@@ -36,7 +36,7 @@ export function UserDashboard() {
     useEffect(() => {
         if (typeof window !== "undefined") {
             // Hydrate cached journey data
-            const localJourney = localStorage.getItem("visaformula_user_journey");
+            const localJourney = localStorage.getItem("travltik_user_journey");
             const activeCasesStr = localStorage.getItem("active_visa_cases");
             const savedDocsStr = localStorage.getItem("seeker_documents");
 
@@ -97,7 +97,7 @@ export function UserDashboard() {
                 } catch(e) {}
             }
 
-            const userStr = localStorage.getItem("visaformula_user");
+            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
             const savedEmail = localStorage.getItem("seeker_email");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
@@ -285,7 +285,7 @@ export function UserDashboard() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("visaformula_user");
+        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
         localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");
         localStorage.removeItem("seeker_email");

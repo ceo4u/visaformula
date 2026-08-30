@@ -58,7 +58,7 @@ export function RequestQuoteModal({
 
     // Auto-fill logged in seeker credentials if available
     try {
-      const userStr = localStorage.getItem("visaformula_user") || localStorage.getItem("travltik_user");
+      const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || localStorage.getItem("travltik_user");
       if (userStr) {
         const u = JSON.parse(userStr);
         if (u.name) setSeekerName(u.name);

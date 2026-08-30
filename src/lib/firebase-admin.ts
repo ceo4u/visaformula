@@ -12,7 +12,7 @@ let adminAuth: Auth | null = null;
 function initFirebaseAdmin(): { app: App; auth: Auth } | null {
   if (adminAuth) return { app: adminApp!, auth: adminAuth };
 
-  const projectId = process.env.FIREBASE_PROJECT_ID || process.env.PUBLIC_FIREBASE_PROJECT_ID || 'visaformula-auth';
+  const projectId = process.env.FIREBASE_PROJECT_ID || process.env.PUBLIC_FIREBASE_PROJECT_ID || 'travltik-auth';
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_PRIVATE_KEY
     ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')

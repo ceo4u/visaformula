@@ -2129,7 +2129,7 @@ export function VisaCountryResultPortal({
           submitted_at: submissionDate,
           status: 'Dossier Ingested & AI Verified'
         };
-        localStorage.setItem('visaformula_user_journey', JSON.stringify(journeyPayload));
+        localStorage.setItem('travltik_user_journey', JSON.stringify(journeyPayload));
 
         // 2. Save Seeker Core Profile fields
         localStorage.setItem('seeker_destinations', JSON.stringify([countryName]));
@@ -2138,7 +2138,7 @@ export function VisaCountryResultPortal({
         localStorage.setItem('seeker_goals', JSON.stringify([isStudyPurpose ? 'Study Abroad' : isWorkPurpose ? 'Work Abroad' : 'Tourism / Vacation']));
         
         // Ensure user can immediately view their dashboard without redirect roadblock
-        if (!localStorage.getItem('seeker_email') && !localStorage.getItem('visaformula_user')) {
+        if (!localStorage.getItem('seeker_email') && !(localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"))) {
           localStorage.setItem('seeker_email', 'seeker@travltik.com');
           localStorage.setItem('seeker_firstName', 'TravlTik');
           localStorage.setItem('seeker_lastName', 'Seeker');
@@ -2246,7 +2246,7 @@ export function VisaCountryResultPortal({
     try {
       const email = localStorage.getItem('seeker_email') || (() => {
         try {
-          const u = JSON.parse(localStorage.getItem('visaformula_user') || '{}');
+          const u = JSON.parse((localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || '{}');
           return u.email || 'guest@travltik.com';
         } catch(e) { return 'guest@travltik.com'; }
       })();
@@ -2276,8 +2276,8 @@ export function VisaCountryResultPortal({
       };
 
       // 1. Save to local storage for immediate offline / instant dashboard display
-      localStorage.setItem('visaformula_user_journey', JSON.stringify(journeyPayload));
-      localStorage.setItem('visaformula_last_searched_country', countryName);
+      localStorage.setItem('travltik_user_journey', JSON.stringify(journeyPayload));
+      localStorage.setItem('travltik_last_searched_country', countryName);
 
       // 2. Synchronize to backend journey endpoint if email exists
       if (email && email !== 'guest@travltik.com') {

@@ -30,13 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user");
+            const stored = localStorage.getItem("travltik_user") || (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
             if (stored && stored !== "null") {
                 try {
                     const parsed = JSON.parse(stored);
                     if (parsed && (parsed.displayName === "Google User" || parsed.displayName === "Google" || parsed.email === "user.google@travltik.com" || parsed.email?.includes("google_"))) {
                         localStorage.removeItem("travltik_user");
-                        localStorage.removeItem("visaformula_user");
+                        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
                         localStorage.removeItem("seeker_firstName");
                         localStorage.removeItem("seeker_lastName");
                         localStorage.removeItem("seeker_email");
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 } catch (e) {
                     console.error("Failed to parse stored user", e);
                     localStorage.removeItem("travltik_user");
-                    localStorage.removeItem("visaformula_user");
+                    localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
                 }
             }
         }
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(data.user);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("travltik_user", JSON.stringify(data.user));
-                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    localStorage.setItem("travltik_user", JSON.stringify(data.user));
                     if (data.user && data.user.rawUser) {
                         const raw = data.user.rawUser;
                         if (data.user.type === "seeker") {
@@ -115,13 +115,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (seekerEmail && seekerEmail.toLowerCase() === email.toLowerCase()) {
                     const mockUser = { uid: "local_seeker", email: seekerEmail, displayName: localStorage.getItem("seeker_firstName") || "Seeker", type: "seeker" };
                     setUser(mockUser);
-                    localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
+                    localStorage.setItem("travltik_user", JSON.stringify(mockUser));
                     return;
                 }
                 if (expertEmail && expertEmail.toLowerCase() === email.toLowerCase()) {
                     const mockUser = { uid: "local_expert", email: expertEmail, displayName: localStorage.getItem("expert_businessName") || "Expert", type: "expert" };
                     setUser(mockUser);
-                    localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
+                    localStorage.setItem("travltik_user", JSON.stringify(mockUser));
                     return;
                 }
             }
@@ -141,7 +141,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (data.user) {
                     setUser(data.user);
                     if (typeof window !== "undefined") {
-                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                        localStorage.setItem("travltik_user", JSON.stringify(data.user));
                     }
                 }
             }
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (typeof window !== "undefined") {
                 const mockUser: User = { uid: `mock_${Date.now()}`, email, displayName: name };
                 setUser(mockUser);
-                localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
+                localStorage.setItem("travltik_user", JSON.stringify(mockUser));
             }
         }
     };
@@ -170,7 +170,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 };
                 setUser(mockUser);
                 if (typeof window !== "undefined") {
-                    localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
+                    localStorage.setItem("travltik_user", JSON.stringify(mockUser));
                     localStorage.setItem("expert_isLoggedIn", "true");
                     localStorage.setItem("expert_email", mockEmail);
                     localStorage.setItem("expert_businessName", "Verified Consultant");
@@ -219,7 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(authenticatedUser);
 
             if (typeof window !== "undefined") {
-                localStorage.setItem("visaformula_user", JSON.stringify(authenticatedUser));
+                localStorage.setItem("travltik_user", JSON.stringify(authenticatedUser));
                 if (role === 'expert') {
                     localStorage.setItem("expert_isLoggedIn", "true");
                     localStorage.setItem("expert_email", fbUser.email || '');
@@ -248,7 +248,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         const resolvedUser = data.user;
                         setUser(resolvedUser);
                         if (typeof window !== "undefined") {
-                            localStorage.setItem("visaformula_user", JSON.stringify(resolvedUser));
+                            localStorage.setItem("travltik_user", JSON.stringify(resolvedUser));
                             if (resolvedUser.type === 'expert' || role === 'expert') {
                                 const raw = resolvedUser.rawUser || {};
                                 localStorage.setItem("expert_isLoggedIn", "true");
@@ -299,7 +299,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         setUser(null);
         if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", "null");
+            localStorage.setItem("travltik_user", "null");
         }
     };
 

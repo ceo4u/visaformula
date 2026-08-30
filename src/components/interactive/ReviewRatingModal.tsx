@@ -57,7 +57,7 @@ export function ReviewRatingModal({
 
     // Auto-fill authenticated seeker information if stored locally
     try {
-      const userStr = localStorage.getItem("visaformula_user") || localStorage.getItem("travltik_user");
+      const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || localStorage.getItem("travltik_user");
       if (userStr) {
         const u = JSON.parse(userStr);
         if (u.name) setSeekerName(u.name);

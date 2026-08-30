@@ -123,7 +123,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     return;
                 }
 
-                const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+                const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) : null;
                 if (userStr) {
                     try {
                         const parsed = JSON.parse(userStr);
@@ -156,7 +156,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setLoginLoading(true);
         try {
             await signIn(loginEmail, loginPassword);
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) : null;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);
@@ -261,7 +261,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             if (response.ok) {
                 const data = await response.json();
                 if (data.user && typeof window !== "undefined") {
-                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    localStorage.setItem("travltik_user", JSON.stringify(data.user));
                 }
             }
         } catch (err) {
@@ -290,7 +290,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 displayName: `${firstName} ${lastName}`.trim() || "Seeker User",
                 type: "seeker"
             };
-            localStorage.setItem("visaformula_user", JSON.stringify(seekerUser));
+            localStorage.setItem("travltik_user", JSON.stringify(seekerUser));
             localStorage.setItem("seeker_firstName", firstName);
             localStorage.setItem("seeker_lastName", lastName);
             localStorage.setItem("seeker_phone", `${countryCode} ${phone}`);

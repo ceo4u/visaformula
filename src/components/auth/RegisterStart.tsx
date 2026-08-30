@@ -33,7 +33,7 @@ export default function RegisterStart() {
       // Save user session in localStorage for frontend continuity
       if (typeof window !== "undefined") {
         if (data.user) {
-          localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+          localStorage.setItem("travltik_user", JSON.stringify(data.user));
         }
         if (formData.role === "expert") {
           localStorage.setItem("expert_isLoggedIn", "true");

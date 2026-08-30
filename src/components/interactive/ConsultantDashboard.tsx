@@ -97,7 +97,7 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const userStr = localStorage.getItem("visaformula_user");
+            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
             let parsedUser: any = null;
@@ -316,7 +316,7 @@ export function ConsultantDashboard() {
         // Update active user & profile updates dictionary
         try {
             const currentEmail = localStorage.getItem("expert_email") || "";
-            localStorage.setItem("visaformula_user", JSON.stringify({
+            localStorage.setItem("travltik_user", JSON.stringify({
                 name: formName,
                 email: currentEmail,
                 role: "expert",
@@ -324,7 +324,7 @@ export function ConsultantDashboard() {
                 type: "expert"
             }));
             const key = formName.toLowerCase().trim();
-            const existingUpdates = JSON.parse(localStorage.getItem("visaformula_expert_profile_updates") || "{}");
+            const existingUpdates = JSON.parse(localStorage.getItem("travltik_expert_profile_updates") || "{}");
             existingUpdates[key] = {
                 name: formName,
                 role: formRole,
@@ -336,16 +336,16 @@ export function ConsultantDashboard() {
                 profile_photo: formImage,
                 phone: formPhone
             };
-            localStorage.setItem("visaformula_expert_profile_updates", JSON.stringify(existingUpdates));
+            localStorage.setItem("travltik_expert_profile_updates", JSON.stringify(existingUpdates));
 
-            const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
+            const existingAll = JSON.parse(localStorage.getItem("travltik_all_experts") || "[]");
             const updatedAll = existingAll.map((x: any) => {
                 if (x.name?.toLowerCase() === formName.toLowerCase() || x.id === "logged-in-expert") {
                     return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, bio: formBio, image: formImage, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
                 }
                 return x;
             });
-            localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
+            localStorage.setItem("travltik_all_experts", JSON.stringify(updatedAll));
 
             // Sync to Neon PostgreSQL Database
             if (currentEmail) {
@@ -472,7 +472,7 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
             localStorage.removeItem("expert_email");
-            localStorage.removeItem("visaformula_user");
+            localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
             window.location.href = "/signup/expert";
         }
     };

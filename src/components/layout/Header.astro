@@ -397,7 +397,7 @@ const isHome = pathname === '/' || pathname === '';
     function syncAuthHeader() {
         const seekerFirst = localStorage.getItem("seeker_firstName");
         const expertBusiness = localStorage.getItem("expert_businessName");
-        const userStr = localStorage.getItem("visaformula_user") || localStorage.getItem("travltik_user");
+        const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || localStorage.getItem("travltik_user");
 
         const isLoggedIn = Boolean(seekerFirst || expertBusiness || (userStr && userStr !== "null" && userStr !== "undefined"));
 
@@ -562,7 +562,7 @@ const isHome = pathname === '/' || pathname === '';
     // Handle Logout triggers
     const handleLogout = (e) => {
         e.preventDefault();
-        localStorage.removeItem("visaformula_user");
+        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
         localStorage.removeItem("travltik_user");
         localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");

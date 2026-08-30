@@ -326,7 +326,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   const currentOption = PURPOSE_OPTIONS.find(opt => opt.id === selectedPurpose) || PURPOSE_OPTIONS[0];
 
   return (
-    <div className="w-full bg-[#f8fafc] rounded-[20px] sm:rounded-[32px] p-3.5 sm:p-7 md:p-9 border border-slate-200/90 shadow-sm space-y-4 sm:space-y-6 text-slate-800 font-sans relative overflow-hidden">
+    <div className="w-full space-y-4 sm:space-y-6 text-slate-800 font-sans relative">
       
       {toastMessage && (
         <div className="fixed bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-full text-xs font-bold z-50 shadow-2xl flex items-center gap-2 border border-white/20 animate-fade-in whitespace-nowrap max-w-[90vw] truncate">

@@ -6031,9 +6031,9 @@ export function VisaCountryResultPortal({
 
             {/* AI CONSULAR MOCK INTERVIEW PREP KIT (ABOVE FAQ) */}
             <ConsularMockPrepCard 
-              countryName={countryData.country}
+              countryName={countryName}
               passportCountry={passportCountry}
-              purpose={activePurpose}
+              purpose={initialPurpose === 'study' ? 'Higher Studies' : initialPurpose === 'work' ? 'Employment / Work' : 'Tourism / Vacation'}
             />
 
             {/* 5. EXPANDABLE FAQ ACCORDION */}

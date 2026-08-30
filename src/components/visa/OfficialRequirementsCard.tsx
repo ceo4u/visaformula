@@ -385,7 +385,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
       ) : data ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           
-          <div id="section-docs" className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between">
+          <div id="section-documents" className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between scroll-mt-24">
             <div className="space-y-5">
               <div className="flex items-center gap-3">
                 <div className="w-7 h-7 rounded-lg bg-[#009e86] text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -523,7 +523,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
           </div>
 
-          <div id="section-how-to-apply" className="lg:col-span-4 space-y-5">
+          <div id="section-visa-process" className="lg:col-span-4 space-y-5 scroll-mt-24">
             <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-7 h-7 rounded-lg bg-[#009e86] text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -564,7 +564,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 <div className="w-7 h-7 rounded-lg bg-[#5b45d9] text-white flex items-center justify-center shrink-0 shadow-2xs">
                   <CreditCard className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Costs &amp; Reference Fees</h3>
+                <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Costs &amp; Visa Fees</h3>
               </div>
               <div className="space-y-2.5 pt-1 text-xs sm:text-sm font-bold text-slate-800">
                 <div className="flex items-center justify-between">
@@ -576,8 +576,10 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   <span className="font-extrabold text-slate-900">{data.costs.service_fee}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-sm sm:text-base">
-                  <strong className="text-slate-900 font-extrabold">Total reference fees</strong>
-                  <strong className="text-[#009e86] font-black text-base sm:text-lg">{data.costs.total_fee}</strong>
+                  <strong className="text-slate-900 font-extrabold">Total Fees</strong>
+                  <strong className="text-[#009e86] font-black text-base sm:text-lg">
+                    {data.costs.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs.visa_fee}
+                  </strong>
                 </div>
                 <p className="text-[10px] text-slate-400 font-medium pt-1">{data.costs.notes}</p>
               </div>

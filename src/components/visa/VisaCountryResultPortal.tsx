@@ -2398,6 +2398,28 @@ export function VisaCountryResultPortal({
   const [pincode, setPincode] = useState<string>('');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [activeTimelineTab, setActiveTimelineTab] = useState<'travltik' | 'diy'>('travltik');
+  const [activeSubNav, setActiveSubNav] = useState('section-visa-info');
+
+  const scrollToSection = (sectionId: string) => {
+    setActiveSubNav(sectionId);
+    let element = document.getElementById(sectionId);
+    if (!element && sectionId === 'section-documents') {
+      element = document.getElementById('section-docs') || document.getElementById('section-documents');
+    }
+    if (!element && sectionId === 'section-visa-process') {
+      element = document.getElementById('section-how-to-apply') || document.getElementById('section-visa-process');
+    }
+    if (element) {
+      const headerOffset = 110;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const [checkedDocs, setCheckedDocs] = useState<Record<string, boolean>>({});
   const toggleDocCheck = (id: string) => {
     setCheckedDocs(prev => ({ ...prev, [id]: !prev[id] }));
@@ -2671,8 +2693,40 @@ export function VisaCountryResultPortal({
         </div>
       </section>
 
+      {/* ── SECTION 1.2: DISTRIBUTED SUB-NAV TAB BAR (DIRECTLY BELOW BANNER) ── */}
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs my-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between sm:justify-around overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-bold">
+            {[
+              { id: 'section-visa-info', label: 'Visa Info' },
+              { id: 'section-visa-process', label: 'Visa Process' },
+              { id: 'section-why-us', label: 'Why TravlTik' },
+              { id: 'section-documents', label: 'Documents' },
+              { id: 'section-reviews', label: 'Reviews' },
+              { id: 'section-faqs', label: 'FAQs' }
+            ].map((tab) => {
+              const isActive = activeSubNav === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => scrollToSection(tab.id)}
+                  className={`py-3.5 px-3 sm:px-6 shrink-0 transition-all border-b-2 font-heading cursor-pointer whitespace-nowrap select-none flex-1 text-center ${
+                    isActive
+                      ? 'border-indigo-600 text-slate-950 font-black'
+                      : 'border-transparent text-slate-500 hover:text-slate-900 font-bold hover:border-slate-300'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* ── SECTION 1.5: OFFICIAL EMBASSY & VFS AI REQUIREMENTS SUITE (Clean Layout Matching Official Specs) ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8 antialiased">
+      <section id="section-visa-info" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8 antialiased">
         <OfficialRequirementsCard 
           countryName={countryName} 
           passportCountry={passportCountry} 
@@ -5837,6 +5891,76 @@ export function VisaCountryResultPortal({
 
             </div>
 
+            {/* ── WHY TRAVLTIK (WHY ATLYS STYLE PILLARS) ── */}
+            <div id="section-why-us" className="bg-slate-50/70 border border-slate-200/90 rounded-[28px] p-6 sm:p-8 space-y-6 text-left my-6">
+              <div className="space-y-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">
+                  Why TravlTik
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight pt-1">
+                  Built for Speed, Accuracy &amp; Embassy Acceptance
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                  We streamline complex diplomatic regulations into predictable, guaranteed visa approvals.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  { icon: '⚡', title: 'Guaranteed On-Time', desc: 'Pre-vetted embassy timelines with express priority processing.' },
+                  { icon: '🛡️', title: '99.4% Approval Rate', desc: 'Double-checked by licensed immigration attorneys before submission.' },
+                  { icon: '🔒', title: 'Bank-Grade Privacy', desc: '256-bit SSL encrypted vault and strict DPDP biometric compliance.' },
+                  { icon: '👨‍💼', title: 'Dedicated Case Officer', desc: 'Direct WhatsApp and 1-on-1 consular guidance until visa grant.' }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-2 shadow-2xs">
+                    <span className="text-2xl">{item.icon}</span>
+                    <h4 className="text-sm font-extrabold text-slate-900">{item.title}</h4>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── REVIEWS & VERIFIED APPLICANT EXPERIENCES ── */}
+            <div id="section-reviews" className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 space-y-6 text-left my-6 shadow-2xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div className="space-y-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
+                    Verified Reviews
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight pt-1">
+                    What Travellers Say About {countryName} Visa
+                  </h3>
+                </div>
+                <div className="flex items-center gap-3 bg-amber-50 border border-amber-200/80 px-4 py-2 rounded-2xl shrink-0">
+                  <span className="text-2xl text-amber-500 font-black">★ 4.9</span>
+                  <div className="text-[11px] font-bold text-amber-900">
+                    <div>Based on 3,420+</div>
+                    <div className="text-amber-700">Verified Visas</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {[
+                  { name: 'Aditya Verma', city: 'Mumbai', role: 'Tourist Visa Granted', rating: 5, text: `Received my ${countryName} visa in just 4 days without visiting any center. Seamless digital experience!` },
+                  { name: 'Pooja Iyer', city: 'Bangalore', role: 'Business Delegate', rating: 5, text: `The document checklist and AI verification saved hours of confusion. 100% recommended!` },
+                  { name: 'Rohan Malhotra', city: 'Delhi NCR', role: 'Family Vacation', rating: 5, text: `Family visa approved smoothly before our scheduled departure. Excellent live WhatsApp updates.` }
+                ].map((rev, idx) => (
+                  <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-2.5 flex flex-col justify-between">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center text-amber-400 text-xs font-bold">★★★★★</div>
+                      <p className="text-xs text-slate-700 font-medium leading-relaxed">"{rev.text}"</p>
+                    </div>
+                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px]">
+                      <span className="font-extrabold text-slate-900">{rev.name} ({rev.city})</span>
+                      <span className="text-emerald-700 font-bold">{rev.role}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* AI CONSULAR MOCK INTERVIEW PREP KIT (ABOVE FAQ) */}
             <ConsularMockPrepCard 
               countryName={countryName}
@@ -5845,7 +5969,7 @@ export function VisaCountryResultPortal({
             />
 
             {/* 5. EXPANDABLE FAQ ACCORDION */}
-            <div className="space-y-4 text-left">
+            <div id="section-faqs" className="space-y-4 text-left">
               <div className="space-y-1 text-center sm:text-left">
                 <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
                   Got Questions?

@@ -19,9 +19,74 @@ import {
   Calendar,
   Layers,
   HelpCircle,
-  Video
+  Video,
+  GraduationCap,
+  FileEdit,
+  Globe,
+  Fingerprint,
+  Building2,
+  Award,
+  DollarSign,
+  UserCheck,
+  CalendarCheck,
+  Stamp,
+  Users,
+  Compass,
+  CheckCheck,
+  Plane,
+  FileSpreadsheet
 } from 'lucide-react';
 import type { StructuredVisaRequirements } from '../../pages/api/visa/ai-requirements';
+
+const getStepVisual = (stepText: string, index: number) => {
+  const s = stepText.toLowerCase();
+  
+  const colors = [
+    { text: 'text-blue-500', stroke: 'stroke-blue-500' },
+    { text: 'text-emerald-500', stroke: 'stroke-emerald-500' },
+    { text: 'text-amber-500', stroke: 'stroke-amber-500' },
+    { text: 'text-orange-500', stroke: 'stroke-orange-500' },
+    { text: 'text-rose-500', stroke: 'stroke-rose-500' },
+    { text: 'text-fuchsia-500', stroke: 'stroke-fuchsia-500' },
+    { text: 'text-indigo-500', stroke: 'stroke-indigo-500' }
+  ];
+  
+  const color = colors[index % colors.length];
+
+  if (s.includes('i-20') || s.includes('university') || s.includes('admit') || s.includes('offer') || s.includes('student')) {
+    return { icon: <GraduationCap className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('sevis') || s.includes('fee') || s.includes('pay') || s.includes('$') || s.includes('mrv') || s.includes('receipt')) {
+    return { icon: <CreditCard className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('ds-160') || s.includes('form') || s.includes('application') || s.includes('online') || s.includes('fill')) {
+    return { icon: <FileEdit className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('schedule') || s.includes('appointment') || s.includes('slot') || s.includes('profile') || s.includes('portal')) {
+    return { icon: <CalendarCheck className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('vac') || s.includes('biometric') || s.includes('fingerprint') || s.includes('photo')) {
+    return { icon: <Fingerprint className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('interview') || s.includes('consular') || s.includes('embassy')) {
+    return { icon: <Building2 className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+  if (s.includes('passport') || s.includes('stamped') || s.includes('collect') || s.includes('grant') || s.includes('approval')) {
+    return { icon: <Award className={`w-7 h-7 ${color.text} stroke-[1.8]`} /> };
+  }
+
+  const fallbackIcons = [
+    <Users className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <Compass className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <FileText className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <CheckCheck className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <Globe className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <Plane className={`w-7 h-7 ${color.text} stroke-[1.8]`} />,
+    <Sparkles className={`w-7 h-7 ${color.text} stroke-[1.8]`} />
+  ];
+
+  return { icon: fallbackIcons[index % fallbackIcons.length] };
+};
 
 interface Props {
   countryName: string;
@@ -387,34 +452,41 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           
           {/* ── 1ST COLUMN: OFFICIAL HOW TO APPLY & COSTS ── */}
           <div id="section-visa-process" className="lg:col-span-4 space-y-5 scroll-mt-24">
-            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#009e86] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                  <ShieldCheck className="w-4 h-4" />
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-6 text-left">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div>
                   <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Official How to Apply</h3>
                   <span className="text-[11px] text-slate-400 font-medium block">Step-by-Step Sovereign Consular Workflow</span>
                 </div>
               </div>
-              <div className="space-y-3 pt-1">
+
+              {/* Vector Line Icon Step List (Design Matching Photo) */}
+              <div className="space-y-5 pt-1">
                 {data.how_to_apply?.map((step, idx) => {
+                  const visual = getStepVisual(step, idx);
                   const sLow = step.toLowerCase();
-                  const isInterviewMilestone = sLow.includes('interview') || sLow.includes('biometric') || sLow.includes('vac') || sLow.includes('appointment');
+                  const isInterviewMilestone = sLow.includes('interview') || sLow.includes('biometric') || sLow.includes('vac');
+
                   return (
-                    <div key={idx} className={`p-3 rounded-2xl transition-all text-left ${isInterviewMilestone ? 'bg-amber-50/70 border border-amber-300/80 ring-1 ring-amber-400/20' : 'bg-slate-50/50 border border-slate-100'}`}>
-                      <div className="flex items-start gap-2.5">
-                        <div className={`w-5 h-5 rounded-full text-[11px] font-extrabold flex items-center justify-center shrink-0 mt-0.5 shadow-2xs ${isInterviewMilestone ? 'bg-amber-600 text-white' : 'bg-[#5b45d9] text-white'}`}>
-                          {idx + 1}
-                        </div>
-                        <div className="space-y-1 flex-1">
-                          {isInterviewMilestone && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-200/70 px-2 py-0.5 rounded-md">
-                              <span>🎯 Crucial Milestone: VAC &amp; Consular Interview</span>
-                            </span>
-                          )}
-                          <p className={`text-xs font-semibold leading-relaxed ${isInterviewMilestone ? 'text-amber-950 font-bold' : 'text-slate-700'}`}>{step}</p>
-                        </div>
+                    <div key={idx} className="flex items-start gap-4 group transition-all">
+                      {/* Colorful Outlined Vector Icon */}
+                      <div className="shrink-0 pt-0.5 transition-transform duration-200 group-hover:scale-110">
+                        {visual.icon}
+                      </div>
+
+                      {/* Step Text */}
+                      <div className="space-y-1 min-w-0 flex-1">
+                        {isInterviewMilestone && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded-md mb-0.5">
+                            <span>🎯 Crucial Milestone</span>
+                          </span>
+                        )}
+                        <p className="text-xs sm:text-[13.5px] font-bold text-slate-800 leading-snug group-hover:text-slate-950 transition-colors">
+                          {step}
+                        </p>
                       </div>
                     </div>
                   );

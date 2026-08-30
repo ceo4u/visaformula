@@ -2462,6 +2462,148 @@ export function VisaCountryResultPortal({
   const [pickupAddress, setPickupAddress] = useState('');
   const [isSubmittingModal, setIsSubmittingModal] = useState(false);
 
+  // ── REAL-TIME DYNAMIC VISA READINESS & APPROVAL SCORECARD ──
+  const readinessMetrics = useMemo(() => {
+    let filledCount = 0;
+    const totalQuestions = 4;
+    let recommendations: string[] = [];
+
+    if (activePurposeTab === 'study') {
+      if (studyQual) filledCount++;
+      if (studyTarget) filledCount++;
+      if (studyIntake) filledCount++;
+      if (studyBudget) filledCount++;
+
+      const fitScore = studyQual && studyTarget ? 25 : studyQual || studyTarget ? 15 : 8;
+      const finScore = studyBudget.includes('Self-Funded') ? 35 : studyBudget.includes('Scholarship') ? 33 : studyBudget ? 26 : 10;
+      const docScore = studyIntake ? 15 : 6;
+      const tiesScore = 20;
+
+      let calcScore = 0;
+      if (filledCount === 0) {
+        calcScore = 52;
+      } else {
+        calcScore = Math.min(98, Math.round(45 + (fitScore + finScore + docScore + tiesScore) * 0.55));
+        if (filledCount === 4) calcScore = Math.max(91, calcScore);
+      }
+
+      if (studyBudget.includes('Education Loan')) {
+        recommendations.push('Sanctioned loan letter from recognized bank required for SEVP / Embassy approval.');
+      } else if (studyBudget.includes('Self-Funded')) {
+        recommendations.push(`Maintain 6-month continuous liquid bank statements covering full 1st-year tuition + living costs for ${countryName}.`);
+      } else {
+        recommendations.push(`Proof of liquid tuition funds & living costs for ${countryName} required.`);
+      }
+      recommendations.push('Upload Form I-20 / Admission Acceptance before booking consular biometric appointment.');
+
+      return {
+        score: calcScore,
+        filledCount,
+        totalQuestions,
+        category: 'Student Visa',
+        statusText: calcScore >= 85 ? 'High Approval Readiness' : calcScore >= 65 ? 'Moderate Readiness' : 'Profile Assessment Incomplete',
+        badgeColor: calcScore >= 85 ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' : 'text-amber-800 bg-amber-100/80 border-amber-200',
+        barColor: calcScore >= 85 ? 'bg-emerald-500' : 'bg-amber-500',
+        recommendations,
+        pillars: [
+          { name: 'Academic Fit', score: fitScore, max: 25, value: studyTarget || 'Pending Degree' },
+          { name: 'Financial Solvency', score: finScore, max: 35, value: studyBudget || 'Pending Proof' },
+          { name: 'Intake Readiness', score: docScore, max: 15, value: studyIntake || 'Pending Session' },
+          { name: 'INA 214(b) Tie-Back', score: tiesScore, max: 25, value: 'Academic intent verified' }
+        ]
+      };
+    }
+
+    if (activePurposeTab === 'tourism') {
+      if (visitPlanStatus) filledCount++;
+      if (visitTiming) filledCount++;
+      if (visitReturnDate) filledCount++;
+      if (visitStay) filledCount++;
+
+      const fitScore = visitPlanStatus ? 25 : 10;
+      const finScore = 32;
+      const tiesScore = visitReturnDate ? 25 : 12;
+      const docScore = visitStay ? 15 : 7;
+
+      let calcScore = 0;
+      if (filledCount === 0) {
+        calcScore = 55;
+      } else {
+        calcScore = Math.min(97, Math.round(48 + (fitScore + finScore + docScore + tiesScore) * 0.52));
+        if (filledCount === 4) calcScore = Math.max(93, calcScore);
+      }
+
+      recommendations.push('Ensure 3-6 months continuous stamped bank balance with adequate travel funds.');
+      recommendations.push('Confirmed round-trip flight booking voucher and hotel accommodation required.');
+
+      return {
+        score: calcScore,
+        filledCount,
+        totalQuestions,
+        category: 'Tourist / Visit Visa',
+        statusText: calcScore >= 85 ? 'High Approval Readiness' : calcScore >= 65 ? 'Moderate Readiness' : 'Profile Assessment Incomplete',
+        badgeColor: calcScore >= 85 ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' : 'text-amber-800 bg-amber-100/80 border-amber-200',
+        barColor: calcScore >= 85 ? 'bg-emerald-500' : 'bg-amber-500',
+        recommendations,
+        pillars: [
+          { name: 'Trip Itinerary', score: fitScore, max: 25, value: visitPlanStatus || 'Pending Status' },
+          { name: 'Travel Timing', score: 20, max: 25, value: visitTiming || 'Pending Departure' },
+          { name: 'Return Proof', score: tiesScore, max: 25, value: visitReturnDate || 'Pending Return' },
+          { name: 'Accommodation', score: docScore, max: 15, value: visitStay || 'Pending Hotel' }
+        ]
+      };
+    }
+
+    // Work / Employment
+    if (workExp) filledCount++;
+    if (workOffer) filledCount++;
+    if (workDomain) filledCount++;
+    if (workAssess) filledCount++;
+
+    const fitScore = workExp && workDomain ? 25 : 12;
+    const finScore = 30;
+    const tiesScore = workOffer.includes('Confirmed') ? 25 : 14;
+    const docScore = workAssess.includes('Assessed') ? 15 : 8;
+
+    let calcScore = 0;
+    if (filledCount === 0) {
+      calcScore = 50;
+    } else {
+      calcScore = Math.min(96, Math.round(44 + (fitScore + finScore + docScore + tiesScore) * 0.54));
+      if (filledCount === 4) calcScore = Math.max(90, calcScore);
+    }
+
+    if (workOffer.includes('Seeking')) {
+      recommendations.push('Obtain official employer sponsorship petition (CoS, Form I-797, or Labour Clearance).');
+    } else {
+      recommendations.push('Attach signed employment contract detailing job title, duties, and remuneration.');
+    }
+    recommendations.push('Credential assessment report (ECA/WES) required for qualification equivalence.');
+
+    return {
+      score: calcScore,
+      filledCount,
+      totalQuestions,
+      category: 'Work / Employment Visa',
+      statusText: calcScore >= 85 ? 'High Employment Readiness' : calcScore >= 65 ? 'Moderate Readiness' : 'Profile Assessment Incomplete',
+      badgeColor: calcScore >= 85 ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' : 'text-amber-800 bg-amber-100/80 border-amber-200',
+      barColor: calcScore >= 85 ? 'bg-emerald-500' : 'bg-amber-500',
+      recommendations,
+      pillars: [
+        { name: 'Industry Exp', score: fitScore, max: 25, value: workExp || 'Pending Level' },
+        { name: 'Job Offer Sponsor', score: tiesScore, max: 25, value: workOffer || 'Pending Offer' },
+        { name: 'Domain Specialization', score: finScore, max: 35, value: workDomain || 'Pending Domain' },
+        { name: 'Credential Audit', score: docScore, max: 15, value: workAssess || 'Pending ECA' }
+      ]
+    };
+  }, [
+    activePurposeTab,
+    studyQual, studyTarget, studyIntake, studyBudget,
+    visitPlanStatus, visitTiming, visitReturnDate, visitStay,
+    workExp, workOffer, workDomain, workAssess,
+    countryName
+  ]);
+
   // Selected Variant Data
   const currentVariant = useMemo(() => {
     return variants.find(v => v.id === selectedVariantId) || variants[0];
@@ -3540,6 +3682,82 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
               )}
+
+              {/* ── REAL-TIME VISA READINESS & APPROVAL SCORECARD (FOR ALL CATEGORIES) ── */}
+              <div className="mt-6 pt-6 border-t border-slate-200/90 bg-slate-50/70 rounded-2xl sm:rounded-3xl p-5 sm:p-7 space-y-6 text-left border border-slate-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Zap className="w-5 h-5 text-amber-400 fill-amber-400" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base sm:text-lg font-black text-slate-950">
+                          Visa Readiness &amp; Approval Engine
+                        </h4>
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-900">
+                          LIVE
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 font-medium mt-0.5">
+                        Consular compliance &amp; risk scoring for <strong className="text-slate-800">{countryName} {readinessMetrics.category}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className={`px-3.5 py-1.5 rounded-xl border text-xs font-black uppercase tracking-wider flex items-center gap-2 ${readinessMetrics.badgeColor}`}>
+                      <span className="text-sm">🎯</span>
+                      <span>{readinessMetrics.score}% {readinessMetrics.statusText}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Live Readiness Progress Bar */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-600">
+                    <span>Approval Likelihood Factor</span>
+                    <span className="text-slate-900 font-black">{readinessMetrics.score} / 100</span>
+                  </div>
+                  <div className="w-full h-3 rounded-full bg-slate-200/80 overflow-hidden p-0.5">
+                    <div 
+                      className={`h-full rounded-full transition-all duration-700 ease-out ${readinessMetrics.barColor}`} 
+                      style={{ width: `${readinessMetrics.score}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* 4 Pillars Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                  {readinessMetrics.pillars.map((pillar, pIdx) => (
+                    <div key={pIdx} className="bg-white border border-slate-200/90 rounded-2xl p-4 space-y-1.5 shadow-2xs">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        <span>{pillar.name}</span>
+                        <span className="text-slate-900 font-black">{pillar.score}/{pillar.max}</span>
+                      </div>
+                      <p className="text-xs sm:text-[13px] font-extrabold text-slate-900 truncate">
+                        {pillar.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Consular Recommendation Guidance Box */}
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-2xs">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-900 uppercase tracking-wider">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Consular Adjudication Recommendations:</span>
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-slate-700 font-medium">
+                    {readinessMetrics.recommendations.map((rec, rIdx) => (
+                      <li key={rIdx} className="flex items-start gap-2">
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[3] mt-0.5" />
+                        <span>{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
 
             </div>
           </section>

@@ -4090,12 +4090,19 @@ export function VisaCountryResultPortal({
                         </div>
                       </div>
                     ) : (
-                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-400 bg-white hover:bg-indigo-50/30 rounded-2xl p-6 sm:p-7 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs group">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100 flex items-center justify-center text-indigo-600 mb-2.5 transition-colors">
-                          <Upload className="w-5 h-5 text-indigo-600" />
+                      <label className="border-2 border-dashed border-indigo-200 hover:border-indigo-500 bg-white hover:bg-indigo-50/40 rounded-2xl py-10 sm:py-14 px-6 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-sm hover:shadow-md group min-h-[220px] sm:min-h-[240px]">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-4 transition-all shadow-xs">
+                          <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 stroke-[2.5]" />
                         </div>
-                        <span className="text-sm sm:text-base font-extrabold text-slate-900">Click or Drag to Upload Passport</span>
-                        <span className="text-xs text-slate-500 font-medium mt-1">Supports PDF, JPG, PNG (Max 15MB)</span>
+                        <span className="text-base sm:text-lg font-heading font-black text-slate-950 tracking-tight">
+                          Click or Drag to Upload Passport
+                        </span>
+                        <span className="text-xs sm:text-sm text-slate-500 font-semibold mt-1.5">
+                          Supports PDF, JPG, PNG (Max 15MB)
+                        </span>
+                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-[11px] font-bold text-slate-600 group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors">
+                          <span>📁 Browse File</span>
+                        </div>
                         <input
                           type="file"
                           accept=".pdf,.jpg,.jpeg,.png"

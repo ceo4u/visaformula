@@ -2727,7 +2727,6 @@ export function VisaCountryResultPortal({
               { id: 'section-visa-process', label: 'How to Apply' },
               { id: 'section-documents', label: 'Documents' },
               { id: 'section-mandates', label: 'Mandates' },
-              { id: 'section-reviews', label: 'Reviews' },
               { id: 'section-faqs', label: 'FAQs' }
             ].map((tab) => {
               const isActive = activeSubNav === tab.id;
@@ -5918,45 +5917,7 @@ export function VisaCountryResultPortal({
 
 
 
-            {/* ── REVIEWS & VERIFIED APPLICANT EXPERIENCES ── */}
-            <div id="section-reviews" className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 space-y-6 text-left my-6 shadow-2xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div className="space-y-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
-                    Verified Reviews
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight pt-1">
-                    What Travellers Say About {countryName} Visa
-                  </h3>
-                </div>
-                <div className="flex items-center gap-3 bg-amber-50 border border-amber-200/80 px-4 py-2 rounded-2xl shrink-0">
-                  <span className="text-2xl text-amber-500 font-black">★ 4.9</span>
-                  <div className="text-[11px] font-bold text-amber-900">
-                    <div>Based on 3,420+</div>
-                    <div className="text-amber-700">Verified Visas</div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {[
-                  { name: 'Aditya Verma', city: 'Mumbai', role: 'Tourist Visa Granted', rating: 5, text: `Received my ${countryName} visa in just 4 days without visiting any center. Seamless digital experience!` },
-                  { name: 'Pooja Iyer', city: 'Bangalore', role: 'Business Delegate', rating: 5, text: `The document checklist and AI verification saved hours of confusion. 100% recommended!` },
-                  { name: 'Rohan Malhotra', city: 'Delhi NCR', role: 'Family Vacation', rating: 5, text: `Family visa approved smoothly before our scheduled departure. Excellent live WhatsApp updates.` }
-                ].map((rev, idx) => (
-                  <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-2.5 flex flex-col justify-between">
-                    <div className="space-y-1.5">
-                      <div className="flex items-center text-amber-400 text-xs font-bold">★★★★★</div>
-                      <p className="text-xs text-slate-700 font-medium leading-relaxed">"{rev.text}"</p>
-                    </div>
-                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px]">
-                      <span className="font-extrabold text-slate-900">{rev.name} ({rev.city})</span>
-                      <span className="text-emerald-700 font-bold">{rev.role}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* AI CONSULAR MOCK INTERVIEW PREP KIT (ABOVE FAQ) */}
             <ConsularMockPrepCard 

@@ -899,8 +899,8 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         <div id="section-mandates" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div className="flex items-center gap-3.5">
-              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                <AlertCircle className="w-5 h-5 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <AlertCircle className="w-5 h-5 text-amber-400" />
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Important Consular Mandates &amp; Insurance Guidelines</h3>
@@ -917,40 +917,38 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               return (
                 <div 
                   key={idx} 
-                  className="bg-slate-50/60 hover:bg-slate-50/90 border border-slate-200/80 hover:border-slate-300 rounded-2xl sm:rounded-3xl p-5 sm:p-6 transition-all text-left flex flex-col justify-between gap-4 shadow-2xs group"
+                  className="bg-slate-50/50 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-3xl p-5 sm:p-6 transition-all duration-200 shadow-2xs hover:shadow-xs flex items-start gap-4 text-left group"
                 >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-8 h-8 rounded-xl ${visual.iconBg} flex items-center justify-center shrink-0`}>
-                          {visual.icon}
-                        </div>
-                        <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md border ${visual.badgeBg}`}>
-                          {visual.tag}
-                        </span>
-                      </div>
-                    </div>
+                  <div className={`w-11 h-11 rounded-2xl ${visual.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5 group-hover:scale-105 transition-transform`}>
+                    {visual.icon}
+                  </div>
 
-                    <h4 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-slate-950 transition-colors leading-snug">
-                      {req.category}
-                    </h4>
+                  <div className="space-y-2 flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-slate-950 transition-colors leading-snug">
+                        {req.category}
+                      </h4>
+                      <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${visual.badgeBg}`}>
+                        {visual.tag}
+                      </span>
+                    </div>
 
                     <p className="text-xs sm:text-[13px] text-slate-600 font-normal leading-relaxed">
                       {req.details}
                     </p>
-                  </div>
 
-                  {isInsurance && (
-                    <div className="pt-2 border-t border-slate-200/60">
-                      <a
-                        href="/find-experts?category=insurance"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] transition-colors"
-                      >
-                        <span>Explore Consular-Approved Insurance</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  )}
+                    {isInsurance && (
+                      <div className="pt-2 border-t border-slate-200/60 mt-2">
+                        <a
+                          href="/find-experts?category=insurance"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] transition-colors"
+                        >
+                          <span>Explore Consular-Approved Insurance</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}

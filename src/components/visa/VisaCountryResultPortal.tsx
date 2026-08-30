@@ -4704,28 +4704,30 @@ export function VisaCountryResultPortal({
                           <div
                             key={job.id}
                             onClick={() => setSelectedJobId(job.id)}
-                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2.5 ${
+                            className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2.5 ${
                               isSelected
                                 ? 'bg-emerald-50/40 border-2 border-[#00A86B] shadow-xs'
-                                : 'bg-slate-50/50 hover:bg-white border-slate-200/80 hover:border-slate-300'
+                                : 'bg-slate-50/60 hover:bg-white border-slate-200/80 hover:border-slate-300'
                             }`}
                           >
-                            <div className="space-y-1.5">
-                              <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 inline-block">
-                                {job.sponsorshipBadge}
-                              </span>
-                              <h4 className="font-heading font-black text-xs sm:text-sm text-slate-950 line-clamp-1">
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 inline-block">
+                                  {job.sponsorshipBadge}
+                                </span>
+                                <span className="text-slate-400 text-[10px] font-semibold">{job.type}</span>
+                              </div>
+                              <h4 className="font-heading font-black text-xs sm:text-sm text-slate-950 line-clamp-1 pt-0.5">
                                 {job.title}
                               </h4>
-                              <span className="text-[11px] font-semibold text-slate-600 block truncate">{job.company} • {job.location}</span>
-                              <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
-                                {job.desc}
-                              </p>
+                              <span className="text-[11px] font-medium text-slate-500 block truncate">{job.company} • {job.location}</span>
                             </div>
 
                             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold">
                               <span className="text-emerald-700 font-extrabold">{job.salary}</span>
-                              <span className="text-slate-400 text-[10px]">{job.type}</span>
+                              <span className="text-slate-900 text-[10px] font-extrabold flex items-center gap-0.5">
+                                Select <ArrowRight className="w-2.5 h-2.5" />
+                              </span>
                             </div>
                           </div>
                         );

@@ -2384,7 +2384,7 @@ export function VisaCountryResultPortal({
 
   const [visitPlanStatus, setVisitPlanStatus] = useState('');
   const [visitTiming, setVisitTiming] = useState('');
-  const [visitTravellers, setVisitTravellers] = useState('');
+  const [visitReturnDate, setVisitReturnDate] = useState('');
   const [visitStay, setVisitStay] = useState('');
 
   const [workExp, setWorkExp] = useState('');
@@ -3372,17 +3372,17 @@ export function VisaCountryResultPortal({
                       ]}
                     />
 
-                    {/* Q3: Travellers */}
+                    {/* Q3: Tentative Return Date */}
                     <PortalCustomSelect
-                      label="3. Group / Travellers"
-                      value={visitTravellers}
-                      onChange={setVisitTravellers}
-                      placeholder="Select group type"
+                      label="3. Tentative Return Date"
+                      value={visitReturnDate}
+                      onChange={setVisitReturnDate}
+                      placeholder="Select return window"
                       options={[
-                        "Solo Traveller",
-                        "Couple / Honeymoon",
-                        "Family with Kids / Elders",
-                        "Corporate Business Group"
+                        "Within 1 to 2 Weeks",
+                        "In 1 Month",
+                        "In 2 to 3 Months",
+                        "Flexible / Extended Stay"
                       ]}
                     />
 

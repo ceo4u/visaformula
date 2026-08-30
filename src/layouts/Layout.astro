@@ -31,8 +31,14 @@ const {
   hideWidgets = false
 } = Astro.props;
 
-const cleanCanonical = canonical || Astro.url.origin + Astro.url.pathname;
+const siteUrl = 'https://www.travltik.com';
+const pathname = Astro.url.pathname;
+const normalizedPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+const cleanCanonical = canonical 
+  ? (canonical.startsWith('http://') ? canonical.replace('http://', 'https://') : canonical)
+  : `${siteUrl}${normalizedPath}`;
 const currentUrl = cleanCanonical;
+
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const isJobs = Astro.url.pathname === '/jobs' || Astro.url.pathname === '/jobs/';
 const isTours = Astro.url.pathname === '/tours' || Astro.url.pathname === '/tours/';
@@ -42,12 +48,19 @@ const isCommunity = Astro.url.pathname.startsWith('/community');
 const isVisaCountryPage = Astro.url.pathname.startsWith('/visa/') || Astro.url.pathname.startsWith('/visa');
 const shouldHideWidgets = hideWidgets || isChannelPartner || isCommunity || isVisaCountryPage;
 
-const safeTitle = title || "The Global Immigration & Mobility Platform | Marketplace";
+const cleanTitle = (title || "The Global Immigration & Mobility Platform")
+  .replace(/\s*\|\s*VisaFormula/gi, '')
+  .replace(/\s*-\s*VisaFormula/gi, '')
+  .replace(/\s*\|\s*Tavltik/gi, '')
+  .replace(/\s*-\s*Tavltik/gi, '')
+  .replace(/\bVisaFormula\b/gi, 'TravlTik')
+  .trim();
+
 const pageTitle = isHome 
   ? "TravlTik — The Global Immigration & Mobility Platform | Marketplace" 
-  : safeTitle.includes("TravlTik")
-  ? `${safeTitle} | Global Immigration Marketplace`
-  : `${safeTitle} | TravlTik — Global Immigration Marketplace`;
+  : cleanTitle.includes("TravlTik")
+  ? `${cleanTitle} | Global Immigration Marketplace`
+  : `${cleanTitle} | TravlTik — Global Immigration Marketplace`;
 
 const ogTitle = pageTitle;
 
@@ -56,10 +69,10 @@ const defaultSchema = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://travltik.com/#organization",
+      "@id": "https://www.travltik.com/#organization",
       "name": "TravlTik",
-      "url": "https://travltik.com",
-      "logo": "https://travltik.com/logo.png",
+      "url": "https://www.travltik.com",
+      "logo": "https://www.travltik.com/logo.png",
       "sameAs": [
         "https://twitter.com/travltik",
         "https://www.linkedin.com/company/travltik",
@@ -69,10 +82,10 @@ const defaultSchema = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://travltik.com/#website",
-      "url": "https://travltik.com",
+      "@id": "https://www.travltik.com/#website",
+      "url": "https://www.travltik.com",
       "name": "TravlTik",
-      "publisher": { "@id": "https://travltik.com/#organization" }
+      "publisher": { "@id": "https://www.travltik.com/#organization" }
     }
   ]
 };

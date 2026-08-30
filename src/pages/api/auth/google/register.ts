@@ -93,6 +93,10 @@ export const POST: APIRoute = async ({ request }) => {
     headers.append('Content-Type', 'application/json');
     headers.append(
       'Set-Cookie',
+      `travltik_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
+    );
+    headers.append(
+      'Set-Cookie',
       `visaformula_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
     );
 

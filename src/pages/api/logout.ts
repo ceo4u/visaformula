@@ -6,7 +6,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const cookieHeader = request.headers.get('Cookie') || '';
-    const match = cookieHeader.match(/visaformula_sid=([^;]+)/);
+    const match = cookieHeader.match(/(?:travltik_sid|visaformula_sid)=([^;]+)/);
     const token = match ? match[1] : '';
 
     if (token) {
@@ -15,6 +15,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
+    headers.append(
+      'Set-Cookie',
+      'travltik_sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0;'
+    );
     headers.append(
       'Set-Cookie',
       'visaformula_sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0;'

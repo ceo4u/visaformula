@@ -6,7 +6,7 @@ export const prerender = false;
 export const GET: APIRoute = async ({ request }) => {
   try {
     const cookieHeader = request.headers.get('Cookie') || '';
-    const match = cookieHeader.match(/visaformula_sid=([^;]+)/);
+    const match = cookieHeader.match(/(?:travltik_sid|visaformula_sid)=([^;]+)/);
     const token = match ? match[1] : '';
 
     if (!token) {

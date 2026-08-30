@@ -153,6 +153,15 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params;
+const legacySlugMap: Record<string, string> = {
+  'study-canada-2025-intake': 'study-canada-2026-intake',
+  'germany-opportunity-card-2025': 'germany-opportunity-card-2026'
+};
+
+if (id && legacySlugMap[id]) {
+  return Astro.redirect(`/classifieds/${legacySlugMap[id]}`, 301);
+}
+
 const classified = Astro.props.classified || allClassifieds.find(c => c.id === id) || allClassifieds[0];
 ---
 

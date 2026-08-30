@@ -403,28 +403,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         </div>
       </div>
 
-      {data && (
-        <div className="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
-          <div className="w-full md:w-auto text-left">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] sm:text-xs font-bold text-slate-900">Readiness Tracker:</span>
-              <span className="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                {readyItemsCount} of {totalItemsCount} Verified ({readinessPercentage}%)
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <button
-              onClick={handleSaveChecklistToProfile}
-              className="w-full md:w-auto px-4 sm:px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm bg-slate-900 hover:bg-black text-white active:scale-95 cursor-pointer"
-            >
-              <Bookmark className="w-3.5 h-3.5 text-white" />
-              <span>{isSavedToProfile ? '✓ Synced to Profile' : 'Save to Profile'}</span>
-            </button>
-          </div>
-        </div>
-      )}
+
 
       <div className="space-y-1.5 text-left pt-1">
         <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-snug break-words">
@@ -456,7 +435,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </div>
                 <div>
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Official How to Apply</h3>
-                  <span className="text-xs text-slate-400 font-semibold block">Step-by-Step Sovereign Consular Workflow</span>
                 </div>
               </div>
 

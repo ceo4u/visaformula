@@ -168,9 +168,9 @@ const schema = {
                   </div>
 
                   {/* Pill CTA Button */}
-                  <a href={`/apply-visa?country=${visa.country}`} class="inline-block">
+                  <a href={`/visa/${visa.country.toLowerCase()}?passport=India&purpose=${visa.type.toLowerCase()}`} class="inline-block">
                       <button className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none">
-                          Start New Application
+                          Check Requirements &amp; Apply Online
                       </button>
                   </a>
               </div>
@@ -310,7 +310,7 @@ const schema = {
               <span class="bg-slate-900/10 text-slate-800 text-[9px] font-black tracking-widest px-3 py-1 rounded-full mb-3 inline-block">Professional Assistance</span>
               <h3 class="font-sans text-xl font-bold text-navy mb-2">Need Help Filing Your Application?</h3>
               <p class="text-xs text-gray-500 max-w-md mx-auto mb-6">Connect with vetted visa experts, verified migration lawyers, and dedicated case officers.</p>
-              <a href={`/apply-visa?country=${visa.country}`} class="inline-block">
+              <a href={`/find-experts?country=${visa.country}`} class="inline-block">
                   <button class="bg-black hover:bg-slate-900 text-white px-8 py-3.5 rounded-2xl font-bold text-xs tracking-wider flex items-center gap-2 transition-all">
                       <Users class="w-4 h-4" /> Connect with {visa.title} Experts <ArrowRight class="w-4 h-4" />
                   </button>

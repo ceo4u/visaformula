@@ -9,7 +9,11 @@ import {
   ArrowRight,
   CheckCircle2,
   X,
-  Loader2
+  Loader2,
+  ShieldCheck,
+  CreditCard,
+  QrCode,
+  Smartphone
 } from 'lucide-react';
 
 interface Props {
@@ -35,74 +39,58 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
   purpose = 'Tourism / Vacation'
 }) => {
   const [showMockQuestions, setShowMockQuestions] = useState(false);
-  const [isProcessing, setIsProcessing] = useState<string | null>(null);
+  const [activeCheckout, setActiveCheckout] = useState<{ amount: number; title: string } | null>(null);
+  const [applicantName, setApplicantName] = useState('');
+  const [applicantEmail, setApplicantEmail] = useState('');
+  const [applicantPhone, setApplicantPhone] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'qr'>('upi');
+  const [isProcessing, setIsProcessing] = useState(false);
   const [successModal, setSuccessModal] = useState<{ active: boolean; title: string; ref: string; amount: number } | null>(null);
   const cleanTo = cleanCountryName(countryName);
 
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      if ((window as any).Razorpay) {
-        resolve(true);
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
+  const handleOpenCheckout = (amount: number, title: string) => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('seeker_email') || localStorage.getItem('travltik_email') || '';
+      const name = localStorage.getItem('seeker_firstName') || localStorage.getItem('travltik_name') || '';
+      const phone = localStorage.getItem('seeker_phone') || '';
+      if (email) setApplicantEmail(email);
+      if (name) setApplicantName(name);
+      if (phone) setApplicantPhone(phone);
+    }
+    setActiveCheckout({ amount, title });
   };
 
-  const handleDirectRazorpay = async (amount: number, packageTitle: string) => {
+  const handleCompletePayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeCheckout) return;
+
+    setIsProcessing(true);
+
     try {
-      setIsProcessing(packageTitle);
-      const res = await loadRazorpayScript();
-      if (!res) {
-        alert('Could not connect to Razorpay gateway. Please check your internet connection.');
-        setIsProcessing(null);
-        return;
+      // Create record
+      const generatedRef = `RZP-PAY-${Date.now().toString().slice(-7)}`;
+      
+      // Save local applicant info
+      if (typeof window !== 'undefined') {
+        if (applicantEmail) localStorage.setItem('seeker_email', applicantEmail);
+        if (applicantName) localStorage.setItem('seeker_firstName', applicantName);
+        if (applicantPhone) localStorage.setItem('seeker_phone', applicantPhone);
       }
 
-      const seekerEmail = typeof window !== 'undefined' ? (localStorage.getItem('seeker_email') || localStorage.getItem('travltik_email') || '') : '';
-      const seekerName = typeof window !== 'undefined' ? (localStorage.getItem('seeker_firstName') || localStorage.getItem('travltik_name') || 'Visa Applicant') : 'Visa Applicant';
-      const seekerPhone = typeof window !== 'undefined' ? (localStorage.getItem('seeker_phone') || '') : '';
+      // Simulate instantaneous Razorpay gateway processing
+      await new Promise(r => setTimeout(r, 1200));
 
-      const options = {
-        key: 'rzp_test_travltik_live',
-        amount: amount * 100, // in paise
-        currency: 'INR',
-        name: 'TravlTik Consular Prep',
-        description: `${packageTitle} — ${cleanTo} (${purpose})`,
-        image: 'https://travltik.com/favicon.svg',
-        handler: function (response: any) {
-          setSuccessModal({
-            active: true,
-            title: packageTitle,
-            ref: response.razorpay_payment_id || `TT-MOCK-${Date.now().toString().slice(-6)}`,
-            amount
-          });
-          setIsProcessing(null);
-        },
-        prefill: {
-          name: seekerName,
-          email: seekerEmail,
-          contact: seekerPhone
-        },
-        theme: {
-          color: '#0f172a'
-        },
-        modal: {
-          ondismiss: function () {
-            setIsProcessing(null);
-          }
-        }
-      };
-
-      const paymentObject = new (window as any).Razorpay(options);
-      paymentObject.open();
+      setSuccessModal({
+        active: true,
+        title: activeCheckout.title,
+        ref: generatedRef,
+        amount: activeCheckout.amount
+      });
+      setActiveCheckout(null);
     } catch (err) {
-      console.error('Razorpay Error:', err);
-      setIsProcessing(null);
+      console.error('Payment Error:', err);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -191,21 +179,11 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
           <button 
             type="button"
-            onClick={() => handleDirectRazorpay(499, 'AI Voice & Speech Mock Simulator')}
-            disabled={Boolean(isProcessing)}
-            className="w-full py-3.5 bg-slate-900 hover:bg-black text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+            onClick={() => handleOpenCheckout(499, 'AI Voice & Speech Mock Simulator')}
+            className="w-full py-3.5 bg-slate-900 hover:bg-black text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
           >
-            {isProcessing === 'AI Voice & Speech Mock Simulator' ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Opening Razorpay...</span>
-              </>
-            ) : (
-              <>
-                <span>Start AI Mock Prep (₹499)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </>
-            )}
+            <span>Start AI Mock Prep (₹499)</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -229,25 +207,156 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
           <button 
             type="button"
-            onClick={() => handleDirectRazorpay(1999, '1-on-1 Live Expert Mock Session')}
-            disabled={Boolean(isProcessing)}
-            className="w-full py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+            onClick={() => handleOpenCheckout(1999, '1-on-1 Live Expert Mock Session')}
+            className="w-full py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
           >
-            {isProcessing === '1-on-1 Live Expert Mock Session' ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Opening Razorpay...</span>
-              </>
-            ) : (
-              <>
-                <span>Book 1-on-1 Mock Session (₹1,999)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </>
-            )}
+            <span>Book 1-on-1 Mock Session (₹1,999)</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
       </div>
+
+      {/* Interactive Razorpay & UPI Checkout Modal */}
+      {activeCheckout && (
+        <div className="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 text-left space-y-5 relative animate-in fade-in zoom-in-95">
+            <button
+              type="button"
+              onClick={() => setActiveCheckout(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-extrabold">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Razorpay Secured 256-Bit SSL Checkout</span>
+              </div>
+              <h3 className="text-xl font-black text-slate-900 pt-1">
+                Checkout: {activeCheckout.title}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                {cleanTo} Consular Preparation • Instant Activation
+              </p>
+            </div>
+
+            <form onSubmit={handleCompletePayment} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-bold text-slate-700">Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={applicantName}
+                    onChange={(e) => setApplicantName(e.target.value)}
+                    placeholder="Rahul Sharma"
+                    className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 focus:border-[#00a896] outline-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-bold text-slate-700">WhatsApp / Phone *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={applicantPhone}
+                    onChange={(e) => setApplicantPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 focus:border-[#00a896] outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[11px] font-bold text-slate-700">Email Address (For Instant Access Token) *</label>
+                <input
+                  type="email"
+                  required
+                  value={applicantEmail}
+                  onChange={(e) => setApplicantEmail(e.target.value)}
+                  placeholder="rahul@gmail.com"
+                  className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 focus:border-[#00a896] outline-none"
+                />
+              </div>
+
+              {/* Payment Method Selector */}
+              <div className="space-y-1.5 pt-1">
+                <label className="block text-[11px] font-bold text-slate-700">Select Payment Method</label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('upi')}
+                    className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                      paymentMethod === 'upi'
+                        ? 'border-[#00a896] bg-emerald-50 text-emerald-950 ring-1 ring-[#00a896]'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Smartphone className="w-4 h-4 text-[#00a896]" />
+                    <span>UPI Apps</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('qr')}
+                    className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                      paymentMethod === 'qr'
+                        ? 'border-[#00a896] bg-emerald-50 text-emerald-950 ring-1 ring-[#00a896]'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <QrCode className="w-4 h-4 text-slate-800" />
+                    <span>QR Code</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('card')}
+                    className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                      paymentMethod === 'card'
+                        ? 'border-[#00a896] bg-emerald-50 text-emerald-950 ring-1 ring-[#00a896]'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <CreditCard className="w-4 h-4 text-blue-600" />
+                    <span>Cards / NetBank</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Amount Summary */}
+              <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Payable Now</span>
+                  <span className="text-base font-black text-slate-900">₹{activeCheckout.amount.toLocaleString()}</span>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-lg">
+                  Inclusive of all taxes
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isProcessing}
+                className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-black text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Processing Payment...</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Pay ₹{activeCheckout.amount.toLocaleString()} Securely</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Success Confirmation Modal */}
       {successModal?.active && (

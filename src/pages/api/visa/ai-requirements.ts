@@ -946,8 +946,10 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
           { type: 'Liquid Funds Covering 1st Year Costs', minimum_balance_or_amount: 'Total 1-year tuition + living costs as stated on Form I-20', time_frame: 'Last 6 months bank statements', notes: 'Bank balance certificates, fixed deposit receipts, approved education loan sanction letters, or sponsor affidavit (Form I-134).' }
         ],
         other_requirements: [
-          { category: 'SEVIS Fee Payment ($350)', details: 'Mandatory SEVIS fee must be paid before attending visa interview.' },
-          { category: 'Two-Stage Appointment', details: 'Stage 1: VAC Biometrics (photo & fingerprints). Stage 2: In-person consular interview at US Embassy/Consulate.' }
+          { category: 'Two-Stage Appointment Requirement', details: 'Stage 1: VAC Biometrics (photo & fingerprints). Stage 2: In-person consular interview at US Embassy/Consulate.' },
+          { category: 'I-901 SEVIS Fee Verification', details: 'Mandatory $350 SEVIS fee must be paid and verified online at fmjfee.com at least 3 business days prior to consular interview.' },
+          { category: 'Section 214(b) Academic Intent', details: 'Student must demonstrate legitimate educational intent, adequate liquid financial solvency, and intent to depart the US upon program completion.' },
+          { category: 'Student Health & Medical Insurance', details: 'Universities mandate comprehensive student health insurance (or waiver-eligible international coverage) prior to campus enrollment.' }
         ],
         how_to_apply: [
           'Receive signed Form I-20 from your SEVP-approved US university.',
@@ -981,8 +983,10 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
           { type: 'Salary Slips & Tax Returns', minimum_balance_or_amount: 'Certified LCA wage minimum', time_frame: 'Last 3-6 months paystubs & Form 16 / ITR', notes: 'Proof of steady employment and authorized compensation.' }
         ],
         other_requirements: [
-          { category: 'USCIS Petition Approval', details: 'Employer must secure approved Form I-129 petition before visa appointment.' },
-          { category: 'Biometrics & Interview', details: 'Attend VAC for fingerprinting, followed by consular interview at US Consulate.' }
+          { category: 'USCIS Petition Approval', details: 'Employer must secure approved Form I-129 petition before visa appointment scheduling.' },
+          { category: 'Two-Stage Biometrics & Interview', details: 'Attend VAC for fingerprinting and digital photo, followed by consular interview at US Consulate.' },
+          { category: 'Client Letter & End-Client Verification', details: 'Third-party placement workers must present current, signed client letters specifying work location and job duties.' },
+          { category: 'Travel Medical & Relocation Cover', details: 'Comprehensive health coverage is required upon entry into the US until employer group policy becomes active.' }
         ],
         how_to_apply: [
           'Employer petitions USCIS and receives approved Form I-797 Notice of Action.',
@@ -1016,8 +1020,10 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
         { type: 'Bank Statements & Income Tax Returns', minimum_balance_or_amount: 'Sufficient funds covering full estimated US trip expenses ($4,000–$7,000+)', time_frame: 'Last 6 months bank statements + last 3 years ITR / Form 16', notes: 'Original bank statements with bank stamp; demonstrating financial self-sufficiency.' }
       ],
       other_requirements: [
-        { category: 'Two-Stage Appointment Requirement', details: 'You must attend two separate appointments: (1) VAC for photo & biometrics, and (2) US Embassy/Consulate for the interview.' },
-        { category: 'Section 214(b) Adjudication', details: 'Applicants must demonstrate strong economic, social, and family ties to their home country.' }
+        { category: 'Two-Stage Appointment Requirement', details: 'You must attend two separate appointments: (1) VAC for photo & biometrics, and (2) US Embassy/Consulate for the consular interview.' },
+        { category: 'Section 214(b) INA Adjudication', details: 'Applicants must demonstrate strong economic, social, and family ties to their home country to overcome immigrant intent.' },
+        { category: 'DS-160 & MRV Receipt Validity', details: 'The 10-character DS-160 confirmation barcode must be locked before scheduling; MRV fee receipt allows 365 days to schedule.' },
+        { category: 'Travel Health & Medical Insurance', details: 'Consular authorities strongly advise international travel medical insurance with minimum $50,000 emergency medical and evacuation coverage.' }
       ],
       how_to_apply: [
         'Complete the official Form DS-160 online (ceac.state.gov) and print your confirmation barcode.',

@@ -88,6 +88,50 @@ const getStepVisual = (stepText: string, index: number) => {
   return { icon: fallbackIcons[index % fallbackIcons.length] };
 };
 
+const getMandateVisual = (category: string, index: number) => {
+  const catLow = (category || '').toLowerCase();
+  
+  if (catLow.includes('appointment') || catLow.includes('schedule') || catLow.includes('vac') || catLow.includes('biometric')) {
+    return {
+      icon: <CalendarCheck className="w-5 h-5 text-amber-600 stroke-[2]" />,
+      tag: 'APPOINTMENT RULE',
+      badgeBg: 'bg-amber-50 text-amber-800 border-amber-200/80',
+      iconBg: 'bg-amber-100/70 text-amber-700'
+    };
+  }
+  if (catLow.includes('214') || catLow.includes('adjudication') || catLow.includes('intent') || catLow.includes('legal') || catLow.includes('law')) {
+    return {
+      icon: <Award className="w-5 h-5 text-indigo-600 stroke-[2]" />,
+      tag: 'LEGAL ADJUDICATION',
+      badgeBg: 'bg-indigo-50 text-indigo-800 border-indigo-200/80',
+      iconBg: 'bg-indigo-100/70 text-indigo-700'
+    };
+  }
+  if (catLow.includes('insurance') || catLow.includes('health') || catLow.includes('medical') || catLow.includes('ihs')) {
+    return {
+      icon: <ShieldCheck className="w-5 h-5 text-emerald-600 stroke-[2]" />,
+      tag: 'HEALTH & COVERAGE',
+      badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200/80',
+      iconBg: 'bg-emerald-100/70 text-emerald-700'
+    };
+  }
+  if (catLow.includes('sevis') || catLow.includes('fee') || catLow.includes('receipt') || catLow.includes('ds-160') || catLow.includes('form') || catLow.includes('petition') || catLow.includes('letter')) {
+    return {
+      icon: <FileEdit className="w-5 h-5 text-blue-600 stroke-[2]" />,
+      tag: 'DOCUMENT COMPLIANCE',
+      badgeBg: 'bg-blue-50 text-blue-800 border-blue-200/80',
+      iconBg: 'bg-blue-100/70 text-blue-700'
+    };
+  }
+  
+  return {
+    icon: <AlertCircle className="w-5 h-5 text-slate-700 stroke-[2]" />,
+    tag: 'CONSULAR DIRECTIVE',
+    badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',
+    iconBg: 'bg-slate-100 text-slate-700'
+  };
+};
+
 interface Props {
   countryName: string;
   passportCountry: string;
@@ -851,27 +895,65 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         </div>
       ) : null}
 
-      {data && (
-        <div id="section-mandates" className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
-              <AlertCircle className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Important Consular Mandates &amp; Insurance Guidelines</h3>
-              <span className="text-[11px] text-slate-400 font-medium block">Travel Health Insurance, Biometric Rules &amp; Compliance</span>
+      {data && data.other_requirements && data.other_requirements.length > 0 && (
+        <div id="section-mandates" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div className="flex items-center gap-3.5">
+              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <AlertCircle className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Important Consular Mandates &amp; Insurance Guidelines</h3>
+                <span className="text-xs text-slate-400 font-semibold block">Official Embassy Legal Directives, Biometrics &amp; Adjudication Rules</span>
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-            {data.other_requirements?.map((req, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 text-left space-y-1">
-                <span className="text-xs font-extrabold text-slate-900 block flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span>{req.category}</span>
-                </span>
-                <p className="text-xs text-slate-600 font-medium leading-relaxed">{req.details}</p>
-              </div>
-            ))}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+            {data.other_requirements.map((req, idx) => {
+              const visual = getMandateVisual(req.category, idx);
+              const isInsurance = req.category.toLowerCase().includes('insurance') || req.category.toLowerCase().includes('health') || req.category.toLowerCase().includes('ihs');
+
+              return (
+                <div 
+                  key={idx} 
+                  className="bg-slate-50/60 hover:bg-slate-50/90 border border-slate-200/80 hover:border-slate-300 rounded-2xl sm:rounded-3xl p-5 sm:p-6 transition-all text-left flex flex-col justify-between gap-4 shadow-2xs group"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-8 h-8 rounded-xl ${visual.iconBg} flex items-center justify-center shrink-0`}>
+                          {visual.icon}
+                        </div>
+                        <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md border ${visual.badgeBg}`}>
+                          {visual.tag}
+                        </span>
+                      </div>
+                    </div>
+
+                    <h4 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-slate-950 transition-colors leading-snug">
+                      {req.category}
+                    </h4>
+
+                    <p className="text-xs sm:text-[13px] text-slate-600 font-normal leading-relaxed">
+                      {req.details}
+                    </p>
+                  </div>
+
+                  {isInsurance && (
+                    <div className="pt-2 border-t border-slate-200/60">
+                      <a
+                        href="/find-experts?category=insurance"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] transition-colors"
+                      >
+                        <span>Explore Consular-Approved Insurance</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

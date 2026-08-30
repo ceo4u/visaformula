@@ -1569,7 +1569,7 @@ export function AITripPlannerLanding() {
     if (typeof window === 'undefined') return;
 
     let email = '';
-    const storedUser = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+    const storedUser = (localStorage.getItem("travltik_user"));
     if (storedUser) {
       try {
         const parsed = JSON.parse(storedUser);
@@ -1912,7 +1912,7 @@ export function AITripPlannerLanding() {
     });
 
     const isUserLoggedIn = typeof window !== 'undefined' && (
-      Boolean((localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"))) ||
+      Boolean((localStorage.getItem("travltik_user"))) ||
       Boolean(localStorage.getItem('seeker_email'))
     );
 

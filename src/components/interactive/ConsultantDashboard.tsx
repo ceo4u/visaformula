@@ -97,7 +97,7 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+            const userStr = (localStorage.getItem("travltik_user"));
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
             let parsedUser: any = null;
@@ -472,8 +472,7 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
             localStorage.removeItem("expert_email");
-            localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
-            window.location.href = "/signup/expert";
+            localStorage.removeItem("travltik_user"); window.location.href = "/signup/expert";
         }
     };
 

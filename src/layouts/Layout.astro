@@ -31,7 +31,7 @@ const {
   hideWidgets = false
 } = Astro.props;
 
-const siteUrl = 'https://travltik.com';
+const siteUrl = 'https://www.travltik.com';
 const pathname = Astro.url.pathname;
 const normalizedPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
 const cleanCanonical = canonical 
@@ -49,11 +49,11 @@ const isVisaCountryPage = Astro.url.pathname.startsWith('/visa/') || Astro.url.p
 const shouldHideWidgets = hideWidgets || isChannelPartner || isCommunity || isVisaCountryPage;
 
 const cleanTitle = (title || "The Global Immigration & Mobility Platform")
-  .replace(/\s*\|\s*VisaFormula/gi, '')
-  .replace(/\s*-\s*VisaFormula/gi, '')
+  .replace(/\s*\|\s*TravlTik/gi, '')
+  .replace(/\s*-\s*TravlTik/gi, '')
   .replace(/\s*\|\s*Tavltik/gi, '')
   .replace(/\s*-\s*Tavltik/gi, '')
-  .replace(/\bVisaFormula\b/gi, 'TravlTik')
+  .replace(/\bTravlTik\b/gi, 'TravlTik')
   .trim();
 
 const pageTitle = isHome 
@@ -69,10 +69,10 @@ const defaultSchema = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://travltik.com/#organization",
+      "@id": "https://www.travltik.com/#organization",
       "name": "TravlTik",
-      "url": "https://travltik.com",
-      "logo": "https://travltik.com/logo.png",
+      "url": "https://www.travltik.com",
+      "logo": "https://www.travltik.com/logo.png",
       "sameAs": [
         "https://twitter.com/travltik",
         "https://www.linkedin.com/company/travltik",
@@ -82,10 +82,10 @@ const defaultSchema = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://travltik.com/#website",
-      "url": "https://travltik.com",
+      "@id": "https://www.travltik.com/#website",
+      "url": "https://www.travltik.com",
       "name": "TravlTik",
-      "publisher": { "@id": "https://travltik.com/#organization" }
+      "publisher": { "@id": "https://www.travltik.com/#organization" }
     }
   ]
 };

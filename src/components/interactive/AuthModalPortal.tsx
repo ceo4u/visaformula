@@ -123,7 +123,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     return;
                 }
 
-                const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) : null;
+                const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
                 if (userStr) {
                     try {
                         const parsed = JSON.parse(userStr);
@@ -156,7 +156,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setLoginLoading(true);
         try {
             await signIn(loginEmail, loginPassword);
-            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) : null;
+            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);

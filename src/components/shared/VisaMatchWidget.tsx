@@ -108,7 +108,7 @@ export function VisaMatchWidget() {
     window.addEventListener("open-visa-match-modal", handleOpenTrigger);
 
     try {
-      const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || localStorage.getItem("travltik_user");
+      const userStr = (localStorage.getItem("travltik_user")) || localStorage.getItem("travltik_user");
       if (userStr) {
         const u = JSON.parse(userStr);
         if (u && (u.type === "seeker" || u.role === "seeker" || u.email)) {

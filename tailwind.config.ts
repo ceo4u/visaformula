@@ -73,7 +73,7 @@ const config: Config = {
                     DEFAULT: "hsl(var(--outline))",
                     variant: "hsl(var(--outline-variant))",
                 },
-                // New VisaFormula design system colors
+                // TravlTik design system colors
                 navy: "#000000",
                 ink: "#111111",
                 hint: "#8FAEC4",

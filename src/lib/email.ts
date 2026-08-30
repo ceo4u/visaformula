@@ -19,7 +19,7 @@ import type {
 const rawName = process.env.EMAIL_FROM_NAME || 'TravlTik';
 const FROM_NAME = rawName.toLowerCase().includes('visa') ? 'TravlTik' : rawName;
 const rawEmail = process.env.EMAIL_FROM || 'noreply@travltik.com';
-const FROM_EMAIL = (!rawEmail || rawEmail.includes('visaformula.com') || !rawEmail.includes('@travltik.com'))
+const FROM_EMAIL = (!rawEmail || rawEmail.includes('travltik.com') || !rawEmail.includes('@travltik.com'))
   ? 'noreply@travltik.com'
   : rawEmail;
 const FROM_FORMATTED = `${FROM_NAME} <${FROM_EMAIL}>`;

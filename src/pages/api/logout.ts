@@ -6,7 +6,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const cookieHeader = request.headers.get('Cookie') || '';
-    const match = cookieHeader.match(/(?:travltik_sid|visaformula_sid)=([^;]+)/);
+    const match = cookieHeader.match(/(?:travltik_sid|travltik_sid)=([^;]+)/);
     const token = match ? match[1] : '';
 
     if (token) {
@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
     headers.append(
       'Set-Cookie',
-      'visaformula_sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0;'
+      'travltik_sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0;'
     );
 
     return new Response(JSON.stringify({ status: 'success', message: 'Logged out successfully.' }), {

@@ -97,7 +97,7 @@ export function UserDashboard() {
                 } catch(e) {}
             }
 
-            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+            const userStr = (localStorage.getItem("travltik_user"));
             const savedEmail = localStorage.getItem("seeker_email");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
@@ -285,8 +285,7 @@ export function UserDashboard() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
-        localStorage.removeItem("seeker_firstName");
+        localStorage.removeItem("travltik_user"); localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");
         localStorage.removeItem("seeker_email");
         localStorage.removeItem("seeker_phone");

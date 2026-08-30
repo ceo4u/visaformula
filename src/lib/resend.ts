@@ -59,7 +59,7 @@ export const sendEmail = async ({
   const apiKey = getApiKey();
   const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
   let sender = from || process.env.EMAIL_FROM || 'TravlTik <noreply@travltik.com>';
-  if (!sender || sender.includes('visaformula.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@travltik.com')) {
+  if (!sender || sender.includes('travltik.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@travltik.com')) {
     sender = 'TravlTik <noreply@travltik.com>';
   }
   const toArray = Array.isArray(to) ? to : [to];

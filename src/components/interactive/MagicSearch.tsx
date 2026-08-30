@@ -81,7 +81,7 @@ export function MagicSearch({ className = "" }: { className?: string }) {
         if (typeof window !== "undefined") {
             const seekerFirst = localStorage.getItem("seeker_firstName");
             const expertBusiness = localStorage.getItem("expert_businessName");
-            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+            const userStr = (localStorage.getItem("travltik_user"));
             const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
 
             if (!isLoggedIn) {

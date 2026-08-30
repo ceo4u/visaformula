@@ -25,7 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
     headers.append(
       'Set-Cookie',
-      `visaformula_sid=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
+      `travltik_sid=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
     );
 
     const displayName = type === 'seeker' 

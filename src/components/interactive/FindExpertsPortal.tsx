@@ -148,7 +148,7 @@ export function FindExpertsPortal() {
 
     const isUserLoggedIn = () => {
         if (typeof window === "undefined") return false;
-        const user = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+        const user = (localStorage.getItem("travltik_user"));
         const seekerEmail = localStorage.getItem("seeker_email");
         const expertLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
         return !!(user || seekerEmail || expertLoggedIn);
@@ -162,7 +162,7 @@ export function FindExpertsPortal() {
             const expertEmail = localStorage.getItem("expert_email");
             if (expertLoggedIn || expertEmail) return true;
 
-            const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+            const userStr = (localStorage.getItem("travltik_user"));
             if (userStr) {
                 const u = JSON.parse(userStr);
                 if (u && (u.type === "expert" || u.role === "expert" || u.role === "consultant" || u.isExpert)) {

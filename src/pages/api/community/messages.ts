@@ -92,7 +92,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Check session if available
     let authUser: any = null;
     const cookieHeader = request.headers.get('Cookie') || '';
-    const match = cookieHeader.match(/(?:travltik_sid|visaformula_sid)=([^;]+)/);
+    const match = cookieHeader.match(/(?:travltik_sid|travltik_sid)=([^;]+)/);
     if (match && match[1]) {
       const authResult = await verifySession(match[1]);
       if (authResult) authUser = authResult;

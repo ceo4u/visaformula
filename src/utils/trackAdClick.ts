@@ -14,7 +14,7 @@ export function isUserLoggedIn(): boolean {
   const seekerFirst = localStorage.getItem('seeker_firstName');
   const expertEmail = localStorage.getItem('expert_email');
   const expertBusiness = localStorage.getItem('expert_businessName');
-  const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+  const userStr = (localStorage.getItem("travltik_user"));
 
   return Boolean(
     seekerEmail ||
@@ -34,7 +34,7 @@ export async function trackAdClick(payload: AdClickPayload) {
     const seekerFirst = localStorage.getItem('seeker_firstName');
     const expertEmail = localStorage.getItem('expert_email');
     const expertBusiness = localStorage.getItem('expert_businessName');
-    const userStr = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+    const userStr = (localStorage.getItem("travltik_user"));
 
     let userEmail = 'Guest (Anonymous)';
     let userRole = 'guest';

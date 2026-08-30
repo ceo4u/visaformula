@@ -2138,7 +2138,7 @@ export function VisaCountryResultPortal({
         localStorage.setItem('seeker_goals', JSON.stringify([isStudyPurpose ? 'Study Abroad' : isWorkPurpose ? 'Work Abroad' : 'Tourism / Vacation']));
         
         // Ensure user can immediately view their dashboard without redirect roadblock
-        if (!localStorage.getItem('seeker_email') && !(localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"))) {
+        if (!localStorage.getItem('seeker_email') && !(localStorage.getItem("travltik_user"))) {
           localStorage.setItem('seeker_email', 'seeker@travltik.com');
           localStorage.setItem('seeker_firstName', 'TravlTik');
           localStorage.setItem('seeker_lastName', 'Seeker');
@@ -2246,7 +2246,7 @@ export function VisaCountryResultPortal({
     try {
       const email = localStorage.getItem('seeker_email') || (() => {
         try {
-          const u = JSON.parse((localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || '{}');
+          const u = JSON.parse((localStorage.getItem("travltik_user")) || '{}');
           return u.email || 'guest@travltik.com';
         } catch(e) { return 'guest@travltik.com'; }
       })();
@@ -4047,55 +4047,55 @@ export function VisaCountryResultPortal({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
                   {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
-                  <div className="lg:col-span-6 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 text-left flex flex-col justify-between">
+                  <div className="lg:col-span-6 bg-slate-50/80 border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 text-left flex flex-col justify-between shadow-2xs">
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-                          📘 Passport Bio-Data (Upload)
+                        <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-2">
+                          <span>📘 Passport Bio-Data (Upload)</span>
                         </span>
                         {passportFile ? (
-                          <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                          <span className="text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs">
                             ✓ ATTACHED
                           </span>
                         ) : (
-                          <span className="text-[10px] font-black uppercase text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                          <span className="text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs">
                             UPLOAD REQUIRED
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed mt-1.5">
+                      <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed mt-2">
                         Upload your passport bio-data page to extract MRZ checksum and verify 6-month consular validity for {countryName}.
                       </p>
                     </div>
 
                     {passportFile ? (
-                      <div className="p-4 bg-white border border-emerald-200 rounded-2xl space-y-2 shadow-2xs">
+                      <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-2.5 shadow-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-900 truncate max-w-[200px]">
+                          <span className="text-sm font-black text-slate-950 truncate max-w-[240px]">
                             {passportFile.name}
                           </span>
                           <button
                             type="button"
                             onClick={() => handlePassportUpload(null)}
-                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2 py-0.5 rounded-md hover:bg-rose-50 cursor-pointer"
+                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors"
                           >
                             ✕ Remove
                           </button>
                         </div>
-                        <div className="flex items-center gap-3 text-[11px] text-emerald-700 font-semibold">
+                        <div className="flex items-center gap-3 text-xs text-emerald-700 font-bold">
                           <span>Size: {passportFile.size}</span>
                           <span>•</span>
-                          <span>MRZ Checksum Verified</span>
+                          <span>MRZ Checksum Verified ✓</span>
                         </div>
                       </div>
                     ) : (
-                      <label className="border-2 border-dashed border-slate-300 hover:border-slate-500 bg-white hover:bg-slate-50/80 rounded-2xl p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs">
-                        <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 mb-2">
-                          <Upload className="w-4 h-4 text-slate-600" />
+                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-400 bg-white hover:bg-indigo-50/30 rounded-2xl p-6 sm:p-7 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs group">
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100 flex items-center justify-center text-indigo-600 mb-2.5 transition-colors">
+                          <Upload className="w-5 h-5 text-indigo-600" />
                         </div>
-                        <span className="text-xs font-bold text-slate-900">Click or Drag to Upload Passport</span>
-                        <span className="text-[10px] text-slate-400 mt-0.5">Supports PDF, JPG, PNG (Max 15MB)</span>
+                        <span className="text-sm sm:text-base font-extrabold text-slate-900">Click or Drag to Upload Passport</span>
+                        <span className="text-xs text-slate-500 font-medium mt-1">Supports PDF, JPG, PNG (Max 15MB)</span>
                         <input
                           type="file"
                           accept=".pdf,.jpg,.jpeg,.png"
@@ -4107,20 +4107,20 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* RIGHT COLUMN: CIRCULAR GAUGE VISA READINESS SCORECARD (CREDIT SCORE STYLE) */}
-                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
+                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
                     
                     {/* Card Header */}
                     <div className="w-full flex items-center justify-between pb-1 text-left">
                       <div>
-                        <h4 className="text-base sm:text-lg font-heading font-extrabold text-slate-900 tracking-tight">
+                        <h4 className="text-lg sm:text-xl font-heading font-black text-slate-950 tracking-tight">
                           Your Visa Readiness Score
                         </h4>
-                        <p className="text-xs text-slate-400 font-medium">
+                        <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
                           {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
 
-                      <span className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider ${
+                      <span className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider ${
                         readinessMetrics.score >= 85
                           ? 'bg-[#D97706] text-white shadow-xs'
                           : readinessMetrics.score >= 65
@@ -4144,7 +4144,7 @@ export function VisaCountryResultPortal({
                     </div>
 
                     {/* Center: Circular Rainbow Gauge */}
-                    <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center my-1">
+                    <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center my-1">
                       <svg className="w-full h-full" viewBox="0 0 200 200">
                         <defs>
                           <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -4160,7 +4160,7 @@ export function VisaCountryResultPortal({
                           d="M 46 150 A 70 70 0 1 1 154 150"
                           fill="none"
                           stroke="#E2E8F0"
-                          strokeWidth="14"
+                          strokeWidth="15"
                           strokeLinecap="round"
                         />
 
@@ -4169,7 +4169,7 @@ export function VisaCountryResultPortal({
                           d="M 46 150 A 70 70 0 1 1 154 150"
                           fill="none"
                           stroke="url(#rainbowGauge)"
-                          strokeWidth="14"
+                          strokeWidth="15"
                           strokeLinecap="round"
                           strokeDasharray="318"
                           strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
@@ -4178,17 +4178,17 @@ export function VisaCountryResultPortal({
                       </svg>
 
                       {/* Center Number & Points */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2">
-                        <span className="text-4xl sm:text-5xl font-heading font-black text-slate-950 tracking-tight leading-none">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-3">
+                        <span className="text-5xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
                           {readinessMetrics.score > 0
                             ? Math.round(300 + (readinessMetrics.score / 100) * 550)
                             : 0}
                         </span>
-                        <span className="text-xs font-bold text-slate-700 mt-1">
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-800 mt-1.5">
                           {passportFile ? (
-                            <span className="text-emerald-600 font-extrabold">+20 Points</span>
+                            <span className="text-emerald-600 font-black">+20 Points</span>
                           ) : readinessMetrics.filledCount > 0 ? (
-                            <span className="text-slate-600">+{readinessMetrics.filledCount * 10} Points</span>
+                            <span className="text-slate-700">+{readinessMetrics.filledCount * 10} Points</span>
                           ) : (
                             <span className="text-slate-400">0 Points</span>
                           )}
@@ -4197,11 +4197,11 @@ export function VisaCountryResultPortal({
                     </div>
 
                     {/* Card Footer */}
-                    <div className="w-full pt-3 border-t border-slate-100 space-y-0.5">
-                      <div className="text-xs font-bold text-slate-700">
+                    <div className="w-full pt-3 border-t border-slate-100 space-y-1">
+                      <div className="text-xs sm:text-sm font-black text-slate-800">
                         TravlTik Consular AI
                       </div>
-                      <div className="text-[11px] text-slate-400 font-medium">
+                      <div className="text-xs text-slate-500 font-semibold">
                         Score calculated using official {countryName} immigration benchmarks
                       </div>
                     </div>

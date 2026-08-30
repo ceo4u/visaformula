@@ -117,7 +117,7 @@ export default function CommunityHub() {
   const checkAuth = async () => {
     try {
       if (typeof window !== 'undefined') {
-        const stored = (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+        const stored = (localStorage.getItem("travltik_user"));
         if (stored && stored !== 'null') {
           const parsed = JSON.parse(stored);
           if (parsed && (parsed.displayName || parsed.email || parsed.first_name)) {
@@ -500,8 +500,7 @@ export default function CommunityHub() {
                     <button
                       type="button"
                       onClick={() => {
-                        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
-                        window.location.href = '/login';
+                        localStorage.removeItem("travltik_user"); window.location.href = '/login';
                       }}
                       className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 text-left"
                     >

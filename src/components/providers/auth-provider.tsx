@@ -30,14 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("travltik_user") || (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user"));
+            const stored = localStorage.getItem("travltik_user") || (localStorage.getItem("travltik_user"));
             if (stored && stored !== "null") {
                 try {
                     const parsed = JSON.parse(stored);
                     if (parsed && (parsed.displayName === "Google User" || parsed.displayName === "Google" || parsed.email === "user.google@travltik.com" || parsed.email?.includes("google_"))) {
                         localStorage.removeItem("travltik_user");
-                        localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
-                        localStorage.removeItem("seeker_firstName");
+                        localStorage.removeItem("travltik_user"); localStorage.removeItem("seeker_firstName");
                         localStorage.removeItem("seeker_lastName");
                         localStorage.removeItem("seeker_email");
                         setUser(null);
@@ -47,8 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 } catch (e) {
                     console.error("Failed to parse stored user", e);
                     localStorage.removeItem("travltik_user");
-                    localStorage.removeItem("travltik_user"); localStorage.removeItem("visaformula_user");
-                }
+                    localStorage.removeItem("travltik_user"); }
             }
         }
         setLoading(false);

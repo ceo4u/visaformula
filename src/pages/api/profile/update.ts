@@ -8,7 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Verify session cookie — reject unauthenticated requests
     const cookieHeader = request.headers.get('cookie') || '';
-    const sidMatch = cookieHeader.match(/(?:travltik_sid|visaformula_sid)=([^;]+)/);
+    const sidMatch = cookieHeader.match(/(?:travltik_sid|travltik_sid)=([^;]+)/);
     const sessionToken = sidMatch ? sidMatch[1] : null;
     if (!sessionToken) {
       return new Response(JSON.stringify({ status: 'error', message: 'Unauthorized. Please log in.' }), {

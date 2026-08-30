@@ -283,7 +283,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
     if (typeof window === 'undefined') return false;
     return Boolean(
       localStorage.getItem('travltik_user') || 
-      (localStorage.getItem("travltik_user") || localStorage.getItem("visaformula_user")) || 
+      (localStorage.getItem("travltik_user")) || 
       localStorage.getItem('seeker_firstName')
     );
   };

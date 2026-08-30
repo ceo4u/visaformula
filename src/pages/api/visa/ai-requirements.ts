@@ -921,77 +921,342 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // 3. GENERIC DESTINATION FALLBACK
+  // 3. UNITED STATES (USA) OFFICIAL EMBASSY REQUIREMENTS
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('united states') || toLower.includes('usa') || toLower === 'us' || toLower.includes('america')) {
+    const isStudent = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('university') || purposeLower.includes('college');
+    const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('h1b') || purposeLower.includes('l1');
+
+    if (isStudent) {
+      return {
+        passport_country: from,
+        destination_country: 'United States',
+        purpose_of_visit: 'Study / Higher Education',
+        visa_type: 'F-1 Academic Student Visa',
+        source_url: 'https://travel.state.gov/content/travel/en/us-visas/study/student-visa.html',
+        official_source_name: 'U.S. Department of State & US Travel Docs',
+        documents_required: [
+          { title: 'Form I-20 (Certificate of Eligibility)', description: 'Official signed Form I-20 issued by SEVP-certified US educational institution.', is_mandatory: true },
+          { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended period of stay in the United States.', is_mandatory: true },
+          { title: 'DS-160 Confirmation Page', description: 'Online Nonimmigrant Visa Application confirmation page with 10-digit barcode.', is_mandatory: true },
+          { title: 'I-901 SEVIS Fee Receipt', description: 'Proof of payment of mandatory $350 SEVIS fee paid at fmjfee.com.', is_mandatory: true },
+          { title: 'Academic Transcripts & Standardized Scores', description: 'Degree certificates, marksheets, GRE/GMAT, and TOEFL/IELTS scorecards.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Liquid Funds Covering 1st Year Costs', minimum_balance_or_amount: 'Total 1-year tuition + living costs as stated on Form I-20', time_frame: 'Last 6 months bank statements', notes: 'Bank balance certificates, fixed deposit receipts, approved education loan sanction letters, or sponsor affidavit (Form I-134).' }
+        ],
+        other_requirements: [
+          { category: 'SEVIS Fee Payment ($350)', details: 'Mandatory SEVIS fee must be paid before attending visa interview.' },
+          { category: 'Two-Stage Appointment', details: 'Stage 1: VAC Biometrics (photo & fingerprints). Stage 2: In-person consular interview at US Embassy/Consulate.' }
+        ],
+        how_to_apply: [
+          'Receive signed Form I-20 from your SEVP-approved US university.',
+          'Pay the mandatory $350 I-901 SEVIS fee online at fmjfee.com.',
+          'Complete Form DS-160 online and save your 10-digit confirmation barcode.',
+          'Create profile on usvisascheduling.com, pay $185 MRV visa fee, and schedule VAC Biometrics + Consular Interview appointments.',
+          'Attend VAC for biometrics, then attend your Embassy Consular Interview with original I-20 and financial documents.',
+          'Upon visa approval, collect passport with stamped F-1 visa foil from chosen VAC or courier.'
+        ],
+        costs: { visa_fee: '$185 (approx. ₹15,540)', service_fee: '$350 (I-901 SEVIS Fee)', total_fee: '$535 Total Reference', notes: 'Paid online via official US visa scheduling portal (UPI / NEFT / Credit Card).' },
+        processing_and_timing: { apply_window: 'Apply up to 365 days before course start date on I-20.', decision_time: 'Decision given at the end of consular interview.', max_extension: 'Can enter USA up to 30 days before program start date.' }
+      };
+    }
+
+    if (isWork) {
+      return {
+        passport_country: from,
+        destination_country: 'United States',
+        purpose_of_visit: 'Employment / Work',
+        visa_type: 'H-1B / L-1 Specialty Occupation Visa',
+        source_url: 'https://travel.state.gov/content/travel/en/us-visas/employment/temporary-worker-visas.html',
+        official_source_name: 'U.S. Citizenship and Immigration Services (USCIS)',
+        documents_required: [
+          { title: 'Form I-797 (Notice of Action)', description: 'Original or copy of approved petition from USCIS with valid receipt number.', is_mandatory: true },
+          { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended period of stay.', is_mandatory: true },
+          { title: 'DS-160 Confirmation', description: 'Printed confirmation barcode page of completed DS-160 form.', is_mandatory: true },
+          { title: 'Employment Offer Letter & Client Letter', description: 'Detailed job offer letter, salary breakdown, and vendor/client documentation.', is_mandatory: true },
+          { title: 'Educational & Professional Credentials', description: 'Degree evaluations, experience letters, and previous US paystubs/W-2s if applicable.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Salary Slips & Tax Returns', minimum_balance_or_amount: 'Certified LCA wage minimum', time_frame: 'Last 3-6 months paystubs & Form 16 / ITR', notes: 'Proof of steady employment and authorized compensation.' }
+        ],
+        other_requirements: [
+          { category: 'USCIS Petition Approval', details: 'Employer must secure approved Form I-129 petition before visa appointment.' },
+          { category: 'Biometrics & Interview', details: 'Attend VAC for fingerprinting, followed by consular interview at US Consulate.' }
+        ],
+        how_to_apply: [
+          'Employer petitions USCIS and receives approved Form I-797 Notice of Action.',
+          'Complete Form DS-160 online and note your confirmation barcode.',
+          'Create account on usvisascheduling.com, pay $205 MRV visa fee, and book VAC + Consular interview dates.',
+          'Attend VAC for digital biometrics and facial photograph.',
+          'Attend Consular Interview at US Embassy/Consulate with I-797, LCA, and employment documents.',
+          'Receive passport with stamped H-1B/L-1 visa foil via premium delivery or VAC collection.'
+        ],
+        costs: { visa_fee: '$205 (approx. ₹17,220)', service_fee: '₹0 (Included)', total_fee: '$205 Total Reference', notes: 'Excludes USCIS employer filing and fraud prevention fees.' },
+        processing_and_timing: { apply_window: 'Apply up to 90 days before petition start date.', decision_time: 'Decision given immediately at consular window.', max_extension: 'Can enter USA up to 10 days before petition validity starts.' }
+      };
+    }
+
+    // Default US B1/B2 Visitor / Tourism
+    return {
+      passport_country: from,
+      destination_country: 'United States',
+      purpose_of_visit: 'Tourism / Business Visit (B1/B2)',
+      visa_type: 'B1/B2 Nonimmigrant Visitor Visa',
+      source_url: 'https://travel.state.gov/content/travel/en/us-visas/tourism-visit/visitor.html',
+      official_source_name: 'U.S. Department of State & U.S. Embassy Consular Affairs',
+      documents_required: [
+        { title: 'Valid Passport', description: 'Must be valid for at least 6 months beyond intended stay with blank visa pages.', is_mandatory: true },
+        { title: 'Form DS-160 Confirmation Page', description: 'Printed confirmation sheet with clear 10-character alphanumeric barcode.', is_mandatory: true },
+        { title: 'Appointment Confirmation Letter', description: 'Printed confirmation confirming both VAC Biometrics and Consular Interview appointments.', is_mandatory: true },
+        { title: 'Travel Purpose & Itinerary', description: 'Detailed travel itinerary, flight bookings, hotel reservations, or invitation letter from US host.', is_mandatory: true },
+        { title: 'Employment & Ties to Home Country', description: 'Employer leave letter / NOC, business registration, property documents proving intention to return.', is_mandatory: true }
+      ],
+      financial_proofs: [
+        { type: 'Bank Statements & Income Tax Returns', minimum_balance_or_amount: 'Sufficient funds covering full estimated US trip expenses ($4,000–$7,000+)', time_frame: 'Last 6 months bank statements + last 3 years ITR / Form 16', notes: 'Original bank statements with bank stamp; demonstrating financial self-sufficiency.' }
+      ],
+      other_requirements: [
+        { category: 'Two-Stage Appointment Requirement', details: 'You must attend two separate appointments: (1) VAC for photo & biometrics, and (2) US Embassy/Consulate for the interview.' },
+        { category: 'Section 214(b) Adjudication', details: 'Applicants must demonstrate strong economic, social, and family ties to their home country.' }
+      ],
+      how_to_apply: [
+        'Complete the official Form DS-160 online (ceac.state.gov) and print your confirmation barcode.',
+        'Create a profile on usvisascheduling.com and pay the $185 MRV visa fee (via UPI, NEFT, or card).',
+        'Schedule your two appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
+        'Attend VAC appointment with passport and DS-160 confirmation for photo and fingerprint registration.',
+        'Attend in-person Consular Interview at the US Embassy/Consulate with your financial and tie-back proofs.',
+        'Upon visa approval, collect your 10-year multiple-entry visa stamped passport from selected VAC or courier.'
+      ],
+      costs: {
+        visa_fee: '$185 (approx. ₹15,540)',
+        service_fee: '₹0 (Direct Consular Fee)',
+        total_fee: '$185 Total Reference',
+        notes: 'Payable online directly via official US Visa Scheduling portal; valid for 10 years multiple entry.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 2 to 3 months before intended travel date.',
+        decision_time: 'Decision: Given verbally at the end of the consular interview.',
+        max_extension: '10-Year Multiple Entry Visa (up to 6 months stay per entry authorized at CBP port of entry).'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 4. CANADA OFFICIAL IMMIGRATION REQUIREMENTS (IRCC)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('canada')) {
+    const isStudent = purposeLower.includes('study') || purposeLower.includes('student');
+    return {
+      passport_country: from,
+      destination_country: 'Canada',
+      purpose_of_visit: isStudent ? 'Study in Canada' : 'Tourism / Family Visit',
+      visa_type: isStudent ? 'Canada Study Permit (Student Visa)' : 'Temporary Resident Visa (Visitor Visa V-1)',
+      source_url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada.html',
+      official_source_name: 'Immigration, Refugees and Citizenship Canada (IRCC)',
+      documents_required: [
+        { title: 'Valid Passport', description: 'Color scan of bio-data page and all stamped pages (valid for intended stay duration).', is_mandatory: true },
+        { title: 'Digital Photograph', description: 'Meeting IRCC specifications (35mm x 45mm, white background, taken within last 6 months).', is_mandatory: true },
+        { title: 'Travel Purpose & Itinerary', description: 'Cover letter / Purpose of Travel, round-trip flight booking, hotel reservations, or letter of invitation.', is_mandatory: true },
+        { title: 'Ties to Home Country', description: 'Employment letter, leave approval NOC, property documents, and proof of family ties in home country.', is_mandatory: true }
+      ],
+      financial_proofs: [
+        { type: 'Bank Statements & Tax Returns', minimum_balance_or_amount: 'CAD $10,000+ for single visitor / GIC $20,635 CAD for students', time_frame: 'Last 6 months stamped bank statements + 3 years ITR', notes: 'Demonstrates sufficient liquid funds without sudden unexplained deposits.' }
+      ],
+      other_requirements: [
+        { category: 'Biometrics Requirement (BIL)', details: 'Mandatory biometrics (fingerprints & photo) given at VFS Global VAC once Biometrics Instruction Letter is issued.' },
+        { category: 'Passport Submission (PPR)', details: 'Upon online approval, submit original passport to VFS for counterfoil visa stamping.' }
+      ],
+      how_to_apply: [
+        'Create an official IRCC Portal account on canada.ca and complete the online application.',
+        'Upload scanned documents: passport, bank statements, itinerary, employment letter, and SOP.',
+        'Pay the $100 CAD visa application fee + $85 CAD biometrics fee online using credit/debit card.',
+        'Receive your Biometrics Instruction Letter (BIL) within 24-48 hours.',
+        'Book and attend an appointment at your nearest VFS Global Canada VAC to submit biometrics.',
+        'Track your application on IRCC portal; upon approval, submit passport to VFS for visa counterfoil stamping.'
+      ],
+      costs: {
+        visa_fee: '$100 CAD (approx. ₹6,200)',
+        service_fee: '$85 CAD (Biometrics Fee)',
+        total_fee: '$185 CAD Total Reference',
+        notes: 'Official IRCC government fees paid online; visa typically granted up to passport expiry.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 30 to 90 days before planned departure date.',
+        decision_time: 'Decision: Typically 15 to 30 business days after biometrics submission.',
+        max_extension: 'Multiple-entry visa valid up to passport validity (max 10 years).'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 5. AUSTRALIA OFFICIAL IMMIGRATION REQUIREMENTS (DHA)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('australia')) {
+    return {
+      passport_country: from,
+      destination_country: 'Australia',
+      purpose_of_visit: 'Tourism / Visitor',
+      visa_type: 'Visitor Visa (Subclass 600 - Tourist Stream)',
+      source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/visitor-600',
+      official_source_name: 'Australian Department of Home Affairs (ImmiAccount)',
+      documents_required: [
+        { title: 'Current Passport', description: 'High-resolution color scan of all pages of your current valid passport.', is_mandatory: true },
+        { title: 'National Identity Proof', description: 'Color copy of Aadhaar Card / National ID and PAN card.', is_mandatory: true },
+        { title: 'Genuine Temporary Entrant Proof', description: 'Cover letter detailing visit itinerary, travel activities, and strong ties to return to home country.', is_mandatory: true },
+        { title: 'Employment Evidence', description: 'Employment contract, recent 3 months payslips, and employer approved leave letter.', is_mandatory: true }
+      ],
+      financial_proofs: [
+        { type: 'Bank Statements & Income Evidence', minimum_balance_or_amount: 'AUD $5,000–$8,000+ in liquid savings', time_frame: 'Last 6 months stamped bank statements + 3 years ITR', notes: 'Demonstrates financial capacity to support stay in Australia.' }
+      ],
+      other_requirements: [
+        { category: '100% Digital e-Visa', details: 'Australia issues electronic visa grants linked directly to your passport number; no physical passport label is required.' },
+        { category: 'Biometrics Collection', details: 'Applicants in India must provide biometrics at Australian Biometric Collection Centre (VFS Global) upon request.' }
+      ],
+      how_to_apply: [
+        'Create an official ImmiAccount on online.immi.gov.au.',
+        'Complete the online Subclass 600 Visitor Visa application form.',
+        'Upload high-quality color scans of passport, financial proofs, travel itinerary, and employment documents.',
+        'Pay the $195 AUD official visa fee securely online via ImmiAccount.',
+        'Receive the Biometrics Requirement Letter and complete fingerprint/photo capture at VFS Global ABCC.',
+        'Receive your official Australian Electronic Visa Grant Notification via email.'
+      ],
+      costs: {
+        visa_fee: '$195 AUD (approx. ₹10,800)',
+        service_fee: '₹1,650 (VFS Biometrics if applicable)',
+        total_fee: '$195 AUD+ Total Reference',
+        notes: 'Payable online directly via Australian ImmiAccount portal.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 4 to 8 weeks before planned travel.',
+        decision_time: 'Decision: Standard 15 to 25 calendar days.',
+        max_extension: 'Grants are usually 3, 6, or 12 months with single or multiple entry.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 6. UNITED ARAB EMIRATES (UAE / DUBAI) OFFICIAL REQUIREMENTS
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('emirates') || toLower.includes('uae') || toLower.includes('dubai') || toLower.includes('abu dhabi')) {
+    return {
+      passport_country: from,
+      destination_country: 'United Arab Emirates',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'UAE Tourist e-Visa (30 / 60 Days Single or Multiple Entry)',
+      source_url: 'https://smartservices.icp.gov.ae',
+      official_source_name: 'Federal Authority for Identity, Citizenship, Customs & Port Security (ICP) / GDRFA Dubai',
+      documents_required: [
+        { title: 'Passport Bio-Page & Last Page Scan', description: 'Clear color scan of passport valid for minimum 6 months from entry date.', is_mandatory: true },
+        { title: 'Passport-Size Digital Photograph', description: 'Recent color photograph with white background, neutral expression, and 80% face coverage.', is_mandatory: true },
+        { title: 'Confirmed Return Air Ticket', description: 'Confirmed round-trip flight booking to Dubai/Abu Dhabi/Sharjah.', is_mandatory: true },
+        { title: 'Hotel Booking / Host Address', description: 'Confirmed hotel stay voucher or UAE resident host details & Emirates ID.', is_mandatory: false }
+      ],
+      financial_proofs: [
+        { type: 'Basic Financial Sufficiency', minimum_balance_or_amount: 'AED 3,000 or equivalent in cash / international credit cards upon airport arrival', time_frame: 'Current', notes: 'Standard immigration spot-check requirement at UAE airports.' }
+      ],
+      other_requirements: [
+        { category: '100% Paperless E-Visa', details: 'Issued as an official electronic PDF entry permit. No physical consulate visit or biometrics required.' },
+        { category: 'Entry Window', details: 'Valid for entry into UAE within 60 days from date of electronic issuance.' }
+      ],
+      how_to_apply: [
+        'Submit color scan of your valid passport (front and back page) and white-background photograph.',
+        'Select your desired visa duration (30 Days or 60 Days Tourist e-Visa).',
+        'Pay official government ICP / GDRFA entry permit and processing fees online.',
+        'Application undergoes rapid automated security clearance with UAE immigration authorities.',
+        'Receive your official approved UAE e-Visa PDF via email and download it for airline check-in.'
+      ],
+      costs: {
+        visa_fee: '₹6,400 (30 Days) / ₹11,800 (60 Days)',
+        service_fee: '₹0 (Included)',
+        total_fee: '₹6,400 – ₹11,800 Total Reference',
+        notes: 'Includes mandatory COVID-19 & emergency health insurance coverage.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 7 to 30 days before planned departure date.',
+        decision_time: 'Decision: Fast 24 to 72 working hours (Express processing available in 8 hours).',
+        max_extension: 'Extendable inside the UAE for an additional 30 days without exit.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 7. GENERIC DESTINATION FALLBACK (Official Embassy Standard 5-Step Process)
   // ═══════════════════════════════════════════════════════════════
   return {
     passport_country: from,
     destination_country: to,
     purpose_of_visit: rawPurpose || 'Tourism / Vacation',
-    visa_type: `${to} Entry Visa / Electronic Authorization`,
+    visa_type: `${to} Consular Visa / Electronic Travel Authorization`,
     source_url: `https://www.vfsglobal.com`,
     official_source_name: `Official Consular Mission & Ministry of Foreign Affairs of ${to}`,
     documents_required: [
       {
         title: 'Original Passport',
-        description: 'Valid for at least 6 months beyond travel date with at least 2 blank pages.',
+        description: 'Valid for at least 6 months beyond intended departure date with minimum 2 consecutive blank visa pages.',
         is_mandatory: true
       },
       {
-        title: 'Visa Application Form',
-        description: 'Complete digital visa application form with accurate traveler details.',
+        title: 'Official Visa Application Form',
+        description: 'Completed and signed official consular visa application form matching passport details.',
         is_mandatory: true
       },
       {
-        title: 'Digital Passport Photo',
-        description: 'Recent clear photograph on white background meeting consulate millimeter specs.',
+        title: 'Recent Passport Photographs',
+        description: 'Color photographs on white background meeting official embassy biometric specifications.',
         is_mandatory: true
       },
       {
-        title: 'Confirmed Travel & Lodging',
-        description: 'Confirmed round-trip ticket and accommodation proof or invitation.',
+        title: 'Flight Itinerary & Accommodation',
+        description: 'Confirmed round-trip flight booking and hotel vouchers or official host invitation letter.',
+        is_mandatory: true
+      },
+      {
+        title: 'Employment & Occupation Proof',
+        description: 'Employer NOC / leave sanction letter, recent 3 months payslips, or company registration documents.',
         is_mandatory: true
       }
     ],
     financial_proofs: [
       {
-        type: 'Bank Statements',
-        minimum_balance_or_amount: 'Sufficient funds covering estimated stay',
-        time_frame: 'Last 3 to 6 months',
-        notes: 'Signed and stamped by issuing banking institution.'
+        type: 'Bank Statements & Income Tax Returns',
+        minimum_balance_or_amount: 'Sufficient liquid funds covering total stay duration',
+        time_frame: 'Last 6 months original bank statements with bank seal + 3 years ITR',
+        notes: 'Signed and stamped by issuing bank verifying steady income and self-sufficiency.'
       },
       {
-        type: 'Employment & Occupation Proof',
+        type: 'Employment & Income Stability Proof',
         minimum_balance_or_amount: null,
-        time_frame: 'Current',
-        notes: 'Employer NOC, salary slips, or business registration documents.'
+        time_frame: 'Current / Last 3-6 months',
+        notes: 'Salary slips, business incorporation certificate, or financial sponsor affidavit.'
       }
     ],
     other_requirements: [
       {
-        category: 'Travel Insurance',
-        details: 'Comprehensive emergency medical policy covering hospitalization and repatriation.'
+        category: 'Travel Medical Insurance',
+        details: 'Comprehensive international emergency policy covering hospitalization, medical evacuation, and repatriation.'
       },
       {
-        category: 'Biometrics & Submission',
-        details: 'Digital upload or in-person biometric appointment based on consular route.'
+        category: 'Biometrics & VAC Appointment',
+        details: 'Mandatory in-person appointment at authorized Visa Application Centre (VFS Global / TLS / BLS) for fingerprinting and document submission.'
       }
     ],
     how_to_apply: [
-      'Check requirements & prepare documents.',
-      'Complete online application form.',
-      'Submit application & fee online or at VAC.',
-      'Track status and receive visa grant.'
+      `Check requirements and assemble mandatory documents: valid passport, 6-month bank statements, photos, and flight/hotel bookings.`,
+      `Complete the official ${to} consular visa application form online or download the official submission packet.`,
+      `Book an appointment at the authorized Visa Application Centre (VFS Global / Embassy / VAC) and pay the official visa fee.`,
+      `Attend your in-person VAC appointment for document submission, identity verification, and biometric fingerprinting.`,
+      `Track your application status online and collect your stamped passport or receive your official electronic visa grant.`
     ],
     costs: {
-      visa_fee: '₹3,500 – ₹7,800',
-      service_fee: '₹1,500 – ₹2,500',
-      total_fee: '₹5,000 – ₹10,300',
-      notes: 'Consular and processing fees combined.'
+      visa_fee: '₹4,500 – ₹9,200',
+      service_fee: '₹1,500 – ₹2,800 (VAC Processing)',
+      total_fee: '₹6,000 – ₹12,000 Total Reference',
+      notes: 'Official consular visa and VAC logistics fees combined; exchange rates apply.'
     },
     processing_and_timing: {
-      apply_window: 'Apply 15 to 90 days before departure.',
-      decision_time: 'Decision: 3 to 5 business days.',
-      max_extension: 'Subject to consular review.'
+      apply_window: 'Apply 30 to 90 days before your intended travel date.',
+      decision_time: 'Decision: 10 to 15 business days after appointment submission.',
+      max_extension: 'Standard single or multiple entry visa valid per consular approval.'
     }
   };
 }

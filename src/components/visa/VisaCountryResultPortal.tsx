@@ -3361,7 +3361,7 @@ export function VisaCountryResultPortal({
 
                     {/* Q2: Travel Timing */}
                     <PortalCustomSelect
-                      label="2. Tentative Travel Timing"
+                      label="2. Tentative Departure Date"
                       value={visitTiming}
                       onChange={setVisitTiming}
                       placeholder="Select travel window"

@@ -1,6 +1,19 @@
 import { defineMiddleware } from 'astro:middleware';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const url = new URL(context.request.url);
+  const proto = context.request.headers.get('x-forwarded-proto') || url.protocol.replace(':', '');
+  const host = context.request.headers.get('host') || url.host;
+
+  // Enforce HTTPS & apex-to-www canonical domain in production
+  if (proto === 'http' && !host.includes('localhost') && !host.includes('127.0.0.1')) {
+    const targetHost = host === 'travltik.com' ? 'www.travltik.com' : host;
+    return context.redirect(`https://${targetHost}${url.pathname}${url.search}`, 301);
+  }
+  if (host === 'travltik.com') {
+    return context.redirect(`https://www.travltik.com${url.pathname}${url.search}`, 301);
+  }
+
   const response = await next();
 
   // Strict Production Security Headers

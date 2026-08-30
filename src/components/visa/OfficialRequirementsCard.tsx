@@ -472,12 +472,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               </div>
             </div>
 
-            {/* Vector Line Icon Step List (Clean Minimalist Photo Style) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 pt-2">
+            {/* Vector Line Icon Step List (One by One Single-Column Stack) */}
+            <div className="space-y-6 pt-2">
               {data.how_to_apply?.map((step, idx) => {
                 const visual = getStepVisual(step, idx);
                 const sLow = step.toLowerCase();
-                const isInterviewMilestone = sLow.includes('interview') || sLow.includes('biometric') || sLow.includes('vac');
+                const isInterviewMilestone = sLow.includes('consular interview') || (sLow.includes('schedule') && sLow.includes('appointment')) || sLow.includes('vac biometrics');
 
                 return (
                   <div key={idx} className="flex items-start gap-4 group transition-all">
@@ -487,13 +487,13 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     </div>
 
                     {/* Step Text */}
-                    <div className="space-y-1 min-w-0 flex-1">
+                    <div className="space-y-1 min-w-0 flex-1 text-left">
                       {isInterviewMilestone && (
                         <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded-md mb-1">
                           <span>🎯 Crucial Milestone</span>
                         </span>
                       )}
-                      <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed group-hover:text-slate-950 transition-colors">
+                      <p className="text-xs sm:text-base font-bold text-slate-800 leading-relaxed group-hover:text-slate-950 transition-colors">
                         {step}
                       </p>
                     </div>

@@ -2409,6 +2409,9 @@ export function VisaCountryResultPortal({
     if (!element && sectionId === 'section-visa-process') {
       element = document.getElementById('section-how-to-apply') || document.getElementById('section-visa-process');
     }
+    if (!element && sectionId === 'section-mandates') {
+      element = document.getElementById('section-mandates');
+    }
     if (element) {
       const headerOffset = 110;
       const elementPosition = element.getBoundingClientRect().top;
@@ -2419,6 +2422,28 @@ export function VisaCountryResultPortal({
       });
     }
   };
+
+  // Scroll Spy for Sub-Nav Tabs
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['section-visa-info', 'section-visa-process', 'section-documents', 'section-mandates', 'section-reviews', 'section-faqs'];
+      const scrollPosition = window.scrollY + 160;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSubNav(sections[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const [checkedDocs, setCheckedDocs] = useState<Record<string, boolean>>({});
   const toggleDocCheck = (id: string) => {
@@ -2699,9 +2724,9 @@ export function VisaCountryResultPortal({
           <div className="flex items-center justify-between sm:justify-around overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-bold">
             {[
               { id: 'section-visa-info', label: 'Visa Info' },
-              { id: 'section-visa-process', label: 'Visa Process' },
-              { id: 'section-why-us', label: 'Why TravlTik' },
+              { id: 'section-visa-process', label: 'How to Apply' },
               { id: 'section-documents', label: 'Documents' },
+              { id: 'section-mandates', label: 'Mandates' },
               { id: 'section-reviews', label: 'Reviews' },
               { id: 'section-faqs', label: 'FAQs' }
             ].map((tab) => {

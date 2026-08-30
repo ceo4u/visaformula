@@ -1206,7 +1206,6 @@ const lookingForOptions = [
   { value: 'pr', label: 'Permanent Residency & Migration', icon: '🛂' },
   { value: 'tourist', label: 'Tourist & Visitor Visas', icon: '🏖️' },
   { value: 'business', label: 'Business & Investor Visa', icon: '🏛️' },
-  { value: 'ielts', label: 'IELTS / PTE Test Prep', icon: '📖' },
 ];
 
 const serviceTypeOptions = [

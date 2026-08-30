@@ -1282,45 +1282,65 @@ export const POST: APIRoute = async ({ request }) => {
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are an elite, autonomous AI Web Scraping & Data Extraction Agent for TravlTik (travltik.com), specialized in global immigration processing, embassy systems, and VFS Global portals.
+        const prompt = `You are the Principal Immigration Data Architect & Verification Engine for TravlTik (travltik.com).
 
-Extract and synthesize official visa requirements for:
+Generate 100% accurate, country-isolated, non-hallucinated visa requirements, fees, document checklists, and application steps for:
 1. Origin / Passport Country: "${fromCountry}"
 2. Destination Country: "${toCountry}"
 3. Purpose of Visit: "${purpose}"
 
-Strictly categorize every single requirement item into THREE distinct structural buckets:
-Bucket A: DOCUMENTS REQUIRED CHECKLIST (title, description, is_mandatory)
-Bucket B: FINANCIAL PROOFS & MEANS OF SUBSISTENCE (type, minimum_balance_or_amount, time_frame, notes)
-Bucket C: OTHER IMPORTANT REQUIREMENTS & MANDATES (category, details)
+STRICT DATA ISOLATION & VERIFICATION MANDATES:
+1. ZERO CROSS-CONTAMINATION (NO HYBRID RULES):
+   - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia.
+   - For USA: strictly 2x2 inches (51x51mm) photo, DS-160 barcode, $185 MRV fee, 10-year B1/B2 validity, CBP 180-day stay rule.
+   - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
+   - For Schengen: €90 consular fee, €30,000 travel medical insurance, 35x45mm photo, 90/180-day rule.
+
+2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
+   - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."
+
+3. INTERVIEW WAIVER & DROP-BOX CLAUSES:
+   - In 'how_to_apply', include conditional waiver check: "Interview Waiver / Drop-Box Eligibility: Check if applicant qualifies to bypass the in-person Consular Interview based on prior visa issuance history within eligible renewal windows."
+
+4. PRIMARY VS. SECONDARY FINANCIAL PROOFS:
+   - Mandatory primary proofs (Bank Statements, ITRs) marked as is_mandatory: true.
+   - Secondary/supplementary proofs (Fixed Deposits, Property Valuations, Mutual Funds) marked as is_mandatory: false with "(Optional / Solvency Strengthening)".
+
+5. CITY-SPECIFIC VAC & CONSULAR LOCATIONS:
+   - Auto-populate in processing_and_timing.center_notes all operational VACs and Consulates in ${fromCountry} for ${toCountry}.
 
 Return ONLY a valid JSON object matching this exact schema:
 {
   "passport_country": "${fromCountry}",
   "destination_country": "${toCountry}",
   "purpose_of_visit": "${purpose}",
-  "visa_type": "Official visa category (e.g., Short-stay Schengen Visa (Type C), UK Student Visa, Skilled Worker Visa, Standard Visitor Visa)",
-  "source_url": "Official portal URL (e.g., https://in-gr.gvcworld.eu/en/visa-info-tourism or https://www.gov.uk/student-visa)",
-  "official_source_name": "Name of official authority (e.g., Greek official sources (GVCW & Embassy) or UK Visas & Immigration (UKVI))",
+  "visa_type": "Official visa category name",
+  "source_url": "Official embassy / ministerial portal URL",
+  "official_source_name": "Official issuing authority name",
+  "validity_and_stay": {
+    "visa_validity": "e.g. 10 Years Multiple Entry or 6 Months or Course Duration",
+    "max_stay_per_entry": "e.g. Up to 6 Months (180 Days) or Up to 90 Days",
+    "entry_type": "Single Entry / Multiple Entry"
+  },
   "documents_required": [
     {
       "title": "Document title",
-      "description": "Specific requirements, validity rules, blank pages, or photo dimensions",
+      "description": "Exhaustive specifications, photo millimeter dimensions, form names, or validity rules",
       "is_mandatory": true
     }
   ],
   "financial_proofs": [
     {
-      "type": "Bank Statement / Income Evidence / Tax Return / Sponsorship",
+      "type": "Primary / Secondary Proof Title",
       "minimum_balance_or_amount": "Amount with currency or null",
-      "time_frame": "e.g., Last 3 or 6 months",
+      "time_frame": "Timeframe required",
       "notes": "Bank stamp, sealing rules, or employer NOC"
     }
   ],
   "other_requirements": [
     {
-      "category": "Travel Insurance / Biometrics / Processing Time / Entry Rules",
-      "details": "Specific actionable instructions or threshold criteria"
+      "category": "Category name",
+      "details": "Specific actionable legal and procedural instructions"
     }
   ],
   "how_to_apply": [
@@ -1331,16 +1351,16 @@ Return ONLY a valid JSON object matching this exact schema:
     "Step 5..."
   ],
   "costs": {
-    "visa_fee": "e.g. €90 or £490 or £115",
-    "service_fee": "e.g. €30 or £776 or ₹2,500",
-    "total_fee": "e.g. €120 or £1,266",
-    "notes": "Payment notes and currency conversion"
+    "visa_fee": "Fee with currency",
+    "service_fee": "VAC logistics fee",
+    "total_fee": "Total fee",
+    "notes": "Converted at the official consular exchange rate at the time of fee payment challan generation."
   },
   "processing_and_timing": {
-    "apply_window": "e.g. Apply up to 6 months before travel.",
-    "decision_time": "e.g. Decision: up to 15 calendar days.",
-    "max_extension": "e.g. May extend to 45 calendar days.",
-    "center_notes": "Courier transit notes for regional centers."
+    "apply_window": "Application window timeline",
+    "decision_time": "Decision and passport dispatch timeline",
+    "max_extension": "Extension or in-country stay adjustment rules",
+    "center_notes": "Operational VACs and Consulate/Embassy locations across ${fromCountry}"
   }
 }`;
 

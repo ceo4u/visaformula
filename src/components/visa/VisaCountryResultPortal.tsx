@@ -5891,35 +5891,7 @@ export function VisaCountryResultPortal({
 
             </div>
 
-            {/* ── WHY TRAVLTIK (WHY ATLYS STYLE PILLARS) ── */}
-            <div id="section-why-us" className="bg-slate-50/70 border border-slate-200/90 rounded-[28px] p-6 sm:p-8 space-y-6 text-left my-6">
-              <div className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">
-                  Why TravlTik
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight pt-1">
-                  Built for Speed, Accuracy &amp; Embassy Acceptance
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium">
-                  We streamline complex diplomatic regulations into predictable, guaranteed visa approvals.
-                </p>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { icon: '⚡', title: 'Guaranteed On-Time', desc: 'Pre-vetted embassy timelines with express priority processing.' },
-                  { icon: '🛡️', title: '99.4% Approval Rate', desc: 'Double-checked by licensed immigration attorneys before submission.' },
-                  { icon: '🔒', title: 'Bank-Grade Privacy', desc: '256-bit SSL encrypted vault and strict DPDP biometric compliance.' },
-                  { icon: '👨‍💼', title: 'Dedicated Case Officer', desc: 'Direct WhatsApp and 1-on-1 consular guidance until visa grant.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-2 shadow-2xs">
-                    <span className="text-2xl">{item.icon}</span>
-                    <h4 className="text-sm font-extrabold text-slate-900">{item.title}</h4>
-                    <p className="text-xs text-slate-500 font-medium leading-relaxed">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* ── REVIEWS & VERIFIED APPLICANT EXPERIENCES ── */}
             <div id="section-reviews" className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 space-y-6 text-left my-6 shadow-2xs">

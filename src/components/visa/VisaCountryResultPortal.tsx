@@ -33,23 +33,23 @@ function PortalCustomSelect({
 
   return (
     <div className="relative space-y-1.5" ref={dropdownRef}>
-      {label && <label className="block text-xs font-semibold text-slate-700">{label}</label>}
+      {label && <label className="block text-sm sm:text-[15px] font-extrabold text-slate-900 tracking-tight leading-snug">{label}</label>}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full h-11 px-3.5 rounded-xl border bg-white text-xs sm:text-sm font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs ${
-          open ? 'border-[#00A86B] ring-2 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300'
+        className={`w-full h-12 sm:h-13 px-4 rounded-2xl border bg-white text-sm sm:text-[15px] font-bold flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
+          open ? 'border-indigo-600 ring-2 ring-indigo-500/20' : 'border-slate-300 hover:border-slate-400'
         }`}
       >
-        <span className={`truncate text-left ${hasValue ? 'text-slate-900' : 'text-slate-400 font-normal'}`}>
+        <span className={`truncate text-left ${hasValue ? 'text-slate-950 font-black' : 'text-slate-400 font-semibold'}`}>
           {hasValue ? value : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00A86B]' : ''}`} />
+        <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-indigo-600' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-2xl border border-slate-200/90 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 origin-top">
-          <div className="max-h-56 overflow-y-auto space-y-0.5">
+        <div className="absolute top-full left-0 mt-2 w-full bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 origin-top">
+          <div className="max-h-60 overflow-y-auto space-y-1">
             {options.map((opt) => {
               const isSelected = opt === value;
               return (
@@ -60,14 +60,14 @@ function PortalCustomSelect({
                     onChange(opt);
                     setOpen(false);
                   }}
-                  className={`w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-between transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3.5 py-3 rounded-xl text-sm sm:text-[15px] font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-emerald-50 text-emerald-800 font-semibold'
-                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                      ? 'bg-indigo-50 text-indigo-900 font-black'
+                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950'
                   }`}
                 >
                   <span className="truncate">{opt}</span>
-                  {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                  {isSelected && <Check className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 shrink-0 stroke-[3]" />}
                 </button>
               );
             })}
@@ -3707,13 +3707,13 @@ export function VisaCountryResultPortal({
               
               {/* Header with Step indicator */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-500 uppercase tracking-wider">
                       Category: {activePurposeTab === 'study' ? 'STUDENT VISA' : activePurposeTab === 'work' ? 'WORK VISA' : 'TOURIST VISA'}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 tracking-tight">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-heading font-black text-slate-950 tracking-tight">
                     {activePurposeTab === 'study'
                       ? `Apply for your Student Visa to ${countryName}`
                       : activePurposeTab === 'work'
@@ -3723,7 +3723,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Purpose Category Tag Badge (No unrelated tabs shown) */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 text-white text-xs font-bold shadow-xs">
+                <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-950 text-white text-xs sm:text-sm font-black shadow-xs">
                   <span>
                     {activePurposeTab === 'study'
                       ? '🎓 Student / Study Visa'
@@ -4047,7 +4047,7 @@ export function VisaCountryResultPortal({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
                   {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
-                  <div className="lg:col-span-6 bg-slate-50/80 border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 text-left flex flex-col justify-between shadow-2xs">
+                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 text-left flex flex-col justify-between shadow-sm">
                     <div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-2">
@@ -4090,7 +4090,7 @@ export function VisaCountryResultPortal({
                         </div>
                       </div>
                     ) : (
-                      <label className="border-2 border-dashed border-indigo-200 hover:border-indigo-500 bg-white hover:bg-indigo-50/40 rounded-2xl py-10 sm:py-14 px-6 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-sm hover:shadow-md group min-h-[220px] sm:min-h-[240px]">
+                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/30 rounded-2xl py-10 sm:py-14 px-6 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[220px] sm:min-h-[240px]">
                         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-4 transition-all shadow-xs">
                           <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 stroke-[2.5]" />
                         </div>
@@ -4100,7 +4100,7 @@ export function VisaCountryResultPortal({
                         <span className="text-xs sm:text-sm text-slate-500 font-semibold mt-1.5">
                           Supports PDF, JPG, PNG (Max 15MB)
                         </span>
-                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-[11px] font-bold text-slate-600 group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors">
+                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-700 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-colors">
                           <span>📁 Browse File</span>
                         </div>
                         <input

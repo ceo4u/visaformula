@@ -2376,31 +2376,31 @@ export function VisaCountryResultPortal({
   const [customsChecked, setCustomsChecked] = useState({ cash: true, meds: false });
   const [openArrivalStep, setOpenArrivalStep] = useState<number | null>(0);
 
-  // ── BRANCH 2: QUESTIONNAIRE & DETAILED READINESS PROFILE STATES ──
-  const [passportValidityRange, setPassportValidityRange] = useState('> 12 Months (Valid)');
-  const [visaRefusalHistory, setVisaRefusalHistory] = useState('No Previous Refusals');
+  // ── BRANCH 2: QUESTIONNAIRE & DETAILED READINESS PROFILE STATES (START UNSELECTED / EMPTY) ──
+  const [passportValidityRange, setPassportValidityRange] = useState('');
+  const [visaRefusalHistory, setVisaRefusalHistory] = useState('');
 
   // Study Visa Specifics
-  const [studyQual, setStudyQual] = useState("Bachelor's Degree");
-  const [studyTarget, setStudyTarget] = useState("Master's (PG / MS)");
-  const [studyIntake, setStudyIntake] = useState('Fall 2026 (Aug - Sep)');
-  const [studyBudget, setStudyBudget] = useState('Self-Funded Liquid Funds (₹25L+)');
-  const [studentAdmissionStatus, setStudentAdmissionStatus] = useState('Have Confirmed Form I-20 / CAS');
-  const [studentLanguageScore, setStudentLanguageScore] = useState('IELTS 6.5+ / PTE 65+');
+  const [studyQual, setStudyQual] = useState('');
+  const [studyTarget, setStudyTarget] = useState('');
+  const [studyIntake, setStudyIntake] = useState('');
+  const [studyBudget, setStudyBudget] = useState('');
+  const [studentAdmissionStatus, setStudentAdmissionStatus] = useState('');
+  const [studentLanguageScore, setStudentLanguageScore] = useState('');
 
   // Tourist Visa Specifics
-  const [visitPlanStatus, setVisitPlanStatus] = useState('I have my Itinerary & Hotel');
-  const [visitTiming, setVisitTiming] = useState('In 1 to 3 Months');
-  const [visitReturnDate, setVisitReturnDate] = useState('Within 1 to 2 Weeks');
-  const [visitStay, setVisitStay] = useState('Boutique City Hotels');
-  const [touristHomeTies, setTouristHomeTies] = useState('Salaried with Employer NOC & ITR');
-  const [touristBankStability, setTouristBankStability] = useState('6-Month Stamped (₹4L+ / $5k+)');
+  const [visitPlanStatus, setVisitPlanStatus] = useState('');
+  const [visitTiming, setVisitTiming] = useState('');
+  const [visitReturnDate, setVisitReturnDate] = useState('');
+  const [visitStay, setVisitStay] = useState('');
+  const [touristHomeTies, setTouristHomeTies] = useState('');
+  const [touristBankStability, setTouristBankStability] = useState('');
 
   // Work Visa Specifics
-  const [workExp, setWorkExp] = useState('3 - 5 Years (Mid-Senior)');
-  const [workOffer, setWorkOffer] = useState('Have Confirmed Sponsor Offer');
-  const [workDomain, setWorkDomain] = useState('Tech / IT / Software / AI');
-  const [workAssess, setWorkAssess] = useState('Already Assessed & Approved');
+  const [workExp, setWorkExp] = useState('');
+  const [workOffer, setWorkOffer] = useState('');
+  const [workDomain, setWorkDomain] = useState('');
+  const [workAssess, setWorkAssess] = useState('');
 
   // ── REAL USER DOCUMENT ATTACHMENTS (START EMPTY — NO HARDCODED DUMMY FILES) ──
   const [realUploadedFiles, setRealUploadedFiles] = useState<Record<string, { name: string; size: string; type: string } | null>>({
@@ -2498,119 +2498,181 @@ export function VisaCountryResultPortal({
   const readinessMetrics = useMemo(() => {
     let recommendations: string[] = [];
     let redFlags: string[] = [];
+    let filledCount = 0;
 
     // Pillar 1: Passport Validity (30% weight)
-    let passportScore = 30;
-    if (passportValidityRange.includes('> 12 Months')) {
-      passportScore = 30;
-    } else if (passportValidityRange.includes('6 - 12 Months')) {
-      passportScore = 24;
-    } else {
-      passportScore = 0;
-      redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${countryName} consular rules.`);
+    let passportScore = 0;
+    if (passportValidityRange) {
+      filledCount++;
+      if (passportValidityRange.includes('> 12 Months')) {
+        passportScore = 30;
+      } else if (passportValidityRange.includes('6 - 12 Months')) {
+        passportScore = 24;
+      } else {
+        passportScore = 0;
+        redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${countryName} consular rules.`);
+      }
     }
 
     // Pillar 2: Financial Sufficiency (35% weight)
-    let finScore = 35;
+    let finScore = 0;
     // Pillar 3: Travel Itinerary (15% weight)
-    let itinScore = 15;
+    let itinScore = 0;
     // Pillar 4: Home Ties & Purpose (20% weight)
-    let tiesScore = 20;
+    let tiesScore = 0;
 
     if (activePurposeTab === 'study') {
-      // Study Financials
-      if (studyBudget.includes('Self-Funded') || studyBudget.includes('Scholarship')) {
-        finScore = 35;
-      } else if (studyBudget.includes('Loan')) {
-        finScore = 32;
-        recommendations.push('Attach unconditional bank loan sanction letter and co-sponsor income tax returns.');
-      } else {
-        finScore = 22;
-        recommendations.push('Prepare liquid savings statement covering 1st-year tuition + living costs.');
-      }
-
-      // Study Itinerary / Intake
-      itinScore = studyIntake ? 15 : 8;
-
-      // Study Ties & Offer
-      if (studentAdmissionStatus.includes('Confirmed')) {
-        tiesScore = 20;
-      } else if (studentAdmissionStatus.includes('Conditional')) {
-        tiesScore = 14;
-        recommendations.push('Fulfill academic conditions to convert offer into unconditional Form I-20 / CAS.');
-      } else {
-        tiesScore = 8;
-        redFlags.push('Formal institutional admission letter is mandatory before scheduling embassy interview.');
-      }
-
-      recommendations.push(`Upload Form I-20 / CAS and 6-month stamped bank statements for ${countryName}.`);
-    } else if (activePurposeTab === 'tourism') {
-      // Tourist Financials
-      if (touristBankStability.includes('₹4L+')) {
-        finScore = 35;
-      } else if (touristBankStability.includes('₹2L - ₹4L')) {
-        finScore = 26;
-      } else {
-        finScore = 12;
-        redFlags.push('Recent lump-sum deposits or low balance may trigger consular queries under financial solvency rules.');
-      }
-
-      // Tourist Itinerary
-      itinScore = visitPlanStatus.includes('Itinerary') ? 15 : 10;
-
-      // Tourist Home Ties
-      if (touristHomeTies.includes('Salaried')) {
-        tiesScore = 20;
-      } else if (touristHomeTies.includes('Business')) {
-        tiesScore = 18;
-      } else {
-        tiesScore = 10;
-        recommendations.push('Provide property deeds, ongoing contracts, or family ties proof to establish return intent.');
-      }
-
-      recommendations.push(`Keep confirmed round-trip flight booking and hotel vouchers ready for ${countryName}.`);
-    } else {
-      // Work Financials & Offer
-      if (workOffer.includes('Confirmed') || workOffer.includes('Approved')) {
-        finScore = 35;
-        tiesScore = 20;
-      } else {
-        finScore = 15;
-        tiesScore = 10;
-        redFlags.push(`Official employer sponsorship petition or labour clearance is mandatory for ${countryName} work visa.`);
-      }
-
-      if (workAssess.includes('Assessed')) {
+      if (studyQual) filledCount++;
+      if (studyTarget) filledCount++;
+      if (studyIntake) {
+        filledCount++;
         itinScore = 15;
-      } else {
-        itinScore = 8;
-        recommendations.push('Complete ECA educational credential evaluation (WES/ACS) for qualification equivalency.');
+      }
+      if (studyBudget) {
+        filledCount++;
+        if (studyBudget.includes('Self-Funded') || studyBudget.includes('Scholarship')) {
+          finScore = 35;
+        } else if (studyBudget.includes('Loan')) {
+          finScore = 32;
+          recommendations.push('Attach unconditional bank loan sanction letter and co-sponsor income tax returns.');
+        } else {
+          finScore = 22;
+          recommendations.push('Prepare liquid savings statement covering 1st-year tuition + living costs.');
+        }
+      }
+
+      if (studentAdmissionStatus) {
+        filledCount++;
+        if (studentAdmissionStatus.includes('Confirmed')) {
+          tiesScore = 20;
+        } else if (studentAdmissionStatus.includes('Conditional')) {
+          tiesScore = 14;
+          recommendations.push('Fulfill academic conditions to convert offer into unconditional Form I-20 / CAS.');
+        } else {
+          tiesScore = 8;
+          redFlags.push('Formal institutional admission letter is mandatory before scheduling embassy interview.');
+        }
+      }
+
+      if (studentLanguageScore) filledCount++;
+
+      if (filledCount > 0) {
+        recommendations.push(`Upload Form I-20 / CAS and 6-month stamped bank statements for ${countryName}.`);
+      }
+    } else if (activePurposeTab === 'tourism') {
+      if (visitPlanStatus) {
+        filledCount++;
+        itinScore = 15;
+      }
+      if (visitTiming) filledCount++;
+      if (visitReturnDate) filledCount++;
+      if (visitStay) filledCount++;
+
+      if (touristBankStability) {
+        filledCount++;
+        if (touristBankStability.includes('₹4L+')) {
+          finScore = 35;
+        } else if (touristBankStability.includes('₹2L - ₹4L')) {
+          finScore = 26;
+        } else {
+          finScore = 12;
+          redFlags.push('Recent lump-sum deposits or low balance may trigger consular queries under financial solvency rules.');
+        }
+      }
+
+      if (touristHomeTies) {
+        filledCount++;
+        if (touristHomeTies.includes('Salaried')) {
+          tiesScore = 20;
+        } else if (touristHomeTies.includes('Business')) {
+          tiesScore = 18;
+        } else {
+          tiesScore = 10;
+          recommendations.push('Provide property deeds, ongoing contracts, or family ties proof to establish return intent.');
+        }
+      }
+
+      if (filledCount > 0) {
+        recommendations.push(`Keep confirmed round-trip flight booking and hotel vouchers ready for ${countryName}.`);
+      }
+    } else {
+      // Work Visa
+      if (workExp) filledCount++;
+      if (workOffer) {
+        filledCount++;
+        if (workOffer.includes('Confirmed') || workOffer.includes('Approved')) {
+          finScore = 35;
+          tiesScore = 20;
+        } else {
+          finScore = 15;
+          tiesScore = 10;
+          redFlags.push(`Official employer sponsorship petition or labour clearance is mandatory for ${countryName} work visa.`);
+        }
+      }
+
+      if (workDomain) filledCount++;
+      if (workAssess) {
+        filledCount++;
+        if (workAssess.includes('Assessed')) {
+          itinScore = 15;
+        } else {
+          itinScore = 8;
+          recommendations.push('Complete ECA educational credential evaluation (WES/ACS) for qualification equivalency.');
+        }
       }
     }
 
-    // Refusal History Penalty
-    let refusalPenalty = 0;
-    if (visaRefusalHistory.includes('Past Refusal')) {
-      refusalPenalty = 12;
-      redFlags.push('Prior refusal recorded. Include a strong cover letter addressing previous refusal grounds.');
+    if (visaRefusalHistory) {
+      filledCount++;
+      if (visaRefusalHistory.includes('Past Refusal')) {
+        redFlags.push('Prior refusal recorded. Include a strong cover letter addressing previous refusal grounds.');
+      }
     }
 
-    const totalRaw = passportScore + finScore + itinScore + tiesScore - refusalPenalty;
-    const finalScore = Math.max(15, Math.min(98, totalRaw));
+    // Calculation
+    let refusalPenalty = visaRefusalHistory.includes('Past Refusal') ? 12 : 0;
+    let finalScore = 0;
+
+    if (filledCount === 0) {
+      finalScore = 0;
+      recommendations = ['Select your profile details in the fields above to calculate your exact consular approval readiness score.'];
+    } else {
+      const totalRaw = passportScore + finScore + itinScore + tiesScore - refusalPenalty;
+      finalScore = Math.max(10, Math.min(98, totalRaw));
+    }
 
     return {
       score: finalScore,
+      filledCount,
       category: activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist / Visit Visa',
-      statusText: finalScore >= 85 ? 'High Approval Readiness' : finalScore >= 65 ? 'Moderate Readiness' : 'Action Required / Critical Gaps',
-      badgeColor: finalScore >= 85 ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' : finalScore >= 65 ? 'text-amber-800 bg-amber-100/80 border-amber-200' : 'text-rose-800 bg-rose-100/80 border-rose-200',
-      barColor: finalScore >= 85 ? 'bg-emerald-500' : finalScore >= 65 ? 'bg-amber-500' : 'bg-rose-500',
+      statusText: filledCount === 0 
+        ? 'Awaiting Profile Selections' 
+        : finalScore >= 85 
+        ? 'High Approval Readiness' 
+        : finalScore >= 65 
+        ? 'Moderate Readiness' 
+        : 'Action Required / Critical Gaps',
+      badgeColor: filledCount === 0
+        ? 'text-slate-700 bg-slate-100 border-slate-200'
+        : finalScore >= 85 
+        ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' 
+        : finalScore >= 65 
+        ? 'text-amber-800 bg-amber-100/80 border-amber-200' 
+        : 'text-rose-800 bg-rose-100/80 border-rose-200',
+      barColor: filledCount === 0
+        ? 'bg-slate-300'
+        : finalScore >= 85 
+        ? 'bg-emerald-500' 
+        : finalScore >= 65 
+        ? 'bg-amber-500' 
+        : 'bg-rose-500',
       recommendations,
       redFlags,
       pillars: [
-        { name: 'Passport & Identity', score: passportScore, max: 30, value: passportValidityRange },
-        { name: 'Financial Sufficiency', score: finScore, max: 35, value: activePurposeTab === 'study' ? studyBudget : activePurposeTab === 'tourism' ? touristBankStability : workOffer },
-        { name: 'Trip Itinerary / Intake', score: itinScore, max: 15, value: activePurposeTab === 'study' ? studyIntake : activePurposeTab === 'tourism' ? visitTiming : workAssess },
-        { name: 'Ties & Sponsorship', score: tiesScore, max: 20, value: activePurposeTab === 'study' ? studentAdmissionStatus : activePurposeTab === 'tourism' ? touristHomeTies : workExp }
+        { name: 'Passport & Identity', score: passportScore, max: 30, value: passportValidityRange || 'Select Validity' },
+        { name: 'Financial Sufficiency', score: finScore, max: 35, value: (activePurposeTab === 'study' ? studyBudget : activePurposeTab === 'tourism' ? touristBankStability : workOffer) || 'Select Funding' },
+        { name: 'Trip Itinerary / Intake', score: itinScore, max: 15, value: (activePurposeTab === 'study' ? studyIntake : activePurposeTab === 'tourism' ? visitTiming : workAssess) || 'Select Timing' },
+        { name: 'Ties & Sponsorship', score: tiesScore, max: 20, value: (activePurposeTab === 'study' ? studentAdmissionStatus : activePurposeTab === 'tourism' ? touristHomeTies : workExp) || 'Select Status' }
       ]
     };
   }, [

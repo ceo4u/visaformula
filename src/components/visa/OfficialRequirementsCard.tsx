@@ -93,42 +93,37 @@ const getMandateVisual = (category: string, index: number) => {
   
   if (catLow.includes('appointment') || catLow.includes('schedule') || catLow.includes('vac') || catLow.includes('biometric')) {
     return {
-      icon: <CalendarCheck className="w-5 h-5 text-amber-600 stroke-[2]" />,
+      icon: <CalendarCheck className="w-7 h-7 text-amber-500 stroke-[1.8]" />,
       tag: 'APPOINTMENT RULE',
-      badgeBg: 'bg-amber-50 text-amber-800 border-amber-200/80',
-      iconBg: 'bg-amber-100/70 text-amber-700'
+      badgeBg: 'bg-amber-100/90 text-amber-900'
     };
   }
   if (catLow.includes('214') || catLow.includes('adjudication') || catLow.includes('intent') || catLow.includes('legal') || catLow.includes('law')) {
     return {
-      icon: <Award className="w-5 h-5 text-indigo-600 stroke-[2]" />,
+      icon: <Award className="w-7 h-7 text-indigo-500 stroke-[1.8]" />,
       tag: 'LEGAL ADJUDICATION',
-      badgeBg: 'bg-indigo-50 text-indigo-800 border-indigo-200/80',
-      iconBg: 'bg-indigo-100/70 text-indigo-700'
+      badgeBg: 'bg-indigo-100/90 text-indigo-900'
     };
   }
   if (catLow.includes('insurance') || catLow.includes('health') || catLow.includes('medical') || catLow.includes('ihs')) {
     return {
-      icon: <ShieldCheck className="w-5 h-5 text-emerald-600 stroke-[2]" />,
+      icon: <ShieldCheck className="w-7 h-7 text-emerald-500 stroke-[1.8]" />,
       tag: 'HEALTH & COVERAGE',
-      badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200/80',
-      iconBg: 'bg-emerald-100/70 text-emerald-700'
+      badgeBg: 'bg-emerald-100/90 text-emerald-900'
     };
   }
   if (catLow.includes('sevis') || catLow.includes('fee') || catLow.includes('receipt') || catLow.includes('ds-160') || catLow.includes('form') || catLow.includes('petition') || catLow.includes('letter')) {
     return {
-      icon: <FileEdit className="w-5 h-5 text-blue-600 stroke-[2]" />,
+      icon: <FileEdit className="w-7 h-7 text-blue-500 stroke-[1.8]" />,
       tag: 'DOCUMENT COMPLIANCE',
-      badgeBg: 'bg-blue-50 text-blue-800 border-blue-200/80',
-      iconBg: 'bg-blue-100/70 text-blue-700'
+      badgeBg: 'bg-blue-100/90 text-blue-900'
     };
   }
   
   return {
-    icon: <AlertCircle className="w-5 h-5 text-slate-700 stroke-[2]" />,
+    icon: <AlertCircle className="w-7 h-7 text-orange-500 stroke-[1.8]" />,
     tag: 'CONSULAR DIRECTIVE',
-    badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',
-    iconBg: 'bg-slate-100 text-slate-700'
+    badgeBg: 'bg-orange-100/90 text-orange-900'
   };
 };
 
@@ -576,7 +571,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* ── 2. DOCUMENTS REQUIRED CHECKLIST (CLEAN 2-COLUMN TABLE FORMAT) ── */}
+          {/* ── 2. DOCUMENTS REQUIRED CHECKLIST (CRYSTAL CLEAR HIGH-CONTRAST TABLE) ── */}
           <div id="section-documents" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div className="flex items-center gap-3.5">
@@ -584,134 +579,170 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   <FileText className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Documents Required Checklist</h3>
-                  <span className="text-xs text-slate-400 font-semibold block">Official Embassy Verification &amp; Compliance Details</span>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight">Documents Required Checklist</h3>
+                  <span className="text-xs text-slate-500 font-semibold block">Official Embassy Verification &amp; Compliance Details</span>
                 </div>
               </div>
 
               <button 
                 onClick={handleSaveChecklistToProfile}
-                className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+                className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
               >
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>Verify Documents &amp; Sync</span>
               </button>
             </div>
 
-            {/* Official Consular Checklist Table (Clean 2-Column List) */}
-            <div className="border border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-2xs">
+            {/* Official Consular Checklist Table (Crystal Clear, High-Contrast Layout) */}
+            <div className="border border-slate-300 rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] sm:text-xs font-black text-slate-700 uppercase tracking-wider">
-                    <th className="py-3.5 px-4 w-20 sm:w-24 text-center border-r border-slate-200">READY</th>
-                    <th className="py-3.5 px-5 sm:px-6">DOCUMENT</th>
+                  <tr className="bg-slate-100/90 border-b border-slate-300 text-xs font-black text-slate-900 uppercase tracking-wider">
+                    <th className="py-4 px-4 w-20 sm:w-24 text-center border-r border-slate-300">READY</th>
+                    <th className="py-4 px-6 sm:px-8">DOCUMENT</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 text-xs sm:text-[14px]">
+                <tbody className="divide-y divide-slate-200 text-sm">
                   
                   {/* Row 1: Visa Application Form */}
-                  <tr className="hover:bg-slate-50/40 transition-colors">
-                    <td className="py-4 px-4 text-center border-r border-slate-200 align-middle">
+                  <tr className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_form')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none"
+                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_form']?.ready
-                            ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                            : 'border-slate-400 bg-white hover:border-slate-700'
+                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500 group-hover:bg-emerald-50/40'
                         }`}>
-                          {checkedDocs['doc_req_form']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                          {checkedDocs['doc_req_form']?.ready ? (
+                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                          ) : (
+                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">1</span>
+                          )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-400">1</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 sm:px-6 align-middle">
-                      <strong className="font-extrabold text-slate-900 block leading-snug text-sm sm:text-base">Visa Application Form</strong>
-                      <span className="text-xs text-slate-500 font-medium block mt-0.5">DS-160 / Official Consular Filing Sheet</span>
+                    <td className="py-5 px-6 sm:px-8 align-middle">
+                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                        Visa Application Form
+                      </strong>
+                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                        DS-160 / Official Consular Filing Sheet with confirmation barcode.
+                      </span>
                     </td>
                   </tr>
 
                   {/* Row 2: Recent Passport-Sized Photographs */}
-                  <tr className="hover:bg-slate-50/40 transition-colors">
-                    <td className="py-4 px-4 text-center border-r border-slate-200 align-middle">
+                  <tr className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_photo')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none"
+                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_photo']?.ready
-                            ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                            : 'border-slate-400 bg-white hover:border-slate-700'
+                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500 group-hover:bg-emerald-50/40'
                         }`}>
-                          {checkedDocs['doc_req_photo']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                          {checkedDocs['doc_req_photo']?.ready ? (
+                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                          ) : (
+                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">2</span>
+                          )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-400">2</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 sm:px-6 align-middle">
-                      <strong className="font-extrabold text-slate-900 block leading-snug text-sm sm:text-base">Two Recent Passport-Sized Pictures</strong>
-                      <span className="text-xs text-slate-500 font-medium block mt-0.5">Biometric Photo Standards (White Background)</span>
+                    <td className="py-5 px-6 sm:px-8 align-middle">
+                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                        Two Recent Passport-Sized Pictures
+                      </strong>
+                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                        Biometric Photo Standards (White Background, 2x2 inch / 35x45mm, neutral expression).
+                      </span>
                     </td>
                   </tr>
 
                   {/* Row 3: Passport */}
-                  <tr className="hover:bg-slate-50/40 transition-colors">
-                    <td className="py-4 px-4 text-center border-r border-slate-200 align-middle">
+                  <tr className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_passport')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none"
+                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_passport']?.ready
-                            ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                            : 'border-slate-400 bg-white hover:border-slate-700'
+                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500 group-hover:bg-emerald-50/40'
                         }`}>
-                          {checkedDocs['doc_req_passport']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                          {checkedDocs['doc_req_passport']?.ready ? (
+                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                          ) : (
+                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">3</span>
+                          )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-400">3</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 sm:px-6 align-middle">
-                      <strong className="font-extrabold text-slate-900 block leading-snug text-sm sm:text-base">Original Passport</strong>
-                      <span className="text-xs text-slate-500 font-medium block mt-0.5">Current &amp; Previous Passports (Min. 6 Months Validity)</span>
+                    <td className="py-5 px-6 sm:px-8 align-middle">
+                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                        Original Passport
+                      </strong>
+                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                        Current &amp; Previous Passports (Minimum 6 months validity from planned departure date, at least 2 blank visa pages).
+                      </span>
                     </td>
                   </tr>
 
                   {/* Row 4: Medical / Health Insurance */}
-                  <tr className="hover:bg-slate-50/40 transition-colors">
-                    <td className="py-4 px-4 text-center border-r border-slate-200 align-top pt-5">
+                  <tr className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-5 px-4 text-center border-r border-slate-200 align-top pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_insurance')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none"
+                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_insurance']?.ready
-                            ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                            : 'border-slate-400 bg-white hover:border-slate-700'
+                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500 group-hover:bg-emerald-50/40'
                         }`}>
-                          {checkedDocs['doc_req_insurance']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                          {checkedDocs['doc_req_insurance']?.ready ? (
+                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                          ) : (
+                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">4</span>
+                          )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-400">4</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 sm:px-6 align-top space-y-3">
+                    <td className="py-5 px-6 sm:px-8 align-top space-y-4">
                       <div>
-                        <strong className="font-extrabold text-slate-900 block leading-snug text-sm sm:text-base">Medical &amp; Travel Insurance</strong>
-                        <span className="text-xs text-slate-500 font-medium block mt-0.5">(Holders of diplomatic passports are exempted)</span>
+                        <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                          Medical &amp; Travel Insurance
+                        </strong>
+                        <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                          Consular-approved health coverage including emergency medical evacuation &amp; repatriation. (Holders of diplomatic passports are exempted).
+                        </span>
                       </div>
 
-                      <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3">
-                        <p className="text-xs text-slate-600 font-normal leading-relaxed">
+                      {/* High-Contrast Modern Assistance Box */}
+                      <div className="bg-gradient-to-br from-slate-50 via-sky-50/30 to-slate-50 border border-sky-200/90 rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-sky-900 bg-sky-100/90 px-2.5 py-0.5 rounded-full border border-sky-200">
+                            Consular Assistance
+                          </span>
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                           You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, TravlTik provides direct consular-approved insurance policy issuance.
                         </p>
                         
-                        <div>
+                        <div className="pt-1">
                           <a
                             href="/find-experts?category=insurance"
-                            className="inline-flex items-center justify-center px-5 py-2.5 bg-[#004e8c] hover:bg-[#003866] text-white rounded-xl text-xs font-black tracking-wide uppercase shadow-sm transition-all active:scale-95"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#004e8c] hover:bg-[#003866] text-white rounded-xl text-xs sm:text-sm font-black tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95"
                           >
-                            FIND A MEDICAL INSURANCE
+                            <span>FIND A MEDICAL INSURANCE</span>
+                            <ArrowRight className="w-4 h-4" />
                           </a>
                         </div>
 
@@ -723,164 +754,212 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   </tr>
 
                   {/* Row 5: Purpose Specific Required Documents */}
-                  <tr className="hover:bg-slate-50/40 transition-colors">
-                    <td className="py-4 px-4 text-center border-r border-slate-200 align-top pt-5">
+                  <tr className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-5 px-4 text-center border-r border-slate-200 align-top pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_purpose')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none"
+                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_purpose']?.ready
-                            ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                            : 'border-slate-400 bg-white hover:border-slate-700'
+                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500 group-hover:bg-emerald-50/40'
                         }`}>
-                          {checkedDocs['doc_req_purpose']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                          {checkedDocs['doc_req_purpose']?.ready ? (
+                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                          ) : (
+                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">5</span>
+                          )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-400">5</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 sm:px-6 align-top space-y-3">
+                    <td className="py-5 px-6 sm:px-8 align-top space-y-4">
                       <div>
-                        <strong className="font-extrabold text-slate-900 block leading-snug text-sm sm:text-base">Required Documents</strong>
-                        <span className="text-xs text-emerald-700 font-extrabold block mt-0.5">({cleanPurposeLabel} Specific)</span>
+                        <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                          Required Documents
+                        </strong>
+                        <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md inline-block mt-1">
+                          {cleanPurposeLabel} Specific
+                        </span>
                       </div>
 
-                      <div className="space-y-2.5 pt-1">
+                      {/* Crystal Clear Sub-Checklist Cards */}
+                      <div className="space-y-3 pt-1">
                         {selectedPurpose === 'student' || cleanPurposeLabel.toLowerCase().includes('stud') ? (
                           <>
                             {/* Sub-item 1 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_i20')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_i20']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
-                                {checkedDocs['sub_student_i20']?.ready && <Check className="w-3 h-3 stroke-[3] text-white" />}
+                                {checkedDocs['sub_student_i20']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">University Acceptance Letter (Form I-20):</strong> Confirmed unconditional offer letter and signed Form I-20.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  University Acceptance Letter (Form I-20):
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Confirmed unconditional offer letter and signed Form I-20.
+                                </span>
+                              </div>
                             </div>
 
                             {/* Sub-item 2 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_fin')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_fin']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_student_fin']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Financial Solvency Proof:</strong> Verified liquid bank statements (last 6 months) or educational loan letter.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Financial Solvency Proof:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Verified liquid bank statements (last 6 months) or educational loan sanction letter.
+                                </span>
+                              </div>
                             </div>
 
                             {/* Sub-item 3 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_academic')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_academic']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_student_academic']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Academic &amp; Language Records:</strong> Recognized degree certificates and test scorecards (IELTS/PTE/TOEFL).
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Academic &amp; Language Records:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Recognized degree certificates and official test scorecards (IELTS / PTE / TOEFL).
+                                </span>
+                              </div>
                             </div>
                           </>
                         ) : cleanPurposeLabel.toLowerCase().includes('work') ? (
                           <>
                             <div 
                               onClick={() => toggleDocReady('sub_work_contract')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_work_contract']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_work_contract']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Signed Employment Contract:</strong> Copy of signed offer letter with employer sponsorship.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Signed Employment Contract:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Copy of signed offer letter with confirmed employer sponsorship and job description.
+                                </span>
+                              </div>
                             </div>
 
                             <div 
                               onClick={() => toggleDocReady('sub_work_permit')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_work_permit']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_work_permit']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Labour Approval / Work Authorization:</strong> In-Principle Approval (IPA), CoS, or Ministry of Labour clearance.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Labour Approval / Work Authorization:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  In-Principle Approval (IPA), Certificate of Sponsorship (CoS), or Ministry of Labour clearance.
+                                </span>
+                              </div>
                             </div>
                           </>
                         ) : (
                           <>
                             <div 
                               onClick={() => toggleDocReady('sub_tour_flight')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_flight']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_tour_flight']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Flight Itinerary:</strong> Confirmed round-trip flight booking or itinerary reservation.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Flight Itinerary:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Confirmed round-trip flight booking or verifiable itinerary reservation.
+                                </span>
+                              </div>
                             </div>
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_hotel')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_hotel']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_tour_hotel']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Accommodation Proof:</strong> Verified hotel booking voucher or host invitation letter.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Accommodation Proof:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Verified hotel booking voucher or host invitation letter with proof of address.
+                                </span>
+                              </div>
                             </div>
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_funds')}
-                              className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all cursor-pointer select-none border border-transparent hover:border-slate-200"
+                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
                             >
-                              <div className={`w-4 h-4 rounded border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
+                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_funds']?.ready
-                                  ? 'bg-slate-900 border-slate-900 text-white'
-                                  : 'border-slate-400 bg-white'
+                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
                                 {checkedDocs['sub_tour_funds']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
-                              <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                <strong className="font-bold text-slate-900">Financial Solvency Proof:</strong> Bank account statements of the last 3-6 months.
-                              </span>
+                              <div className="min-w-0 flex-1 text-left">
+                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                  Financial Solvency Proof:
+                                </strong>
+                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
+                                  Bank account statements of the last 3–6 months showing adequate travel funds.
+                                </span>
+                              </div>
                             </div>
                           </>
                         )}
@@ -909,39 +988,35 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div className="space-y-6 pt-2">
             {data.other_requirements.map((req, idx) => {
               const visual = getMandateVisual(req.category, idx);
               const isInsurance = req.category.toLowerCase().includes('insurance') || req.category.toLowerCase().includes('health') || req.category.toLowerCase().includes('ihs');
 
               return (
-                <div 
-                  key={idx} 
-                  className="bg-slate-50/50 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-3xl p-5 sm:p-6 transition-all duration-200 shadow-2xs hover:shadow-xs flex items-start gap-4 text-left group"
-                >
-                  <div className={`w-11 h-11 rounded-2xl ${visual.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5 group-hover:scale-105 transition-transform`}>
+                <div key={idx} className="flex items-start gap-4 group transition-all text-left">
+                  {/* Outlined Vector Icon */}
+                  <div className="shrink-0 pt-0.5 transition-transform duration-200 group-hover:scale-110">
                     {visual.icon}
                   </div>
 
-                  <div className="space-y-2 flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-slate-950 transition-colors leading-snug">
-                        {req.category}
-                      </h4>
-                      <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${visual.badgeBg}`}>
-                        {visual.tag}
+                  {/* Content */}
+                  <div className="space-y-1 min-w-0 flex-1 text-left">
+                    {visual.tag && (
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md mb-1 ${visual.badgeBg}`}>
+                        <span>📌 {visual.tag}</span>
                       </span>
-                    </div>
-
-                    <p className="text-xs sm:text-[13px] text-slate-600 font-normal leading-relaxed">
+                    )}
+                    <p className="text-xs sm:text-base font-bold text-slate-800 leading-relaxed group-hover:text-slate-950 transition-colors">
+                      <strong className="font-extrabold text-slate-950 mr-1.5">{req.category}:</strong>
                       {req.details}
                     </p>
 
                     {isInsurance && (
-                      <div className="pt-2 border-t border-slate-200/60 mt-2">
+                      <div className="pt-1.5">
                         <a
                           href="/find-experts?category=insurance"
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] hover:underline transition-colors"
                         >
                           <span>Explore Consular-Approved Insurance</span>
                           <ArrowRight className="w-3.5 h-3.5" />

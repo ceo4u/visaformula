@@ -355,13 +355,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           <div className="flex items-center gap-3 w-full md:w-auto">
             <button
               onClick={handleSaveChecklistToProfile}
-              className={`w-full md:w-auto px-4 sm:px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm ${
-                isSavedToProfile
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                  : 'bg-slate-900 hover:bg-black text-white'
-              }`}
+              className="w-full md:w-auto px-4 sm:px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm bg-slate-900 hover:bg-black text-white active:scale-95 cursor-pointer"
             >
-              <Bookmark className="w-3.5 h-3.5" />
+              <Bookmark className="w-3.5 h-3.5 text-white" />
               <span>{isSavedToProfile ? '✓ Synced to Profile' : 'Save to Profile'}</span>
             </button>
           </div>

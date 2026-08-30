@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://travltik.com/sitemap.xml

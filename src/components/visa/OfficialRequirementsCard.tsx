@@ -515,7 +515,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] sm:text-xs font-black text-slate-700 uppercase tracking-wider">
                       <th className="py-3.5 px-4 w-24 text-center border-r border-slate-200">READY</th>
                       <th className="py-3.5 px-5 w-64 border-r border-slate-200">DOCUMENT</th>
-                      <th className="py-3.5 px-6">REQUIREMENTS</th>
+                      <th className="py-3.5 px-6"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 text-xs sm:text-[13px]">

@@ -33,23 +33,23 @@ function PortalCustomSelect({
 
   return (
     <div className="relative space-y-1.5" ref={dropdownRef}>
-      {label && <label className="block text-sm sm:text-[15px] font-extrabold text-slate-900 tracking-tight leading-snug">{label}</label>}
+      {label && <label className="block text-xs sm:text-[13px] font-bold text-slate-800 tracking-tight leading-snug">{label}</label>}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full h-12 sm:h-13 px-4 rounded-2xl border bg-white text-sm sm:text-[15px] font-bold flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
-          open ? 'border-indigo-600 ring-2 ring-indigo-500/20' : 'border-slate-300 hover:border-slate-400'
+        className={`w-full h-11 px-3.5 rounded-xl border bg-white text-xs sm:text-sm font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
+          open ? 'border-indigo-600 ring-2 ring-indigo-500/20' : 'border-slate-200 hover:border-slate-300'
         }`}
       >
-        <span className={`truncate text-left ${hasValue ? 'text-slate-950 font-black' : 'text-slate-400 font-semibold'}`}>
+        <span className={`truncate text-left ${hasValue ? 'text-slate-900 font-bold' : 'text-slate-400 font-normal'}`}>
           {hasValue ? value : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-indigo-600' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-indigo-600' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-full bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 origin-top">
-          <div className="max-h-60 overflow-y-auto space-y-1">
+        <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-2xl border border-slate-200/90 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 origin-top">
+          <div className="max-h-56 overflow-y-auto space-y-0.5">
             {options.map((opt) => {
               const isSelected = opt === value;
               return (
@@ -60,14 +60,14 @@ function PortalCustomSelect({
                     onChange(opt);
                     setOpen(false);
                   }}
-                  className={`w-full text-left px-3.5 py-3 rounded-xl text-sm sm:text-[15px] font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-between transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-50 text-indigo-900 font-black'
+                      ? 'bg-indigo-50 text-indigo-900 font-bold'
                       : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950'
                   }`}
                 >
                   <span className="truncate">{opt}</span>
-                  {isSelected && <Check className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 shrink-0 stroke-[3]" />}
+                  {isSelected && <Check className="w-4 h-4 text-indigo-600 shrink-0 stroke-[3]" />}
                 </button>
               );
             })}
@@ -3702,18 +3702,18 @@ export function VisaCountryResultPortal({
       {hasVisaAlready === 'no' && (
         <>
           {/* ── 4-STEP PURPOSE-SPECIFIC INTERACTIVE QUESTIONNAIRE & VISA READINESS ── */}
-          <section id="section-visa-readiness" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-24 animate-fadeIn">
-            <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm text-left space-y-6">
+          <section id="section-visa-readiness" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-24 animate-fadeIn">
+            <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-8 shadow-sm text-left space-y-5 sm:space-y-6">
               
               {/* Header with Step indicator */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                <div className="space-y-1.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-slate-100">
+                <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-extrabold text-slate-500 uppercase tracking-wider">
+                    <span className="text-[11px] sm:text-sm font-extrabold text-slate-500 uppercase tracking-wider">
                       Category: {activePurposeTab === 'study' ? 'STUDENT VISA' : activePurposeTab === 'work' ? 'WORK VISA' : 'TOURIST VISA'}
                     </span>
                   </div>
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-heading font-black text-slate-950 tracking-tight">
+                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-heading font-black text-slate-950 tracking-tight leading-tight">
                     {activePurposeTab === 'study'
                       ? `Apply for your Student Visa to ${countryName}`
                       : activePurposeTab === 'work'
@@ -3723,7 +3723,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Purpose Category Tag Badge (No unrelated tabs shown) */}
-                <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-950 text-white text-xs sm:text-sm font-black shadow-xs">
+                <div className="inline-flex items-center self-start sm:self-auto gap-2 px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-950 text-white text-xs sm:text-sm font-black shadow-xs">
                   <span>
                     {activePurposeTab === 'study'
                       ? '🎓 Student / Study Visa'
@@ -3737,7 +3737,7 @@ export function VisaCountryResultPortal({
               {/* STUDY QUESTIONNAIRE (ALL 8 PROFILE FIELDS) */}
               {activePurposeTab === 'study' && (
                 <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     {/* Q1: Qualification */}
                     <PortalCustomSelect
                       label="1. Highest Qualification"
@@ -3794,28 +3794,28 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
                     <PortalCustomSelect
                       label="5. Institutional Admission Status"
                       value={studentAdmissionStatus}
                       onChange={setStudentAdmissionStatus}
                       placeholder="Select admission status"
                       options={[
-                        "Have Confirmed Form I-20 / CAS",
-                        "Conditional Offer Letter",
-                        "Awaiting Admission Offer"
+                        "Confirmed Offer / CAS / I-20",
+                        "Conditional Offer Received",
+                        "Yet to Apply / Planning"
                       ]}
                     />
 
                     <PortalCustomSelect
-                      label="6. Language Score (IELTS / PTE / TOEFL)"
+                      label="6. English Language Proficiency"
                       value={studentLanguageScore}
                       onChange={setStudentLanguageScore}
-                      placeholder="Select language test"
+                      placeholder="Select language status"
                       options={[
-                        "IELTS 6.5+ / PTE 65+",
-                        "IELTS 6.0 / PTE 58",
-                        "Pending / Not Taken Yet"
+                        "IELTS 6.5+ / PTE 60+ Cleared",
+                        "Exam Booked / Preparing",
+                        "Medium of Instruction (MOI) Waiver"
                       ]}
                     />
 
@@ -3825,8 +3825,8 @@ export function VisaCountryResultPortal({
                       onChange={setPassportValidityRange}
                       placeholder="Select passport validity"
                       options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
+                        "> 12 Months (Recommended)",
+                        "6 - 12 Months Valid",
                         "< 6 Months (Renewal Required)"
                       ]}
                     />
@@ -3837,8 +3837,8 @@ export function VisaCountryResultPortal({
                       onChange={setVisaRefusalHistory}
                       placeholder="Select refusal history"
                       options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
+                        "Clean History (No Refusals)",
+                        "Past Refusal (Requires Cover Letter)"
                       ]}
                     />
                   </div>
@@ -3848,7 +3848,7 @@ export function VisaCountryResultPortal({
               {/* VISIT / TOURISM QUESTIONNAIRE (ALL 8 PROFILE FIELDS) */}
               {activePurposeTab === 'tourism' && (
                 <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     {/* Q1: Trip Status */}
                     <PortalCustomSelect
                       label="1. Trip Planning Status"
@@ -3856,9 +3856,9 @@ export function VisaCountryResultPortal({
                       onChange={setVisitPlanStatus}
                       placeholder="Select trip status"
                       options={[
-                        "Need Curated Tour Packages",
-                        "I have my Itinerary & Hotel",
-                        "Visiting Family / Relatives"
+                        "Fixed Dates & Itinerary Ready",
+                        "Flexible / Exploring Dates",
+                        "Urgent Travel (Next 14 Days)"
                       ]}
                     />
 
@@ -3869,9 +3869,10 @@ export function VisaCountryResultPortal({
                       onChange={setVisitTiming}
                       placeholder="Select travel window"
                       options={[
-                        "Within 30 Days (Fast-Track)",
-                        "In 1 to 3 Months",
-                        "In 3 to 6 Months"
+                        "Next 30 Days",
+                        "1 - 3 Months",
+                        "3 - 6 Months",
+                        "6+ Months Later"
                       ]}
                     />
 
@@ -3882,10 +3883,10 @@ export function VisaCountryResultPortal({
                       onChange={setVisitReturnDate}
                       placeholder="Select return window"
                       options={[
-                        "Within 1 to 2 Weeks",
-                        "In 1 Month",
-                        "In 2 to 3 Months",
-                        "Flexible / Extended Stay"
+                        "Within 7 Days",
+                        "8 - 14 Days",
+                        "15 - 30 Days",
+                        "1 - 3 Months"
                       ]}
                     />
 
@@ -3896,24 +3897,24 @@ export function VisaCountryResultPortal({
                       onChange={setVisitStay}
                       placeholder="Select accommodation"
                       options={[
-                        "4-5 Star Luxury Resorts",
-                        "Boutique City Hotels",
-                        "Serviced Apartments / Airbnb"
+                        "Hotel / Resort Booked",
+                        "Staying with Host / Family",
+                        "Airbnb / Rental Apartment"
                       ]}
                     />
                   </div>
 
                   {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
                     <PortalCustomSelect
                       label="5. 6-Month Stamped Bank Balance"
                       value={touristBankStability}
                       onChange={setTouristBankStability}
                       placeholder="Select bank balance"
                       options={[
-                        "6-Month Stamped (₹4L+ / $5k+)",
-                        "Balance ₹2L - ₹4L",
-                        "Under ₹2L / Recent Large Lump-Sum"
+                        "₹4L+ Maintained (Strong Solvency)",
+                        "₹2L - ₹4L Balance",
+                        "Under ₹2L / Need Financial Advice"
                       ]}
                     />
 
@@ -3923,9 +3924,10 @@ export function VisaCountryResultPortal({
                       onChange={setTouristHomeTies}
                       placeholder="Select employment / ties"
                       options={[
-                        "Salaried with Employer NOC & ITR",
-                        "Business Owner / Property Owner",
-                        "Freelance / Self-employed"
+                        "Salaried (NOC & 3-Mo Payslips Ready)",
+                        "Business Owner / GST & 2-Yr ITR",
+                        "Self-Employed / Freelancer",
+                        "Student / Dependent"
                       ]}
                     />
 
@@ -3935,8 +3937,8 @@ export function VisaCountryResultPortal({
                       onChange={setPassportValidityRange}
                       placeholder="Select passport validity"
                       options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
+                        "> 12 Months (Recommended)",
+                        "6 - 12 Months Valid",
                         "< 6 Months (Renewal Required)"
                       ]}
                     />
@@ -3947,8 +3949,8 @@ export function VisaCountryResultPortal({
                       onChange={setVisaRefusalHistory}
                       placeholder="Select refusal history"
                       options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
+                        "Clean History (No Refusals)",
+                        "Past Refusal (Requires Cover Letter)"
                       ]}
                     />
                   </div>
@@ -3958,72 +3960,73 @@ export function VisaCountryResultPortal({
               {/* WORK QUESTIONNAIRE (ALL PROFILE FIELDS) */}
               {activePurposeTab === 'work' && (
                 <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     {/* Q1: Exp */}
                     <PortalCustomSelect
-                      label="1. Total Experience"
+                      label="1. Total Work Experience"
                       value={workExp}
                       onChange={setWorkExp}
-                      placeholder="Select experience level"
+                      placeholder="Select total experience"
                       options={[
-                        "0 - 2 Years (Entry Level)",
-                        "3 - 5 Years (Mid-Senior)",
-                        "6+ Years (Senior / Lead)",
-                        "10+ Years (Executive)"
+                        "0 - 2 Years (Early Career)",
+                        "3 - 5 Years (Mid-Level)",
+                        "5 - 8 Years (Senior)",
+                        "8+ Years (Lead / Executive)"
                       ]}
                     />
 
                     {/* Q2: Job Offer */}
                     <PortalCustomSelect
-                      label="2. Sponsoring Job Offer"
+                      label={`2. Job Offer in ${countryName}`}
                       value={workOffer}
                       onChange={setWorkOffer}
-                      placeholder="Select job offer status"
+                      placeholder="Select offer status"
                       options={[
-                        "Actively Seeking Sponsoring Job",
-                        "Have Confirmed Sponsor Offer",
-                        "Internal Company Transfer (ICT)"
+                        "Confirmed Sponsored Job Offer (CoS/LMIA)",
+                        "Interviewing / Final Stages",
+                        "Job Seeker (Applying from India)"
                       ]}
                     />
 
                     {/* Q3: Domain */}
                     <PortalCustomSelect
-                      label="3. Industry Domain"
+                      label="3. Industry / Job Role"
                       value={workDomain}
                       onChange={setWorkDomain}
-                      placeholder="Select industry"
+                      placeholder="Select domain"
                       options={[
-                        "Tech / IT / Software / AI",
-                        "Healthcare & Nursing",
-                        "Banking, Finance & Accounting",
-                        "Civil, Mechanical & Engineering"
+                        "IT / Software & Tech",
+                        "Healthcare / Nursing / Medical",
+                        "Engineering & Construction",
+                        "Finance & Management",
+                        "Hospitality & Services"
                       ]}
                     />
 
                     {/* Q4: Credential Assessment */}
                     <PortalCustomSelect
-                      label="4. Credential Assessment"
+                      label="4. Skill Assessment Status"
                       value={workAssess}
                       onChange={setWorkAssess}
                       placeholder="Select assessment status"
                       options={[
-                        "Need WES / ACS Credential Evaluation",
-                        "Already Assessed & Approved",
-                        "Exempt / Not Applicable"
+                        "Assessed (ACS / WES / Engineers Aus)",
+                        "Under Processing",
+                        "Not Initiated / Need Assistance"
                       ]}
                     />
                   </div>
 
                   {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 max-w-2xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
                     <PortalCustomSelect
                       label="5. Passport Validity Remaining"
                       value={passportValidityRange}
                       onChange={setPassportValidityRange}
                       placeholder="Select passport validity"
                       options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
+                        "> 12 Months (Recommended)",
+                        "6 - 12 Months Valid",
                         "< 6 Months (Renewal Required)"
                       ]}
                     />
@@ -4034,8 +4037,8 @@ export function VisaCountryResultPortal({
                       onChange={setVisaRefusalHistory}
                       placeholder="Select refusal history"
                       options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
+                        "Clean History (No Refusals)",
+                        "Past Refusal (Requires Cover Letter)"
                       ]}
                     />
                   </div>
@@ -4043,22 +4046,22 @@ export function VisaCountryResultPortal({
               )}
 
               {/* ── STEP 2: PASSPORT COLLECTION & LIVE VISA READINESS SCORECARD ── */}
-              <div className="pt-6 border-t border-slate-100 space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              <div className="pt-5 sm:pt-6 border-t border-slate-100 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
                   
                   {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
-                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 text-left flex flex-col justify-between shadow-sm">
+                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-5 text-left flex flex-col justify-between shadow-sm">
                     <div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-2">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-1.5 whitespace-nowrap">
                           <span>📘 Passport Bio-Data (Upload)</span>
                         </span>
                         {passportFile ? (
-                          <span className="text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs">
+                          <span className="text-[11px] sm:text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
                             ✓ ATTACHED
                           </span>
                         ) : (
-                          <span className="text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs">
+                          <span className="text-[11px] sm:text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
                             UPLOAD REQUIRED
                           </span>
                         )}
@@ -4071,14 +4074,14 @@ export function VisaCountryResultPortal({
 
                     {passportFile ? (
                       <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-2.5 shadow-xs">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-black text-slate-950 truncate max-w-[240px]">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-sm font-black text-slate-950 truncate max-w-[200px] sm:max-w-[260px]">
                             {passportFile.name}
                           </span>
                           <button
                             type="button"
                             onClick={() => handlePassportUpload(null)}
-                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors"
+                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors shrink-0"
                           >
                             ✕ Remove
                           </button>
@@ -4090,14 +4093,14 @@ export function VisaCountryResultPortal({
                         </div>
                       </div>
                     ) : (
-                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/30 rounded-2xl py-10 sm:py-14 px-6 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[220px] sm:min-h-[240px]">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-4 transition-all shadow-xs">
-                          <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 stroke-[2.5]" />
+                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/30 rounded-2xl py-8 sm:py-14 px-4 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[190px] sm:min-h-[240px]">
+                        <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-3 sm:mb-4 transition-all shadow-xs">
+                          <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600 stroke-[2.5]" />
                         </div>
-                        <span className="text-base sm:text-lg font-heading font-black text-slate-950 tracking-tight">
+                        <span className="text-sm sm:text-lg font-heading font-black text-slate-950 tracking-tight">
                           Click or Drag to Upload Passport
                         </span>
-                        <span className="text-xs sm:text-sm text-slate-500 font-semibold mt-1.5">
+                        <span className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-1">
                           Supports PDF, JPG, PNG (Max 15MB)
                         </span>
                         <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-700 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-colors">
@@ -4114,20 +4117,20 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* RIGHT COLUMN: CIRCULAR GAUGE VISA READINESS SCORECARD (CREDIT SCORE STYLE) */}
-                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
+                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
                     
                     {/* Card Header */}
-                    <div className="w-full flex items-center justify-between pb-1 text-left">
+                    <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
                       <div>
-                        <h4 className="text-lg sm:text-xl font-heading font-black text-slate-950 tracking-tight">
+                        <h4 className="text-base sm:text-xl font-heading font-black text-slate-950 tracking-tight">
                           Your Visa Readiness Score
                         </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
+                        <p className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-0.5">
                           {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
 
-                      <span className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider ${
+                      <span className={`px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-black uppercase tracking-wider shrink-0 ${
                         readinessMetrics.score >= 85
                           ? 'bg-[#D97706] text-white shadow-xs'
                           : readinessMetrics.score >= 65
@@ -4151,7 +4154,7 @@ export function VisaCountryResultPortal({
                     </div>
 
                     {/* Center: Circular Rainbow Gauge */}
-                    <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center my-1">
+                    <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center my-1">
                       <svg className="w-full h-full" viewBox="0 0 200 200">
                         <defs>
                           <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -4185,13 +4188,13 @@ export function VisaCountryResultPortal({
                       </svg>
 
                       {/* Center Number & Points */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-3">
-                        <span className="text-5xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
+                        <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
                           {readinessMetrics.score > 0
                             ? Math.round(300 + (readinessMetrics.score / 100) * 550)
                             : 0}
                         </span>
-                        <span className="text-xs sm:text-sm font-extrabold text-slate-800 mt-1.5">
+                        <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
                           {passportFile ? (
                             <span className="text-emerald-600 font-black">+20 Points</span>
                           ) : readinessMetrics.filledCount > 0 ? (

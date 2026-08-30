@@ -405,7 +405,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
       {data && (
         <div className="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
-          <div className="space-y-1 w-full md:w-auto text-left">
+          <div className="w-full md:w-auto text-left">
             <div className="flex flex-wrap items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-[11px] sm:text-xs font-bold text-slate-900">Readiness Tracker:</span>
@@ -413,9 +413,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 {readyItemsCount} of {totalItemsCount} Verified ({readinessPercentage}%)
               </span>
             </div>
-            <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
-              Tap any item to register completion date and log audit timestamps.
-            </p>
           </div>
           <div className="flex items-center gap-3 w-full md:w-auto">
             <button
@@ -503,13 +500,10 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
 
             {/* Fee Notes Breakdown */}
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-medium">
-              <div className="flex items-center gap-4 flex-wrap">
-                <span><strong>Official Visa Fee:</strong> {data.costs.visa_fee}</span>
-                <span>•</span>
-                <span><strong>VAC / Logistics Fee:</strong> {data.costs.service_fee}</span>
-              </div>
-              <span className="text-[11px] text-slate-400">{data.costs.notes}</span>
+            <div className="pt-4 border-t border-slate-100 flex items-center gap-4 flex-wrap text-xs text-slate-500 font-medium">
+              <span><strong>Official Visa Fee:</strong> {data.costs.visa_fee}</span>
+              <span>•</span>
+              <span><strong>VAC / Logistics Fee:</strong> {data.costs.service_fee}</span>
             </div>
           </div>
 

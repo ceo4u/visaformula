@@ -4133,9 +4133,9 @@ export function VisaCountryResultPortal({
                       <span className={`px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-black uppercase tracking-wider shrink-0 ${
                         readinessMetrics.score >= 85
                           ? 'bg-[#D97706] text-white shadow-xs'
-                          : readinessMetrics.score >= 65
+                          : readinessMetrics.score >= 70
                           ? 'bg-emerald-600 text-white shadow-xs'
-                          : readinessMetrics.score >= 40
+                          : readinessMetrics.score >= 50
                           ? 'bg-blue-600 text-white shadow-xs'
                           : readinessMetrics.score > 0
                           ? 'bg-orange-500 text-white shadow-xs'
@@ -4143,9 +4143,9 @@ export function VisaCountryResultPortal({
                       }`}>
                         {readinessMetrics.score >= 85
                           ? 'EXCEPTIONAL'
-                          : readinessMetrics.score >= 65
+                          : readinessMetrics.score >= 70
                           ? 'EXCELLENT'
-                          : readinessMetrics.score >= 40
+                          : readinessMetrics.score >= 50
                           ? 'GOOD'
                           : readinessMetrics.score > 0
                           ? 'FAIR'
@@ -4187,20 +4187,23 @@ export function VisaCountryResultPortal({
                         />
                       </svg>
 
-                      {/* Center Number & Points */}
+                      {/* Center Number & Points (Clean Out of 10 Scale) */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
-                        <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
-                          {readinessMetrics.score > 0
-                            ? Math.round(300 + (readinessMetrics.score / 100) * 550)
-                            : 0}
-                        </span>
+                        <div className="flex items-baseline justify-center gap-1">
+                          <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
+                            {readinessMetrics.score > 0
+                              ? (readinessMetrics.score / 10).toFixed(1)
+                              : '0.0'}
+                          </span>
+                          <span className="text-sm sm:text-xl font-bold text-slate-400">/ 10</span>
+                        </div>
                         <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
                           {passportFile ? (
-                            <span className="text-emerald-600 font-black">+20 Points</span>
+                            <span className="text-emerald-600 font-black">+2.0 pts (Passport)</span>
                           ) : readinessMetrics.filledCount > 0 ? (
-                            <span className="text-slate-700">+{readinessMetrics.filledCount * 10} Points</span>
+                            <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
                           ) : (
-                            <span className="text-slate-400">0 Points</span>
+                            <span className="text-slate-400">0.0 pts</span>
                           )}
                         </span>
                       </div>

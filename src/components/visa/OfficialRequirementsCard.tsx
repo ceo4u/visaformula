@@ -724,8 +724,8 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </span>
                       </div>
 
-                      {/* High-Contrast Modern Assistance Box */}
-                      <div className="bg-gradient-to-br from-slate-50 via-sky-50/30 to-slate-50 border border-sky-200/90 rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs">
+                      {/* High-Contrast Modern Assistance Box (Pure White Background) */}
+                      <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs">
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] font-black uppercase tracking-wider text-sky-900 bg-sky-100/90 px-2.5 py-0.5 rounded-full border border-sky-200">
                             Consular Assistance
@@ -783,14 +783,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </span>
                       </div>
 
-                      {/* Crystal Clear Sub-Checklist Cards */}
+                      {/* Crystal Clear Sub-Checklist Cards (Pure White Background) */}
                       <div className="space-y-3 pt-1">
                         {selectedPurpose === 'student' || cleanPurposeLabel.toLowerCase().includes('stud') ? (
                           <>
                             {/* Sub-item 1 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_i20')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_i20']?.ready
@@ -812,7 +812,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {/* Sub-item 2 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_fin')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_fin']?.ready
@@ -834,7 +834,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {/* Sub-item 3 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_academic')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_academic']?.ready
@@ -857,7 +857,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                           <>
                             <div 
                               onClick={() => toggleDocReady('sub_work_contract')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_work_contract']?.ready
@@ -878,7 +878,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                             <div 
                               onClick={() => toggleDocReady('sub_work_permit')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_work_permit']?.ready
@@ -901,7 +901,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                           <>
                             <div 
                               onClick={() => toggleDocReady('sub_tour_flight')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_flight']?.ready
@@ -922,7 +922,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_hotel')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_hotel']?.ready
@@ -943,7 +943,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_funds')}
-                              className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs hover:shadow-xs group"
+                              className="bg-white hover:bg-slate-50/50 border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_funds']?.ready

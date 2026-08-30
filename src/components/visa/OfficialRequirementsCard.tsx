@@ -516,7 +516,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </div>
                 <div>
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Documents Required Checklist</h3>
-                  <span className="text-xs text-slate-400 font-semibold block">Official Embassy Verification &amp; Compliance Specifications</span>
+                  <span className="text-xs text-slate-400 font-semibold block">Official Embassy Verification &amp; Compliance Details</span>
                 </div>
               </div>
 
@@ -537,7 +537,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] sm:text-xs font-black text-slate-700 uppercase tracking-wider">
                       <th className="py-3.5 px-4 w-24 text-center border-r border-slate-200">READY</th>
                       <th className="py-3.5 px-5 w-64 border-r border-slate-200">DOCUMENT</th>
-                      <th className="py-3.5 px-6">SPECIFICATION &amp; REQUIREMENTS</th>
+                      <th className="py-3.5 px-6">REQUIREMENTS</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 text-xs sm:text-[13px]">
@@ -594,7 +594,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                       </td>
                       <td className="py-4 px-5 border-r border-slate-200 align-top">
                         <strong className="font-extrabold text-slate-900 block leading-snug">Two Recent Passport-Sized Pictures</strong>
-                        <span className="text-[11px] text-slate-500 font-medium block mt-0.5">Biometric Photo Specifications</span>
+                        <span className="text-[11px] text-slate-500 font-medium block mt-0.5">Biometric Photo Format</span>
                       </td>
                       <td className="py-4 px-6 align-top space-y-1 text-slate-700 leading-relaxed font-medium">
                         <p className="flex items-start gap-2">

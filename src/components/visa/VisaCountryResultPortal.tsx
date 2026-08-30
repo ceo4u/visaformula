@@ -2394,7 +2394,7 @@ export function VisaCountryResultPortal({
   // ── ATLYS VISA RESULT PORTAL STATES ──
   const [selectedVariantId, setSelectedVariantId] = useState<string>(variants[0].id);
   const [travellerCount, setTravellerCount] = useState<number>(1);
-  const [pincode, setPincode] = useState<string>('400001');
+  const [pincode, setPincode] = useState<string>('');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [activeTimelineTab, setActiveTimelineTab] = useState<'travltik' | 'diy'>('travltik');
   const [checkedDocs, setCheckedDocs] = useState<Record<string, boolean>>({});

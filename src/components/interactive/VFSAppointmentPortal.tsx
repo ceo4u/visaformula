@@ -65,36 +65,36 @@ export function VFSAppointmentPortal() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-1.5 text-xs font-bold text-red-600 mb-6">
-              🗓️ VFS Appointment Booking
+              🗓️ Consular &amp; VFS Appointment Support
             </div>
             <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
-              Book Your VFS<br />
+              Schedule Your VFS<br />
               <span className="bg-gradient-to-r from-red-500 to-[#b91c1c] bg-clip-text text-transparent">
                 Biometric Appointment.
               </span>
             </h1>
             <p className="text-gray-500 text-base md:text-lg max-w-lg leading-relaxed mb-8 font-medium">
-              We monitor VFS Global slot availability and book your appointment the moment a slot opens.
+              Get dedicated concierge assistance to organize your submission files and schedule official biometric slots at authorized visa application centres.
             </p>
             <button
               onClick={scrollToBooking}
               className="bg-black hover:bg-slate-900 text-white font-bold px-7 py-4 rounded-2xl text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2"
             >
-              Book Appointment →
+              Request Booking Support →
             </button>
           </div>
           <div className="lg:col-span-5 hidden lg:block">
-            <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
+            <div className="bg-white rounded-3xl border border-slate-200 p-7 shadow-xl">
               <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
-                <span>⚡</span> Instant Slot Monitoring
+                <span>🛡️</span> Verified Concierge Booking Assistance
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                Visa appointment slots release randomly. Our automated tracking monitors VFS 24/7 and books your biometric slot instantly.
+                TravlTik coordinates with verified mobility agents to review your documents and ensure your biometric slot is booked accurately in compliance with official consular guidelines.
               </p>
               <div className="h-px bg-slate-100 my-4" />
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">✓</div>
-                <div className="text-xs text-gray-500">Fast tracking & booking system</div>
+                <div className="text-xs text-gray-500">100% compliant document review &amp; scheduling</div>
               </div>
             </div>
           </div>
@@ -329,9 +329,9 @@ export function VFSAppointmentPortal() {
               <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex gap-3 items-start">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Guaranteed Slot Matching</h4>
+                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Dedicated Concierge Assistance</h4>
                   <p className="text-[11px] text-emerald-700 leading-relaxed">
-                    We track appointments 24/7. If no slot matches your selected window, we book the closest alternative or issue a full refund.
+                    Our team guides you through the official appointment booking portal step-by-step and helps you prepare your audit-ready document submission packet.
                   </p>
                 </div>
               </div>

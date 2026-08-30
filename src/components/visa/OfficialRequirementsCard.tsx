@@ -261,36 +261,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   const currentOption = PURPOSE_OPTIONS.find(opt => opt.id === selectedPurpose) || PURPOSE_OPTIONS[0];
 
   return (
-    <div className="w-full bg-[#f8fafc] rounded-[24px] sm:rounded-[32px] p-4 sm:p-7 md:p-9 border border-slate-200/90 shadow-sm space-y-6 text-slate-800 font-sans relative">
+    <div className="w-full bg-[#f8fafc] rounded-[20px] sm:rounded-[32px] p-3.5 sm:p-7 md:p-9 border border-slate-200/90 shadow-sm space-y-4 sm:space-y-6 text-slate-800 font-sans relative overflow-hidden">
       
       {toastMessage && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3.5 rounded-full text-xs font-bold z-50 shadow-2xl flex items-center gap-2 border border-white/20 animate-fade-in">
+        <div className="fixed bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-full text-xs font-bold z-50 shadow-2xl flex items-center gap-2 border border-white/20 animate-fade-in whitespace-nowrap max-w-[90vw] truncate">
           <span>{toastMessage}</span>
         </div>
       )}
 
       {showAuthPrompt && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-5 text-center">
-            <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto text-2xl text-indigo-600">
-              <Lock className="w-7 h-7" />
+          <div className="bg-white rounded-3xl p-5 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 sm:space-y-5 text-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto text-xl sm:text-2xl text-indigo-600">
+              <Lock className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-slate-900">Sign in to Save Checklist</h3>
+              <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">Sign in to Save Checklist</h3>
               <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
                 Save your verified document checklist to your traveler profile so you can log progress, record timestamps, and access your status from any device.
               </p>
             </div>
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-2.5 pt-2">
               <button 
                 onClick={() => setShowAuthPrompt(false)}
-                className="flex-1 py-3 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50"
+                className="flex-1 py-2.5 sm:py-3 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50"
               >
                 Cancel
               </button>
               <a 
                 href="/login?redirect=back"
-                className="flex-1 py-3 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md"
+                className="flex-1 py-2.5 sm:py-3 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md"
               >
                 Sign In / Join →
               </a>
@@ -299,77 +299,77 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         </div>
       )}
 
-      <div className="bg-white rounded-2xl sm:rounded-3xl px-5 sm:px-7 py-4 sm:py-5 border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-5 relative z-30">
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="space-y-1 text-left">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">FROM</span>
-            <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold text-slate-900">
+      <div className="bg-white rounded-2xl sm:rounded-3xl px-4 sm:px-7 py-3.5 sm:py-5 border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-5 relative z-30">
+        <div className="flex items-center justify-between w-full md:w-auto gap-3">
+          <div className="space-y-0.5 text-left min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block">FROM</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-base font-extrabold text-slate-900 truncate">
               <img 
                 src={`https://flagcdn.com/w80/${fromCode}.png`}
                 alt={cleanFrom}
-                className="w-5 h-3.5 sm:w-6 sm:h-4 object-cover rounded-xs shadow-2xs border border-slate-200/60 shrink-0"
+                className="w-4 h-3 sm:w-6 sm:h-4 object-cover rounded-xs shadow-2xs border border-slate-200/60 shrink-0"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w80/un.png'; }}
               />
-              <span>{cleanFrom}</span>
+              <span className="truncate">{cleanFrom}</span>
             </div>
           </div>
-          <div className="flex items-center text-slate-300 px-1 pt-3 sm:pt-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-300 mx-1.5" />
-            <ArrowRight className="w-4 h-4 text-slate-400 stroke-[2.5]" />
+          <div className="flex items-center text-slate-300 px-1 shrink-0">
+            <span className="w-1 h-1 rounded-full bg-slate-300 mx-1 hidden sm:inline-block" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 stroke-[2.5]" />
           </div>
-          <div className="space-y-1 text-left">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">TO</span>
-            <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold text-slate-900">
+          <div className="space-y-0.5 text-left min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block">TO</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-base font-extrabold text-slate-900 truncate">
               <img 
                 src={`https://flagcdn.com/w80/${toCode}.png`}
                 alt={cleanTo}
-                className="w-5 h-3.5 sm:w-6 sm:h-4 object-cover rounded-xs shadow-2xs border border-slate-200/60 shrink-0"
+                className="w-4 h-3 sm:w-6 sm:h-4 object-cover rounded-xs shadow-2xs border border-slate-200/60 shrink-0"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w80/un.png'; }}
               />
-              <span>{cleanTo}</span>
+              <span className="truncate">{cleanTo}</span>
             </div>
           </div>
         </div>
-        <div className="w-full md:w-auto space-y-1 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-3 md:pt-0">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">PURPOSE OF TRAVEL</span>
-          <div className="text-sm sm:text-base font-extrabold text-slate-900 py-0.5">
+        <div className="w-full md:w-auto space-y-0.5 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-2.5 md:pt-0">
+          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block">PURPOSE OF TRAVEL</span>
+          <div className="text-xs sm:text-base font-extrabold text-slate-900 py-0.5">
             <span>{currentOption.label}</span>
           </div>
         </div>
       </div>
 
       {data && (
-        <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
           <div className="space-y-1 w-full md:w-auto text-left">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-bold text-slate-900">Your Document Readiness Tracker:</span>
-              <span className="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] sm:text-xs font-bold text-slate-900">Readiness Tracker:</span>
+              <span className="text-[10px] sm:text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
                 {readyItemsCount} of {totalItemsCount} Verified ({readinessPercentage}%)
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium">
-              Click any checklist item below to register completion date and log audit timestamps.
+            <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
+              Tap any item to register completion date and log audit timestamps.
             </p>
           </div>
           <div className="flex items-center gap-3 w-full md:w-auto">
             <button
               onClick={handleSaveChecklistToProfile}
-              className={`w-full md:w-auto px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm ${
+              className={`w-full md:w-auto px-4 sm:px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-sm ${
                 isSavedToProfile
                   ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
                   : 'bg-slate-900 hover:bg-black text-white'
               }`}
             >
               <Bookmark className="w-3.5 h-3.5" />
-              <span>{isSavedToProfile ? '✓ Checklist Synced to Profile' : 'Save Checklist to Profile'}</span>
+              <span>{isSavedToProfile ? '✓ Synced to Profile' : 'Save to Profile'}</span>
             </button>
           </div>
         </div>
       )}
 
-      <div className="space-y-2 text-left pt-1">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-tight">
+      <div className="space-y-1.5 text-left pt-1">
+        <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-snug break-words">
           Travel Requirements: {cleanFrom} <span className="text-slate-400 font-normal">→</span> {cleanTo}
         </h2>
         <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-4xl">
@@ -377,7 +377,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           {' '}•{' '}
           <span className="font-semibold text-slate-600">{data?.visa_type || 'Official Entry Visa'}</span>
           {' '}•{' '}
-          <span>Information checked against {data?.official_source_name || `${cleanTo} official consular sources`}</span>
+          <span>Checked against {data?.official_source_name || `${cleanTo} official consular sources`}</span>
         </p>
       </div>
 

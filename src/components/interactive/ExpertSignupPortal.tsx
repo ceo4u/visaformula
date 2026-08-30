@@ -415,7 +415,7 @@ function ExpertSignupPortalContent() {
           role: businessType || "Visa Consultant",
           rating: 5.0,
           reviews: 1,
-          price: 1500,
+          price: 299,
           city: city || "Remote",
           countries: selectedCountries.length > 0 ? selectedCountries : ["India"],
           experience: yearsInBusiness === "Less than 1 year" ? 1

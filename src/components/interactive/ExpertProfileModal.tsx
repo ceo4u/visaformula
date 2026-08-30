@@ -268,7 +268,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
               </div>
               <div className="text-right shrink-0">
                 <span className="text-[10px] uppercase font-medium text-teal-800 tracking-wider block">Starting from</span>
-                <span className="text-base font-bold text-slate-950 font-sans">{expert.price ? `$${expert.price}` : '$49'}</span>
+                <span className="text-base font-bold text-slate-950 font-sans">{expert.price ? `₹${expert.price}` : '₹299'}</span>
                 <span className="text-[10px] text-slate-500 font-normal"> / session</span>
               </div>
             </div>
@@ -348,7 +348,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-sans">Consultation Fee</span>
             <div className="flex items-baseline gap-1 font-sans">
-              <span className="text-lg font-black text-slate-900 font-sans">₹{expert.price || 1500}</span>
+              <span className="text-lg font-black text-slate-900 font-sans">₹{expert.price || 299}</span>
               <span className="text-[11px] text-slate-400 font-semibold font-sans">/ session</span>
             </div>
           </div>

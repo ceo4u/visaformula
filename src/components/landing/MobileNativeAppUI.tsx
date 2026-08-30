@@ -29,8 +29,8 @@ export function MobileNativeAppUI() {
     { id: 'visit', label: 'Visit + Holiday', sub: 'Travel the world with ease', icon: '✈️', iconBg: 'bg-purple-500', href: '/visa-guide?type=visit' },
     { id: 'pr', label: 'PR / Residency', sub: 'Settle abroad permanently', icon: '🏠', iconBg: 'bg-orange-500', href: '/visa-guide?type=pr' },
     { id: 'ielts', label: 'IELTS Training', sub: 'Prepare with top trainers', icon: '📚', iconBg: 'bg-pink-500', href: '/ielts' },
-    { id: 'language', label: 'Language', sub: 'Learn new languages', icon: '💬', iconBg: 'bg-teal-500', href: '/services' },
-    { id: 'finance', label: 'Finance & Loans', sub: 'Secure funding for your dreams', icon: '🏛️', iconBg: 'bg-yellow-500', href: '/services' },
+    { id: 'language', label: 'Language', sub: 'Learn new languages', icon: '💬', iconBg: 'bg-teal-500', href: '/find-experts' },
+    { id: 'finance', label: 'Finance & Loans', sub: 'Secure funding for your dreams', icon: '🏛️', iconBg: 'bg-yellow-500', href: '/find-experts' },
     { id: 'expert', label: 'Local Expert', sub: 'Connect with verified experts', icon: '👤', iconBg: 'bg-blue-400', href: '/find-experts' },
   ];
 

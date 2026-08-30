@@ -803,7 +803,7 @@ export function DesktopHomeSection() {
 
                   {/* Relocation Item 4: Airport Pickup & Arrival */}
                   <a
-                    href="/services"
+                    href="/find-experts"
                     className="p-4 rounded-2xl border border-slate-200 hover:border-[#00a896] bg-slate-50 hover:bg-white transition-all group shadow-xs"
                   >
                     <div className="w-9 h-9 rounded-xl bg-purple-100/70 text-purple-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">

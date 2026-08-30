@@ -1320,7 +1320,7 @@ export default function ChannelPartnerDashboard() {
                     <h3 className="text-xs sm:text-[13px] font-bold text-slate-900">Visa Consultation Brochure</h3>
                     <p className="text-[11px] text-slate-500 mt-1">Customizable 8-page PDF guide for prospective student and migration clients.</p>
                   </div>
-                  <button onClick={() => window.open('/services', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
+                  <button onClick={() => window.open('/find-experts', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
                     Preview Brochure
                   </button>
                 </div>

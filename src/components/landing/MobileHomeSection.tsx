@@ -23,7 +23,7 @@ const tools = [
   { icon: <ShieldCheck className="w-5 h-5 text-[#00a896]" />, name: 'Travel Readiness\nCheck', href: '/readiness', bg: 'bg-teal-50' },
   { icon: <FileText className="w-5 h-5 text-[#2563eb]" />, name: 'Visa Document\nChecklist', href: '/services/visa-documentation', bg: 'bg-blue-50' },
   { icon: <DollarSign className="w-5 h-5 text-[#7c3aed]" />, name: 'Visa Cost\nCalculator', href: '/migration-tools', bg: 'bg-purple-50' },
-  { icon: <Activity className="w-5 h-5 text-[#ea580c]" />, name: 'Track Visa\nProcess', href: '/services', bg: 'bg-orange-50' },
+  { icon: <Activity className="w-5 h-5 text-[#ea580c]" />, name: 'Track Visa\nProcess', href: '/find-experts', bg: 'bg-orange-50' },
 ];
 
 const classifieds = [
@@ -462,7 +462,7 @@ export function MobileHomeSection() {
                 </a>
 
                 <a
-                  href="/services"
+                  href="/find-experts"
                   className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between hover:border-purple-600 transition-all"
                 >
                   <Compass className="w-4 h-4 text-purple-600 mb-1.5" />

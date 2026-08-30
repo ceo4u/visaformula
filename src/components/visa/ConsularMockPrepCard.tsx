@@ -118,7 +118,7 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
           </div>
 
           <a 
-            href={`/services?prep=ai-mock&country=${cleanTo}`}
+            href={`/find-experts?category=work&mock=ai&country=${cleanTo}`}
             className="w-full py-3 bg-slate-900 hover:bg-black text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
           >
             <span>Start AI Mock Prep (₹499)</span>

@@ -95,27 +95,28 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
   };
 
   return (
-    <div id="section-mock-prep" className="bg-white text-slate-900 rounded-[20px] sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-sm border border-slate-200/90 space-y-6 text-left relative my-6 sm:my-8 font-sans">
+    <div id="section-mock-prep" className="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xs border border-slate-200/90 space-y-6 text-left relative my-6 sm:my-8 font-sans scroll-mt-24">
       
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-700 text-xs font-extrabold">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-            <span>AI Consular Mock Interview Prep Kit</span>
+        <div className="flex items-start gap-3.5">
+          <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
+            <Mic className="w-5 h-5 text-indigo-400" />
           </div>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-            Ace Your {cleanTo} Consular Interview
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-2xl leading-relaxed">
-            Over 82% of visa refusals occur due to unprepared interview answers and Section 214(b) immigrant intent doubts. Practice real visa officer questions before stepping into the embassy.
-          </p>
+          <div className="space-y-1">
+            <h3 className="text-lg sm:text-2xl font-black text-slate-950 tracking-tight">
+              Ace Your {cleanTo} Consular Interview
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-2xl leading-relaxed">
+              Over 82% of visa refusals occur due to unprepared interview answers and Section 214(b) immigrant intent doubts. Practice real visa officer questions before stepping into the embassy.
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2.5 bg-emerald-50 border border-emerald-200 px-4 py-2.5 rounded-2xl shrink-0">
-          <span className="text-xl">🏆</span>
+        <div className="flex items-center gap-2.5 bg-slate-50 border border-slate-200 px-4 py-2 rounded-2xl shrink-0">
+          <span className="text-lg">🎯</span>
           <div>
-            <div className="text-xs font-extrabold text-emerald-800">98.4% Approval Rate</div>
-            <div className="text-[10px] text-emerald-600 font-bold">After AI Mock Practice</div>
+            <div className="text-xs font-black text-slate-900">98.4% Approval Rate</div>
+            <div className="text-[10px] text-slate-500 font-bold">After Mock Practice</div>
           </div>
         </div>
       </div>
@@ -123,12 +124,12 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
       {/* Sample Visa Officer Questions Accordion */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <span className="text-xs font-black uppercase tracking-wider text-slate-500">
             Top Consular Questions Asked for {cleanTo} ({purpose}):
           </span>
           <button 
             onClick={() => setShowMockQuestions(prev => !prev)}
-            className="text-xs font-extrabold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer transition-colors"
+            className="text-xs font-black text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer transition-colors"
           >
             <span>{showMockQuestions ? 'Hide Questions' : 'View Sample Questions (4)'}</span>
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showMockQuestions ? 'rotate-180' : ''}`} />
@@ -143,12 +144,12 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
               { q: "What strong ties guarantee that you will return to your home country upon visa expiry?", tip: "Mention your active employment contract, family roots, and property/career commitments in home country." },
               { q: `Why did you choose ${cleanTo} over other alternative global destinations?`, tip: "Give concrete reasons aligned with your itinerary, university curriculum, or business meeting agenda." }
             ].map((item, i) => (
-              <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5 text-left">
-                <span className="text-xs font-extrabold text-slate-900 block">
+              <div key={i} className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-1.5 text-left">
+                <span className="text-xs font-black text-slate-950 block">
                   Q{i + 1}: {item.q}
                 </span>
-                <p className="text-[11px] text-slate-600 leading-relaxed">
-                  <strong className="text-indigo-700 font-bold">Officer Insight: </strong>{item.tip}
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  <strong className="text-indigo-600 font-bold">Officer Insight: </strong>{item.tip}
                 </p>
               </div>
             ))}
@@ -156,31 +157,34 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
         )}
       </div>
 
-      {/* AI Mock Packages & Pricing Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+      {/* AI Mock Packages & Pricing Grid (Clean, High-Contrast) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
         
         {/* Package 1: Instant AI Speech & Voice Simulator */}
-        <div className="bg-slate-50/70 border border-indigo-200 rounded-3xl p-5 sm:p-6 space-y-4 hover:border-indigo-400/80 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs">
-          <div className="space-y-3">
+        <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 sm:p-7 space-y-5 transition-all flex flex-col justify-between shadow-2xs hover:shadow-xs">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-[11px] font-extrabold text-indigo-900">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-[10px] font-black uppercase tracking-wider text-indigo-900">
                 <Mic className="w-3.5 h-3.5 text-indigo-700" />
                 <span>Instant AI Voice Practice</span>
-              </div>
-              <span className="text-xl sm:text-2xl font-black text-slate-900">₹499</span>
+              </span>
+              <span className="text-2xl font-black text-slate-950">₹499</span>
             </div>
-            <h4 className="text-base font-extrabold text-slate-900">AI Voice &amp; Speech Mock Simulator</h4>
-            <ul className="text-xs text-slate-600 space-y-2 font-medium">
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> 50+ Real embassy visa officer question scenarios</li>
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> Live AI speech analysis &amp; immigrant intent grading</li>
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> Instant Section 214(b) rejection risk scoring</li>
+            <div>
+              <h4 className="text-base sm:text-lg font-black text-slate-950">AI Voice &amp; Speech Mock Simulator</h4>
+              <span className="text-xs text-slate-500 font-medium block mt-0.5">Interactive speech practice on mobile &amp; laptop</span>
+            </div>
+            <ul className="text-xs sm:text-[13px] text-slate-700 space-y-2.5 font-medium">
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> 50+ Real embassy visa officer question scenarios</li>
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> Live AI speech analysis &amp; immigrant intent grading</li>
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> Instant Section 214(b) rejection risk scoring</li>
             </ul>
           </div>
 
           <button 
             type="button"
             onClick={() => handleOpenCheckout(499, 'AI Voice & Speech Mock Simulator')}
-            className="w-full py-3.5 bg-slate-900 hover:bg-black text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+            className="w-full py-3.5 bg-slate-950 hover:bg-black text-white font-black text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
           >
             <span>Start AI Mock Prep (₹499)</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -188,27 +192,30 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
         </div>
 
         {/* Package 2: 1-on-1 Live Mock with Ex-Visa Officer / Attorney */}
-        <div className="bg-slate-50/70 border border-emerald-200 rounded-3xl p-5 sm:p-6 space-y-4 hover:border-emerald-400/80 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs">
-          <div className="space-y-3">
+        <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 sm:p-7 space-y-5 transition-all flex flex-col justify-between shadow-2xs hover:shadow-xs">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-[11px] font-extrabold text-emerald-900">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-100 text-[10px] font-black uppercase tracking-wider text-emerald-900">
                 <Video className="w-3.5 h-3.5 text-emerald-700" />
                 <span>Live 1-on-1 Consultation</span>
-              </div>
-              <span className="text-xl sm:text-2xl font-black text-slate-900">₹1,999</span>
+              </span>
+              <span className="text-2xl font-black text-slate-950">₹1,999</span>
             </div>
-            <h4 className="text-base font-extrabold text-slate-900">1-on-1 Live Expert Mock Session</h4>
-            <ul className="text-xs text-slate-600 space-y-2 font-medium">
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> 45-Min Live Zoom Mock with licensed immigration counsel</li>
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> Line-by-line DS-160 / application audit</li>
-              <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" /> Custom answer structuring &amp; body language coaching</li>
+            <div>
+              <h4 className="text-base sm:text-lg font-black text-slate-950">1-on-1 Live Expert Mock Session</h4>
+              <span className="text-xs text-slate-500 font-medium block mt-0.5">Direct 1-on-1 coaching with licensed immigration expert</span>
+            </div>
+            <ul className="text-xs sm:text-[13px] text-slate-700 space-y-2.5 font-medium">
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> 45-Min Live Zoom Mock with licensed immigration counsel</li>
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> Line-by-line DS-160 / application audit</li>
+              <li className="flex items-center gap-2.5"><Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" /> Custom answer structuring &amp; body language coaching</li>
             </ul>
           </div>
 
           <button 
             type="button"
             onClick={() => handleOpenCheckout(1999, '1-on-1 Live Expert Mock Session')}
-            className="w-full py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+            className="w-full py-3.5 bg-[#004e8c] hover:bg-[#003866] text-white font-black text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
           >
             <span>Book 1-on-1 Mock Session (₹1,999)</span>
             <ArrowRight className="w-3.5 h-3.5" />

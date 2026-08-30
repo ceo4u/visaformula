@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
+import { ConsularMockPrepCard } from './ConsularMockPrepCard';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -6027,6 +6028,13 @@ export function VisaCountryResultPortal({
               </div>
 
             </div>
+
+            {/* AI CONSULAR MOCK INTERVIEW PREP KIT (ABOVE FAQ) */}
+            <ConsularMockPrepCard 
+              countryName={countryData.country}
+              passportCountry={passportCountry}
+              purpose={activePurpose}
+            />
 
             {/* 5. EXPANDABLE FAQ ACCORDION */}
             <div className="space-y-4 text-left">

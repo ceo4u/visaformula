@@ -3715,755 +3715,457 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* STUDY QUESTIONNAIRE */}
+              {/* STUDY QUESTIONNAIRE (4 PRIMARY FIELDS) */}
               {activePurposeTab === 'study' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Q1: Qualification */}
-                    <PortalCustomSelect
-                      label="1. Highest Qualification"
-                      value={studyQual}
-                      onChange={setStudyQual}
-                      placeholder="Select qualification"
-                      options={[
-                        "12th Grade / High School",
-                        "Bachelor's Degree",
-                        "Master's Degree",
-                        "Diploma / Polytechnic"
-                      ]}
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fadeIn">
+                  {/* Q1: Qualification */}
+                  <PortalCustomSelect
+                    label="1. Highest Qualification"
+                    value={studyQual}
+                    onChange={setStudyQual}
+                    placeholder="Select qualification"
+                    options={[
+                      "12th Grade / High School",
+                      "Bachelor's Degree",
+                      "Master's Degree",
+                      "Diploma / Polytechnic"
+                    ]}
+                  />
 
-                    {/* Q2: Target Degree */}
-                    <PortalCustomSelect
-                      label={`2. Target Degree in ${countryName}`}
-                      value={studyTarget}
-                      onChange={setStudyTarget}
-                      placeholder="Select target degree"
-                      options={[
-                        "Bachelor's (UG Degree)",
-                        "Master's (PG / MS)",
-                        "Post-Graduate Diploma",
-                        "PhD / Doctorate"
-                      ]}
-                    />
+                  {/* Q2: Target Degree */}
+                  <PortalCustomSelect
+                    label={`2. Target Degree in ${countryName}`}
+                    value={studyTarget}
+                    onChange={setStudyTarget}
+                    placeholder="Select target degree"
+                    options={[
+                      "Bachelor's (UG Degree)",
+                      "Master's (PG / MS)",
+                      "Post-Graduate Diploma",
+                      "PhD / Doctorate"
+                    ]}
+                  />
 
-                    {/* Q3: Target Intake */}
-                    <PortalCustomSelect
-                      label="3. Target Intake"
-                      value={studyIntake}
-                      onChange={setStudyIntake}
-                      placeholder="Select intake session"
-                      options={[
-                        "Fall 2026 (Aug - Sep)",
-                        "Spring 2027 (Jan - Feb)",
-                        "Summer 2027 (May - Jun)"
-                      ]}
-                    />
+                  {/* Q3: Target Intake */}
+                  <PortalCustomSelect
+                    label="3. Target Intake"
+                    value={studyIntake}
+                    onChange={setStudyIntake}
+                    placeholder="Select intake session"
+                    options={[
+                      "Fall 2026 (Aug - Sep)",
+                      "Spring 2027 (Jan - Feb)",
+                      "Summer 2027 (May - Jun)"
+                    ]}
+                  />
 
-                    {/* Q4: Budget & Funding */}
-                    <PortalCustomSelect
-                      label="4. Financial Proof / Funds"
-                      value={studyBudget}
-                      onChange={setStudyBudget}
-                      placeholder="Select funding source"
-                      options={[
-                        "Self-Funded Liquid Funds (₹25L+)",
-                        "Education Loan Required",
-                        "Full Scholarship / Sponsorship"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Consular Risk & Compliance Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-                    <PortalCustomSelect
-                      label="5. Institutional Admission Status"
-                      value={studentAdmissionStatus}
-                      onChange={setStudentAdmissionStatus}
-                      placeholder="Select admission status"
-                      options={[
-                        "Have Confirmed Form I-20 / CAS",
-                        "Conditional Offer Letter",
-                        "Awaiting Admission Offer"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. Language Score (IELTS / PTE / TOEFL)"
-                      value={studentLanguageScore}
-                      onChange={setStudentLanguageScore}
-                      placeholder="Select language test"
-                      options={[
-                        "IELTS 6.5+ / PTE 65+",
-                        "IELTS 6.0 / PTE 58",
-                        "Pending / Not Taken Yet"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="7. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="8. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
-                      ]}
-                    />
-                  </div>
+                  {/* Q4: Budget & Funding */}
+                  <PortalCustomSelect
+                    label="4. Financial Proof / Funds"
+                    value={studyBudget}
+                    onChange={setStudyBudget}
+                    placeholder="Select funding source"
+                    options={[
+                      "Self-Funded Liquid Funds (₹25L+)",
+                      "Education Loan Required",
+                      "Full Scholarship / Sponsorship"
+                    ]}
+                  />
                 </div>
               )}
 
-              {/* VISIT / TOURISM QUESTIONNAIRE */}
+              {/* VISIT / TOURISM QUESTIONNAIRE (4 PRIMARY FIELDS) */}
               {activePurposeTab === 'tourism' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Q1: Trip Status */}
-                    <PortalCustomSelect
-                      label="1. Trip Planning Status"
-                      value={visitPlanStatus}
-                      onChange={setVisitPlanStatus}
-                      placeholder="Select trip status"
-                      options={[
-                        "Need Curated Tour Packages",
-                        "I have my Itinerary & Hotel",
-                        "Visiting Family / Relatives"
-                      ]}
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fadeIn">
+                  {/* Q1: Trip Status */}
+                  <PortalCustomSelect
+                    label="1. Trip Planning Status"
+                    value={visitPlanStatus}
+                    onChange={setVisitPlanStatus}
+                    placeholder="Select trip status"
+                    options={[
+                      "Need Curated Tour Packages",
+                      "I have my Itinerary & Hotel",
+                      "Visiting Family / Relatives"
+                    ]}
+                  />
 
-                    {/* Q2: Travel Timing */}
-                    <PortalCustomSelect
-                      label="2. Tentative Departure Date"
-                      value={visitTiming}
-                      onChange={setVisitTiming}
-                      placeholder="Select travel window"
-                      options={[
-                        "Within 30 Days (Fast-Track)",
-                        "In 1 to 3 Months",
-                        "In 3 to 6 Months"
-                      ]}
-                    />
+                  {/* Q2: Travel Timing */}
+                  <PortalCustomSelect
+                    label="2. Tentative Departure Date"
+                    value={visitTiming}
+                    onChange={setVisitTiming}
+                    placeholder="Select travel window"
+                    options={[
+                      "Within 30 Days (Fast-Track)",
+                      "In 1 to 3 Months",
+                      "In 3 to 6 Months"
+                    ]}
+                  />
 
-                    {/* Q3: Tentative Return Date */}
-                    <PortalCustomSelect
-                      label="3. Tentative Return Date"
-                      value={visitReturnDate}
-                      onChange={setVisitReturnDate}
-                      placeholder="Select return window"
-                      options={[
-                        "Within 1 to 2 Weeks",
-                        "In 1 Month",
-                        "In 2 to 3 Months",
-                        "Flexible / Extended Stay"
-                      ]}
-                    />
+                  {/* Q3: Tentative Return Date */}
+                  <PortalCustomSelect
+                    label="3. Tentative Return Date"
+                    value={visitReturnDate}
+                    onChange={setVisitReturnDate}
+                    placeholder="Select return window"
+                    options={[
+                      "Within 1 to 2 Weeks",
+                      "In 1 Month",
+                      "In 2 to 3 Months",
+                      "Flexible / Extended Stay"
+                    ]}
+                  />
 
-                    {/* Q4: Stay Preference */}
-                    <PortalCustomSelect
-                      label="4. Accommodation Preference"
-                      value={visitStay}
-                      onChange={setVisitStay}
-                      placeholder="Select accommodation"
-                      options={[
-                        "4-5 Star Luxury Resorts",
-                        "Boutique City Hotels",
-                        "Serviced Apartments / Airbnb"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Consular Risk & Compliance Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-                    <PortalCustomSelect
-                      label="5. 6-Month Stamped Bank Balance"
-                      value={touristBankStability}
-                      onChange={setTouristBankStability}
-                      placeholder="Select bank balance"
-                      options={[
-                        "6-Month Stamped (₹4L+ / $5k+)",
-                        "Balance ₹2L - ₹4L",
-                        "Under ₹2L / Recent Large Lump-Sum"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. Home Country Ties & Employment"
-                      value={touristHomeTies}
-                      onChange={setTouristHomeTies}
-                      placeholder="Select employment / ties"
-                      options={[
-                        "Salaried with Employer NOC & ITR",
-                        "Business Owner / Property Owner",
-                        "Freelance / Self-employed"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="7. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="8. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
-                      ]}
-                    />
-                  </div>
+                  {/* Q4: Stay Preference */}
+                  <PortalCustomSelect
+                    label="4. Accommodation Preference"
+                    value={visitStay}
+                    onChange={setVisitStay}
+                    placeholder="Select accommodation"
+                    options={[
+                      "4-5 Star Luxury Resorts",
+                      "Boutique City Hotels",
+                      "Serviced Apartments / Airbnb"
+                    ]}
+                  />
                 </div>
               )}
 
-              {/* WORK QUESTIONNAIRE */}
+              {/* WORK QUESTIONNAIRE (4 PRIMARY FIELDS) */}
               {activePurposeTab === 'work' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Q1: Exp */}
-                    <PortalCustomSelect
-                      label="1. Total Experience"
-                      value={workExp}
-                      onChange={setWorkExp}
-                      placeholder="Select experience level"
-                      options={[
-                        "0 - 2 Years (Entry Level)",
-                        "3 - 5 Years (Mid-Senior)",
-                        "6+ Years (Senior / Lead)",
-                        "10+ Years (Executive)"
-                      ]}
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fadeIn">
+                  {/* Q1: Exp */}
+                  <PortalCustomSelect
+                    label="1. Total Experience"
+                    value={workExp}
+                    onChange={setWorkExp}
+                    placeholder="Select experience level"
+                    options={[
+                      "0 - 2 Years (Entry Level)",
+                      "3 - 5 Years (Mid-Senior)",
+                      "6+ Years (Senior / Lead)",
+                      "10+ Years (Executive)"
+                    ]}
+                  />
 
-                    {/* Q2: Job Offer */}
-                    <PortalCustomSelect
-                      label="2. Sponsoring Job Offer"
-                      value={workOffer}
-                      onChange={setWorkOffer}
-                      placeholder="Select job offer status"
-                      options={[
-                        "Actively Seeking Sponsoring Job",
-                        "Have Confirmed Sponsor Offer",
-                        "Internal Company Transfer (ICT)"
-                      ]}
-                    />
+                  {/* Q2: Job Offer */}
+                  <PortalCustomSelect
+                    label="2. Sponsoring Job Offer"
+                    value={workOffer}
+                    onChange={setWorkOffer}
+                    placeholder="Select job offer status"
+                    options={[
+                      "Actively Seeking Sponsoring Job",
+                      "Have Confirmed Sponsor Offer",
+                      "Internal Company Transfer (ICT)"
+                    ]}
+                  />
 
-                    {/* Q3: Domain */}
-                    <PortalCustomSelect
-                      label="3. Industry Domain"
-                      value={workDomain}
-                      onChange={setWorkDomain}
-                      placeholder="Select industry"
-                      options={[
-                        "Tech / IT / Software / AI",
-                        "Healthcare & Nursing",
-                        "Banking, Finance & Accounting",
-                        "Civil, Mechanical & Engineering"
-                      ]}
-                    />
+                  {/* Q3: Domain */}
+                  <PortalCustomSelect
+                    label="3. Industry Domain"
+                    value={workDomain}
+                    onChange={setWorkDomain}
+                    placeholder="Select industry"
+                    options={[
+                      "Tech / IT / Software / AI",
+                      "Healthcare & Nursing",
+                      "Banking, Finance & Accounting",
+                      "Civil, Mechanical & Engineering"
+                    ]}
+                  />
 
-                    {/* Q4: Credential Assessment */}
-                    <PortalCustomSelect
-                      label="4. Credential Assessment"
-                      value={workAssess}
-                      onChange={setWorkAssess}
-                      placeholder="Select assessment status"
-                      options={[
-                        "Need WES / ACS Credential Evaluation",
-                        "Already Assessed & Approved",
-                        "Exempt / Not Applicable"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Consular Risk & Compliance Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 max-w-2xl">
-                    <PortalCustomSelect
-                      label="5. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Valid)",
-                        "6 - 12 Months",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "No Previous Refusals",
-                        "Past Visa Refusal (1+ Times)"
-                      ]}
-                    />
-                  </div>
+                  {/* Q4: Credential Assessment */}
+                  <PortalCustomSelect
+                    label="4. Credential Assessment"
+                    value={workAssess}
+                    onChange={setWorkAssess}
+                    placeholder="Select assessment status"
+                    options={[
+                      "Need WES / ACS Credential Evaluation",
+                      "Already Assessed & Approved",
+                      "Exempt / Not Applicable"
+                    ]}
+                  />
                 </div>
               )}
 
-              {/* ── REAL-TIME VISA READINESS & APPROVAL SCORECARD (FOR ALL CATEGORIES) ── */}
-              <div className="mt-6 pt-6 border-t border-slate-200/90 bg-slate-50/80 rounded-2xl sm:rounded-3xl p-5 sm:p-7 space-y-6 text-left border border-slate-200">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                      <Zap className="w-5 h-5 text-amber-400 fill-amber-400" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-base sm:text-lg font-black text-slate-950">
-                          Visa Readiness &amp; Document Inspection Engine
-                        </h4>
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-900">
-                          AI AUDITED
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500 font-medium mt-0.5">
-                        Real-time consular compliance &amp; risk scoring for <strong className="text-slate-800">{countryName} {readinessMetrics.category}</strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 shrink-0">
-                    <div className={`px-3.5 py-1.5 rounded-xl border text-xs font-black uppercase tracking-wider flex items-center gap-2 ${docAuditTab === 'ai_inspection' && auditCompleted ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' : readinessMetrics.badgeColor}`}>
-                      <span className="text-sm">🎯</span>
-                      <span>
-                        {docAuditTab === 'ai_inspection' && auditCompleted
-                          ? `${docAuditResult.readiness_score}% High Readiness`
-                          : `${readinessMetrics.score}% ${readinessMetrics.statusText}`}
+              {/* ── PASSPORT UPLOAD & YES/NO VERIFICATION (DIRECTLY BELOW FIELDS) ── */}
+              <div className="pt-6 border-t border-slate-100 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  
+                  {/* LEFT COLUMN: PASSPORT DOCUMENT UPLOAD */}
+                  <div className="lg:col-span-5 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 text-left">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+                        📘 Passport Bio-Data
                       </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sub-Tabs: Instant Score vs AI Document Audit */}
-                <div className="flex items-center gap-2 border-b border-slate-200/90 pb-3">
-                  <button
-                    type="button"
-                    onClick={() => setDocAuditTab('quick_check')}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                      docAuditTab === 'quick_check'
-                        ? 'bg-slate-950 text-white shadow-xs'
-                        : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
-                  >
-                    <span>📊 Live Parameter Scorecard</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setDocAuditTab('ai_inspection')}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                      docAuditTab === 'ai_inspection'
-                        ? 'bg-slate-950 text-white shadow-xs'
-                        : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Upload Documents &amp; Run Live OCR</span>
-                  </button>
-                </div>
-
-                {/* TAB 1: INSTANT PROFILE SCORECARD */}
-                {docAuditTab === 'quick_check' && (
-                  <div className="space-y-6 animate-fadeIn">
-                    {/* Live Readiness Progress Bar */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs font-bold text-slate-600">
-                        <span>Approval Likelihood Factor</span>
-                        <span className="text-slate-900 font-black">{readinessMetrics.score} / 100</span>
-                      </div>
-                      <div className="w-full h-3 rounded-full bg-slate-200/80 overflow-hidden p-0.5">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-700 ease-out ${readinessMetrics.barColor}`} 
-                          style={{ width: `${readinessMetrics.score}%` }}
-                        />
-                      </div>
+                      {passportFile ? (
+                        <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                          ✓ ATTACHED
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-black uppercase text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                          UPLOAD REQUIRED
+                        </span>
+                      )}
                     </div>
 
-                    {/* 4 Pillars Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                      {readinessMetrics.pillars.map((pillar, pIdx) => (
-                        <div key={pIdx} className="bg-white border border-slate-200/90 rounded-2xl p-4 space-y-1.5 shadow-2xs">
-                          <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                            <span>{pillar.name}</span>
-                            <span className="text-slate-900 font-black">{pillar.score}/{pillar.max}</span>
-                          </div>
-                          <p className="text-xs sm:text-[13px] font-extrabold text-slate-900 truncate">
-                            {pillar.value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      Upload your passport bio-data page to extract your full name, passport number, and verify the 6-month validity rule for {countryName}.
+                    </p>
 
-                    {/* Consular Recommendation Guidance Box */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-2xs">
-                      <div className="flex items-center gap-2 text-xs font-black text-slate-900 uppercase tracking-wider">
-                        <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span>Consular Adjudication Recommendations:</span>
-                      </div>
-                      <ul className="space-y-1.5 text-xs text-slate-700 font-medium">
-                        {readinessMetrics.recommendations.map((rec, rIdx) => (
-                          <li key={rIdx} className="flex items-start gap-2">
-                            <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[3] mt-0.5" />
-                            <span>{rec}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 2: AI DOCUMENT INSPECTION & OCR AUDIT (PASSPORT UPLOAD + YES/NO CHECKS) */}
-                {docAuditTab === 'ai_inspection' && (
-                  <div className="space-y-6 animate-fadeIn">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                      
-                      {/* LEFT COLUMN: ONLY PASSPORT DOCUMENT UPLOAD */}
-                      <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
+                    {passportFile ? (
+                      <div className="p-4 bg-white border border-emerald-200 rounded-2xl space-y-2 shadow-2xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-                            📘 Passport Bio-Data (Mandatory)
+                          <span className="text-xs font-bold text-slate-900 truncate max-w-[200px]">
+                            {passportFile.name}
                           </span>
-                          {passportFile ? (
-                            <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                              ✓ ATTACHED
-                            </span>
-                          ) : (
-                            <span className="text-[10px] font-black uppercase text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full">
-                              UPLOAD REQUIRED
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="text-xs text-slate-500 font-medium">
-                          Upload your passport bio-data page. Our AI OCR extracts name, passport number, and verifies the 6-month validity rule for {countryName}.
-                        </p>
-
-                        {passportFile ? (
-                          <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-2xl space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold text-emerald-950 truncate max-w-[200px]">
-                                {passportFile.name}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => handlePassportUpload(null)}
-                                className="text-xs text-rose-600 hover:text-rose-800 font-black px-2 py-0.5 rounded-md hover:bg-rose-100/60 cursor-pointer"
-                              >
-                                ✕ Remove
-                              </button>
-                            </div>
-                            <div className="flex items-center gap-3 text-[11px] text-emerald-800 font-medium">
-                              <span>Size: {passportFile.size}</span>
-                              <span>•</span>
-                              <span className="font-bold">Ready for OCR MRZ parsing</span>
-                            </div>
-                          </div>
-                        ) : (
-                          <label className="border-2 border-dashed border-slate-300 hover:border-slate-500 bg-slate-50/50 hover:bg-slate-50 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all">
-                            <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 shadow-2xs mb-2">
-                              <Upload className="w-5 h-5 text-slate-600" />
-                            </div>
-                            <span className="text-xs font-bold text-slate-900">Click or Drag to Upload Passport</span>
-                            <span className="text-[10px] text-slate-400 mt-0.5">Supports PDF, JPG, PNG (Max 15MB)</span>
-                            <input
-                              type="file"
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              className="hidden"
-                              onChange={(e) => handlePassportUpload(e.target.files?.[0] || null)}
-                            />
-                          </label>
-                        )}
-                      </div>
-
-                      {/* RIGHT COLUMN: QUICK CONSULAR YES / NO CHECKLIST */}
-                      <div className="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
-                        <div>
-                          <h5 className="text-xs font-black uppercase tracking-wider text-slate-900">
-                            📋 Quick Consular Eligibility Checklist (Yes / No)
-                          </h5>
-                          <p className="text-xs text-slate-500 font-medium mt-0.5">
-                            Answer simple Yes/No questions below for {readinessMetrics.category}:
-                          </p>
-                        </div>
-
-                        <div className="space-y-3 pt-1">
-                          {/* Q1: Funds */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-                            <span className="text-xs font-bold text-slate-800">
-                              {activePurposeTab === 'study'
-                                ? '1. Have 6-month stamped bank statement or sanctioned education loan?'
-                                : activePurposeTab === 'work'
-                                ? '1. Have proof of salary / financial solvency statement?'
-                                : '1. Have 6-month stamped bank statement with travel funds?'}
-                            </span>
-                            <div className="flex items-center gap-2 shrink-0">
-                              <button
-                                type="button"
-                                onClick={() => setHasFundsProof(true)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasFundsProof === true
-                                    ? 'bg-emerald-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setHasFundsProof(false)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasFundsProof === false
-                                    ? 'bg-rose-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Q2: Admission / Job Offer / Accommodation */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-                            <span className="text-xs font-bold text-slate-800">
-                              {activePurposeTab === 'study'
-                                ? '2. Have confirmed Form I-20 / CAS / Admission acceptance letter?'
-                                : activePurposeTab === 'work'
-                                ? '2. Have approved employer sponsorship petition or job contract?'
-                                : '2. Have confirmed hotel booking or host invitation in destination?'}
-                            </span>
-                            <div className="flex items-center gap-2 shrink-0">
-                              <button
-                                type="button"
-                                onClick={() => setHasAdmissionOrOffer(true)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasAdmissionOrOffer === true
-                                    ? 'bg-emerald-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setHasAdmissionOrOffer(false)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasAdmissionOrOffer === false
-                                    ? 'bg-rose-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Q3: Flight Itinerary */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-                            <span className="text-xs font-bold text-slate-800">
-                              3. Have tentative flight reservation or planned travel itinerary?
-                            </span>
-                            <div className="flex items-center gap-2 shrink-0">
-                              <button
-                                type="button"
-                                onClick={() => setHasFlightItinerary(true)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasFlightItinerary === true
-                                    ? 'bg-emerald-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setHasFlightItinerary(false)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasFlightItinerary === false
-                                    ? 'bg-rose-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Q4: Prior Refusal History */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-                            <span className="text-xs font-bold text-slate-800">
-                              4. Do you have any previous visa refusals for any country?
-                            </span>
-                            <div className="flex items-center gap-2 shrink-0">
-                              <button
-                                type="button"
-                                onClick={() => setHasPastRefusalCheck(false)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasPastRefusalCheck === false
-                                    ? 'bg-emerald-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                No (Clean)
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setHasPastRefusalCheck(true)}
-                                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                  hasPastRefusalCheck === true
-                                    ? 'bg-amber-600 text-white shadow-2xs'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                Yes (1+ Refusal)
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Run Audit CTA */}
-                    {!auditCompleted ? (
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-white border border-slate-200 shadow-2xs">
-                        <div>
-                          <h5 className="text-xs sm:text-sm font-bold text-slate-900">
-                            Perform Real-Time OCR &amp; Consular Verification Match
-                          </h5>
-                          <p className="text-xs text-slate-500 font-medium">
-                            Cross-verifies your uploaded passport against your Yes/No answers for {countryName}.
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          disabled={isAuditingDocs}
-                          onClick={handleRunDocAudit}
-                          className="px-5 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all shrink-0"
-                        >
-                          {isAuditingDocs ? (
-                            <>
-                              <RotateCw className="w-3.5 h-3.5 animate-spin" />
-                              <span>Scanning &amp; Verifying...</span>
-                            </>
-                          ) : (
-                            <>
-                              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                              <span>Run AI Document &amp; Eligibility Audit</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    ) : (
-                      /* Audit Results Scorecard matching strict schema */
-                      <div className="space-y-4 pt-2">
-                        {/* Passport Audit Subcard */}
-                        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-2xs">
-                          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                            <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                              📘 Passport OCR &amp; MRZ Verification
-                            </span>
-                            <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                              ✓ {docAuditResult.passport_audit.validity_status}
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                            <div>
-                              <span className="text-slate-400 block font-bold text-[10px] uppercase">Applicant Name</span>
-                              <strong className="text-slate-900">{docAuditResult.passport_audit.extracted_name}</strong>
-                            </div>
-                            <div>
-                              <span className="text-slate-400 block font-bold text-[10px] uppercase">Passport Upload</span>
-                              <strong className="text-slate-900">{realUploadedFiles.passport ? realUploadedFiles.passport.name : 'Pending File'}</strong>
-                            </div>
-                            <div>
-                              <span className="text-slate-400 block font-bold text-[10px] uppercase">Validity Condition</span>
-                              <strong className="text-slate-900">{passportValidityRange}</strong>
-                            </div>
-                            <div>
-                              <span className="text-slate-400 block font-bold text-[10px] uppercase">MRZ Line Integrity</span>
-                              <strong className="text-emerald-700">Verified</strong>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Checklist Matches Breakdown */}
-                        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-2xs">
-                          <span className="text-xs font-black uppercase tracking-wider text-slate-900 block">
-                            📋 Verified Document Checklist &amp; Policy Adherence
-                          </span>
-                          <div className="divide-y divide-slate-100 text-xs space-y-2">
-                            {docAuditResult.checklist_matches.map((item, idx) => (
-                              <div key={idx} className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                <div>
-                                  <div className="flex items-center gap-2">
-                                    <strong className="text-slate-900">{item.document_type}</strong>
-                                    <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                      {item.status} ({Math.round(item.confidence_score * 100)}% Match)
-                                    </span>
-                                  </div>
-                                  <p className="text-slate-600 font-medium text-[11px] mt-0.5">
-                                    {item.details}
-                                  </p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Red Flags and Advisory Alerts */}
-                        <div className="bg-amber-50/80 border border-amber-200/90 rounded-2xl p-4 sm:p-5 space-y-2.5">
-                          <div className="flex items-center gap-2 text-xs font-black text-amber-950 uppercase tracking-wider">
-                            <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
-                            <span>Adjudication Warnings &amp; Red Flags:</span>
-                          </div>
-                          <ul className="space-y-1.5 text-xs text-amber-900 font-medium">
-                            {docAuditResult.red_flags_and_warnings.map((flag, fIdx) => (
-                              <li key={fIdx} className="flex items-start gap-2">
-                                <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded-sm bg-amber-200 text-amber-900 shrink-0">
-                                  {flag.severity}
-                                </span>
-                                <span>{flag.message}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Re-run button */}
-                        <div className="text-right pt-1">
                           <button
                             type="button"
-                            onClick={() => setAuditCompleted(false)}
-                            className="text-xs font-bold text-slate-500 hover:text-slate-900 underline cursor-pointer"
+                            onClick={() => handlePassportUpload(null)}
+                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2 py-0.5 rounded-md hover:bg-rose-50 cursor-pointer"
                           >
-                            Re-run Document Inspection
+                            ✕ Remove
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-3 text-[11px] text-emerald-700 font-semibold">
+                          <span>Size: {passportFile.size}</span>
+                          <span>•</span>
+                          <span>MRZ Checksum Verified</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="border-2 border-dashed border-slate-300 hover:border-slate-500 bg-white hover:bg-slate-50/80 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs">
+                        <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 mb-2">
+                          <Upload className="w-4 h-4 text-slate-600" />
+                        </div>
+                        <span className="text-xs font-bold text-slate-900">Click or Drag to Upload Passport</span>
+                        <span className="text-[10px] text-slate-400 mt-0.5">Supports PDF, JPG, PNG (Max 15MB)</span>
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          className="hidden"
+                          onChange={(e) => handlePassportUpload(e.target.files?.[0] || null)}
+                        />
+                      </label>
+                    )}
+                  </div>
+
+                  {/* RIGHT COLUMN: QUICK CONSULAR YES / NO CHECKLIST */}
+                  <div className="lg:col-span-7 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-3.5 text-left">
+                    <div className="flex items-center justify-between pb-1">
+                      <h5 className="text-xs font-black uppercase tracking-wider text-slate-900">
+                        📋 Quick Consular Verification Checklist (Yes / No)
+                      </h5>
+                      <span className="text-[10px] font-extrabold uppercase text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200">
+                        {readinessMetrics.category}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {/* Q1: Funds */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
+                        <span className="text-xs font-bold text-slate-800">
+                          {activePurposeTab === 'study'
+                            ? '1. Have 6-month stamped bank statement or sanctioned loan?'
+                            : activePurposeTab === 'work'
+                            ? '1. Have proof of salary / financial solvency statement?'
+                            : '1. Have 6-month stamped bank statement with travel funds?'}
+                        </span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setHasFundsProof(true)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasFundsProof === true
+                                ? 'bg-emerald-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setHasFundsProof(false)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasFundsProof === false
+                                ? 'bg-rose-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            No
                           </button>
                         </div>
                       </div>
-                    )}
+
+                      {/* Q2: Admission / Job Offer / Accommodation */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
+                        <span className="text-xs font-bold text-slate-800">
+                          {activePurposeTab === 'study'
+                            ? '2. Have confirmed Form I-20 / CAS / Admission acceptance?'
+                            : activePurposeTab === 'work'
+                            ? '2. Have approved employer sponsorship petition or job offer?'
+                            : '2. Have confirmed hotel booking or host invitation?'}
+                        </span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setHasAdmissionOrOffer(true)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasAdmissionOrOffer === true
+                                ? 'bg-emerald-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setHasAdmissionOrOffer(false)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasAdmissionOrOffer === false
+                                ? 'bg-rose-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            No
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Q3: Flight Itinerary */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
+                        <span className="text-xs font-bold text-slate-800">
+                          3. Have tentative flight reservation or planned travel dates?
+                        </span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setHasFlightItinerary(true)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasFlightItinerary === true
+                                ? 'bg-emerald-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setHasFlightItinerary(false)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasFlightItinerary === false
+                                ? 'bg-rose-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            No
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Q4: Prior Refusal History */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
+                        <span className="text-xs font-bold text-slate-800">
+                          4. Do you have any previous visa refusals for any country?
+                        </span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setHasPastRefusalCheck(false)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasPastRefusalCheck === false
+                                ? 'bg-emerald-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            No (Clean)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setHasPastRefusalCheck(true)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              hasPastRefusalCheck === true
+                                ? 'bg-amber-600 text-white shadow-2xs'
+                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            Yes (1+ Refusal)
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
+
+                {/* ── LIVE VISA READINESS SCORECARD BAR ── */}
+                <div className="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 space-y-4 shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-amber-400 shrink-0">
+                        <Zap className="w-5 h-5 fill-amber-400" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm sm:text-base font-black text-white">
+                            Consular Approval Readiness Score
+                          </h4>
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                            AI CALCULATED
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 font-medium mt-0.5">
+                          Calculated for {countryName} {readinessMetrics.category} based on your profile inputs, passport upload &amp; checklist.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div className={`px-3.5 py-1.5 rounded-xl border text-xs font-black uppercase tracking-wider flex items-center gap-2 ${
+                        docAuditResult.readiness_score >= 85
+                          ? 'text-emerald-300 bg-emerald-950/60 border-emerald-800'
+                          : docAuditResult.readiness_score >= 50
+                          ? 'text-amber-300 bg-amber-950/60 border-amber-800'
+                          : 'text-slate-400 bg-slate-800 border-slate-700'
+                      }`}>
+                        <span>🎯</span>
+                        <span>
+                          {docAuditResult.readiness_score > 0
+                            ? `${docAuditResult.readiness_score}% ${docAuditResult.readiness_tier.replace('_', ' ')}`
+                            : '0% AWAITING INPUTS'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ease-out ${
+                        docAuditResult.readiness_score >= 85
+                          ? 'bg-emerald-500'
+                          : docAuditResult.readiness_score >= 50
+                          ? 'bg-amber-500'
+                          : 'bg-slate-600'
+                      }`}
+                      style={{ width: `${Math.max(4, docAuditResult.readiness_score)}%` }}
+                    />
+                  </div>
+
+                  {/* Warnings / Recommendations */}
+                  {docAuditResult.red_flags_and_warnings.length > 0 && (
+                    <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2 text-xs">
+                      {docAuditResult.red_flags_and_warnings.map((rf, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 text-amber-300 bg-amber-950/40 border border-amber-800/60 px-3 py-1 rounded-xl">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                          <span className="text-[11px] font-medium">{rf.message}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
             </div>

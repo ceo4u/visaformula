@@ -72,17 +72,17 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
             className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
           >
             <span>{showMockQuestions ? 'Hide Questions' : 'View Sample Questions (4)'}</span>
-            <ChevronDown className={w-3.5 h-3.5 transition-transform } />
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showMockQuestions ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
         {showMockQuestions && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 animate-fade-in">
             {[
-              { q: What is the specific purpose of your trip to  and how long will you stay?, tip: "State your travel dates, exact hotel/sponsor city, and definitive return date clearly." },
+              { q: `What is the specific purpose of your trip to ${cleanTo} and how long will you stay?`, tip: "State your travel dates, exact hotel/sponsor city, and definitive return date clearly." },
               { q: "Who is sponsoring your trip and how did you accumulate these financial funds?", tip: "Reference your stamped 6-month bank statements and employer/sponsor compensation." },
               { q: "What strong ties guarantee that you will return to your home country upon visa expiry?", tip: "Mention your active employment contract, family roots, and property/career commitments in home country." },
-              { q: Why did you choose  over other alternative global destinations?, tip: "Give concrete reasons aligned with your itinerary, university curriculum, or business meeting agenda." }
+              { q: `Why did you choose ${cleanTo} over other alternative global destinations?`, tip: "Give concrete reasons aligned with your itinerary, university curriculum, or business meeting agenda." }
             ].map((item, i) => (
               <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
                 <span className="text-xs font-bold text-white block">
@@ -119,7 +119,7 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
           </div>
 
           <a 
-            href={/services?prep=ai-mock&country=}
+            href={`/services?prep=ai-mock&country=${cleanTo}`}
             className="w-full py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all"
           >
             <span>Start AI Mock Prep (₹499)</span>
@@ -146,7 +146,7 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
           </div>
 
           <a 
-            href={/find-experts?category=work&mock=1&country=}
+            href={`/find-experts?category=work&mock=1&country=${cleanTo}`}
             className="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all"
           >
             <span>Book 1-on-1 Mock Session (₹1,999)</span>
@@ -158,3 +158,4 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
     </div>
   );
 };
+

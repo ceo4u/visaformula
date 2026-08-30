@@ -4106,65 +4106,106 @@ export function VisaCountryResultPortal({
                     )}
                   </div>
 
-                  {/* RIGHT COLUMN: LIVE VISA READINESS SCORECARD */}
-                  <div className="lg:col-span-6 bg-slate-900 text-white rounded-3xl p-5 sm:p-6 space-y-4 text-left flex flex-col justify-between shadow-sm">
-                    <div className="space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-amber-400 shrink-0">
-                            <Zap className="w-4 h-4 fill-amber-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">
-                              Visa Readiness Score
-                            </h4>
-                            <p className="text-[11px] text-slate-400 font-medium">
-                              Computed for {countryName} {readinessMetrics.category}
-                            </p>
-                          </div>
-                        </div>
-
-                        <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider self-start sm:self-auto ${
-                          readinessMetrics.score >= 85
-                            ? 'text-emerald-300 bg-emerald-950 border border-emerald-800'
-                            : readinessMetrics.score >= 50
-                            ? 'text-amber-300 bg-amber-950 border border-amber-800'
-                            : 'text-slate-400 bg-slate-800 border border-slate-700'
-                        }`}>
-                          {readinessMetrics.score > 0 ? `${readinessMetrics.score}% ${readinessMetrics.statusText}` : '0% AWAITING INPUTS'}
-                        </span>
+                  {/* RIGHT COLUMN: CIRCULAR GAUGE VISA READINESS SCORECARD (CREDIT SCORE STYLE) */}
+                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
+                    
+                    {/* Card Header */}
+                    <div className="w-full flex items-center justify-between pb-1 text-left">
+                      <div>
+                        <h4 className="text-base sm:text-lg font-heading font-extrabold text-slate-900 tracking-tight">
+                          Your Visa Readiness Score
+                        </h4>
+                        <p className="text-xs text-slate-400 font-medium">
+                          {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                        </p>
                       </div>
 
-                      {/* Progress Bar */}
-                      <div className="space-y-1.5 pt-1">
-                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
-                          <span>Consular Pre-Screening Factor</span>
-                          <span className="text-white font-extrabold">{readinessMetrics.score} / 100</span>
-                        </div>
-                        <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all duration-700 ease-out ${
-                              readinessMetrics.score >= 85
-                                ? 'bg-emerald-500'
-                                : readinessMetrics.score >= 50
-                                ? 'bg-amber-500'
-                                : 'bg-slate-600'
-                            }`}
-                            style={{ width: `${Math.max(4, readinessMetrics.score)}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Consular Recommendation / Tip */}
-                    <div className="pt-3 border-t border-slate-800 flex items-start gap-2 text-xs text-slate-300">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span className="font-medium">
-                        {passportFile
-                          ? '✓ Passport attached. Verify remaining profile fields above to maximize your approval likelihood.'
-                          : 'Upload your passport bio-data page to complete 100% consular verification.'}
+                      <span className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider ${
+                        readinessMetrics.score >= 85
+                          ? 'bg-[#D97706] text-white shadow-xs'
+                          : readinessMetrics.score >= 65
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : readinessMetrics.score >= 40
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : readinessMetrics.score > 0
+                          ? 'bg-orange-500 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200'
+                      }`}>
+                        {readinessMetrics.score >= 85
+                          ? 'EXCEPTIONAL'
+                          : readinessMetrics.score >= 65
+                          ? 'EXCELLENT'
+                          : readinessMetrics.score >= 40
+                          ? 'GOOD'
+                          : readinessMetrics.score > 0
+                          ? 'FAIR'
+                          : 'PENDING'}
                       </span>
                     </div>
+
+                    {/* Center: Circular Rainbow Gauge */}
+                    <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center my-1">
+                      <svg className="w-full h-full" viewBox="0 0 200 200">
+                        <defs>
+                          <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#F43F5E" />
+                            <stop offset="35%" stopColor="#FB923C" />
+                            <stop offset="65%" stopColor="#FACC15" />
+                            <stop offset="100%" stopColor="#22C55E" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Background Arc */}
+                        <path
+                          d="M 46 150 A 70 70 0 1 1 154 150"
+                          fill="none"
+                          stroke="#E2E8F0"
+                          strokeWidth="14"
+                          strokeLinecap="round"
+                        />
+
+                        {/* Foreground Rainbow Score Arc */}
+                        <path
+                          d="M 46 150 A 70 70 0 1 1 154 150"
+                          fill="none"
+                          stroke="url(#rainbowGauge)"
+                          strokeWidth="14"
+                          strokeLinecap="round"
+                          strokeDasharray="318"
+                          strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
+                          className="transition-all duration-1000 ease-out"
+                        />
+                      </svg>
+
+                      {/* Center Number & Points */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2">
+                        <span className="text-4xl sm:text-5xl font-heading font-black text-slate-950 tracking-tight leading-none">
+                          {readinessMetrics.score > 0
+                            ? Math.round(300 + (readinessMetrics.score / 100) * 550)
+                            : 0}
+                        </span>
+                        <span className="text-xs font-bold text-slate-700 mt-1">
+                          {passportFile ? (
+                            <span className="text-emerald-600 font-extrabold">+20 Points</span>
+                          ) : readinessMetrics.filledCount > 0 ? (
+                            <span className="text-slate-600">+{readinessMetrics.filledCount * 10} Points</span>
+                          ) : (
+                            <span className="text-slate-400">0 Points</span>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Card Footer */}
+                    <div className="w-full pt-3 border-t border-slate-100 space-y-0.5">
+                      <div className="text-xs font-bold text-slate-700">
+                        TravlTik Consular AI
+                      </div>
+                      <div className="text-[11px] text-slate-400 font-medium">
+                        Score calculated using official {countryName} immigration benchmarks
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

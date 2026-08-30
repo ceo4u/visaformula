@@ -2433,6 +2433,21 @@ export function VisaCountryResultPortal({
 
   const scrollToSection = (sectionId: string) => {
     setActiveSubNav(sectionId);
+    if (sectionId === 'section-visa-readiness') {
+      if (hasVisaAlready !== 'no') {
+        setHasVisaAlready('no');
+      }
+      setTimeout(() => {
+        const element = document.getElementById('section-visa-readiness') || document.getElementById('visa-application-branch');
+        if (element) {
+          const headerOffset = 110;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }, 60);
+      return;
+    }
     let element = document.getElementById(sectionId);
     if (!element && sectionId === 'section-documents') {
       element = document.getElementById('section-docs') || document.getElementById('section-documents');
@@ -2457,7 +2472,7 @@ export function VisaCountryResultPortal({
   // Scroll Spy for Sub-Nav Tabs
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['section-visa-info', 'section-visa-process', 'section-documents', 'section-mandates', 'section-reviews', 'section-faqs'];
+      const sections = ['section-visa-info', 'section-visa-readiness', 'section-visa-process', 'section-documents', 'section-mandates', 'section-reviews', 'section-faqs'];
       const scrollPosition = window.scrollY + 160;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -2499,16 +2514,19 @@ export function VisaCountryResultPortal({
     let redFlags: string[] = [];
     let filledCount = 0;
 
-    // Pillar 1: Passport Validity (30% weight)
+    // Pillar 1: Passport & Identity (30% weight)
     let passportScore = 0;
+    if (passportFile) {
+      filledCount++;
+      passportScore += 15;
+    }
     if (passportValidityRange) {
       filledCount++;
       if (passportValidityRange.includes('> 12 Months')) {
-        passportScore = 30;
+        passportScore += 15;
       } else if (passportValidityRange.includes('6 - 12 Months')) {
-        passportScore = 24;
+        passportScore += 10;
       } else {
-        passportScore = 0;
         redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${countryName} consular rules.`);
       }
     }
@@ -3080,6 +3098,7 @@ export function VisaCountryResultPortal({
           <div className="flex items-center justify-between sm:justify-around overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-bold">
             {[
               { id: 'section-visa-info', label: 'Visa Info' },
+              { id: 'section-visa-readiness', label: 'Visa Readiness' },
               { id: 'section-visa-process', label: 'How to Apply' },
               { id: 'section-documents', label: 'Documents' },
               { id: 'section-mandates', label: 'Mandates' },
@@ -3682,8 +3701,8 @@ export function VisaCountryResultPortal({
       {/* ══════════════════════════════════════════════════════════════════════════ */}
       {hasVisaAlready === 'no' && (
         <>
-          {/* ── 4-STEP PURPOSE-SPECIFIC INTERACTIVE QUESTIONNAIRE ── */}
-          <section id="visa-application-branch" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-24 animate-fadeIn">
+          {/* ── 4-STEP PURPOSE-SPECIFIC INTERACTIVE QUESTIONNAIRE & VISA READINESS ── */}
+          <section id="section-visa-readiness" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-24 animate-fadeIn">
             <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm text-left space-y-6">
               
               {/* Header with Step indicator */}
@@ -4023,30 +4042,32 @@ export function VisaCountryResultPortal({
                 </div>
               )}
 
-              {/* ── PASSPORT UPLOAD & YES/NO VERIFICATION (DIRECTLY BELOW FIELDS) ── */}
+              {/* ── STEP 2: PASSPORT COLLECTION & LIVE VISA READINESS SCORECARD ── */}
               <div className="pt-6 border-t border-slate-100 space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
-                  {/* LEFT COLUMN: PASSPORT DOCUMENT UPLOAD */}
-                  <div className="lg:col-span-5 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 text-left">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-                        📘 Passport Bio-Data
-                      </span>
-                      {passportFile ? (
-                        <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                          ✓ ATTACHED
+                  {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
+                  <div className="lg:col-span-6 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 text-left flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+                          📘 Passport Bio-Data (Upload)
                         </span>
-                      ) : (
-                        <span className="text-[10px] font-black uppercase text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full">
-                          UPLOAD REQUIRED
-                        </span>
-                      )}
-                    </div>
+                        {passportFile ? (
+                          <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                            ✓ ATTACHED
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-black uppercase text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                            UPLOAD REQUIRED
+                          </span>
+                        )}
+                      </div>
 
-                    <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                      Upload your passport bio-data page to extract your full name, passport number, and verify the 6-month validity rule for {countryName}.
-                    </p>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed mt-1.5">
+                        Upload your passport bio-data page to extract MRZ checksum and verify 6-month consular validity for {countryName}.
+                      </p>
+                    </div>
 
                     {passportFile ? (
                       <div className="p-4 bg-white border border-emerald-200 rounded-2xl space-y-2 shadow-2xs">
@@ -4069,7 +4090,7 @@ export function VisaCountryResultPortal({
                         </div>
                       </div>
                     ) : (
-                      <label className="border-2 border-dashed border-slate-300 hover:border-slate-500 bg-white hover:bg-slate-50/80 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs">
+                      <label className="border-2 border-dashed border-slate-300 hover:border-slate-500 bg-white hover:bg-slate-50/80 rounded-2xl p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs">
                         <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 mb-2">
                           <Upload className="w-4 h-4 text-slate-600" />
                         </div>
@@ -4085,149 +4106,64 @@ export function VisaCountryResultPortal({
                     )}
                   </div>
 
-                  {/* RIGHT COLUMN: QUICK CONSULAR YES / NO CHECKLIST */}
-                  <div className="lg:col-span-7 bg-slate-50/70 border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-3.5 text-left">
-                    <div className="flex items-center justify-between pb-1">
-                      <h5 className="text-xs font-black uppercase tracking-wider text-slate-900">
-                        📋 Quick Consular Verification Checklist (Yes / No)
-                      </h5>
-                      <span className="text-[10px] font-extrabold uppercase text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                        {readinessMetrics.category}
-                      </span>
+                  {/* RIGHT COLUMN: LIVE VISA READINESS SCORECARD */}
+                  <div className="lg:col-span-6 bg-slate-900 text-white rounded-3xl p-5 sm:p-6 space-y-4 text-left flex flex-col justify-between shadow-sm">
+                    <div className="space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-amber-400 shrink-0">
+                            <Zap className="w-4 h-4 fill-amber-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                              Visa Readiness Score
+                            </h4>
+                            <p className="text-[11px] text-slate-400 font-medium">
+                              Computed for {countryName} {readinessMetrics.category}
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider self-start sm:self-auto ${
+                          readinessMetrics.score >= 85
+                            ? 'text-emerald-300 bg-emerald-950 border border-emerald-800'
+                            : readinessMetrics.score >= 50
+                            ? 'text-amber-300 bg-amber-950 border border-amber-800'
+                            : 'text-slate-400 bg-slate-800 border border-slate-700'
+                        }`}>
+                          {readinessMetrics.score > 0 ? `${readinessMetrics.score}% ${readinessMetrics.statusText}` : '0% AWAITING INPUTS'}
+                        </span>
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div className="space-y-1.5 pt-1">
+                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
+                          <span>Consular Pre-Screening Factor</span>
+                          <span className="text-white font-extrabold">{readinessMetrics.score} / 100</span>
+                        </div>
+                        <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-700 ease-out ${
+                              readinessMetrics.score >= 85
+                                ? 'bg-emerald-500'
+                                : readinessMetrics.score >= 50
+                                ? 'bg-amber-500'
+                                : 'bg-slate-600'
+                            }`}
+                            style={{ width: `${Math.max(4, readinessMetrics.score)}%` }}
+                          />
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="space-y-2.5">
-                      {/* Q1: Funds */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
-                        <span className="text-xs font-bold text-slate-800">
-                          {activePurposeTab === 'study'
-                            ? '1. Have 6-month stamped bank statement or sanctioned loan?'
-                            : activePurposeTab === 'work'
-                            ? '1. Have proof of salary / financial solvency statement?'
-                            : '1. Have 6-month stamped bank statement with travel funds?'}
-                        </span>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setHasFundsProof(true)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasFundsProof === true
-                                ? 'bg-emerald-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            Yes
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setHasFundsProof(false)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasFundsProof === false
-                                ? 'bg-rose-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Q2: Admission / Job Offer / Accommodation */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
-                        <span className="text-xs font-bold text-slate-800">
-                          {activePurposeTab === 'study'
-                            ? '2. Have confirmed Form I-20 / CAS / Admission acceptance?'
-                            : activePurposeTab === 'work'
-                            ? '2. Have approved employer sponsorship petition or job offer?'
-                            : '2. Have confirmed hotel booking or host invitation?'}
-                        </span>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setHasAdmissionOrOffer(true)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasAdmissionOrOffer === true
-                                ? 'bg-emerald-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            Yes
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setHasAdmissionOrOffer(false)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasAdmissionOrOffer === false
-                                ? 'bg-rose-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Q3: Flight Itinerary */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
-                        <span className="text-xs font-bold text-slate-800">
-                          3. Have tentative flight reservation or planned travel dates?
-                        </span>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setHasFlightItinerary(true)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasFlightItinerary === true
-                                ? 'bg-emerald-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            Yes
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setHasFlightItinerary(false)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasFlightItinerary === false
-                                ? 'bg-rose-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Q4: Prior Refusal History */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs">
-                        <span className="text-xs font-bold text-slate-800">
-                          4. Do you have any previous visa refusals for any country?
-                        </span>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setHasPastRefusalCheck(false)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasPastRefusalCheck === false
-                                ? 'bg-emerald-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            No (Clean)
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setHasPastRefusalCheck(true)}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              hasPastRefusalCheck === true
-                                ? 'bg-amber-600 text-white shadow-2xs'
-                                : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
-                            }`}
-                          >
-                            Yes (1+ Refusal)
-                          </button>
-                        </div>
-                      </div>
+                    {/* Consular Recommendation / Tip */}
+                    <div className="pt-3 border-t border-slate-800 flex items-start gap-2 text-xs text-slate-300">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span className="font-medium">
+                        {passportFile
+                          ? '✓ Passport attached. Verify remaining profile fields above to maximize your approval likelihood.'
+                          : 'Upload your passport bio-data page to complete 100% consular verification.'}
+                      </span>
                     </div>
                   </div>
                 </div>

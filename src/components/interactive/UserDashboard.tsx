@@ -311,7 +311,7 @@ export function UserDashboard() {
     const fullName = `${firstName} ${lastName}`.trim() || userDisplayName;
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col text-slate-800 antialiased selection:bg-[#00a896] selection:text-white">
+        <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col text-slate-800 antialiased selection:bg-slate-900 selection:text-white">
             
             {/* Top Fixed Navigation Header */}
             <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">
@@ -328,7 +328,7 @@ export function UserDashboard() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
-                    <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#00a896] hover:bg-[#008f80] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
+                    <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
                         <Plus className="w-3.5 h-3.5" /> Book Consultation
                     </a>
 
@@ -340,13 +340,13 @@ export function UserDashboard() {
                         {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
                             <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
                         ) : (
-                            <div className="w-9 h-9 rounded-full bg-[#00a896] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                            <div className="w-9 h-9 rounded-full bg-slate-900 text-white text-sm font-black flex items-center justify-center border border-slate-700 shrink-0 shadow-2xs">
                                 {(userDisplayName || "U").charAt(0).toUpperCase()}
                             </div>
                         )}
                         <div className="hidden md:block text-left">
                             <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{fullName}</h4>
-                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Visa Seeker</span>
+                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-slate-700/80 mt-0.5">Visa Seeker</span>
                         </div>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                     </div>
@@ -368,7 +368,7 @@ export function UserDashboard() {
                                         onClick={() => setActiveTab(item.id)}
                                         className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                             isActive
-                                                ? "bg-[#00a896] text-white shadow-md"
+                                                ? "bg-slate-900 text-white shadow-md"
                                                 : "text-slate-600 hover:bg-slate-100"
                                         }`}
                                     >
@@ -423,7 +423,7 @@ export function UserDashboard() {
                                             }}
                                             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-[#00a896] text-white shadow-md"
+                                                    ? "bg-slate-900 text-white shadow-md"
                                                     : "text-slate-600 hover:bg-slate-100"
                                             }`}
                                         >
@@ -481,7 +481,7 @@ export function UserDashboard() {
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Track your visa applications, consultations, and document readiness</p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <a href="/find-experts" className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5">
+                                    <a href="/find-experts" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5">
                                         <Search className="w-3.5 h-3.5" /> Find Expert
                                     </a>
                                 </div>
@@ -650,7 +650,7 @@ export function UserDashboard() {
                                             <h3 className="text-base font-extrabold text-slate-900">Document Readiness Vault</h3>
                                             <p className="text-xs text-slate-500 font-medium mt-0.5">Manage your passport scans, scorecards, and visa applications</p>
                                         </div>
-                                        <button onClick={() => setActiveTab("scanned-documents")} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                                        <button onClick={() => setActiveTab("scanned-documents")} className="text-xs font-bold text-slate-900 hover:underline flex items-center gap-1">
                                             View Vault <ChevronRight className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
@@ -661,7 +661,7 @@ export function UserDashboard() {
                                             <h4 className="text-sm font-extrabold text-slate-900">No Documents Uploaded Yet</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Upload your Passport copy, IELTS scorecard, or SOP to share with verified consultants.</p>
 
-                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all inline-flex items-center gap-1.5">
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all inline-flex items-center gap-1.5">
                                                 <Upload className="w-3.5 h-3.5" /> Upload Document
                                             </button>
                                         </div>
@@ -689,7 +689,7 @@ export function UserDashboard() {
                                 <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-base font-extrabold text-slate-900">IELTS Scorecard</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-teal-200">
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-slate-700">
                                             Overall: {overallBand}
                                         </span>
                                     </div>
@@ -748,7 +748,7 @@ export function UserDashboard() {
                                         </div>
                                     </div>
 
-                                    <a href="/training/ielts" className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-2.5 rounded-xl text-xs font-bold text-center block shadow-sm">
+                                    <a href="/training/ielts" className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-xl text-xs font-bold text-center block shadow-sm">
                                         Practice IELTS Tests →
                                     </a>
                                 </div>
@@ -764,7 +764,7 @@ export function UserDashboard() {
                                     <h2 className="text-xl font-black text-slate-900">Personal & Visa Profile</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
                                 </div>
-                                <button onClick={() => setShowProfileModal(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
+                                <button onClick={() => setShowProfileModal(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
                                     <Edit2 className="w-3.5 h-3.5" /> Edit Details
                                 </button>
                             </div>
@@ -773,14 +773,14 @@ export function UserDashboard() {
                                 {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
                                     <img src={profilePhoto} alt={fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
                                 ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-[#00a896] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                    <div className="w-24 h-24 rounded-2xl bg-slate-900 text-white text-3xl font-black flex items-center justify-center border-2 border-slate-700 shadow-sm shrink-0">
                                         {(userDisplayName || "U").charAt(0).toUpperCase()}
                                     </div>
                                 )}
                                 <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-2">
                                         <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Seeker</span>
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-slate-700">Verified Seeker</span>
                                     </div>
                                     <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
                                     <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
@@ -808,7 +808,7 @@ export function UserDashboard() {
                                     <h2 className="text-xl font-black text-slate-900">Active Visa Cases ({visasProcessingState.length})</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
                                 </div>
-                                <a href="/#need-visa-pathway-dashboard" className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 self-start sm:self-auto">
+                                <a href="/#need-visa-pathway-dashboard" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 self-start sm:self-auto">
                                     <Plus className="w-3.5 h-3.5" /> Start New Application
                                 </a>
                             </div>
@@ -820,7 +820,7 @@ export function UserDashboard() {
                                     <p className="text-xs text-slate-500 max-w-sm mx-auto">
                                         You haven't submitted any visa dossiers yet. Explore official visa requirements and start your fast-track application.
                                     </p>
-                                    <a href="/visa/united-kingdom?passport=indian&purpose=tourism" className="inline-block bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                    <a href="/visa/united-kingdom?passport=indian&purpose=tourism" className="inline-block bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         Explore UK Tourist Visa →
                                     </a>
                                 </div>
@@ -919,7 +919,7 @@ export function UserDashboard() {
                                     <h2 className="text-xl font-black text-slate-900">Document Readiness Vault ({documents.length})</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Encrypted cloud vault storing passport scans, financial proofs, and transcripts</p>
                                 </div>
-                                <label className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 cursor-pointer self-start sm:self-auto active:scale-95 transition-all">
+                                <label className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 cursor-pointer self-start sm:self-auto active:scale-95 transition-all">
                                     <Upload className="w-3.5 h-3.5" /> Upload New File
                                     <input 
                                         type="file" 
@@ -999,7 +999,7 @@ export function UserDashboard() {
                                 View your upcoming video advisory calls with OISC & Bar-licensed solicitors and verified immigration consultants.
                             </p>
                             <div className="pt-2">
-                                <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                                <a href="/find-experts" className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
                                     Book New 1-on-1 Session →
                                 </a>
                             </div>
@@ -1049,7 +1049,7 @@ export function UserDashboard() {
                             <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
                                 All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your TravlTik profile.
                             </p>
-                            <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                            <a href="/find-experts" className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
                                 Connect with Expert →
                             </a>
                         </div>
@@ -1079,7 +1079,7 @@ export function UserDashboard() {
                                     {modalPhoto && !modalPhoto.includes("unsplash.com") ? (
                                         <img src={modalPhoto} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
                                     ) : (
-                                        <div className="w-12 h-12 rounded-xl bg-[#00a896] text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
+                                        <div className="w-12 h-12 rounded-xl bg-slate-900 text-white text-lg font-black flex items-center justify-center border border-slate-700 shrink-0">
                                             {(modalFirstName || userDisplayName || "U").charAt(0).toUpperCase()}
                                         </div>
                                     )}
@@ -1174,7 +1174,7 @@ export function UserDashboard() {
 
                             <div className="flex gap-3 pt-3">
                                 <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors cursor-pointer">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
                             </div>
                         </form>
                     </div>

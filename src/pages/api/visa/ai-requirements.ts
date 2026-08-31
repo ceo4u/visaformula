@@ -1663,6 +1663,18 @@ export const POST: APIRoute = async ({ request }) => {
     const toCountry = cleanCountryName(rawTo);
 
     // 1. Try Gemini AI generation with fallback
+    const isToGreece = toCountry.toLowerCase().includes('greece');
+    const isToSchengen = isToGreece || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'poland', 'hungary', 'malta'].some(c => toCountry.toLowerCase().includes(c));
+
+    // For Greece specifically, always serve the 100% verified Embassy of Greece & GVCW dataset for flawless accuracy
+    if (isToGreece) {
+      const verified = getVerifiedOfficialData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({ success: true, data: verified, source: 'verified-consular-standards' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const apiKey = getGeminiApiKey();
     if (apiKey) {
       try {
@@ -1679,7 +1691,7 @@ STRICT DATA ISOLATION & VERIFICATION MANDATES:
    - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia.
    - For USA: strictly 2x2 inches (51x51mm) photo, DS-160 barcode, $185 MRV fee, 10-year B1/B2 validity, CBP 180-day stay rule.
    - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
-   - For Schengen: €90 consular fee, €30,000 travel medical insurance, 35x45mm photo, 90/180-day rule.
+   - For Schengen / Greece: strictly Harmonised Schengen Visa Application Form (NEVER DS-160 which is US only), €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
 
 2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
    - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."
@@ -1775,6 +1787,23 @@ Return ONLY a valid JSON object matching this exact schema:
           const parsed = JSON.parse(text);
           parsed.passport_country = cleanCountryName(parsed.passport_country || fromCountry);
           parsed.destination_country = cleanCountryName(parsed.destination_country || toCountry);
+
+          // Post-generation sanity guard for Schengen destinations:
+          if (isToSchengen) {
+            if (Array.isArray(parsed.documents_required)) {
+              parsed.documents_required = parsed.documents_required.map((doc: any) => {
+                if (doc.title?.toLowerCase().includes('ds-160') || doc.description?.toLowerCase().includes('ds-160')) {
+                  doc.title = 'Harmonised Schengen Visa Application Form';
+                  doc.description = doc.description.replace(/ds-160/gi, 'Harmonised Schengen Visa Application Form');
+                }
+                if (doc.description?.includes('2x2')) {
+                  doc.description = doc.description.replace(/2x2\s*inch/gi, '35x45mm');
+                }
+                return doc;
+              });
+            }
+          }
+
           return new Response(JSON.stringify({ success: true, data: parsed, source: 'gemini-ai' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }

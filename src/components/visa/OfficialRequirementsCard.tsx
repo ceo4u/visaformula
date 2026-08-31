@@ -624,511 +624,183 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-sm">
-                  
-                  {/* Row 1: Visa Application Form */}
-                  <tr className="transition-colors">
-                    {/* Col 1: Serial Number */}
-                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
-                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
-                        1
-                      </span>
-                    </td>
-                    {/* Col 2: Interactive Ready Checklist */}
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
-                      <div 
-                        onClick={() => toggleDocReady('doc_req_form')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                        title={checkedDocs['doc_req_form']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
-                      >
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                          checkedDocs['doc_req_form']?.ready
-                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                        }`}>
-                          {checkedDocs['doc_req_form']?.ready ? (
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                          ) : (
-                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                          )}
-                        </div>
-                        {checkedDocs['doc_req_form']?.ready && (
-                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                        )}
-                      </div>
-                    </td>
-                    {/* Col 3: Document Details */}
-                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                          Visa Application Form
-                        </strong>
-                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                          ✓ Mandatory
-                        </span>
-                      </div>
-                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
-                        DS-160 / Official Consular Filing Sheet with confirmation barcode.
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
-                        📌 Mandatory Consular Filing: Must be fully completed and signed before scheduling biometrics / interview.
-                      </span>
-                    </td>
-                  </tr>
+                  {data.documents_required && data.documents_required.length > 0 ? (
+                    data.documents_required.map((doc, idx) => {
+                      const docKey = `doc_req_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+                      const isReady = checkedDocs[docKey]?.ready;
+                      const titleLower = doc.title.toLowerCase();
+                      const descLower = doc.description.toLowerCase();
+                      const isInsurance = titleLower.includes('insurance') || titleLower.includes('medical') || descLower.includes('insurance');
+                      const isCriticalNotice = descLower.includes('⚠️') || descLower.includes('mandatory') || descLower.includes('strictly');
 
-                  {/* Row 2: Recent Passport-Sized Photographs */}
-                  <tr className="transition-colors">
-                    {/* Col 1: Serial Number */}
-                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
-                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
-                        2
-                      </span>
-                    </td>
-                    {/* Col 2: Interactive Ready Checklist */}
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
-                      <div 
-                        onClick={() => toggleDocReady('doc_req_photo')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                        title={checkedDocs['doc_req_photo']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
-                      >
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                          checkedDocs['doc_req_photo']?.ready
-                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                        }`}>
-                          {checkedDocs['doc_req_photo']?.ready ? (
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                          ) : (
-                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                          )}
-                        </div>
-                        {checkedDocs['doc_req_photo']?.ready && (
-                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                        )}
-                      </div>
-                    </td>
-                    {/* Col 3: Document Details */}
-                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                          Two Recent Passport-Sized Pictures
-                        </strong>
-                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                          ✓ Mandatory
-                        </span>
-                      </div>
-                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
-                        Biometric Photo Standards (White Background, 2x2 inch / 35x45mm, neutral expression).
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
-                        📌 Mandatory Photo Rule: Taken within the last 6 months, no glasses, no headwear unless religious.
-                      </span>
-                    </td>
-                  </tr>
+                      return (
+                        <tr key={idx} className="transition-colors hover:bg-slate-50/50">
+                          {/* Col 1: Serial Number */}
+                          <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-top pt-4 sm:pt-5">
+                            <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                              {idx + 1}
+                            </span>
+                          </td>
 
-                  {/* Row 3: Passport */}
-                  <tr className="transition-colors">
-                    {/* Col 1: Serial Number */}
-                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
-                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
-                        3
-                      </span>
-                    </td>
-                    {/* Col 2: Interactive Ready Checklist */}
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
-                      <div 
-                        onClick={() => toggleDocReady('doc_req_passport')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                        title={checkedDocs['doc_req_passport']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
-                      >
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                          checkedDocs['doc_req_passport']?.ready
-                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                        }`}>
-                          {checkedDocs['doc_req_passport']?.ready ? (
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                          ) : (
-                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                          )}
-                        </div>
-                        {checkedDocs['doc_req_passport']?.ready && (
-                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                        )}
-                      </div>
-                    </td>
-                    {/* Col 3: Document Details */}
-                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                          Original Passport
-                        </strong>
-                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                          ✓ Mandatory
-                        </span>
-                      </div>
-                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
-                        Current &amp; Previous Passports (Minimum 6 months validity from planned departure date, at least 2 blank visa pages).
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
-                        📌 Mandatory Passport Rule: Must have 6+ months remaining validity and minimum 2 consecutive blank visa pages.
-                      </span>
-                    </td>
-                  </tr>
-
-                  {/* Row 4: Medical / Health Insurance */}
-                  <tr className="transition-colors">
-                    {/* Col 1: Serial Number */}
-                    <td className="py-3.5 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
-                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
-                        4
-                      </span>
-                    </td>
-                    {/* Col 2: Interactive Ready Checklist */}
-                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
-                      <div 
-                        onClick={() => toggleDocReady('doc_req_insurance')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                        title={checkedDocs['doc_req_insurance']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
-                      >
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                          checkedDocs['doc_req_insurance']?.ready
-                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                        }`}>
-                          {checkedDocs['doc_req_insurance']?.ready ? (
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                          ) : (
-                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                          )}
-                        </div>
-                        {checkedDocs['doc_req_insurance']?.ready && (
-                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                        )}
-                      </div>
-                    </td>
-                    {/* Col 3: Document Details */}
-                    <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                            Medical &amp; Travel Insurance
-                          </strong>
-                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                            ✓ Mandatory Mandate
-                          </span>
-                        </div>
-                        <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
-                          Consular-approved health coverage including emergency medical evacuation &amp; repatriation. (Holders of diplomatic passports are exempted).
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
-                          📌 Mandatory Insurance Mandate: Must cover the complete duration of stay with minimum statutory emergency repatriation cover.
-                        </span>
-                      </div>
-
-                      {/* High-Contrast Modern Assistance Box (Pure White Background) */}
-                      <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-sky-900 bg-sky-100/90 px-2.5 py-0.5 rounded-full border border-sky-200">
-                            Consular Assistance
-                          </span>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                          You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, TravlTik provides direct consular-approved insurance policy issuance.
-                        </p>
-                        
-                        <div className="pt-1">
-                          <a
-                            href="/find-experts?category=insurance"
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#004e8c] hover:bg-[#003866] text-white rounded-xl text-xs sm:text-sm font-black tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95"
-                          >
-                            <span>FIND A MEDICAL INSURANCE</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </a>
-                        </div>
-
-                        <p className="text-[10px] text-slate-400 italic leading-relaxed pt-1">
-                          Disclaimer: By clicking "Find a medical insurance", you will be assisted with verified insurance partners. TravlTik does not accept liability arising from insurer underwriting decisions.
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-
-                  {/* Row 5: Purpose Specific Required Documents */}
-                  <tr className="transition-colors">
-                    {/* Col 1: Serial Number */}
-                    <td className="py-3.5 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
-                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
-                        5
-                      </span>
-                    </td>
-                    {/* Col 2: Interactive Ready Checklist */}
-                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
-                      <div 
-                        onClick={() => toggleDocReady('doc_req_purpose')}
-                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                        title={checkedDocs['doc_req_purpose']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
-                      >
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                          checkedDocs['doc_req_purpose']?.ready
-                            ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                        }`}>
-                          {checkedDocs['doc_req_purpose']?.ready ? (
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                          ) : (
-                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                          )}
-                        </div>
-                        {checkedDocs['doc_req_purpose']?.ready && (
-                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                        )}
-                      </div>
-                    </td>
-                    {/* Col 3: Document Details */}
-                    <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                            Required Supporting Documents
-                          </strong>
-                          <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md inline-block">
-                            {cleanPurposeLabel} Specific
-                          </span>
-                        </div>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
-                          📌 Mandatory Evidence: All supporting financial and travel proofs must be authentic and verifiable.
-                        </span>
-                      </div>
-
-                      {/* Crystal Clear Sub-Checklist Cards (Pure White Background) */}
-                      <div className="space-y-3 pt-1">
-                        {selectedPurpose === 'student' || cleanPurposeLabel.toLowerCase().includes('stud') ? (
-                          <>
-                            {/* Sub-item 1 */}
+                          {/* Col 2: Interactive Ready Checklist */}
+                          <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-5">
                             <div 
-                              onClick={() => toggleDocReady('sub_student_i20')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              onClick={() => toggleDocReady(docKey)}
+                              className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                              title={isReady ? "Marked as Ready" : "Click to mark as Ready"}
                             >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_student_i20']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
+                              <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
+                                isReady
+                                  ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
                                   : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
-                                {checkedDocs['sub_student_i20']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                                {isReady ? (
+                                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
+                                ) : (
+                                  <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
+                                )}
                               </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    University Acceptance Letter (Form I-20 / CAS):
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Confirmed unconditional offer letter and signed Form I-20 / CAS statement.
+                              {isReady && (
+                                <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Col 3: Document Details */}
+                          <td className="py-3 sm:py-5 px-3 sm:px-8 align-top space-y-2 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                                {doc.title}
+                              </strong>
+                              {doc.is_mandatory ? (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                                  ✓ Mandatory
                                 </span>
-                              </div>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-md">
+                                  Optional / Supporting
+                                </span>
+                              )}
                             </div>
 
-                            {/* Sub-item 2 */}
-                            <div 
-                              onClick={() => toggleDocReady('sub_student_fin')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_student_fin']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_student_fin']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Financial Solvency Proof:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Verified liquid bank statements (last 6 months) or educational loan sanction letter.
-                                </span>
-                              </div>
+                            {/* Formatted Multi-line / Bullet Description */}
+                            <div className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold space-y-1.5 break-words leading-relaxed whitespace-pre-line">
+                              {doc.description}
                             </div>
 
-                            {/* Sub-item 3 */}
-                            <div 
-                              onClick={() => toggleDocReady('sub_student_academic')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_student_academic']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_student_academic']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Academic &amp; Language Records:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
+                            {/* Consular Insurance Assistance Card */}
+                            {isInsurance && (
+                              <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3 shadow-2xs mt-3">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] font-black uppercase tracking-wider text-sky-900 bg-sky-100/90 px-2.5 py-0.5 rounded-full border border-sky-200">
+                                    Consular Assistance
                                   </span>
                                 </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Academic transcripts, degree certificates, and official IELTS / TOEFL / PTE scorecards.
-                                </span>
-                              </div>
-                            </div>
-                          </>
-                        ) : selectedPurpose === 'work' || cleanPurposeLabel.toLowerCase().includes('work') || cleanPurposeLabel.toLowerCase().includes('job') ? (
-                          <>
-                            <div 
-                              onClick={() => toggleDocReady('sub_work_offer')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_work_offer']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_work_offer']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Employment Offer &amp; Sponsorship:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
+                                <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                                  You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, TravlTik provides direct consular-approved insurance policy issuance.
+                                </p>
+                                <div className="pt-1">
+                                  <a
+                                    href="/find-experts?category=insurance"
+                                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#004e8c] hover:bg-[#003866] text-white rounded-xl text-xs sm:text-sm font-black tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95"
+                                  >
+                                    <span>FIND A MEDICAL INSURANCE</span>
+                                    <ArrowRight className="w-4 h-4" />
+                                  </a>
                                 </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Official signed job contract and employer Certificate of Sponsorship (CoS) / petition.
-                                </span>
                               </div>
-                            </div>
-
-                            <div 
-                              onClick={() => toggleDocReady('sub_work_exp')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_work_exp']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_work_exp']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Experience &amp; Skill Verification:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Prior service letters, salary slips (3–6 months), and relevant professional credentials.
-                                </span>
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div 
-                              onClick={() => toggleDocReady('sub_tour_flight')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_tour_flight']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_tour_flight']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Confirmed Flight Reservation:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Confirmed return or onward round-trip flight booking itinerary with verifiable PNR.
-                                </span>
-                              </div>
-                            </div>
-
-                            <div 
-                              onClick={() => toggleDocReady('sub_tour_hotel')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_tour_hotel']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_tour_hotel']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Accommodation Proof:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Verified hotel booking voucher or host invitation letter with proof of address.
-                                </span>
-                              </div>
-                            </div>
-
-                            <div 
-                              onClick={() => toggleDocReady('sub_tour_funds')}
-                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
-                            >
-                              <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_tour_funds']?.ready
-                                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {checkedDocs['sub_tour_funds']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
-                              </div>
-                              <div className="min-w-0 flex-1 text-left">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                    Financial Solvency Proof:
-                                  </strong>
-                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                                    Mandatory
-                                  </span>
-                                </div>
-                                <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Bank account statements of the last 3–6 months showing adequate travel funds.
-                                </span>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className="py-8 text-center text-slate-500 font-semibold">
+                        No specific documents listed for this category. Please check official embassy guidelines.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
 
+            {/* ── 3. FINANCIAL PROOFS & SOLVENCY BREAKDOWN ── */}
+            {data.financial_proofs && data.financial_proofs.length > 0 && (
+              <div className="pt-6 border-t border-slate-200/80 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center shrink-0">
+                    <DollarSign className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
+                      Financial Proofs &amp; Solvency Benchmarks
+                    </h4>
+                    <span className="text-xs text-slate-500 font-medium block">
+                      Mandatory financial documents required to prove self-sufficiency
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+                  {data.financial_proofs.map((fin, fIdx) => (
+                    <div key={fIdx} className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-2 text-left">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <strong className="font-extrabold text-slate-900 text-sm sm:text-base">
+                          {fin.type}
+                        </strong>
+                        {fin.minimum_balance_or_amount && (
+                          <span className="text-[11px] font-black text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
+                            {fin.minimum_balance_or_amount}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-slate-600 font-semibold space-y-1">
+                        <p><span className="text-slate-400 font-bold uppercase text-[10px]">Timeline:</span> {fin.time_frame}</p>
+                        <p className="text-slate-700 font-medium">{fin.notes}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── 4. OFFICIAL CONSULAR DIRECTIVES & MANDATES ── */}
+            {data.other_requirements && data.other_requirements.length > 0 && (
+              <div className="pt-6 border-t border-slate-200/80 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-700 text-white flex items-center justify-center shrink-0">
+                    <AlertCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
+                      Official Consular Directives &amp; Compliance Mandates
+                    </h4>
+                    <span className="text-xs text-slate-500 font-medium block">
+                      Crucial legal guidelines, 90/180 rules, and application standards
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+                  {data.other_requirements.map((mandate, mIdx) => {
+                    const visual = getMandateVisual(mandate.category, mIdx);
+                    return (
+                      <div key={mIdx} className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-2 text-left shadow-2xs">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${visual.badgeBg}`}>
+                            {mandate.category}
+                          </span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                          {mandate.details}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : null}

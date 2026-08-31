@@ -450,21 +450,21 @@ export function UserDashboard() {
 
                     {/* Incomplete Profile Alert Banner */}
                     {isProfileIncomplete && (
-                        <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs w-full animate-fade-up">
                             <div className="flex items-start gap-3.5">
-                                <div className="w-10 h-10 rounded-2xl bg-amber-100/90 flex items-center justify-center text-amber-800 shrink-0 font-black text-lg border border-amber-200">
-                                    ⚠️
+                                <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0 font-black text-lg border border-slate-200">
+                                    👤
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your seeker profile details</h4>
-                                    <p className="text-xs font-semibold text-amber-800 mt-1 leading-relaxed">
+                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">Complete your seeker profile details</h4>
+                                    <p className="text-xs font-medium text-slate-500 mt-1 leading-relaxed">
                                         Please add your phone number, citizenship country, and target visa goals to receive personalized consultant matches.
                                     </p>
                                 </div>
                             </div>
                             <button 
                                 onClick={() => setShowProfileModal(true)}
-                                className="bg-amber-800 hover:bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
                                 <span>Complete Profile</span>
                                 <ChevronRight className="w-4 h-4" />

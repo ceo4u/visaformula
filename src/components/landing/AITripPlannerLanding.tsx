@@ -57,6 +57,7 @@ import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload,
   Award,
   X,
   Plus,
+  Minus,
   FileUp,
   Save,
   RotateCw,
@@ -2744,23 +2745,39 @@ return (
                       </div>
                     </div>
 
-                    {/* 5. Travelers (1 Col) */}
-                    <div className="lg:col-span-1 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1 truncate">Travelers</label>
-                      <select
-                        value={domesticMembers}
-                        onChange={(e) => setDomesticMembers(parseInt(e.target.value, 10))}
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2.5 text-xs sm:text-sm font-bold text-slate-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B] cursor-pointer"
-                      >
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4+</option>
-                      </select>
+                    {/* 5. Travelers (+ / - Stepper) (2 Cols) */}
+                    <div className="lg:col-span-2 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1 truncate">
+                        Travelers
+                      </label>
+                      <div className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 flex items-center justify-between shadow-2xs">
+                        <button
+                          type="button"
+                          onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
+                          disabled={domesticMembers <= 1}
+                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-800 font-black flex items-center justify-center text-sm transition-all select-none cursor-pointer"
+                          title="Decrease travelers"
+                        >
+                          <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+                        </button>
+                        <span className="font-extrabold text-xs sm:text-sm text-slate-900 select-none px-1 flex items-center gap-1.5">
+                          <Users className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{domesticMembers}</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setDomesticMembers(Math.min(20, domesticMembers + 1))}
+                          disabled={domesticMembers >= 20}
+                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-800 font-black flex items-center justify-center text-sm transition-all select-none cursor-pointer"
+                          title="Increase travelers"
+                        >
+                          <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                        </button>
+                      </div>
                     </div>
 
-                    {/* 6. Action Button (1 Col on 12-grid or clean responsive wrapper) */}
-                    <div className="lg:col-span-1">
+                    {/* 6. Action Button (Full Width on Mobile, Sleek Align on Desktop) */}
+                    <div className="lg:col-span-12 flex justify-end pt-1">
                       <button
                         type="button"
                         onClick={() => {
@@ -2773,15 +2790,17 @@ return (
                           }, 600);
                         }}
                         disabled={isGeneratingDomestic}
-                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
-                        title="Plan Domestic Trip"
+                        className="w-full sm:w-auto px-8 h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                       >
                         {isGeneratingDomestic ? (
-                          <RotateCw className="w-4 h-4 animate-spin text-white" />
+                          <>
+                            <RotateCw className="w-4 h-4 animate-spin text-white" />
+                            <span>Curating Tour...</span>
+                          </>
                         ) : (
                           <>
                             <Sparkles className="w-4 h-4 text-emerald-400" />
-                            <span className="truncate">Plan →</span>
+                            <span>Plan Domestic Trip →</span>
                           </>
                         )}
                       </button>

@@ -2264,58 +2264,7 @@ return (
               </p>
             </div>
 
-            {/* ── TRAVEL READINESS INTERACTIVE CARD (ALIGNED RIGHT DIRECTLY ABOVE SEARCH BUTTON) ── */}
-            <div className="w-full flex justify-start lg:justify-end mb-2.5 sm:mb-3.5">
-              <div className="w-full sm:w-auto min-w-[300px] sm:max-w-lg bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-[0_8px_25px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3 sm:gap-4 hover:shadow-md transition-all">
-                
-                {/* Left: Gauge & Status */}
-                <div className="flex items-center gap-3 min-w-0">
-                  {/* Circular Gauge */}
-                  <div className="relative w-13 h-13 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="10" />
-                      <circle cx="50" cy="50" r="38" fill="none" stroke="url(#searchReadinessGrad)" strokeWidth="10" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />
-                      <defs>
-                        <linearGradient id="searchReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#00A896" />
-                          <stop offset="100%" stopColor="#028090" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                      <span className="text-xs sm:text-sm font-black text-slate-900 leading-none">78%</span>
-                      <span className="text-[8px] font-bold text-[#00A896]">Ready</span>
-                    </div>
-                  </div>
-
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-teal-50 text-[#00A896]">
-                        <Plane className="w-3.5 h-3.5 stroke-[2.5]" />
-                      </span>
-                      <span className="text-xs sm:text-[13px] font-black text-[#00A896] truncate">You are almost there!</span>
-                    </div>
-                    <p className="text-[10px] sm:text-xs text-slate-600 font-medium leading-snug mt-0.5 truncate sm:whitespace-normal">
-                      Complete remaining steps to strengthen application.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right: Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#008f80] hover:to-[#016875] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all active:scale-95 whitespace-nowrap cursor-pointer shrink-0"
-                >
-                  Improve Readiness →
-                </button>
-              </div>
-            </div>
-
-            {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD ── */}
+            {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
               {/* 3 Tabs attached seamlessly to the top of the search card */}

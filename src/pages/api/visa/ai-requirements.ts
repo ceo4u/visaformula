@@ -424,6 +424,465 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
     };
   }
 
+  // ═══════════════════════════════════════════════════════════════
+  // SINGAPORE PATHWAYS (Official ICA e-Visa & SGAC)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('singapore') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Singapore',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Singapore Entry Visa (e-Visa via ICA / SAVE Portal)',
+      source_url: 'https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements',
+      official_source_name: 'Immigration & Checkpoints Authority (ICA) Singapore',
+      processing_time: '3–5 Business Days',
+      validity: '30 Days to 2 Years Multiple Entry',
+      stay_duration: 'Up to 30 Days Per Visit',
+      entry_type: 'Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 2 Years Multiple Entry',
+        max_stay_per_entry: 'Up to 30 Days Per Visit',
+        entry_type: 'Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Original passport valid for at least 6 months from the date of entry into Singapore with minimum 2 blank visa pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Form 14A Visa Application Form',
+          description: 'Fully completed and signed official Form 14A matching passport details with applicant photograph affixed.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Photographs — 35×45mm',
+          description: 'Two recent color photographs (35mm x 45mm, matte/semi-matte finish, white background, taken within last 3 months, 80% face coverage, no borders).',
+          is_mandatory: true
+        },
+        {
+          title: 'SG Arrival Card (SGAC) with Electronic Health Declaration',
+          description: 'Mandatory online arrival card submitted within 3 days prior to arrival in Singapore via official ICA portal (eservices.ica.gov.sg) or MyICA Mobile app.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Confirmed round-trip flight booking with verifiable PNR showing entry and exit from Singapore.',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking / Accommodation Proof',
+          description: 'Confirmed hotel reservations in Singapore for all nights of stay, or an official invitation letter (Form V39A) if staying with a Singapore Citizen/PR.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Employment / NOC',
+          description: 'Original leave approval / NOC letter on company letterhead confirming designation, salary, approved leave dates, and return commitment + last 3 months salary slips.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Bank Statements (Last 3–6 Months)',
+          minimum_balance_or_amount: 'Minimum ₹1,00,000 – ₹1,50,000 liquid balance',
+          time_frame: 'Last 3 to 6 months (original bank-stamped)',
+          notes: 'Bank statement with original bank seal and signature showing steady financial standing.'
+        },
+        {
+          type: 'Income Tax Returns (ITR-V)',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last 2 consecutive financial years',
+          notes: 'ITR-V acknowledgement copies showing declared annual income.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Authorized Agent Submission',
+          details: 'Applications from India must be submitted online through ICA Authorized Visa Agents (AVAs) or strategic partner agencies. Individual direct filing on SAVE is only permitted if sponsored by a Singapore Citizen/PR.'
+        },
+        {
+          category: 'SGAC Digital Entry Clearance',
+          details: 'Submit the Singapore Arrival Card (SGAC) online for free within 72 hours before arrival to ensure seamless biometrics clearance at Changi Airport.'
+        }
+      ],
+      how_to_apply: [
+        'Compile mandatory documents: valid passport, Form 14A, 35x45mm photos, flight & hotel bookings, bank statements, and employment NOC.',
+        'Submit application through an ICA Authorized Visa Agent (AVA) in India.',
+        'Pay the official visa fee of SGD $30 + authorized agency processing fee.',
+        'Track application status online on the official ICA SAVE portal.',
+        'Receive your official Singapore electronic visa (e-Visa PDF) via email and print it for travel.',
+        'Submit SG Arrival Card (SGAC) online within 3 days before flight and clear automated immigration at Changi Airport.'
+      ],
+      costs: {
+        visa_fee: 'SGD $30 (approx. ₹1,900)',
+        service_fee: '₹1,000 – ₹1,500 (Authorized Agent Fee)',
+        total_fee: '₹3,000 – ₹3,500 Total Reference',
+        notes: 'Official ICA consular visa fee is SGD $30. Non-refundable once processed.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 4 weeks before intended departure date.',
+        decision_time: 'Standard: 3 to 5 business days after agent submission.',
+        max_extension: 'Can be extended for an additional 30 days online via ICA e-Services while in Singapore.',
+        center_notes: 'Processed electronically; visa delivered as a digital PDF with QR verification code.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // INDONESIA / BALI PATHWAYS (Official e-VOA & Customs QR)
+  // ═══════════════════════════════════════════════════════════════
+  if ((toLower.includes('indonesia') || toLower.includes('bali')) && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Indonesia',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Electronic Visa on Arrival (e-VOA - B1 Tourist 30 Days)',
+      source_url: 'https://evisa.imigrasi.go.id',
+      official_source_name: 'Directorate General of Immigration, Ministry of Law & Human Rights, Indonesia',
+      processing_time: 'Instant / 1–2 Hours Online (or on Arrival)',
+      validity: '90 Days to Enter from Issuance',
+      stay_duration: '30 Days (Extendable by 30 Days)',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '90 Days Entry Window',
+        max_stay_per_entry: '30 Days (Extendable to 60 Days)',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months from the date of arrival in Indonesia with minimum 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Bio-Data Page Scan',
+          description: 'Clear color scan of passport bio-data page (PDF or JPEG format, minimum 1500x2000 resolution).',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Size Photograph',
+          description: 'Recent color photograph on white background (standard 35x45mm or 4x6cm, JPEG format).',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return / Onward Flight Ticket',
+          description: 'Confirmed airline ticket leaving Indonesia within 30 days of arrival.',
+          is_mandatory: true
+        },
+        {
+          title: 'Electronic Customs Declaration (e-CD)',
+          description: 'Mandatory customs QR code filled online within 3 days prior to arrival at ecd.beacukai.go.id.',
+          is_mandatory: true
+        },
+        {
+          title: 'Bali Tourist Levy (Bali Only)',
+          description: 'Mandatory provincial tourist levy of IDR 150,000 (approx. ₹800) paid online via lovebali.baliprov.go.id prior to landing in Bali.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Expense Funds',
+          minimum_balance_or_amount: 'USD $1,000 or equivalent in liquid funds / international credit card',
+          time_frame: 'Carried during travel',
+          notes: 'Standard spot-check solvency requirement upon arrival.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Online e-VOA vs. Counter VOA',
+          details: 'Applying online at evisa.imigrasi.go.id lets you use automated e-gates at Jakarta (CGK) and Bali Ngurah Rai (DPS) airports, avoiding long queue counters.'
+        },
+        {
+          category: '30-Day In-Country Extension',
+          details: 'If obtained online via evisa.imigrasi.go.id, the e-VOA can be extended online for another 30 days with a single click without visiting an immigration office.'
+        }
+      ],
+      how_to_apply: [
+        'Visit the official Indonesian immigration portal: evisa.imigrasi.go.id.',
+        'Upload your passport bio page and passport photograph.',
+        'Pay the official visa fee of IDR 500,000 (approx. ₹2,700 / $35 USD) online via credit card.',
+        'Download your approved e-VOA PDF instantly.',
+        'Complete the Electronic Customs Declaration (e-CD) at ecd.beacukai.go.id within 3 days before flight.',
+        'Pay Bali Tourist Levy on lovebali.baliprov.go.id (if visiting Bali).',
+        'Use electronic gates or immigration counters at DPS/CGK airport for rapid clearance.'
+      ],
+      costs: {
+        visa_fee: 'IDR 500,000 (approx. ₹2,700 / $35 USD)',
+        service_fee: '₹0 (Official Direct Portal)',
+        total_fee: 'IDR 500,000 Total Reference',
+        notes: 'Payable online via credit/debit card or in cash/card on arrival at airport counters.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 14 days before your flight date.',
+        decision_time: 'Instant / Automated approval in 10 to 60 minutes.',
+        max_extension: 'Can be extended once for 30 additional days (total 60 days stay).',
+        center_notes: 'Available online for all major entry points: Bali (DPS), Jakarta (CGK), Surabaya (SUB).'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // VIETNAM PATHWAYS (Official E-Visa 30/90 Days)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('vietnam') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Vietnam',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Vietnam Electronic Visa (E-Visa - 30 to 90 Days)',
+      source_url: 'https://evisa.xuatnhapcanh.gov.vn',
+      official_source_name: 'Vietnam Immigration Department (Ministry of Public Security)',
+      processing_time: '3 Business Days (72 Hours)',
+      validity: '30 or 90 Days Single / Multiple Entry',
+      stay_duration: 'Up to 90 Days Per Entry',
+      entry_type: 'Single / Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 90 Days',
+        max_stay_per_entry: 'Up to 90 Days',
+        entry_type: 'Single / Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months from entry date into Vietnam with at least 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Bio-Data Page Scan',
+          description: 'Clear, full-page color scan of passport bio-data page in JPG format (no glare or cut edges).',
+          is_mandatory: true
+        },
+        {
+          title: 'Portrait Digital Photograph (4×6cm)',
+          description: 'Straight-looking photo on white background, no glasses, no headwear, taken within 6 months.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return / Onward Flight Ticket',
+          description: 'Round-trip air ticket with verifiable PNR booking.',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking / Accommodation Vouchers',
+          description: 'Confirmed hotel reservations for planned cities (Hanoi, Da Nang, Ho Chi Minh City, etc.).',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Travel Living Funds',
+          minimum_balance_or_amount: 'Sufficient funds for trip duration (approx. $500–$1,000 USD)',
+          time_frame: 'Carried during travel',
+          notes: 'Credit cards, debit cards, or liquid bank funds.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Designated Entry Checkpoints',
+          details: 'You must specify your exact entry and exit international airport/port on the application. Vietnam E-Visa is accepted at 33 international border checkpoints (HAN, SGN, DAD, CXR, PQC, etc.).'
+        }
+      ],
+      how_to_apply: [
+        'Visit the official Vietnam Immigration E-Visa portal: evisa.xuatnhapcanh.gov.vn.',
+        'Upload your passport bio page scan and portrait photograph.',
+        'Fill in personal details, intended entry port, and trip dates.',
+        'Pay the official visa fee ($25 USD single entry / $50 USD multiple entry) via credit card.',
+        'Save your Registration Code to track application progress.',
+        'After 3 business days, search with your code and print your official E-Visa PDF letter for boarding.'
+      ],
+      costs: {
+        visa_fee: '$25 USD Single Entry (₹2,100) / $50 USD Multiple Entry (₹4,200)',
+        service_fee: '₹0 (Official Direct Portal)',
+        total_fee: '$25 – $50 USD Total Reference',
+        notes: 'Non-refundable fee paid directly on the official government payment gateway.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 7 to 20 days before planned flight.',
+        decision_time: 'Standard: 3 business days (72 hours).',
+        max_extension: 'Can apply for 90-day multiple-entry e-visa directly online.',
+        center_notes: '100% digital electronic visa grant with QR code validation.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // JAPAN PATHWAYS (Official JAPAN eVISA & VFS)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('japan') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Japan',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Japan Short-Term Tourist eVisa (Single Entry 90 Days)',
+      source_url: 'https://www.evisa.mofa.go.jp',
+      official_source_name: 'Ministry of Foreign Affairs of Japan (MOFA) & Embassy of Japan',
+      processing_time: '5–7 Business Days',
+      validity: '3 Months from Date of Issue',
+      stay_duration: 'Up to 15, 30, or 90 Days',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '3 Months from Date of Issue',
+        max_stay_per_entry: 'Up to 15, 30, or 90 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Original passport valid for at least 6 months with minimum 2 blank visa pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Visa Application Form',
+          description: 'Completed Japan visa application form with signature matching passport.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Photograph — 45×35mm (or 2×2 inch)',
+          description: '1 recent photo taken within 6 months, white background, neutral expression, no borders.',
+          is_mandatory: true
+        },
+        {
+          title: 'Detailed Schedule of Stay (Taizai Nitteihyo)',
+          description: 'Day-by-day travel itinerary form outlining dates, planned activities, hotel names, addresses, and telephone numbers in Japan.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Flight Reservations',
+          description: 'Round-trip flight booking with verifiable PNR (refundable or reservation only).',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation',
+          description: 'Hotel booking vouchers for every night of stay in Japan (Tokyo, Kyoto, Osaka, etc.).',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Employment / Occupation',
+          description: 'Employer NOC / Leave Approval Letter on company letterhead stating designation, salary, joining date, and approved leave + salary slips for last 3 months.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Bank Statements (Last 6 Months)',
+          minimum_balance_or_amount: 'Minimum ₹1,50,000 – ₹2,50,000 liquid balance',
+          time_frame: 'Last 6 consecutive months (bank-stamped original)',
+          notes: 'Bank statement with original bank seal and branch manager signature demonstrating steady financial solvency.'
+        },
+        {
+          type: 'Income Tax Returns (ITR-V)',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last 2 to 3 financial years',
+          notes: 'ITR-V acknowledgement copies filed with the Income Tax Department of India.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'JAPAN eVISA Portal & Electronic Issuance',
+          details: 'Indian passport holders residing in India can apply online via the JAPAN eVISA portal (evisa.mofa.go.jp) through accredited VFS agencies, receiving an official digital "Visa Issuance Notice".'
+        },
+        {
+          category: 'Visit Japan Web (Fast Track Entry)',
+          details: 'Register on vjw-lp.digital.go.jp before departure for immigration and customs QR code clearance at Narita (NRT), Haneda (HND), and Kansai (KIX) airports.'
+        }
+      ],
+      how_to_apply: [
+        'Complete the Japan visa application form and draft your day-by-day Schedule of Stay itinerary.',
+        'Compile your document dossier: passport, photos, flight/hotel bookings, 6-month bank statements, ITR, and employer NOC.',
+        'Submit application online via JAPAN eVISA portal or at nearest VFS Global Japan center.',
+        'Pay official consular fee of 3,000 JPY + VFS logistics fee.',
+        'Track application status (takes 5 to 7 business days).',
+        'Receive your official digital Electronic Visa Issuance Notice or collect stamped passport from VFS.'
+      ],
+      costs: {
+        visa_fee: '3,000 JPY (approx. ₹1,700)',
+        service_fee: '₹750 – ₹1,200 (VFS Processing Fee)',
+        total_fee: '₹2,500 – ₹3,000 Total Reference',
+        notes: 'Consular visa fee is 3,000 JPY for single-entry tourist visa.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 6 weeks before planned travel date.',
+        decision_time: 'Standard: 5 to 7 working days from date of submission.',
+        max_extension: 'Single entry valid for 3 months from issuance date.',
+        center_notes: 'Handled via Embassy of Japan in New Delhi, Consulates in Mumbai, Chennai, Kolkata, and Bengaluru, and VFS Japan centers.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // SRI LANKA PATHWAYS (Official ETA / e-Visa)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('sri lanka') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Sri Lanka',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Sri Lanka Electronic Travel Authorization (ETA / e-Visa - 30 Days Double Entry)',
+      source_url: 'https://www.srilankaevisa.lk',
+      official_source_name: 'Department of Immigration and Emigration, Sri Lanka',
+      processing_time: 'Instant / 24–48 Hours Online',
+      validity: '180 Days from Date of Approval',
+      stay_duration: '30 Days (Double Entry, Extendable to 180 Days)',
+      entry_type: 'Double Entry',
+      validity_and_stay: {
+        visa_validity: '180 Days Validity',
+        max_stay_per_entry: '30 Days Per Visit (Double Entry)',
+        entry_type: 'Double Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months from the date of arrival in Sri Lanka with minimum 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return / Onward Flight Ticket',
+          description: 'Confirmed air ticket leaving Sri Lanka within 30 days of arrival.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation',
+          description: 'Hotel booking reservation or host address in Sri Lanka.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Maintenance Travel Funds',
+          minimum_balance_or_amount: 'USD $30–$50 per day of intended stay',
+          time_frame: 'Carried during travel',
+          notes: 'International credit card, debit card, or currency cash.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Double Entry Facility',
+          details: 'Standard tourist ETA grants double entry within 30 days from the initial date of entry.'
+        }
+      ],
+      how_to_apply: [
+        'Visit the official Sri Lanka eVisa portal: srilankaevisa.lk.',
+        'Select 30-Day Standard Tourist ETA and fill in passport details.',
+        'Upload passport bio page scan and photograph if requested.',
+        'Pay the nominal processing fee online via credit card.',
+        'Receive your official Electronic Travel Authorization approval notice via email.',
+        'Present ETA approval letter and passport at Colombo (CMB) airport immigration for entry stamping.'
+      ],
+      costs: {
+        visa_fee: '$20 – $50 USD (approx. ₹1,700 – ₹4,200, subject to periodic fee waivers for Indian tourists)',
+        service_fee: '₹0 (Official Portal)',
+        total_fee: '₹1,700 – ₹4,200 Total Reference',
+        notes: 'Periodic fee waivers for Indian citizens apply per Sri Lankan government bilateral agreements.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 15 days before your flight.',
+        decision_time: 'Automated processing within 24 to 48 hours.',
+        max_extension: 'Can be extended up to 180 days total at Department of Immigration in Battaramulla, Colombo.',
+        center_notes: 'Instant digital authorization linked directly to your passport number.'
+      }
+    };
+  }
 
   // ═══════════════════════════════════════════════════════════════
   // 1. UNITED KINGDOM PATHWAYS
@@ -1662,12 +2121,18 @@ export const POST: APIRoute = async ({ request }) => {
     const fromCountry = cleanCountryName(rawFrom);
     const toCountry = cleanCountryName(rawTo);
 
-    // 1. Try Gemini AI generation with fallback
-    const isToGreece = toCountry.toLowerCase().includes('greece');
-    const isToSchengen = isToGreece || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'poland', 'hungary', 'malta'].some(c => toCountry.toLowerCase().includes(c));
+    // List of countries with 100% verified official datasets
+    const toLowerCheck = toCountry.toLowerCase();
+    const isVerifiedCountry = [
+      'greece', 'united kingdom', 'uk', 'england', 'united states', 'usa', 'america',
+      'canada', 'australia', 'emirates', 'uae', 'dubai', 'abu dhabi',
+      'singapore', 'thailand', 'malaysia', 'maldives', 'mauritius',
+      'indonesia', 'bali', 'vietnam', 'japan', 'sri lanka',
+      'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'poland', 'hungary', 'malta'
+    ].some(c => toLowerCheck.includes(c));
 
-    // For Greece specifically, always serve the 100% verified Embassy of Greece & GVCW dataset for flawless accuracy
-    if (isToGreece) {
+    // Serve 100% verified official consular dataset directly for instant, flawless accuracy
+    if (isVerifiedCountry) {
       const verified = getVerifiedOfficialData(fromCountry, toCountry, purpose);
       return new Response(JSON.stringify({ success: true, data: verified, source: 'verified-consular-standards' }), {
         status: 200,

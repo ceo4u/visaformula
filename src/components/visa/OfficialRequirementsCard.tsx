@@ -532,7 +532,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* ── 1. OFFICIAL HOW TO APPLY (FULL-WIDTH CLEAN VECTOR ICON LIST AS SHOWN IN PHOTO) ── */}
+          {/* ── 1. HOW TO APPLY (FULL-WIDTH CLEAN VECTOR ICON LIST AS SHOWN IN PHOTO) ── */}
           <div id="section-visa-process" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div className="flex items-center gap-3.5">
@@ -540,7 +540,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   <ShieldCheck className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Official How to Apply</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">How to Apply</h3>
                 </div>
               </div>
 
@@ -585,7 +585,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
             {/* Fee Notes Breakdown */}
             <div className="pt-4 border-t border-slate-100 flex items-center gap-4 flex-wrap text-xs text-slate-500 font-medium">
-              <span><strong>Official Visa Fee:</strong> {data.costs.visa_fee}</span>
+              <span><strong>Visa Fee:</strong> {data.costs.visa_fee}</span>
               <span>•</span>
               <span><strong>VAC / Logistics Fee:</strong> {data.costs.service_fee}</span>
             </div>

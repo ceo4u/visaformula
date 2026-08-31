@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-// ✅ Firebase is imported statically at the top level.
-// This is safe because auth-provider is always used inside client:only="react" islands in Astro,
-// meaning this file NEVER runs on the server — so top-level Firebase imports work correctly.
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+// Firebase is loaded DYNAMICALLY inside event handlers.
+// This prevents server-side evaluation of firebase/app in Astro's SSR bundler.
+// The optimizeDeps.include in astro.config.mjs ensures Vite pre-bundles them at startup,
+// so the dynamic import() resolves instantly from cache without 504 errors.
 
 export interface User {
     uid: string;
@@ -183,6 +182,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         // ── Firebase config present: do REAL Google OAuth popup ──
+        // Dynamic imports resolve from Vite's pre-bundled cache (optimizeDeps.include)
+        const { initializeApp, getApps, getApp } = await import("firebase/app");
+        const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+
         const firebaseConfig = {
             apiKey,
             authDomain,

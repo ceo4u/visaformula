@@ -3844,6 +3844,61 @@ return (
             </div>
           </div>
 
+          {/* ── 6. TRAVEL READINESS AUDIT FEATURE CARD ── */}
+          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-16 mb-12 sm:mb-20 text-left px-2 sm:px-0">
+            <a
+              href="/visa-guide"
+              className="max-w-2xl mx-auto bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group block"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                    Check Your Travel Readiness
+                  </h3>
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[11px] sm:text-xs font-black uppercase tracking-wider">
+                    Instant AI Audit
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-5 sm:gap-7 my-2">
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-50 border-4 border-emerald-500 flex items-center justify-center shrink-0">
+                    <div className="text-center">
+                      <span className="text-lg sm:text-2xl font-black text-slate-950 leading-none">8.5</span>
+                      <span className="text-[10px] sm:text-xs text-slate-400 block font-bold">/10</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-bold text-slate-700">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <span>Passport Validity</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <span>Documents Verified</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <span>Finances Ready</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <span>Travel Insurance</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs text-slate-500 font-semibold">Ready for immediate consular assessment</span>
+                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00A86B] group-hover:translate-x-1 transition-transform">
+                  <span>Check Now</span>
+                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                </span>
+              </div>
+            </a>
+          </div>
+
         {/* ======================================================= */}
         {/* ── FLOATING EASY SEARCH WIDGET ── */}
         {/* ======================================================= */}

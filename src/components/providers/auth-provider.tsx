@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-// ⚠️ Firebase is loaded DYNAMICALLY (inside event handlers only)
-// This prevents the "multiple copies of React" / "Invalid hook call" error
-// that occurs when Firebase is imported at the top level in an Astro client:only island
+// ✅ Firebase is imported statically at the top level.
+// This is safe because auth-provider is always used inside client:only="react" islands in Astro,
+// meaning this file NEVER runs on the server — so top-level Firebase imports work correctly.
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export interface User {
     uid: string;
@@ -181,9 +183,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         // ── Firebase config present: do REAL Google OAuth popup ──
-        const { initializeApp, getApps, getApp } = await import("firebase/app");
-        const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
-
         const firebaseConfig = {
             apiKey,
             authDomain,
@@ -193,6 +192,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
         };
 
+        // Use statically-imported Firebase (avoids Vite dynamic import fetch failure)
         const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();

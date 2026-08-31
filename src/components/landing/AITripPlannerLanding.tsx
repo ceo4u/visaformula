@@ -3260,7 +3260,7 @@ return (
               ].map((card, i) => (
                 <div 
                   key={i}
-                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
+                  className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
                 >
                   <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
                     {card.icon}

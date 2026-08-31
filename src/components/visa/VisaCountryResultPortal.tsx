@@ -4498,19 +4498,10 @@ export function VisaCountryResultPortal({
                   <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
                     
                     {/* Header */}
-                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
-                          Verified Advisory
-                        </span>
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
-                      </div>
+                    <div className="border-b border-slate-100 pb-4">
                       <h4 className="text-xl font-heading font-black text-slate-950">
                         Search Verified Immigration Lawyers &amp; Study Visa Experts
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Connect with verified immigration lawyers &amp; certified advisors specializing in {countryName}.
-                      </p>
                     </div>
 
                     {/* Search & Filter Engine Box */}
@@ -5082,19 +5073,10 @@ export function VisaCountryResultPortal({
                   <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
                     
                     {/* Header */}
-                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
-                          Verified Advisory
-                        </span>
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
-                      </div>
+                    <div className="border-b border-slate-100 pb-4">
                       <h4 className="text-xl font-heading font-black text-slate-950">
                         Search Verified Tourist Visa Filing Experts &amp; Lawyers
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Connect with verified immigration lawyers &amp; certified advisors specializing in {countryName} visitor visas.
-                      </p>
                     </div>
 
                     {/* Search & Filter Engine Box */}
@@ -5650,19 +5632,10 @@ export function VisaCountryResultPortal({
                   <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
                     
                     {/* Header */}
-                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
-                          Verified Advisory
-                        </span>
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
-                      </div>
+                    <div className="border-b border-slate-100 pb-4">
                       <h4 className="text-xl font-heading font-black text-slate-950">
                         Search Licensed Work Visa Solicitors &amp; Corporate Counsel
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Connect with licensed solicitors specialized in Skilled Worker visas, CoS audits, and employment residency in {countryName}.
-                      </p>
                     </div>
 
                     {/* Search & Filter Engine Box */}

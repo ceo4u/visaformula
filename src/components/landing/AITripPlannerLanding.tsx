@@ -1472,10 +1472,14 @@ export function AITripPlannerLanding() {
   const domesticCountryRef = useRef<HTMLDivElement>(null);
   const domesticStateRef = useRef<HTMLDivElement>(null);
   const [domesticCity, setDomesticCity] = useState('');
+  const [isDomesticCityOpen, setIsDomesticCityOpen] = useState(false);
+  const domesticCityRef = useRef<HTMLDivElement>(null);
   const [domesticDestination, setDomesticDestination] = useState('');
   const [isDomesticDestOpen, setIsDomesticDestOpen] = useState(false);
   const domesticDestRef = useRef<HTMLDivElement>(null);
   const [domesticMembers, setDomesticMembers] = useState(1);
+  const [isDomesticMembersOpen, setIsDomesticMembersOpen] = useState(false);
+  const domesticMembersRef = useRef<HTMLDivElement>(null);
 
   // International Travel Duration
   const [tripDurationDays, setTripDurationDays] = useState('');
@@ -1730,10 +1734,11 @@ export function AITripPlannerLanding() {
       if (consultantDestRef.current && !consultantDestRef.current.contains(target)) setIsConsultantDestOpen(false);
       if (consultantPurposeRef.current && !consultantPurposeRef.current.contains(target)) setIsConsultantPurposeOpen(false);
       if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
-      if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
       if (checklistCountryRef.current && !checklistCountryRef.current.contains(target)) setIsChecklistCountryOpen(false);
-      if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
-      if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
+      if (domesticCountryRef.current && !domesticCountryRef.current.contains(target)) setIsDomesticCountryOpen(false);
+      if (domesticStateRef.current && !domesticStateRef.current.contains(target)) setIsDomesticStateOpen(false);
+      if (domesticDestRef.current && !domesticDestRef.current.contains(target)) setIsDomesticDestOpen(false);
+      if (domesticCityRef.current && !domesticCityRef.current.contains(target)) setIsDomesticCityOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);

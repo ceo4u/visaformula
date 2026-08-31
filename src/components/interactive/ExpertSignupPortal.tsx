@@ -230,7 +230,14 @@ function ExpertSignupPortalContent() {
       }
       window.location.href = '/consultant/dashboard';
     } catch (e: any) {
-      window.location.href = '/consultant/dashboard';
+      const msg = e?.message || '';
+      if (msg.includes('popup-closed') || msg.includes('closed-by-user')) {
+        setValidationError("Google sign-in was cancelled. Please try again.");
+      } else if (msg.includes('popup-blocked')) {
+        setValidationError("Popup was blocked by your browser. Please allow popups for this site and try again.");
+      } else {
+        setValidationError("Google Sign-In failed. Please try again or register with Email.");
+      }
     } finally {
       setGoogleLoading(false);
     }

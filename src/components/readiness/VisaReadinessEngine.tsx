@@ -34,10 +34,11 @@ interface CustomSelectProps {
   value: string;
   onChange: (val: string) => void;
   options: { value: string; label: string }[];
+  placeholder?: string;
   className?: string;
 }
 
-function CustomSelect({ value, onChange, options, className = "" }: CustomSelectProps) {
+function CustomSelect({ value, onChange, options, placeholder = "Select option...", className = "" }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -49,7 +50,7 @@ function CustomSelect({ value, onChange, options, className = "" }: CustomSelect
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const selected = options.find(o => o.value === value) || options[0];
+  const selected = options.find(o => o.value === value);
 
   return (
     <div ref={ref} className={`relative font-sans ${className}`}>
@@ -58,7 +59,9 @@ function CustomSelect({ value, onChange, options, className = "" }: CustomSelect
         onClick={() => setOpen(prev => !prev)}
         className="w-full flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer shadow-2xs font-sans text-left"
       >
-        <span className="truncate">{selected?.label || value}</span>
+        <span className={`truncate ${!selected ? 'text-slate-400 font-medium' : 'text-slate-900 font-bold'}`}>
+          {selected?.label || placeholder}
+        </span>
         <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00a896]' : ''}`} />
       </button>
 
@@ -103,34 +106,34 @@ export default function VisaReadinessEngine() {
   const [captchaToken, setCaptchaToken] = useState<string | null>('mock-token');
   const [captchaSolved, setCaptchaSolved] = useState<boolean>(true);
 
-  // ── Common Mandatory Inputs (All Users) ──
-  const [targetCountry, setTargetCountry] = useState('Canada');
-  const [residenceCountry, setResidenceCountry] = useState('India');
-  const [passportValidMonths, setPassportValidMonths] = useState('36');
+  // ── Common Mandatory Inputs (All Users - Completely Blank by Default) ──
+  const [targetCountry, setTargetCountry] = useState('');
+  const [residenceCountry, setResidenceCountry] = useState('');
+  const [passportValidMonths, setPassportValidMonths] = useState('');
   const [hasRefusals, setHasRefusals] = useState(false);
   const [refusalDetails, setRefusalDetails] = useState('');
 
   // ── Persona 1: Student Visa Inputs ──
-  const [academicLevel, setAcademicLevel] = useState("Master's Degree");
-  const [languageScore, setLanguageScore] = useState('IELTS - 6.5 Overall');
+  const [academicLevel, setAcademicLevel] = useState('');
+  const [languageScore, setLanguageScore] = useState('');
   const [bankBalanceUsd, setBankBalanceUsd] = useState('');
-  const [sponsorDetails, setSponsorDetails] = useState('Parents Co-Sponsor (Verified Funds)');
+  const [sponsorDetails, setSponsorDetails] = useState('');
 
   // ── Persona 2: Work & Job Seeker Inputs ──
-  const [workExperienceYears, setWorkExperienceYears] = useState('3 - 5 Years');
-  const [jobOfferStatus, setJobOfferStatus] = useState('Awaiting Job Offer');
-  const [ecaStatus, setEcaStatus] = useState('Yes');
+  const [workExperienceYears, setWorkExperienceYears] = useState('');
+  const [jobOfferStatus, setJobOfferStatus] = useState('');
+  const [ecaStatus, setEcaStatus] = useState('');
   const [monthlySalaryUsd, setMonthlySalaryUsd] = useState('');
 
   // ── Persona 3: Tourist & Visitor Inputs ──
-  const [bankBalance6MonthAvg, setBankBalance6MonthAvg] = useState('6 Months Stable Balance');
-  const [homeTiesProof, setHomeTiesProof] = useState('Employer NOC & Property Deed');
-  const [invitationStatus, setInvitationStatus] = useState('Self-sponsored Travel');
-  const [travelStamps, setTravelStamps] = useState('1-3 Visas');
+  const [bankBalance6MonthAvg, setBankBalance6MonthAvg] = useState('');
+  const [homeTiesProof, setHomeTiesProof] = useState('');
+  const [invitationStatus, setInvitationStatus] = useState('');
+  const [travelStamps, setTravelStamps] = useState('');
 
   // ── Persona 4: PR & Skilled Migration Inputs ──
-  const [pointsBenchmark, setPointsBenchmark] = useState('470 CRS');
-  const [skillAssessmentResult, setSkillAssessmentResult] = useState('Yes');
+  const [pointsBenchmark, setPointsBenchmark] = useState('');
+  const [skillAssessmentResult, setSkillAssessmentResult] = useState('');
   const [settlementFundsUsd, setSettlementFundsUsd] = useState('');
 
   // ── Assessment Results State ──
@@ -470,6 +473,7 @@ export default function VisaReadinessEngine() {
                     value={targetCountry}
                     onChange={setTargetCountry}
                     options={targetCountryOptions}
+                    placeholder="Select Target Destination Country..."
                   />
                 </div>
 
@@ -497,6 +501,7 @@ export default function VisaReadinessEngine() {
                       value={passportValidMonths}
                       onChange={setPassportValidMonths}
                       options={passportValidityOptions}
+                      placeholder="Select Validity..."
                     />
                   </div>
                 </div>
@@ -515,6 +520,7 @@ export default function VisaReadinessEngine() {
                           value={academicLevel}
                           onChange={setAcademicLevel}
                           options={academicLevelOptions}
+                          placeholder="Select Academic Level..."
                         />
                       </div>
 
@@ -526,6 +532,7 @@ export default function VisaReadinessEngine() {
                           value={languageScore}
                           onChange={setLanguageScore}
                           options={languageScoreOptions}
+                          placeholder="Select Language Score..."
                         />
                       </div>
                     </div>
@@ -557,6 +564,7 @@ export default function VisaReadinessEngine() {
                           value={sponsorDetails}
                           onChange={setSponsorDetails}
                           options={sponsorDetailsOptions}
+                          placeholder="Select Sponsor..."
                         />
                       </div>
                     </div>
@@ -575,6 +583,7 @@ export default function VisaReadinessEngine() {
                           value={workExperienceYears}
                           onChange={setWorkExperienceYears}
                           options={workExperienceOptions}
+                          placeholder="Select Experience..."
                         />
                       </div>
 
@@ -586,6 +595,7 @@ export default function VisaReadinessEngine() {
                           value={jobOfferStatus}
                           onChange={setJobOfferStatus}
                           options={jobOfferOptions}
+                          placeholder="Select Status..."
                         />
                       </div>
                     </div>
@@ -599,6 +609,7 @@ export default function VisaReadinessEngine() {
                           value={ecaStatus}
                           onChange={setEcaStatus}
                           options={ecaOptions}
+                          placeholder="Select ECA Status..."
                         />
                       </div>
 
@@ -634,6 +645,7 @@ export default function VisaReadinessEngine() {
                           value={bankBalance6MonthAvg}
                           onChange={setBankBalance6MonthAvg}
                           options={bankStabilityOptions}
+                          placeholder="Select Bank Stability..."
                         />
                       </div>
 
@@ -645,6 +657,7 @@ export default function VisaReadinessEngine() {
                           value={homeTiesProof}
                           onChange={setHomeTiesProof}
                           options={homeTiesOptions}
+                          placeholder="Select Home Ties Proof..."
                         />
                       </div>
                     </div>
@@ -658,6 +671,7 @@ export default function VisaReadinessEngine() {
                           value={invitationStatus}
                           onChange={setInvitationStatus}
                           options={invitationOptions}
+                          placeholder="Select Invitation..."
                         />
                       </div>
 
@@ -669,6 +683,7 @@ export default function VisaReadinessEngine() {
                           value={travelStamps}
                           onChange={setTravelStamps}
                           options={travelStampsOptions}
+                          placeholder="Select Prior Travel..."
                         />
                       </div>
                     </div>
@@ -701,6 +716,7 @@ export default function VisaReadinessEngine() {
                           value={skillAssessmentResult}
                           onChange={setSkillAssessmentResult}
                           options={skillAssessmentOptions}
+                          placeholder="Select Assessment..."
                         />
                       </div>
                     </div>

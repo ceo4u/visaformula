@@ -2575,7 +2575,7 @@ export function VisaCountryResultPortal({
   // Scroll Spy for Sub-Nav Tabs
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['section-visa-info', 'section-visa-process', 'section-documents', 'section-mandates', 'section-visa-readiness', 'section-reviews', 'section-faqs'];
+      const sections = ['section-visa-info', 'section-visa-process', 'section-documents', 'section-visa-readiness', 'section-reviews', 'section-faqs'];
       const scrollPosition = window.scrollY + 160;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -3203,7 +3203,6 @@ export function VisaCountryResultPortal({
               { id: 'section-visa-info', label: 'Visa Info' },
               { id: 'section-visa-process', label: 'How to Apply' },
               { id: 'section-documents', label: 'Documents' },
-              { id: 'section-mandates', label: 'Mandates' },
               { id: 'section-visa-readiness', label: 'Visa Readiness' },
               { id: 'section-faqs', label: 'FAQs' }
             ].map((tab) => {

@@ -658,9 +658,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     </td>
                     {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                        Visa Application Form
-                      </strong>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                          Visa Application Form
+                        </strong>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                          ✓ Mandatory
+                        </span>
+                      </div>
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         DS-160 / Official Consular Filing Sheet with confirmation barcode.
                       </span>
@@ -700,9 +705,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     </td>
                     {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                        Two Recent Passport-Sized Pictures
-                      </strong>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                          Two Recent Passport-Sized Pictures
+                        </strong>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                          ✓ Mandatory
+                        </span>
+                      </div>
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Biometric Photo Standards (White Background, 2x2 inch / 35x45mm, neutral expression).
                       </span>
@@ -742,9 +752,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     </td>
                     {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
-                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                        Original Passport
-                      </strong>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                          Original Passport
+                        </strong>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                          ✓ Mandatory
+                        </span>
+                      </div>
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Current &amp; Previous Passports (Minimum 6 months validity from planned departure date, at least 2 blank visa pages).
                       </span>
@@ -785,9 +800,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     {/* Col 3: Document Details */}
                     <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
-                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                          Medical &amp; Travel Insurance
-                        </strong>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                            Medical &amp; Travel Insurance
+                          </strong>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                            ✓ Mandatory Mandate
+                          </span>
+                        </div>
                         <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                           Consular-approved health coverage including emergency medical evacuation &amp; repatriation. (Holders of diplomatic passports are exempted).
                         </span>
@@ -856,12 +876,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     {/* Col 3: Document Details */}
                     <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
-                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
-                          Required Documents
-                        </strong>
-                        <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md inline-block mt-1">
-                          {cleanPurposeLabel} Specific
-                        </span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
+                            Required Supporting Documents
+                          </strong>
+                          <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md inline-block">
+                            {cleanPurposeLabel} Specific
+                          </span>
+                        </div>
                       </div>
 
                       {/* Crystal Clear Sub-Checklist Cards (Pure White Background) */}
@@ -871,7 +893,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {/* Sub-item 1 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_i20')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_i20']?.ready
@@ -881,11 +903,16 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_student_i20']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  University Acceptance Letter (Form I-20):
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    University Acceptance Letter (Form I-20 / CAS):
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Confirmed unconditional offer letter and signed Form I-20.
+                                  Confirmed unconditional offer letter and signed Form I-20 / CAS statement.
                                 </span>
                               </div>
                             </div>
@@ -893,7 +920,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {/* Sub-item 2 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_fin')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_fin']?.ready
@@ -903,9 +930,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_student_fin']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Financial Solvency Proof:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Financial Solvency Proof:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
                                   Verified liquid bank statements (last 6 months) or educational loan sanction letter.
                                 </span>
@@ -915,7 +947,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {/* Sub-item 3 */}
                             <div 
                               onClick={() => toggleDocReady('sub_student_academic')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_student_academic']?.ready
@@ -925,55 +957,70 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_student_academic']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Academic &amp; Language Records:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Academic &amp; Language Records:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Recognized degree certificates and official test scorecards (IELTS / PTE / TOEFL).
+                                  Academic transcripts, degree certificates, and official IELTS / TOEFL / PTE scorecards.
                                 </span>
                               </div>
                             </div>
                           </>
-                        ) : cleanPurposeLabel.toLowerCase().includes('work') ? (
+                        ) : selectedPurpose === 'work' || cleanPurposeLabel.toLowerCase().includes('work') || cleanPurposeLabel.toLowerCase().includes('job') ? (
                           <>
                             <div 
-                              onClick={() => toggleDocReady('sub_work_contract')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              onClick={() => toggleDocReady('sub_work_offer')}
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_work_contract']?.ready
+                                checkedDocs['sub_work_offer']?.ready
                                   ? 'bg-emerald-600 border-emerald-600 text-white'
                                   : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
-                                {checkedDocs['sub_work_contract']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                                {checkedDocs['sub_work_offer']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Signed Employment Contract:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Employment Offer &amp; Sponsorship:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Copy of signed offer letter with confirmed employer sponsorship and job description.
+                                  Official signed job contract and employer Certificate of Sponsorship (CoS) / petition.
                                 </span>
                               </div>
                             </div>
 
                             <div 
-                              onClick={() => toggleDocReady('sub_work_permit')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              onClick={() => toggleDocReady('sub_work_exp')}
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
-                                checkedDocs['sub_work_permit']?.ready
+                                checkedDocs['sub_work_exp']?.ready
                                   ? 'bg-emerald-600 border-emerald-600 text-white'
                                   : 'border-slate-300 bg-white group-hover:border-emerald-500'
                               }`}>
-                                {checkedDocs['sub_work_permit']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                                {checkedDocs['sub_work_exp']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Labour Approval / Work Authorization:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Experience &amp; Skill Verification:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  In-Principle Approval (IPA), Certificate of Sponsorship (CoS), or Ministry of Labour clearance.
+                                  Prior service letters, salary slips (3–6 months), and relevant professional credentials.
                                 </span>
                               </div>
                             </div>
@@ -982,7 +1029,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                           <>
                             <div 
                               onClick={() => toggleDocReady('sub_tour_flight')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_flight']?.ready
@@ -992,18 +1039,23 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_tour_flight']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Flight Itinerary:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Confirmed Flight Reservation:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
-                                  Confirmed round-trip flight booking or verifiable itinerary reservation.
+                                  Confirmed return or onward round-trip flight booking itinerary with verifiable PNR.
                                 </span>
                               </div>
                             </div>
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_hotel')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_hotel']?.ready
@@ -1013,9 +1065,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_tour_hotel']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Accommodation Proof:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Accommodation Proof:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
                                   Verified hotel booking voucher or host invitation letter with proof of address.
                                 </span>
@@ -1024,7 +1081,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                             <div 
                               onClick={() => toggleDocReady('sub_tour_funds')}
-                              className="bg-white  border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
+                              className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-xl p-3.5 sm:p-4 flex items-start gap-3.5 cursor-pointer select-none transition-all shadow-2xs group"
                             >
                               <div className={`w-5 h-5 rounded-lg border-2 shrink-0 transition-all flex items-center justify-center mt-0.5 ${
                                 checkedDocs['sub_tour_funds']?.ready
@@ -1034,9 +1091,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 {checkedDocs['sub_tour_funds']?.ready && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                               </div>
                               <div className="min-w-0 flex-1 text-left">
-                                <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
-                                  Financial Solvency Proof:
-                                </strong>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <strong className="font-extrabold text-slate-950 block text-xs sm:text-sm leading-snug">
+                                    Financial Solvency Proof:
+                                  </strong>
+                                  <span className="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                                    Mandatory
+                                  </span>
+                                </div>
                                 <span className="text-xs sm:text-[13px] text-slate-600 font-medium block mt-0.5 leading-relaxed">
                                   Bank account statements of the last 3–6 months showing adequate travel funds.
                                 </span>
@@ -1051,66 +1113,64 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </tbody>
               </table>
             </div>
+
+            {/* ── INTEGRATED MANDATES & LEGAL DIRECTIVES (DIRECTLY UNDER DOCUMENTS TABLE) ── */}
+            {data && data.other_requirements && data.other_requirements.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-slate-200 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                    <AlertCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
+                      Official Consular Mandates &amp; Legal Directives
+                    </h4>
+                    <span className="text-xs text-slate-500 font-semibold block">
+                      Mandatory statutory compliance rules for {cleanTo} visa adjudication
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+                  {data.other_requirements.map((req, idx) => {
+                    const visual = getMandateVisual(req.category, idx);
+                    const isInsurance = req.category.toLowerCase().includes('insurance') || req.category.toLowerCase().includes('health') || req.category.toLowerCase().includes('ihs');
+
+                    return (
+                      <div key={idx} className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 hover:border-slate-300 transition-colors">
+                        <div className="shrink-0 pt-0.5">
+                          {visual.icon}
+                        </div>
+                        <div className="space-y-1.5 min-w-0 flex-1 text-left">
+                          <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md ${visual.badgeBg}`}>
+                            <span>📌 {visual.tag}</span>
+                          </span>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
+                            <strong className="font-extrabold text-slate-950 mr-1.5">{req.category}:</strong>
+                            {req.details}
+                          </p>
+                          {isInsurance && (
+                            <div className="pt-1">
+                              <a
+                                href="/find-experts?category=insurance"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-[#004e8c] hover:underline"
+                              >
+                                <span>Explore Consular-Approved Insurance</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       ) : null}
-
-      {data && data.other_requirements && data.other_requirements.length > 0 && (
-        <div id="section-mandates" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-            <div className="flex items-center gap-3.5">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                <AlertCircle className="w-5 h-5 text-amber-400" />
-              </div>
-              <div>
-                <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Important Consular Mandates &amp; Insurance Guidelines</h3>
-                <span className="text-xs text-slate-400 font-semibold block">Official Embassy Legal Directives, Biometrics &amp; Adjudication Rules</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6 pt-2">
-            {data.other_requirements.map((req, idx) => {
-              const visual = getMandateVisual(req.category, idx);
-              const isInsurance = req.category.toLowerCase().includes('insurance') || req.category.toLowerCase().includes('health') || req.category.toLowerCase().includes('ihs');
-
-              return (
-                <div key={idx} className="flex items-start gap-4 group transition-all text-left">
-                  {/* Outlined Vector Icon */}
-                  <div className="shrink-0 pt-0.5 transition-transform duration-200 group-hover:scale-110">
-                    {visual.icon}
-                  </div>
-
-                  {/* Content */}
-                  <div className="space-y-1 min-w-0 flex-1 text-left">
-                    {visual.tag && (
-                      <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md mb-1 ${visual.badgeBg}`}>
-                        <span>📌 {visual.tag}</span>
-                      </span>
-                    )}
-                    <p className="text-xs sm:text-base font-bold text-slate-800 leading-relaxed group-hover:text-slate-950 transition-colors">
-                      <strong className="font-extrabold text-slate-950 mr-1.5">{req.category}:</strong>
-                      {req.details}
-                    </p>
-
-                    {isInsurance && (
-                      <div className="pt-1.5">
-                        <a
-                          href="/find-experts?category=insurance"
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#004e8c] hover:text-[#003866] hover:underline transition-colors"
-                        >
-                          <span>Explore Consular-Approved Insurance</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

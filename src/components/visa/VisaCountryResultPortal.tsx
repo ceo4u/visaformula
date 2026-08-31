@@ -303,6 +303,22 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
       { id: 'vietnam-90m', label: '90 Days Multiple Entry E-Visa', stay: '90 Days', govFee: 5800, servFee: 2500 },
     ]
   },
+  mauritius: {
+    countryName: 'Mauritius',
+    flagEmoji: '🇲🇺',
+    heroImage: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=1600&auto=format&fit=crop&q=85',
+    lengthOfStay: 'Up to 90 Days',
+    validity: '90 Days',
+    entryType: 'Visa-Free / Visa Exempt',
+    visaType: 'Visa-Free Entry (Exempt)',
+    processingDays: 0,
+    governmentFeeINR: 0,
+    serviceFeeINR: 0,
+    variants: [
+      { id: 'visa-free-90', label: 'Visa-Free Tourist Entry (Up to 90 Days)', stay: '90 Days', govFee: 0, servFee: 0, popular: true },
+      { id: 'business-free', label: 'Business / Conference (Up to 90 Days)', stay: '90 Days', govFee: 0, servFee: 0 },
+    ]
+  },
 };
 
 // Aliases mapping for direct access
@@ -2063,15 +2079,15 @@ export function VisaCountryResultPortal({
   const countryName = baseData.countryName || slugClean.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const flagEmoji = baseData.flagEmoji || '🌍';
   const heroImage = baseData.heroImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&auto=format&fit=crop&q=85';
-  const lengthOfStay = baseData.lengthOfStay || '30 Days';
+  const lengthOfStay = 'Depending on application';
   const validity = baseData.validity || '90 Days';
-  const entryType = baseData.entryType || 'Single Entry';
+  const entryType = 'Single / Multiple (Depending on application)';
   const visaType = baseData.visaType || 'Official E-Visa';
   const processingDays = baseData.processingDays || 4;
 
   const variants = baseData.variants || [
-    { id: 'standard', label: `Standard ${lengthOfStay} Tourist`, stay: lengthOfStay, govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },
-    { id: 'express', label: `Express Fast-Track (Priority)`, stay: lengthOfStay, govFee: (baseData.governmentFeeINR || 6500) + 2000, servFee: (baseData.serviceFeeINR || 2500) + 1000 }
+    { id: 'standard', label: `Standard Tourist Entry`, stay: 'Depending on application', govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },
+    { id: 'express', label: `Express Fast-Track (Priority)`, stay: 'Depending on application', govFee: (baseData.governmentFeeINR || 6500) + 2000, servFee: (baseData.serviceFeeINR || 2500) + 1000 }
   ];
 
   // ── DECISION GATE STATE ──

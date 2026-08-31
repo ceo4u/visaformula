@@ -514,8 +514,8 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <Clock className="w-6 h-6 text-slate-800 stroke-[1.75]" />
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
-                <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || '90 days'}
+                <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
+                  Depending on application
                 </h4>
               </div>
             </div>
@@ -525,8 +525,8 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <ShieldCheck className="w-6 h-6 text-slate-800 stroke-[1.75]" />
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
-                <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.entry_type || data.validity_and_stay?.entry_type || 'Multiple'}
+                <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
+                  Single / Multiple (Depending on application)
                 </h4>
               </div>
             </div>

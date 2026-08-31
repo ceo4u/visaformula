@@ -2267,9 +2267,9 @@ return (
                 </p>
               </div>
 
-              {/* Right Column: Travel Readiness Card (Exact Design from Image) */}
-              <div className="shrink-0 flex justify-start lg:justify-end">
-                <div className="w-full sm:w-[320px] md:w-[340px] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[28px] p-4 sm:p-5 shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 relative">
+              {/* Right Column: Travel Readiness Card (Shifted to right over background image) */}
+              <div className="shrink-0 flex justify-start lg:justify-end lg:ml-auto lg:mr-0 xl:mr-1">
+                <div className="w-full sm:w-[320px] md:w-[350px] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[32px] p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:shadow-2xl transition-all duration-300 relative">
                   
                   {/* Top Row: Plane Illustration & Title with Arrow */}
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100">

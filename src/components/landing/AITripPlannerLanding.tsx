@@ -2305,7 +2305,7 @@ return (
                   </button>
                 </div>
 
-                {/* Right Side: Travel Readiness Pill (Spread horizontally across right side) */}
+                {/* Right Side: Travel Readiness Pill (Spread horizontally across right side, wider on desktop) */}
                 <a
                   href="#need-visa-pathway-dashboard"
                   onClick={(e) => {
@@ -2313,18 +2313,18 @@ return (
                     const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="inline-flex items-center justify-between gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full px-3.5 sm:px-5 py-2 sm:py-2.5 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all group cursor-pointer shrink-0 min-w-[200px] sm:min-w-[260px] md:min-w-[290px] mb-1"
+                  className="inline-flex items-center justify-between gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full px-3.5 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all group cursor-pointer shrink-0 min-w-[200px] sm:min-w-[260px] md:min-w-[290px] lg:min-w-[360px] xl:min-w-[420px] mb-1"
                 >
-                  <div className="flex items-center gap-2.5 sm:gap-3">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A896] shrink-0">
-                      <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2] rotate-[-25deg]" />
+                  <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-3.5">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A896] shrink-0">
+                      <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-4.5 lg:h-4.5 stroke-[2.2] rotate-[-25deg]" />
                     </div>
-                    <span className="text-xs sm:text-[14px] font-black text-slate-900 leading-tight">
+                    <span className="text-xs sm:text-[14px] lg:text-[15px] font-black text-slate-900 leading-tight">
                       Travel Readiness
                     </span>
                   </div>
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-teal-50 group-hover:bg-teal-100 text-[#00A896] flex items-center justify-center shrink-0 transition-colors">
-                    <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 rounded-full bg-teal-50 group-hover:bg-teal-100 text-[#00A896] flex items-center justify-center shrink-0 transition-colors">
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </a>
 

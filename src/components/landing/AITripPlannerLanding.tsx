@@ -2239,7 +2239,7 @@ return (
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
-          {/* Floating Travel Readiness Card (At Right of Girl - Exactly as in Image) */}
+          {/* Floating Travel Readiness Card (At Left of Girl - Enlarged & Positioned on Lake/Mountain View) */}
           <a
             href="#need-visa-pathway-dashboard"
             onClick={(e) => {
@@ -2247,14 +2247,14 @@ return (
               const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="absolute top-3 sm:top-5 md:top-6 right-3 sm:right-6 md:right-8 lg:right-12 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl sm:rounded-3xl p-2.5 sm:p-3.5 shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[105px] sm:min-w-[135px]"
+            className="absolute top-3 sm:top-5 md:top-6 right-[130px] sm:right-[210px] md:right-[270px] lg:right-[340px] xl:right-[390px] z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl sm:rounded-[28px] p-3 sm:p-4 md:p-5 shadow-[0_16px_36px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:scale-105 transition-all group flex flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[120px] sm:min-w-[150px] md:min-w-[165px]"
             title="View Travel Readiness"
           >
             {/* Circular Progress Gauge */}
-            <div className="relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 shrink-0 flex items-center justify-center mb-1 sm:mb-1.5">
+            <div className="relative w-15 h-15 sm:w-18 sm:h-18 md:w-22 md:h-22 shrink-0 flex items-center justify-center mb-1.5 sm:mb-2">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="11" />
-                <circle cx="50" cy="50" r="38" fill="none" stroke="url(#heroGirlReadinessGrad)" strokeWidth="11" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="10" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="url(#heroGirlReadinessGrad)" strokeWidth="10" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />
                 <defs>
                   <linearGradient id="heroGirlReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#00A86B" />
@@ -2263,15 +2263,15 @@ return (
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-xs sm:text-sm md:text-base font-black text-slate-900 leading-none">78%</span>
-                <span className="text-[7px] sm:text-[9px] font-bold text-[#00A86B] mt-0.5">Ready</span>
+                <span className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-none">78%</span>
+                <span className="text-[8px] sm:text-[10px] font-bold text-[#00A86B] mt-0.5">Ready</span>
               </div>
             </div>
 
             {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
+            <div className="flex items-center gap-1 text-[11px] sm:text-xs md:text-[13px] font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
               <span>Travel Readiness</span>
-              <ChevronRight className="w-3 h-3 stroke-[2.5] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight className="w-3.5 h-3.5 stroke-[2.5] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
             </div>
           </a>
 

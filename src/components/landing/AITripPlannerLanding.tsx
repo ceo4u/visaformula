@@ -1302,6 +1302,7 @@ export function AITripPlannerLanding() {
   const passportRef = useRef<HTMLDivElement>(null);
   const journeyDestRef = useRef<HTMLDivElement>(null);
   const purposeRef = useRef<HTMLDivElement>(null);
+  const [travelTiming, setTravelTiming] = useState('');
 
   // FLOW 1: "VISA APPROVED & READY" Real Dynamic State
   const [approvedVisaType, setApprovedVisaType] = useState('');

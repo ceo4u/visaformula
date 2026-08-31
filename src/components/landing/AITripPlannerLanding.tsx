@@ -2239,7 +2239,7 @@ return (
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
-          {/* Floating Travel Readiness Card (At Left of Girl - Compact & Sleek) */}
+          {/* Floating Travel Readiness Card (At Right Edge - After the Girl) */}
           <a
             href="#need-visa-pathway-dashboard"
             onClick={(e) => {
@@ -2247,11 +2247,11 @@ return (
               const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="absolute top-2.5 sm:top-4 md:top-5 right-[110px] sm:right-[180px] md:right-[230px] lg:right-[290px] xl:right-[340px] z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl p-2 sm:p-2.5 md:p-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[95px] sm:min-w-[115px] md:min-w-[125px]"
+            className="absolute top-2.5 sm:top-4 md:top-5 right-2.5 sm:right-5 md:right-7 lg:right-9 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl p-2 sm:p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[90px] sm:min-w-[110px]"
             title="View Travel Readiness"
           >
             {/* Circular Progress Gauge */}
-            <div className="relative w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 shrink-0 flex items-center justify-center mb-1">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 flex items-center justify-center mb-1">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="11" />
                 <circle cx="50" cy="50" r="38" fill="none" stroke="url(#heroGirlReadinessGrad)" strokeWidth="11" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />
@@ -2269,7 +2269,7 @@ return (
             </div>
 
             {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-0.5 text-[9px] sm:text-[10px] md:text-[11px] font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
+            <div className="flex items-center gap-0.5 text-[9px] sm:text-[10px] font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
               <span>Travel Readiness</span>
               <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
             </div>

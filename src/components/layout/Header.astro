@@ -21,9 +21,9 @@ const isHome = pathname === '/' || pathname === '';
         </div>
 
         <!-- Logo - Centered on Mobile, Left-aligned on Desktop -->
-        <div class="flex items-center shrink-0 py-1 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+        <div class="flex items-center shrink-0 py-1 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 pointer-events-auto">
             <a href="/" class="flex flex-col items-center lg:items-start focus:outline-none -ml-0 lg:-ml-2" aria-label="TravlTik Home">
-                <img id="header-logo-img" src="/logo.png?v=8" class="h-12 sm:h-13 lg:h-[44px] max-h-[46px] w-auto object-contain transition-all duration-200" alt="TravlTik Logo" />
+                <img id="header-logo-img" src="/logo.png?v=8" class="h-8 sm:h-10 lg:h-[44px] max-h-[46px] w-auto max-w-[135px] sm:max-w-[170px] lg:max-w-none object-contain transition-all duration-200" alt="TravlTik Logo" />
             </a>
         </div>
 
@@ -194,8 +194,8 @@ const isHome = pathname === '/' || pathname === '';
         </div>
 
         <!-- Right Mobile Actions (Sign Up / Logged In Profile Avatar) -->
-        <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-slate-900 hover:bg-slate-800 text-white !text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[13px] sm:text-sm font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
+        <div class="flex items-center gap-2 lg:hidden z-50 shrink-0">
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-slate-900 hover:bg-slate-800 text-white !text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
                 Sign Up
             </a>
             <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-[#00A86B] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">

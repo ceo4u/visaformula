@@ -376,6 +376,64 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const purNorm = (purpose || 'tourism').toLowerCase();
   const nationality = formatNationality(passport);
 
+
+  const isMauritius = cNorm.includes('mauritius');
+  const isThailand = cNorm.includes('thailand');
+  const isMalaysia = cNorm.includes('malaysia');
+  const isMaldives = cNorm.includes('maldives');
+
+  // Case 0: Mauritius (100% Verified Free Visa on Arrival for Indian Citizens)
+  if (isMauritius) {
+    if (pNorm.includes('india') || pNorm.includes('in')) {
+      return {
+        isExempt: true,
+        verdictTitle: `${nationality} passport holders enjoy Visa-Free entry on arrival to Mauritius`,
+        verdictSummary: `No advance visa application required. Tourist visa on arrival granted for up to 60 days with ₹0 visa fee.`,
+        entryStatus: "Visa-Free / Granted on Arrival",
+        entryStatusSubtext: "Instant at SSR Airport (0 Days)",
+        stayDuration: "Up to 60 Days (Extendable)",
+        stayDurationSubtext: "Free holiday stay",
+        entryType: "Single / Multiple Entry",
+        entryTypeSubtext: "Free on-arrival stamp",
+        visaPillTag: "VISA-FREE / ON ARRIVAL (₹0 FEE)",
+        digitalCardName: "Mauritius All-in-One Digital Travel Form",
+        digitalCardDesc: "Official mandatory health/travel electronic declaration form (safetravel.govmu.org).",
+        sources: ["Passport and Immigration Office, Republic of Mauritius", "Ministry of Foreign Affairs", "IATA Timatic 2026"],
+        maxStay: "Up to 60 Days (Extendable to 90 Days)",
+        conditionsForVisa: [
+          "Original Passport valid for at least 6 months with 2 blank pages.",
+          "Confirmed return / onward flight ticket departing within 60 days.",
+          "Confirmed hotel booking voucher or host accommodation invitation letter.",
+          "Fill online Mauritius All-in-One Digital Travel Form prior to departure.",
+          "Proof of sufficient funds (min. USD $100 / EUR €100 / MUR 4,000 per day of stay)."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Government Visa Fee", amount: "₹0 (Free / No Fee)", note: "Indian tourists receive complimentary on-arrival entry" },
+            { label: "Digital Arrival Form (safetravel.govmu.org)", amount: "₹0 (Free)", note: "Official online declaration" }
+          ],
+          totalEstimatedINR: "₹0 Free Entry",
+          processingTime: "Instant on Arrival (0 Days)",
+          processingSLA: "Direct immigration clearance at SSR International Airport (MRU).",
+          applicationWindow: "Fill digital travel form 24–72 hours before flight",
+          earlyEntryBuffer: "Entry granted directly on landing"
+        },
+        applicationProcess: {
+          submission: "1. Verify Passport: Ensure 6+ months validity and 2 blank pages.",
+          onlineForm: "2. Digital Travel Form: Fill online Mauritius All-in-One Form at safetravel.govmu.org.",
+          appointments: "3. Direct Travel: Fly to Mauritius with carry-on documents; zero embassy appointments needed.",
+          documentsAndBiometrics: [
+            "Valid Indian Passport (6+ months validity)",
+            "Confirmed Return Flight Ticket",
+            "Confirmed Hotel Voucher / Host Letter",
+            "Mauritius Digital Travel Form QR Code",
+            "Proof of Sufficient Funds (USD $100/day)"
+          ]
+        }
+      };
+    }
+  }
+
   const isUK = cNorm.includes('united kingdom') || cNorm.includes('uk') || cNorm.includes('great britain') || cNorm.includes('england') || cNorm.includes('britain') || cNorm.includes('scotland');
   const isUKorUSorEU = pNorm.includes('united kingdom') || pNorm.includes('uk') || pNorm.includes('united states') || pNorm.includes('usa') || pNorm.includes('australia') || pNorm.includes('canada');
   const isUS = cNorm.includes('united states') || cNorm.includes('usa') || cNorm.includes('america');

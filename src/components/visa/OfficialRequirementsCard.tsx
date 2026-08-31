@@ -154,9 +154,20 @@ function cleanCountryName(str: string): string {
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
+import { ALL_COUNTRIES } from '../../data/countries';
+
 function getCountryCode(country: string): string {
   const c = country.toLowerCase().trim();
   if (c.includes('india') || c === 'in' || c === 'indian') return 'in';
+  if (c.includes('mauritius') || c === 'mu') return 'mu';
+  if (c.includes('maldives') || c === 'mv') return 'mv';
+  if (c.includes('thailand') || c === 'th' || c === 'thai') return 'th';
+  if (c.includes('malaysia') || c === 'my') return 'my';
+  if (c.includes('sri lanka') || c === 'lk') return 'lk';
+  if (c.includes('nepal') || c === 'np') return 'np';
+  if (c.includes('bhutan') || c === 'bt') return 'bt';
+  if (c.includes('indonesia') || c.includes('bali') || c === 'id') return 'id';
+  if (c.includes('vietnam') || c === 'vn') return 'vn';
   if (c.includes('united kingdom') || c.includes('uk') || c.includes('england') || c.includes('britain') || c.includes('great britain')) return 'gb';
   if (c.includes('united states') || c.includes('usa') || c.includes('us') || c.includes('america')) return 'us';
   if (c.includes('greece') || c === 'gr' || c === 'greek') return 'gr';
@@ -168,7 +179,6 @@ function getCountryCode(country: string): string {
   if (c.includes('italy') || c === 'it') return 'it';
   if (c.includes('spain') || c === 'es') return 'es';
   if (c.includes('singapore') || c === 'sg') return 'sg';
-  if (c.includes('thailand') || c === 'th') return 'th';
   if (c.includes('japan') || c === 'jp') return 'jp';
   if (c.includes('switzerland') || c === 'ch') return 'ch';
   if (c.includes('netherlands') || c === 'nl') return 'nl';
@@ -177,9 +187,6 @@ function getCountryCode(country: string): string {
   if (c.includes('new zealand') || c === 'nz') return 'nz';
   if (c.includes('schengen') || c.includes('europe') || c === 'eu') return 'eu';
   if (c.includes('turkey') || c.includes('turkiye') || c === 'tr') return 'tr';
-  if (c.includes('vietnam') || c === 'vn') return 'vn';
-  if (c.includes('malaysia') || c === 'my') return 'my';
-  if (c.includes('indonesia') || c.includes('bali') || c === 'id') return 'id';
   if (c.includes('china') || c === 'cn') return 'cn';
   if (c.includes('russia') || c === 'ru') return 'ru';
   if (c.includes('south africa') || c === 'za') return 'za';
@@ -191,6 +198,19 @@ function getCountryCode(country: string): string {
   if (c.includes('oman') || c === 'om') return 'om';
   if (c.includes('kuwait') || c === 'kw') return 'kw';
   if (c.includes('bahrain') || c === 'bh') return 'bh';
+  if (c.includes('seychelles') || c === 'sc') return 'sc';
+  if (c.includes('fiji') || c === 'fj') return 'fj';
+  if (c.includes('kenya') || c === 'ke') return 'ke';
+  if (c.includes('egypt') || c === 'eg') return 'eg';
+  if (c.includes('philippines') || c === 'ph') return 'ph';
+  if (c.includes('georgia') || c === 'ge') return 'ge';
+  if (c.includes('kazakhstan') || c === 'kz') return 'kz';
+  if (c.includes('south korea') || c === 'kr') return 'kr';
+  
+  // Lookup in ALL_COUNTRIES
+  const match = ALL_COUNTRIES.find(item => item.name.toLowerCase() === c || item.code.toLowerCase() === c);
+  if (match) return match.code.toLowerCase();
+  
   return 'un';
 }
 
@@ -473,7 +493,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Processing Time</span>
                 <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.processing_time || '3–5 Days'}
+                  {data.processing_time || data.processing_and_timing?.decision_time || '3–5 Days'}
                 </h4>
               </div>
             </div>
@@ -484,7 +504,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Validity</span>
                 <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.validity || '90 days'}
+                  {data.validity || data.validity_and_stay?.visa_validity || '90 days'}
                 </h4>
               </div>
             </div>
@@ -495,7 +515,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
                 <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.stay_duration || '90 days'}
+                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || '90 days'}
                 </h4>
               </div>
             </div>
@@ -506,7 +526,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
                 <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.entry_type || 'Multiple'}
+                  {data.entry_type || data.validity_and_stay?.entry_type || 'Multiple'}
                 </h4>
               </div>
             </div>

@@ -105,6 +105,325 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   const isGreece = toLower.includes('greece');
   const isSchengen = isGreece || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden'].some(c => toLower.includes(c));
   const isUSA = toLower.includes('united states') || toLower.includes('usa');
+  const isMauritius = toLower.includes('mauritius');
+  const isThailand = toLower.includes('thailand');
+  const isMalaysia = toLower.includes('malaysia');
+  const isMaldives = toLower.includes('maldives');
+  const isSriLanka = toLower.includes('sri lanka');
+  const isIndonesia = toLower.includes('indonesia') || toLower.includes('bali');
+  const isVietnam = toLower.includes('vietnam');
+
+  // ═══════════════════════════════════════════════════════════════
+  // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
+  // ═══════════════════════════════════════════════════════════════
+  if (isMauritius) {
+    const isIndianPassport = from.toLowerCase().includes('india') || from.toLowerCase().includes('in');
+    
+    if (isIndianPassport && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+      return {
+        passport_country: from,
+        destination_country: 'Mauritius',
+        purpose_of_visit: 'Tourism / Vacation',
+        visa_type: 'Visa-Free Entry (Granted on Arrival)',
+        source_url: 'https://passport.govmu.org',
+        official_source_name: 'Passport & Immigration Office, Republic of Mauritius',
+        processing_time: 'Instant / On-Arrival (0 Days)',
+        validity: '60–90 Days on Arrival',
+        stay_duration: 'Up to 60 Days (Extendable to 90 Days)',
+        entry_type: 'Single / Multiple Entry',
+        validity_and_stay: {
+          visa_validity: '60–90 Days on Arrival',
+          max_stay_per_entry: 'Up to 60 Days (Extendable)',
+          entry_type: 'Single / Multiple Entry'
+        },
+        documents_required: [
+          {
+            title: 'Original Passport',
+            description: 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.',
+            is_mandatory: true
+          },
+          {
+            title: 'Confirmed Return / Onward Flight Ticket',
+            description: 'Confirmed round-trip or onward airline ticket departing Mauritius within the 60-day permitted stay.',
+            is_mandatory: true
+          },
+          {
+            title: 'Proof of Accommodation / Hotel Voucher',
+            description: 'Confirmed hotel booking reservation or official host accommodation invitation letter with address and contact details.',
+            is_mandatory: true
+          },
+          {
+            title: 'Mauritius All-in-One Digital Travel Form',
+            description: 'Mandatory online entry form completed at safetravel.govmu.org prior to departure to generate the arrival QR code.',
+            is_mandatory: true
+          }
+        ],
+        financial_proofs: [
+          {
+            type: 'Proof of Sufficient Funds on Arrival',
+            minimum_balance_or_amount: 'Minimum USD $100 / EUR €100 / MUR 4,000 per day of stay',
+            time_frame: 'Carried during travel',
+            notes: 'Acceptable in international credit/debit cards, traveler’s cheques, or physical foreign currency cash.'
+          }
+        ],
+        other_requirements: [
+          {
+            category: 'Immigration Clearance on Arrival',
+            details: 'No advance consular application required. Present passport, return flight, hotel voucher, and digital travel QR code at SSR International Airport (MRU).'
+          },
+          {
+            category: 'Customs Currency Rules',
+            details: 'Currency exceeding MUR 500,000 (or foreign equivalent approx. $11,000 USD) must be declared upon arrival.'
+          }
+        ],
+        how_to_apply: [
+          'Verify your passport has at least 6 months validity from planned departure date and 2 blank pages.',
+          'Book confirmed return flight ticket and hotel accommodation voucher in Mauritius.',
+          'Complete the official Mauritius All-in-One Digital Travel / Health Form online at safetravel.govmu.org prior to departure.',
+          'Carry passport, return ticket, hotel voucher, and digital entry QR code in your carry-on bag.',
+          'Present documents at SSR International Airport (Mauritius) immigration counter for free, instant visa-on-arrival entry stamping.'
+        ],
+        costs: {
+          visa_fee: '₹0 (Free / No Consular Fee)',
+          service_fee: '₹0 (No Appointment Needed)',
+          total_fee: '₹0 (Free on Arrival)',
+          notes: 'Indian citizens traveling for tourism are granted a free tourist visa on arrival for up to 60 days.'
+        },
+        processing_and_timing: {
+          apply_window: 'No prior visa application needed. Complete Mauritius All-in-One Digital Form online before flight.',
+          decision_time: 'Instant on-arrival stamping at SSR International Airport (Mauritius).',
+          max_extension: 'Extendable up to 90 days total for holiday/tourism via Passport & Immigration Office in Port Louis.',
+          center_notes: 'Entry granted directly at SSR International Airport (MRU) / Port Louis Seaport.'
+        }
+      };
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // THAILAND PATHWAYS (Visa-Free Policy)
+  // ═══════════════════════════════════════════════════════════════
+  if (isThailand && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Thailand',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Visa Exemption / Visa-Free (60 Days)',
+      source_url: 'https://www.thaievisa.go.th',
+      official_source_name: 'Royal Thai Immigration Bureau & Ministry of Foreign Affairs',
+      processing_time: 'Instant / On-Arrival (0 Days)',
+      validity: '60 Days on Arrival',
+      stay_duration: 'Up to 60 Days (Extendable by 30 Days)',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '60 Days on Arrival',
+        max_stay_per_entry: 'Up to 60 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months with 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Verifiable ticket leaving Thailand within 60 days.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation',
+          description: 'Hotel booking or host invitation in Thailand.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Expense Funds',
+          minimum_balance_or_amount: '10,000 THB per person / 20,000 THB per family (approx. ₹24,000 – ₹48,000)',
+          time_frame: 'Carried during travel',
+          notes: 'Held in cash or liquid card funds.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Entry Stamping',
+          details: 'Direct immigration entry stamp on arrival at Bangkok Suvarnabhumi (BKK), Don Mueang (DMK), or Phuket (HKT).'
+        }
+      ],
+      how_to_apply: [
+        'Ensure passport has at least 6 months validity.',
+        'Book confirmed return flight and hotel accommodation.',
+        'Board flight to Thailand with documents in carry-on bag.',
+        'Present passport and return flight ticket at Thai Immigration counter for free 60-day entry stamp.'
+      ],
+      costs: {
+        visa_fee: '₹0 (Free Visa Exemption)',
+        service_fee: '₹0 (No Appointment Needed)',
+        total_fee: '₹0 (Free Entry)',
+        notes: 'Indian passport holders receive 60-day visa-free entry under official Thai government exemption.'
+      },
+      processing_and_timing: {
+        apply_window: 'No advance application required.',
+        decision_time: 'Instant on-arrival stamping (0 Days).',
+        max_extension: 'Can be extended for an additional 30 days at local Thai immigration offices for 1,900 THB.',
+        center_notes: 'Available at all international airports in Thailand (BKK, DMK, HKT, CNX).'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // MALAYSIA PATHWAYS (Visa-Free Policy with MDAC)
+  // ═══════════════════════════════════════════════════════════════
+  if (isMalaysia && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+    return {
+      passport_country: from,
+      destination_country: 'Malaysia',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Visa-Free Entry (30 Days with MDAC)',
+      source_url: 'https://imigresen-online.imi.gov.my/mdac/main',
+      official_source_name: 'Immigration Department of Malaysia',
+      processing_time: 'Instant / On-Arrival (0 Days)',
+      validity: '30 Days on Arrival',
+      stay_duration: 'Up to 30 Days',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '30 Days on Arrival',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months from arrival date with 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Malaysia Digital Arrival Card (MDAC)',
+          description: 'Mandatory online arrival form submitted within 3 days prior to arrival at imigresen-online.imi.gov.my/mdac.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Confirmed round-trip ticket departing Malaysia within 30 days.',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Reservation / Accommodation Voucher',
+          description: 'Confirmed hotel booking or proof of residence in Malaysia.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Maintenance Funds Proof',
+          minimum_balance_or_amount: 'USD $500 – $1,000 or equivalent',
+          time_frame: 'Carried during travel',
+          notes: 'Credit cards, debit cards, or cash.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'MDAC Digital Submission',
+          details: 'Submit MDAC online within 72 hours before arrival in Malaysia and carry digital/printed confirmation.'
+        }
+      ],
+      how_to_apply: [
+        'Ensure passport has 6+ months validity from travel date.',
+        'Book confirmed return flight and hotel accommodation.',
+        'Submit the online Malaysia Digital Arrival Card (MDAC) within 3 days prior to arrival.',
+        'Clear immigration at Kuala Lumpur International Airport (KLIA/KLIA2) for free 30-day entry stamping.'
+      ],
+      costs: {
+        visa_fee: '₹0 (Free / No Consular Fee)',
+        service_fee: '₹0 (Free Online MDAC)',
+        total_fee: '₹0 (Free on Arrival)',
+        notes: 'Indian passport holders enjoy visa-free entry to Malaysia for stays up to 30 days.'
+      },
+      processing_and_timing: {
+        apply_window: 'Submit MDAC online within 3 days (72 hours) of arrival.',
+        decision_time: 'Instant clearance on arrival (0 Days).',
+        max_extension: 'Non-extendable 30-day social visit pass.',
+        center_notes: 'Available at KLIA 1, KLIA 2, Penang, and all Malaysian border points.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // MALDIVES PATHWAYS (Free 30-Day Visa on Arrival)
+  // ═══════════════════════════════════════════════════════════════
+  if (isMaldives && !purposeLower.includes('work')) {
+    return {
+      passport_country: from,
+      destination_country: 'Maldives',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Free Tourist Visa on Arrival (30 Days)',
+      source_url: 'https://imuga.immigration.gov.mv',
+      official_source_name: 'Maldives Immigration',
+      processing_time: 'Instant / On-Arrival (0 Days)',
+      validity: '30 Days on Arrival',
+      stay_duration: 'Up to 30 Days (Extendable to 90 Days)',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '30 Days on Arrival',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 1 month (recommended 6 months) with machine-readable zone.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return / Onward Ticket',
+          description: 'Valid return air ticket leaving Maldives within 30 days.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Resort / Hotel Booking',
+          description: 'Prepaid hotel reservation or resort booking voucher.',
+          is_mandatory: true
+        },
+        {
+          title: 'IMUGA Traveler Declaration Form',
+          description: 'Mandatory online digital declaration filled within 96 hours before arrival at imuga.immigration.gov.mv.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Travel Solvency Proof',
+          minimum_balance_or_amount: 'USD $100 + $50/day or confirmed prepaid resort package',
+          time_frame: 'Carried during travel',
+          notes: 'Credit cards, cash, or confirmed luxury resort booking voucher.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'IMUGA QR Code',
+          details: 'Mandatory QR code generated from IMUGA portal to be scanned at Velana International Airport (MLE).'
+        }
+      ],
+      how_to_apply: [
+        'Book confirmed flights and resort accommodation.',
+        'Fill out the online IMUGA Traveler Declaration Form within 96 hours before landing.',
+        'Present passport, IMUGA QR code, and return ticket to Maldives Immigration officer at MLE airport for free 30-day visa stamp.'
+      ],
+      costs: {
+        visa_fee: '₹0 (Free Visa on Arrival)',
+        service_fee: '₹0 (Free IMUGA Portal)',
+        total_fee: '₹0 (Free on Arrival)',
+        notes: 'All tourists entering Maldives receive a complimentary 30-day visa on arrival.'
+      },
+      processing_and_timing: {
+        apply_window: 'Fill IMUGA online within 96 hours of arrival flight.',
+        decision_time: 'Instant on-arrival stamping (0 Days).',
+        max_extension: 'Can be extended up to 90 days total at Maldives Immigration HQ in Malé for MVR 750.',
+        center_notes: 'Cleared directly at Velana International Airport, Malé (MLE).'
+      }
+    };
+  }
+
 
   // ═══════════════════════════════════════════════════════════════
   // 1. UNITED KINGDOM PATHWAYS

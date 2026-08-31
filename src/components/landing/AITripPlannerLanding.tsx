@@ -2242,24 +2242,129 @@ return (
           {/* Hero Content Container */}
           <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
             
-            {/* Top Pill Badge (Increased Size) */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-              <span className="text-xs sm:text-sm md:text-[15px] font-black text-blue-700 tracking-tight">
-                Your Journey, Our Expertise
-              </span>
+            {/* Hero Top Grid: Heading on left & Travel Readiness Card on right */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6 mb-3 sm:mb-5">
+              
+              {/* Left Column: Heading & Subheading */}
+              <div className="max-w-2xl text-left">
+                {/* Top Pill Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2 sm:mb-3">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+                  <span className="text-xs sm:text-sm md:text-[15px] font-black text-blue-700 tracking-tight">
+                    Your Journey, Our Expertise
+                  </span>
+                </div>
+
+                {/* Main H1 Headline */}
+                <h1 className="text-[21px] sm:text-3xl lg:text-[36px] font-black text-slate-900 leading-[1.15] tracking-tight">
+                  Everything you need for <br className="hidden sm:inline" />
+                  <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
+                </h1>
+
+                {/* Subheading */}
+                <p className="mt-1.5 sm:mt-2.5 text-slate-600 text-xs sm:text-sm lg:text-[14px] font-medium max-w-xl leading-relaxed">
+                  Find trusted consultants, plan your trip, compare services and make your journey seamless.
+                </p>
+              </div>
+
+              {/* Right Column: Travel Readiness Card (Exact Design from Image) */}
+              <div className="shrink-0 flex justify-start lg:justify-end">
+                <div className="w-full sm:w-[320px] md:w-[340px] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[28px] p-4 sm:p-5 shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 relative">
+                  
+                  {/* Top Row: Plane Illustration & Title with Arrow */}
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-3">
+                      {/* Plane Icon with dotted trail */}
+                      <div className="w-11 h-11 rounded-2xl bg-teal-50/90 border border-teal-100/80 flex items-center justify-center text-[#00A896] shadow-2xs">
+                        <Plane className="w-6 h-6 stroke-[2.2] rotate-[-25deg]" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                          Travel<br />Readiness
+                        </h3>
+                      </div>
+                    </div>
+
+                    <a
+                      href="#hero-search"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="w-8 h-8 rounded-full bg-teal-50 hover:bg-teal-100 text-[#00A896] flex items-center justify-center transition-all cursor-pointer shadow-2xs group"
+                      title="View Travel Readiness"
+                    >
+                      <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+
+                  {/* Middle Row: Circular 78% Gauge + Message */}
+                  <div className="py-3.5 flex items-center gap-3.5">
+                    {/* Circular Progress Gauge */}
+                    <div className="relative w-20 h-20 sm:w-22 sm:h-22 shrink-0 flex items-center justify-center">
+                      <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                        {/* Background track */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="38"
+                          fill="none"
+                          stroke="#e2e8f0"
+                          strokeWidth="9"
+                        />
+                        {/* Progress Arc: 78% */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="38"
+                          fill="none"
+                          stroke="url(#heroReadinessGrad)"
+                          strokeWidth="9"
+                          strokeDasharray="238.76"
+                          strokeDashoffset="52.5"
+                          strokeLinecap="round"
+                        />
+                        <defs>
+                          <linearGradient id="heroReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#00A896" />
+                            <stop offset="100%" stopColor="#028090" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      {/* Inner Text */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span className="text-lg sm:text-xl font-black text-slate-900 leading-none">78%</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold text-[#00A896] mt-0.5">Ready</span>
+                      </div>
+                    </div>
+
+                    {/* Message Details */}
+                    <div className="space-y-1 text-left min-w-0">
+                      <div className="text-xs sm:text-[13px] font-black text-[#00A896] leading-snug">
+                        You are almost there!
+                      </div>
+                      <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium leading-tight">
+                        Complete the remaining steps to strengthen your application.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Bottom Action Button: Improve My Readiness */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="w-full py-2.5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#008f80] hover:to-[#016875] text-white font-black text-xs sm:text-sm text-center shadow-md shadow-teal-700/20 hover:shadow-lg transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <span>Improve My Readiness</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
-
-            {/* Main H1 Headline */}
-            <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-black text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
-              Everything you need for <br className="hidden sm:inline" />
-              <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
-            </h1>
-
-            {/* Subheading */}
-            <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-medium max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-4">
-              Find trusted consultants, plan your trip, compare services and make your journey seamless.
-            </p>
 
             {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">

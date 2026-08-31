@@ -2264,14 +2264,14 @@ return (
               </p>
             </div>
 
-            {/* ── TRAVEL READINESS INTERACTIVE CARD (RIGHT ABOVE SEARCH BOX) ── */}
-            <div className="w-full max-w-md sm:max-w-lg mb-3 sm:mb-4">
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3 sm:gap-4 hover:shadow-md transition-all">
+            {/* ── TRAVEL READINESS INTERACTIVE CARD (ALIGNED RIGHT DIRECTLY ABOVE SEARCH BUTTON) ── */}
+            <div className="w-full flex justify-start lg:justify-end mb-2.5 sm:mb-3.5">
+              <div className="w-full sm:w-auto min-w-[300px] sm:max-w-lg bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-[0_8px_25px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3 sm:gap-4 hover:shadow-md transition-all">
                 
                 {/* Left: Gauge & Status */}
                 <div className="flex items-center gap-3 min-w-0">
                   {/* Circular Gauge */}
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center">
+                  <div className="relative w-13 h-13 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
                     <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                       <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="10" />
                       <circle cx="50" cy="50" r="38" fill="none" stroke="url(#searchReadinessGrad)" strokeWidth="10" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />

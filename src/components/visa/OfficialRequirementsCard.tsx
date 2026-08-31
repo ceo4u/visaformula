@@ -613,12 +613,13 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               </button>
             </div>
 
-            {/* Official Consular Checklist Table (Crystal Clear, High-Contrast Layout) */}
+            {/* Official Consular Checklist Table (Distinct S.NO, READY Checkbox & DOCUMENT Columns) */}
             <div className="border border-slate-300 rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-100/90 border-b border-slate-300 text-xs font-black text-slate-900 uppercase tracking-wider">
-                    <th className="py-3 sm:py-4 px-2 sm:px-4 w-12 sm:w-24 text-center border-r border-slate-300 text-[11px] sm:text-xs">READY</th>
+                    <th className="py-3 sm:py-4 px-1.5 sm:px-3 w-10 sm:w-16 text-center border-r border-slate-300 text-[11px] sm:text-xs">#</th>
+                    <th className="py-3 sm:py-4 px-2 sm:px-4 w-16 sm:w-24 text-center border-r border-slate-300 text-[11px] sm:text-xs">READY</th>
                     <th className="py-3 sm:py-4 px-3 sm:px-8 text-[11px] sm:text-xs">DOCUMENT</th>
                   </tr>
                 </thead>
@@ -626,24 +627,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   
                   {/* Row 1: Visa Application Form */}
                   <tr className="transition-colors">
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
+                    {/* Col 1: Serial Number */}
+                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
+                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                        1
+                      </span>
+                    </td>
+                    {/* Col 2: Interactive Ready Checklist */}
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_form')}
-                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
+                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                        title={checkedDocs['doc_req_form']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
                       >
-                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_form']?.ready
                             ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500 '
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
                         }`}>
                           {checkedDocs['doc_req_form']?.ready ? (
-                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
                           ) : (
-                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">1</span>
+                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
                           )}
                         </div>
+                        {checkedDocs['doc_req_form']?.ready && (
+                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                        )}
                       </div>
                     </td>
+                    {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
                       <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Visa Application Form
@@ -656,24 +669,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 2: Recent Passport-Sized Photographs */}
                   <tr className="transition-colors">
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
+                    {/* Col 1: Serial Number */}
+                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
+                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                        2
+                      </span>
+                    </td>
+                    {/* Col 2: Interactive Ready Checklist */}
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_photo')}
-                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
+                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                        title={checkedDocs['doc_req_photo']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
                       >
-                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_photo']?.ready
                             ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500 '
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
                         }`}>
                           {checkedDocs['doc_req_photo']?.ready ? (
-                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
                           ) : (
-                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">2</span>
+                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
                           )}
                         </div>
+                        {checkedDocs['doc_req_photo']?.ready && (
+                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                        )}
                       </div>
                     </td>
+                    {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
                       <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Two Recent Passport-Sized Pictures
@@ -686,24 +711,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 3: Passport */}
                   <tr className="transition-colors">
-                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
+                    {/* Col 1: Serial Number */}
+                    <td className="py-3 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-middle">
+                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                        3
+                      </span>
+                    </td>
+                    {/* Col 2: Interactive Ready Checklist */}
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_passport')}
-                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
+                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                        title={checkedDocs['doc_req_passport']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
                       >
-                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_passport']?.ready
                             ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500 '
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
                         }`}>
                           {checkedDocs['doc_req_passport']?.ready ? (
-                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
                           ) : (
-                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">3</span>
+                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
                           )}
                         </div>
+                        {checkedDocs['doc_req_passport']?.ready && (
+                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                        )}
                       </div>
                     </td>
+                    {/* Col 3: Document Details */}
                     <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
                       <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Original Passport
@@ -716,24 +753,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 4: Medical / Health Insurance */}
                   <tr className="transition-colors">
-                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
+                    {/* Col 1: Serial Number */}
+                    <td className="py-3.5 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
+                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                        4
+                      </span>
+                    </td>
+                    {/* Col 2: Interactive Ready Checklist */}
+                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_insurance')}
-                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
+                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                        title={checkedDocs['doc_req_insurance']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
                       >
-                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_insurance']?.ready
                             ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500 '
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
                         }`}>
                           {checkedDocs['doc_req_insurance']?.ready ? (
-                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
                           ) : (
-                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">4</span>
+                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
                           )}
                         </div>
+                        {checkedDocs['doc_req_insurance']?.ready && (
+                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                        )}
                       </div>
                     </td>
+                    {/* Col 3: Document Details */}
                     <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
                         <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
@@ -775,24 +824,36 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 5: Purpose Specific Required Documents */}
                   <tr className="transition-colors">
-                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
+                    {/* Col 1: Serial Number */}
+                    <td className="py-3.5 sm:py-5 px-1 sm:px-2 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
+                      <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 border border-slate-200 text-[11px] sm:text-xs font-black text-slate-700">
+                        5
+                      </span>
+                    </td>
+                    {/* Col 2: Interactive Ready Checklist */}
+                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_purpose')}
-                        className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
+                        className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                        title={checkedDocs['doc_req_purpose']?.ready ? "Marked as Ready" : "Click to mark as Ready"}
                       >
-                        <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center shadow-xs ${
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
                           checkedDocs['doc_req_purpose']?.ready
                             ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                            : 'border-slate-300 bg-white group-hover:border-emerald-500 '
+                            : 'border-slate-300 bg-white group-hover:border-emerald-500'
                         }`}>
                           {checkedDocs['doc_req_purpose']?.ready ? (
-                            <Check className="w-4 h-4 stroke-[3] text-white" />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
                           ) : (
-                            <span className="text-[11px] font-black text-slate-400 group-hover:text-emerald-600">5</span>
+                            <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
                           )}
                         </div>
+                        {checkedDocs['doc_req_purpose']?.ready && (
+                          <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                        )}
                       </div>
                     </td>
+                    {/* Col 3: Document Details */}
                     <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
                         <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">

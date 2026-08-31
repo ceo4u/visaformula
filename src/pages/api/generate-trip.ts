@@ -122,10 +122,18 @@ IMPORTANT RULES:
   }
 }`;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: [{ role: 'user', parts: [{ text: prompt }] }]
-        });
+        let response: any = null;
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: [{ role: 'user', parts: [{ text: prompt }] }]
+          });
+        } catch (f35Err) {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [{ role: 'user', parts: [{ text: prompt }] }]
+          });
+        }
 
         const text = response.text || '';
         const match = text.match(/\{[\s\S]*\}/);

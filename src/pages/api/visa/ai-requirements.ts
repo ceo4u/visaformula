@@ -1683,14 +1683,26 @@ Return ONLY a valid JSON object matching this exact schema:
   }
 }`;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: prompt,
-          config: {
-            responseMimeType: 'application/json',
-            temperature: 0.1
-          }
-        });
+        let response: any = null;
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+              temperature: 0.1
+            }
+          });
+        } catch (f35Err) {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+              temperature: 0.1
+            }
+          });
+        }
 
         const text = response.text ? response.text.trim() : '';
         if (text) {

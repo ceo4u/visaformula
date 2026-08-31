@@ -245,11 +245,11 @@ Strict Evaluation Criteria (apply ONLY rules applicable to ${targetCountry}):
 Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.
         `;
 
-        // Try Google's flagship flagship reasoning model: gemini-2.5-pro, fallback to gemini-2.5-flash
+        // Try gemini-3.5-flash as primary model, fallback to gemini-2.5-flash
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: 'gemini-3.5-flash',
             contents: promptText,
             config: {
               systemInstruction,
@@ -282,7 +282,7 @@ Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK
               },
             },
           });
-        } catch (proErr) {
+        } catch (flash35Err) {
           // Fallback to gemini-2.5-flash
           response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',

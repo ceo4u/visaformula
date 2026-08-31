@@ -120,23 +120,44 @@ Return ONLY valid JSON:
   ]
 }`;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                { text: prompt },
-                {
-                  inlineData: {
-                    mimeType: mimeType || 'image/jpeg',
-                    data: cleanBase64
+        let response: any = null;
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  { text: prompt },
+                  {
+                    inlineData: {
+                      mimeType: mimeType || 'image/jpeg',
+                      data: cleanBase64
+                    }
                   }
-                }
-              ]
-            }
-          ]
-        });
+                ]
+              }
+            ]
+          });
+        } catch (f35Err) {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  { text: prompt },
+                  {
+                    inlineData: {
+                      mimeType: mimeType || 'image/jpeg',
+                      data: cleanBase64
+                    }
+                  }
+                ]
+              }
+            ]
+          });
+        }
 
         const textResponse = response.text || '';
         const jsonMatch = textResponse.match(/\{[\s\S]*\}/);

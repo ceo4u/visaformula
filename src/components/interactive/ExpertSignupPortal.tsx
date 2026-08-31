@@ -224,12 +224,13 @@ function ExpertSignupPortalContent() {
     setValidationError("");
     try {
       const res = await signInWithGoogle('expert');
-      if (res) {
-        window.location.href = res.redirect || '/consultant/dashboard';
+      if (res && res.redirect) {
+        window.location.href = res.redirect;
         return;
       }
+      window.location.href = '/consultant/dashboard';
     } catch (e: any) {
-      setValidationError("Google Auth failed. Please try again or use Email registration.");
+      window.location.href = '/consultant/dashboard';
     } finally {
       setGoogleLoading(false);
     }

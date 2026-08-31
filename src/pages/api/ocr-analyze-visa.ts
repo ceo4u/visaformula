@@ -101,7 +101,7 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-3.5-flash',
+            model: 'gemini-3.7-flash',
             contents: [
               {
                 role: 'user',

@@ -125,7 +125,7 @@ IMPORTANT RULES:
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-3.5-flash',
+            model: 'gemini-3.7-flash',
             contents: [{ role: 'user', parts: [{ text: prompt }] }]
           });
         } catch (f35Err) {

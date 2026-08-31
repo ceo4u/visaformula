@@ -1,17 +1,36 @@
 import pg from 'pg';
+import fs from 'fs';
+import path from 'path';
 
 let pool: pg.Pool | null = null;
 let useSSL = true;
 
-const DEFAULT_DATABASE_URL = 'postgresql://neondb_owner:npg_U4qJKmCVdn5t@ep-long-recipe-aolj8kyf.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
+function getDatabaseUrl(): string {
+  let connStr = (import.meta?.env?.DATABASE_URL as string || process.env.DATABASE_URL || '').trim();
+  if (connStr) return connStr;
+
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      const match = content.match(/^DATABASE_URL\s*=\s*(.*)$/m);
+      if (match) {
+        connStr = match[1].trim().replace(/^["']|["']$/g, '');
+        if (connStr) return connStr;
+      }
+    }
+  } catch (e) {}
+
+  return '';
+}
 
 function createPoolInstance(forceNoSSL = false) {
   if (pool) {
     try { pool.end(); } catch(e) {}
   }
-  let connStr = (import.meta?.env?.DATABASE_URL as string || process.env.DATABASE_URL || DEFAULT_DATABASE_URL).trim();
+  let connStr = getDatabaseUrl();
   if (!connStr) {
-    connStr = DEFAULT_DATABASE_URL;
+    console.warn('[DB] Warning: DATABASE_URL is not set in environment or .env file.');
   }
   if (forceNoSSL || !useSSL) {
     connStr = connStr.replace('sslmode=require', 'sslmode=disable');

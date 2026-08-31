@@ -245,40 +245,80 @@ Strict Evaluation Criteria (apply ONLY rules applicable to ${targetCountry}):
 Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.
         `;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.0-flash',
-          contents: promptText,
-          config: {
-            systemInstruction,
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: Type.OBJECT,
-              properties: {
-                readinessScore: { type: Type.INTEGER },
-                status: { type: Type.STRING },
-                financialScore: { type: Type.INTEGER },
-                credentialScore: { type: Type.INTEGER },
-                homeTiesScore: { type: Type.INTEGER },
-                historyScore: { type: Type.INTEGER },
-                criticalGaps: {
-                  type: Type.ARRAY,
-                  items: { type: Type.STRING },
+        // Try Google's flagship flagship reasoning model: gemini-2.5-pro, fallback to gemini-2.5-flash
+        let response: any = null;
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-pro',
+            contents: promptText,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  readinessScore: { type: Type.INTEGER },
+                  status: { type: Type.STRING },
+                  financialScore: { type: Type.INTEGER },
+                  credentialScore: { type: Type.INTEGER },
+                  homeTiesScore: { type: Type.INTEGER },
+                  historyScore: { type: Type.INTEGER },
+                  criticalGaps: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  recommendationSummary: { type: Type.STRING },
                 },
-                recommendationSummary: { type: Type.STRING },
+                required: [
+                  'readinessScore',
+                  'status',
+                  'financialScore',
+                  'credentialScore',
+                  'homeTiesScore',
+                  'historyScore',
+                  'criticalGaps',
+                  'recommendationSummary',
+                ],
               },
-              required: [
-                'readinessScore',
-                'status',
-                'financialScore',
-                'credentialScore',
-                'homeTiesScore',
-                'historyScore',
-                'criticalGaps',
-                'recommendationSummary',
-              ],
             },
-          },
-        });
+          });
+        } catch (proErr) {
+          // Fallback to gemini-2.5-flash
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: promptText,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  readinessScore: { type: Type.INTEGER },
+                  status: { type: Type.STRING },
+                  financialScore: { type: Type.INTEGER },
+                  credentialScore: { type: Type.INTEGER },
+                  homeTiesScore: { type: Type.INTEGER },
+                  historyScore: { type: Type.INTEGER },
+                  criticalGaps: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  recommendationSummary: { type: Type.STRING },
+                },
+                required: [
+                  'readinessScore',
+                  'status',
+                  'financialScore',
+                  'credentialScore',
+                  'homeTiesScore',
+                  'historyScore',
+                  'criticalGaps',
+                  'recommendationSummary',
+                ],
+              },
+            },
+          });
+        }
 
         if (response.text) {
           assessmentResult = JSON.parse(response.text);

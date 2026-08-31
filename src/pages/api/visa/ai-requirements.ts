@@ -2188,73 +2188,104 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
       return {
         passport_country: from,
         destination_country: 'United Kingdom',
-        purpose_of_visit: 'Student Visa',
+        purpose_of_visit: 'Higher Studies / Student Visa',
         visa_type: 'UK Student Visa (Student Route)',
         source_url: 'https://www.gov.uk/student-visa/documents-you-must-provide',
         official_source_name: 'UK Visas & Immigration (UKVI) official sources',
+        processing_time: 'Standard 3 Weeks (15 Working Days)',
+        validity: 'Full Course Duration + 4 Months Wrap-up (Initial 90-Day Entry Vignette)',
+        stay_duration: 'Length of Academic Program',
+        entry_type: 'Multiple Entry',
+        validity_and_stay: {
+          visa_validity: 'Course Duration + 4 Months Wrap-up (90-Day Entry Vignette)',
+          max_stay_per_entry: 'Full Academic Program Length',
+          entry_type: 'Multiple Entry'
+        },
         documents_required: [
           {
             title: 'Valid Passport',
-            description: 'Must be valid for your full period of stay in the UK and contain at least 1 blank page for the entry vignette.',
+            description: 'Original passport valid for your full period of stay in the UK with at least 1 blank page for the 90-day travel vignette.',
             is_mandatory: true
           },
           {
             title: 'Confirmation of Acceptance for Studies (CAS)',
-            description: 'A unique 14-digit reference number provided by your UK licensed university sponsor upon unconditional acceptance.',
-            is_mandatory: true
-          },
-          {
-            title: 'Proof of English Language Capability',
-            description: 'SELT certificate (IELTS Academic/PTE Academic) or confirmation on CAS that university assessed English proficiency.',
+            description: 'A unique 14-digit reference number provided by your UK licensed Higher Education Provider (HEP) upon unconditional acceptance, detailing course fees, payments made, and assessment qualifications.',
             is_mandatory: true
           },
           {
             title: 'Tuberculosis (TB) Test Certificate',
-            description: 'Required if residing in a UKVI listed country for 6+ months. Certificate must be from a UKVI-approved clinic.',
+            description: 'Mandatory for Indian passport holders residing in India for 6+ months. Certificate must be issued by an authorized UKVI-approved medical clinic (e.g. Apollo, Fortis, Max Healthcare). Valid for 6 months.',
             is_mandatory: true
           },
           {
-            title: 'ATAS Certificate',
-            description: 'Academic Technology Approval Scheme clearance required for specific sensitive postgraduate STEM/tech courses.',
+            title: 'Proof of English Language Capability',
+            description: 'SELT certificate (IELTS Academic / PTE Academic) or official confirmation on CAS statement that the HEP university assessed and verified English proficiency at CEFR B2 level.',
+            is_mandatory: true
+          },
+          {
+            title: 'Academic Transcripts & Degree Certificates',
+            description: 'Original certificates and marksheets specified by the university in the CAS statement used to assess academic admission.',
+            is_mandatory: true
+          },
+          {
+            title: 'ATAS Certificate (Academic Technology Approval Scheme)',
+            description: 'Mandatory clearance certificate for sensitive postgraduate STEM, engineering, medicine, and research courses before visa application.',
             is_mandatory: false
           }
         ],
         financial_proofs: [
           {
-            type: 'Bank Statement / Official Financial Sponsorship',
-            minimum_balance_or_amount: 'Tuition Fee Balance + Living Allowance (£1,529/mo London or £1,171/mo Non-London)',
-            time_frame: 'Held for 28 consecutive days minimum',
-            notes: 'Bank statement must be dated within 31 days of application submission. Account must allow immediate cash withdrawal.'
+            type: 'Bank Statements / Financial Sponsorship (28-Day Holding Rule)',
+            minimum_balance_or_amount: 'Tuition Fee Balance + Living Maintenance: £1,483/mo London (max £13,347 for 9 mo) OR £1,136/mo Outside London (max £10,224 for 9 mo)',
+            time_frame: 'Held continuously for 28 consecutive days minimum',
+            notes: 'Funds must be held in the account for 28 consecutive days without dipping below required balance. Bank statement must be dated within 31 days prior to application submission. In student’s or parents’ name (with birth certificate + consent letter).'
+          },
+          {
+            type: 'Approved Education Loan Sanction Letter',
+            minimum_balance_or_amount: 'Covering full tuition balance and living maintenance allowance',
+            time_frame: 'Issued within 6 months of visa application',
+            notes: 'Must be an official educational loan from a regulated financial institution (RBI approved schedule bank).'
           }
         ],
         other_requirements: [
           {
-            category: 'Immigration Health Surcharge (IHS)',
-            details: 'Mandatory healthcare fee paid online during visa application setup for access to NHS medical services (£776/year).'
+            category: 'Immigration Health Surcharge (IHS) Calculation',
+            details: 'Mandatory NHS healthcare surcharge paid online during application setup. Student discounted rate is £776 per year. For courses with extra wrap-around months (e.g., 1-year Master’s getting a 16-month visa), IHS is calculated in 6-month increments: £776 (1 year) + £388 (4 months) = £1,164 total IHS.'
           },
           {
-            category: 'Biometrics Appointment',
-            details: 'Mandatory in-person appointment at VFS Global / TLScontact center to submit fingerprints and digital facial photograph.'
+            category: '90-Day Entry Vignette & Digital eVisa / BRP',
+            details: 'Successful applicants receive a 90-day travel vignette (sticker) in their passport to enter the UK. Upon arrival, access digital UKVI eVisa account or collect physical Biometric Residence Permit (BRP) from designated Post Office/university within 10 days.'
+          },
+          {
+            category: 'Biometrics Appointment at VFS Global',
+            details: 'Mandatory in-person appointment at VFS Global UK Visa Application Center in India for 10-finger biometric scans and digital photograph.'
+          },
+          {
+            category: 'Work Rights Permitted',
+            details: 'Degree-level students at Higher Education Institutions are legally permitted to work up to 20 hours per week during term time and full-time during official vacation periods.'
           }
         ],
         how_to_apply: [
-          'Secure unconditional offer & official CAS letter from UK university.',
-          'Complete UKVI online visa application form & pay visa fee + IHS.',
-          'Upload supporting academic & 28-day financial documents to VFS portal.',
-          'Attend VFS Global appointment for biometrics and passport submission.',
-          'Receive UKVI decision letter and collect passport with visa vignette or eVisa.'
+          '1️⃣ Secure unconditional offer and official 14-digit CAS statement from UK Higher Education Provider (HEP).',
+          '2️⃣ Obtain Tuberculosis (TB) clearance certificate from a UKVI-approved clinic in India.',
+          '3️⃣ Maintain required tuition + living maintenance funds (£1,483/mo London or £1,136/mo Non-London) in bank for 28 consecutive days.',
+          '4️⃣ Complete the UKVI Student Visa online application form on gov.uk.',
+          '5️⃣ Pay the £490 visa application fee + £776/year Immigration Health Surcharge (IHS).',
+          '6️⃣ Upload CAS, TB certificate, academic credentials, and 28-day financial statements to VFS Global portal.',
+          '7️⃣ Book and attend VFS Global biometric appointment for fingerprinting and passport submission.',
+          '8️⃣ Receive UKVI decision letter within 15 working days and passport with 90-day entry vignette, then travel to UK.'
         ],
         costs: {
-          visa_fee: '£490 (approx. ₹52,400)',
-          service_fee: '£776 / yr (IHS Healthcare)',
-          total_fee: '£1,266+ (Visa + 1st Year IHS)',
-          notes: 'Payable online directly at official UKVI portal; exchange rates apply.'
+          visa_fee: '£490 (approx. ₹52,400 out-of-country student fee)',
+          service_fee: '£776 / yr (Student Discounted IHS Healthcare Surcharge)',
+          total_fee: '£1,266+ (Visa £490 + 1st Year IHS £776)',
+          notes: 'Payable online directly at official UKVI portal; courses with extra months calculate IHS per half-year block (£388/6 mo).'
         },
         processing_and_timing: {
-          apply_window: 'Apply up to 6 months before course start date.',
-          decision_time: 'Decision: Standard 3 weeks (15 working days).',
-          max_extension: 'Priority Service (5 working days) | Super Priority (24 hours) available.',
-          center_notes: 'Applications submitted via VFS Global centers across 10+ Indian cities.'
+          apply_window: 'Apply up to 6 months before academic course start date.',
+          decision_time: 'Standard: 3 weeks (15 working days) from biometric appointment date.',
+          max_extension: 'Priority Service (5 working days: +£500) | Super Priority (24 hours: +£1,000) available at VFS centers.',
+          center_notes: 'VFS Global UK VACs available in New Delhi, Mumbai, Chennai, Kolkata, Bengaluru, Hyderabad, Ahmedabad, Pune, Chandigarh, Kochi, Jalandhar, Jaipur, and Goa.'
         }
       };
     }

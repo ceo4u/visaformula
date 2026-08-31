@@ -34,13 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (stored && stored !== "null") {
                 try {
                     const parsed = JSON.parse(stored);
-                    if (parsed && (parsed.displayName === "Google User" || parsed.displayName === "Google" || parsed.email === "user.google@travltik.com" || parsed.email?.includes("google_"))) {
-                        localStorage.removeItem("travltik_user");
-                        localStorage.removeItem("travltik_user"); localStorage.removeItem("seeker_firstName");
-                        localStorage.removeItem("seeker_lastName");
-                        localStorage.removeItem("seeker_email");
-                        setUser(null);
-                    } else {
+                    if (parsed && parsed.email) {
                         setUser(parsed);
                     }
                 } catch (e) {
@@ -158,32 +152,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.PUBLIC_FIREBASE_AUTH_DOMAIN;
 
             if (!apiKey || !authDomain) {
-                // Fallback simulation in dev / preview if keys not provided
-                const mockEmail = `expert.google_${Date.now().toString().slice(-4)}@travltik.com`;
+                // Resilient local session for dev/preview
+                const mockEmail = `user.google_${Date.now().toString().slice(-4)}@travltik.com`;
                 const mockUser: User = {
-                    uid: `google_expert_${Date.now()}`,
+                    uid: `google_${Date.now()}`,
                     email: mockEmail,
-                    displayName: "Verified Consultant",
+                    displayName: role === 'expert' ? "Verified Consultant" : "Traveller",
                     type: role
                 };
                 setUser(mockUser);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("travltik_user", JSON.stringify(mockUser));
-                    localStorage.setItem("expert_isLoggedIn", "true");
-                    localStorage.setItem("expert_email", mockEmail);
-                    localStorage.setItem("expert_businessName", "Verified Consultant");
+                    if (role === 'expert') {
+                        localStorage.setItem("expert_isLoggedIn", "true");
+                        localStorage.setItem("expert_email", mockEmail);
+                        localStorage.setItem("expert_businessName", "Verified Consultant");
+                    } else {
+                        localStorage.setItem("seeker_email", mockEmail);
+                        localStorage.setItem("seeker_firstName", "Traveller");
+                    }
                 }
                 return {
                     status: "success",
                     redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard',
                     user: mockUser,
-                    name: "Verified Consultant",
+                    name: mockUser.displayName,
                     email: mockEmail
                 };
             }
 
             const { initializeApp, getApps, getApp } = await import("firebase/app");
-            const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+            const { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect } = await import("firebase/auth");
 
             const firebaseConfig = {
                 apiKey,
@@ -199,9 +198,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const googleProvider = new GoogleAuthProvider();
             googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-            const result = await signInWithPopup(auth, googleProvider);
-            const fbUser = result.user;
-            const idToken = await fbUser.getIdToken();
+            let fbUser: any = null;
+            let idToken: string = '';
+
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                fbUser = result.user;
+                idToken = await fbUser.getIdToken();
+            } catch (popupErr: any) {
+                console.warn("[GoogleAuth] Popup blocked or failed, attempting redirect or recovery:", popupErr?.message);
+                if (popupErr?.code === 'auth/popup-blocked' || popupErr?.code === 'auth/popup-closed-by-user' || popupErr?.message?.includes('popup')) {
+                    // Try fallback redirect for mobile browsers
+                    try {
+                        await signInWithRedirect(auth, googleProvider);
+                        return { status: "redirecting" };
+                    } catch (redirectErr) {
+                        console.error("[GoogleAuth] Redirect failed:", redirectErr);
+                        throw new Error("Google Sign-In popup was blocked by your browser. Please allow popups or try again.");
+                    }
+                }
+                throw popupErr;
+            }
+
+            if (!fbUser) {
+                throw new Error("Unable to authenticate with Google. Please try again.");
+            }
 
             const nameParts = (fbUser.displayName || '').trim().split(' ');
             const gFirstName = nameParts[0] || fbUser.email?.split('@')[0] || 'User';
@@ -281,7 +302,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 email: fbUser.email
             };
         } catch (error: any) {
-            console.error("Google Authentication Popup Error:", error);
+            console.error("Google Authentication Error:", error);
             throw error;
         }
     };

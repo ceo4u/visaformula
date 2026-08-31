@@ -2239,6 +2239,42 @@ return (
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
+          {/* Floating Travel Readiness Card (At Right of Girl - Exactly as in Image) */}
+          <a
+            href="#need-visa-pathway-dashboard"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="absolute top-3 sm:top-5 md:top-6 right-3 sm:right-6 md:right-8 lg:right-12 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl sm:rounded-3xl p-2.5 sm:p-3.5 shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[105px] sm:min-w-[135px]"
+            title="View Travel Readiness"
+          >
+            {/* Circular Progress Gauge */}
+            <div className="relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 shrink-0 flex items-center justify-center mb-1 sm:mb-1.5">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="11" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="url(#heroGirlReadinessGrad)" strokeWidth="11" strokeDasharray="238.76" strokeDashoffset="52.5" strokeLinecap="round" />
+                <defs>
+                  <linearGradient id="heroGirlReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#00A86B" />
+                    <stop offset="100%" stopColor="#008060" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                <span className="text-xs sm:text-sm md:text-base font-black text-slate-900 leading-none">78%</span>
+                <span className="text-[7px] sm:text-[9px] font-bold text-[#00A86B] mt-0.5">Ready</span>
+              </div>
+            </div>
+
+            {/* Bottom Label: Travel Readiness > */}
+            <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
+              <span>Travel Readiness</span>
+              <ChevronRight className="w-3 h-3 stroke-[2.5] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </a>
+
           {/* Hero Content Container */}
           <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
             
@@ -2267,67 +2303,40 @@ return (
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
-              {/* Row with Tabs on the left & Travel Readiness pill on the right */}
-              <div className="flex items-end justify-between gap-2 px-1 sm:px-4 mb-0">
+              {/* 2 Tabs attached seamlessly to the top of the search card */}
+              <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
                 
-                {/* Left Tabs */}
-                <div className="flex items-end gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
-                  {/* Tab 1: International Services */}
-                  <button
-                    type="button"
-                    onClick={() => setTravelScopeTab('international')}
-                    className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
-                      travelScopeTab === 'international'
-                        ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                        : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
-                    }`}
-                  >
-                    <span className="relative z-10">International Services</span>
-                    {travelScopeTab === 'international' && (
-                      <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
-                    )}
-                  </button>
-
-                  {/* Tab 2: Domestic Trip Planner */}
-                  <button
-                    type="button"
-                    onClick={() => setTravelScopeTab('domestic')}
-                    className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
-                      travelScopeTab === 'domestic'
-                        ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                        : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
-                    }`}
-                  >
-                    <span>Domestic Trip</span>
-                    {travelScopeTab === 'domestic' && (
-                      <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
-                    )}
-                  </button>
-                </div>
-
-                {/* Right Side: Travel Readiness Pill (Spread horizontally across right side, wider on desktop) */}
-                <a
-                  href="#need-visa-pathway-dashboard"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="inline-flex items-center justify-between gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full px-3.5 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all group cursor-pointer shrink-0 min-w-[200px] sm:min-w-[260px] md:min-w-[290px] lg:min-w-[360px] xl:min-w-[420px] mb-1"
+                {/* Tab 1: International Services */}
+                <button
+                  type="button"
+                  onClick={() => setTravelScopeTab('international')}
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
+                    travelScopeTab === 'international'
+                      ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                  }`}
                 >
-                  <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-3.5">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A896] shrink-0">
-                      <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-4.5 lg:h-4.5 stroke-[2.2] rotate-[-25deg]" />
-                    </div>
-                    <span className="text-xs sm:text-[14px] lg:text-[15px] font-black text-slate-900 leading-tight">
-                      Travel Readiness
-                    </span>
-                  </div>
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 rounded-full bg-teal-50 group-hover:bg-teal-100 text-[#00A896] flex items-center justify-center shrink-0 transition-colors">
-                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </a>
+                  <span className="relative z-10">International Services</span>
+                  {travelScopeTab === 'international' && (
+                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
+                  )}
+                </button>
 
+                {/* Tab 2: Domestic Trip Planner */}
+                <button
+                  type="button"
+                  onClick={() => setTravelScopeTab('domestic')}
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
+                    travelScopeTab === 'domestic'
+                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                  }`}
+                >
+                  <span>Domestic Trip</span>
+                  {travelScopeTab === 'domestic' && (
+                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
+                  )}
+                </button>
               </div>
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}

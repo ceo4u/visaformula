@@ -307,11 +307,26 @@ const domesticCountryData: Record<string, {
 
 const domesticCountryOptions = [
   { value: 'India', label: 'India', icon: '🇮🇳' },
-  { value: 'UAE', label: 'United Arab Emirates (UAE)', icon: '🇦🇪' },
   { value: 'United States', label: 'United States (USA)', icon: '🇺🇸' },
   { value: 'United Kingdom', label: 'United Kingdom (UK)', icon: '🇬🇧' },
   { value: 'Canada', label: 'Canada', icon: '🇨🇦' },
   { value: 'Australia', label: 'Australia', icon: '🇦🇺' },
+  { value: 'UAE', label: 'United Arab Emirates (UAE)', icon: '🇦🇪' },
+  { value: 'Germany', label: 'Germany / Schengen', icon: '🇩🇪' },
+  { value: 'France', label: 'France / Europe', icon: '🇫🇷' },
+  { value: 'Singapore', label: 'Singapore', icon: '🇸🇬' },
+  { value: 'New Zealand', label: 'New Zealand', icon: '🇳🇿' },
+  { value: 'Japan', label: 'Japan', icon: '🇯🇵' },
+  { value: 'Ireland', label: 'Ireland', icon: '🇮🇪' },
+  { value: 'Italy', label: 'Italy', icon: '🇮🇹' },
+  { value: 'Spain', label: 'Spain', icon: '🇪🇸' },
+  { value: 'Switzerland', label: 'Switzerland', icon: '🇨🇭' },
+  { value: 'Netherlands', label: 'Netherlands', icon: '🇳🇱' },
+  { value: 'Thailand', label: 'Thailand', icon: '🇹🇭' },
+  { value: 'Malaysia', label: 'Malaysia', icon: '🇲🇾' },
+  { value: 'Saudi Arabia', label: 'Saudi Arabia (KSA)', icon: '🇸🇦' },
+  { value: 'Qatar', label: 'Qatar', icon: '🇶🇦' },
+  { value: 'Worldwide', label: 'Worldwide / All Countries', icon: '🌍' },
 ];
 
 const domesticStateOptions = [
@@ -2271,7 +2286,7 @@ return (
                       : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
-                  <span>Domestic Trip</span>
+                  <span className="flex items-center gap-1.5"><svg className="w-4 h-4 text-[#00A86B] inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trip Readiness</span>
                   {travelScopeTab === 'domestic' && (
                     <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
                   )}
@@ -2761,8 +2776,8 @@ return (
                             </>
                           ) : (
                             <>
-                              <Sparkles className="w-4 h-4 text-cyan-300" />
-                              <span className="truncate">Explore Packages →</span>
+                              <Sparkles className="w-4 h-4 text-emerald-400" />
+                              <span className="truncate">Check Readiness →</span>
                             </>
                           )}
                         </button>

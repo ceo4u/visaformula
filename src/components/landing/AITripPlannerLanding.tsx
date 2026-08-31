@@ -2267,40 +2267,64 @@ return (
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
-              {/* 3 Tabs attached seamlessly to the top of the search card */}
-              <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
+              {/* Row with Tabs on the left & Travel Readiness pill on the right */}
+              <div className="flex items-end justify-between gap-2 px-1 sm:px-4 mb-0">
                 
-                {/* Tab 1: International Services */}
-                <button
-                  type="button"
-                  onClick={() => setTravelScopeTab('international')}
-                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
-                    travelScopeTab === 'international'
-                      ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
-                  }`}
-                >
-                  <span className="relative z-10">International Services</span>
-                  {travelScopeTab === 'international' && (
-                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
-                  )}
-                </button>
+                {/* Left Tabs */}
+                <div className="flex items-end gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+                  {/* Tab 1: International Services */}
+                  <button
+                    type="button"
+                    onClick={() => setTravelScopeTab('international')}
+                    className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
+                      travelScopeTab === 'international'
+                        ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                        : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                    }`}
+                  >
+                    <span className="relative z-10">International Services</span>
+                    {travelScopeTab === 'international' && (
+                      <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
+                    )}
+                  </button>
 
-                {/* Tab 2: Domestic Trip Planner */}
-                <button
-                  type="button"
-                  onClick={() => setTravelScopeTab('domestic')}
-                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
-                    travelScopeTab === 'domestic'
-                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
-                  }`}
+                  {/* Tab 2: Domestic Trip Planner */}
+                  <button
+                    type="button"
+                    onClick={() => setTravelScopeTab('domestic')}
+                    className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
+                      travelScopeTab === 'domestic'
+                        ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                        : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                    }`}
+                  >
+                    <span>Domestic Trip</span>
+                    {travelScopeTab === 'domestic' && (
+                      <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Right Side: Travel Readiness Pill (Exact Design from Image) */}
+                <a
+                  href="#need-visa-pathway-dashboard"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('need-visa-pathway-dashboard') || document.getElementById('hero-search');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="inline-flex items-center gap-2 sm:gap-2.5 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl px-2.5 sm:px-3 py-1.5 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all group cursor-pointer shrink-0 mb-1"
                 >
-                  <span>Domestic Trip</span>
-                  {travelScopeTab === 'domestic' && (
-                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
-                  )}
-                </button>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-teal-50/90 border border-teal-100 flex items-center justify-center text-[#00A896] shrink-0">
+                    <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2] rotate-[-25deg]" />
+                  </div>
+                  <span className="text-[11px] sm:text-[13px] font-black text-slate-900 leading-tight">
+                    Travel Readiness
+                  </span>
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-teal-50 group-hover:bg-teal-100 text-[#00A896] flex items-center justify-center shrink-0 transition-colors">
+                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </a>
 
               </div>
 

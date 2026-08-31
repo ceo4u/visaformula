@@ -572,7 +572,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           </div>
 
           {/* ── 2. DOCUMENTS REQUIRED CHECKLIST (CRYSTAL CLEAR HIGH-CONTRAST TABLE) ── */}
-          <div id="section-documents" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
+          <div id="section-documents" className="bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-5 sm:space-y-6 text-left scroll-mt-24 w-full overflow-hidden">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div className="flex items-center gap-3.5">
                 <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -598,15 +598,15 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-100/90 border-b border-slate-300 text-xs font-black text-slate-900 uppercase tracking-wider">
-                    <th className="py-4 px-4 w-20 sm:w-24 text-center border-r border-slate-300">READY</th>
-                    <th className="py-4 px-6 sm:px-8">DOCUMENT</th>
+                    <th className="py-3 sm:py-4 px-2 sm:px-4 w-12 sm:w-24 text-center border-r border-slate-300 text-[11px] sm:text-xs">READY</th>
+                    <th className="py-3 sm:py-4 px-3 sm:px-8 text-[11px] sm:text-xs">DOCUMENT</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-sm">
                   
                   {/* Row 1: Visa Application Form */}
                   <tr className="transition-colors">
-                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_form')}
                         className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
@@ -624,11 +624,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 px-6 sm:px-8 align-middle">
-                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
+                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Visa Application Form
                       </strong>
-                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         DS-160 / Official Consular Filing Sheet with confirmation barcode.
                       </span>
                     </td>
@@ -636,7 +636,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 2: Recent Passport-Sized Photographs */}
                   <tr className="transition-colors">
-                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_photo')}
                         className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
@@ -654,11 +654,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 px-6 sm:px-8 align-middle">
-                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
+                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Two Recent Passport-Sized Pictures
                       </strong>
-                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Biometric Photo Standards (White Background, 2x2 inch / 35x45mm, neutral expression).
                       </span>
                     </td>
@@ -666,7 +666,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 3: Passport */}
                   <tr className="transition-colors">
-                    <td className="py-5 px-4 text-center border-r border-slate-200 align-middle">
+                    <td className="py-3 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-middle">
                       <div 
                         onClick={() => toggleDocReady('doc_req_passport')}
                         className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
@@ -684,11 +684,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 px-6 sm:px-8 align-middle">
-                      <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                    <td className="py-3 sm:py-5 px-3 sm:px-8 align-middle min-w-0">
+                      <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                         Original Passport
                       </strong>
-                      <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                      <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Current &amp; Previous Passports (Minimum 6 months validity from planned departure date, at least 2 blank visa pages).
                       </span>
                     </td>
@@ -696,7 +696,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 4: Medical / Health Insurance */}
                   <tr className="transition-colors">
-                    <td className="py-5 px-4 text-center border-r border-slate-200 align-top pt-6">
+                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_insurance')}
                         className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
@@ -714,12 +714,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 px-6 sm:px-8 align-top space-y-4">
+                    <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
-                        <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                           Medical &amp; Travel Insurance
                         </strong>
-                        <span className="text-xs sm:text-sm text-slate-600 font-semibold block mt-1">
+                        <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                           Consular-approved health coverage including emergency medical evacuation &amp; repatriation. (Holders of diplomatic passports are exempted).
                         </span>
                       </div>
@@ -755,7 +755,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
                   {/* Row 5: Purpose Specific Required Documents */}
                   <tr className="transition-colors">
-                    <td className="py-5 px-4 text-center border-r border-slate-200 align-top pt-6">
+                    <td className="py-3.5 sm:py-5 px-1.5 sm:px-4 text-center border-r border-slate-200 align-top pt-4 sm:pt-6">
                       <div 
                         onClick={() => toggleDocReady('doc_req_purpose')}
                         className="flex flex-col items-center justify-center gap-1.5 cursor-pointer select-none group"
@@ -773,9 +773,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 px-6 sm:px-8 align-top space-y-4">
+                    <td className="py-3.5 sm:py-5 px-3 sm:px-8 align-top space-y-3 sm:space-y-4 min-w-0">
                       <div>
-                        <strong className="font-black text-slate-950 block text-base sm:text-[17px] tracking-tight leading-snug">
+                        <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                           Required Documents
                         </strong>
                         <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md inline-block mt-1">

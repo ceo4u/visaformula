@@ -3862,33 +3862,37 @@ export function VisaCountryResultPortal({
                       ]}
                     />
 
-                    {/* Q2: Travel Timing */}
-                    <PortalCustomSelect
-                      label="2. Tentative Departure Date"
-                      value={visitTiming}
-                      onChange={setVisitTiming}
-                      placeholder="Select travel window"
-                      options={[
-                        "Next 30 Days",
-                        "1 - 3 Months",
-                        "3 - 6 Months",
-                        "6+ Months Later"
-                      ]}
-                    />
+                    {/* Q2: Tentative Departure Date */}
+                    <div className="space-y-1 text-left">
+                      <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                        2. Tentative Departure Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          value={visitTiming}
+                          min={new Date().toISOString().split('T')[0]}
+                          onChange={(e) => setVisitTiming(e.target.value)}
+                          className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
+                        />
+                      </div>
+                    </div>
 
                     {/* Q3: Tentative Return Date */}
-                    <PortalCustomSelect
-                      label="3. Tentative Return Date"
-                      value={visitReturnDate}
-                      onChange={setVisitReturnDate}
-                      placeholder="Select return window"
-                      options={[
-                        "Within 7 Days",
-                        "8 - 14 Days",
-                        "15 - 30 Days",
-                        "1 - 3 Months"
-                      ]}
-                    />
+                    <div className="space-y-1 text-left">
+                      <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                        3. Tentative Return Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          value={visitReturnDate}
+                          min={visitTiming || new Date().toISOString().split('T')[0]}
+                          onChange={(e) => setVisitReturnDate(e.target.value)}
+                          className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
+                        />
+                      </div>
+                    </div>
 
                     {/* Q4: Stay Preference */}
                     <PortalCustomSelect

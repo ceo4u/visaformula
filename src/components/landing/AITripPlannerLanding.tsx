@@ -3847,21 +3847,28 @@ return (
           {/* ── 6. TRAVEL READINESS AUDIT FEATURE CARD ── */}
           <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-16 mb-12 sm:mb-20 text-left px-2 sm:px-0">
             <a
-              href="/visa-guide"
-              className="max-w-2xl mx-auto bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group block"
+              href="#need-visa-pathway-dashboard"
+              onClick={(e) => {
+                const el = document.getElementById('need-visa-pathway-dashboard') || document.querySelector('input[placeholder*="destination" i]');
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+              }}
+              className="max-w-2xl mx-auto bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group block cursor-pointer active:scale-[0.99]"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#00A86B] transition-colors">
                     Check Your Travel Readiness
                   </h3>
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[11px] sm:text-xs font-black uppercase tracking-wider">
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[11px] sm:text-xs font-black uppercase tracking-wider group-hover:bg-emerald-100 transition-colors">
                     Instant AI Audit
                   </span>
                 </div>
 
                 <div className="flex items-center gap-5 sm:gap-7 my-2">
-                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-50 border-4 border-emerald-500 flex items-center justify-center shrink-0">
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-50 border-4 border-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                     <div className="text-center">
                       <span className="text-lg sm:text-2xl font-black text-slate-950 leading-none">8.5</span>
                       <span className="text-[10px] sm:text-xs text-slate-400 block font-bold">/10</span>

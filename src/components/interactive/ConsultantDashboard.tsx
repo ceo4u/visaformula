@@ -495,11 +495,11 @@ export function ConsultantDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f4f6f9] font-sans flex flex-col text-slate-900 selection:bg-[#00a896] selection:text-white">
+        <div className="min-h-screen bg-[#f4f6f9] font-sans flex flex-col text-slate-900 selection:bg-slate-900 selection:text-white">
             
             {/* Success Notification Toast */}
             {showSuccessToast && (
-                <div className="fixed top-5 right-5 z-[99999] bg-[#00a896] text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-xs flex items-center gap-2 animate-bounce">
+                <div className="fixed top-5 right-5 z-[99999] bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-xs flex items-center gap-2 animate-bounce">
                     <CheckCircle className="w-4 h-4 text-white" />
                     <span>{toastMessage}</span>
                 </div>
@@ -542,7 +542,7 @@ export function ConsultantDashboard() {
                         {profile.image && !profile.image.includes("unsplash.com") ? (
                             <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
                         ) : (
-                            <div className="w-9 h-9 rounded-full bg-[#00a896] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                            <div className="w-9 h-9 rounded-full bg-slate-900 text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
                                 {(profile.name || "E").charAt(0).toUpperCase()}
                             </div>
                         )}
@@ -569,7 +569,7 @@ export function ConsultantDashboard() {
                                     onClick={() => setActiveTab(item.id)}
                                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                         isActive
-                                            ? "bg-[#00a896] text-white shadow-md"
+                                            ? "bg-slate-900 text-white shadow-md"
                                             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                     }`}
                                 >
@@ -600,7 +600,7 @@ export function ConsultantDashboard() {
                             </ul>
                             <button 
                                 onClick={() => setActiveTab("subscriptions")}
-                                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
+                                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
                             >
                                 Upgrade Now
                             </button>
@@ -632,7 +632,7 @@ export function ConsultantDashboard() {
                                             }}
                                             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-[#00a896] text-white shadow-md"
+                                                    ? "bg-slate-900 text-white shadow-md"
                                                     : "text-slate-600 hover:bg-slate-100"
                                             }`}
                                         >
@@ -660,21 +660,21 @@ export function ConsultantDashboard() {
 
                     {/* Live Profile Listing Status Banners */}
                     {isProfileIncomplete ? (
-                        <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs w-full animate-fade-up">
                             <div className="flex items-start gap-3.5">
-                                <div className="w-10 h-10 rounded-2xl bg-amber-100/90 flex items-center justify-center text-amber-800 shrink-0 font-black text-lg border border-amber-200">
-                                    ⚠️
+                                <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0 font-black text-lg border border-slate-200">
+                                    👤
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your consultant profile to get listed</h4>
-                                    <p className="text-xs font-semibold text-amber-800 mt-1 leading-relaxed">
+                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">Complete your consultant profile to get listed</h4>
+                                    <p className="text-xs font-medium text-slate-500 mt-1 leading-relaxed">
                                         Please fill in your location address, specialization tags, and bio to get publicly listed on Find Experts & start receiving client leads.
                                     </p>
                                 </div>
                             </div>
                             <button 
                                 onClick={() => setIsEditingProfile(true)}
-                                className="bg-amber-800 hover:bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
                                 <span>Complete Profile to Get Listed</span>
                                 <ChevronRight className="w-4 h-4" />
@@ -700,7 +700,7 @@ export function ConsultantDashboard() {
                                 href="/find-experts"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
                             >
                                 <span>View Live Listing</span>
                                 <ChevronRight className="w-4 h-4" />
@@ -879,7 +879,7 @@ export function ConsultantDashboard() {
                                                 <div>
                                                     <div className="h-32 w-full relative overflow-hidden bg-slate-100">
                                                         <img src={ad.img || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"} alt={ad.title} className="w-full h-full object-cover" />
-                                                        <span className="absolute top-2 left-2 bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                        <span className="absolute top-2 left-2 bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
                                                             {ad.category}
                                                         </span>
                                                     </div>
@@ -961,7 +961,7 @@ export function ConsultantDashboard() {
                                     <h2 className="text-xl font-extrabold text-slate-900">Profile & Business Details</h2>
                                     <p className="text-xs font-medium text-slate-500">Manage public profile, business verification, and consultation background</p>
                                 </div>
-                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
+                                <button onClick={() => setIsEditingProfile(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
                                     <Edit2 className="w-3.5 h-3.5" /> Edit Profile
                                 </button>
                             </div>
@@ -970,7 +970,7 @@ export function ConsultantDashboard() {
                                 {profile.image && !profile.image.includes("unsplash.com") ? (
                                     <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
                                 ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-[#00a896] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                    <div className="w-24 h-24 rounded-2xl bg-slate-900 text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
                                         {(profile.name || "E").charAt(0).toUpperCase()}
                                     </div>
                                 )}
@@ -1005,7 +1005,7 @@ export function ConsultantDashboard() {
                                     <h2 className="text-xl font-extrabold text-slate-900">Client Leads Manager ({leadsList.length} Active Leads)</h2>
                                     <p className="text-xs font-medium text-slate-500">Track and convert prospective visa applicants & consultation leads</p>
                                 </div>
-                                <button onClick={() => setIsAddingLead(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                <button onClick={() => setIsAddingLead(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                     <Plus className="w-4 h-4" /> Add New Lead
                                 </button>
                             </div>
@@ -1036,7 +1036,7 @@ export function ConsultantDashboard() {
                                                         </span>
                                                     </td>
                                                     <td className="p-3 text-right space-x-2">
-                                                        <button onClick={() => { setActiveChatClient(lead.name); setActiveTab("messages"); }} className="bg-[#00a896] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#008f80]">
+                                                        <button onClick={() => { setActiveChatClient(lead.name); setActiveTab("messages"); }} className="bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#008f80]">
                                                             Chat
                                                         </button>
                                                         <button onClick={() => handleDeleteLead(lead.id)} className="text-rose-600 hover:underline text-xs">
@@ -1053,7 +1053,7 @@ export function ConsultantDashboard() {
                                     <Users className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Client Leads Found</h3>
                                     <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Add your client leads to start tracking consultation requests and visa application stages.</p>
-                                    <button onClick={() => setIsAddingLead(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                    <button onClick={() => setIsAddingLead(true)} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         + Add New Lead
                                     </button>
                                 </div>
@@ -1101,7 +1101,7 @@ export function ConsultantDashboard() {
                                     <h2 className="text-xl font-extrabold text-slate-900">Service Packages & Escrow Rates</h2>
                                     <p className="text-xs font-medium text-slate-500">Configure consultation prices and milestone services</p>
                                 </div>
-                                <button onClick={() => triggerToast("Added new service package!")} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold">
+                                <button onClick={() => triggerToast("Added new service package!")} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">
                                     + Add New Package
                                 </button>
                             </div>
@@ -1131,7 +1131,7 @@ export function ConsultantDashboard() {
                                     <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
                                     <p className="text-xs font-medium text-slate-500">Manage public listings shown on TravlTik homepage</p>
                                 </div>
-                                <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                <button onClick={() => setIsPostingAd(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                     <Plus className="w-4 h-4" /> Post New Ad
                                 </button>
                             </div>
@@ -1140,7 +1140,7 @@ export function ConsultantDashboard() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {classifiedsList.map(ad => (
                                         <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs p-4 space-y-3">
-                                            <span className="bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">{ad.category}</span>
+                                            <span className="bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">{ad.category}</span>
                                             <h4 className="text-sm font-extrabold text-slate-900">{ad.title}</h4>
                                             <p className="text-xs font-bold text-[#00a896]">Price: {ad.price}</p>
                                             <div className="flex justify-between items-center text-xs text-slate-500 font-bold border-t pt-2">
@@ -1155,7 +1155,7 @@ export function ConsultantDashboard() {
                                     <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
                                     <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on TravlTik.</p>
-                                    <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                    <button onClick={() => setIsPostingAd(true)} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         + Post New Classified / Offer
                                     </button>
                                 </div>
@@ -1213,7 +1213,7 @@ export function ConsultantDashboard() {
                                     <Megaphone className="w-8 h-8 text-[#00a896] mx-auto" />
                                     <h3 className="font-extrabold text-sm text-slate-900">Featured Home Page Spot</h3>
                                     <p className="text-xs text-slate-600">Get 10x higher visibility on top search results</p>
-                                    <button onClick={() => triggerToast("Activated Featured Spot!")} className="w-full bg-[#00a896] text-white py-2 rounded-xl text-xs font-bold">
+                                    <button onClick={() => triggerToast("Activated Featured Spot!")} className="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold">
                                         Activate (₹1,999/mo)
                                     </button>
                                 </div>
@@ -1315,7 +1315,7 @@ export function ConsultantDashboard() {
                                             <button
                                                 key={clientName}
                                                 onClick={() => setActiveChatClient(clientName)}
-                                                className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${activeChatClient === clientName ? "bg-[#00a896] text-white border-[#00a896]" : "bg-slate-50 text-slate-700 hover:bg-slate-100"}`}
+                                                className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${activeChatClient === clientName ? "bg-slate-900 text-white border-[#00a896]" : "bg-slate-50 text-slate-700 hover:bg-slate-100"}`}
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <span>{clientName}</span>
@@ -1333,7 +1333,7 @@ export function ConsultantDashboard() {
                                         <div className="flex-1 overflow-y-auto py-3 space-y-2.5">
                                             {(chatMessages[activeChatClient] || []).map((msg, i) => (
                                                 <div key={i} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
-                                                    <div className={`max-w-[80%] p-2.5 rounded-xl text-xs font-medium ${msg.sender === "me" ? "bg-[#00a896] text-white" : "bg-white border border-slate-200 text-slate-800"}`}>
+                                                    <div className={`max-w-[80%] p-2.5 rounded-xl text-xs font-medium ${msg.sender === "me" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-800"}`}>
                                                         <p>{msg.text}</p>
                                                         <span className="text-[9px] opacity-70 block text-right mt-1">{msg.time}</span>
                                                     </div>
@@ -1349,7 +1349,7 @@ export function ConsultantDashboard() {
                                                 placeholder="Type your response message..." 
                                                 className="flex-1 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs outline-none focus:border-[#00a896]"
                                             />
-                                            <button type="submit" className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                            <button type="submit" className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                                 <Send className="w-3.5 h-3.5" /> Send
                                             </button>
                                         </form>
@@ -1377,7 +1377,7 @@ export function ConsultantDashboard() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-5 border-2 border-[#00a896] rounded-2xl bg-teal-50/50 space-y-3">
-                                    <span className="bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Current Active</span>
+                                    <span className="bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Current Active</span>
                                     <h3 className="text-lg font-black text-slate-900">Basic Plan</h3>
                                     <p className="text-2xl font-black text-slate-900">₹0 <span className="text-xs font-normal text-slate-500">/ forever</span></p>
                                     <ul className="text-xs font-semibold text-slate-700 space-y-1.5">
@@ -1396,7 +1396,7 @@ export function ConsultantDashboard() {
                                         <li>✓ Top verified gold badge</li>
                                         <li>✓ Featured home page placement</li>
                                     </ul>
-                                    <button onClick={() => triggerToast("Upgrading to Pro Consultant Plan...")} className="w-full bg-[#00a896] text-white py-2 rounded-xl text-xs font-bold">
+                                    <button onClick={() => triggerToast("Upgrading to Pro Consultant Plan...")} className="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold">
                                         Upgrade to Pro
                                     </button>
                                 </div>
@@ -1425,7 +1425,7 @@ export function ConsultantDashboard() {
                                     <input type="password" placeholder="Enter new password" className="w-full px-3.5 py-2.5 border rounded-xl text-xs font-medium text-slate-900" />
                                 </div>
 
-                                <button onClick={() => triggerToast("Settings saved!")} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold">
+                                <button onClick={() => triggerToast("Settings saved!")} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold">
                                     Save Settings
                                 </button>
                             </div>
@@ -1477,7 +1477,7 @@ export function ConsultantDashboard() {
                                         <button 
                                             type="submit" 
                                             disabled={isSubmittingTicket}
-                                            className="bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:bg-slate-300"
+                                            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:bg-slate-300"
                                         >
                                             {isSubmittingTicket ? "Submitting Ticket..." : "Submit Ticket"}
                                         </button>
@@ -1543,7 +1543,7 @@ export function ConsultantDashboard() {
                                     {formImage && !formImage.includes("unsplash.com") ? (
                                         <img src={formImage} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
                                     ) : (
-                                        <div className="w-12 h-12 rounded-xl bg-[#00a896] text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
+                                        <div className="w-12 h-12 rounded-xl bg-slate-900 text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
                                             {(formName || "E").charAt(0).toUpperCase()}
                                         </div>
                                     )}
@@ -1713,7 +1713,7 @@ export function ConsultantDashboard() {
                                                 }}
                                                 className={`px-3 py-2.5 rounded-2xl border text-xs font-semibold text-center transition-all cursor-pointer ${
                                                     isChecked 
-                                                        ? "bg-[#00a896] border-[#00a896] text-white shadow-xs font-bold" 
+                                                        ? "bg-slate-900 border-[#00a896] text-white shadow-xs font-bold" 
                                                         : "bg-white border-slate-200/90 text-slate-700 hover:bg-teal-50/50 hover:border-[#00a896]"
                                                 }`}
                                                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -1799,7 +1799,7 @@ export function ConsultantDashboard() {
 
                             <div className="flex gap-3 pt-2 border-t border-slate-100">
                                 <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Save Changes</button>
+                                <button type="submit" className="flex-1 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Save Changes</button>
                             </div>
                         </form>
                     </div>
@@ -1837,7 +1837,7 @@ export function ConsultantDashboard() {
                             </div>
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Publish Listing</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Publish Listing</button>
                             </div>
                         </form>
                     </div>
@@ -1896,7 +1896,7 @@ export function ConsultantDashboard() {
                             </div>
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsAddingLead(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Add Lead</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Add Lead</button>
                             </div>
                         </form>
                     </div>

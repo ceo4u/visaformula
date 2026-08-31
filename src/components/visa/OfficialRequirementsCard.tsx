@@ -669,6 +669,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         DS-160 / Official Consular Filing Sheet with confirmation barcode.
                       </span>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
+                        📌 Mandatory Consular Filing: Must be fully completed and signed before scheduling biometrics / interview.
+                      </span>
                     </td>
                   </tr>
 
@@ -715,6 +718,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                       </div>
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Biometric Photo Standards (White Background, 2x2 inch / 35x45mm, neutral expression).
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
+                        📌 Mandatory Photo Rule: Taken within the last 6 months, no glasses, no headwear unless religious.
                       </span>
                     </td>
                   </tr>
@@ -763,6 +769,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                       <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                         Current &amp; Previous Passports (Minimum 6 months validity from planned departure date, at least 2 blank visa pages).
                       </span>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
+                        📌 Mandatory Passport Rule: Must have 6+ months remaining validity and minimum 2 consecutive blank visa pages.
+                      </span>
                     </td>
                   </tr>
 
@@ -810,6 +819,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                         </div>
                         <span className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold block mt-0.5 sm:mt-1 break-words leading-relaxed">
                           Consular-approved health coverage including emergency medical evacuation &amp; repatriation. (Holders of diplomatic passports are exempted).
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
+                          📌 Mandatory Insurance Mandate: Must cover the complete duration of stay with minimum statutory emergency repatriation cover.
                         </span>
                       </div>
 
@@ -884,6 +896,9 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             {cleanPurposeLabel} Specific
                           </span>
                         </div>
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-50/90 border border-amber-200/90 px-2 py-0.5 rounded-md mt-1.5">
+                          📌 Mandatory Evidence: All supporting financial and travel proofs must be authentic and verifiable.
+                        </span>
                       </div>
 
                       {/* Crystal Clear Sub-Checklist Cards (Pure White Background) */}
@@ -1113,60 +1128,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </tbody>
               </table>
             </div>
-
-            {/* ── INTEGRATED MANDATES & LEGAL DIRECTIVES (DIRECTLY UNDER DOCUMENTS TABLE) ── */}
-            {data && data.other_requirements && data.other_requirements.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-slate-200 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <AlertCircle className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
-                      Official Consular Mandates &amp; Legal Directives
-                    </h4>
-                    <span className="text-xs text-slate-500 font-semibold block">
-                      Mandatory statutory compliance rules for {cleanTo} visa adjudication
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-                  {data.other_requirements.map((req, idx) => {
-                    const visual = getMandateVisual(req.category, idx);
-                    const isInsurance = req.category.toLowerCase().includes('insurance') || req.category.toLowerCase().includes('health') || req.category.toLowerCase().includes('ihs');
-
-                    return (
-                      <div key={idx} className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 hover:border-slate-300 transition-colors">
-                        <div className="shrink-0 pt-0.5">
-                          {visual.icon}
-                        </div>
-                        <div className="space-y-1.5 min-w-0 flex-1 text-left">
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md ${visual.badgeBg}`}>
-                            <span>📌 {visual.tag}</span>
-                          </span>
-                          <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
-                            <strong className="font-extrabold text-slate-950 mr-1.5">{req.category}:</strong>
-                            {req.details}
-                          </p>
-                          {isInsurance && (
-                            <div className="pt-1">
-                              <a
-                                href="/find-experts?category=insurance"
-                                className="inline-flex items-center gap-1 text-xs font-bold text-[#004e8c] hover:underline"
-                              >
-                                <span>Explore Consular-Approved Insurance</span>
-                                <ArrowRight className="w-3.5 h-3.5" />
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
           </div>
         </div>

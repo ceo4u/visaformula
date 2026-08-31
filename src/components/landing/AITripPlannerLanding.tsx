@@ -2286,7 +2286,7 @@ return (
                       : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
-                  <span className="flex items-center gap-1.5"><svg className="w-4 h-4 text-[#00A86B] inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trip Readiness</span>
+                  <span>Trip Readiness</span>
                   {travelScopeTab === 'domestic' && (
                     <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
                   )}
@@ -2575,217 +2575,164 @@ return (
                   </div>
                 )}
 
-                {/* TAB 2: DOMESTIC TRIP PLANNER FIELDS */}
-                {travelScopeTab === 'domestic' && (() => {
-                  const currentCountryData = domesticCountryData[domesticCountry] || domesticCountryData['India'];
-                  const stateList = currentCountryData?.states || [];
-                  const tourList = currentCountryData?.destinations || [];
+                {/* TAB 2: COUNTRY-TO-COUNTRY TRIP READINESS FIELDS */}
+                {travelScopeTab === 'domestic' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
+                    
+                    {/* 1. Passport / Origin Country (3 Cols) */}
+                    <div className="lg:col-span-3 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        Passport / Origin Country
+                      </label>
+                      <div
+                        ref={domesticCountryRef}
+                        onClick={() => {
+                          setIsDomesticCountryOpen(!isDomesticCountryOpen);
+                          setIsDomesticDestOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none transition-all"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img
+                            src={`https://flagcdn.com/w40/${getCountryCode(passportCountry || "India")}.png`}
+                            alt={passportCountry || "India"}
+                            className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://flagcdn.com/w40/in.png"; }}
+                          />
+                          <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                            {passportCountry || "India"}
+                          </span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? "rotate-180 text-[#00A86B]" : ""}`} />
 
-                  return (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
-                      
-                      {/* Country (2 Cols) */}
-                      <div className="lg:col-span-2 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          Country
-                        </label>
-                        <div
-                          ref={domesticCountryRef}
-                          onClick={() => {
-                            setIsDomesticCountryOpen(!isDomesticCountryOpen);
-                            setIsDomesticStateOpen(false);
-                            setIsDomesticDestOpen(false);
-                          }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
-                        >
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            <span>{domesticCountryOptions.find(c => c.value === domesticCountry)?.icon || '🇮🇳'}</span>
-                            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
-                              {domesticCountry}
-                            </span>
+                        {isDomesticCountryOpen && (
+                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+                            {passportCountryOptions.map((opt) => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => {
+                                  setPassportCountry(opt.value);
+                                  setIsDomesticCountryOpen(false);
+                                }}
+                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
+                              >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <span>{opt.icon}</span>
+                                  <span className="truncate">{opt.label}</span>
+                                </div>
+                              </button>
+                            ))}
                           </div>
-                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180' : ''}`} />
-
-                          {isDomesticCountryOpen && (
-                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                              {domesticCountryOptions.map((opt) => (
-                                <button
-                                  key={opt.value}
-                                  type="button"
-                                  onClick={() => {
-                                    setDomesticCountry(opt.value);
-                                    const newStates = domesticCountryData[opt.value]?.states || [];
-                                    if (newStates[0]) {
-                                      setDomesticState(newStates[0].label);
-                                    }
-                                    const newDests = domesticCountryData[opt.value]?.destinations || [];
-                                    if (newDests[0]) {
-                                      setDomesticDestination(newDests[0].label);
-                                    }
-                                    setIsDomesticCountryOpen(false);
-                                  }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
-                                >
-                                  <div className="flex items-center gap-2.5 min-w-0">
-                                    <span>{opt.icon}</span>
-                                    <span className="truncate">{opt.label}</span>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                        )}
                       </div>
-
-                      {/* State (2 Cols) */}
-                      <div className="lg:col-span-2 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          State / Region
-                        </label>
-                        <div
-                          ref={domesticStateRef}
-                          onClick={() => {
-                            setIsDomesticStateOpen(!isDomesticStateOpen);
-                            setIsDomesticCountryOpen(false);
-                            setIsDomesticDestOpen(false);
-                          }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
-                        >
-                          <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                            {domesticState || 'Select State'}
-                          </span>
-                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180' : ''}`} />
-
-                          {isDomesticStateOpen && (
-                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                              {stateList.map((st) => (
-                                <button
-                                  key={st.value || st.label}
-                                  type="button"
-                                  onClick={() => {
-                                    setDomesticState(st.label || st.value);
-                                    setIsDomesticStateOpen(false);
-                                  }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
-                                >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{st.icon || '📍'}</span>
-                                    <span className="truncate">{st.label || st.value}</span>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Origin City (2 Cols) */}
-                      <div className="lg:col-span-2 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          Departing From
-                        </label>
-                        <input
-                          type="text"
-                          value={domesticCity}
-                          onChange={(e) => setDomesticCity(e.target.value)}
-                          placeholder="Your City (e.g. Nashik)"
-                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
-                        />
-                      </div>
-
-                      {/* Tour / Destination (2 Cols) */}
-                      <div className="lg:col-span-2 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          Destination Package
-                        </label>
-                        <div
-                          ref={domesticDestRef}
-                          onClick={() => {
-                            setIsDomesticDestOpen(!isDomesticDestOpen);
-                            setIsDomesticCountryOpen(false);
-                            setIsDomesticStateOpen(false);
-                          }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
-                        >
-                          <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                            {domesticDestination || 'Select Tour'}
-                          </span>
-                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180' : ''}`} />
-
-                          {isDomesticDestOpen && (
-                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                              {tourList.map((d) => (
-                                <button
-                                  key={d.value || d.label}
-                                  type="button"
-                                  onClick={() => {
-                                    setDomesticDestination(d.label || d.value);
-                                    setIsDomesticDestOpen(false);
-                                  }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
-                                >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{d.icon || '🏖️'}</span>
-                                    <span className="truncate">{d.label || d.value}</span>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Travelers (2 Cols) */}
-                      <div className="lg:col-span-2 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          Travelers
-                        </label>
-                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 shadow-2xs">
-                          <button
-                            type="button"
-                            onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
-                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-black flex items-center justify-center cursor-pointer text-xs"
-                          >
-                            -
-                          </button>
-                          <span className="text-xs sm:text-sm font-bold text-slate-900">
-                            {domesticMembers} {domesticMembers === 1 ? 'Traveler' : 'Travelers'}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setDomesticMembers(domesticMembers + 1)}
-                            className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black flex items-center justify-center cursor-pointer text-xs"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Action Button (2 Cols) */}
-                      <div className="lg:col-span-2">
-                        <button
-                          type="button"
-                          onClick={handleGenerateDomesticItinerary}
-                          disabled={isGeneratingDomestic}
-                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
-                        >
-                          {isGeneratingDomestic ? (
-                            <>
-                              <RotateCw className="w-4 h-4 animate-spin text-white" />
-                              <span>Planning...</span>
-                            </>
-                          ) : (
-                            <>
-                              <Sparkles className="w-4 h-4 text-emerald-400" />
-                              <span className="truncate">Check Readiness →</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-
                     </div>
-                  );
-                })()}
+
+                    {/* 2. Destination Country (3 Cols) */}
+                    <div className="lg:col-span-3 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        Going to (Destination)
+                      </label>
+                      <div
+                        ref={domesticDestRef}
+                        onClick={() => {
+                          setIsDomesticDestOpen(!isDomesticDestOpen);
+                          setIsDomesticCountryOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none transition-all"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img
+                            src={`https://flagcdn.com/w40/${getCountryCode(journeyDestination || "United States")}.png`}
+                            alt={journeyDestination || "United States"}
+                            className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://flagcdn.com/w40/un.png"; }}
+                          />
+                          <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                            {journeyDestination || "Select Destination"}
+                          </span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? "rotate-180 text-[#00A86B]" : ""}`} />
+
+                        {isDomesticDestOpen && (
+                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+                            {journeyDestinationOptions.map((opt) => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => {
+                                  setJourneyDestination(opt.value);
+                                  setIsDomesticDestOpen(false);
+                                }}
+                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
+                              >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <span>{opt.icon}</span>
+                                  <span className="truncate">{opt.label}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* 3. Purpose / Visa Category (2 Cols) */}
+                    <div className="lg:col-span-2 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        Purpose
+                      </label>
+                      <select
+                        value={travelPurpose}
+                        onChange={(e) => setTravelPurpose(e.target.value)}
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-bold text-slate-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B] cursor-pointer"
+                      >
+                        <option value="visit">🏝️ Tourist / Visit</option>
+                        <option value="study">🎓 Study Visa</option>
+                        <option value="work">💼 Work Permit</option>
+                        <option value="business">🏢 Business Visa</option>
+                        <option value="pr">🏡 PR & Migration</option>
+                      </select>
+                    </div>
+
+                    {/* 4. Departure Date (2 Cols) */}
+                    <div className="lg:col-span-2 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        Departure Date
+                      </label>
+                      <input
+                        type="date"
+                        min={new Date().toISOString().split("T")[0]}
+                        value={travelTiming || ""}
+                        onChange={(e) => setTravelTiming(e.target.value)}
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-bold text-slate-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B] cursor-pointer"
+                      />
+                    </div>
+
+                    {/* 5. Action Button (2 Cols) */}
+                    <div className="lg:col-span-2">
+                      <button
+                        type="button"
+                        onClick={handleGeneratePathway}
+                        disabled={isGenerating}
+                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                      >
+                        {isGenerating ? (
+                          <>
+                            <RotateCw className="w-4 h-4 animate-spin text-white" />
+                            <span>Auditing...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-4 h-4 text-emerald-400" />
+                            <span className="truncate">Check Readiness →</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                  </div>
+                )}
 
               </div>
 

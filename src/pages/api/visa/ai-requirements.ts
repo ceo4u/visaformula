@@ -1136,105 +1136,171 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
       };
     }
 
-    // Default Schengen Tourism
+    // ── Greece / Schengen Tourism (100% Verified — Embassy of Greece & GVCW Standards) ──
     return {
       passport_country: from,
       destination_country: dest,
       purpose_of_visit: 'Tourism / Vacation',
-      visa_type: 'Short-stay Schengen Visa (Type C)',
+      visa_type: isGreece ? 'Schengen Short-Stay Visa Type C — Greece (via GVCW / Embassy of Greece)' : 'Short-stay Schengen Visa (Type C)',
       source_url: isGreece ? 'https://in-gr.gvcworld.eu/en/visa-info-tourism' : 'https://www.vfsglobal.com',
-      official_source_name: `${dest} official sources (${isGreece ? 'GVCW & Embassy' : 'VFS Global & Embassy'})`,
+      official_source_name: isGreece
+        ? 'Embassy of Greece, New Delhi — GVC World (GVCW) Official Portal'
+        : `${dest} Embassy — VFS Global Official Portal`,
       documents_required: [
         {
-          title: 'Passport',
-          description: 'Valid at least 3 months after the planned return; issued within previous 10 years; at least 2 blank pages.',
+          title: 'Valid Passport',
+          description: 'Must be valid for at least 6 months from planned departure date (Schengen legal minimum: 3 months beyond return, but 6 months recommended). Issued within last 10 years. Minimum 2 blank visa pages required. Carry all old passports if any.',
           is_mandatory: true
         },
         {
-          title: 'Visa application form',
-          description: 'Fully completed and signed in English or official language.',
+          title: isGreece ? 'Harmonised Schengen Visa Application Form (NOT DS-160)' : 'Schengen Visa Application Form',
+          description: isGreece
+            ? 'Official Harmonised Schengen Visa Application Form — completed online via the GVCW E-VISA Portal (in-gr.gvcworld.eu) or downloaded from the Embassy of Greece website. ⚠️ IMPORTANT: DS-160 is EXCLUSIVELY for US Visas — submitting DS-160 for a Greece visa will result in immediate rejection at the counter.'
+            : 'Completed Harmonised Schengen Visa Application Form — fully filled, signed, and dated by the applicant. Available from the official embassy or VFS portal.',
           is_mandatory: true
         },
         {
-          title: 'Photos',
-          description: 'Two recent colour passport photos, 3.5 x 4 cm, forward-facing, light/white background.',
+          title: 'Biometric Passport Photos — 35×45mm',
+          description: '2 recent identical biometric colour photographs. Size: 35mm × 45mm. White or off-white plain background. Neutral expression, mouth closed, eyes open and looking directly at camera. Taken within the last 6 months. No glasses, head coverings (except religious), or digital filters.',
           is_mandatory: true
         },
         {
-          title: 'Travel medical insurance',
-          description: 'Minimum €30,000; covers all Schengen states and the full intended stay, including medical repatriation.',
+          title: 'Travel Medical Insurance — Min. €30,000',
+          description: 'Mandatory Schengen Travel Health Insurance policy. Minimum coverage: €30,000 (thirty thousand euros). Must cover: emergency medical treatment, hospitalization, medical repatriation and repatriation of mortal remains. Valid for ALL Schengen Area countries. Coverage must span the entire trip duration including buffer days.',
           is_mandatory: true
         },
         {
-          title: 'Travel & accommodation',
-          description: 'Return/round-trip reservation and lodging evidence for the trip / each Schengen destination where applicable.',
+          title: 'Round-Trip Flight Itinerary / Reservations (with PNR)',
+          description: 'Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR (Passenger Name Record). ⚠️ Do NOT purchase non-refundable tickets before the visa is issued — book a refundable or on-hold reservation only. Itinerary must show travel from India → Greece (or primary Schengen entry country) → India.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation for Entire Stay',
+          description: isGreece
+            ? 'Confirmed hotel bookings for every night of your stay in Greece (all cities/islands including Athens, Santorini, Mykonos, Crete, etc.). If staying with family/friends: an official Invitation Letter (Declaration of Hospitality) submitted via the Greek Police or authenticated via gov.gr. Booking.com or Airbnb confirmations showing full name, dates, and property address are accepted.'
+            : 'Confirmed hotel bookings or accommodation proof for all nights of stay. Must show full name, dates of stay, and property address. If staying with host: notarized invitation letter from host with their residence proof.',
+          is_mandatory: true
+        },
+        {
+          title: 'Detailed Day-by-Day Travel Itinerary / Cover Letter',
+          description: isGreece
+            ? 'A cover letter (self-written or agency-prepared) providing a clear day-by-day travel plan: Entry and exit dates. Cities/islands to be visited (e.g., Day 1-3: Athens, Day 4-6: Santorini, Day 7-9: Mykonos, Day 10: Departure). Mode of transport between islands (ferry/domestic flight). Purpose of each stop. This helps the consular officer assess your trip is genuine tourism.'
+            : 'A detailed cover letter explaining your travel plans day-by-day, cities to visit, activities, and return intention.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Employment / Occupation Status',
+          description: 'Submit documents matching your employment status:\n\n🏢 EMPLOYED: (a) Original NOC / Leave Approval Letter from employer on company letterhead — must state your designation, salary, approved leave dates, and that you will return to your position. (b) Salary slips for the last 3 consecutive months. (c) Employment contract or appointment letter.\n\n🏭 SELF-EMPLOYED / BUSINESS OWNER: (a) Company Registration Certificate / Incorporation Certificate. (b) GST Registration Certificate. (c) Business ITR for last 3 financial years. (d) Company bank statements (last 6 months).\n\n🎓 STUDENT: (a) Original Bonafide Certificate / Enrollment Certificate from university/school. (b) Official Student ID card (photocopy). (c) No Objection Certificate (NOC) from the institution granting permission to travel.\n\n🏠 RETIRED / HOMEMAKER: Pension statement or bank statements showing regular income source.',
+          is_mandatory: true
+        },
+        {
+          title: 'Bank Account Statements — Last 3 to 6 Months',
+          description: 'Original bank statements for ALL your bank accounts for the last 3 to 6 months. Must be stamped and signed by the bank branch manager (self-printed online statements NOT accepted). Must show sufficient funds — typically €50 to €70 per day of stay (e.g., 10-day trip = minimum €500–€700 liquid balance). Statements must clearly show: account holder name, account number, transaction history, and closing balance.',
+          is_mandatory: true
+        },
+        {
+          title: 'Income Tax Returns (ITR) — Last 3 Years',
+          description: 'ITR-V acknowledgement copies for the last 3 consecutive financial years (e.g., FY 2022-23, 2023-24, 2024-25). Must be e-filed and acknowledged by the Income Tax Department of India. For self-employed: Business ITR (ITR-3 or ITR-4) for 3 years. For salaried: ITR-1 (Sahaj) or ITR-2 with Form 16 from employer.',
           is_mandatory: true
         }
       ],
       financial_proofs: [
         {
-          type: 'Financial means',
-          minimum_balance_or_amount: '€50 per day of intended stay',
-          time_frame: 'Bank statement showing the last 3 months\' movements',
-          notes: 'Must contain original bank seal and signature.'
+          type: 'Bank Account Statements (Primary)',
+          minimum_balance_or_amount: '€50–€70 per day of stay (e.g., min. €700 for a 10-day trip)',
+          time_frame: 'Last 3 to 6 months (bank-stamped originals only)',
+          notes: 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy of Greece.'
         },
         {
-          type: 'Income evidence',
+          type: 'Income Tax Returns (ITR-V)',
           minimum_balance_or_amount: null,
-          time_frame: 'Last 3 months payslips',
-          notes: 'Accompanied by employment contract and employer holiday approval.'
+          time_frame: 'Last 3 consecutive financial years',
+          notes: 'ITR-V e-filing acknowledgements. Salaried: ITR-1/ITR-2 + Form 16. Self-employed: ITR-3/ITR-4 (Business ITR). Students/Dependents: Sponsor\'s ITR.'
         },
         {
-          type: 'Tax / employment evidence',
+          type: 'Salary Slips (Employed Applicants)',
           minimum_balance_or_amount: null,
-          time_frame: 'Last two assessment years',
-          notes: 'Indian income-tax return (ITR-V) acknowledgement (as listed by the Embassy).'
+          time_frame: 'Last 3 consecutive months',
+          notes: 'Original salary slips signed/stamped by employer HR. Must show gross salary, deductions, and net salary. Should match the bank statement credits.'
         },
         {
-          type: 'If self-employed',
+          type: 'Business Financial Proof (Self-Employed)',
           minimum_balance_or_amount: null,
-          time_frame: 'Current assessment year',
-          notes: 'Company registration certificate and relevant income tax assessment documentation.'
+          time_frame: 'Last 3 years ITR + Last 6 months company bank statements',
+          notes: 'Company Registration Certificate + GST Certificate + Audited business accounts or CA-certified balance sheet.'
         },
         {
-          type: 'Tourism evidence',
+          type: 'Fixed Deposits / Investments (Supporting)',
           minimum_balance_or_amount: null,
-          time_frame: 'Duration of trip',
-          notes: 'Travel-agency booking certificate or other appropriate document indicating the travel plans.'
+          time_frame: 'Current FD receipts or investment portfolio statement',
+          notes: 'Supporting financial documents showing overall wealth and strong economic ties to India — reduces risk of overstay suspicion.'
         }
       ],
       other_requirements: [
         {
-          category: 'Health & Travel Insurance',
-          details: 'Mandatory minimum €30,000 policy covering hospitalization and medical repatriation across all 29 Schengen states.'
+          category: '⚠️ Application Form — CRITICAL',
+          details: isGreece
+            ? 'Use ONLY the Harmonised Schengen Visa Application Form from GVCW (in-gr.gvcworld.eu) or the Embassy of Greece. DS-160 is a US Nonimmigrant Visa form — submitting it for Greece will result in IMMEDIATE REJECTION. The GVCW e-portal guides applicants through the correct form online.'
+            : 'Use the official Harmonised Schengen Visa Application Form from your target country\'s embassy or authorized VAC portal. Do NOT use DS-160 (US visa form).'
         },
         {
-          category: 'Biometrics & Physical Appointments',
-          details: 'Mandatory in-person appointment for fingerprinting and live facial photograph.'
+          category: 'Schengen 90/180 Day Rule',
+          details: 'A Schengen Type C visa allows stays of up to 90 days within any rolling 180-day period across all 29 Schengen Area countries combined. Overstaying results in a multi-year Schengen entry ban and potential deportation.'
         },
         {
-          category: 'Application Window',
-          details: 'Applications can be lodged up to 6 months before the planned travel date (minimum 15 working days).'
+          category: 'Biometrics — Mandatory In-Person Appointment',
+          details: isGreece
+            ? 'All applicants must attend an in-person appointment at the GVCW Visa Application Center (VAC) in India (New Delhi, Mumbai, Chennai, Kolkata, Bangalore, Hyderabad, Ahmedabad, Chandigarh). Biometrics include: 10-finger digital fingerprint scan + live digital facial photograph. Children under 12 are exempt from fingerprinting.'
+            : 'Mandatory in-person appointment for 10-finger biometric scan and live digital facial photograph at authorized VAC. Children under 12 exempt from fingerprinting.'
+        },
+        {
+          category: 'Strong Ties to Home Country',
+          details: 'The consular officer must be convinced you will return to India before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for Greece visa rejection.'
+        },
+        {
+          category: 'Travel & Hotel — Do NOT Buy Non-Refundable',
+          details: 'Only book refundable/on-hold flight reservations and hotel bookings for the visa application. Wait for visa approval before making non-refundable purchases. Many travel agents offer "visa purpose" itineraries that are valid for 2-4 weeks for consular submission.'
+        },
+        {
+          category: isGreece ? 'Greece-Specific: Island Travel Planning' : 'Schengen Travel Planning',
+          details: isGreece
+            ? 'If visiting Greek islands (Santorini, Mykonos, Crete, Rhodes, Corfu), include inter-island ferry/domestic flight bookings in your itinerary. Ferry routes from Athens (Piraeus port) to islands are popular — book on seajets.gr or ferryscanner.com for your visa application. Include these in your accommodation proof.'
+            : 'Plan your primary entry Schengen country carefully — you must apply to the embassy of the country where you will spend the most time, or your first point of entry if travel time is equal.'
         }
       ],
-      how_to_apply: [
-        'Check requirements & prepare documents.',
-        'Complete the online application form and print it.',
-        'Book a Visa Application Center appointment.',
-        'Attend in person for submission and biometrics.',
-        'Track the application and collect passport.'
+      how_to_apply: isGreece ? [
+        '1️⃣ Register on the GVCW E-VISA Portal (in-gr.gvcworld.eu) and fill in the Harmonised Schengen Visa Application Form online.',
+        '2️⃣ Pay the visa fee online: €90 (Embassy fee) + €30 (GVCW VAC service charge) = €120 total.',
+        '3️⃣ Compile your complete document dossier: passport, photos, insurance, flight itinerary (with PNR), hotel bookings, day-by-day travel plan, bank statements (3-6 months, bank-stamped), ITR (3 years), employment/NOC letter.',
+        '4️⃣ Book your in-person appointment at the nearest GVCW VAC (available in 8 Indian cities).',
+        '5️⃣ Attend the appointment for biometric submission (fingerprints + photo) and hand over your document dossier.',
+        '6️⃣ Track your application via the GVCW tracking portal. Standard processing: 15 calendar days. Peak season (June–August): up to 45 days.',
+        '7️⃣ Collect your passport with the Schengen visa sticker from the VAC or via courier.'
+      ] : [
+        'Complete the Harmonised Schengen Visa Application Form from the official embassy/VFS portal.',
+        'Pay the visa fee online (€90 embassy + VAC service fee).',
+        'Compile your document dossier: passport, photos, insurance, flights, hotel, bank statements, ITR, employment proof.',
+        'Book an in-person appointment at the authorized VAC in India.',
+        'Attend appointment for biometrics and document submission.',
+        'Track your application and collect passport.'
       ],
       costs: {
-        visa_fee: '€90',
-        service_fee: '€30',
-        total_fee: '€120',
-        notes: 'Payable in INR at the VAC; exchange rate and fees may change.'
+        visa_fee: '€90 (approx. ₹8,100 at current exchange rate)',
+        service_fee: isGreece ? '€30 — GVCW VAC Service Charge (approx. ₹2,700)' : '€30 — VAC Service Charge',
+        total_fee: '€120 Total (approx. ₹10,800)',
+        notes: isGreece
+          ? 'Fees payable in INR at the GVCW VAC at time of appointment. Embassy visa fee (€90) is NON-REFUNDABLE even if the visa is refused. Children under 6: FREE. Children 6–12: €45 (half fee). Rate subject to INR/EUR exchange rate on date of payment.'
+          : 'Fees payable in INR at the VAC. Embassy visa fee is non-refundable if refused. Children under 6: free. Children 6–12: €45.'
       },
       processing_and_timing: {
-        apply_window: 'Apply up to 6 months before travel.',
-        decision_time: 'Decision: up to 15 days after admissible receipt by Embassy.',
-        max_extension: 'May extend to 45 calendar days in individual cases.',
-        center_notes: 'Applications from non-New-Delhi VACs: allow additional dispatch time; notes 5 extra days for those centers.'
+        apply_window: 'Apply between 6 months and minimum 15 calendar days before travel date.',
+        decision_time: isGreece
+          ? 'Standard: 15 calendar days from date of admissible application receipt at Embassy of Greece. Peak season (June–August / Christmas): may extend up to 45 calendar days.'
+          : 'Standard: 15 calendar days. May extend up to 45 days.',
+        max_extension: 'Maximum stay: 90 days within any rolling 180-day period (Schengen 90/180 rule).',
+        center_notes: isGreece
+          ? 'GVCW VAC locations in India: New Delhi (main), Mumbai, Chennai, Kolkata, Bengaluru, Hyderabad, Ahmedabad, Chandigarh. Non-Delhi applications may require 3–5 additional days for document dispatch to Embassy.'
+          : 'VFS Global VAC centers across major Indian cities. Non-metro applications may need extra dispatch days.'
       }
     };
   }

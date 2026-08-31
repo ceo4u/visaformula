@@ -2581,7 +2581,7 @@ return (
                   </div>
                 )}
 
-                {/* TAB 2: DOMESTIC TRIP SEARCH FIELDS */}
+                {/* TAB 2: DOMESTIC TRIP SEARCH FIELDS (CITY / ORIGIN BEFORE DESTINATION WITH DIRECT TYPING) */}
                 {travelScopeTab === 'domestic' && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
                     
@@ -2680,7 +2680,26 @@ return (
                       </div>
                     </div>
 
-                    {/* 3. Destination Package (3 Cols) */}
+                    {/* 3. City / Origin (Direct Clean Text Input) (3 Cols) */}
+                    <div className="lg:col-span-3 relative">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        City / Origin
+                      </label>
+                      <div className="relative">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                          <MapPin className="w-4 h-4" />
+                        </div>
+                        <input
+                          type="text"
+                          value={domesticCity}
+                          onChange={(e) => setDomesticCity(e.target.value)}
+                          placeholder="Type departure city (e.g. Mumbai, Delhi)..."
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] pl-9 pr-3 text-xs sm:text-sm font-bold text-slate-900 placeholder-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 4. Destination Package (3 Cols) */}
                     <div className="lg:col-span-3 relative">
                       <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Destination Package</label>
                       <div
@@ -2725,51 +2744,6 @@ return (
                       </div>
                     </div>
 
-                    {/* 4. City / Origin (2 Cols) */}
-                    <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">City / Origin</label>
-                      <div
-                        ref={domesticCityRef}
-                        onClick={() => {
-                          setIsDomesticCityOpen(!isDomesticCityOpen);
-                          setIsDomesticCountryOpen(false);
-                          setIsDomesticStateOpen(false);
-                          setIsDomesticDestOpen(false);
-                          setIsDomesticMembersOpen(false);
-                        }}
-                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none transition-all"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                          <span className={`text-xs sm:text-sm truncate ${domesticCity ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
-                            {domesticCity || 'Select City'}
-                          </span>
-                        </div>
-                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCityOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
-
-                        {isDomesticCityOpen && (
-                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                            {originCityOptions.map((opt) => (
-                              <button
-                                key={opt.value}
-                                type="button"
-                                onClick={() => {
-                                  setDomesticCity(opt.value);
-                                  setIsDomesticCityOpen(false);
-                                }}
-                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
-                              >
-                                <div className="flex items-center gap-2.5 min-w-0">
-                                  <span>{opt.icon}</span>
-                                  <span className="truncate">{opt.label}</span>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
                     {/* 5. Travelers (1 Col) */}
                     <div className="lg:col-span-1 relative">
                       <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1 truncate">Travelers</label>
@@ -2785,8 +2759,8 @@ return (
                       </select>
                     </div>
 
-                    {/* 6. Action Button (2 Cols) */}
-                    <div className="lg:col-span-2">
+                    {/* 6. Action Button (1 Col on 12-grid or clean responsive wrapper) */}
+                    <div className="lg:col-span-1">
                       <button
                         type="button"
                         onClick={() => {
@@ -2799,17 +2773,15 @@ return (
                           }, 600);
                         }}
                         disabled={isGeneratingDomestic}
-                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        title="Plan Domestic Trip"
                       >
                         {isGeneratingDomestic ? (
-                          <>
-                            <RotateCw className="w-4 h-4 animate-spin text-white" />
-                            <span>Curating...</span>
-                          </>
+                          <RotateCw className="w-4 h-4 animate-spin text-white" />
                         ) : (
                           <>
                             <Sparkles className="w-4 h-4 text-emerald-400" />
-                            <span className="truncate">Plan Trip →</span>
+                            <span className="truncate">Plan →</span>
                           </>
                         )}
                       </button>

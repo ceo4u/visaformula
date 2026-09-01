@@ -3917,22 +3917,15 @@ return (
           {/* ── 6. TRAVEL READINESS AUDIT FEATURE CARD ── */}
           <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-16 mb-12 sm:mb-20 text-left px-2 sm:px-0">
             <a
-              href="#need-visa-pathway-dashboard"
-              onClick={(e) => {
-                const el = document.getElementById('need-visa-pathway-dashboard') || document.querySelector('input[placeholder*="destination" i]');
-                if (el) {
-                  e.preventDefault();
-                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-              }}
+              href="/readiness"
               className="max-w-2xl mx-auto bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group block cursor-pointer active:scale-[0.99]"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#00A86B] transition-colors">
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
                     Check Your Travel Readiness
                   </h3>
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[11px] sm:text-xs font-black uppercase tracking-wider group-hover:bg-emerald-100 transition-colors">
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] sm:text-xs font-black uppercase tracking-wider group-hover:bg-emerald-100 transition-colors">
                     Instant AI Audit
                   </span>
                 </div>
@@ -3947,19 +3940,19 @@ return (
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-bold text-slate-700">
                     <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
                       <span>Passport Validity</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
                       <span>Documents Verified</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
                       <span>Finances Ready</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#00A86B] stroke-[3]" />
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
                       <span>Travel Insurance</span>
                     </div>
                   </div>
@@ -3968,7 +3961,7 @@ return (
 
               <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-xs text-slate-500 font-semibold">Ready for immediate consular assessment</span>
-                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00A86B] group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">
                   <span>Check Now</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </span>

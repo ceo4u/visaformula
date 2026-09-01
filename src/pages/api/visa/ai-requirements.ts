@@ -164,6 +164,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isGeorgia = isDestination(toLower, 'georgia', ['tbilisi', 'batumi', 'sakartvelo'], ['usa', 'united states', 'atlanta']);
   const isPhilippines = isDestination(toLower, 'philippines', ['manila', 'cebu', 'filipino']);
   const isEthiopia = isDestination(toLower, 'ethiopia', ['addis ababa', 'ethiopian', 'ethiopia evisa']);
+  const isDenmark = isDestination(toLower, 'denmark', ['copenhagen', 'danish', 'aarhus', 'odense']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -2771,6 +2772,338 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // 1F. DENMARK OFFICIAL IMMIGRATION & RESIDENCE PATHWAYS (SIRI)
+  // ═══════════════════════════════════════════════════════════════
+  if (isDenmark) {
+    const isStudy = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education') || purposeLower.includes('higher');
+    const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment');
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+
+    if (isStudy) {
+      return {
+        passport_country: from,
+        destination_country: 'Denmark',
+        purpose_of_visit: 'Higher Studies',
+        visa_type: 'Danish Residence and Work Permit for Students (ST1 Scheme / Higher Education Route)',
+        source_url: 'https://www.nyidanmark.dk/en-GB/You-want-to-apply/Study/Higher-education',
+        official_source_name: 'Danish Agency for International Recruitment and Integration (SIRI) & Ministry of Foreign Affairs of Denmark',
+        processing_time: '60 Calendar Days (Standard SIRI SLA)',
+        validity: 'Granted for the Full Duration of the Accredited Degree Programme + 6 Months Post-Study Job Seeking',
+        stay_duration: 'Full Study Programme Duration (Renewable Annually / Per Degree Milestone)',
+        entry_type: 'Multiple Entry (Biometric Residence Card with Full Schengen Free Movement)',
+        validity_and_stay: {
+          visa_validity: 'Duration of Study Programme + 6 Months Job Search Extension',
+          max_stay_per_entry: 'Continuous Legal Residence in Denmark & 90/180 Days in Schengen Area',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          {
+            title: 'Valid Passport',
+            description: 'Original passport valid for at least 3 months beyond the intended study permit duration with minimum 2 blank pages, issued within last 10 years.',
+            is_mandatory: true
+          },
+          {
+            title: 'Official Unconditional Admission Letter',
+            description: 'Letter of acceptance from an accredited Danish higher education institution (University, University College, or Business Academy) confirming admission, start date, and course duration.',
+            is_mandatory: true
+          },
+          {
+            title: 'Online ST1 Application Confirmation & Reference Code',
+            description: 'Online ST1 application form on newtodenmark.dk / nyidanmark.dk. (Part 1 completed and submitted online by the educational institution; Part 2 completed online by the student).',
+            is_mandatory: true
+          },
+          {
+            title: 'SIRI Case Order ID Payment Receipt',
+            description: 'Official payment receipt for the SIRI fee (approx. 2,115 – 2,600 DKK) generated and paid prior to application submission.',
+            is_mandatory: true
+          },
+          {
+            title: 'ApplyVisa (MFA Denmark) Fee Payment Receipt',
+            description: 'Official payment receipt from the Ministry of Foreign Affairs of Denmark portal (applyvisa.um.dk) for consular handling fee (1,710 DKK / approx. €230).',
+            is_mandatory: true
+          },
+          {
+            title: 'Proof of Paid Tuition Fee or Scholarship Waiver',
+            description: 'Official bank transfer receipt proving full payment of first-year / first-semester tuition fees, or an official Danish government scholarship award letter.',
+            is_mandatory: true
+          },
+          {
+            title: 'Recognized English Language Proficiency Certificate',
+            description: 'Official scorecard (IELTS Academic minimum 6.5 / TOEFL iBT minimum 88) as required by Danish university programme regulations.',
+            is_mandatory: true
+          },
+          {
+            title: 'MEA Apostilled Academic Certificates & Transcripts',
+            description: 'Original Bachelor degree / Higher Secondary certificates and transcripts with MEA Apostille certification.',
+            is_mandatory: true
+          }
+        ],
+        financial_proofs: [
+          {
+            type: 'Proof of Sufficient Living Expenses (Maintenance Funds)',
+            minimum_balance_or_amount: '6,500 – 6,800 DKK per month (approx. 78,000 – 81,600 DKK / ~₹9.5L–₹10L INR for one academic year)',
+            time_frame: 'Last 3 to 6 months bank statements in student\'s own name',
+            notes: 'Bank statements must be held in the student\'s sole bank account in a recognized bank, showing liquid funds readily available. Education loan sanction letters or official scholarship award letters are also accepted.'
+          },
+          {
+            type: 'Education Loan Sanction Letter (If Applicable)',
+            minimum_balance_or_amount: 'Covering full tuition and living expenses',
+            time_frame: 'Current assessment year',
+            notes: 'Issued by a nationalized or scheduled bank in India detailing disbursement conditions.'
+          }
+        ],
+        other_requirements: [
+          {
+            category: 'Biometrics Submission at VFS Denmark (14-Day Deadline)',
+            details: 'Students MUST record biometrics (fingerprints and facial photo) at an authorized VFS Global Denmark center within strictly 14 calendar days of submitting the online ST1 application.'
+          },
+          {
+            category: 'Student Part-Time Work Rights',
+            details: 'International students in higher education programmes are legally permitted to work up to 20 hours per week during the academic semester and full-time (37 hours/week) during June, July, and August.'
+          },
+          {
+            category: 'Danish CPR Registration & Yellow Health Card',
+            details: 'Upon arrival in Denmark, register your address at the local International Citizen Service (ICS) / Citizen Service (Borgerservice) to obtain your Danish CPR number and free national healthcare coverage (Sundhedskort).'
+          }
+        ],
+        how_to_apply: [
+          '1️⃣ Secure unconditional admission at an accredited Danish higher education institution.',
+          '2️⃣ Danish educational institution completes Part 1 of the online ST1 application form on nyidanmark.dk and sends the reference ID / password to the student.',
+          '3️⃣ Create a Case Order ID on nyidanmark.dk and pay the official SIRI processing fee (2,115 – 2,600 DKK) online.',
+          '4️⃣ Complete Part 2 of the ST1 application form on nyidanmark.dk, uploading passport, admission letter, and living funds proof.',
+          '5️⃣ Register and pay the Danish Embassy application fee (1,710 DKK) on the official ApplyVisa portal (applyvisa.um.dk).',
+          '6️⃣ Book an appointment and record biometrics at VFS Global Denmark within 14 calendar days of online ST1 submission.',
+          '7️⃣ Track application status on SIRI. Upon approval, receive entry visa sticker or travel to Denmark to collect your physical Biometric Residence Card (Opholdskort).'
+        ],
+        costs: {
+          visa_fee: '2,115 – 2,600 DKK (SIRI Fee) + 1,710 DKK (Embassy ApplyVisa Fee)',
+          service_fee: '₹1,800 – ₹2,500 (VFS Denmark Biometrics Logistics Fee)',
+          total_fee: 'Approx. 3,825 – 4,310 DKK (~₹46,000–₹52,000 INR) Total Official Fees',
+          notes: 'SIRI fee paid online via card on nyidanmark.dk; Embassy fee paid on applyvisa.um.dk; VFS fee paid at appointment.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply 2 to 3 months prior to academic semester start date (August/September or January/February intake).',
+          decision_time: 'Standard SIRI Processing: up to 60 calendar days (fast-track available if institution is certified).',
+          max_extension: 'Permit valid for full normal study duration and extendable for thesis or degree completion.',
+          center_notes: 'Biometrics recorded via VFS Global Denmark in New Delhi, Mumbai, Bengaluru, Chennai, Kolkata, Hyderabad, Kochi, Chandigarh, and Jalandhar.'
+        }
+      };
+    }
+
+    if (isWork) {
+      return {
+        passport_country: from,
+        destination_country: 'Denmark',
+        purpose_of_visit: 'Employment / Work',
+        visa_type: 'Danish Work and Residence Permit (Pay Limit Scheme / Fast-Track / Positive List)',
+        source_url: 'https://www.nyidanmark.dk/en-GB/You-want-to-apply/Work',
+        official_source_name: 'Danish Agency for International Recruitment and Integration (SIRI)',
+        processing_time: '30 to 45 Calendar Days',
+        validity: 'Up to 4 Years Initial Grant (Matching Employment Contract)',
+        stay_duration: 'Duration of Employment Contract + 6 Months Job Search Grace Period',
+        entry_type: 'Multiple Entry',
+        validity_and_stay: {
+          visa_validity: 'Up to 4 Years Renewable',
+          max_stay_per_entry: 'Continuous Legal Residence in Denmark',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended contract duration with 2 blank pages.', is_mandatory: true },
+          { title: 'Signed Danish Employment Contract', description: 'Detailed job contract specifying job title, Danish Collective Agreement terms, working hours (min 37h/week), and gross annual salary.', is_mandatory: true },
+          { title: 'AR1 / AR6 Online Work Permit Application', description: 'Online application submitted via nyidanmark.dk by employer (Part 1) and employee (Part 2).', is_mandatory: true },
+          { title: 'SIRI Case Order ID & Fee Payment', description: 'Payment receipt for official SIRI fee (approx. 4,800 – 5,200 DKK).', is_mandatory: true },
+          { title: 'ApplyVisa Embassy Fee Receipt', description: 'Payment receipt for Danish Embassy consular processing (1,710 DKK) on applyvisa.um.dk.', is_mandatory: true },
+          { title: 'Educational Degrees & Professional Credentials', description: 'Apostilled degree certificates, transcripts, and Danish professional authorization if applying under regulated professions (e.g., healthcare/engineering).', is_mandatory: true }
+        ],
+        financial_proofs: [
+          {
+            type: 'Statutory Salary Compliance (Pay Limit Scheme)',
+            minimum_balance_or_amount: 'Minimum 393,000 – 487,000 DKK gross annual salary depending on scheme threshold',
+            time_frame: 'Stipulated in signed contract and paid into Danish NemKonto bank account',
+            notes: 'Salary must comply with Danish collective wage standards.'
+          }
+        ],
+        other_requirements: [
+          { category: 'NemKonto Salary Mandate', details: 'Salaries in Denmark must be paid into a registered Danish bank account (NemKonto).' },
+          { category: '14-Day Biometric Enrollment', details: 'Biometrics recorded at VFS within 14 calendar days of online AR1 submission.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Secure qualifying job offer meeting Danish salary or Positive List thresholds.',
+          '2️⃣ Employer creates Case Order ID, pays SIRI fee, and submits Part 1 on nyidanmark.dk.',
+          '3️⃣ Employee completes Part 2 with passport details and employment contract.',
+          '4️⃣ Pay Danish Embassy fee on applyvisa.um.dk and book VFS biometrics within 14 days.',
+          '5️⃣ Attend VFS for biometrics, receive approval, and obtain Biometric Residence Card in Denmark.'
+        ],
+        costs: {
+          visa_fee: '4,800 – 5,200 DKK (SIRI) + 1,710 DKK (Embassy ApplyVisa)',
+          service_fee: '₹1,800 – ₹2,500 (VFS Biometrics)',
+          total_fee: 'Approx. 6,510 – 6,910 DKK (~₹78,000–₹83,000 INR)',
+          notes: 'Official SIRI and MFA government fees.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply 1 to 2 months before planned employment start date.',
+          decision_time: 'Standard 30 calendar days (Fast-Track certified employers: 10 days).',
+          max_extension: 'Renewable indefinitely as long as qualifying employment continues.',
+          center_notes: 'Biometrics via VFS Global Denmark.'
+        }
+      };
+    }
+
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'Denmark',
+        purpose_of_visit: 'Permanent Residency (PR) / Settlement',
+        visa_type: 'Danish Permanent Residence Permit (Permanent Opholdstilladelse)',
+        source_url: 'https://www.nyidanmark.dk/en-GB/You-want-to-apply/Permanent-residence-permit',
+        official_source_name: 'Danish Immigration Service (Udlændingestyrelsen) / SIRI',
+        processing_time: '6 to 10 Months Standard SLA',
+        validity: 'Indefinite Permanent Legal Residence in Denmark',
+        stay_duration: 'Indefinite Permanent Settlement (Path to Danish Citizenship)',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: 'Permanent Residence Permit / Indefinite Legal Stay',
+          max_stay_per_entry: 'Permanent Settlement in Denmark',
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Original valid passport and current Danish Residence Card.', is_mandatory: true },
+          { title: 'Proof of 8 Years Legal Residence (or 4 Years Supplementary Route)', description: 'Documentation of continuous legal residence in Denmark for at least 8 years (or 4 years meeting 4 supplementary conditions).', is_mandatory: true },
+          { title: 'Danish Language Exam (Prøve i Dansk 2 or 3)', description: 'Passed official Danish Language Exam 2 (or Exam 3 for 4-year accelerated route).', is_mandatory: true },
+          { title: 'Proof of 3.5 Years Full-Time Employment', description: 'Tax records and employer declarations proving full-time employment for at least 3 years and 6 months within the last 4 years.', is_mandatory: true },
+          { title: 'Clean Public Assistance Record', description: 'Proof of no social assistance received under the Active Social Policy Act for the past 4 years.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Steady Income & Tax Records', minimum_balance_or_amount: 'Self-sufficient income with no active public debt', time_frame: 'Last 4 consecutive years', notes: 'Verified via SKAT tax returns and Danish pension/salary registries.' }
+        ],
+        other_requirements: [
+          { category: 'No Serious Criminal Record', details: 'Must have a clean criminal record with no convictions for serious offences.' },
+          { category: 'Active Employment at Decision Time', details: 'Must be actively employed in Denmark at the time SIRI/DIS issues the permanent residence decision.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Complete required 8 years (or 4 accelerated years) of continuous legal residence.',
+          '2️⃣ Pass Danish language exam (Prøve i Dansk 2/3) and compile SKAT tax records.',
+          '3️⃣ Create Case Order ID on nyidanmark.dk and pay official permanent residence fee (approx. 4,800 DKK).',
+          '4️⃣ Submit online application (TU1 or TU4 form) on nyidanmark.dk.',
+          '5️⃣ Record biometrics at Citizen Service (Borgerservice) or SIRI office in Denmark.',
+          '6️⃣ Receive official Permanent Residence Permit letter and updated card.'
+        ],
+        costs: {
+          visa_fee: '4,800 – 5,200 DKK (SIRI / DIS Application Fee)',
+          service_fee: '0 DKK (In-country Citizen Service)',
+          total_fee: 'Approx. 5,000 DKK (~₹60,000 INR)',
+          notes: 'Payable online on nyidanmark.dk.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply before current temporary residence permit expires.',
+          decision_time: 'Decision: 6 to 10 months.',
+          max_extension: 'Permanent and indefinite; card renewed every 5-10 years.'
+        }
+      };
+    }
+
+    // Denmark Tourism / Short-Stay Default
+    return {
+      passport_country: from,
+      destination_country: 'Denmark',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Denmark Short-Stay Schengen Visa (Type C)',
+      source_url: 'https://applyvisa.um.dk',
+      official_source_name: 'Ministry of Foreign Affairs of Denmark (Udenrigsministeriet) & VFS Global Denmark',
+      processing_time: '15 Calendar Days (Standard Consular SLA)',
+      validity: '90 Days Entry Window',
+      stay_duration: 'Up to 90 Days in any 180-Day Period across Schengen Area',
+      entry_type: 'Single / Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 90 Days / Multiple Entry',
+        max_stay_per_entry: 'Up to 90 Days within 180 Days',
+        entry_type: 'Single / Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Valid for at least 3 months beyond intended departure from Schengen area, issued within last 10 years, with minimum 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'ApplyVisa Online Application Form & Cover Letter',
+          description: 'Completed and paid online via the official Danish Ministry of Foreign Affairs portal (applyvisa.um.dk). Print the cover letter and receipt.',
+          is_mandatory: true
+        },
+        {
+          title: 'Two Biometric Passport Photographs (35×45mm)',
+          description: 'Recent color photos on light background meeting ICAO biometric standards.',
+          is_mandatory: true
+        },
+        {
+          title: 'Travel Medical Insurance (Minimum €30,000)',
+          description: 'Comprehensive travel insurance covering medical emergency, hospitalization, and repatriation across all Schengen states.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Flight Reservations (with PNR)',
+          description: 'Round-trip flight booking with verifiable PNR entering Copenhagen (CPH) or Billund (BLL).',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation',
+          description: 'Confirmed hotel reservations in Denmark for all nights of stay or official invitation (VU1 form) from host in Denmark.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Employment / Student / Business Status',
+          description: 'Employer NOC letter with approved leave dates, recent 3 months payslips, or company registration & 3-year ITR.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Bank Account Statements (Last 3 to 6 Months)',
+          minimum_balance_or_amount: 'Minimum 500 DKK (~€70) per day if staying in hotel / 350 DKK (~€50) per day if staying with host',
+          time_frame: 'Last 3 to 6 months bank statements (stamped and signed by bank)',
+          notes: 'Must show regular income credits and sufficient liquid funds for the entire duration.'
+        },
+        {
+          type: 'Income Tax Returns (ITR-V)',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last 2 to 3 financial years',
+          notes: 'ITR-V acknowledgement copies showing declared income.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'ApplyVisa Portal Mandate',
+          details: 'All visa applications for Denmark must be registered and paid online at applyvisa.um.dk prior to submitting physical documents at VFS.'
+        },
+        {
+          category: 'Biometrics at VFS Denmark',
+          details: 'Mandatory in-person appointment for 10-finger biometric scan and digital photograph.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Register on the official ApplyVisa portal (applyvisa.um.dk) and complete the visa application form online.',
+        '2️⃣ Pay the visa fee (€90) securely online on applyvisa.um.dk and print the signed Cover Letter.',
+        '3️⃣ Compile your document dossier: passport, photos, €30k insurance, flight reservation, hotel booking, bank statements (3-6 months), ITR, and employer NOC.',
+        '4️⃣ Book an appointment at your nearest VFS Global Denmark application center in India.',
+        '5️⃣ Attend the VFS appointment for biometric submission and hand over your document dossier.',
+        '6️⃣ Track your application online and collect your passport with the Schengen visa sticker.'
+      ],
+      costs: {
+        visa_fee: '€90 (approx. 675 DKK / ₹8,100)',
+        service_fee: '₹1,800 – ₹2,500 (VFS Logistics Fee)',
+        total_fee: '€90 + VFS Logistics',
+        notes: 'Embassy visa fee paid online via card on applyvisa.um.dk; VFS fee paid at appointment.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply up to 6 months before intended travel date.',
+        decision_time: 'Decision: 15 calendar days from receipt at Embassy of Denmark in New Delhi (may extend to 45 days in peak season).',
+        max_extension: 'Standard 90 days stay within any 180-day period in Schengen Area.',
+        center_notes: 'Managed via VFS Global Denmark across 10+ Indian cities.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // 2. GREECE & SCHENGEN PATHWAYS
   // ═══════════════════════════════════════════════════════════════
   if (isGreece || isSchengen) {
@@ -3179,7 +3512,9 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         },
         {
           title: 'Round-Trip Flight Itinerary / Reservations (with PNR)',
-          description: 'Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR (Passenger Name Record). ⚠️ Do NOT purchase non-refundable tickets before the visa is issued — book a refundable or on-hold reservation only. Itinerary must show travel from India → Greece (or primary Schengen entry country) → India.',
+          description: isGreece
+            ? 'Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR (Passenger Name Record). ⚠️ Do NOT purchase non-refundable tickets before the visa is issued — book a refundable or on-hold reservation only. Itinerary must show travel from India → Greece → India.'
+            : `Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR. Do NOT purchase non-refundable tickets prior to visa approval. Itinerary must show travel between ${from} and ${dest}.`,
           is_mandatory: true
         },
         {
@@ -3217,7 +3552,9 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           type: 'Bank Account Statements (Primary)',
           minimum_balance_or_amount: '€50–€70 per day of stay (e.g., min. €700 for a 10-day trip)',
           time_frame: 'Last 3 to 6 months (bank-stamped originals only)',
-          notes: 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy of Greece.'
+          notes: isGreece
+            ? 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy of Greece.'
+            : `Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy / Consulates of ${dest}.`
         },
         {
           type: 'Income Tax Returns (ITR-V)',
@@ -3263,7 +3600,9 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         },
         {
           category: 'Strong Ties to Home Country',
-          details: 'The consular officer must be convinced you will return to India before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for Greece visa rejection.'
+          details: isGreece
+            ? 'The consular officer must be convinced you will return to India before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for Greece visa rejection.'
+            : `The consular officer must be convinced you will return to your home country before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for visa rejection.`
         },
         {
           category: 'Travel & Hotel — Do NOT Buy Non-Refundable',

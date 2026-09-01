@@ -1,0 +1,105 @@
+{
+  "route_meta": {
+    "origin": "India",
+    "destination": "Denmark",
+    "purpose": "Higher Studies",
+    "visa_type": "Danish Residence and Work Permit for Students (ST1 Scheme / Higher Education Route)",
+    "official_channel": "Danish Agency for International Recruitment and Integration (SIRI) & Ministry of Foreign Affairs of Denmark"
+  },
+  "processing_meta": {
+    "processing_time": "60 Calendar Days (Standard SIRI SLA)",
+    "validity": "Granted for Full Duration of Accredited Degree Programme + 6 Months Post-Study Job Seeking",
+    "length_of_stay": "Full Study Programme Duration (Continuous Legal Residence)",
+    "entry": "Multiple Entry (Biometric Residence Card / Schengen Free Movement)",
+    "total_fees": {
+      "consular_fee": "2,115 – 2,600 DKK (SIRI Fee) + 1,710 DKK (Embassy ApplyVisa Fee)",
+      "service_fee": "1,800 – 2,500 INR (VFS Biometrics Fee)",
+      "approx_inr": "₹46,000 – ₹52,000 INR Total Official Fees"
+    }
+  },
+  "how_to_apply_steps": [
+    "1️⃣ Secure unconditional admission at an accredited Danish higher education institution.",
+    "2️⃣ Danish educational institution completes Part 1 of the online ST1 application form on nyidanmark.dk and sends the reference ID / password to the student.",
+    "3️⃣ Create a Case Order ID on nyidanmark.dk and pay the official SIRI processing fee (2,115 – 2,600 DKK) online.",
+    "4️⃣ Complete Part 2 of the ST1 application form on nyidanmark.dk, uploading passport, admission letter, and living funds proof.",
+    "5️⃣ Register and pay the Danish Embassy application fee (1,710 DKK) on the official ApplyVisa portal (applyvisa.um.dk).",
+    "6️⃣ Book an appointment and record biometrics at VFS Global Denmark within 14 calendar days of online ST1 submission.",
+    "7️⃣ Track application status on SIRI. Upon approval, receive entry visa sticker or travel to Denmark to collect your physical Biometric Residence Card (Opholdskort)."
+  ],
+  "documents_checklist": [
+    {
+      "id": "DENMARK_DOC_1",
+      "title": "Valid Passport",
+      "is_mandatory": true,
+      "description": "Original passport valid for at least 3 months beyond the intended study permit duration with minimum 2 blank pages, issued within last 10 years."
+    },
+    {
+      "id": "DENMARK_DOC_2",
+      "title": "Official Unconditional Admission Letter",
+      "is_mandatory": true,
+      "description": "Letter of acceptance from an accredited Danish higher education institution (University, University College, or Business Academy) confirming admission, start date, and course duration."
+    },
+    {
+      "id": "DENMARK_DOC_3",
+      "title": "Online ST1 Application Confirmation & Reference Code",
+      "is_mandatory": true,
+      "description": "Online ST1 application form on newtodenmark.dk / nyidanmark.dk. (Part 1 completed and submitted online by the educational institution; Part 2 completed online by the student)."
+    },
+    {
+      "id": "DENMARK_DOC_4",
+      "title": "SIRI Case Order ID Payment Receipt",
+      "is_mandatory": true,
+      "description": "Official payment receipt for the SIRI fee (approx. 2,115 – 2,600 DKK) generated and paid prior to application submission."
+    },
+    {
+      "id": "DENMARK_DOC_5",
+      "title": "ApplyVisa (MFA Denmark) Fee Payment Receipt",
+      "is_mandatory": true,
+      "description": "Official payment receipt from the Ministry of Foreign Affairs of Denmark portal (applyvisa.um.dk) for consular handling fee (1,710 DKK / approx. 230 EUR)."
+    },
+    {
+      "id": "DENMARK_DOC_6",
+      "title": "Proof of Paid Tuition Fee or Scholarship Waiver",
+      "is_mandatory": true,
+      "description": "Official bank transfer receipt proving full payment of first-year / first-semester tuition fees, or an official Danish government scholarship award letter."
+    },
+    {
+      "id": "DENMARK_DOC_7",
+      "title": "Recognized English Language Proficiency Certificate",
+      "is_mandatory": true,
+      "description": "Official scorecard (IELTS Academic minimum 6.5 / TOEFL iBT minimum 88) as required by Danish university programme regulations."
+    },
+    {
+      "id": "DENMARK_DOC_8",
+      "title": "MEA Apostilled Academic Certificates & Transcripts",
+      "is_mandatory": true,
+      "description": "Original Bachelor degree / Higher Secondary certificates and transcripts with MEA Apostille certification."
+    }
+  ],
+  "financial_proofs": [
+    {
+      "type": "Proof of Sufficient Living Expenses (Maintenance Funds)",
+      "minimum_balance_or_amount": "6,500 – 6,800 DKK per month (approx. 78,000 – 81,600 DKK / approx. 9.5L–10L INR for one academic year)",
+      "time_frame": "Last 3 to 6 months bank statements in student's own name",
+      "notes": "Bank statements must be held in the student's sole bank account in a recognized bank, showing liquid funds readily available. Education loan sanction letters or official scholarship award letters are also accepted."
+    }
+  ],
+  "consular_directives": {
+    "statutory_rule": "SIRI ST1 Student Residence Scheme & 14-Day Mandatory VFS Biometrics Deadline",
+    "financial_benchmark": "6,500 – 6,800 DKK / month maintenance requirement if tuition is not state-funded"
+  },
+  "other_requirements": [
+    {
+      "category": "Biometrics Submission at VFS Denmark (14-Day Deadline)",
+      "details": "Students MUST record biometrics (fingerprints and facial photo) at an authorized VFS Global Denmark center within strictly 14 calendar days of submitting the online ST1 application."
+    },
+    {
+      "category": "Student Part-Time Work Rights",
+      "details": "International students in higher education programmes are legally permitted to work up to 20 hours per week during the academic semester and full-time (37 hours/week) during June, July, and August."
+    },
+    {
+      "category": "Danish CPR Registration & Yellow Health Card",
+      "details": "Upon arrival in Denmark, register your address at the local International Citizen Service (ICS) / Citizen Service (Borgerservice) to obtain your Danish CPR number and free national healthcare coverage (Sundhedskort)."
+    }
+  ]
+}

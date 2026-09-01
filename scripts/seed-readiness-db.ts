@@ -41,16 +41,17 @@ async function seedDatabase() {
 
         await pool.query(
           `INSERT INTO verified_readiness_payloads 
-            (origin, destination, destination_slug, purpose, visa_type, official_channel, payload_json, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
-           ON CONFLICT (origin, destination_slug, purpose)
+            (origin, destination, destination_slug, route_key, purpose, visa_type, official_channel, payload_json, updated_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+           ON CONFLICT (origin, destination, purpose)
            DO UPDATE SET 
-             destination = EXCLUDED.destination,
+             route_key = EXCLUDED.route_key,
+             destination_slug = EXCLUDED.destination_slug,
              visa_type = EXCLUDED.visa_type,
              official_channel = EXCLUDED.official_channel,
              payload_json = EXCLUDED.payload_json,
              updated_at = NOW()`,
-          [origin, destination, destinationSlug, purpose, visaType, officialChannel, JSON.stringify(payload)]
+          [origin, destination, destinationSlug, `india_to_${destinationSlug}_${purpose.toLowerCase().split(/\s+/)[0]}`, purpose, visaType, officialChannel, JSON.stringify(payload)]
         );
 
         seededFilesCount++;
@@ -60,41 +61,54 @@ async function seedDatabase() {
     }
   }
 
-  // 2. Seed verified built-in consular knowledge base for key destinations
-  console.log('\n🏛️ Seeding built-in verified consular dataset into database...');
+  // 2. Seed verified built-in consular knowledge base for key destinations and purposes
+  console.log('\n🏛️ Seeding built-in verified consular dataset into database across core travel purposes...');
+  const CORE_PURPOSES = [
+    'Tourism / Vacation',
+    'Higher Studies',
+    'Employment / Work',
+    'Permanent Residency (PR) / Immigration',
+    'Business Visit'
+  ];
+
   for (const country of ALL_COUNTRIES) {
     if (country.name.toLowerCase() === 'india') continue;
 
-    try {
-      const destination = country.name;
-      const destinationSlug = destination.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-      const verified = sanitizeCurrencyCodes(getVerifiedOfficialData(origin, destination, purpose));
+    for (const purp of CORE_PURPOSES) {
+      try {
+        const destination = country.name;
+        const destinationSlug = destination.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+        const routeKey = `india_to_${destinationSlug}_${purp.toLowerCase().split(/\s+/)[0]}`;
+        const verified = sanitizeCurrencyCodes(getVerifiedOfficialData(origin, destination, purp));
 
-      await pool.query(
-        `INSERT INTO verified_readiness_payloads 
-          (origin, destination, destination_slug, purpose, visa_type, official_channel, payload_json, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
-         ON CONFLICT (origin, destination_slug, purpose)
-         DO UPDATE SET 
-           destination = EXCLUDED.destination,
-           visa_type = EXCLUDED.visa_type,
-           official_channel = EXCLUDED.official_channel,
-           payload_json = EXCLUDED.payload_json,
-           updated_at = NOW()`,
-        [
-          origin,
-          destination,
-          destinationSlug,
-          purpose,
-          verified.visa_type || 'Standard Entry Visa',
-          verified.official_source_name || 'Embassy / Consulate',
-          JSON.stringify(verified)
-        ]
-      );
+        await pool.query(
+          `INSERT INTO verified_readiness_payloads 
+            (origin, destination, destination_slug, route_key, purpose, visa_type, official_channel, payload_json, updated_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+           ON CONFLICT (origin, destination, purpose)
+           DO UPDATE SET 
+             route_key = EXCLUDED.route_key,
+             destination_slug = EXCLUDED.destination_slug,
+             visa_type = EXCLUDED.visa_type,
+             official_channel = EXCLUDED.official_channel,
+             payload_json = EXCLUDED.payload_json,
+             updated_at = NOW()`,
+          [
+            origin,
+            destination,
+            destinationSlug,
+            routeKey,
+            purp,
+            verified.visa_type || 'Standard Entry Visa',
+            verified.official_source_name || 'Embassy / Consulate',
+            JSON.stringify(verified)
+          ]
+        );
 
-      seededBuiltinCount++;
-    } catch (err: any) {
-      console.error(`❌ Error seeding ${country.name}:`, err.message);
+        seededBuiltinCount++;
+      } catch (err: any) {
+        console.error(`❌ Error seeding ${country.name} (${purp}):`, err.message);
+      }
     }
   }
 

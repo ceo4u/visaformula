@@ -341,13 +341,35 @@ Generate pre-departure clearance and visa readiness for:
       }
     );
   } catch (err: any) {
-    console.error('[API /api/trip-readiness] Error:', err);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: err.message || 'Internal Server Error evaluating trip readiness.'
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    console.error('[API /api/trip-readiness] Error generating with Gemini, falling back to verified knowledge base:', err);
+
+    try {
+      const { passport_country = 'India', destination = 'Denmark', purpose = 'Higher Studies' } = (await request.clone().json().catch(() => ({}))) as any;
+      const fallbackPayload = sanitizeCurrencyStrings(getVerifiedOfficialData(passport_country, destination, purpose));
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          source: 'verified-consular-fallback',
+          data: fallbackPayload
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Cache': 'FALLBACK',
+            'X-Model': 'verified-knowledge-base'
+          }
+        }
+      );
+    } catch (fallbackErr) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: err.message || 'Internal Server Error evaluating trip readiness.'
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
   }
 };

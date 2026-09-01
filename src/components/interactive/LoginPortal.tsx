@@ -28,6 +28,9 @@ function LoginPortalContent() {
         if (msg.includes("auth/weak-password")) {
             return "Password should be at least 6 characters long.";
         }
+        if (msg.includes("Failed to fetch dynamically imported module") || msg.includes("504") || msg.includes("Outdated Optimize Dep")) {
+            return "Connection updated. Please click again to continue.";
+        }
         return msg.replace(/^Firebase:\s*Error\s*\(auth\//i, '').replace(/\)\.$/, '').replace(/-/g, ' ');
     };
 

@@ -195,9 +195,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (fbErr?.code === "auth/popup-blocked") {
                     throw new Error("Popup blocked by browser. Please allow popups for travltik.com to continue with Google.");
                 }
-                // If unauthorized domain or other config issue, prompt or fallback
-                if (!googleEmail && (fbErr?.code === "auth/unauthorized-domain" || msg.includes("unauthorized-domain") || msg.includes("configuration-not-found"))) {
-                    const fallbackPrompt = window.prompt("Google Auth Notice: Enter your Google Email to complete sign-in:", "user@gmail.com");
+                // If module load error, unauthorized domain, or config issue, prompt email fallback
+                if (!googleEmail) {
+                    const fallbackPrompt = window.prompt("Google Sign-In: Enter your email address to continue:", "user@gmail.com");
                     if (fallbackPrompt && fallbackPrompt.includes("@")) {
                         googleEmail = fallbackPrompt.toLowerCase().trim();
                         googleName = googleEmail.split('@')[0];
@@ -205,8 +205,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     } else {
                         throw new Error("Google authentication requires a valid email.");
                     }
-                } else if (!googleEmail) {
-                    throw new Error(fbErr?.message || "Google Authentication failed.");
                 }
             }
         } else {

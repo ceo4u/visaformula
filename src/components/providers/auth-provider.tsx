@@ -44,28 +44,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const googleName = fbUser.displayName || '';
                     const googlePhoto = fbUser.photoURL || '';
                     const googleUid = fbUser.uid || '';
-                    // Call backend to register/login this Google user
+                    const role = (sessionStorage.getItem("google_auth_role") || 'seeker') as 'seeker' | 'expert';
+                    const returnPath = sessionStorage.getItem("google_auth_return") || "/dashboard";
+                    sessionStorage.removeItem("google_auth_return");
+                    sessionStorage.removeItem("google_auth_role");
+
+                    const nameParts = (googleName || '').trim().split(' ');
+                    const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
+                    const gLastName = nameParts.slice(1).join(' ') || '';
+
+                    // Build local user object as fallback
+                    const localUser: User = {
+                        uid: googleUid,
+                        email: googleEmail,
+                        displayName: googleName || gFirstName,
+                        photoURL: googlePhoto,
+                        type: role,
+                    };
+
+                    // Try backend sync (optional — don't block on failure)
                     try {
                         const response = await fetch('/api/auth/google', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role: 'seeker' }),
+                            body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role }),
                         });
                         if (response.ok) {
                             const data = await response.json();
                             if (data.user) {
-                                setUser(data.user);
-                                localStorage.setItem("travltik_user", JSON.stringify(data.user));
-                                const returnPath = sessionStorage.getItem("google_auth_return") || "/dashboard";
-                                sessionStorage.removeItem("google_auth_return");
-                                window.location.href = data.user.type === "expert" ? "/consultant/dashboard" : returnPath;
+                                const resolvedUser = { ...localUser, ...data.user };
+                                setUser(resolvedUser);
+                                localStorage.setItem("travltik_user", JSON.stringify(resolvedUser));
+                                localStorage.setItem("seeker_email", googleEmail);
+                                localStorage.setItem("seeker_firstName", gFirstName);
+                                localStorage.setItem("seeker_lastName", gLastName);
+                                window.location.href = resolvedUser.type === "expert" ? "/consultant/dashboard" : returnPath;
                                 return;
                             }
                         }
-                    } catch (_) {}
+                    } catch (_) {
+                        console.warn("[GoogleAuth] Backend sync failed, using Firebase user directly");
+                    }
+
+                    // FALLBACK: Use Firebase user data directly — don't block login on backend
+                    setUser(localUser);
+                    localStorage.setItem("travltik_user", JSON.stringify(localUser));
+                    localStorage.setItem("seeker_email", googleEmail);
+                    localStorage.setItem("seeker_firstName", gFirstName);
+                    localStorage.setItem("seeker_lastName", gLastName);
+                    window.location.href = role === "expert" ? "/consultant/dashboard" : returnPath;
+                    return;
                 }
-            } catch (_) {
+            } catch (err) {
                 // No redirect result or Firebase not ready — normal page load
+                console.debug("[Auth] No redirect result:", err);
             }
 
             // ---- Restore session from localStorage ----

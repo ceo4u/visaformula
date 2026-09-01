@@ -228,8 +228,16 @@ Generate a 100% accurate, real-time pre-departure Readiness & Airport Clearance 
   }
 }
 
-STRICT CURRENCY DIRECTIVE (KATEX COMPATIBILITY):
-NEVER output raw dollar signs ($) inside text strings. Convert all monetary figures to standard text codes (e.g., replace "$350" with "350 USD", and "$10,000" with "10,000 USD").
+STRICT STATUTORY CONSULAR DIRECTIVES:
+1. VISA MECHANISM ACCURACY:
+   - Identify whether the destination uses 100% Online eVisa (e.g., Ethiopia evisa.gov.et, Kenya eTA, Vietnam eVisa), Visa-on-Arrival, Commercial VAC (VFS/BLS/TLS), or Direct Consular Mission.
+   - NEVER assume VFS Global / commercial VAC exists if the destination country only processes visas directly at its Embassy Consular Section (e.g., Yemen via MOI/PISA clearance, Syria, Libya).
+2. COUNTRY-SPECIFIC CLEARANCE & PROHIBITIONS:
+   - Yemen: Requires host company to secure prior Ministry of Interior (MOI / PISA) Security Clearance in Yemen before Embassy in New Delhi stamps the visa. STRICT RULE: Any Israeli visa or border stamp results in immediate refusal.
+   - Denmark Student Route: Requires SIRI ST1 Residence & Work Permit Scheme on nyidanmark.dk, Case Order ID fee, ApplyVisa MFA fee, and 14-day VFS biometrics deadline.
+   - Ethiopia: 100% Online eVisa on evisa.gov.et (82 USD for 30-day tourist visa), valid via Addis Ababa Bole Airport (ADD), Yellow Fever certificate required.
+3. STRICT CURRENCY DIRECTIVE (KATEX COMPATIBILITY):
+   - NEVER output raw dollar signs ($) inside text strings. Convert all monetary figures to standard text codes (e.g., replace "$350" with "350 USD", "$82" with "82 USD", and "$10,000" with "10,000 USD").
 
 CRITICAL: Return ONLY raw, valid JSON. Do not include markdown formatting or backticks around the JSON.`;
 

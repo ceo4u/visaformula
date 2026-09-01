@@ -145,6 +145,26 @@ export const POST: APIRoute = async ({ request }) => {
         user = insertRes.rows[0];
         userRole = 'seeker';
       }
+
+      // Send Welcome Email for newly registered Google user
+      try {
+        const { sendWelcomeEmail } = await import('../../../lib/email');
+        const firstName = userRole === 'expert'
+          ? (user.business_name || profileDisplayName || 'Consultant')
+          : (user.first_name || profileDisplayName || 'Traveller');
+        const displayName = userRole === 'expert'
+          ? (user.business_name || profileDisplayName || 'Consultant')
+          : `${user.first_name || ''} ${user.last_name || ''}`.trim() || profileDisplayName || 'Traveller';
+        
+        sendWelcomeEmail({
+          firstName,
+          displayName,
+          email: user.email,
+          userType: userRole,
+        }).catch(emailErr => console.error('[GoogleAuth] Welcome email async failed:', emailErr));
+      } catch (emailErr) {
+        console.error('[GoogleAuth] Welcome email invocation failed:', emailErr);
+      }
     } else {
       // --- CASE 2: USER IS LOGGING IN ---
       if (isExistingSeeker) {

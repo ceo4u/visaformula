@@ -23,7 +23,7 @@ const FROM_EMAIL = (!rawEmail || rawEmail.includes('travltik.com') || !rawEmail.
   ? 'noreply@travltik.com'
   : rawEmail;
 const FROM_FORMATTED = `${FROM_NAME} <${FROM_EMAIL}>`;
-const APP_URL = import.meta.env.APP_URL || process.env.APP_URL || 'https://travltik.com';
+const APP_URL = (typeof import.meta !== 'undefined' && import.meta.env?.APP_URL) || process.env.APP_URL || 'https://travltik.com';
 
 // ─── Core Send Function ────────────────────────────────────
 

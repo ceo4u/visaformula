@@ -458,6 +458,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isGCC = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => cNorm.includes(sc));
   const isSoutheastAsia = SOUTHEAST_ASIA_COUNTRIES.some(sea => cNorm.includes(sea));
+  const isYemen = cNorm.includes('yemen') || cNorm.includes('sanaa') || cNorm.includes('aden');
   const isStudy = purNorm.includes('study') || purNorm.includes('student');
   const isWork = purNorm.includes('work') || purNorm.includes('job') || purNorm.includes('employment');
   const isPR = purNorm.includes('pr') || purNorm.includes('permanent') || purNorm.includes('immigrat') || purNorm.includes('green') || purNorm.includes('settle');
@@ -1657,6 +1658,57 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         }
       };
     }
+  }
+
+  // Case 8B: Yemen (Direct Consular Mission & Ministry of Interior PISA Security Clearance)
+  if (isYemen) {
+    return {
+      isExempt: false,
+      verdictTitle: `${nationality} passport holders require a Consular Visa with MOI Clearance for Yemen`,
+      verdictSummary: `Direct Consular Visa required via Embassy of Yemen, New Delhi. Mandatory Prior Security Approval from Ministry of Interior (PISA) in Yemen required before visa issuance. Strictly NO Israeli stamps permitted.`,
+      entryStatus: "Yemen Consular Visa (MOI Clearance Required)",
+      entryStatusSubtext: "10–20 Business Days (Post-MOI Approval)",
+      stayDuration: "Up to 30 Days",
+      stayDurationSubtext: "Single Entry (Extendable at PISA Aden)",
+      entryType: "Single Entry",
+      entryTypeSubtext: "Direct Embassy Foil",
+      visaPillTag: "SECURITY CLEARANCE & CONSULAR VISA REQUIRED",
+      digitalCardName: "Yemen MOI / PISA Security Approval & Embassy Sticker",
+      digitalCardDesc: "Official security clearance telex from Ministry of Interior (PISA - Yemen) and Embassy visa foil.",
+      sources: ["Embassy of the Republic of Yemen, New Delhi", "Passports, Immigration and Naturalization Authority (PISA - Yemen)", "IATA Timatic 2026"],
+      maxStay: "30 Days per Entry",
+      conditionsForVisa: [
+        "Prior Visa Security Clearance Letter issued by Ministry of Interior (PISA) in Yemen.",
+        "Passport must NOT contain any Israeli visas, entry/exit stamps, or border transit stamps.",
+        "Indian Employer Deputation Letter with explicit Government of India (MEA) Travel Advisory Undertaking.",
+        "Original Medical Fitness Certificate including certified test reports for HIV, Hepatitis B/C, and Chest X-Ray for TB."
+      ],
+      feesAndProcessing: {
+        costItems: [
+          { label: "Yemen Embassy Consular Visa Fee", amount: "100 – 150 USD (approx. ₹8,500 – ₹12,500)", note: "Payable directly via Embassy demand draft / consular account" },
+          { label: "Commercial VAC / VFS Fee", amount: "₹0 (No Commercial VAC exists)", note: "Applications submitted directly to Embassy of Yemen in New Delhi" }
+        ],
+        totalEstimatedINR: "100 – 150 USD (approx. ₹8,500 – ₹12,500)",
+        processingTime: "10 to 20 Business Days (Post-MOI Clearance Receipt)",
+        processingSLA: "Issued directly by Consular Section, Embassy of Yemen, New Delhi upon receiving MOI approval cable.",
+        applicationWindow: "Apply 3 to 6 weeks before planned travel once Yemeni host secures MOI clearance",
+        earlyEntryBuffer: "Valid for single entry arrival within 90 days of issuance"
+      },
+      applicationProcess: {
+        submission: "1. Yemeni Host MOI Clearance: Host company applies at Ministry of Interior (PISA) in Yemen for Security Approval.",
+        onlineForm: "2. Embassy Form & Dossier: Complete official Yemen visa form and compile Chamber-certified invitation, employer MEA undertaking & medicals.",
+        appointments: "3. Direct Embassy Submission: Submit physical dossier at Consular Section, Embassy of the Republic of Yemen, New Delhi (no VFS).",
+        documentsAndBiometrics: [
+          "Original Passport valid for 6+ months (strictly NO Israeli stamps)",
+          "Ministry of Interior (MOI / PISA) Security Clearance Approval Letter",
+          "Completed & Signed Yemen Embassy Visa Application Form with 2 photos",
+          "Chamber of Commerce Certified Yemeni Host Invitation Letter",
+          "Indian Sponsoring Company Deputation Letter & MEA Advisory Undertaking",
+          "Medical Fitness Clearance Certificate (HIV, Hep B/C, TB Chest X-Ray)",
+          "Confirmed Flight Itinerary to Aden (ADE) or Seiyun (GXF)"
+        ]
+      }
+    };
   }
 
   // Case 9: Generic / Other Destinations

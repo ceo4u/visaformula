@@ -1,0 +1,104 @@
+{
+  "route_meta": {
+    "origin": "India",
+    "destination": "Yemen",
+    "purpose": "Business Visit",
+    "visa_type": "Yemen Business / Consular Entry Visa (Subject to Prior MOI / PISA Security Clearance)",
+    "official_channel": "Embassy of the Republic of Yemen, New Delhi & Ministry of Interior (PISA - Yemen)"
+  },
+  "processing_meta": {
+    "processing_time": "10 to 20 Business Days (Post-MOI Clearance Receipt)",
+    "validity": "90 Days from Date of Issue",
+    "length_of_stay": "Up to 30 Days (Single Entry, Extendable in-country at PISA)",
+    "entry": "Single Entry",
+    "total_fees": {
+      "consular_fee": "100 – 150 USD (approx. ₹8,500 – ₹12,500 INR)",
+      "service_fee": "₹0 (Direct Consular Submission — No Commercial VAC / VFS exists)",
+      "approx_inr": "₹8,500 – ₹12,500 INR Total Official Consular Fee"
+    }
+  },
+  "how_to_apply_steps": [
+    "1️⃣ Sponsoring company in Yemen submits an application to the Ministry of Interior (PISA) in Aden/Sana'a to obtain the official Visa Approval / No Objection Clearance.",
+    "2️⃣ Ensure the MOI / PISA approval number and official cable are telexed/transmitted directly to the Embassy of the Republic of Yemen in New Delhi.",
+    "3️⃣ Complete the official Yemen Visa Application Form and attach 2 recent color passport photographs.",
+    "4️⃣ Compile complete dossier: original passport (strictly NO Israeli stamps), MOI approval copy, Chamber-certified Yemeni invitation, Indian employer deputation letter with MEA advisory undertaking, medical clearance certificate (HIV/Hep/TB), and return flight itinerary.",
+    "5️⃣ Submit the physical application dossier directly to the Consular Section, Embassy of the Republic of Yemen, New Delhi and pay the consular fee ($100–$150 USD) via bank draft / consular counter.",
+    "6️⃣ Track consular processing (10–20 business days) and collect your stamped passport directly from the Embassy."
+  ],
+  "documents_checklist": [
+    {
+      "id": "YEMEN_DOC_1",
+      "title": "Original Valid Passport",
+      "is_mandatory": true,
+      "description": "Must be valid for at least 6 months beyond travel date with at least 2 blank pages. ⚠️ STRICT RULE: Passport must NOT contain any Israeli visa, entry, exit, or border transit stamps."
+    },
+    {
+      "id": "YEMEN_DOC_2",
+      "title": "Ministry of Interior (MOI / PISA) Approval Clearance Letter",
+      "is_mandatory": true,
+      "description": "Official Prior Security Clearance Letter issued by the Passports, Immigration & Naturalization Authority (PISA / MOI Yemen) in Aden/Sana'a, obtained by the host company and officially transmitted to the Embassy of Yemen in New Delhi."
+    },
+    {
+      "id": "YEMEN_DOC_3",
+      "title": "Completed Yemen Embassy Visa Application Form",
+      "is_mandatory": true,
+      "description": "Original visa application form fully completed in English/Arabic and signed by the applicant with two passport-sized color photos affixed."
+    },
+    {
+      "id": "YEMEN_DOC_4",
+      "title": "Official Yemeni Company Invitation Letter (Chamber Certified)",
+      "is_mandatory": true,
+      "description": "Formal business invitation letter from the host organization in Yemen on official letterhead, stamped by the local Yemeni Chamber of Commerce & Industry, explaining the exact commercial purpose and duration of visit."
+    },
+    {
+      "id": "YEMEN_DOC_5",
+      "title": "Indian Sponsoring Company Deputation & MEA Travel Undertaking",
+      "is_mandatory": true,
+      "description": "Deputation letter from the Indian employer on company letterhead confirming applicant's designation, salary, purpose of visit, and an explicit company undertaking acknowledging the Government of India (MEA) Travel Advisory on Yemen and assuming full medical/evacuation responsibility."
+    },
+    {
+      "id": "YEMEN_DOC_6",
+      "title": "Medical Fitness Certificate (HIV, Hep B/C, TB)",
+      "is_mandatory": true,
+      "description": "Original medical fitness certificate including certified test reports for HIV, Hepatitis B & C, and Chest X-Ray for Tuberculosis issued by an authorized pathology laboratory."
+    },
+    {
+      "id": "YEMEN_DOC_7",
+      "title": "Confirmed Return Flight Itinerary",
+      "is_mandatory": true,
+      "description": "Round-trip flight booking entering via Aden International Airport (ADE) or Seiyun Airport (GXF)."
+    }
+  ],
+  "financial_proofs": [
+    {
+      "type": "Company Financial Solvency & Bank Statements",
+      "minimum_balance_or_amount": "Indian sponsoring company 6-month bank statement & ITR",
+      "time_frame": "Last 6 consecutive months",
+      "notes": "Verifies financial stability of the deputing Indian enterprise."
+    },
+    {
+      "type": "Host Company Financial Guarantee",
+      "minimum_balance_or_amount": "Full financial, lodging, and security coverage in Yemen",
+      "time_frame": "Stipulated in Chamber-attested invitation letter",
+      "notes": "Yemeni host assumes official sponsorship under PISA regulations."
+    }
+  ],
+  "consular_directives": {
+    "statutory_rule": "Prior MOI / PISA Visa Clearance Approval & Strict Israeli Stamp Prohibition",
+    "financial_benchmark": "Corporate host financial guarantee and Indian employer MEA advisory undertaking"
+  },
+  "other_requirements": [
+    {
+      "category": "⚠️ Absolute Rejection: Israeli Visa / Border Stamp Prohibition",
+      "details": "Yemeni immigration regulations strictly prohibit entry to any traveler whose passport bears an Israeli visa, entry/exit stamp, or border crossing stamp (e.g., King Hussein Bridge / Taba). Possession of any such stamp results in immediate refusal of visa and denial of entry at Yemeni ports."
+    },
+    {
+      "category": "No Commercial VAC / VFS Submission",
+      "details": "There is NO VFS Global or commercial visa application center for Yemen. All applications must be submitted directly to the Consular Section of the Embassy of the Republic of Yemen in New Delhi."
+    },
+    {
+      "category": "Government of India (MEA) Travel Advisory Notice",
+      "details": "The Ministry of External Affairs (MEA), Government of India maintains a strict travel advisory advising Indian nationals against non-essential travel to Yemen due to the prevailing security situation. Corporate travelers travel under corporate indemnity."
+    }
+  ]
+}

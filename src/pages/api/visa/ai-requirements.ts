@@ -165,6 +165,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isPhilippines = isDestination(toLower, 'philippines', ['manila', 'cebu', 'filipino']);
   const isEthiopia = isDestination(toLower, 'ethiopia', ['addis ababa', 'ethiopian', 'ethiopia evisa']);
   const isDenmark = isDestination(toLower, 'denmark', ['copenhagen', 'danish', 'aarhus', 'odense']);
+  const isYemen = isDestination(toLower, 'yemen', ['sanaa', "sana'a", 'aden', 'yemeni', 'al mukalla']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -3099,6 +3100,116 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         decision_time: 'Decision: 15 calendar days from receipt at Embassy of Denmark in New Delhi (may extend to 45 days in peak season).',
         max_extension: 'Standard 90 days stay within any 180-day period in Schengen Area.',
         center_notes: 'Managed via VFS Global Denmark across 10+ Indian cities.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 1G. YEMEN OFFICIAL IMMIGRATION & BUSINESS CLEARANCE PATHWAYS
+  // ═══════════════════════════════════════════════════════════════
+  if (isYemen) {
+    const isBusiness = purposeLower.includes('business') || purposeLower.includes('work') || purposeLower.includes('commercial') || purposeLower.includes('corporate') || purposeLower.includes('official');
+
+    return {
+      passport_country: from,
+      destination_country: 'Yemen',
+      purpose_of_visit: isBusiness ? 'Business / Corporate Visit' : 'Consular Visit',
+      visa_type: 'Yemen Business / Consular Entry Visa (Subject to Prior MOI / PISA Security Clearance)',
+      source_url: 'https://yemenembassy.in',
+      official_source_name: 'Embassy of the Republic of Yemen, New Delhi & Ministry of Interior (PISA - Yemen)',
+      processing_time: '10 to 20 Business Days (Post-MOI Clearance Receipt)',
+      validity: '90 Days from Date of Issue',
+      stay_duration: 'Up to 30 Days (Single Entry, Extendable in-country at PISA)',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '90 Days Validity Window',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Valid Passport',
+          description: 'Must be valid for at least 6 months beyond travel date with at least 2 blank pages. ⚠️ STRICT RULE: Passport must NOT contain any Israeli visa, entry, exit, or border transit stamps.',
+          is_mandatory: true
+        },
+        {
+          title: 'Ministry of Interior (MOI / PISA) Approval Clearance Letter',
+          description: 'Official Prior Security Clearance Letter issued by the Passports, Immigration & Naturalization Authority (PISA / MOI Yemen) in Aden/Sana\'a, obtained by the host company and officially transmitted to the Embassy of Yemen in New Delhi.',
+          is_mandatory: true
+        },
+        {
+          title: 'Completed Yemen Embassy Visa Application Form',
+          description: 'Original visa application form fully completed in English/Arabic and signed by the applicant with two passport-sized color photos affixed.',
+          is_mandatory: true
+        },
+        {
+          title: 'Official Yemeni Company Invitation Letter (Chamber Certified)',
+          description: 'Formal business invitation letter from the host organization in Yemen on official letterhead, stamped by the local Yemeni Chamber of Commerce & Industry, explaining the exact commercial purpose and duration of visit.',
+          is_mandatory: true
+        },
+        {
+          title: 'Indian Sponsoring Company Deputation & MEA Travel Undertaking',
+          description: 'Deputation letter from the Indian employer on company letterhead confirming applicant\'s designation, salary, purpose of visit, and an explicit company undertaking acknowledging the Government of India (MEA) Travel Advisory on Yemen and assuming full medical/evacuation responsibility.',
+          is_mandatory: true
+        },
+        {
+          title: 'Medical Fitness Certificate (HIV, Hep B/C, TB)',
+          description: 'Original medical fitness certificate including certified test reports for HIV, Hepatitis B & C, and Chest X-Ray for Tuberculosis issued by an authorized pathology laboratory.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Itinerary',
+          description: 'Round-trip flight booking entering via Aden International Airport (ADE) or Seiyun Airport (GXF).',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Company Financial Solvency & Bank Statements',
+          minimum_balance_or_amount: 'Indian sponsoring company 6-month bank statement & ITR',
+          time_frame: 'Last 6 consecutive months',
+          notes: 'Verifies financial stability of the deputing Indian enterprise.'
+        },
+        {
+          type: 'Host Company Financial Guarantee',
+          minimum_balance_or_amount: 'Full financial, lodging, and security coverage in Yemen',
+          time_frame: 'Stipulated in Chamber-attested invitation letter',
+          notes: 'Yemeni host assumes official sponsorship under PISA regulations.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: '⚠️ Absolute Rejection: Israeli Visa / Border Stamp Prohibition',
+          details: 'Yemeni immigration regulations strictly prohibit entry to any traveler whose passport bears an Israeli visa, entry/exit stamp, or border crossing stamp (e.g., King Hussein Bridge / Taba). Possession of any such stamp results in immediate refusal of visa and denial of entry at Yemeni ports.'
+        },
+        {
+          category: 'No Commercial VAC / VFS Submission',
+          details: 'There is NO VFS Global or commercial visa application center for Yemen. All applications must be submitted directly to the Consular Section of the Embassy of the Republic of Yemen in New Delhi.'
+        },
+        {
+          category: 'Government of India (MEA) Travel Advisory Notice',
+          details: 'The Ministry of External Affairs (MEA), Government of India maintains a strict travel advisory advising Indian nationals against non-essential travel to Yemen due to the prevailing security situation. Corporate travelers travel under corporate indemnity.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Sponsoring company in Yemen submits an application to the Ministry of Interior (PISA) in Aden/Sana\'a to obtain the official Visa Approval / No Objection Clearance.',
+        '2️⃣ Ensure the MOI / PISA approval number and official cable are telexed/transmitted directly to the Embassy of the Republic of Yemen in New Delhi.',
+        '3️⃣ Complete the official Yemen Visa Application Form and attach 2 recent color passport photographs.',
+        '4️⃣ Compile complete dossier: original passport (strictly NO Israeli stamps), MOI approval copy, Chamber-certified Yemeni invitation, Indian employer deputation letter with MEA advisory undertaking, medical clearance certificate (HIV/Hep/TB), and return flight itinerary.',
+        '5️⃣ Submit the physical application dossier directly to the Consular Section, Embassy of the Republic of Yemen, New Delhi and pay the consular fee ($100–$150 USD) via bank draft / consular counter.',
+        '6️⃣ Track consular processing (10–20 business days) and collect your stamped passport directly from the Embassy.'
+      ],
+      costs: {
+        visa_fee: '100 – 150 USD (approx. ₹8,500 – ₹12,500 INR)',
+        service_fee: '₹0 (Direct Consular Submission — No Commercial VAC / VFS exists)',
+        total_fee: '100 – 150 USD Total Official Consular Fee',
+        notes: 'Payable directly to the Embassy of the Republic of Yemen in New Delhi via demand draft or authorized consular bank account.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 6 weeks before planned business travel once MOI approval is secured.',
+        decision_time: '10 to 20 business days from receipt of physical passport and confirmed MOI telex clearance.',
+        max_extension: 'Initial 30 days single entry; can be extended in-country at the Passports & Immigration Authority (PISA) in Aden.',
+        center_notes: 'Consular Section, Embassy of the Republic of Yemen, 3, Western Avenue, Maharani Bagh, New Delhi 110065.'
       }
     };
   }

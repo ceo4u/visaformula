@@ -16,7 +16,8 @@
     "push:origin": "node scripts/push-remotes.js origin",
     "push:logiqall": "node scripts/push-remotes.js logiqall",
     "push:all": "node scripts/push-remotes.js all",
-    "eval:readiness": "tsx scripts/eval-readiness-pipeline.ts"
+    "eval:readiness": "tsx scripts/eval-readiness-pipeline.ts",
+    "seed:readiness": "tsx scripts/seed-readiness-db.ts"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",

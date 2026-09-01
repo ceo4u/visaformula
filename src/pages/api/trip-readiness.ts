@@ -1,6 +1,7 @@
-// src/pages/api/ocr-analyze-visa.ts
+// src/pages/api/trip-readiness.ts
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
+import { getPool, runMigrations } from '../../backend/db';
 import fs from 'fs';
 import path from 'path';
 
@@ -105,7 +106,7 @@ export const POST: APIRoute = async ({ request }) => {
     const departureDate = departure_date || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const cacheKey = getCacheKey(passport_country, destination, purpose);
 
-    // ── 2. CACHE HIT CHECK (7-DAY TTL) ──
+    // ── 2. IN-MEMORY CACHE HIT CHECK (7-DAY TTL) ──
     const cached = routeCache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
       return new Response(
@@ -116,6 +117,33 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         { status: 200, headers: { 'Content-Type': 'application/json', 'X-Cache': 'HIT' } }
       );
+    }
+
+    // ── 2B. POSTGRESQL VERIFIED CACHE LOOKUP (0ms Latency & Zero Token Cost) ──
+    try {
+      await runMigrations();
+      const pool = getPool();
+      const destinationSlug = destination.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      const dbRes = await pool.query(
+        `SELECT payload_json FROM verified_readiness_payloads 
+         WHERE LOWER(origin) = LOWER($1) AND (destination_slug = $2 OR LOWER(destination) = LOWER($3))
+         ORDER BY updated_at DESC LIMIT 1`,
+        [passport_country, destinationSlug, destination]
+      );
+      if (dbRes.rows.length > 0 && dbRes.rows[0].payload_json) {
+        const stored = sanitizeCurrencyStrings(dbRes.rows[0].payload_json);
+        routeCache.set(cacheKey, { data: stored, expiresAt: Date.now() + CACHE_TTL_MS });
+        return new Response(
+          JSON.stringify({
+            success: true,
+            source: 'postgresql_verified_cache',
+            data: stored
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json', 'X-Cache': 'DB_HIT' } }
+        );
+      }
+    } catch (dbErr) {
+      console.warn('[TripReadiness API] DB lookup skipped:', dbErr);
     }
 
     const apiKey = getGeminiApiKey();

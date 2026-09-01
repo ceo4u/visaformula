@@ -651,6 +651,22 @@ export async function runMigrations() {
 
     -- Clean up any dummy test messages so community starts purely with real user chats
     DELETE FROM chat_messages WHERE user_id LIKE 'senior-%' OR user_id LIKE 'user-arjun' OR user_id LIKE 'user-neha' OR user_id = 'user-current';
+
+    -- ── VERIFIED TRIP READINESS PAYLOADS CACHE TABLE ──
+    CREATE TABLE IF NOT EXISTS verified_readiness_payloads (
+      id SERIAL PRIMARY KEY,
+      origin VARCHAR(100) NOT NULL DEFAULT 'India',
+      destination VARCHAR(100) NOT NULL,
+      destination_slug VARCHAR(100) NOT NULL,
+      purpose VARCHAR(100) NOT NULL DEFAULT 'Tourism / Vacation',
+      visa_type VARCHAR(200),
+      official_channel VARCHAR(255),
+      payload_json JSONB NOT NULL,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (origin, destination_slug, purpose)
+    );
+    CREATE INDEX IF NOT EXISTS idx_vrp_lookup ON verified_readiness_payloads (origin, destination_slug, purpose);
   `);
   })();
   return migrationsPromise;

@@ -118,6 +118,46 @@ export default function VisaReadinessEngine() {
   const [hasRefusals, setHasRefusals] = useState(false);
   const [refusalDetails, setRefusalDetails] = useState('');
 
+  // ── Sync URL Search Parameters on Mount (Hero Widget / Direct Deep Link Support) ──
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      
+      // Target Destination Country
+      const dest = params.get('country') || params.get('destination') || params.get('to') || params.get('targetCountry');
+      if (dest) {
+        setTargetCountry(dest);
+      }
+
+      // Origin / Residence / Passport
+      const orig = params.get('from') || params.get('origin') || params.get('residence') || params.get('passport') || params.get('passportCountry');
+      if (orig) {
+        setResidenceCountry(orig);
+      }
+
+      // Category / Purpose / Tab
+      const cat = (params.get('category') || params.get('purpose') || params.get('type') || params.get('tab') || '').toLowerCase();
+      if (cat.includes('study') || cat.includes('student') || cat.includes('admission') || cat.includes('university')) {
+        setActiveTab('student');
+      } else if (cat.includes('work') || cat.includes('job') || cat.includes('permit') || cat.includes('ssw')) {
+        setActiveTab('work');
+      } else if (cat.includes('tour') || cat.includes('visit') || cat.includes('holiday') || cat.includes('package')) {
+        setActiveTab('tourist');
+      } else if (cat.includes('pr') || cat.includes('permanent') || cat.includes('settle') || cat.includes('immigrat')) {
+        setActiveTab('pr');
+      }
+
+      // Validity
+      const valid = params.get('validity') || params.get('passportValidMonths');
+      if (valid) {
+        setPassportValidMonths(valid);
+      }
+    } catch (err) {
+      console.warn('[ReadinessEngine] Error parsing URL parameters:', err);
+    }
+  }, []);
+
   // ── Passport OCR Scan State ──
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [passportPreview, setPassportPreview] = useState<string | null>(null);

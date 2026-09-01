@@ -2241,7 +2241,7 @@ return (
 
           {/* Floating Travel Readiness Card (Hidden on Mobile, Visible on Desktop/Tablet - Links to /readiness) */}
           <a
-            href="/readiness"
+            href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
             className="hidden md:flex absolute top-3 sm:top-4 md:top-5 right-3 sm:right-5 md:right-7 lg:right-9 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl p-2 sm:p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[95px] sm:min-w-[110px]"
             title="Check Travel Readiness Score"
           >

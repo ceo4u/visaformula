@@ -1,6 +1,7 @@
 // src/pages/api/readiness.ts
 import type { APIRoute } from 'astro';
 import { GoogleGenAI, Type } from '@google/genai';
+import { sanitizeCurrencyCodes } from '../../lib/country-matching';
 import fs from 'fs';
 import path from 'path';
 
@@ -352,7 +353,7 @@ Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK
     }
 
     return new Response(
-      JSON.stringify({ success: true, data: assessmentResult }),
+      JSON.stringify({ success: true, data: sanitizeCurrencyCodes(assessmentResult) }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error: any) {

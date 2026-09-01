@@ -1,6 +1,7 @@
 // src/pages/api/visa/ai-requirements.ts
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
+import { sanitizeCurrencyCodes } from '../../../lib/country-matching';
 import fs from 'fs';
 import path from 'path';
 
@@ -4370,7 +4371,7 @@ Return ONLY a valid JSON object matching this exact schema:
             }
           }
 
-          return new Response(JSON.stringify({ success: true, data: parsed, source: 'gemini-ai' }), {
+          return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(parsed), source: 'gemini-ai' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
           });
@@ -4382,7 +4383,7 @@ Return ONLY a valid JSON object matching this exact schema:
 
     // Fallback to verified official consular database
     const verified = getVerifiedOfficialData(fromCountry, toCountry, purpose);
-    return new Response(JSON.stringify({ success: true, data: verified, source: 'consular-knowledge-base' }), {
+    return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(verified), source: 'consular-knowledge-base' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });

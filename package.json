@@ -15,7 +15,8 @@
     "type-check": "tsc --noEmit",
     "push:origin": "node scripts/push-remotes.js origin",
     "push:logiqall": "node scripts/push-remotes.js logiqall",
-    "push:all": "node scripts/push-remotes.js all"
+    "push:all": "node scripts/push-remotes.js all",
+    "eval:readiness": "tsx scripts/eval-readiness-pipeline.ts"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",

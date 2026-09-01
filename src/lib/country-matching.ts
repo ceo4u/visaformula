@@ -87,3 +87,30 @@ export function isGccDestination(input: string): boolean {
   if (isDestination(norm, 'oman', ['muscat', 'salalah', 'sultanate of oman'], ['romania'])) return true;
   return GCC_COUNTRIES.some(c => isDestination(norm, c));
 }
+
+/**
+ * KaTeX LaTeX crash prevention sanitizer.
+ * Converts raw '$' signs to ISO currency text codes ('USD', 'EUR', 'CAD', etc.)
+ */
+export function sanitizeCurrencyCodes(obj: any): any {
+  if (typeof obj === 'string') {
+    return obj
+      .replace(/\$(\d+(?:[.,]\d+)?)\s*(?:USD)?/gi, '$1 USD')
+      .replace(/€(\d+(?:[.,]\d+)?)\s*(?:EUR)?/gi, '$1 EUR')
+      .replace(/£(\d+(?:[.,]\d+)?)\s*(?:GBP)?/gi, '$1 GBP')
+      .replace(/₹(\d+(?:[.,]\d+)?)\s*(?:INR)?/gi, '₹$1 INR')
+      .replace(/\$/g, ' USD ');
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeCurrencyCodes);
+  }
+  if (obj !== null && typeof obj === 'object') {
+    const res: Record<string, any> = {};
+    for (const key of Object.keys(obj)) {
+      res[key] = sanitizeCurrencyCodes(obj[key]);
+    }
+    return res;
+  }
+  return obj;
+}
+

@@ -3150,24 +3150,25 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
         passport_country: from,
         destination_country: 'United States',
         purpose_of_visit: 'Employment / Work (H-1B / L-1)',
-        visa_type: 'H-1B / L-1 Specialty Occupation Worker Visa',
+        visa_type: 'H-1B / L-1 Specialty Occupation & Intracompany Transferee Visa',
         source_url: 'https://travel.state.gov/content/travel/en/us-visas/employment/temporary-worker-visas.html',
         official_source_name: 'U.S. Citizenship and Immigration Services (USCIS) & Consular Affairs',
         processing_time: 'Verbal Decision at Consular Window',
-        validity: 'Up to 3 Years (Extendable up to 6 Years per Form I-797)',
-        stay_duration: 'As per approved Form I-797 petition validity dates',
+        validity: 'As per Form I-797 Notice of Action (Typically up to 3 years initial; max 6 years for H-1B, 5 years for L-1B, 7 years for L-1A; extendable beyond 6 yrs for H-1B with approved I-140)',
+        stay_duration: 'As per approved Form I-797 petition validity dates (recorded on Form I-94)',
         entry_type: 'Multiple Entry',
         validity_and_stay: {
-          visa_validity: 'Up to 3 Years (Extendable up to 6 Years per Form I-797)',
-          max_stay_per_entry: 'Duration authorized on approved Form I-797 petition',
+          visa_validity: 'As per Form I-797 (Initial up to 3 Years; statutory max: H-1B 6 yrs / L-1B 5 yrs / L-1A 7 yrs)',
+          max_stay_per_entry: 'Duration authorized on approved Form I-797 petition / Form I-94',
           entry_type: 'Multiple Entry'
         },
         documents_required: [
           { title: 'Form I-797 (Notice of Action)', description: 'Original or copy of approved petition from USCIS with valid receipt number.', is_mandatory: true },
           { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended period of stay with blank pages.', is_mandatory: true },
-          { title: 'Form DS-160 Confirmation Page', description: 'Printed confirmation barcode page of completed DS-160 online form.', is_mandatory: true },
-          { title: 'Employment Offer Letter & Client Letter', description: 'Detailed job offer letter, certified LCA, and end-client project documentation if working at third-party site.', is_mandatory: true },
-          { title: 'Educational & Professional Credentials', description: 'Degree evaluations, experience letters, and previous US paystubs/W-2s if applicable.', is_mandatory: true }
+          { title: 'Form DS-160 Confirmation Page', description: 'Printed confirmation barcode page of completed DS-160 online form with 10-character alphanumeric barcode.', is_mandatory: true },
+          { title: 'Employment Offer Letter & Client Letter', description: 'Detailed job offer letter, certified LCA (Form ETA-9035), and end-client project documentation if working at third-party client site.', is_mandatory: true },
+          { title: 'Educational & Professional Credentials', description: 'Degree evaluations, experience letters, and previous US paystubs/W-2s if applicable.', is_mandatory: true },
+          { title: 'Form I-129S & Blanket Notice (L-1 Blanket Only)', description: 'For L-1 Blanket applicants: 3 sets of completed Form I-129S and Form I-797 Blanket approval notice.', is_mandatory: false }
         ],
         financial_proofs: [
           { type: 'Salary Slips & Tax Returns', minimum_balance_or_amount: 'Certified LCA prevailing wage minimum', time_frame: 'Last 3-6 months paystubs & Form 16 / ITR', notes: 'Proof of steady employment and authorized compensation.' }
@@ -3175,19 +3176,29 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
         other_requirements: [
           { category: 'USCIS Petition Approval', details: 'Employer must secure approved Form I-129 petition before visa appointment scheduling.' },
           { category: 'Two-Stage Biometrics & Interview', details: 'Attend VAC for fingerprinting and digital photo, followed by consular interview at US Consulate.' },
-          { category: 'Client Letter & End-Client Verification', details: 'Third-party placement workers must present current, signed client letters specifying work location and job duties.' },
-          { category: 'Travel Medical & Relocation Cover', details: 'Comprehensive health coverage is required upon entry into the US until employer group policy becomes active.' }
+          { category: 'L-1 Blanket Fraud Prevention Fee (500 USD)', details: 'Applicants applying under an approved L-1 Blanket Petition must pay an additional mandatory 500 USD Fraud Prevention and Detection Fee at the consular/VAC cashier window on appointment day.' },
+          { category: 'Statutory Stay Limits & AC21 Extensions', details: 'H-1B: Maximum 6 years (extendable beyond 6 years under AC21 with approved I-140 or PERM pending > 365 days). L-1A (Managers/Execs): Maximum 7 years. L-1B (Specialized Knowledge): Maximum 5 years.' },
+          { category: 'Client Letter & End-Client Verification', details: 'Third-party placement workers must present current, signed client letters specifying work location and job duties.' }
         ],
         how_to_apply: [
-          '1️⃣ Employer petitions USCIS and receives approved Form I-797 Notice of Action.',
+          '1️⃣ Employer petitions USCIS and receives approved Form I-797 Notice of Action (or prepares Form I-129S for L-1 Blanket).',
           '2️⃣ Complete Form DS-160 online (ceac.state.gov) and save confirmation barcode.',
           '3️⃣ Create account on usvisascheduling.com, pay 205 USD MRV visa fee, and book VAC + Consular interview dates.',
           '4️⃣ Attend VAC for digital biometrics and facial photograph.',
-          '5️⃣ Attend Consular Interview at US Embassy/Consulate with I-797, LCA, and employment documents.',
+          '5️⃣ Attend Consular Interview at US Embassy/Consulate with I-797, LCA, and employment documents (pay 500 USD fee at cashier if applying under L-1 Blanket).',
           '6️⃣ Receive passport with stamped H-1B/L-1 visa foil via premium delivery or VAC collection.'
         ],
-        costs: { visa_fee: '205 USD (approx. ₹17,220 MRV fee)', service_fee: '0 USD (Direct Consular Fee)', total_fee: '205 USD Total Reference', notes: 'Excludes USCIS employer filing and fraud prevention fees.' },
-        processing_and_timing: { apply_window: 'Apply up to 90 days before petition start date.', decision_time: 'Decision: Verbal decision given immediately at consular window.', max_extension: 'Can enter USA up to 10 days before petition validity starts.' }
+        costs: {
+          visa_fee: '205 USD (approx. ₹17,220 MRV Application Fee)',
+          service_fee: '500 USD (Mandatory Fraud Prevention Fee — ONLY for L-1 Blanket Applicants)',
+          total_fee: '205 USD (Standard H-1B / Individual L-1) | 705 USD (L-1 Blanket)',
+          notes: 'Standard MRV fee (205 USD) paid online via usvisascheduling.com. L-1 Blanket applicants pay an additional 500 USD Fraud Fee at the embassy cashier. Excludes USCIS employer filing fees.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply up to 90 days before petition start date.',
+          decision_time: 'Decision: Verbal decision given immediately at consular window.',
+          max_extension: 'Can enter USA up to 10 days before petition validity start date.'
+        }
       };
     }
 

@@ -19,7 +19,7 @@ interface AuthContextType {
     loading: boolean;
     signIn: (email: string, password: string) => Promise<void>;
     signUp: (email: string, password: string, name: string) => Promise<void>;
-    signInWithGoogle: () => Promise<any>;
+    signInWithGoogle: (role?: 'seeker' | 'expert') => Promise<any>;
     signOut: () => Promise<void>;
 }
 

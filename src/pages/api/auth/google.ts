@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
     } else if (googleProfile && googleProfile.email) {
       email = String(googleProfile.email).toLowerCase().trim();
-      displayName = googleProfile.name || '';
+      profileDisplayName = googleProfile.name || '';
       picture = googleProfile.picture || '';
     } else {
       return new Response(
@@ -116,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
         user = insertRes.rows[0];
       } else {
         // Seeker Registration
-        const names = (decodedToken.name || '').trim().split(' ');
+        const names = (profileDisplayName || '').trim().split(' ');
         const firstName = names[0] || email.split('@')[0] || 'User';
         const lastName = names.slice(1).join(' ') || '';
 

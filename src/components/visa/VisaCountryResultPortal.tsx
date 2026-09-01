@@ -458,8 +458,9 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isGCC = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => cNorm.includes(sc));
   const isSoutheastAsia = SOUTHEAST_ASIA_COUNTRIES.some(sea => cNorm.includes(sea));
-  const isStudy = purNorm.includes('study');
-  const isWork = purNorm.includes('work') || purNorm.includes('job');
+  const isStudy = purNorm.includes('study') || purNorm.includes('student');
+  const isWork = purNorm.includes('work') || purNorm.includes('job') || purNorm.includes('employment');
+  const isPR = purNorm.includes('pr') || purNorm.includes('permanent') || purNorm.includes('immigrat') || purNorm.includes('green') || purNorm.includes('settle');
 
   // Case 1: United Kingdom (UK)
   if (isUK) {
@@ -555,6 +556,52 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           ]
         }
       };
+    } else if (isPR) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require Settlement / Indefinite Leave to Remain (ILR) for the UK`,
+        verdictSummary: `Permanent settlement granted after continuous qualifying residence (5 years on Skilled Worker, 3 years on Global Talent).`,
+        entryStatus: "UK Settlement / Indefinite Leave to Remain (ILR)",
+        entryStatusSubtext: "Permanent Settlement Status",
+        stayDuration: "Indefinite Leave to Remain (No Time Limit)",
+        stayDurationSubtext: "Path to British Citizenship after 1 Year of ILR",
+        entryType: "Settled Status",
+        entryTypeSubtext: "Digital UKVI eVisa / ILR Status",
+        visaPillTag: "PERMANENT SETTLEMENT REQUIRED",
+        digitalCardName: "UKVI Indefinite Leave to Remain (ILR)",
+        digitalCardDesc: "Settled status granting permanent right to live, work, and study in the UK without visa restrictions.",
+        sources: ["UK Visas and Immigration (UKVI)", "Home Office", "IATA Timatic 2026"],
+        maxStay: "Indefinite Stay",
+        conditionsForVisa: [
+          "Completed qualifying continuous residence (typically 5 years on Skilled Worker or 3 years on Global Talent).",
+          "Pass the Life in the UK Test.",
+          "Meet English language requirement (CEFR B1 or UK degree).",
+          "Absences from the UK not exceeding 180 days in any 12-month period."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "UKVI ILR Settlement Application Fee", amount: "£3,029 (approx. ₹3,20,000)", note: "Official UK government settlement application fee" },
+            { label: "Life in the UK Test", amount: "£50 (approx. ₹5,300)", note: "Mandatory civic knowledge test" }
+          ],
+          totalEstimatedINR: "£3,079 Total Official Fees",
+          processingTime: "Standard: Up to 6 Months (Super Priority: 24 Hours available)",
+          processingSLA: "Instant digital status updated on UKVI account upon grant.",
+          applicationWindow: "Apply up to 28 days before completing the 5-year qualifying period",
+          earlyEntryBuffer: "Settled status grants permanent unconstrained residency"
+        },
+        applicationProcess: {
+          submission: "1. Life in the UK & English Test: Pass Life in the UK Test and verify B1 English language.",
+          onlineForm: "2. Set(O) / Set(M) Online Filing: Complete online settlement form on gov.uk portal.",
+          appointments: "3. UKVCAS Appointment: Attend biometric appointment to scan passport and enrol biometrics.",
+          documentsAndBiometrics: [
+            "Current and all previous Passports used during qualifying period",
+            "Employer Confirmation Letter (confirming ongoing employment at required rate)",
+            "Life in the UK Test Pass Notification",
+            "B1 English Language Certificate / UK Degree NARIC statement",
+            "Continuous Residence Absence Summary & Evidence"
+          ]
+        }
+      };
     } else {
       // UK Tourism / Standard Visitor
       return {
@@ -630,10 +677,10 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "MRV Visa Application Fee", amount: "$185 (approx. ₹15,500 – ₹17,600)", note: "Mandatory Department of State consular processing fee" },
-            { label: "SEVIS I-901 Fee", amount: "$350 (approx. ₹29,500 – ₹33,300)", note: "Department of Homeland Security student database fee" }
+            { label: "MRV Visa Application Fee", amount: "185 USD (approx. ₹15,500 – ₹17,600)", note: "Mandatory Department of State consular processing fee" },
+            { label: "SEVIS I-901 Fee", amount: "350 USD (approx. ₹29,500 – ₹33,300)", note: "Department of Homeland Security student database fee" }
           ],
-          totalEstimatedINR: "₹45,000 – ₹50,900 Total Official Fees",
+          totalEstimatedINR: "535 USD Total Reference",
           processingTime: "Consular Decision: 3–5 Business Days post-interview (Passport dispatch via BlueDart in 2–3 days)",
           processingSLA: "Wait times vary by city (New Delhi, Mumbai, Hyderabad, Chennai, Kolkata). Urgent emergency interview requests supported.",
           applicationWindow: "Apply up to 365 Days prior to I-20 program start date",
@@ -646,7 +693,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           documentsAndBiometrics: [
             "Original Passport valid for at least 6 months beyond intended stay",
             "Signed Form I-20 Certificate of Eligibility with SEVIS ID",
-            "SEVIS I-901 Fee Payment Receipt ($350)",
+            "SEVIS I-901 Fee Payment Receipt (350 USD)",
             "DS-160 Form Barcode Confirmation Sheet",
             "Liquid Financial Proof / Bank Statements & Education Loan Sanction Letter",
             "Academic Transcripts, Degree Certificates & Standardized Test Scores (GRE/IELTS/TOEFL)"
@@ -676,10 +723,10 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "MRV Application Fee (H/L/O/P/Q)", amount: "$205 (approx. ₹17,200 – ₹19,500)", note: "Consular nonimmigrant petition processing fee" },
+            { label: "MRV Application Fee (H/L/O/P/Q)", amount: "205 USD (approx. ₹17,200 – ₹19,500)", note: "Consular nonimmigrant petition processing fee" },
             { label: "USCIS Petition Fees", amount: "Employer Sponsored", note: "Covered by petitioning US enterprise" }
           ],
-          totalEstimatedINR: "₹17,200 Consular Fee",
+          totalEstimatedINR: "205 USD Consular Fee",
           processingTime: "Consular Decision: 3–5 Business Days post-interview",
           processingSLA: "Expedited appointment slots available for critical business operations.",
           applicationWindow: "Apply up to 90 Days before petition start date",
@@ -698,6 +745,54 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           ]
         }
       };
+    } else if (isPR) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require an Immigrant Visa / Green Card for Permanent Residency in the United States`,
+        verdictSummary: `Permanent Residency requires an approved USCIS Immigrant Petition (Form I-130 / I-140 / I-526) and National Visa Center (NVC) DS-260 consular processing or I-485 Adjustment of Status.`,
+        entryStatus: "US Immigrant Visa / Green Card",
+        entryStatusSubtext: "NVC Consular & Immigrant Processing",
+        stayDuration: "Indefinite / Permanent Resident Status (LPR)",
+        stayDurationSubtext: "10-Year Renewable Green Card",
+        entryType: "Permanent Resident",
+        entryTypeSubtext: "LPR / Green Card Foil",
+        visaPillTag: "IMMIGRANT VISA / GREEN CARD",
+        digitalCardName: "Form DS-260 & Form I-797 Immigrant Notice",
+        digitalCardDesc: "Permanent Resident Green Card issued upon US entry via approved NVC consular immigrant package.",
+        sources: ["USCIS", "National Visa Center (NVC)", "U.S. Department of State", "IATA Timatic 2026"],
+        maxStay: "Permanent Resident Status",
+        conditionsForVisa: [
+          "Approved USCIS Immigrant Petition (Form I-130 Family or Form I-140 Employment/EB-1/EB-2/EB-3).",
+          "Priority Date must be 'Current' in Department of State monthly Visa Bulletin Final Action Dates.",
+          "Legally binding Form I-864 Affidavit of Support from petitioner/sponsor.",
+          "Complete CDC-authorized panel physician medical examination and vaccination dossier."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "DS-260 Immigrant Visa Application Fee", amount: "345 USD (approx. ₹29,000 for EB) / 325 USD (Family)", note: "Department of State NVC processing fee" },
+            { label: "USCIS Immigrant Fee (Green Card Production)", amount: "235 USD (approx. ₹19,800)", note: "Payable online via USCIS ELIS before US entry" },
+            { label: "NVC Form I-864 Review Fee", amount: "120 USD (approx. ₹10,100)", note: "Affidavit of Support review fee (if applicable)" }
+          ],
+          totalEstimatedINR: "580 USD – 700 USD Official Government Fee Breakdown",
+          processingTime: "NVC Consular Processing (Subject to Visa Bulletin Priority Dates)",
+          processingSLA: "Interview scheduled at US Embassy New Delhi / Consulate Mumbai once Priority Date is Current.",
+          applicationWindow: "File DS-260 upon receiving NVC Welcome Letter and Documentarily Qualified status",
+          earlyEntryBuffer: "Immigrant visa foil valid for initial travel within 6 months of medical exam date"
+        },
+        applicationProcess: {
+          submission: "1. USCIS Petition Approval: Sponsoring US enterprise or qualifying family relative secures Form I-130/I-140 approval.",
+          onlineForm: "2. NVC Processing & DS-260: Pay NVC fees, complete Form DS-260 online, and upload civil dossier + Form I-864.",
+          appointments: "3. Panel Medical & Consular Interview: Complete medical at approved clinic, attend VAC biometrics, and interview at US Embassy.",
+          documentsAndBiometrics: [
+            "Valid Passport with minimum 6 months validity",
+            "Form DS-260 Immigrant Visa Electronic Application Confirmation Page",
+            "USCIS Immigrant Petition Approval Notice (Form I-797)",
+            "Form I-864 Affidavit of Support with IRS Tax Transcripts & W-2s",
+            "Original Birth Certificate, Marriage Certificate & Police Clearance Certificates (PCC)",
+            "Sealed Medical Examination Report from CDC Panel Physician"
+          ]
+        }
+      };
     } else {
       return {
         isExempt: false,
@@ -706,7 +801,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         entryStatus: "B1/B2 Consular Visa",
         entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Up to 180 Days (6 Months)",
-        stayDurationSubtext: "Per visit on 10-Year Visa",
+        stayDurationSubtext: "Per visit on 10-Year Visa (determined by CBP on Form I-94)",
         entryType: "Multiple Entry",
         entryTypeSubtext: "10-Year Validity Foil",
         visaPillTag: "CONSULAR VISA REQUIRED",
@@ -721,16 +816,16 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "MRV Application Fee (B1/B2)", amount: "$185 (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
+            { label: "MRV Application Fee (B1/B2)", amount: "185 USD (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
           ],
-          totalEstimatedINR: "₹15,500 – ₹17,600",
-          processingTime: "Consular Decision: 3–5 Business Days post-interview",
+          totalEstimatedINR: "185 USD (approx. ₹15,500)",
+          processingTime: "Consular Decision: Verbal decision given immediately at interview window",
           processingSLA: "Interview scheduling slots vary by city.",
           applicationWindow: "Apply 3 to 6 months prior to planned trip",
           earlyEntryBuffer: "Travel permitted anytime during 10-year validity"
         },
         applicationProcess: {
-          submission: "1. Digital Intake: Create profile on US Travel Docs / CEAC portal.",
+          submission: "1. Digital Intake: Create profile on usvisascheduling.com portal.",
           onlineForm: "2. Form DS-160: Complete tourist/business declaration and photo upload.",
           appointments: "3. Schedule Appointments: Book Biometric appointment at VAC + Consular Interview.",
           documentsAndBiometrics: [
@@ -1080,6 +1175,54 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           ]
         }
       };
+    } else if (isPR) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require an approved PR Visa / COPR for Canada`,
+        verdictSummary: `Permanent Residence granted via Express Entry (FSW/CEC/FST) or Provincial Nominee Program (PNP) with Comprehensive Ranking System (CRS) score.`,
+        entryStatus: "Canada Permanent Residence (PR / Express Entry)",
+        entryStatusSubtext: "6 Months Standard SLA",
+        stayDuration: "Permanent Resident Status (5-Year PR Card)",
+        stayDurationSubtext: "Path to Canadian Citizenship after 3 Years",
+        entryType: "Permanent Resident",
+        entryTypeSubtext: "Confirmation of Permanent Residence (COPR)",
+        visaPillTag: "PERMANENT RESIDENCY REQUIRED",
+        digitalCardName: "Confirmation of Permanent Residence (COPR)",
+        digitalCardDesc: "Official COPR issued by Immigration, Refugees and Citizenship Canada (IRCC).",
+        sources: ["IRCC Canada", "Government of Canada", "IATA Timatic 2026"],
+        maxStay: "Permanent Resident Status",
+        conditionsForVisa: [
+          "Invitation to Apply (ITA) received in Express Entry or Provincial Nominee draw.",
+          "Language proficiency: minimum CLB 7 in IELTS General or PTE Core.",
+          "Educational Credential Assessment (ECA report from WES/CES/IQAS).",
+          "Meet settlement funds requirement (minimum 14,690 CAD for single applicant)."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Principal Applicant Processing Fee", amount: "950 CAD (approx. ₹58,000)", note: "Official IRCC PR processing fee" },
+            { label: "Right of Permanent Residence Fee (RPRF)", amount: "575 CAD (approx. ₹35,000)", note: "Mandatory PR landing fee (refundable if refused)" },
+            { label: "Biometrics Collection Fee", amount: "85 CAD (approx. ₹5,200)", note: "VFS Canada biometric enrollment" }
+          ],
+          totalEstimatedINR: "1,610 CAD (approx. ₹98,200 Total for Single Applicant)",
+          processingTime: "6 Months Standard (Express Entry IRCC SLA)",
+          processingSLA: "Fast-track 6-month processing for federal economic streams.",
+          applicationWindow: "Submit complete PR application within 60 days of receiving ITA",
+          earlyEntryBuffer: "Land in Canada before the expiry date on your COPR / Medical validity"
+        },
+        applicationProcess: {
+          submission: "1. ECA & Language Exam: Complete WES credential evaluation and IELTS General / PTE Core.",
+          onlineForm: "2. Express Entry Profile & ITA: Submit profile, enter pool, and receive Invitation to Apply (ITA).",
+          appointments: "3. e-APR Submission & COPR: Upload full medical, PCC, proof of funds; submit passport for COPR stamping.",
+          documentsAndBiometrics: [
+            "Valid Passport with blank visa pages",
+            "Educational Credential Assessment (ECA) Report",
+            "Official Language Test Scorecard (IELTS / PTE Core)",
+            "Police Clearance Certificates from all countries resided 6+ months",
+            "Proof of Settlement Funds (Bank letters meeting IRCC 6-month average rule)",
+            "Upfront Immigration Medical Examination (eMedical Sheet)"
+          ]
+        }
+      };
     } else {
       return {
         isExempt: false,
@@ -1103,10 +1246,10 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "TRV Application Fee", amount: "CAD $100 (approx. ₹6,100)", note: "Official IRCC visa fee" },
-            { label: "Biometrics Fee", amount: "CAD $85 (approx. ₹5,200)", note: "Valid for 10 years once enrolled" }
+            { label: "TRV Application Fee", amount: "100 CAD (approx. ₹6,100)", note: "Official IRCC visa fee" },
+            { label: "Biometrics Fee", amount: "85 CAD (approx. ₹5,200)", note: "Valid for 10 years once enrolled" }
           ],
-          totalEstimatedINR: "CAD $185 (approx. ₹11,300)",
+          totalEstimatedINR: "185 CAD (approx. ₹11,300)",
           processingTime: "3 to 6 Weeks via GCKey",
           processingSLA: "10-Year multiple entry validity granted up to passport expiry.",
           applicationWindow: "Apply 2 to 4 Months prior to trip",
@@ -1150,14 +1293,14 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           "Full-time enrollment in CRICOS-registered course with valid CoE.",
           "Must pass Genuine Student (GS) assessment criteria.",
           "Overseas Student Health Cover (OSHC) for entire stay.",
-          "Proof of living cost (AUD $29,710/yr) & tuition funds."
+          "Proof of living cost (29,710 AUD/yr) & tuition funds."
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "Subclass 500 Application Fee", amount: "AUD $1,600 (approx. ₹88,000)", note: "Official DHA visa surcharge" },
-            { label: "OSHC Health Insurance", amount: "AUD $600 – $900/yr", note: "Mandatory Australian medical protection" }
+            { label: "Subclass 500 Application Fee", amount: "1,600 AUD (approx. ₹88,000)", note: "Official DHA visa surcharge" },
+            { label: "OSHC Health Insurance", amount: "600 AUD – 900 AUD/yr", note: "Mandatory Australian medical protection" }
           ],
-          totalEstimatedINR: "AUD $1,600 Base Fee",
+          totalEstimatedINR: "1,600 AUD Base Fee",
           processingTime: "4 to 6 Weeks Standard via ImmiAccount",
           processingSLA: "100% paperless digital grant linked electronically to passport.",
           applicationWindow: "Apply up to 6 Months before course start",
@@ -1174,6 +1317,53 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
             "Proof of Funds / Bank Statements & Education Loan",
             "OSHC Health Insurance Certificate",
             "English Proficiency Test (IELTS / PTE Academic)"
+          ]
+        }
+      };
+    } else if (isPR) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Permanent Residence Visa (Subclass 189 / 190) for Australia`,
+        verdictSummary: `Points-tested SkillSelect PR visa for skilled professionals with positive skills assessment and state nomination.`,
+        entryStatus: "Australia Permanent Residency (Subclass 189 / 190)",
+        entryStatusSubtext: "SkillSelect Points Tested (65+ Points)",
+        stayDuration: "Permanent Residency (5-Year Travel Facility)",
+        stayDurationSubtext: "Path to Australian Citizenship after 4 Years",
+        entryType: "Permanent Resident",
+        entryTypeSubtext: "Direct PR Visa Grant",
+        visaPillTag: "PERMANENT RESIDENCY REQUIRED",
+        digitalCardName: "SkillSelect PR Grant Notification",
+        digitalCardDesc: "Direct Permanent Residency visa grant linked electronically to passport by Department of Home Affairs.",
+        sources: ["Australian Department of Home Affairs", "SkillSelect", "IATA Timatic 2026"],
+        maxStay: "Permanent Resident Status",
+        conditionsForVisa: [
+          "Score at least 65 points on the Department of Home Affairs points table.",
+          "Positive skills assessment in nominated occupation (ACS, VETASSESS, Engineers Australia).",
+          "Competent English (IELTS 6.0+ in each band / PTE 50+; Proficient English for +10 points).",
+          "Receive formal Invitation to Apply (ITA) through SkillSelect."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Base Application Charge (Primary Applicant)", amount: "4,765 AUD (approx. ₹2,65,000)", note: "Official Home Affairs visa fee" },
+            { label: "Additional Applicant (18+ Years)", amount: "2,385 AUD (approx. ₹1,32,000)", note: "Per dependent spouse / partner" }
+          ],
+          totalEstimatedINR: "4,765 AUD Base Charge",
+          processingTime: "6 to 9 Months from Invitation to Visa Grant",
+          processingSLA: "100% digital grant notification via ImmiAccount.",
+          applicationWindow: "Submit complete visa application within 60 days of SkillSelect invitation",
+          earlyEntryBuffer: "Initial entry date specified on grant letter (typically within 12 months)"
+        },
+        applicationProcess: {
+          submission: "1. Skills Assessment: Obtain positive outcome from authorized assessing body (ACS, EA, VETASSESS).",
+          onlineForm: "2. Expression of Interest (EOI): Lodge EOI on SkillSelect portal with points breakdown.",
+          appointments: "3. Visa Lodgement & Biometrics: Upon invitation, lodge visa via ImmiAccount and provide biometrics/medicals.",
+          documentsAndBiometrics: [
+            "Valid Passport with bio-data pages",
+            "Positive Skills Assessment Letter",
+            "English Language Test Scorecard (PTE / IELTS)",
+            "Employment Reference Letters & Payslips / Form 16",
+            "National Police Certificate / Indian PCC",
+            "HAP ID Medical Examination Clearance"
           ]
         }
       };
@@ -1200,9 +1390,9 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "Visitor Visa Application Fee", amount: "AUD $190 (approx. ₹10,500)", note: "Official DHA lodgement fee" }
+            { label: "Visitor Visa Application Fee", amount: "190 AUD (approx. ₹10,500)", note: "Official DHA lodgement fee" }
           ],
-          totalEstimatedINR: "AUD $190 (approx. ₹10,500)",
+          totalEstimatedINR: "190 AUD (approx. ₹10,500)",
           processingTime: "3 to 4 Weeks via ImmiAccount",
           processingSLA: "Digital grant linked directly to passport number.",
           applicationWindow: "Apply 1 to 3 Months before trip",
@@ -2099,13 +2289,19 @@ export function VisaCountryResultPortal({
       const urlPur = sp.get('purpose') || sp.get('category') || sp.get('type') || sp.get('intent') || sp.get('visa') || sp.get('q');
       if (urlPur) {
         const lower = urlPur.toLowerCase();
+        if (lower.includes('pr') || lower.includes('permanent') || lower.includes('immigrat') || lower.includes('green') || lower.includes('settle')) return 'pr';
         if (lower.includes('student') || lower.includes('study') || lower.includes('education') || lower.includes('university') || lower.includes('course')) return 'study';
         if (lower.includes('work') || lower.includes('job') || lower.includes('employment') || lower.includes('career')) return 'work';
+        if (lower.includes('business')) return 'business';
+        if (lower.includes('family') || lower.includes('friend')) return 'family';
       }
     }
     const initLower = (initialPurpose || 'tourism').toLowerCase();
+    if (initLower.includes('pr') || initLower.includes('permanent') || initLower.includes('immigrat') || initLower.includes('green') || initLower.includes('settle')) return 'pr';
     if (initLower.includes('student') || initLower.includes('study') || initLower.includes('education') || initLower.includes('university') || initLower.includes('course')) return 'study';
     if (initLower.includes('work') || initLower.includes('job') || initLower.includes('employment') || initLower.includes('career')) return 'work';
+    if (initLower.includes('business')) return 'business';
+    if (initLower.includes('family') || initLower.includes('friend')) return 'family';
     return 'tourism';
   });
 
@@ -2264,10 +2460,16 @@ export function VisaCountryResultPortal({
       const urlPur = sp.get('purpose') || sp.get('category') || sp.get('type') || sp.get('intent') || sp.get('visa') || sp.get('q');
       if (urlPur) {
         const lower = urlPur.toLowerCase();
-        if (lower.includes('student') || lower.includes('study') || lower.includes('education') || lower.includes('university') || lower.includes('course')) {
+        if (lower.includes('pr') || lower.includes('permanent') || lower.includes('immigrat') || lower.includes('green') || lower.includes('settle')) {
+          setActivePurposeTab('pr');
+        } else if (lower.includes('student') || lower.includes('study') || lower.includes('education') || lower.includes('university') || lower.includes('course')) {
           setActivePurposeTab('study');
         } else if (lower.includes('work') || lower.includes('job') || lower.includes('employment') || lower.includes('career')) {
           setActivePurposeTab('work');
+        } else if (lower.includes('business')) {
+          setActivePurposeTab('business');
+        } else if (lower.includes('family') || lower.includes('friend')) {
+          setActivePurposeTab('family');
         } else {
           setActivePurposeTab('tourism');
         }
@@ -2285,29 +2487,38 @@ export function VisaCountryResultPortal({
   }, [passportCountry, countryName, activePurposeTab]);
 
   // Dynamic Purpose-Synchronized Specifications
+  const isPRPurpose = activePurposeTab === 'pr';
   const isStudyPurpose = activePurposeTab === 'study';
   const isWorkPurpose = activePurposeTab === 'work';
-  const isTouristPurpose = activePurposeTab === 'tourism';
+  const isTouristPurpose = activePurposeTab === 'tourism' || activePurposeTab === 'business' || activePurposeTab === 'family';
 
-  const dynamicLengthOfStay = isStudyPurpose
+  const dynamicLengthOfStay = isPRPurpose
+    ? 'Indefinite / Permanent Resident Status'
+    : isStudyPurpose
     ? 'Duration of Course (1 - 4 Years)'
     : isWorkPurpose
     ? '1 to 5 Years (Renewable)'
     : baseData.lengthOfStay || '30 Days';
 
-  const dynamicStayCategory = isStudyPurpose
+  const dynamicStayCategory = isPRPurpose
+    ? 'Permanent Residency / Settlement'
+    : isStudyPurpose
     ? "Student's Pass / Visa"
     : isWorkPurpose
     ? 'Work Permit / Pass'
     : 'Tourist & Leisure';
 
-  const dynamicValidity = isStudyPurpose
+  const dynamicValidity = isPRPurpose
+    ? '10-Year Permanent Resident Card / Indefinite'
+    : isStudyPurpose
     ? 'Full Course Duration + 90 Days'
     : isWorkPurpose
     ? 'Employment Contract Duration'
     : validity;
 
-  const dynamicVisaType = isStudyPurpose
+  const dynamicVisaType = isPRPurpose
+    ? (countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa') || countryName.toLowerCase().includes('america') ? 'US Immigrant Visa / Green Card' : countryName.toLowerCase().includes('canada') ? 'Canada Permanent Residence (Express Entry / PNP)' : countryName.toLowerCase().includes('australia') ? 'Australia Permanent Residency (Subclass 189/190)' : countryName.toLowerCase().includes('united kingdom') || countryName.toLowerCase().includes('uk') ? 'UK Settlement / Indefinite Leave to Remain (ILR)' : 'Permanent Residence (PR) / Settlement Visa')
+    : isStudyPurpose
     ? (countryName.toLowerCase().includes('singapore') ? "Student's Pass (STP via SOLAR)" : 'Student Visa / Study Permit')
     : isWorkPurpose
     ? (countryName.toLowerCase().includes('singapore') ? 'Employment Pass / S Pass' : 'Work Visa / Employment Permit')
@@ -3231,7 +3442,14 @@ export function VisaCountryResultPortal({
         <OfficialRequirementsCard 
           countryName={countryName} 
           passportCountry={passportCountry} 
-          purpose={initialPurpose === 'study' ? 'Higher Studies' : initialPurpose === 'work' ? 'Employment / Work' : 'Tourism / Vacation'} 
+          purpose={
+            (activePurposeTab === 'pr' || initialPurpose === 'pr') ? 'Permanent Residency (PR) / Immigration' :
+            (activePurposeTab === 'study' || initialPurpose === 'study') ? 'Higher Studies' :
+            (activePurposeTab === 'work' || initialPurpose === 'work') ? 'Employment / Work' :
+            (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
+            (activePurposeTab === 'family' || initialPurpose === 'family') ? 'Family / Friends Visit' :
+            'Tourism / Vacation'
+          } 
         />
       </section>
 

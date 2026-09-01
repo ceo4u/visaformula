@@ -2605,10 +2605,63 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   if (isGreece || isSchengen) {
     const dest = isGreece ? 'Greece' : to;
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isStudy = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education');
     const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment');
     const isBusiness = purposeLower.includes('business');
     const isFamily = purposeLower.includes('family') || purposeLower.includes('friend');
+
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: dest,
+        purpose_of_visit: 'Permanent Residency / Settlement',
+        visa_type: `${dest} Long-Term National Residence Permit (Type D / EU Permanent Settlement)`,
+        source_url: isGreece ? 'https://migration.gov.gr/en/' : 'https://www.vfsglobal.com',
+        official_source_name: `Ministry of Migration & Asylum & Consular Affairs of ${dest}`,
+        processing_time: '60 to 90 Days Consular SLA',
+        validity: '5-Year Permanent Residence Card (EU Long-Term Resident)',
+        stay_duration: 'Indefinite / Permanent Settlement Status',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: '5-Year Renewable Permanent Residence Card',
+          max_stay_per_entry: `Permanent Resident Status in ${dest} & Schengen Free Movement`,
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Valid for at least 1 year with blank pages, issued within last 10 years.', is_mandatory: true },
+          { title: 'National Long-Stay (Type D) Visa Form', description: 'Completed and signed national settlement application form.', is_mandatory: true },
+          { title: 'MEA Apostilled Criminal Record (PCC)', description: 'Original Police Clearance Certificate with MEA Apostille certification.', is_mandatory: true },
+          { title: 'Proof of Legal Basis / Golden Visa / EU Blue Card', description: 'Property purchase contract, qualifying investment approval, or permanent job offer meeting salary thresholds.', is_mandatory: true },
+          { title: 'Medical Fitness Certificate & Private Health Insurance', description: 'Authorized medical checkup report + comprehensive European health insurance.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Proof of Stable Financial Means', minimum_balance_or_amount: '€2,000–€3,500/month or qualifying property investment (€250k–€500k)', time_frame: 'Last 12 months bank statements & tax returns', notes: 'Demonstrates financial independence and sustained economic capacity.' }
+        ],
+        other_requirements: [
+          { category: 'Apostille & Translation', details: 'All Indian civil certificates (Birth, Marriage, PCC) must be Apostilled by MEA and officially translated.' },
+          { category: 'Biometrics at Immigration Office', details: 'Initial National D visa issued by Embassy; biometric residence card collected at local immigration office upon arrival.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Secure qualifying legal basis (EU Blue Card, Golden Visa investment, or Family Reunification approval).',
+          '2️⃣ Obtain MEA Apostille on PCC and civil documents.',
+          '3️⃣ Lodge National Long-Stay (Type D) visa application at the Embassy or authorized VAC.',
+          '4️⃣ Submit biometrics and attend consular interview.',
+          '5️⃣ Travel to destination country and register biometrics with immigration authority for physical EU Residence Card.'
+        ],
+        costs: {
+          visa_fee: '€180 (Embassy Long-Stay Type D Fee)',
+          service_fee: '€30 (VAC Fee)',
+          total_fee: '€210 Total Reference',
+          notes: 'Official national visa fee for long-stay settlement entry.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply 2 to 4 months before intended relocation date.',
+          decision_time: 'Decision: 60 to 90 calendar days.',
+          max_extension: 'Permanent resident permit renewable every 5 years.'
+        }
+      };
+    }
 
     if (isStudy) {
       return {
@@ -3094,8 +3147,65 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // 3. UNITED STATES (USA) OFFICIAL EMBASSY REQUIREMENTS
   // ═══════════════════════════════════════════════════════════════
   if (toLower.includes('united states') || toLower.includes('usa') || toLower === 'us' || toLower.includes('america')) {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isStudent = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('university') || purposeLower.includes('college');
     const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('h1b') || purposeLower.includes('l1');
+
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'United States',
+        purpose_of_visit: 'Permanent Residency (PR) / Immigrant Visa',
+        visa_type: 'US Immigrant Visa & Permanent Residency (EB-1 / EB-2 / EB-3 / EB-5 / Family Class)',
+        source_url: 'https://travel.state.gov/content/travel/en/us-visas/immigrate.html',
+        official_source_name: 'U.S. Citizenship and Immigration Services (USCIS) & National Visa Center (NVC)',
+        processing_time: 'NVC Consular Processing (Subject to Visa Bulletin Priority Dates)',
+        validity: 'Permanent Resident Status (10-Year Renewable Green Card; 6-Month Immigrant Foil for Initial Travel)',
+        stay_duration: 'Permanent / Indefinite Legal Resident Status (LPR) with Path to US Citizenship after 5 Years',
+        entry_type: 'Permanent Resident (LPR)',
+        validity_and_stay: {
+          visa_validity: 'Permanent Resident Status (10-Year Renewable Green Card)',
+          max_stay_per_entry: 'Permanent / Indefinite Resident Status in the United States',
+          entry_type: 'Permanent Resident (LPR)'
+        },
+        documents_required: [
+          { title: 'Approved USCIS Immigrant Petition (Form I-130 / I-140 / I-526)', description: 'Official Form I-797 approval notice with current Priority Date under the Department of State monthly Visa Bulletin.', is_mandatory: true },
+          { title: 'Valid Passport', description: 'Must be valid for at least 6 months beyond the intended date of entry into the United States with blank visa pages.', is_mandatory: true },
+          { title: 'Form DS-260 Immigrant Visa Confirmation Page', description: 'Online Immigrant Visa Electronic Application confirmation page submitted via CEAC with barcode.', is_mandatory: true },
+          { title: 'Form I-864 Affidavit of Support & IRS Tax Transcripts', description: 'Legally binding financial sponsorship with IRS tax transcripts and W-2s proving income above 125% of Federal Poverty Guidelines.', is_mandatory: true },
+          { title: 'Civil Documents & Police Clearance Certificates (PCC)', description: 'Original birth certificates, marriage certificates, and PCCs from Regional Passport Office (RPO) and all countries lived in for 6+ months.', is_mandatory: true },
+          { title: 'CDC Approved Panel Physician Medical Examination', description: 'Sealed medical report from panel physician (Max Healthcare, Apollo) including syphilis, gonorrhea, and TB chest X-ray screening.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'IRS Federal Tax Transcripts & Form I-864', minimum_balance_or_amount: 'Minimum 125% of US Federal Poverty Guidelines for household size', time_frame: 'Last 3 years IRS federal tax transcripts + current employment verification', notes: 'Petitioner / joint sponsor must demonstrate ongoing financial capacity to maintain intending immigrant above poverty line.' }
+        ],
+        other_requirements: [
+          { category: 'Visa Bulletin Priority Date Cutoff', details: 'Immigrant visa interview is scheduled by NVC only when the applicant\'s Priority Date becomes "Current" in the final action dates chart of the DOS Visa Bulletin.' },
+          { category: 'Two-Stage Immigrant Biometrics & Interview', details: 'Stage 1: VAC for biometric submission and photo. Stage 2: In-depth immigrant visa interview at the US Embassy in New Delhi or US Consulate Mumbai.' },
+          { category: 'USCIS Immigrant Fee (235 USD)', details: 'After visa issuance, the 235 USD USCIS Immigrant Fee must be paid online via USCIS Electronic Immigration System (ELIS) before traveling to the US to produce the physical Green Card.' },
+          { category: 'Panel Physician Medical Exam', details: 'Mandatory panel physician medical screening and vaccination dossier must be completed within 6 months of consular interview.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Sponsoring employer or qualifying family relative files Immigrant Petition (Form I-130 / I-140) with USCIS and receives approval.',
+          '2️⃣ Case transferred to National Visa Center (NVC); pay DS-260 immigrant fee (345 USD for employment / 325 USD for family) and I-864 review fee (120 USD).',
+          '3️⃣ Complete online Form DS-260 and upload civil documents, PCC, and I-864 Affidavit of Support with IRS tax returns.',
+          '4️⃣ Complete medical exam at CDC-authorized panel physician clinic in India.',
+          '5️⃣ Attend Biometrics appointment at VAC, followed by Immigrant Visa Interview at the US Embassy/Consulate with original civil dossier.',
+          '6️⃣ Upon approval, receive 6-month immigrant entry visa foil in passport; pay 235 USD USCIS Immigrant Fee online and travel to the US to receive physical 10-Year Green Card.'
+        ],
+        costs: {
+          visa_fee: '345 USD (Employment-Based DS-260) / 325 USD (Family-Based DS-260)',
+          service_fee: '235 USD (USCIS Immigrant Fee for Green Card Production) + 120 USD (NVC I-864 Review if applicable)',
+          total_fee: '580 USD – 700 USD Official Government Fee Breakdown',
+          notes: 'NVC fees paid via CEAC portal. 235 USD Green Card production fee paid online to USCIS before US arrival. Excludes initial Form I-130/I-140 filing fees.'
+        },
+        processing_and_timing: {
+          apply_window: 'File DS-260 once NVC issues welcome letter and Priority Date is current in Visa Bulletin.',
+          decision_time: 'Decision: Interview decision given verbally at consular counter on interview day.',
+          max_extension: 'Permanent Resident (Green Card) status is indefinite; physical card valid for 10 years and renewable online.'
+        }
+      };
+    }
 
     if (isStudent) {
       return {
@@ -3262,7 +3372,64 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // 4. CANADA OFFICIAL IMMIGRATION REQUIREMENTS (IRCC)
   // ═══════════════════════════════════════════════════════════════
   if (toLower.includes('canada')) {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isStudent = purposeLower.includes('study') || purposeLower.includes('student');
+
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'Canada',
+        purpose_of_visit: 'Permanent Residency (PR) / Immigration',
+        visa_type: 'Canada Permanent Residence (Express Entry / PNP / FSW / CEC)',
+        source_url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada.html',
+        official_source_name: 'Immigration, Refugees and Citizenship Canada (IRCC)',
+        processing_time: '6 Months (Express Entry IRCC Standard SLA)',
+        validity: 'Permanent Resident Status (5-Year Renewable PR Card; COPR for Initial Entry)',
+        stay_duration: 'Permanent Resident Status with Path to Canadian Citizenship after 3 Years (1,095 Days)',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: 'Permanent Resident Status (5-Year Renewable PR Card)',
+          max_stay_per_entry: 'Permanent Resident Status in Canada',
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Color scan of bio-data page and all stamped pages (valid for intended travel duration).', is_mandatory: true },
+          { title: 'Educational Credential Assessment (ECA)', description: 'ECA evaluation report from WES, CES, or IQAS establishing Canadian equivalency.', is_mandatory: true },
+          { title: 'Official Language Test Results', description: 'IELTS General Training (CLB 7+ minimum; CLB 9+ recommended) or PTE Core scorecard.', is_mandatory: true },
+          { title: 'Police Clearance Certificates (PCC)', description: 'PCCs from Regional Passport Office (RPO) and all countries resided in for 6+ consecutive months since age 18.', is_mandatory: true },
+          { title: 'Proof of Settlement Funds', description: 'Official bank letter with 6-month average balance meeting IRCC minimum threshold (14,690 CAD for single applicant).', is_mandatory: true },
+          { title: 'Immigration Medical Exam (IME)', description: 'Upfront medical examination conducted by an IRCC-authorized panel physician (eMedical sheet).', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Proof of Settlement Funds (POF)', minimum_balance_or_amount: '14,690 CAD for 1 applicant / 18,288 CAD for family of 2', time_frame: 'Last 6 months bank balance certificates & statements', notes: 'Must be unencumbered liquid funds without loans or sudden borrowed deposits.' }
+        ],
+        other_requirements: [
+          { category: 'Express Entry Comprehensive Ranking (CRS)', details: 'Applicant must meet CRS cutoff in Federal Skilled Worker (FSW), Canadian Experience Class (CEC), or PNP category draws.' },
+          { category: 'Biometrics Requirement (BIL)', details: 'Mandatory biometrics (fingerprints & photo) given at VFS Global VAC once Biometrics Instruction Letter is issued.' },
+          { category: 'Right of Permanent Residence Fee (RPRF)', details: 'Mandatory 575 CAD RPRF fee must be paid before Confirmation of Permanent Residence (COPR) issuance (refundable if refused).' }
+        ],
+        how_to_apply: [
+          '1️⃣ Complete Educational Credential Assessment (WES) and language test (IELTS General / PTE Core).',
+          '2️⃣ Create and submit Express Entry profile on IRCC portal.',
+          '3️⃣ Receive Invitation to Apply (ITA) in Express Entry or Provincial Nominee draw.',
+          '4️⃣ Submit electronic Application for Permanent Residence (e-APR) within 60 days with complete medical, PCC, and financial dossier.',
+          '5️⃣ Pay 950 CAD processing fee + 575 CAD RPRF fee + 85 CAD biometrics fee.',
+          '6️⃣ Receive Confirmation of Permanent Residence (COPR) and submit passport to VFS for PR visa foil stamping.'
+        ],
+        costs: {
+          visa_fee: '950 CAD (Principal Applicant Processing Fee)',
+          service_fee: '575 CAD (Right of Permanent Residence Fee - RPRF) + 85 CAD (Biometrics Fee)',
+          total_fee: '1,610 CAD Total IRCC Fee for Single Applicant',
+          notes: 'RPRF (575 CAD) is refundable if application is refused. Spouse fee: 950 CAD + 575 CAD RPRF. Dependent child: 230 CAD.'
+        },
+        processing_and_timing: {
+          apply_window: 'Submit complete e-APR within 60 calendar days of receiving ITA.',
+          decision_time: 'Standard: 6 months from e-APR submission date.',
+          max_extension: 'Permanent resident card valid for 5 years and renewable indefinitely.'
+        }
+      };
+    }
+
     return {
       passport_country: from,
       destination_country: 'Canada',
@@ -3309,6 +3476,63 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // 5. AUSTRALIA OFFICIAL IMMIGRATION REQUIREMENTS (DHA)
   // ═══════════════════════════════════════════════════════════════
   if (toLower.includes('australia')) {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+    
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'Australia',
+        purpose_of_visit: 'Permanent Residency (PR) / Skilled Migration',
+        visa_type: 'Skilled Independent / Nominated PR Visa (Subclass 189 / 190 / 491)',
+        source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189',
+        official_source_name: 'Australian Department of Home Affairs (SkillSelect)',
+        processing_time: '6 to 9 Months from Invitation to Visa Grant',
+        validity: 'Permanent Residency (5-Year Travel Facility; Indefinite Stay in Australia)',
+        stay_duration: 'Permanent Resident Status with Path to Australian Citizenship after 4 Years',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: 'Permanent Residency (5-Year Travel Facility; Indefinite Stay)',
+          max_stay_per_entry: 'Permanent Resident Status in Australia',
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Color scan of bio-data and stamped pages of current passport.', is_mandatory: true },
+          { title: 'Positive Skills Assessment Outcome', description: 'Official assessment from assessing authority (ACS, Engineers Australia, VETASSESS).', is_mandatory: true },
+          { title: 'English Language Competency Scorecard', description: 'PTE Academic (65+ for Proficient English / 79+ for Superior) or IELTS scorecard.', is_mandatory: true },
+          { title: 'Employment Reference & Tax Documents', description: 'Detailed work reference letters, payslips, bank statements, and Form 16 / ITRs proving claimed points.', is_mandatory: true },
+          { title: 'National Police Clearance Certificates', description: 'Indian PCC from Regional Passport Office (RPO) and clearances from all countries lived in 12+ months.', is_mandatory: true },
+          { title: 'HAP ID Medical Clearance Report', description: 'Health assessment conducted by Bupa Medical Visa Services / designated panel clinics.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Proof of Funds & Employment Income', minimum_balance_or_amount: 'Sufficient funds for settlement & relocation (approx. 25,000–35,000 AUD)', time_frame: 'Bank statements & salary records', notes: 'Demonstrates financial solvency during initial settlement.' }
+        ],
+        other_requirements: [
+          { category: 'SkillSelect Points Threshold (65+ Points)', details: 'Minimum 65 points required on DHA points test based on age, English proficiency, qualifications, and work experience.' },
+          { category: '100% Digital e-Visa (VEVO)', details: 'Permanent Residency is granted electronically via ImmiAccount; verified online via VEVO.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Complete Skills Assessment with designated Australian assessing authority (ACS, EA, VETASSESS).',
+          '2️⃣ Appear for English language exam (PTE / IELTS).',
+          '3️⃣ Submit Expression of Interest (EOI) in SkillSelect.',
+          '4️⃣ Receive Invitation to Apply (ITA) in federal or state nomination round.',
+          '5️⃣ Lodge online visa application on ImmiAccount within 60 days of invitation.',
+          '6️⃣ Complete biometric collection at VFS Global ABCC and health examinations.',
+          '7️⃣ Receive official Australian Permanent Residency (Subclass 189/190) Visa Grant Notification.'
+        ],
+        costs: {
+          visa_fee: '4,765 AUD (Base Application Charge for Primary Applicant)',
+          service_fee: '2,385 AUD (Additional Applicant 18+ Years) / 1,195 AUD (Under 18)',
+          total_fee: '4,765 AUD Base Charge',
+          notes: 'Paid online via ImmiAccount. Excludes Skills Assessment and English test fees.'
+        },
+        processing_and_timing: {
+          apply_window: 'Lodge application within 60 days of receiving SkillSelect invitation.',
+          decision_time: 'Standard processing: 6 to 9 months from lodgement.',
+          max_extension: 'Permanent resident visa includes 5-year travel facility, renewable via Resident Return Visa (Subclass 155).'
+        }
+      };
+    }
+
     return {
       passport_country: from,
       destination_country: 'Australia',

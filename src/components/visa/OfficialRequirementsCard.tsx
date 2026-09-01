@@ -218,6 +218,7 @@ const PURPOSE_OPTIONS = [
   { id: 'Tourism / Vacation', label: 'Tourism / Vacation', icon: '🏖️', desc: 'Holiday, leisure, sightseeing & short travel' },
   { id: 'Higher Studies', label: 'Higher Studies', icon: '🎓', desc: 'University, degree programs & CAS student route' },
   { id: 'Employment / Work', label: 'Employment / Work', icon: '💼', desc: 'Skilled work, sponsored jobs & employment permits' },
+  { id: 'Permanent Residency (PR) / Immigration', label: 'Permanent Residency (PR) / Immigration', icon: '🏛️', desc: 'Green Card, Express Entry, Skilled PR & Settlement' },
   { id: 'Business Visit', label: 'Business Visit', icon: '🤝', desc: 'Meetings, conferences, client deals & exhibitions' },
   { id: 'Family / Friends Visit', label: 'Family / Friends Visit', icon: '👨‍👩‍👧', desc: 'Visiting relatives, private hosts & dependents' },
 ];
@@ -234,6 +235,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
   const initialPurposeLabel = useMemo(() => {
     const p = (purpose || '').toLowerCase();
+    if (p.includes('pr') || p.includes('permanent') || p.includes('immigrat') || p.includes('green') || p.includes('settle')) return 'Permanent Residency (PR) / Immigration';
     if (p.includes('study') || p.includes('student') || p.includes('education') || p.includes('higher')) return 'Higher Studies';
     if (p.includes('work') || p.includes('job') || p.includes('employment')) return 'Employment / Work';
     if (p.includes('business')) return 'Business Visit';

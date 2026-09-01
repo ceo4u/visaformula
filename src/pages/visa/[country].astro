@@ -17,10 +17,16 @@ const rawPurpose = Astro.url.searchParams.get('purpose') ||
                    'tourism';
 
 const purposeLower = rawPurpose.toLowerCase();
-const purpose = (purposeLower.includes('student') || purposeLower.includes('study') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('course'))
+const purpose = (purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle'))
+  ? 'pr'
+  : (purposeLower.includes('student') || purposeLower.includes('study') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('course'))
   ? 'study'
   : (purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('career'))
   ? 'work'
+  : (purposeLower.includes('business') || purposeLower.includes('corporate') || purposeLower.includes('conference'))
+  ? 'business'
+  : (purposeLower.includes('family') || purposeLower.includes('friend') || purposeLower.includes('relative'))
+  ? 'family'
   : 'tourism';
 
 const countryClean = (country || 'destination')

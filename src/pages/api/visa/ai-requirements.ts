@@ -158,6 +158,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isAzerbaijan = isDestination(toLower, 'azerbaijan', ['baku']);
   const isGeorgia = isDestination(toLower, 'georgia', ['tbilisi', 'batumi', 'sakartvelo'], ['usa', 'united states', 'atlanta']);
   const isPhilippines = isDestination(toLower, 'philippines', ['manila', 'cebu', 'filipino']);
+  const isEthiopia = isDestination(toLower, 'ethiopia', ['addis ababa', 'ethiopian', 'ethiopia evisa']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -4016,6 +4017,93 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // 8B. ETHIOPIA OFFICIAL 100% ONLINE EVISA REQUIREMENTS
+  // ═══════════════════════════════════════════════════════════════
+  if (isEthiopia) {
+    return {
+      passport_country: from,
+      destination_country: 'Ethiopia',
+      purpose_of_visit: rawPurpose || 'Tourism / Vacation',
+      visa_type: 'Ethiopia Tourist e-Visa (30 / 90 Days Single or Multiple Entry)',
+      source_url: 'https://www.evisa.gov.et',
+      official_source_name: 'Main Department for Immigration and Nationality Affairs / Immigration and Citizenship Service (ICS) Ethiopia',
+      processing_time: '24 to 72 Hours (1–3 Business Days)',
+      validity: '30 Days or 90 Days from Intended Arrival Date',
+      stay_duration: 'Up to 30 Days (Single Entry) or up to 90 Days (Single/Multiple Entry)',
+      entry_type: 'Single / Multiple Entry (Strictly valid via Addis Ababa Bole International Airport - ADD only)',
+      validity_and_stay: {
+        visa_validity: '30 or 90 Days from arrival date',
+        max_stay_per_entry: '30 Days (Single Entry) / 90 Days (Single or Multiple Entry)',
+        entry_type: 'Single / Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport (Digital Bio-Page Scan)',
+          description: 'Clear color scan of passport bio-data page valid for at least 6 months from the intended date of arrival in Ethiopia.',
+          is_mandatory: true
+        },
+        {
+          title: 'Recent Digital Passport-Size Photograph',
+          description: 'Clear color photograph with white background taken within the last 6 months (JPEG or PNG format).',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Confirmed onward or return airline booking departing from Addis Ababa Bole International Airport (ADD).',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking or Host Address',
+          description: 'Confirmed hotel reservation voucher or full residential address and telephone number of your host in Ethiopia.',
+          is_mandatory: false
+        },
+        {
+          title: 'Yellow Fever Vaccination Certificate',
+          description: 'International Certificate of Vaccination (ICVP) for Yellow Fever (mandatory for entry health clearance at Addis Ababa airport).',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Basic Financial Sufficiency',
+          minimum_balance_or_amount: '50 USD per day of stay in international cards or cash',
+          time_frame: 'Current',
+          notes: 'Standard airport border verification. No 3-year ITR, stamped bank statements, or pay slips required for online tourist eVisa.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: '100% Online Paperless eVisa',
+          details: 'Application and payment are completed entirely online at evisa.gov.et. No physical embassy visit, paper file, or biometric appointment required.'
+        },
+        {
+          category: 'Port of Entry Mandate',
+          details: 'Tourist eVisa holders are strictly authorized to enter Ethiopia through Addis Ababa Bole International Airport (ADD). Land border crossings do not process tourist eVisas on arrival.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Visit the official Ethiopian Government portal: https://www.evisa.gov.et.',
+        '2️⃣ Select "Tourist Visa" and choose your desired validity (30-Day Single Entry or 90-Day Single/Multiple Entry).',
+        '3️⃣ Fill in personal, passport, and travel details and upload digital scans of your passport bio-page and photo.',
+        '4️⃣ Pay the official visa fee (82 USD for 30-Day or 102 USD for 90-Day) securely online using credit/debit card.',
+        '5️⃣ Receive official electronic visa approval PDF via email within 24 to 72 hours.',
+        '6️⃣ Print the eVisa confirmation letter and present it alongside your passport and Yellow Fever Certificate at Addis Ababa Bole Airport immigration.'
+      ],
+      costs: {
+        visa_fee: '82 USD (30-Day Single Entry) / 102 USD (90-Day Single Entry) / 152 USD (90-Day Multiple Entry)',
+        service_fee: '0 USD (No VAC or biometric service charge)',
+        total_fee: '82 USD (~₹6,800 INR) for 30-Day Tourist eVisa',
+        notes: 'Payable online in USD via Mastercard, Visa, or American Express.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 14 days before your intended travel date.',
+        decision_time: 'Decision: 24 to 72 hours (1–3 business days).',
+        max_extension: 'Can be extended in Ethiopia before expiry at the Immigration and Citizenship Service (ICS) headquarters in Addis Ababa.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // 9. GENERIC DESTINATION PR & IMMIGRATION FALLBACK
   // ═══════════════════════════════════════════════════════════════
   const isGenericPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
@@ -4219,7 +4307,8 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'hungary', aliases: ['budapest'] },
       { primary: 'malta', aliases: ['valletta'] },
       { primary: 'bulgaria', aliases: ['sofia'] },
-      { primary: 'croatia', aliases: ['zagreb', 'dubrovnik'] }
+      { primary: 'croatia', aliases: ['zagreb', 'dubrovnik'] },
+      { primary: 'ethiopia', aliases: ['addis ababa', 'ethiopian', 'ethiopia evisa'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));
@@ -4227,7 +4316,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Serve 100% verified official consular dataset directly for instant, flawless accuracy
     if (isVerifiedCountry) {
       const verified = getVerifiedOfficialData(fromCountry, toCountry, purpose);
-      return new Response(JSON.stringify({ success: true, data: verified, source: 'verified-consular-standards' }), {
+      return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(verified), source: 'verified-consular-standards' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });

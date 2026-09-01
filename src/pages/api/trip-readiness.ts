@@ -85,12 +85,10 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3, initial
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const {
-      passport_country,
-      destination,
-      purpose,
-      departure_date
-    } = body;
+    const passport_country = body.passport_country || body.passportCountry || body.fromCountry || body.from;
+    const destination = body.destination || body.destination_country || body.toCountry || body.to;
+    const purpose = body.purpose || body.travel_purpose || body.purpose_of_visit || 'Tourism / Vacation';
+    const departure_date = body.departure_date || body.departureDate;
 
     // ── 1. INPUT VALIDATION ──
     if (!passport_country || !destination || !purpose) {

@@ -461,6 +461,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isStudy = purNorm.includes('study') || purNorm.includes('student');
   const isWork = purNorm.includes('work') || purNorm.includes('job') || purNorm.includes('employment');
   const isPR = purNorm.includes('pr') || purNorm.includes('permanent') || purNorm.includes('immigrat') || purNorm.includes('green') || purNorm.includes('settle');
+  const isBusiness = purNorm.includes('business') || purNorm.includes('corporate') || purNorm.includes('commercial') || purNorm.includes('b1') || purNorm.includes('meeting') || purNorm.includes('conference');
 
   // Case 1: United Kingdom (UK)
   if (isUK) {
@@ -793,12 +794,57 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           ]
         }
       };
+    } else if (isBusiness) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a B-1 Business Visa for the United States`,
+        verdictSummary: `Business Visitor Visa (B-1 / B1/B2) for commercial meetings, conferences, contract negotiations, and corporate consultations. 10-Year Multiple Entry.`,
+        entryStatus: "B-1 Business Visitor Visa",
+        entryStatusSubtext: "Requires Consular Interview",
+        stayDuration: "Up to 180 Days (6 Months)",
+        stayDurationSubtext: "Per visit on 10-Year Visa (determined by CBP on Form I-94)",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "10-Year Validity Foil",
+        visaPillTag: "BUSINESS VISA REQUIRED",
+        digitalCardName: "Form DS-160 & B-1 Consular Appointment",
+        digitalCardDesc: "Official B-1/B-2 visa foil stamped in passport after consular interview.",
+        sources: ["US Department of State", "CBP", "IATA Timatic 2026"],
+        maxStay: "Up to 6 Months per Visit",
+        conditionsForVisa: [
+          "Commercial meetings, industry conferences, corporate consultations, and contract negotiations.",
+          "Strictly no productive local employment or drawing U.S. source remuneration.",
+          "Must present Official U.S. Business Invitation Letter and Indian Employer Deputation Letter."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "MRV Application Fee (B-1/B-2)", amount: "185 USD (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
+          ],
+          totalEstimatedINR: "185 USD (approx. ₹15,500)",
+          processingTime: "Consular Decision: Verbal decision given immediately at interview window",
+          processingSLA: "Interview scheduling slots vary by city.",
+          applicationWindow: "Apply 2 to 3 months prior to planned business trip",
+          earlyEntryBuffer: "Travel permitted anytime during 10-year validity"
+        },
+        applicationProcess: {
+          submission: "1. Digital Intake: Create profile on usvisascheduling.com portal.",
+          onlineForm: "2. Form DS-160: Complete DS-160 selecting B-1 (Business/Conference) and upload photo.",
+          appointments: "3. Schedule Appointments: Book Biometric appointment at VAC + Consular Interview.",
+          documentsAndBiometrics: [
+            "Current Passport valid for 6+ months with blank pages",
+            "Official U.S. Business Invitation Letter (meetings, dates, host contact)",
+            "Indian Employer Deputation / Cover Letter (funding, no US salary drawn)",
+            "DS-160 Confirmation Barcode Page",
+            "MRV Fee Receipt & Appointment Confirmation",
+            "Company Registration & Financial Solvency Proofs"
+          ]
+        }
+      };
     } else {
       return {
         isExempt: false,
-        verdictTitle: `${nationality} passport holders require a B1/B2 Visa for the United States`,
+        verdictTitle: `${nationality} passport holders require a B-2 Tourist Visa for the United States`,
         verdictSummary: `Non-immigrant visitor visa required prior to boarding. Valid for multiple entries up to 10 years.`,
-        entryStatus: "B1/B2 Consular Visa",
+        entryStatus: "B-2 Tourist Consular Visa",
         entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Up to 180 Days (6 Months)",
         stayDurationSubtext: "Per visit on 10-Year Visa (determined by CBP on Form I-94)",
@@ -808,15 +854,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         digitalCardName: "ESTA / US B1/B2 Stamp",
         digitalCardDesc: "Physical visa foil in passport or approved ESTA if dual citizen.",
         sources: ["US Department of State", "CBP", "IATA Timatic 2026"],
-        maxStay: "6 Months per Visit",
+        maxStay: "Up to 6 Months per Visit",
         conditionsForVisa: [
-          "Tourism, family visits, holidays, or short business consultations.",
-          "No employment or unauthorized work permitted under B1/B2.",
+          "Tourism, family visits, holidays, and sightseeing.",
+          "No employment or unauthorized work permitted under B-2.",
           "Must demonstrate strong ties to home country."
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "MRV Application Fee (B1/B2)", amount: "185 USD (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
+            { label: "MRV Application Fee (B-2/B1)", amount: "185 USD (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
           ],
           totalEstimatedINR: "185 USD (approx. ₹15,500)",
           processingTime: "Consular Decision: Verbal decision given immediately at interview window",
@@ -826,7 +872,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         },
         applicationProcess: {
           submission: "1. Digital Intake: Create profile on usvisascheduling.com portal.",
-          onlineForm: "2. Form DS-160: Complete tourist/business declaration and photo upload.",
+          onlineForm: "2. Form DS-160: Complete tourist declaration and photo upload.",
           appointments: "3. Schedule Appointments: Book Biometric appointment at VAC + Consular Interview.",
           documentsAndBiometrics: [
             "Current Passport valid for 6+ months",

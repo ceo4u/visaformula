@@ -3148,6 +3148,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   if (toLower.includes('united states') || toLower.includes('usa') || toLower === 'us' || toLower.includes('america')) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+    const isBusiness = purposeLower.includes('business') || purposeLower.includes('corporate') || purposeLower.includes('commercial') || purposeLower.includes('b1') || purposeLower.includes('meeting') || purposeLower.includes('conference');
     const isStudent = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('university') || purposeLower.includes('college');
     const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('h1b') || purposeLower.includes('l1');
 
@@ -3203,6 +3204,62 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
           apply_window: 'File DS-260 once NVC issues welcome letter and Priority Date is current in Visa Bulletin.',
           decision_time: 'Decision: Interview decision given verbally at consular counter on interview day.',
           max_extension: 'Permanent Resident (Green Card) status is indefinite; physical card valid for 10 years and renewable online.'
+        }
+      };
+    }
+
+    if (isBusiness) {
+      return {
+        passport_country: from,
+        destination_country: 'United States',
+        purpose_of_visit: 'Business / Corporate Visit (B-1)',
+        visa_type: 'B-1 / B1/B2 Nonimmigrant Visitor Visa',
+        source_url: 'https://travel.state.gov/content/travel/en/us-visas/business.html',
+        official_source_name: 'U.S. Department of State & U.S. Embassy Consular Affairs',
+        processing_time: 'Verbal Decision at Consular Window',
+        validity: 'Up to 10 Years (120 Months) Multiple Entry',
+        stay_duration: 'Up to 6 Months (180 Days) per entry (determined by CBP on Form I-94)',
+        entry_type: 'Multiple Entry',
+        validity_and_stay: {
+          visa_validity: 'Up to 10 Years (120 Months) Multiple Entry',
+          max_stay_per_entry: 'Up to 6 Months (180 Days) per entry (determined by CBP on Form I-94)',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          { title: 'Official U.S. Business Invitation Letter', description: 'Official invitation from U.S. host enterprise detailing meetings, conferences, business negotiations, training scope, dates, and host company details.', is_mandatory: true },
+          { title: 'Indian Employer Deputation / Cover Letter', description: 'Official corporate letter on employer letterhead explicitly stating who is funding the trip, project purpose, applicant\'s role, and confirming that no U.S. salary will be drawn (staying on Indian payroll).', is_mandatory: true },
+          { title: 'Valid Passport', description: 'Must be valid for at least 6 months beyond intended stay with blank visa pages.', is_mandatory: true },
+          { title: 'Form DS-160 Confirmation Page', description: 'Printed confirmation sheet with clear 10-character alphanumeric barcode.', is_mandatory: true },
+          { title: 'Appointment Confirmation Letter', description: 'Printed confirmation confirming both VAC Biometrics and Consular Interview appointments.', is_mandatory: true },
+          { title: 'Company Standing & Professional Background', description: 'Employer registration certificate / GST, corporate business cards, and project documentation confirming legitimate commercial purpose.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Corporate Financial Undertaking & Bank Statements', minimum_balance_or_amount: 'Covered by Indian Employer or 4,000–7,000 USD personal liquidity', time_frame: 'Last 6 months company and personal bank statements + 3 years ITR / Form 16', notes: 'Employer cover letter confirming all flights, lodging, and per-diem business expenses are fully sponsored by the Indian organization.' }
+        ],
+        other_requirements: [
+          { category: 'Prohibition on Productive U.S. Labor (B-1 Scope)', details: 'Under B-1 status, taking up local productive employment, performing hands-on billable work, or drawing salary from a U.S. entity is strictly prohibited. Permitted activities: business conferences, client consultations, contract negotiations, exhibitions, and short-term corporate training.' },
+          { category: 'Two-Stage Appointment Requirement', details: 'You must attend two separate appointments: (1) VAC for photo & biometrics, and (2) US Embassy/Consulate for the mandatory in-person consular interview.' },
+          { category: 'Section 214(b) INA Adjudication', details: 'Applicant must demonstrate strong economic, professional, and business ties to India confirming departure upon conclusion of the business visit.' },
+          { category: 'Length of Stay Determined by CBP', details: 'The consular visa foil allows travel to a US port of entry. The U.S. Customs and Border Protection (CBP) officer determines authorized stay duration upon arrival (recorded on electronic Form I-94, typically up to 180 days).' }
+        ],
+        how_to_apply: [
+          '1️⃣ Complete the official Form DS-160 online (ceac.state.gov) selecting B-1 (Business/Conference) and print your confirmation barcode.',
+          '2️⃣ Create a profile on usvisascheduling.com and pay the 185 USD MRV visa fee (via UPI, NEFT, or card).',
+          '3️⃣ Schedule your two appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
+          '4️⃣ Attend VAC appointment with passport and DS-160 confirmation for photo and fingerprint registration.',
+          '5️⃣ Attend Consular Interview at US Embassy/Consulate with your Official U.S. Business Invitation Letter and Indian Employer Deputation Letter.',
+          '6️⃣ Upon visa approval, collect your 10-year multiple-entry visa stamped passport from selected VAC or premium courier.'
+        ],
+        costs: {
+          visa_fee: '185 USD (approx. ₹15,540 MRV fee)',
+          service_fee: '0 USD (Direct Consular Fee)',
+          total_fee: '185 USD Total Reference',
+          notes: 'Payable online directly via official US Visa Scheduling portal (UPI / NEFT / Debit / Credit Card); valid for 10 years multiple entry.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply 2 to 3 months before intended business travel date.',
+          decision_time: 'Decision: Verbal decision given immediately at the interview window.',
+          max_extension: '10-Year Multiple Entry Visa (up to 6 months stay per entry authorized at CBP port of entry on electronic Form I-94).'
         }
       };
     }
@@ -3312,12 +3369,12 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
       };
     }
 
-    // Default US B1/B2 Visitor / Tourism
+    // Default US B-2 Visitor / Tourism
     return {
       passport_country: from,
       destination_country: 'United States',
-      purpose_of_visit: 'Tourism / Business Visit (B1/B2)',
-      visa_type: 'B1/B2 Nonimmigrant Visitor Visa',
+      purpose_of_visit: 'Tourism / Vacation (B-2)',
+      visa_type: 'B-2 / B1/B2 Nonimmigrant Visitor Visa',
       source_url: 'https://travel.state.gov/content/travel/en/us-visas/tourism-visit/visitor.html',
       official_source_name: 'U.S. Department of State & U.S. Embassy Consular Affairs',
       processing_time: 'Verbal Decision at Consular Window',

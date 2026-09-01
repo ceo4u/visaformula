@@ -376,11 +376,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
   const cleanPurposeLabel = useMemo(() => {
     const p = (data?.purpose_of_visit || selectedPurpose || '').trim();
-    if (p.toLowerCase().includes('tour')) return 'Tourism';
+    if (p.toLowerCase().includes('pr') || p.toLowerCase().includes('permanent') || p.toLowerCase().includes('immigrat')) return 'Permanent Residency (PR) / Immigration';
+    if (p.toLowerCase().includes('business') || p.toLowerCase().includes('corporate')) return 'Business / Corporate Visit';
     if (p.toLowerCase().includes('study') || p.toLowerCase().includes('student')) return 'Higher Studies';
-    if (p.toLowerCase().includes('work') || p.toLowerCase().includes('employ')) return 'Employment';
-    if (p.toLowerCase().includes('business')) return 'Business';
-    if (p.toLowerCase().includes('family') || p.toLowerCase().includes('friend')) return 'Family Visit';
+    if (p.toLowerCase().includes('work') || p.toLowerCase().includes('employ')) return 'Employment / Work';
+    if (p.toLowerCase().includes('family') || p.toLowerCase().includes('friend')) return 'Family / Friends Visit';
+    if (p.toLowerCase().includes('tour')) return 'Tourism / Vacation';
     return p;
   }, [data?.purpose_of_visit, selectedPurpose]);
 
@@ -517,7 +518,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  Depending on application
+                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || 'Up to 6 Months (180 Days)'}
                 </h4>
               </div>
             </div>
@@ -528,7 +529,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  Single / Multiple (Depending on application)
+                  {data.entry_type || data.validity_and_stay?.entry_type || 'Multiple Entry'}
                 </h4>
               </div>
             </div>

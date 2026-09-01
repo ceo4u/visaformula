@@ -216,18 +216,74 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker') => {
+        let fbUser: any = null;
+        let idToken: string | null = null;
+        let googleEmail = '';
+        let googleName = '';
+        let googlePhoto = '';
+        let googleUid = '';
+
         try {
-            const { loginWithGoogleRedirect } = await import("../../lib/firebase");
-            // Store return path and role for after redirect
-            sessionStorage.setItem("google_auth_return", role === 'expert' ? '/consultant/dashboard' : '/dashboard');
-            sessionStorage.setItem("google_auth_role", role);
-            // This will redirect the browser to Google — page navigates away
-            await loginWithGoogleRedirect(role === 'expert' ? '/consultant/dashboard' : '/dashboard');
+            const { loginWithGooglePopup } = await import("../../lib/firebase");
+            const result = await loginWithGooglePopup();
+            fbUser = result.user;
+            if (fbUser) {
+                idToken = await fbUser.getIdToken();
+                googleEmail = (fbUser.email || '').toLowerCase().trim();
+                googleName = fbUser.displayName || '';
+                googlePhoto = fbUser.photoURL || '';
+                googleUid = fbUser.uid || '';
+            }
         } catch (fbErr: any) {
-            console.error("[GoogleAuth] Redirect error:", fbErr);
-            throw new Error(fbErr?.message || "Google Authentication failed. Please try again.");
+            const code = fbErr?.code || '';
+            const msg = fbErr?.message || '';
+            if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user')) {
+                throw new Error('Google sign-in was cancelled.');
+            }
+            if (code === 'auth/popup-blocked') {
+                throw new Error('Popup blocked. Please allow popups and try again.');
+            }
+            throw new Error(msg || 'Google sign-in failed. Please try again.');
         }
-        // Function doesn't return — browser navigates away to Google
+
+        if (!googleEmail) throw new Error('Could not get Google account details.');
+
+        const nameParts = (googleName || '').trim().split(' ');
+        const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
+        const gLastName = nameParts.slice(1).join(' ') || '';
+
+        const localUser: User = {
+            uid: googleUid || `google_${Date.now()}`,
+            email: googleEmail,
+            displayName: googleName || gFirstName,
+            photoURL: googlePhoto,
+            type: role,
+        };
+        setUser(localUser);
+        localStorage.setItem('travltik_user', JSON.stringify(localUser));
+        localStorage.setItem('seeker_email', googleEmail);
+        localStorage.setItem('seeker_firstName', gFirstName);
+        localStorage.setItem('seeker_lastName', gLastName);
+
+        // Sync with backend (non-blocking)
+        try {
+            const resp = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role }),
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data.user) {
+                    const resolved = { ...localUser, ...data.user };
+                    setUser(resolved);
+                    localStorage.setItem('travltik_user', JSON.stringify(resolved));
+                    return { status: 'success', ...data, redirect: resolved.type === 'expert' ? '/consultant/dashboard' : '/dashboard' };
+                }
+            }
+        } catch (_) { /* backend optional */ }
+
+        return { status: 'success', user: localUser, redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard' };
     };
 
     const signOut = async () => {

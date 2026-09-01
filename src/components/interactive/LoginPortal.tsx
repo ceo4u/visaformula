@@ -28,8 +28,11 @@ function LoginPortalContent() {
         if (msg.includes("auth/weak-password")) {
             return "Password should be at least 6 characters long.";
         }
-        if (msg.includes("Failed to fetch dynamically imported module") || msg.includes("504") || msg.includes("Outdated Optimize Dep")) {
-            return "Connection updated. Please click again to continue.";
+        if (msg.includes("unauthorized-domain")) {
+            return "Google Sign-In is not authorized for this domain. Please contact support.";
+        }
+        if (msg.includes("popup-blocked")) {
+            return "Popup blocked by browser. Please allow popups for this site and try again.";
         }
         return msg.replace(/^Firebase:\s*Error\s*\(auth\//i, '').replace(/\)\.$/, '').replace(/-/g, ' ');
     };

@@ -94,24 +94,69 @@ export function cleanCountryName(str: string): string {
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
+export function isDestination(
+  input: string,
+  primary: string,
+  aliases: string[] = [],
+  exclusions: string[] = []
+): boolean {
+  if (!input) return false;
+  const norm = input.trim().toLowerCase();
+  for (const ex of exclusions) {
+    if (norm.includes(ex.toLowerCase())) return false;
+  }
+  const targets = [primary.toLowerCase(), ...aliases.map(a => a.toLowerCase())];
+  if (targets.some(t => norm === t)) return true;
+  for (const t of targets) {
+    const regex = new RegExp(`(^|[^a-z0-9])${t}([^a-z0-9]|$)`, 'i');
+    if (regex.test(norm)) return true;
+  }
+  return false;
+}
+
 // Built-in verified database matching official GVCW, VFS, UKVI & Consular regulations
-function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: string): StructuredVisaRequirements {
+export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: string): StructuredVisaRequirements {
   const from = cleanCountryName(rawFrom);
   const to = cleanCountryName(rawTo);
   const toLower = to.toLowerCase();
   const purposeLower = rawPurpose.toLowerCase();
 
-  const isUK = toLower.includes('united kingdom') || toLower.includes('uk') || toLower.includes('england');
-  const isGreece = toLower.includes('greece');
-  const isSchengen = isGreece || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden'].some(c => toLower.includes(c));
-  const isUSA = toLower.includes('united states') || toLower.includes('usa');
-  const isMauritius = toLower.includes('mauritius');
-  const isThailand = toLower.includes('thailand');
-  const isMalaysia = toLower.includes('malaysia');
-  const isMaldives = toLower.includes('maldives');
-  const isSriLanka = toLower.includes('sri lanka');
-  const isIndonesia = toLower.includes('indonesia') || toLower.includes('bali');
-  const isVietnam = toLower.includes('vietnam');
+  const isUK = isDestination(toLower, 'united kingdom', ['uk', 'great britain', 'england', 'scotland', 'wales', 'british']);
+  const isGreece = isDestination(toLower, 'greece', ['hellas', 'athens', 'thessaloniki']);
+  const isRomania = isDestination(toLower, 'romania', ['bucharest', 'cluj', 'timisoara', 'brasov', 'iasi', 'constanta']);
+  const isBulgaria = isDestination(toLower, 'bulgaria', ['sofia', 'varna', 'plovdiv']);
+  const isCroatia = isDestination(toLower, 'croatia', ['zagreb', 'dubrovnik', 'split']);
+  const isSchengen = isGreece || isRomania || isBulgaria || isCroatia || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein'].some(c => isDestination(toLower, c));
+  const isUSA = isDestination(toLower, 'united states', ['usa', 'us', 'america', 'american']);
+  const isCanada = isDestination(toLower, 'canada', ['canadian']);
+  const isAustralia = isDestination(toLower, 'australia', ['australian', 'aussie']);
+  const isNewZealand = isDestination(toLower, 'new zealand', ['nz', 'kiwi']);
+  const isGermany = isDestination(toLower, 'germany', ['deutschland', 'berlin', 'munich', 'frankfurt', 'german']);
+  const isUAE = isDestination(toLower, 'united arab emirates', ['uae', 'dubai', 'abu dhabi', 'sharjah', 'emirates', 'emirati']);
+  const isMauritius = isDestination(toLower, 'mauritius', ['port louis']);
+  const isThailand = isDestination(toLower, 'thailand', ['bangkok', 'phuket', 'pattaya', 'thai']);
+  const isMalaysia = isDestination(toLower, 'malaysia', ['kuala lumpur', 'penang', 'malaysian']);
+  const isMaldives = isDestination(toLower, 'maldives', ['male']);
+  const isSingapore = isDestination(toLower, 'singapore', ['singaporean']);
+  const isIndonesia = isDestination(toLower, 'indonesia', ['bali', 'jakarta']);
+  const isVietnam = isDestination(toLower, 'vietnam', ['hanoi', 'ho chi minh', 'da nang']);
+  const isJapan = isDestination(toLower, 'japan', ['tokyo', 'osaka', 'kyoto', 'japanese']);
+  const isSriLanka = isDestination(toLower, 'sri lanka', ['colombo']);
+  const isSaudi = isDestination(toLower, 'saudi arabia', ['saudi', 'ksa', 'riyadh', 'jeddah', 'mecca', 'medina']);
+  const isQatar = isDestination(toLower, 'qatar', ['doha']);
+  const isOman = isDestination(toLower, 'oman', ['sultanate of oman', 'muscat', 'salalah'], ['romania']);
+  const isBahrain = isDestination(toLower, 'bahrain', ['manama']);
+  const isEgypt = isDestination(toLower, 'egypt', ['cairo', 'alexandria', 'hurghada', 'sharm el sheikh']);
+  const isKenya = isDestination(toLower, 'kenya', ['nairobi', 'mombasa']);
+  const isTanzania = isDestination(toLower, 'tanzania', ['zanzibar', 'dar es salaam']);
+  const isSouthAfrica = isDestination(toLower, 'south africa', ['johannesburg', 'cape town', 'durban', 'rsa']);
+  const isSeychelles = isDestination(toLower, 'seychelles', ['mahe']);
+  const isSouthKorea = isDestination(toLower, 'south korea', ['korea', 'seoul', 'busan', 'korean'], ['north korea']);
+  const isHongKong = isDestination(toLower, 'hong kong', ['hk', 'hongkong']);
+  const isKazakhstan = isDestination(toLower, 'kazakhstan', ['almaty', 'astana']);
+  const isAzerbaijan = isDestination(toLower, 'azerbaijan', ['baku']);
+  const isGeorgia = isDestination(toLower, 'georgia', ['tbilisi', 'batumi', 'sakartvelo'], ['usa', 'united states', 'atlanta']);
+  const isPhilippines = isDestination(toLower, 'philippines', ['manila', 'cebu', 'filipino']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -427,7 +472,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SINGAPORE PATHWAYS (Official ICA e-Visa & SGAC)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('singapore') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+  if (isSingapore && !purposeLower.includes('work') && !purposeLower.includes('study')) {
     return {
       passport_country: from,
       destination_country: 'Singapore',
@@ -531,7 +576,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // INDONESIA / BALI PATHWAYS (Official e-VOA & Customs QR)
   // ═══════════════════════════════════════════════════════════════
-  if ((toLower.includes('indonesia') || toLower.includes('bali')) && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+  if (isIndonesia && !purposeLower.includes('work') && !purposeLower.includes('study')) {
     return {
       passport_country: from,
       destination_country: 'Indonesia',
@@ -625,7 +670,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // VIETNAM PATHWAYS (Official E-Visa 30/90 Days)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('vietnam') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+  if (isVietnam && !purposeLower.includes('work') && !purposeLower.includes('study')) {
     return {
       passport_country: from,
       destination_country: 'Vietnam',
@@ -709,7 +754,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // JAPAN PATHWAYS (Official JAPAN eVISA & VFS)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('japan') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+  if (isJapan && !purposeLower.includes('work') && !purposeLower.includes('study')) {
     return {
       passport_country: from,
       destination_country: 'Japan',
@@ -813,7 +858,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SRI LANKA PATHWAYS (Official ETA / e-Visa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('sri lanka') && !purposeLower.includes('work') && !purposeLower.includes('study')) {
+  if (isSriLanka && !purposeLower.includes('work') && !purposeLower.includes('study')) {
     return {
       passport_country: from,
       destination_country: 'Sri Lanka',
@@ -887,7 +932,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SAUDI ARABIA PATHWAYS (Official KSA Tourist eVisa / Tasheer)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('saudi') || toLower.includes('ksa')) {
+  if (isSaudi) {
     return {
       passport_country: from,
       destination_country: 'Saudi Arabia',
@@ -974,7 +1019,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // QATAR PATHWAYS (Official Free 30-Day Visa on Arrival / Hayya)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('qatar') || toLower.includes('doha')) {
+  if (isQatar) {
     return {
       passport_country: from,
       destination_country: 'Qatar',
@@ -1056,7 +1101,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // ROMANIA PATHWAYS (Official Ministry of Foreign Affairs - eVisa Romania / Schengen Type C)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('romania') || toLower.includes('bucharest') || toLower.includes('cluj')) {
+  if (isRomania) {
     return {
       passport_country: from,
       destination_country: 'Romania',
@@ -1174,7 +1219,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // OMAN PATHWAYS (Official Royal Oman Police eVisa)
   // ═══════════════════════════════════════════════════════════════
-  if ((toLower.includes('oman') && !toLower.includes('romania')) || toLower.includes('muscat') || toLower.includes('salalah')) {
+  if (isOman) {
     return {
       passport_country: from,
       destination_country: 'Oman',
@@ -1257,7 +1302,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // BAHRAIN PATHWAYS (Official Bahrain Tourist eVisa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('bahrain') || toLower.includes('manama')) {
+  if (isBahrain) {
     return {
       passport_country: from,
       destination_country: 'Bahrain',
@@ -1340,7 +1385,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // EGYPT PATHWAYS (Official Egypt Tourist e-Visa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('egypt') || toLower.includes('cairo')) {
+  if (isEgypt) {
     return {
       passport_country: from,
       destination_country: 'Egypt',
@@ -1418,7 +1463,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // KENYA PATHWAYS (Official Kenya eTA 100% Digital)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('kenya') || toLower.includes('nairobi')) {
+  if (isKenya) {
     return {
       passport_country: from,
       destination_country: 'Kenya',
@@ -1501,7 +1546,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // TANZANIA PATHWAYS (Official Tourist eVisa & Zanzibar)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('tanzania') || toLower.includes('zanzibar')) {
+  if (isTanzania) {
     return {
       passport_country: from,
       destination_country: 'Tanzania',
@@ -1584,7 +1629,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SOUTH AFRICA PATHWAYS (Official Visitor Visa via VFS)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('south africa') || toLower.includes('johannesburg') || toLower.includes('cape town')) {
+  if (isSouthAfrica) {
     return {
       passport_country: from,
       destination_country: 'South Africa',
@@ -1692,7 +1737,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SEYCHELLES PATHWAYS (Official Free Visitor Permit & TA)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('seychelles') || toLower.includes('mahe')) {
+  if (isSeychelles) {
     return {
       passport_country: from,
       destination_country: 'Seychelles',
@@ -1775,7 +1820,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // SOUTH KOREA PATHWAYS (Official C-3-9 Tourist Visa & KVAC)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('south korea') || toLower.includes('korea') || toLower.includes('seoul')) {
+  if (isSouthKorea) {
     return {
       passport_country: from,
       destination_country: 'South Korea',
@@ -1879,7 +1924,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // HONG KONG PATHWAYS (Official Pre-Arrival Registration - PAR)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('hong kong') || toLower.includes('hk')) {
+  if (isHongKong) {
     return {
       passport_country: from,
       destination_country: 'Hong Kong',
@@ -1957,7 +2002,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // KAZAKHSTAN PATHWAYS (14-Day Visa-Free Entry for Indians)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('kazakhstan') || toLower.includes('almaty') || toLower.includes('astana')) {
+  if (isKazakhstan) {
     return {
       passport_country: from,
       destination_country: 'Kazakhstan',
@@ -2034,7 +2079,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // AZERBAIJAN PATHWAYS (Official ASAN Visa 30-Day eVisa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('azerbaijan') || toLower.includes('baku')) {
+  if (isAzerbaijan) {
     return {
       passport_country: from,
       destination_country: 'Azerbaijan',
@@ -2112,7 +2157,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // GEORGIA PATHWAYS (Official Georgia eVisa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('georgia') || toLower.includes('tbilisi')) {
+  if (isGeorgia) {
     return {
       passport_country: from,
       destination_country: 'Georgia',
@@ -2200,7 +2245,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // PHILIPPINES PATHWAYS (Official 9(a) Tourist Visa / VFS)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('philippines') || toLower.includes('manila')) {
+  if (isPhilippines) {
     return {
       passport_country: from,
       destination_country: 'Philippines',
@@ -3264,7 +3309,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 3. UNITED STATES (USA) OFFICIAL EMBASSY REQUIREMENTS
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('united states') || toLower.includes('usa') || toLower === 'us' || toLower.includes('america')) {
+  if (isUSA) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isBusiness = purposeLower.includes('business') || purposeLower.includes('corporate') || purposeLower.includes('commercial') || purposeLower.includes('b1') || purposeLower.includes('meeting') || purposeLower.includes('conference');
     const isStudent = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('university') || purposeLower.includes('college');
@@ -3546,7 +3591,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 4. CANADA OFFICIAL IMMIGRATION REQUIREMENTS (IRCC)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('canada')) {
+  if (isCanada) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isStudent = purposeLower.includes('study') || purposeLower.includes('student');
 
@@ -3650,7 +3695,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 5. AUSTRALIA OFFICIAL IMMIGRATION REQUIREMENTS (DHA)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('australia')) {
+  if (isAustralia) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     
     if (isPR) {
@@ -3753,7 +3798,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 6. NEW ZEALAND OFFICIAL IMMIGRATION REQUIREMENTS (INZ)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('new zealand') || toLower === 'nz') {
+  if (isNewZealand) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     
     if (isPR) {
@@ -3813,7 +3858,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 7. GERMANY OFFICIAL IMMIGRATION REQUIREMENTS (BAMF / Ausländerbehörde)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('germany') || toLower.includes('deutschland')) {
+  if (isGermany) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     
     if (isPR) {
@@ -3873,7 +3918,7 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   // ═══════════════════════════════════════════════════════════════
   // 8. UNITED ARAB EMIRATES (UAE / DUBAI) OFFICIAL REQUIREMENTS
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('emirates') || toLower.includes('uae') || toLower.includes('dubai') || toLower.includes('abu dhabi')) {
+  if (isUAE) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     
     if (isPR) {
@@ -4119,19 +4164,64 @@ export const POST: APIRoute = async ({ request }) => {
     const fromCountry = cleanCountryName(rawFrom);
     const toCountry = cleanCountryName(rawTo);
 
-    // List of countries with 100% verified official datasets
-    const toLowerCheck = toCountry.toLowerCase();
-    const isVerifiedCountry = [
-      'greece', 'united kingdom', 'uk', 'england', 'united states', 'usa', 'america',
-      'canada', 'australia', 'emirates', 'uae', 'dubai', 'abu dhabi',
-      'singapore', 'thailand', 'malaysia', 'maldives', 'mauritius',
-      'indonesia', 'bali', 'vietnam', 'japan', 'sri lanka',
-      'saudi', 'ksa', 'qatar', 'doha', 'oman', 'muscat', 'bahrain', 'manama', 'egypt', 'cairo',
-      'kenya', 'nairobi', 'tanzania', 'zanzibar', 'south africa', 'johannesburg', 'cape town', 'seychelles', 'mahe',
-      'south korea', 'korea', 'seoul', 'hong kong', 'hk',
-      'kazakhstan', 'almaty', 'astana', 'azerbaijan', 'baku', 'georgia', 'tbilisi', 'philippines', 'manila',
-      'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'poland', 'hungary', 'malta'
-    ].some(c => toLowerCheck.includes(c));
+    const isToSchengen = ['greece', 'romania', 'bulgaria', 'croatia', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein'].some(c => isDestination(toCountry, c));
+
+    // List of destinations with 100% verified official datasets
+    const VERIFIED_DESTINATIONS: Array<{ primary: string; aliases?: string[]; exclusions?: string[] }> = [
+      { primary: 'united kingdom', aliases: ['uk', 'england', 'great britain', 'scotland', 'wales', 'british'] },
+      { primary: 'united states', aliases: ['usa', 'us', 'america', 'american'] },
+      { primary: 'canada', aliases: ['canadian'] },
+      { primary: 'australia', aliases: ['australian'] },
+      { primary: 'new zealand', aliases: ['nz'] },
+      { primary: 'united arab emirates', aliases: ['uae', 'dubai', 'abu dhabi', 'sharjah', 'emirates'] },
+      { primary: 'singapore' },
+      { primary: 'thailand', aliases: ['bangkok', 'phuket', 'pattaya'] },
+      { primary: 'malaysia', aliases: ['kuala lumpur', 'penang'] },
+      { primary: 'maldives', aliases: ['male'] },
+      { primary: 'mauritius', aliases: ['port louis'] },
+      { primary: 'indonesia', aliases: ['bali', 'jakarta'] },
+      { primary: 'vietnam', aliases: ['hanoi', 'ho chi minh', 'da nang'] },
+      { primary: 'japan', aliases: ['tokyo', 'osaka', 'kyoto'] },
+      { primary: 'sri lanka', aliases: ['colombo'] },
+      { primary: 'saudi arabia', aliases: ['saudi', 'ksa', 'riyadh', 'jeddah'] },
+      { primary: 'qatar', aliases: ['doha'] },
+      { primary: 'romania', aliases: ['bucharest', 'cluj', 'timisoara', 'brasov'] },
+      { primary: 'oman', aliases: ['muscat', 'salalah', 'sultanate of oman'], exclusions: ['romania'] },
+      { primary: 'bahrain', aliases: ['manama'] },
+      { primary: 'egypt', aliases: ['cairo', 'alexandria', 'hurghada'] },
+      { primary: 'kenya', aliases: ['nairobi', 'mombasa'] },
+      { primary: 'tanzania', aliases: ['zanzibar', 'dar es salaam'] },
+      { primary: 'south africa', aliases: ['johannesburg', 'cape town', 'durban'] },
+      { primary: 'seychelles', aliases: ['mahe'] },
+      { primary: 'south korea', aliases: ['korea', 'seoul', 'busan'], exclusions: ['north korea'] },
+      { primary: 'hong kong', aliases: ['hk', 'hongkong'] },
+      { primary: 'kazakhstan', aliases: ['almaty', 'astana'] },
+      { primary: 'azerbaijan', aliases: ['baku'] },
+      { primary: 'georgia', aliases: ['tbilisi', 'batumi'], exclusions: ['usa', 'united states', 'atlanta'] },
+      { primary: 'philippines', aliases: ['manila', 'cebu'] },
+      { primary: 'greece', aliases: ['athens', 'thessaloniki'] },
+      { primary: 'germany', aliases: ['berlin', 'munich', 'frankfurt', 'deutschland'] },
+      { primary: 'france', aliases: ['paris', 'nice', 'lyon'] },
+      { primary: 'italy', aliases: ['rome', 'milan', 'venice', 'florence'] },
+      { primary: 'spain', aliases: ['madrid', 'barcelona'] },
+      { primary: 'switzerland', aliases: ['zurich', 'geneva'] },
+      { primary: 'austria', aliases: ['vienna'] },
+      { primary: 'netherlands', aliases: ['amsterdam', 'holland'] },
+      { primary: 'portugal', aliases: ['lisbon', 'porto'] },
+      { primary: 'belgium', aliases: ['brussels'] },
+      { primary: 'sweden', aliases: ['stockholm'] },
+      { primary: 'norway', aliases: ['oslo'] },
+      { primary: 'denmark', aliases: ['copenhagen'] },
+      { primary: 'finland', aliases: ['helsinki'] },
+      { primary: 'czechia', aliases: ['czech republic', 'prague'] },
+      { primary: 'poland', aliases: ['warsaw', 'krakow'] },
+      { primary: 'hungary', aliases: ['budapest'] },
+      { primary: 'malta', aliases: ['valletta'] },
+      { primary: 'bulgaria', aliases: ['sofia'] },
+      { primary: 'croatia', aliases: ['zagreb', 'dubrovnik'] }
+    ];
+
+    const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));
 
     // Serve 100% verified official consular dataset directly for instant, flawless accuracy
     if (isVerifiedCountry) {
@@ -4153,12 +4243,21 @@ Generate 100% accurate, country-isolated, non-hallucinated visa requirements, fe
 2. Destination Country: "${toCountry}"
 3. Purpose of Visit: "${purpose}"
 
+CRITICAL ISOLATION RULE:
+- Adhere strictly and exclusively to the requested Destination Country: "${toCountry}" and Passport Country: "${fromCountry}".
+- Never mix authorities, currencies, forms, fees, or regulations from previous conversational context or other nations.
+- Treat this request as a completely fresh, stateless assessment.
+
+PRE-OUTPUT VERIFICATION GUARDRAIL:
+- Ensure official_source_name, source_url, visa_type, currency, and embassy names exactly belong to "${toCountry}".
+
 STRICT DATA ISOLATION & VERIFICATION MANDATES:
 1. ZERO CROSS-CONTAMINATION (NO HYBRID RULES):
-   - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia.
+   - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia, Singapore, GCC.
    - For USA: strictly 2x2 inches (51x51mm) photo, DS-160 barcode, $185 MRV fee, 10-year B1/B2 validity, CBP 180-day stay rule.
    - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
-   - For Schengen / Greece: strictly Harmonised Schengen Visa Application Form (NEVER DS-160 which is US only), €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
+   - For GCC (UAE, Saudi, Oman, Qatar, Bahrain, Kuwait): Minimum 6 months passport validity from arrival. Never display 3-month or 10-year Schengen rules.
+   - For Schengen / EU: strictly Harmonised Schengen Visa Application Form (NEVER DS-160 which is US only), €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
 
 2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
    - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."

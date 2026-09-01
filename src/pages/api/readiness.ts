@@ -216,18 +216,31 @@ export const POST: APIRoute = async ({ request }) => {
 
         // ── ZERO-HALLUCINATION SYSTEM INSTRUCTIONS ──
         // Strict rule isolation: Never mix regulations from other jurisdictions.
-        const systemInstruction = `You are an Uncompromising Official Visa & Immigration Accuracy Engine.
+        const systemInstruction = `You are an Uncompromising Official Visa & Immigration Accuracy Engine for TravlTik.
 Your PRIMARY directive is to provide 100% accurate, country-specific entry rules WITHOUT hallucinating or cross-contaminating regulations from other jurisdictions.
 
-STRICT RULE ISOLATION DIRECTIVES:
-1. NEVER mix European/Schengen rules (ETIAS, 3-Month Validity, 10-Year Issue Rule) into non-Schengen destinations (UAE, Singapore, Canada, USA, etc.).
+CRITICAL ISOLATION RULE:
+- Adhere strictly and exclusively to the requested Destination Country: "${targetCountry}".
+- Never mix authorities, currencies, forms, fees, or regulations from previous conversational context or other nations.
+- Treat every request as a completely fresh, stateless assessment.
+
+PRE-OUTPUT VERIFICATION GUARDRAIL:
+- Ensure official_channel, currency, and authority names exactly belong to "${targetCountry}".
+
+STRICT REGIONAL DIRECTIVES:
+1. NEVER mix European/Schengen rules (ETIAS, 3-Month Validity, 10-Year Issue Rule, €30k insurance) into non-Schengen destinations (UAE, Oman, Singapore, Canada, USA, etc.).
 2. GCC REGION (UAE, Saudi Arabia, Qatar, Oman, Bahrain, Kuwait): Enforce STRICT MINIMUM 6 MONTHS (180 DAYS) passport validity from the date of ARRIVAL. Never display 3-month or 10-year Schengen rules for GCC countries.
-3. SCHENGEN AREA (Germany, France, Spain, Italy, Greece, etc.): Passport minimum 3 months beyond planned departure date. Passport issued within last 10 years. ETIAS applicable (when active).
+3. SCHENGEN AREA (Germany, France, Spain, Italy, Greece, Romania, Bulgaria, etc.): Passport minimum 3 months beyond planned departure date. Passport issued within last 10 years. ETIAS applicable (when active).
 4. SOUTH-EAST ASIA (Singapore, Thailand, Malaysia, Vietnam): Minimum 6 months passport validity from arrival. For Singapore ONLY: Mandatory SG Arrival Card (SGAC) via ICA portal within 3 days prior to arrival.
 5. Never invent or fabricate digital entry cards (arrival cards, border declarations) for countries that do NOT officially mandate them. Only Singapore (SGAC), Canada (ArriveCAN when applicable), and Australia (incoming visitor declaration) require pre-arrival digital forms.
 6. If you do not have verified, official data for a country-specific rule, state "Verify with official consular source" rather than guessing.
 
-EVALUATION OUTPUT: You are evaluating a visa readiness/application profile. Apply ONLY the rules applicable to the specified destination country.`;
+EVALUATION OUTPUT: You are evaluating a visa readiness/application profile. Apply ONLY the rules applicable to ${targetCountry}.`;
+
+        const isGccTarget = ['uae', 'united arab emirates', 'dubai', 'saudi arabia', 'ksa', 'qatar', 'sultanate of oman', 'muscat', 'salalah', 'bahrain', 'kuwait'].some(gcc => {
+          const t = targetCountry.toLowerCase();
+          return t === gcc || (gcc !== 'oman' && t.includes(gcc)) || (gcc === 'oman' && !t.includes('romania') && t.includes('oman'));
+        });
 
         const promptText = `
 Destination Country: ${targetCountry}
@@ -239,7 +252,7 @@ ${JSON.stringify(profileDetails, null, 2)}
 Strict Evaluation Criteria (apply ONLY rules applicable to ${targetCountry}):
 - Student: Check liquid fund threshold vs tuition/living costs, language test requirements (IELTS/TOEFL/PTE), and academic progression.
 - Work: Check job offer/sponsorship status, credential evaluation (ECA/WES/ACS), and work experience depth.
-- Tourist: Check minimum ${['UAE', 'United Arab Emirates', 'Dubai', 'Saudi Arabia', 'Qatar', 'Oman', 'Bahrain', 'Kuwait'].some(gcc => targetCountry.toLowerCase().includes(gcc.toLowerCase())) ? '6-month' : '3 or 6-month'} bank balance stability, employer NOC, home country ties proof, and travel history.
+- Tourist: Check minimum ${isGccTarget ? '6-month' : '3 or 6-month'} bank balance stability, employer NOC, home country ties proof, and travel history.
 - PR: Check settlement funds, skill assessment status, and calculated points benchmark.
 
 Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.

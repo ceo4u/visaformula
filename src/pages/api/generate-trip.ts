@@ -100,8 +100,17 @@ export const POST: APIRoute = async ({ request }) => {
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are the Chief Immigration Officer & Parental Overseas Security Architect.
+        const prompt = `You are the Chief Immigration Officer & Parental Overseas Security Architect for TravlTik.
 Generate a strictly professional, practical 5-stage pre-departure & settlement pathway for a traveler heading to ${destination} for ${vibe}.
+
+CRITICAL ISOLATION RULE:
+- Adhere strictly and exclusively to the destination country: "${destination}".
+- Never mix authorities, airports, currencies, or legal frameworks from previous conversational context or other countries.
+- All 5 stages must apply specifically to entering and settling in "${destination}".
+
+PRE-OUTPUT VERIFICATION GUARDRAIL:
+- Ensure airport codes, legal terms, immigration bodies, and currency exactly belong to "${destination}".
+
 IMPORTANT RULES:
 - DO NOT INCLUDE ANY TOURISM, SIGHTSEEING, BEACHES, CAFES, SHOPPING, OR CULINARY ITINERARY.
 - STRICTLY FOCUS ON PARENTAL PEACE-OF-MIND: Document verification, SOP, Proof of Funds, Biometrics, Visa Grant, Transit Visa checking, Airport Pickup by verified driver, Escrow Accommodation, 5G eSIM, Multi-currency Forex, and Border Compliance.

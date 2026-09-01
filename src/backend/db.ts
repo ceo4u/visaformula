@@ -50,6 +50,11 @@ function createPoolInstance(forceNoSSL = false) {
       connectionTimeoutMillis: 5000
     });
   }
+
+  // Prevent idle connection drops from crashing the Node.js process
+  pool.on('error', (err) => {
+    console.warn('[DB Pool Idle Client Error - Handled]:', err.message);
+  });
 }
 
 export function getPool() {

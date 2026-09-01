@@ -223,7 +223,7 @@ function ExpertSignupPortalContent() {
     setGoogleLoading(true);
     setValidationError("");
     try {
-      const res = await signInWithGoogle('expert');
+      const res = await signInWithGoogle('expert', 'signup');
       if (res && res.redirect) {
         window.location.href = res.redirect;
         return;
@@ -236,7 +236,7 @@ function ExpertSignupPortalContent() {
       } else if (msg.includes('popup-blocked')) {
         setValidationError("Popup was blocked by your browser. Please allow popups for this site and try again.");
       } else {
-        setValidationError("Google Sign-In failed. Please try again or register with Email.");
+        setValidationError(msg || "Google Sign-In failed. Please try again or register with Email.");
       }
     } finally {
       setGoogleLoading(false);

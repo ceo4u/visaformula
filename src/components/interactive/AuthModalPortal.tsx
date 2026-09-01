@@ -113,29 +113,21 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google Auth...");
         try {
-            const res = await signInWithGoogle('seeker');
+            const res = await signInWithGoogle('seeker', activeTab);
             setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
             if (res && res.redirect) {
                 window.location.href = res.redirect;
                 return;
             }
-
-            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
-            if (userStr) {
-                try {
-                    const parsed = JSON.parse(userStr);
-                    if (parsed.type === "expert") {
-                        window.location.href = "/consultant/dashboard";
-                        return;
-                    }
-                } catch (e) {}
-            }
-            window.location.href = "/dashboard";
+            window.location.href = res?.user?.type === "expert" ? "/consultant/dashboard" : "/dashboard";
         } catch (e: any) {
-            console.error("Google login error:", e);
+            console.error("Google auth error:", e);
             const msg = e?.message || "Google Authentication failed.";
-            setLoginError(msg);
-            setSignupError(msg);
+            if (activeTab === "signup") {
+                setSignupError(msg);
+            } else {
+                setLoginError(msg);
+            }
         } finally {
             setGoogleLoading(false);
         }

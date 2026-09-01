@@ -542,7 +542,7 @@ export function ConsultantDashboard() {
                         {profile.image && !profile.image.includes("unsplash.com") ? (
                             <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
                         ) : (
-                            <div className="w-9 h-9 rounded-full bg-slate-900 text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                            <div className="w-9 h-9 rounded-full bg-[#00A86B] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
                                 {(profile.name || "E").charAt(0).toUpperCase()}
                             </div>
                         )}
@@ -970,7 +970,7 @@ export function ConsultantDashboard() {
                                 {profile.image && !profile.image.includes("unsplash.com") ? (
                                     <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
                                 ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-slate-900 text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                    <div className="w-24 h-24 rounded-2xl bg-[#00A86B] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
                                         {(profile.name || "E").charAt(0).toUpperCase()}
                                     </div>
                                 )}
@@ -1543,7 +1543,7 @@ export function ConsultantDashboard() {
                                     {formImage && !formImage.includes("unsplash.com") ? (
                                         <img src={formImage} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
                                     ) : (
-                                        <div className="w-12 h-12 rounded-xl bg-slate-900 text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
+                                        <div className="w-12 h-12 rounded-xl bg-[#00A86B] text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
                                             {(formName || "E").charAt(0).toUpperCase()}
                                         </div>
                                     )}

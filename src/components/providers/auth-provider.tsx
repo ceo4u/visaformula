@@ -19,7 +19,7 @@ interface AuthContextType {
     loading: boolean;
     signIn: (email: string, password: string) => Promise<void>;
     signUp: (email: string, password: string, name: string) => Promise<void>;
-    signInWithGoogle: (role?: 'seeker' | 'expert') => Promise<any>;
+    signInWithGoogle: (role?: 'seeker' | 'expert', mode?: 'login' | 'signup') => Promise<any>;
     signOut: () => Promise<void>;
 }
 
@@ -215,7 +215,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker') => {
+    const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker', mode: 'login' | 'signup' = 'login') => {
         let fbUser: any = null;
         let idToken: string | null = null;
         let googleEmail = '';
@@ -248,42 +248,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (!googleEmail) throw new Error('Could not get Google account details.');
 
-        const nameParts = (googleName || '').trim().split(' ');
-        const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
-        const gLastName = nameParts.slice(1).join(' ') || '';
+        // STRICT DATABASE-BACKED AUTHENTICATION — NO DUMMY LOCALSTORAGE
+        const resp = await fetch('/api/auth/google', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                idToken,
+                googleProfile: {
+                    email: googleEmail,
+                    name: googleName,
+                    picture: googlePhoto,
+                    uid: googleUid
+                },
+                role,
+                mode
+            }),
+        });
 
-        const localUser: User = {
-            uid: googleUid || `google_${Date.now()}`,
-            email: googleEmail,
-            displayName: googleName || gFirstName,
-            photoURL: googlePhoto,
-            type: role,
-        };
-        setUser(localUser);
-        localStorage.setItem('travltik_user', JSON.stringify(localUser));
-        localStorage.setItem('seeker_email', googleEmail);
-        localStorage.setItem('seeker_firstName', gFirstName);
-        localStorage.setItem('seeker_lastName', gLastName);
+        const data = await resp.json();
 
-        // Sync with backend (non-blocking)
-        try {
-            const resp = await fetch('/api/auth/google', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role }),
-            });
-            if (resp.ok) {
-                const data = await resp.json();
-                if (data.user) {
-                    const resolved = { ...localUser, ...data.user };
-                    setUser(resolved);
-                    localStorage.setItem('travltik_user', JSON.stringify(resolved));
-                    return { status: 'success', ...data, redirect: resolved.type === 'expert' ? '/consultant/dashboard' : '/dashboard' };
-                }
+        if (!resp.ok || data.status === 'error') {
+            throw new Error(data.message || 'Authentication failed.');
+        }
+
+        const realUser: User = data.user;
+        setUser(realUser);
+
+        if (typeof window !== "undefined") {
+            localStorage.setItem('travltik_user', JSON.stringify(realUser));
+            if (realUser.type === 'expert') {
+                localStorage.setItem('expert_isLoggedIn', 'true');
+                localStorage.setItem('expert_email', realUser.email);
+                localStorage.setItem('expert_businessName', realUser.displayName || realUser.rawUser?.business_name || '');
+                if (googlePhoto) localStorage.setItem('expert_profilePhoto', googlePhoto);
+            } else {
+                const names = (realUser.displayName || googleName || '').trim().split(' ');
+                localStorage.setItem('seeker_email', realUser.email);
+                localStorage.setItem('seeker_firstName', names[0] || 'User');
+                localStorage.setItem('seeker_lastName', names.slice(1).join(' ') || '');
             }
-        } catch (_) { /* backend optional */ }
+        }
 
-        return { status: 'success', user: localUser, redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard' };
+        return {
+            status: 'success',
+            ...data,
+            redirect: data.redirect || (realUser.type === 'expert' ? '/consultant/dashboard' : '/dashboard')
+        };
     };
 
     const signOut = async () => {

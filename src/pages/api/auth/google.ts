@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
-    const { idToken, googleProfile, role: requestedRole = 'seeker' } = body;
+    const { idToken, googleProfile, role: requestedRole = 'seeker', mode = 'login' } = body;
 
     let email = '';
     let profileDisplayName = '';
@@ -64,33 +64,39 @@ export const POST: APIRoute = async ({ request }) => {
     await runMigrations();
     const pool = getPool();
 
-    // Step 3.2: Query PostgreSQL database for existing records
+    // Query database for existing records in BOTH tables
     const [seekerRes, expertRes] = await Promise.all([
       pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
       pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
     ]);
 
+    const isExistingSeeker = seekerRes.rows.length > 0;
+    const isExistingExpert = expertRes.rows.length > 0;
+    const isAlreadyRegistered = isExistingSeeker || isExistingExpert;
+
     let user: any = null;
     let userRole: 'seeker' | 'expert' = requestedRole === 'expert' ? 'expert' : 'seeker';
     let isNewUser = false;
 
-    // Case A: User Already Exists in Database (Duplicate Prevention)
-    if (seekerRes.rows.length > 0) {
-      user = seekerRes.rows[0];
-      userRole = 'seeker';
-      console.log(`[API /api/auth/google] Existing Seeker Account Found (ID: ${user.id})`);
-    } else if (expertRes.rows.length > 0) {
-      user = expertRes.rows[0];
-      userRole = 'expert';
-      console.log(`[API /api/auth/google] Existing Expert Account Found (ID: ${user.id})`);
-    } else {
-      // Case B: New User Registration
-      isNewUser = true;
-      console.log(`[API /api/auth/google] Creating New User Account (Role: ${userRole})`);
+    // --- CASE 1: USER IS SIGNING UP (REGISTRATION) ---
+    if (mode === 'signup') {
+      if (isAlreadyRegistered) {
+        const existingType = isExistingExpert ? 'an Expert / Consultant' : 'a Traveller / Seeker';
+        console.log(`[API /api/auth/google] Registration Rejected: ${email} is already registered as ${existingType}`);
+        return new Response(
+          JSON.stringify({
+            status: 'error',
+            code: 'EMAIL_ALREADY_EXISTS',
+            message: `This email is already registered as ${existingType}. Please log in instead.`
+          }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
 
-      if (userRole === 'expert') {
-        // Expert Rule: Do NOT auto-populate or overwrite name/business from Gmail.
-        // Set onboarding_completed = false so they manually complete details.
+      // New user registration
+      isNewUser = true;
+      if (requestedRole === 'expert') {
+        const fallbackName = profileDisplayName || email.split('@')[0] || 'Consultant';
         const insertRes = await pool.query(`
           INSERT INTO experts (
             business_name, email, password_hash, contact_number, advisor_type, 
@@ -100,7 +106,7 @@ export const POST: APIRoute = async ({ request }) => {
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
           RETURNING *;
         `, [
-          '', // Keep business_name blank so user manually fills it
+          fallbackName,
           email,
           '',
           '',
@@ -114,8 +120,8 @@ export const POST: APIRoute = async ({ request }) => {
           '[]'
         ]);
         user = insertRes.rows[0];
+        userRole = 'expert';
       } else {
-        // Seeker Registration
         const names = (profileDisplayName || '').trim().split(' ');
         const firstName = names[0] || email.split('@')[0] || 'User';
         const lastName = names.slice(1).join(' ') || '';
@@ -137,6 +143,29 @@ export const POST: APIRoute = async ({ request }) => {
           '[]'
         ]);
         user = insertRes.rows[0];
+        userRole = 'seeker';
+      }
+    } else {
+      // --- CASE 2: USER IS LOGGING IN ---
+      if (isExistingSeeker) {
+        user = seekerRes.rows[0];
+        userRole = 'seeker';
+        console.log(`[API /api/auth/google] Login: Seeker account found for ${email}`);
+      } else if (isExistingExpert) {
+        user = expertRes.rows[0];
+        userRole = 'expert';
+        console.log(`[API /api/auth/google] Login: Expert account found for ${email}`);
+      } else {
+        // No account found with this email
+        console.log(`[API /api/auth/google] Login: No account found for ${email}`);
+        return new Response(
+          JSON.stringify({
+            status: 'error',
+            code: 'USER_NOT_FOUND',
+            message: 'No account found with this email. Please register first.'
+          }),
+          { status: 404, headers: { 'Content-Type': 'application/json' } }
+        );
       }
     }
 

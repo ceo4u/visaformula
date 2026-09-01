@@ -179,7 +179,7 @@ export function FindExpertsPortal() {
     const handleGoogleExpertLogin = async () => {
         setGoogleLoading(true);
         try {
-            const res = await signInWithGoogle('expert');
+            const res = await signInWithGoogle('expert', 'login');
             if (res?.redirect) {
                 window.location.href = res.redirect;
                 return;

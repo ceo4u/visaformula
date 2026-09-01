@@ -42,21 +42,13 @@ function LoginPortalContent() {
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google...");
         try {
-            const res = await signInWithGoogle('seeker');
+            const res = await signInWithGoogle('seeker', 'login');
             setGoogleLoadingText("Authenticated! Redirecting...");
             if (res?.redirect) {
                 window.location.href = res.redirect;
                 return;
             }
-            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
-            if (userStr) {
-                try {
-                    const parsed = JSON.parse(userStr);
-                    window.location.href = parsed.type === "expert" ? "/consultant/dashboard" : "/dashboard";
-                    return;
-                } catch(e) {}
-            }
-            window.location.href = "/dashboard";
+            window.location.href = res?.user?.type === "expert" ? "/consultant/dashboard" : "/dashboard";
         } catch (e: any) {
             const cleanErr = formatAuthError(e?.message || e?.code);
             if (cleanErr) setError(cleanErr);

@@ -30,21 +30,57 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("travltik_user") || (localStorage.getItem("travltik_user"));
+        const init = async () => {
+            if (typeof window === "undefined") { setLoading(false); return; }
+
+            // ---- Check for pending Google Redirect result (from signInWithRedirect flow) ----
+            try {
+                const { getGoogleRedirectResult } = await import("../../lib/firebase");
+                const redirectResult = await getGoogleRedirectResult();
+                if (redirectResult && redirectResult.user) {
+                    const fbUser = redirectResult.user;
+                    const idToken = await fbUser.getIdToken();
+                    const googleEmail = (fbUser.email || '').toLowerCase().trim();
+                    const googleName = fbUser.displayName || '';
+                    const googlePhoto = fbUser.photoURL || '';
+                    const googleUid = fbUser.uid || '';
+                    // Call backend to register/login this Google user
+                    try {
+                        const response = await fetch('/api/auth/google', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role: 'seeker' }),
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.user) {
+                                setUser(data.user);
+                                localStorage.setItem("travltik_user", JSON.stringify(data.user));
+                                const returnPath = sessionStorage.getItem("google_auth_return") || "/dashboard";
+                                sessionStorage.removeItem("google_auth_return");
+                                window.location.href = data.user.type === "expert" ? "/consultant/dashboard" : returnPath;
+                                return;
+                            }
+                        }
+                    } catch (_) {}
+                }
+            } catch (_) {
+                // No redirect result or Firebase not ready — normal page load
+            }
+
+            // ---- Restore session from localStorage ----
+            const stored = localStorage.getItem("travltik_user");
             if (stored && stored !== "null") {
                 try {
                     const parsed = JSON.parse(stored);
-                    if (parsed && parsed.email) {
-                        setUser(parsed);
-                    }
+                    if (parsed && parsed.email) setUser(parsed);
                 } catch (e) {
-                    console.error("Failed to parse stored user", e);
                     localStorage.removeItem("travltik_user");
-                    localStorage.removeItem("travltik_user"); }
+                }
             }
-        }
-        setLoading(false);
+            setLoading(false);
+        };
+        init();
     }, []);
 
     const signIn = async (email: string, password: string) => {
@@ -148,121 +184,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker') => {
-        let fbUser: any = null;
-        let idToken: string | null = null;
-        let googleEmail = '';
-        let googleName = '';
-        let googlePhoto = '';
-        let googleUid = '';
-
         try {
-            const { loginWithGooglePopup } = await import("../../lib/firebase");
-            const result = await loginWithGooglePopup();
-            fbUser = result.user;
-            if (fbUser) {
-                idToken = await fbUser.getIdToken();
-                googleEmail = (fbUser.email || '').toLowerCase().trim();
-                googleName = fbUser.displayName || '';
-                googlePhoto = fbUser.photoURL || '';
-                googleUid = fbUser.uid || '';
-            }
+            const { loginWithGoogleRedirect } = await import("../../lib/firebase");
+            // Store return path and role for after redirect
+            sessionStorage.setItem("google_auth_return", role === 'expert' ? '/consultant/dashboard' : '/dashboard');
+            sessionStorage.setItem("google_auth_role", role);
+            // This will redirect the browser to Google — page navigates away
+            await loginWithGoogleRedirect(role === 'expert' ? '/consultant/dashboard' : '/dashboard');
         } catch (fbErr: any) {
-            console.error("[GoogleAuth] Real Firebase error:", fbErr);
-            const msg = fbErr?.message || '';
-            if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
-                throw new Error("Google sign-in was cancelled.");
-            }
-            if (fbErr?.code === "auth/popup-blocked") {
-                throw new Error("Popup blocked by browser. Please allow popups for localhost:4321 to continue with Google.");
-            }
-            if (fbErr?.code === "auth/unauthorized-domain") {
-                throw new Error("This domain is not authorized in Firebase Console. Please add localhost to Firebase Auth Authorized Domains.");
-            }
+            console.error("[GoogleAuth] Redirect error:", fbErr);
             throw new Error(fbErr?.message || "Google Authentication failed. Please try again.");
         }
-
-        if (!googleEmail) {
-            throw new Error("Unable to retrieve Google account details.");
-        }
-
-        const nameParts = (googleName || '').trim().split(' ');
-        const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
-        const gLastName = nameParts.slice(1).join(' ') || '';
-
-        const authenticatedUser: User = {
-            uid: googleUid || `google_${Date.now()}`,
-            email: googleEmail,
-            displayName: googleName || `${gFirstName} ${gLastName}`.trim() || 'User',
-            type: role
-        };
-
-        setUser(authenticatedUser);
-
-        if (typeof window !== "undefined") {
-            localStorage.setItem("travltik_user", JSON.stringify(authenticatedUser));
-            if (role === 'expert') {
-                localStorage.setItem("expert_isLoggedIn", "true");
-                localStorage.setItem("expert_email", googleEmail);
-                localStorage.setItem("expert_firstName", gFirstName);
-                localStorage.setItem("expert_lastName", gLastName);
-                localStorage.setItem("expert_businessName", googleName || `${gFirstName} ${gLastName}`.trim());
-                if (googlePhoto) localStorage.setItem("expert_profilePhoto", googlePhoto);
-            } else {
-                localStorage.setItem("seeker_email", googleEmail);
-                localStorage.setItem("seeker_firstName", gFirstName);
-                localStorage.setItem("seeker_lastName", gLastName);
-            }
-        }
-
-        // Verify with Backend & set session cookie
-        try {
-            const response = await fetch('/api/auth/google', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    idToken, 
-                    googleProfile: {
-                        email: googleEmail,
-                        name: googleName,
-                        picture: googlePhoto,
-                        uid: googleUid
-                    },
-                    role 
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.user) {
-                    const resolvedUser = data.user;
-                    setUser(resolvedUser);
-                    if (typeof window !== "undefined") {
-                        localStorage.setItem("travltik_user", JSON.stringify(resolvedUser));
-                        if (resolvedUser.type === 'expert' || role === 'expert') {
-                            const raw = resolvedUser.rawUser || {};
-                            localStorage.setItem("expert_isLoggedIn", "true");
-                            localStorage.setItem("expert_email", resolvedUser.email || googleEmail);
-                            localStorage.setItem("expert_businessName", raw.business_name || resolvedUser.displayName || googleName);
-                        }
-                    }
-                }
-                return {
-                    status: 'success',
-                    ...data,
-                    redirect: data.redirect || (role === 'expert' ? '/consultant/dashboard' : '/dashboard')
-                };
-            }
-        } catch (backendErr) {
-            console.warn("[GoogleAuth] Backend sync warning:", backendErr);
-        }
-
-        return {
-            status: "success",
-            user: authenticatedUser,
-            redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard',
-            name: googleName,
-            email: googleEmail
-        };
+        // Function doesn't return — browser navigates away to Google
     };
 
     const signOut = async () => {

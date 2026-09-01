@@ -29,8 +29,27 @@ async function initFirebase() {
     return { auth: _auth, googleProvider: _googleProvider };
 }
 
+// Popup-based sign in (works when COOP headers are correct)
 export async function loginWithGooglePopup() {
     const { auth, googleProvider } = await initFirebase();
     const { signInWithPopup } = await import("firebase/auth");
     return await signInWithPopup(auth, googleProvider);
+}
+
+// Redirect-based sign in (most reliable — no popup/COOP issues at all)
+export async function loginWithGoogleRedirect(returnPath?: string) {
+    const { auth, googleProvider } = await initFirebase();
+    const { signInWithRedirect } = await import("firebase/auth");
+    // Store return path so we can redirect after auth completes
+    if (returnPath) {
+        sessionStorage.setItem("google_auth_return", returnPath);
+    }
+    await signInWithRedirect(auth, googleProvider);
+}
+
+// Call this on page load to get the result after a redirect sign-in
+export async function getGoogleRedirectResult() {
+    const { auth } = await initFirebase();
+    const { getRedirectResult } = await import("firebase/auth");
+    return await getRedirectResult(auth);
 }

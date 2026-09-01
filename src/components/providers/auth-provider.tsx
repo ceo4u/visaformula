@@ -148,9 +148,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker') => {
-        const apiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-        const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
-
         let fbUser: any = null;
         let idToken: string | null = null;
         let googleEmail = '';
@@ -158,61 +155,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         let googlePhoto = '';
         let googleUid = '';
 
-        if (apiKey && authDomain) {
-            try {
-                const { initializeApp, getApps, getApp } = await import("firebase/app");
-                const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
-
-                const firebaseConfig = {
-                    apiKey,
-                    authDomain,
-                    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-                    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-                    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-                    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
-                };
-
-                const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-                const auth = getAuth(app);
-                const googleProvider = new GoogleAuthProvider();
-                googleProvider.setCustomParameters({ prompt: 'select_account' });
-
-                const result = await signInWithPopup(auth, googleProvider);
-                fbUser = result.user;
-                if (fbUser) {
-                    idToken = await fbUser.getIdToken();
-                    googleEmail = (fbUser.email || '').toLowerCase().trim();
-                    googleName = fbUser.displayName || '';
-                    googlePhoto = fbUser.photoURL || '';
-                    googleUid = fbUser.uid || '';
-                }
-            } catch (fbErr: any) {
-                console.warn("[GoogleAuth] Firebase notice:", fbErr?.code || fbErr?.message);
-                const msg = fbErr?.message || '';
-                if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
-                    throw new Error("Google sign-in was cancelled.");
-                }
-                if (fbErr?.code === "auth/popup-blocked") {
-                    throw new Error("Popup blocked by browser. Please allow popups for travltik.com to continue with Google.");
-                }
-                // If module load error, unauthorized domain, or config issue, prompt email fallback
-                if (!googleEmail) {
-                    const fallbackPrompt = window.prompt("Google Sign-In: Enter your email address to continue:", "user@gmail.com");
-                    if (fallbackPrompt && fallbackPrompt.includes("@")) {
-                        googleEmail = fallbackPrompt.toLowerCase().trim();
-                        googleName = googleEmail.split('@')[0];
-                        googleUid = `google_${Date.now()}`;
-                    } else {
-                        throw new Error("Google authentication requires a valid email.");
-                    }
-                }
+        try {
+            const { loginWithGooglePopup } = await import("../../lib/firebase");
+            const result = await loginWithGooglePopup();
+            fbUser = result.user;
+            if (fbUser) {
+                idToken = await fbUser.getIdToken();
+                googleEmail = (fbUser.email || '').toLowerCase().trim();
+                googleName = fbUser.displayName || '';
+                googlePhoto = fbUser.photoURL || '';
+                googleUid = fbUser.uid || '';
             }
-        } else {
-            // No Firebase config: create quick dev session
-            const mockEmail = `user.google_${Date.now().toString().slice(-4)}@travltik.com`;
-            googleEmail = mockEmail;
-            googleName = role === 'expert' ? "Verified Consultant" : "Traveller";
-            googleUid = `google_${Date.now()}`;
+        } catch (fbErr: any) {
+            console.error("[GoogleAuth] Real Firebase error:", fbErr);
+            const msg = fbErr?.message || '';
+            if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
+                throw new Error("Google sign-in was cancelled.");
+            }
+            if (fbErr?.code === "auth/popup-blocked") {
+                throw new Error("Popup blocked by browser. Please allow popups for localhost:4321 to continue with Google.");
+            }
+            if (fbErr?.code === "auth/unauthorized-domain") {
+                throw new Error("This domain is not authorized in Firebase Console. Please add localhost to Firebase Auth Authorized Domains.");
+            }
+            throw new Error(fbErr?.message || "Google Authentication failed. Please try again.");
         }
 
         if (!googleEmail) {

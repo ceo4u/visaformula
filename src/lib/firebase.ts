@@ -1,33 +1,31 @@
-// Firebase is loaded lazily (dynamic import) to avoid React duplicate instance issues
-// This module is only loaded in the browser, never during SSR
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-let _auth: any = null;
-let _googleProvider: any = null;
-let _initialized = false;
+const firebaseConfig = {
+  apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
+};
 
-export async function getFirebaseAuth() {
-    if (_initialized) return { auth: _auth, googleProvider: _googleProvider };
-    _initialized = true;
+function getClientApp() {
+  if (getApps().length === 0) {
+    return initializeApp(firebaseConfig);
+  }
+  return getApp();
+}
 
-    try {
-        const { initializeApp, getApps, getApp } = await import("firebase/app");
-        const { getAuth, GoogleAuthProvider } = await import("firebase/auth");
+export function getFirebaseAuth() {
+  const app = getClientApp();
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
+  return { auth, googleProvider };
+}
 
-        const firebaseConfig = {
-            apiKey: import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-            authDomain: import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-            projectId: import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-            storageBucket: import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-            appId: import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
-        };
-
-        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-        _auth = getAuth(app);
-        _googleProvider = new GoogleAuthProvider();
-    } catch (e) {
-        console.error("Firebase init error:", e);
-    }
-
-    return { auth: _auth, googleProvider: _googleProvider };
+export async function loginWithGooglePopup() {
+  const { auth, googleProvider } = getFirebaseAuth();
+  return await signInWithPopup(auth, googleProvider);
 }

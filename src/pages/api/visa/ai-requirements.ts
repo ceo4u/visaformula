@@ -3576,9 +3576,183 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // 6. UNITED ARAB EMIRATES (UAE / DUBAI) OFFICIAL REQUIREMENTS
+  // 6. NEW ZEALAND OFFICIAL IMMIGRATION REQUIREMENTS (INZ)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('new zealand') || toLower === 'nz') {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+    
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'New Zealand',
+        purpose_of_visit: 'Permanent Residency (PR) / Skilled Migration',
+        visa_type: 'Skilled Migrant Category (SMC) Resident Visa (6-Point System)',
+        source_url: 'https://www.immigration.govt.nz/new-zealand-visas/visas/visa/skilled-migrant-category-resident-visa',
+        official_source_name: 'Immigration New Zealand (INZ)',
+        processing_time: '6 to 9 Months Standard SLA',
+        validity: 'Permanent Resident Status (2-Year Travel Conditions; Indefinite Stay in NZ)',
+        stay_duration: 'Indefinite Stay in New Zealand with Path to Permanent Resident Visa (PRV) after 2 Years',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: 'Resident Visa (Initial 2-Year Travel Facility; Indefinite Stay)',
+          max_stay_per_entry: 'Permanent Resident Status in New Zealand',
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Color scan of bio-data and all stamped pages of current passport (valid 12+ months).', is_mandatory: true },
+          { title: 'NZQA International Qualifications Assessment (IQA)', description: 'Official International Qualifications Assessment from NZQA confirming qualification equivalency.', is_mandatory: true },
+          { title: 'English Language Competency Scorecard', description: 'IELTS General Training (minimum 6.5 overall) or PTE Academic (minimum 58 overall) scorecard.', is_mandatory: true },
+          { title: 'Skilled Employment Offer / Registration', description: 'Offer of skilled employment from an accredited NZ employer paying at or above the median wage.', is_mandatory: true },
+          { title: 'National Police Clearance Certificates (PCC)', description: 'Police certificates from Regional Passport Office (RPO) and all countries resided in for 12+ months.', is_mandatory: true },
+          { title: 'INZ 1007 General Medical Certificate & Chest X-ray', description: 'eMedical panel physician medical and chest X-ray certificate.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Proof of Settlement Solvency', minimum_balance_or_amount: 'Minimum 20,000–30,000 NZD in unencumbered liquid funds', time_frame: 'Last 6 months bank statements', notes: 'Demonstrates financial capacity to settle family in New Zealand without state support.' }
+        ],
+        other_requirements: [
+          { category: 'SMC 6-Point Threshold', details: 'Must claim 6 points from either: NZ occupational registration, recognized qualification (Bachelor/Master/PhD), or high income (1.5x - 3x median wage), plus 1-3 points for skilled work in NZ.' },
+          { category: 'Accredited Employer Requirement', details: 'Job offer must be for full-time work (minimum 30 hrs/week) with an INZ Accredited Employer.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Phase 1 (Pre-Requisites): Complete NZQA International Qualifications Assessment (IQA) and pass IELTS General (6.5+) / PTE (58+).',
+          '2️⃣ Phase 2 (Expression of Interest): Submit online SMC Expression of Interest (EOI) claiming 6 points on Immigration New Zealand portal.',
+          '3️⃣ Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) from INZ upon verification of point claims.',
+          '4️⃣ Phase 4 (Full PR Lodgement): Submit complete resident visa application within 4 months with eMedical (INZ 1007), apostilled PCC, and employer job confirmation.',
+          '5️⃣ Phase 5 (Resident Visa Grant): Receive electronic Skilled Migrant Category Resident Visa Grant Notice.'
+        ],
+        costs: {
+          visa_fee: '4,890 NZD (Immigration New Zealand SMC Application & Immigration Levy)',
+          service_fee: '450 NZD (NZQA IQA Evaluation)',
+          total_fee: '4,890 NZD Official Government Fee',
+          notes: 'Paid online via Immigration Online portal. Excludes medical exam and English test charges.'
+        },
+        processing_and_timing: {
+          apply_window: 'Submit complete application within 4 months of receiving ITA.',
+          decision_time: 'Standard processing: 6 to 9 months from lodgement.',
+          max_extension: 'Resident Visa grants indefinite stay in NZ; apply for Permanent Resident Visa (PRV) after 24 months.'
+        }
+      };
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 7. GERMANY OFFICIAL IMMIGRATION REQUIREMENTS (BAMF / Ausländerbehörde)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('germany') || toLower.includes('deutschland')) {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+    
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'Germany',
+        purpose_of_visit: 'Permanent Residency (PR) / Settlement Permit (Niederlassungserlaubnis)',
+        visa_type: 'EU Blue Card (§18g) / Skilled Worker to Permanent Settlement Permit (Niederlassungserlaubnis §18c AufenthG)',
+        source_url: 'https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/Niederlassungserlaubnis/niederlassungserlaubnis-node.html',
+        official_source_name: 'Federal Office for Migration and Refugees (BAMF) & Ausländerbehörde',
+        processing_time: 'Fast-Track PR in 21 Months (with B1 German) or 27 Months (with A1 German)',
+        validity: 'Permanent Settlement Permit (Niederlassungserlaubnis) — Indefinite Validity',
+        stay_duration: 'Indefinite Permanent Residency in Germany with Unrestricted Right to Work & EU Mobility',
+        entry_type: 'Permanent Resident',
+        validity_and_stay: {
+          visa_validity: 'Niederlassungserlaubnis (Permanent Settlement Permit — Unlimited Validity)',
+          max_stay_per_entry: 'Permanent Resident Status in Germany',
+          entry_type: 'Permanent Resident'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Current passport with at least 12 months validity and blank visa pages.', is_mandatory: true },
+          { title: 'Foreign Degree Recognition (ZAB Statement / Anabin)', description: 'ZAB Statement of Comparability confirming German university degree equivalency.', is_mandatory: true },
+          { title: 'German Language Certificate (CEFR A1 / B1)', description: 'Goethe-Institut / telc / TestDaF certificate proving required German language level.', is_mandatory: true },
+          { title: 'Statutory Pension Proof (Rentenversicherung)', description: 'Official contribution statement (Versicherungsverlauf) showing 21 to 27 months of statutory pension payments.', is_mandatory: true },
+          { title: 'Employment Contract & Salary Slips', description: 'Current indefinite employment contract, job description form (Erklärung zum Beschäftigungsverhältnis), and last 6 months payslips.', is_mandatory: true },
+          { title: 'Proof of Adequate Living Space (Mietvertrag)', description: 'Lease agreement (Mietvertrag) and landlord confirmation (Wohnungsgeberbestätigung).', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Statutory Salary Benchmark & Financial Solvency', minimum_balance_or_amount: '45,300 EUR/year for shortage occupations (IT/Engineering) or 50,700 EUR/year standard', time_frame: 'Current annual salary & last 6 months salary accounts', notes: 'Must be completely self-sufficient without claiming German public social assistance (SGB II).' }
+        ],
+        other_requirements: [
+          { category: 'Integration & Legal System Knowledge', details: 'Proof of basic knowledge of the legal and social order in Germany ("Life in Germany" / Einbürgerungstest test certificate).' },
+          { category: 'Mandatory Health Insurance', details: 'Statutory (GKV - TK/AOK) or comprehensive private health insurance coverage.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Phase 1 (Pre-Requisites): Obtain ZAB foreign degree comparability and secure employment offer meeting EU Blue Card salary thresholds.',
+          '2️⃣ Phase 2 (Consular Entry Visa): Apply for National Type D employment visa at German Embassy/VFS in India.',
+          '3️⃣ Phase 3 (Arrival & Blue Card): Register residence (Anmeldung) at Bürgeramt and receive electronic EU Blue Card (Aufenthaltstitel) at Ausländerbehörde.',
+          '4️⃣ Phase 4 (Pension Contributions): Complete 21 months of employment with B1 German (or 27 months with A1 German) and pay compulsory pension contributions.',
+          '5️⃣ Phase 5 (Permanent Settlement): Apply for Niederlassungserlaubnis at the local immigration office and receive indefinite Permanent Settlement Permit.'
+        ],
+        costs: {
+          visa_fee: '75 EUR (National Visa Type D) + 113 EUR (Niederlassungserlaubnis Settlement Application Fee)',
+          service_fee: '200 EUR (ZAB Degree Statement of Comparability)',
+          total_fee: '188 EUR Government Immigration Fee',
+          notes: 'Payable in EUR/INR at German Embassy and Ausländerbehörde upon application.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply for Settlement Permit after 21 or 27 months of Blue Card employment.',
+          decision_time: 'Decision: 6 to 12 weeks from application submission at Ausländerbehörde.',
+          max_extension: 'Permanent Settlement Permit is indefinite; card renewal every 10 years matching passport.'
+        }
+      };
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 8. UNITED ARAB EMIRATES (UAE / DUBAI) OFFICIAL REQUIREMENTS
   // ═══════════════════════════════════════════════════════════════
   if (toLower.includes('emirates') || toLower.includes('uae') || toLower.includes('dubai') || toLower.includes('abu dhabi')) {
+    const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+    
+    if (isPR) {
+      return {
+        passport_country: from,
+        destination_country: 'United Arab Emirates',
+        purpose_of_visit: 'Permanent Residency (PR) / Golden Visa',
+        visa_type: 'UAE 10-Year Golden Visa (Long-Term Permanent Residency)',
+        source_url: 'https://smartservices.icp.gov.ae',
+        official_source_name: 'Federal Authority for Identity, Citizenship, Customs & Port Security (ICP) & GDRFA Dubai',
+        processing_time: '7 to 14 Working Days Standard SLA',
+        validity: '10-Year Renewable Golden Visa (No Sponsor Required; 100% Ownership)',
+        stay_duration: 'Indefinite Long-Term Residency (Stay outside UAE for > 6 months allowed without losing visa)',
+        entry_type: 'Multiple Entry Permanent Resident',
+        validity_and_stay: {
+          visa_validity: '10-Year Renewable Golden Residency',
+          max_stay_per_entry: 'Continuous Residency in UAE (Exempt from 6-month stay rule)',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          { title: 'Valid Passport', description: 'Original passport valid for at least 6 months with clear bio-data pages.', is_mandatory: true },
+          { title: 'MOE Degree Attestation / Equivalency', description: 'Apostilled and UAE Ministry of Education (MOE) attested Bachelor/Master/PhD degree certificate.', is_mandatory: true },
+          { title: 'Employment Contract / Professional Letter', description: 'Valid UAE employment contract with minimum monthly salary of 30,000 AED (approx. 8,160 USD) or real estate title deed.', is_mandatory: true },
+          { title: '6-Month Bank Statements', description: 'Stamped UAE bank statements showing regular salary credit of 30,000+ AED/month.', is_mandatory: true },
+          { title: 'Comprehensive UAE Health Insurance', description: 'Valid medical insurance policy covering Golden Visa holder and family dependents.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Monthly Income or Real Estate Investment', minimum_balance_or_amount: '30,000 AED monthly salary or 2,000,000 AED real estate property investment', time_frame: 'Last 6 months salary records or Title Deed from Dubai Land Department (DLD)', notes: 'Property can be mortgaged from approved UAE local banks.' }
+        ],
+        other_requirements: [
+          { category: 'Exemption from 6-Month Rule', details: 'Golden Visa holders can stay outside the UAE for any duration without their residence visa becoming invalid.' },
+          { category: 'Unlimited Family & Domestic Sponsorship', details: 'Sponsor spouse, children of any age, and unlimited domestic helpers with complete security.' }
+        ],
+        how_to_apply: [
+          '1️⃣ Phase 1 (Eligibility & Attestation): Attest university degree with UAE MOE or secure DLD title deed.',
+          '2️⃣ Phase 2 (Nomination / Initial Approval): Apply for Golden Visa nomination via ICP portal or GDRFA Dubai.',
+          '3️⃣ Phase 3 (6-Month Entry Visa): Obtain 6-month multiple-entry visa to finalize procedures in the UAE.',
+          '4️⃣ Phase 4 (Medical & Biometrics): Complete VIP medical fitness screening and Emirates ID biometric enrollment.',
+          '5️⃣ Phase 5 (10-Year Golden Visa Issuance): Receive official 10-Year Golden Visa digital residency and physical Emirates ID.'
+        ],
+        costs: {
+          visa_fee: '2,800 AED – 3,800 AED (approx. 760 USD – 1,030 USD)',
+          service_fee: '1,050 AED (Emirates ID 10-Year Issuance Fee)',
+          total_fee: '3,850 AED Total Official Government Fee',
+          notes: 'Paid online directly through official ICP / GDRFA Dubai portals.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply anytime upon meeting salary (30k AED) or real estate investment (2M AED) benchmarks.',
+          decision_time: 'Decision: 48 to 72 hours initial approval; 7 to 14 days full issuance.',
+          max_extension: '10-Year Golden Visa renewed automatically every decade as long as criteria are maintained.'
+        }
+      };
+    }
+
     return {
       passport_country: from,
       destination_country: 'United Arab Emirates',
@@ -3621,7 +3795,65 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // 7. GENERIC DESTINATION FALLBACK (Official Embassy Standard 5-Step Process)
+  // 9. GENERIC DESTINATION PR & IMMIGRATION FALLBACK
+  // ═══════════════════════════════════════════════════════════════
+  const isGenericPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
+  
+  if (isGenericPR) {
+    return {
+      passport_country: from,
+      destination_country: to,
+      purpose_of_visit: 'Permanent Residency (PR) / Economic Migration',
+      visa_type: `${to} Permanent Resident & Settlement Permit (Long-Term Economic Stream)`,
+      source_url: `https://www.vfsglobal.com`,
+      official_source_name: `Department of Immigration & Consular Affairs of ${to}`,
+      processing_time: '6 to 12 Months Standard Migration SLA',
+      validity: '5-Year Permanent Resident Card / Indefinite Legal Settlement',
+      stay_duration: 'Indefinite Permanent Residency with Path to Citizenship',
+      entry_type: 'Permanent Resident',
+      validity_and_stay: {
+        visa_validity: '5-Year Renewable Permanent Resident Card / Indefinite Stay',
+        max_stay_per_entry: `Permanent Legal Resident Status in ${to}`,
+        entry_type: 'Permanent Resident'
+      },
+      documents_required: [
+        { title: 'Valid Passport', description: 'Must be valid for at least 12+ months beyond intended relocation date with blank visa pages.', is_mandatory: true },
+        { title: 'Educational & Foreign Credential Assessment (ECA)', description: 'Official qualification equivalency report from an authorized evaluating body.', is_mandatory: true },
+        { title: 'Standardized Language Proficiency Scorecard', description: 'Official language test scorecard (IELTS General / PTE / national language exam).', is_mandatory: true },
+        { title: 'Police Clearance Certificates (PCC)', description: 'National PCCs from Regional Passport Office (RPO) and all jurisdictions lived in 6+ months.', is_mandatory: true },
+        { title: 'Proof of Unencumbered Settlement Funds', description: 'Liquid bank balance certificate demonstrating financial self-sufficiency for applicant and family.', is_mandatory: true },
+        { title: 'Panel Physician Health & Medical Examination', description: 'Comprehensive medical clearance report from authorized panel clinics.', is_mandatory: true }
+      ],
+      financial_proofs: [
+        { type: 'Unencumbered Liquid Settlement Funds', minimum_balance_or_amount: '15,000–25,000 USD equivalent in liquid savings, fixed deposits, or provident fund', time_frame: 'Last 6 to 12 months stamped bank statements', notes: 'Must be unencumbered liquid funds with no personal loans or sudden unexplained borrowing.' }
+      ],
+      other_requirements: [
+        { category: 'Point-Based / Economic Qualification', details: 'Must meet national economic criteria based on age, education, language ability, and skilled work experience.' },
+        { category: 'Two-Stage Biometrics & Health Clearance', details: 'Biometrics recorded at VAC; physical biometric residency card issued by domestic immigration bureau.' }
+      ],
+      how_to_apply: [
+        '1️⃣ Phase 1 (Pre-Requisites): Complete credential evaluation (ECA) and standardized language proficiency exam.',
+        '2️⃣ Phase 2 (Expression of Interest): Submit online Expression of Interest (EOI) or economic profile in national talent pool.',
+        '3️⃣ Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) or provincial/state nomination approval.',
+        '4️⃣ Phase 4 (Full PR Lodgement): Submit complete immigration dossier with apostilled PCC, medical clearance, and settlement funds proof.',
+        '5️⃣ Phase 5 (Permanent Residence Grant): Receive Confirmation of Permanent Residence (COPR) / Resident Visa Grant Letter.'
+      ],
+      costs: {
+        visa_fee: '1,200 – 3,500 USD equivalent in local currency',
+        service_fee: '150 – 350 USD (Biometrics and Logistics)',
+        total_fee: 'Official National PR Application Fees Apply',
+        notes: 'Payable online directly to official immigration authorities.'
+      },
+      processing_and_timing: {
+        apply_window: 'Submit complete application within designated window following invitation (typically 60-90 days).',
+        decision_time: 'Standard economic migration processing: 6 to 12 months.',
+        max_extension: 'Permanent residency card valid for 5 years and renewable indefinitely.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 10. GENERIC DESTINATION TOURIST FALLBACK
   // ═══════════════════════════════════════════════════════════════
   return {
     passport_country: from,

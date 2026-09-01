@@ -1,7 +1,6 @@
 ---
 // src/pages/login.astro
 import Layout from '../layouts/Layout.astro';
-import LandingPage from '../components/landing/LandingPage';
 import { LoginPortal } from '../components/interactive/LoginPortal';
 ---
 
@@ -11,9 +10,6 @@ import { LoginPortal } from '../components/interactive/LoginPortal';
   hideHeader={true}
   hideFooter={true}
 >
-  <!-- Main Home Page rendered in the background -->
-  <LandingPage client:only="react" />
-
   <!-- Fixed Modal Card Overlay -->
   <LoginPortal client:only="react" />
 </Layout>

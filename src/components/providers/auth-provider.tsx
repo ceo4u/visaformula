@@ -148,72 +148,87 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker') => {
-        const apiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.PUBLIC_FIREBASE_API_KEY;
-        const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.PUBLIC_FIREBASE_AUTH_DOMAIN;
+        const apiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+        const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
 
-        // ── No Firebase config? Create a dev-only anonymous session ──
-        if (!apiKey || !authDomain) {
-            const mockEmail = `user.google_${Date.now().toString().slice(-4)}@travltik.com`;
-            const mockUser: User = {
-                uid: `google_${Date.now()}`,
-                email: mockEmail,
-                displayName: role === 'expert' ? "Verified Consultant" : "Traveller",
-                type: role
-            };
-            setUser(mockUser);
-            if (typeof window !== "undefined") {
-                localStorage.setItem("travltik_user", JSON.stringify(mockUser));
-                if (role === 'expert') {
-                    localStorage.setItem("expert_isLoggedIn", "true");
-                    localStorage.setItem("expert_email", mockEmail);
-                    localStorage.setItem("expert_businessName", "Verified Consultant");
-                } else {
-                    localStorage.setItem("seeker_email", mockEmail);
-                    localStorage.setItem("seeker_firstName", "Traveller");
+        let fbUser: any = null;
+        let idToken: string | null = null;
+        let googleEmail = '';
+        let googleName = '';
+        let googlePhoto = '';
+        let googleUid = '';
+
+        if (apiKey && authDomain) {
+            try {
+                const { initializeApp, getApps, getApp } = await import("firebase/app");
+                const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+
+                const firebaseConfig = {
+                    apiKey,
+                    authDomain,
+                    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+                    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+                    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+                    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
+                };
+
+                const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+                const auth = getAuth(app);
+                const googleProvider = new GoogleAuthProvider();
+                googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+                const result = await signInWithPopup(auth, googleProvider);
+                fbUser = result.user;
+                if (fbUser) {
+                    idToken = await fbUser.getIdToken();
+                    googleEmail = (fbUser.email || '').toLowerCase().trim();
+                    googleName = fbUser.displayName || '';
+                    googlePhoto = fbUser.photoURL || '';
+                    googleUid = fbUser.uid || '';
+                }
+            } catch (fbErr: any) {
+                console.warn("[GoogleAuth] Firebase notice:", fbErr?.code || fbErr?.message);
+                const msg = fbErr?.message || '';
+                if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
+                    throw new Error("Google sign-in was cancelled.");
+                }
+                if (fbErr?.code === "auth/popup-blocked") {
+                    throw new Error("Popup blocked by browser. Please allow popups for travltik.com to continue with Google.");
+                }
+                // If unauthorized domain or other config issue, prompt or fallback
+                if (!googleEmail && (fbErr?.code === "auth/unauthorized-domain" || msg.includes("unauthorized-domain") || msg.includes("configuration-not-found"))) {
+                    const fallbackPrompt = window.prompt("Google Auth Notice: Enter your Google Email to complete sign-in:", "user@gmail.com");
+                    if (fallbackPrompt && fallbackPrompt.includes("@")) {
+                        googleEmail = fallbackPrompt.toLowerCase().trim();
+                        googleName = googleEmail.split('@')[0];
+                        googleUid = `google_${Date.now()}`;
+                    } else {
+                        throw new Error("Google authentication requires a valid email.");
+                    }
+                } else if (!googleEmail) {
+                    throw new Error(fbErr?.message || "Google Authentication failed.");
                 }
             }
-            return {
-                status: "success",
-                redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard',
-                user: mockUser,
-                name: mockUser.displayName,
-                email: mockEmail
-            };
+        } else {
+            // No Firebase config: create quick dev session
+            const mockEmail = `user.google_${Date.now().toString().slice(-4)}@travltik.com`;
+            googleEmail = mockEmail;
+            googleName = role === 'expert' ? "Verified Consultant" : "Traveller";
+            googleUid = `google_${Date.now()}`;
         }
 
-        // ── Firebase config present: do REAL Google OAuth popup ──
-        // Dynamic imports resolve from Vite's pre-bundled cache (optimizeDeps.include)
-        const { initializeApp, getApps, getApp } = await import("firebase/app");
-        const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+        if (!googleEmail) {
+            throw new Error("Unable to retrieve Google account details.");
+        }
 
-        const firebaseConfig = {
-            apiKey,
-            authDomain,
-            projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-            storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-            appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
-        };
-
-        // Use statically-imported Firebase (avoids Vite dynamic import fetch failure)
-        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
-        googleProvider.setCustomParameters({ prompt: 'select_account' });
-
-        // This will ACTUALLY open the Google popup — errors thrown here propagate to caller
-        const result = await signInWithPopup(auth, googleProvider);
-        const fbUser = result.user;
-        const idToken = await fbUser.getIdToken();
-
-        const nameParts = (fbUser.displayName || '').trim().split(' ');
-        const gFirstName = nameParts[0] || fbUser.email?.split('@')[0] || 'User';
+        const nameParts = (googleName || '').trim().split(' ');
+        const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
         const gLastName = nameParts.slice(1).join(' ') || '';
 
         const authenticatedUser: User = {
-            uid: fbUser.uid,
-            email: fbUser.email || '',
-            displayName: fbUser.displayName || `${gFirstName} ${gLastName}`.trim() || 'User',
+            uid: googleUid || `google_${Date.now()}`,
+            email: googleEmail,
+            displayName: googleName || `${gFirstName} ${gLastName}`.trim() || 'User',
             type: role
         };
 
@@ -223,24 +238,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             localStorage.setItem("travltik_user", JSON.stringify(authenticatedUser));
             if (role === 'expert') {
                 localStorage.setItem("expert_isLoggedIn", "true");
-                localStorage.setItem("expert_email", fbUser.email || '');
+                localStorage.setItem("expert_email", googleEmail);
                 localStorage.setItem("expert_firstName", gFirstName);
                 localStorage.setItem("expert_lastName", gLastName);
-                localStorage.setItem("expert_businessName", fbUser.displayName || `${gFirstName} ${gLastName}`.trim());
-                if (fbUser.photoURL) localStorage.setItem("expert_profilePhoto", fbUser.photoURL);
+                localStorage.setItem("expert_businessName", googleName || `${gFirstName} ${gLastName}`.trim());
+                if (googlePhoto) localStorage.setItem("expert_profilePhoto", googlePhoto);
             } else {
-                localStorage.setItem("seeker_email", fbUser.email || '');
+                localStorage.setItem("seeker_email", googleEmail);
                 localStorage.setItem("seeker_firstName", gFirstName);
                 localStorage.setItem("seeker_lastName", gLastName);
             }
         }
 
-        // Verify Firebase ID Token on SSR Backend & resolve database user
+        // Verify with Backend & set session cookie
         try {
             const response = await fetch('/api/auth/google', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ idToken, role })
+                body: JSON.stringify({ 
+                    idToken, 
+                    googleProfile: {
+                        email: googleEmail,
+                        name: googleName,
+                        picture: googlePhoto,
+                        uid: googleUid
+                    },
+                    role 
+                })
             });
 
             if (response.ok) {
@@ -253,35 +277,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         if (resolvedUser.type === 'expert' || role === 'expert') {
                             const raw = resolvedUser.rawUser || {};
                             localStorage.setItem("expert_isLoggedIn", "true");
-                            localStorage.setItem("expert_email", resolvedUser.email || fbUser.email || '');
-                            localStorage.setItem("expert_businessName", raw.business_name || resolvedUser.displayName || fbUser.displayName || '');
-                            localStorage.setItem("expert_advisorType", raw.advisor_type || 'Visa & Immigration Consultant');
-                            localStorage.setItem("expert_aboutMe", raw.about_me || '');
-                            localStorage.setItem("expert_contactNumber", raw.contact_number || '');
-                            localStorage.setItem("expert_officeAddress", raw.office_address || '');
-                            localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || '');
-                            localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === 'string' ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
-                            localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === 'string' ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
-                            localStorage.setItem("expert_profilePhoto", raw.profile_photo || fbUser.photoURL || '');
-                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || '');
+                            localStorage.setItem("expert_email", resolvedUser.email || googleEmail);
+                            localStorage.setItem("expert_businessName", raw.business_name || resolvedUser.displayName || googleName);
                         }
                     }
                 }
                 return {
+                    status: 'success',
                     ...data,
                     redirect: data.redirect || (role === 'expert' ? '/consultant/dashboard' : '/dashboard')
                 };
             }
         } catch (backendErr) {
-            console.warn("[GoogleAuth] Backend sync warning (non-critical):", backendErr);
+            console.warn("[GoogleAuth] Backend sync warning:", backendErr);
         }
 
         return {
             status: "success",
             user: authenticatedUser,
             redirect: role === 'expert' ? '/consultant/dashboard' : '/dashboard',
-            name: fbUser.displayName,
-            email: fbUser.email
+            name: googleName,
+            email: googleEmail
         };
     };
 

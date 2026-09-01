@@ -36,30 +36,25 @@ function LoginPortalContent() {
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google...");
         try {
-            const res = await signInWithGoogle();
-            if (res && res.status === 'needs_role') {
-                setGoogleLoading(false);
-                return;
-            }
-            // Use redirect URL from backend response (correctly identifies expert vs seeker)
+            const res = await signInWithGoogle('seeker');
+            setGoogleLoadingText("Authenticated! Redirecting...");
             if (res?.redirect) {
                 window.location.href = res.redirect;
                 return;
             }
-            // Fallback: read from localStorage
             const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
             if (userStr) {
                 try {
                     const parsed = JSON.parse(userStr);
                     window.location.href = parsed.type === "expert" ? "/consultant/dashboard" : "/dashboard";
-                } catch { const redirectParam = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
-            window.location.href = redirectParam; }
-            } else {
-                window.location.href = "/dashboard";
+                    return;
+                } catch(e) {}
             }
+            window.location.href = "/dashboard";
         } catch (e: any) {
             const cleanErr = formatAuthError(e?.message || e?.code);
             if (cleanErr) setError(cleanErr);
+        } finally {
             setGoogleLoading(false);
         }
     };

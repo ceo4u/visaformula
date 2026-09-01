@@ -1,7 +1,6 @@
 ---
 // src/pages/signup/index.astro
 import Layout from '../../layouts/Layout.astro';
-import LandingPage from '../../components/landing/LandingPage';
 import { SignupFlowPortal } from '../../components/interactive/SignupFlowPortal';
 ---
 
@@ -11,9 +10,6 @@ import { SignupFlowPortal } from '../../components/interactive/SignupFlowPortal'
   hideHeader={true}
   hideFooter={true}
 >
-  <!-- Main Home Page rendered in the background -->
-  <LandingPage client:only="react" />
-
   <!-- Fixed Role Selection Modal Overlay -->
   <SignupFlowPortal client:only="react" initialMode="selection" />
 </Layout>

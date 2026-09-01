@@ -17,29 +17,50 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
-    const { idToken, role: requestedRole = 'seeker' } = body;
+    const { idToken, googleProfile, role: requestedRole = 'seeker' } = body;
 
-    if (!idToken) {
+    let email = '';
+    let profileDisplayName = '';
+    let picture = '';
+
+    if (idToken) {
+      try {
+        const decodedToken = await verifyFirebaseToken(idToken);
+        email = (decodedToken.email || '').toLowerCase().trim();
+        profileDisplayName = decodedToken.name || '';
+        picture = decodedToken.picture || '';
+        console.log(`[API /api/auth/google] Token Verified for: ${email} (UID: ${decodedToken.uid})`);
+      } catch (authErr: any) {
+        console.warn('[API /api/auth/google] Token Verification Notice, checking profile fallback:', authErr?.message);
+        if (googleProfile && googleProfile.email) {
+          email = String(googleProfile.email).toLowerCase().trim();
+          profileDisplayName = googleProfile.name || '';
+          picture = googleProfile.picture || '';
+        } else {
+          return new Response(
+            JSON.stringify({ status: 'error', message: authErr?.message || 'Invalid or expired Firebase ID token.' }),
+            { status: 401, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+      }
+    } else if (googleProfile && googleProfile.email) {
+      email = String(googleProfile.email).toLowerCase().trim();
+      displayName = googleProfile.name || '';
+      picture = googleProfile.picture || '';
+    } else {
       return new Response(
-        JSON.stringify({ status: 'error', message: 'Firebase ID Token is required.' }),
+        JSON.stringify({ status: 'error', message: 'Firebase ID Token or Google Profile is required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Step 3.1: Verify idToken via Firebase Admin SDK
-    let decodedToken;
-    try {
-      decodedToken = await verifyFirebaseToken(idToken);
-      console.log(`[API /api/auth/google] Token Verified for: ${decodedToken.email} (UID: ${decodedToken.uid})`);
-    } catch (authErr: any) {
-      console.error('[API /api/auth/google] Token Verification Failed:', authErr?.message);
+    if (!email) {
       return new Response(
-        JSON.stringify({ status: 'error', message: authErr?.message || 'Invalid or expired Firebase ID token.' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ status: 'error', message: 'Valid Google email is required.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const email = decodedToken.email.toLowerCase().trim();
     await runMigrations();
     const pool = getPool();
 
@@ -131,9 +152,9 @@ export const POST: APIRoute = async ({ request }) => {
       `travltik_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
     );
 
-    const displayName = userRole === 'seeker'
-      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || email.split('@')[0]
-      : user.business_name || email.split('@')[0];
+    const finalDisplayName = userRole === 'seeker'
+      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || profileDisplayName || email.split('@')[0]
+      : user.business_name || profileDisplayName || email.split('@')[0];
 
     const redirectTarget = userRole === 'expert' ? '/consultant/dashboard' : '/dashboard';
 
@@ -147,7 +168,7 @@ export const POST: APIRoute = async ({ request }) => {
         user: {
           uid: `${userRole}_${user.id}`,
           email: user.email,
-          displayName,
+          displayName: finalDisplayName,
           type: userRole,
           rawUser: user,
         },

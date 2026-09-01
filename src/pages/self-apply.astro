@@ -1,7 +1,6 @@
 ---
 // src/pages/self-apply.astro
 import Layout from '../layouts/Layout.astro';
-import LandingPage from '../components/landing/LandingPage';
 
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'dummy_razorpay_key';
 ---
@@ -869,13 +868,10 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
     }
   </style>
 
-  <!-- Main Home Page rendered in the background (blurred) -->
-  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-    <LandingPage client:only="react" />
+  <!-- Ambient Background with backdrop blur -->
+  <div class="fixed inset-0 z-0 bg-slate-900">
+    <div class="absolute inset-0 bg-radial-[at_top] from-slate-800 via-slate-900 to-slate-950 opacity-90"></div>
   </div>
-
-  <!-- Dark Overlay with backdrop blur -->
-  <div class="fixed inset-0 z-10 bg-slate-900/50 backdrop-blur-sm pointer-events-none"></div>
 
   <!-- Toast -->
   <div class="toast" id="toast">Message</div>

@@ -1054,9 +1054,127 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // ROMANIA PATHWAYS (Official Ministry of Foreign Affairs - eVisa Romania / Schengen Type C)
+  // ═══════════════════════════════════════════════════════════════
+  if (toLower.includes('romania') || toLower.includes('bucharest') || toLower.includes('cluj')) {
+    return {
+      passport_country: from,
+      destination_country: 'Romania',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Romania Short-Stay Schengen Visa (Type C) / National Visa C/TU',
+      source_url: 'https://evisa.mae.ro',
+      official_source_name: 'Ministry of Foreign Affairs Romania (MAE) & Embassy of Romania in New Delhi',
+      processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
+      validity: 'Up to 90 Days in any 180-Day Period',
+      stay_duration: 'Up to 90 Days (Schengen 90/180 Rule)',
+      entry_type: 'Single / Double / Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 90 Days within 180-Day Period',
+        max_stay_per_entry: 'Up to 90 Days',
+        entry_type: 'Single / Double / Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 3 months beyond intended departure from Schengen area, issued within the last 10 years, with at least 2 blank visa pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'eVisa Romania Application Form & Barcode Receipt',
+          description: 'Completed and electronically registered visa application form printed from the official evisa.mae.ro portal.',
+          is_mandatory: true
+        },
+        {
+          title: 'Digital Passport Photographs (2 Copies)',
+          description: 'Recent 35x45mm color photographs on light/white background meeting ICAO biometric standards.',
+          is_mandatory: true
+        },
+        {
+          title: 'Schengen Travel Medical Insurance',
+          description: 'Mandatory insurance policy covering minimum €30,000 for emergency medical hospitalization and repatriation across the entire Schengen Area.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket / Reservation',
+          description: 'Round-trip air ticket reservation showing entry into and departure from Romania / Schengen territory.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of Accommodation / Hotel Booking',
+          description: 'Confirmed hotel reservations covering entire stay or official invitation certified by the General Inspectorate for Immigration (IGI) if visiting relatives/friends.',
+          is_mandatory: true
+        },
+        {
+          title: 'Bank Statements & Financial Solvency',
+          description: 'Stamped bank account statements for the last 3–6 months demonstrating at least €50/day of stay (minimum €500 total).',
+          is_mandatory: true
+        },
+        {
+          title: 'Employment Proof & Leave NOC',
+          description: 'Letter from employer on company letterhead confirming designation, salary slips (last 3 months), and approved leave dates (or Business Registration / GST certificate for self-employed).',
+          is_mandatory: true
+        },
+        {
+          title: 'Cover Letter & Travel Itinerary',
+          description: 'Personal cover letter outlining purpose of visit, planned cities (Bucharest, Brașov, Cluj-Napoca, etc.), and detailed daily schedule.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Daily Subsistence Benchmark',
+          minimum_balance_or_amount: '€50 per day of stay (Minimum €500 for entire duration)',
+          time_frame: 'Last 3 to 6 Months Bank Statements',
+          notes: 'Must be original stamped statements or verified international credit cards with limit certificate.'
+        },
+        {
+          type: 'Tax & Income Verification',
+          minimum_balance_or_amount: 'ITR-V Acknowledgement (Last 2 Years)',
+          time_frame: 'Preceding 2 Assessment Years',
+          notes: 'Standard economic ties verification required by consular visa officers.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Schengen Area 90/180 Rule',
+          details: 'Romania is a member of the European Union and Schengen Area. Total stay across all Schengen member states cannot exceed 90 days within any 180-day window.'
+        },
+        {
+          category: 'Special Exemption for Multi-Entry Schengen Visa Holders',
+          details: 'Indian nationals holding a valid 2-or-multiple entry Schengen visa, or Bulgarian/Cypriot visa/residence permit do NOT require a separate Romanian visa (stay permitted up to 90 days in 180 days).'
+        },
+        {
+          category: 'Online Pre-Validation Mandatory',
+          details: 'Applicants must first upload and have all documents validated online on the official evisa.mae.ro portal before securing an in-person biometrics appointment at the Embassy / VAC.'
+        }
+      ],
+      how_to_apply: [
+        'eVisa Portal Registration: Create an account and submit your electronic visa dossier on the official MAE portal: evisa.mae.ro.',
+        'Online Consular Validation: The Consular Section of the Embassy of Romania reviews the uploaded documents and issues validation for appointment booking.',
+        'Appointment Booking & Biometrics: Schedule and attend your consular / VAC appointment in New Delhi, Mumbai, or authorized visa centers with original passport and physical documents.',
+        'Biometric Submission: Provide 10-digit fingerprint scans and facial biometrics during the in-person appointment.',
+        'Visa Fee Payment: Pay the official Schengen visa fee of €90 (approx. ₹8,100) + VAC logistical fee.',
+        'Decision & Passport Collection: Track your file status online and collect your stamped passport once processing is concluded.'
+      ],
+      costs: {
+        visa_fee: '€90 (approx. ₹8,100) Standard Consular Schengen Fee (Children 6-12: €45; Under 6: Free)',
+        service_fee: '€30–€35 VAC Global Biometrics Service Charge',
+        total_fee: '€90 Official Consular Fee + VAC Logistics',
+        notes: 'Non-refundable official consular processing fee mandated under European Union Schengen Visa Code.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply between 6 months and 15 working days prior to scheduled departure.',
+        decision_time: 'Standard: 15 Calendar Days (up to 45 calendar days during peak seasons or when extended background checks apply).',
+        max_extension: 'Short-stay visas cannot be extended except for exceptional force majeure reasons.',
+        center_notes: 'Embassy of Romania in New Delhi & Consulate General in Mumbai / VFS Global Visa Application Centers.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // OMAN PATHWAYS (Official Royal Oman Police eVisa)
   // ═══════════════════════════════════════════════════════════════
-  if (toLower.includes('oman') || toLower.includes('muscat')) {
+  if ((toLower.includes('oman') && !toLower.includes('romania')) || toLower.includes('muscat') || toLower.includes('salalah')) {
     return {
       passport_country: from,
       destination_country: 'Oman',

@@ -113,34 +113,30 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google Auth...");
         try {
-            const res = await signInWithGoogle();
-            if (res) {
-                setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
-                await new Promise(resolve => setTimeout(resolve, 400));
-                
-                if (res.redirect) {
-                    window.location.href = res.redirect;
-                    return;
-                }
-
-                const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
-                if (userStr) {
-                    try {
-                        const parsed = JSON.parse(userStr);
-                        if (parsed.type === "expert") {
-                            window.location.href = "/consultant/dashboard";
-                        } else {
-                            window.location.href = "/dashboard";
-                        }
-                        return;
-                    } catch (e) {}
-                }
-                window.location.href = "/dashboard";
+            const res = await signInWithGoogle('seeker');
+            setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
+            if (res && res.redirect) {
+                window.location.href = res.redirect;
+                return;
             }
+
+            const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
+            if (userStr) {
+                try {
+                    const parsed = JSON.parse(userStr);
+                    if (parsed.type === "expert") {
+                        window.location.href = "/consultant/dashboard";
+                        return;
+                    }
+                } catch (e) {}
+            }
+            window.location.href = "/dashboard";
         } catch (e: any) {
             console.error("Google login error:", e);
-            setLoginError(e.message || "Google Authentication failed.");
-            setSignupError(e.message || "Google Authentication failed.");
+            const msg = e?.message || "Google Authentication failed.";
+            setLoginError(msg);
+            setSignupError(msg);
+        } finally {
             setGoogleLoading(false);
         }
     };

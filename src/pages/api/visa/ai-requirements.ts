@@ -9,17 +9,22 @@ export const prerender = false;
 
 // Resolve Gemini API key safely
 const getGeminiApiKey = (): string => {
-  let key = (import.meta?.env?.GEMINI_API_KEY as string | undefined)?.trim();
-  if (key) return key;
-
-  key = (process.env.GEMINI_API_KEY as string | undefined)?.trim();
+  let key = (
+    (import.meta?.env?.GEMINI_API_KEY as string | undefined) ||
+    (import.meta?.env?.NEXT_PUBLIC_GEMINI_API_KEY as string | undefined) ||
+    process.env.GEMINI_API_KEY ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY ||
+    process.env.PUBLIC_GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    ''
+  )?.trim();
   if (key) return key;
 
   try {
     const envPath = path.resolve(process.cwd(), '.env');
     if (fs.existsSync(envPath)) {
       const content = fs.readFileSync(envPath, 'utf8');
-      const match = content.match(/^GEMINI_API_KEY\s*=\s*(.*)$/m);
+      const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
       if (match) {
         key = match[1].trim().replace(/^["']|["']$/g, '');
         if (key) return key;

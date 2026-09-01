@@ -657,16 +657,20 @@ export async function runMigrations() {
       id SERIAL PRIMARY KEY,
       origin VARCHAR(100) NOT NULL DEFAULT 'India',
       destination VARCHAR(100) NOT NULL,
-      destination_slug VARCHAR(100) NOT NULL,
+      destination_slug VARCHAR(100),
+      route_key VARCHAR(255),
       purpose VARCHAR(100) NOT NULL DEFAULT 'Tourism / Vacation',
-      visa_type VARCHAR(200),
+      visa_type VARCHAR(255),
       official_channel VARCHAR(255),
       payload_json JSONB NOT NULL,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE (origin, destination_slug, purpose)
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
-    CREATE INDEX IF NOT EXISTS idx_vrp_lookup ON verified_readiness_payloads (origin, destination_slug, purpose);
+    ALTER TABLE verified_readiness_payloads ADD COLUMN IF NOT EXISTS route_key VARCHAR(255);
+    ALTER TABLE verified_readiness_payloads ADD COLUMN IF NOT EXISTS destination_slug VARCHAR(100);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_vrp_unique_route ON verified_readiness_payloads (origin, destination, purpose);
+    CREATE INDEX IF NOT EXISTS idx_vrp_lookup ON verified_readiness_payloads (origin, destination, purpose);
+    CREATE INDEX IF NOT EXISTS idx_vrp_route_key ON verified_readiness_payloads (route_key);
   `);
   })();
   return migrationsPromise;

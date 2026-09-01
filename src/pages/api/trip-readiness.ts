@@ -9,17 +9,22 @@ export const prerender = false;
 
 // Resolve Gemini API key safely
 const getGeminiApiKey = (): string => {
-  let key = (import.meta?.env?.GEMINI_API_KEY as string | undefined)?.trim();
-  if (key) return key;
-
-  key = (process.env.GEMINI_API_KEY as string | undefined)?.trim();
+  let key = (
+    (import.meta?.env?.GEMINI_API_KEY as string | undefined) ||
+    (import.meta?.env?.NEXT_PUBLIC_GEMINI_API_KEY as string | undefined) ||
+    process.env.GEMINI_API_KEY ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY ||
+    process.env.PUBLIC_GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    ''
+  )?.trim();
   if (key) return key;
 
   try {
     const envPath = path.resolve(process.cwd(), '.env');
     if (fs.existsSync(envPath)) {
       const content = fs.readFileSync(envPath, 'utf8');
-      const match = content.match(/^GEMINI_API_KEY\s*=\s*(.*)$/m);
+      const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
       if (match) {
         key = match[1].trim().replace(/^["']|["']$/g, '');
         if (key) return key;
@@ -250,7 +255,8 @@ Generate pre-departure clearance and visa readiness for:
           config: {
             systemInstruction: systemPrompt,
             temperature: 0.1, // Strict zero-hallucination determinism
-            responseMimeType: 'application/json' // Suppress reasoning tokens from breaking JSON parser
+            responseMimeType: 'application/json',
+            tools: [{ googleSearch: {} } as any]
           }
         });
       } catch (f37Err) {
@@ -294,10 +300,35 @@ Generate pre-departure clearance and visa readiness for:
       expiresAt: Date.now() + CACHE_TTL_MS
     });
 
+    // ── 6. ASYNC PERSIST TO POSTGRESQL DATABASE ──
+    try {
+      const pool = getPool();
+      const destinationSlug = destination.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      const routeKey = `${passport_country.toLowerCase().replace(/\s+/g, '_')}_to_${destination.toLowerCase().replace(/\s+/g, '_')}_${purpose.toLowerCase().split(/\s+/)[0]}`;
+      const visaType = sanitizedData.route_meta?.visa_type || sanitizedData.visa_type || 'Standard Visa';
+      const officialChannel = sanitizedData.route_meta?.official_channel || sanitizedData.official_source_name || 'Official Consular Mission';
+
+      await pool.query(
+        `INSERT INTO verified_readiness_payloads 
+          (origin, destination, destination_slug, route_key, purpose, visa_type, official_channel, payload_json, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+         ON CONFLICT (origin, destination, purpose)
+         DO UPDATE SET
+           route_key = EXCLUDED.route_key,
+           visa_type = EXCLUDED.visa_type,
+           official_channel = EXCLUDED.official_channel,
+           payload_json = EXCLUDED.payload_json,
+           updated_at = NOW()`,
+        [passport_country, destination, destinationSlug, routeKey, purpose, visaType, officialChannel, JSON.stringify(sanitizedData)]
+      );
+    } catch (saveErr) {
+      console.warn('[TripReadiness API] DB async cache persist skipped:', saveErr);
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
-        source: 'gemini-3.7-flash',
+        source: 'gemini-3.7-flash-grounded',
         data: sanitizedData
       }),
       {

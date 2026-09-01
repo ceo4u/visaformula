@@ -17,7 +17,9 @@
     "push:logiqall": "node scripts/push-remotes.js logiqall",
     "push:all": "node scripts/push-remotes.js all",
     "eval:readiness": "tsx scripts/eval-readiness-pipeline.ts",
-    "seed:readiness": "tsx scripts/seed-readiness-db.ts"
+    "seed:readiness": "tsx scripts/seed-readiness-db.ts",
+    "matrix:readiness": "tsx scripts/matrix-readiness-pipeline.ts",
+    "matrix:readiness:py": "python scripts/matrix-readiness-pipeline.py"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",

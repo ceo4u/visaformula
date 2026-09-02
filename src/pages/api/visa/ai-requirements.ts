@@ -22,13 +22,16 @@ const getGeminiApiKey = (): string => {
   if (key) return key;
 
   try {
-    const envPath = path.resolve(process.cwd(), '.env');
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, 'utf8');
-      const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
-      if (match) {
-        key = match[1].trim().replace(/^["']|["']$/g, '');
-        if (key) return key;
+    const envFiles = ['.env', '.env.local'];
+    for (const f of envFiles) {
+      const envPath = path.resolve(process.cwd(), f);
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
+        if (match) {
+          key = match[1].trim().replace(/^["']|["']$/g, '');
+          if (key) return key;
+        }
       }
     }
   } catch (err) {}
@@ -5358,32 +5361,39 @@ Return ONLY a valid JSON object matching this exact schema:
   }
 }`;
 
+        const candidateModels = ['gemini-3.6-flash', 'gemini-2.5-flash'];
         let response: any = null;
-        try {
-          response = await ai.models.generateContent({
-            model: 'gemini-3.7-flash',
-            contents: prompt,
-            config: {
-              responseMimeType: 'application/json',
-              temperature: 0.1
-            }
-          });
-        } catch (f35Err) {
-          response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-            config: {
-              responseMimeType: 'application/json',
-              temperature: 0.1
-            }
-          });
+        for (const modelName of candidateModels) {
+          try {
+            response = await ai.models.generateContent({
+              model: modelName,
+              contents: prompt,
+              config: {
+                responseMimeType: 'application/json',
+                temperature: 0.1
+              }
+            });
+            if (response?.text) break;
+          } catch (modelErr: any) {
+            console.warn(`[AI Requirements API] Model ${modelName} failed:`, modelErr?.message || modelErr);
+          }
         }
 
-        const text = response.text ? response.text.trim() : '';
+        const text = response?.text ? response.text.trim() : '';
         if (text) {
           const parsed = JSON.parse(text);
           parsed.passport_country = cleanCountryName(parsed.passport_country || fromCountry);
           parsed.destination_country = cleanCountryName(parsed.destination_country || toCountry);
+
+          // Post-generation sanity guard: Never allow 180 Days / 6 Months stay for general tourist visas unless USA/UK/Canada
+          const toLower = parsed.destination_country.toLowerCase();
+          const isLongStayAllowed = toLower.includes('united states') || toLower.includes('usa') || toLower.includes('united kingdom') || toLower.includes('uk') || toLower.includes('canada');
+          if (!isLongStayAllowed && parsed.validity_and_stay?.max_stay_per_entry) {
+            const stay = parsed.validity_and_stay.max_stay_per_entry.toLowerCase();
+            if (stay.includes('180') || stay.includes('6 month')) {
+              parsed.validity_and_stay.max_stay_per_entry = 'Up to 30 Days (Extendable as per destination immigration regulations)';
+            }
+          }
 
           // Post-generation sanity guard for Schengen destinations:
           if (isToSchengen) {
@@ -5397,6 +5407,18 @@ Return ONLY a valid JSON object matching this exact schema:
                   doc.description = doc.description.replace(/2x2\s*inch/gi, '35x45mm');
                 }
                 return doc;
+              });
+            }
+          }
+
+          // Post-generation sanity guard: If destination is Visa-Free or VoA/eVisa, strip false VFS biometrics
+          const isDirectEntry = ['jordan', 'thailand', 'malaysia', 'maldives', 'mauritius', 'indonesia', 'sri lanka', 'nepal', 'bhutan', 'cambodia', 'kazakhstan', 'azerbaijan', 'georgia', 'seychelles'].some(c => toLower.includes(c));
+          if (isDirectEntry) {
+            if (Array.isArray(parsed.other_requirements)) {
+              parsed.other_requirements = parsed.other_requirements.filter((item: any) => {
+                const cat = (item.category || '').toLowerCase();
+                const det = (item.details || '').toLowerCase();
+                return !(cat.includes('vac') && (det.includes('fingerprint') || det.includes('biometric')));
               });
             }
           }

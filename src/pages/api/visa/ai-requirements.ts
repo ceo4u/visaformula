@@ -98,6 +98,10 @@ export function cleanCountryName(str: string): string {
   if (sLow === 'th' || sLow === 'thailand' || sLow === 'thai') return 'Thailand';
   if (sLow === 'jp' || sLow === 'japan' || sLow === 'japanese') return 'Japan';
   if (sLow === 'jo' || sLow === 'jordan' || sLow === 'jordanian') return 'Jordan';
+  if (sLow === 'tr' || sLow === 'turkey' || sLow === 'turkiye' || sLow === 'türkiye' || sLow === 'turkish') return 'Turkey';
+  if (sLow === 'np' || sLow === 'nepal' || sLow === 'nepali') return 'Nepal';
+  if (sLow === 'bt' || sLow === 'bhutan' || sLow === 'bhutanese') return 'Bhutan';
+  if (sLow === 'kh' || sLow === 'cambodia' || sLow === 'cambodian') return 'Cambodia';
   
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
@@ -169,6 +173,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isDenmark = isDestination(toLower, 'denmark', ['copenhagen', 'danish', 'aarhus', 'odense']);
   const isYemen = isDestination(toLower, 'yemen', ['sanaa', "sana'a", 'aden', 'yemeni', 'al mukalla']);
   const isJordan = isDestination(toLower, 'jordan', ['hashemite kingdom of jordan', 'amman', 'petra', 'aqaba', 'jordanian']);
+  const isTurkey = isDestination(toLower, 'turkey', ['turkiye', 'türkiye', 'istanbul', 'ankara', 'antalya', 'turkish']);
+  const isNepal = isDestination(toLower, 'nepal', ['kathmandu', 'pokhara', 'nepali']);
+  const isBhutan = isDestination(toLower, 'bhutan', ['thimphu', 'paro', 'bhutanese']);
+  const isCambodia = isDestination(toLower, 'cambodia', ['phnom penh', 'siem reap', 'angkor wat', 'cambodian']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -1480,6 +1488,336 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         decision_time: 'Instant on Arrival at Queen Alia International Airport (AMM) / 24–48 Hours via MOI portal.',
         max_extension: 'Standard 30-day stay can be extended up to 3 months (90 days) free of charge at any local police station in Jordan.',
         center_notes: 'No VAC visit required. Entry available at Queen Alia International Airport (AMM), King Hussein International Airport Aqaba (AQJ), and Sheikh Hussein border crossing.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // TURKEY (TÜRKIYE) PATHWAYS (Official eVisa vs. Gateway Globe)
+  // ═══════════════════════════════════════════════════════════════
+  if (isTurkey) {
+    return {
+      passport_country: from,
+      destination_country: 'Turkey',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Turkey Tourist e-Visa (Conditional) / Consular Sticker Visa (Gateway Globe)',
+      source_url: 'https://www.evisa.gov.tr',
+      official_source_name: 'Ministry of Foreign Affairs of the Republic of Türkiye',
+      processing_time: 'Instant / 5 Minutes for Online e-Visa (or 10–15 Working Days for Sticker Visa)',
+      validity: '180 Days (Entry Window)',
+      stay_duration: 'Up to 30 Days Single Entry',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '180 Days from date of issue',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Valid for at least 6 months beyond intended arrival date in Turkey with at least 2 blank visa pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Qualifying Supporting Visa (For 100% Online eVisa)',
+          description: 'Valid, physical or electronic visa or residence permit from USA, UK, Schengen Area, or Ireland. E-visas of other countries are not accepted as supporting documents.',
+          is_mandatory: false
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Round-trip flight booking with Turkish Airlines, Pegasus, IndiGo, or other recognized airline.',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking Reservation',
+          description: 'Confirmed hotel reservations for all nights of stay in Turkey (e.g. Istanbul, Cappadocia, Antalya).',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Expense Funds',
+          minimum_balance_or_amount: 'Minimum USD $50 per day of stay in cards or cash',
+          time_frame: 'Carried during travel',
+          notes: 'Standard Turkish border control check.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Conditional Online e-Visa Facility',
+          details: 'Indian passport holders holding a valid, current visa or residence permit from USA, UK, Schengen, or Ireland can apply for a 100% paperless e-Visa online at evisa.gov.tr within 5 minutes. No physical appointment required.'
+        },
+        {
+          category: 'Standard Sticker Visa via Gateway Globe',
+          details: 'Indian passport holders WITHOUT a valid US/UK/Schengen/Ireland visa must apply for a traditional sticker visa through Gateway Globe (authorized Turkish visa application centers in India).'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Check eligibility: If you hold a valid US, UK, Schengen, or Ireland visa, go directly to the official portal: evisa.gov.tr.',
+        '2️⃣ (If eligible for eVisa): Fill in your passport details, enter your supporting visa number, and pay the $43 USD fee online. Your electronic visa is issued instantly.',
+        '3️⃣ (If not eligible for eVisa): Prepare document dossier (passport, photos, 6-month bank statements, ITR, employment NOC) and submit via Gateway Globe VAC.',
+        '4️⃣ Print your approved e-Visa or collect your passport with the stamped sticker visa before departure.'
+      ],
+      costs: {
+        visa_fee: '$43 USD (approx. ₹3,650 INR) for Online eVisa — OR approx. $60 USD for Consular Sticker Visa',
+        service_fee: '0 USD for eVisa / approx. ₹3,500 INR for Gateway Globe VAC if sticker visa',
+        total_fee: '$43 USD (eVisa) / approx. ₹8,500 INR (Sticker Visa)',
+        notes: 'Online eVisa fee is paid directly on the official Turkish MFA portal (evisa.gov.tr).'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 3 to 14 days before travel for eVisa; 4 weeks before travel for sticker visa.',
+        decision_time: 'Instant / 5 minutes (eVisa) | 10 to 15 business days (Gateway Globe sticker visa).',
+        max_extension: 'Single entry permit valid for up to 30 days within a 180-day window.',
+        center_notes: 'Gateway Globe centers operate in New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, Kolkata, Ahmedabad, Pune, Kochi, and Jaipur.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // NEPAL PATHWAYS (100% Visa-Free Freedom of Movement for Indians)
+  // ═══════════════════════════════════════════════════════════════
+  if (isNepal) {
+    const isIndian = from.toLowerCase().includes('india') || from.toLowerCase().includes('in');
+
+    return {
+      passport_country: from,
+      destination_country: 'Nepal',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: isIndian ? 'Visa-Free Freedom of Movement (1950 Indo-Nepal Treaty)' : 'Nepal Tourist Visa on Arrival (VoA)',
+      source_url: 'https://nepaliport.immigration.gov.np',
+      official_source_name: 'Department of Immigration, Government of Nepal',
+      processing_time: 'Instant on Arrival (0 Days)',
+      validity: isIndian ? 'Unrestricted / Freedom of Movement' : '15 / 30 / 90 Days',
+      stay_duration: isIndian ? 'Unlimited / Unrestricted Stay for Indian Citizens' : 'Up to 30 Days (Extendable)',
+      entry_type: 'Multiple Entry',
+      validity_and_stay: {
+        visa_validity: isIndian ? 'Unrestricted' : '15 / 30 / 90 Days',
+        max_stay_per_entry: isIndian ? 'Unlimited (Freedom of Movement)' : 'Up to 30 Days',
+        entry_type: 'Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: isIndian ? 'Valid Indian Passport OR Election Voter ID Card' : 'Valid Passport',
+          description: isIndian ? 'Indian citizens can travel to Nepal by air with EITHER a valid Indian Passport OR an original Voter ID card issued by the Election Commission of India. (Note: Aadhaar card and Driving License are not accepted for flight travel).' : 'Valid passport for at least 6 months with 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Round-trip air ticket departing Tribhuvan International Airport, Kathmandu (KTM).',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking / Accommodation',
+          description: 'Confirmed hotel reservations in Kathmandu, Pokhara, or travel itinerary.',
+          is_mandatory: false
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Expense Funds',
+          minimum_balance_or_amount: 'INR or NPR currency / credit cards',
+          time_frame: 'Carried during travel',
+          notes: 'Indian currency notes of denominations ₹10, ₹20, ₹50, ₹100, and ₹200 are widely accepted across Nepal (notes of ₹500 and ₹2,000 may have local restrictions).'
+        }
+      ],
+      other_requirements: [
+        {
+          category: '1950 Peace & Friendship Treaty',
+          details: 'Indian citizens do not require any visa, tourist permit, biometrics, or consular fee to enter, travel, work, or reside in Nepal.'
+        },
+        {
+          category: 'Acceptable Photo IDs for Indians',
+          details: 'Only original Passport or original Election Commission Voter ID card are valid proofs of Indian nationality for entry by air.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Ensure you carry your original Indian Passport OR your original Election Commission Voter ID Card.',
+        '2️⃣ Book your flight to Tribhuvan International Airport, Kathmandu (KTM) or travel via designated open land border checkpoints (Raxaul/Birgunj, Sonauli, etc.).',
+        '3️⃣ At Kathmandu airport immigration, simply show your Indian photo ID for instant entry stamping.',
+        '4️⃣ No visa fee, no VFS appointment, and no biometric registration required.'
+      ],
+      costs: {
+        visa_fee: '₹0 (100% Free / Visa Exempt for Indian Citizens)',
+        service_fee: '₹0 (No Middlemen / No VAC)',
+        total_fee: '₹0 (Completely Free Entry)',
+        notes: 'Indian citizens are completely exempt from visa fees and entry permits under bilateral treaty.'
+      },
+      processing_and_timing: {
+        apply_window: 'No advance application needed.',
+        decision_time: 'Instant on Arrival (0 Days).',
+        max_extension: 'Indefinite / Unrestricted for Indian citizens for tourism and residence.',
+        center_notes: 'Available at Tribhuvan International Airport (KTM) and all recognized land border crossings.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BHUTAN PATHWAYS (Visa-Free / Entry Permit & Concessional SDF)
+  // ═══════════════════════════════════════════════════════════════
+  if (isBhutan) {
+    const isIndian = from.toLowerCase().includes('india') || from.toLowerCase().includes('in');
+
+    return {
+      passport_country: from,
+      destination_country: 'Bhutan',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: isIndian ? 'Entry Permit on Arrival (Concessional SDF for Indian Nationals)' : 'Bhutan Tourist Visa (Full SDF)',
+      source_url: 'https://www.bhutan.travel',
+      official_source_name: 'Department of Immigration, Ministry of Home Affairs, Royal Government of Bhutan',
+      processing_time: 'Instant on Arrival at Paro Airport (PBH) / Online Permit via TCB',
+      validity: 'Up to 14 Days on Arrival',
+      stay_duration: 'Up to 14 Days (Extendable)',
+      entry_type: 'Single / Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 14 Days on Arrival',
+        max_stay_per_entry: 'Up to 14 Days (Extendable)',
+        entry_type: 'Single / Multiple Entry'
+      },
+      documents_required: [
+        {
+          title: isIndian ? 'Valid Indian Passport OR Election Voter ID Card' : 'Valid Passport',
+          description: isIndian ? 'Indian citizens require an Indian Passport valid for at least 6 months OR an original Voter ID card issued by Election Commission of India.' : 'Valid passport with at least 6 months validity.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport-Size Photographs',
+          description: 'Two recent color photographs on white background (35x45mm).',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Hotel Booking (Certified Hotel)',
+          description: 'Confirmed hotel reservations in Bhutan with a Department of Tourism approved/certified accommodation.',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight / Transport',
+          description: 'Confirmed flight ticket with Drukair / Bhutan Airlines or vehicle travel permit from border entry.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Payment of Sustainable Development Fee (SDF)',
+          minimum_balance_or_amount: isIndian ? '₹1,200 INR per person per night (concessional rate for Indians)' : 'USD $100 per person per night',
+          time_frame: 'Paid prior to or on arrival',
+          notes: 'Statutory government Sustainable Development Fee (SDF). Children aged 6–12 pay ₹600/night; under 6 are exempt.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'No VFS Global or VAC Biometrics',
+          details: 'Indian tourists do not need to visit any visa application center. Entry permit is processed directly on arrival or online via authorized Bhutanese tour operators.'
+        },
+        {
+          category: 'Mandatory Certified Guide',
+          details: 'Tourists traveling beyond Thimphu and Paro are required to be accompanied by a licensed Bhutanese tour guide.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Ensure your passport has 6+ months validity or carry your original Voter ID Card.',
+        '2️⃣ Book accommodation in a Department of Tourism certified hotel in Bhutan.',
+        '3️⃣ Pay the statutory Sustainable Development Fee (SDF) of ₹1,200 per night online or via your hotel/operator.',
+        '4️⃣ Arrive at Paro International Airport (PBH) or land border gates (Phuentsholing, Gelephu, Samdrup Jongkhar) to receive your entry permit stamp.'
+      ],
+      costs: {
+        visa_fee: '₹0 (No Visa Fee for Indian Citizens)',
+        service_fee: '₹1,200 INR per night (Statutory Sustainable Development Fee - SDF)',
+        total_fee: '₹1,200 INR / night SDF (Children 6-12: ₹600 / night)',
+        notes: 'Indian citizens do not pay a visa fee. Only the concessional statutory SDF of ₹1,200/night applies.'
+      },
+      processing_and_timing: {
+        apply_window: 'Arrange hotel and SDF payment 7 to 20 days before travel.',
+        decision_time: 'Instant on Arrival at Paro Airport (PBH) / 2–3 business days online.',
+        max_extension: 'Can be extended through Department of Immigration in Thimphu.',
+        center_notes: 'Available at Paro Airport (PBH) and land border entry gates.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // CAMBODIA PATHWAYS (Official Tourist eVisa / Visa on Arrival)
+  // ═══════════════════════════════════════════════════════════════
+  if (isCambodia) {
+    return {
+      passport_country: from,
+      destination_country: 'Cambodia',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Cambodia Tourist e-Visa (Type T) / Visa on Arrival (VoA)',
+      source_url: 'https://www.evisa.gov.kh',
+      official_source_name: 'Ministry of Foreign Affairs & International Cooperation, Kingdom of Cambodia',
+      processing_time: 'Instant on Arrival / 1–3 Business Days for Online eVisa',
+      validity: '3 Months (90 Days) from Date of Issue',
+      stay_duration: 'Up to 30 Days Single Entry',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '3 Months (90 Days)',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Original passport valid for at least 6 months from arrival date with minimum 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Photograph',
+          description: 'Recent digital color photograph with white background (JPEG/PNG format).',
+          is_mandatory: true
+        },
+        {
+          title: 'Confirmed Return Flight Ticket',
+          description: 'Round-trip air ticket to Phnom Penh (PNH) or Siem Reap Angkor (SAI).',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Booking / Itinerary',
+          description: 'Confirmed hotel reservations in Siem Reap or Phnom Penh.',
+          is_mandatory: true
+        },
+        {
+          title: 'Cambodia e-Arrival Card',
+          description: 'Mandatory digital arrival card completed online within 7 days prior to arrival at arrival.gov.kh.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Expense Funds',
+          minimum_balance_or_amount: 'Approx. USD $500–$1,000 in cards or cash',
+          time_frame: 'Carried during travel',
+          notes: 'Standard airport border verification.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'No In-Person VAC or Biometrics',
+          details: 'Cambodia does NOT require Indian tourists to visit VFS or any visa application center. Apply 100% online at evisa.gov.kh or obtain VoA at airport.'
+        },
+        {
+          category: 'Fast-Track Online eVisa',
+          details: 'Official eVisa certificate is emailed as a PDF. Print 2 color copies (one for entry, one for exit).'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ Visit the official government eVisa portal: https://www.evisa.gov.kh.',
+        '2️⃣ Complete the simple application form and upload passport bio-page scan and photograph.',
+        '3️⃣ Pay the official visa fee of $36 USD ($30 visa + $6 processing) securely online via credit card.',
+        '4️⃣ Receive your official electronic visa approval certificate via email within 3 business days.',
+        '5️⃣ (Alternative): Obtain Visa on Arrival (VoA) for $30 USD cash directly at Phnom Penh or Siem Reap airport.',
+        '6️⃣ Complete the Cambodia e-Arrival Card online at arrival.gov.kh within 7 days before flight.'
+      ],
+      costs: {
+        visa_fee: '$30 USD (approx. ₹2,550 INR) on Arrival / $36 USD (approx. ₹3,050 INR) for Online eVisa',
+        service_fee: '0 USD (No VAC Fees)',
+        total_fee: '$30 – $36 USD Total Official Government Fee',
+        notes: 'Official government fee paid online via credit card or in crisp USD cash at airport VoA counter.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply 7 to 20 days before departure for eVisa, or get VoA on arrival.',
+        decision_time: '1 to 3 business days online / Instant on arrival at airport.',
+        max_extension: 'Can be extended once for an additional 30 days at the Department of Immigration in Phnom Penh.',
+        center_notes: 'Accepted at Phnom Penh (PNH), Siem Reap Angkor (SAI), Sihanoukville (KOS), and major land borders with Thailand and Vietnam.'
       }
     };
   }
@@ -4739,9 +5077,18 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
     passport_country: from,
     destination_country: to,
     purpose_of_visit: rawPurpose || 'Tourism / Vacation',
-    visa_type: `${to} Consular Visa / Electronic Travel Authorization`,
-    source_url: `https://www.vfsglobal.com`,
-    official_source_name: `Official Consular Mission & Ministry of Foreign Affairs of ${to}`,
+    visa_type: `${to} Tourist Entry Permit / Consular Visa`,
+    source_url: `https://www.google.com/search?q=${encodeURIComponent(to + ' official visa immigration portal')}`,
+    official_source_name: `Ministry of Foreign Affairs & Immigration Authority of ${to}`,
+    processing_time: '5 to 15 Working Days (or Instant / 24–72 Hours for eVisa / VoA routes)',
+    validity: '30 to 90 Days (per approved visa tier)',
+    stay_duration: 'Up to 30 Days (Extendable as per destination immigration regulations)',
+    entry_type: 'Single Entry',
+    validity_and_stay: {
+      visa_validity: '30 to 90 Days',
+      max_stay_per_entry: 'Up to 30 Days (Extendable)',
+      entry_type: 'Single Entry'
+    },
     documents_required: [
       {
         title: 'Original Passport',
@@ -4749,67 +5096,61 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         is_mandatory: true
       },
       {
-        title: 'Official Visa Application Form',
-        description: 'Completed and signed official consular visa application form matching passport details.',
+        title: 'Visa Application Form',
+        description: `Completed official visa application form (online portal or consular submission) matching passport details.`,
         is_mandatory: true
       },
       {
-        title: 'Recent Passport Photographs',
-        description: 'Color photographs on white background meeting official embassy biometric specifications.',
+        title: 'Passport Photographs',
+        description: 'Recent color photographs on white background meeting official biometric specifications.',
         is_mandatory: true
       },
       {
-        title: 'Flight Itinerary & Accommodation',
-        description: 'Confirmed round-trip flight booking and hotel vouchers or official host invitation letter.',
+        title: 'Confirmed Return Flight Ticket',
+        description: `Confirmed round-trip or onward air ticket departing ${to} within authorized stay period.`,
         is_mandatory: true
       },
       {
-        title: 'Employment & Occupation Proof',
-        description: 'Employer NOC / leave sanction letter, recent 3 months payslips, or company registration documents.',
+        title: 'Proof of Accommodation',
+        description: `Confirmed hotel reservations in ${to} or official host invitation letter with full contact details.`,
         is_mandatory: true
       }
     ],
     financial_proofs: [
       {
-        type: 'Bank Statements & Income Tax Returns',
-        minimum_balance_or_amount: 'Sufficient liquid funds covering total stay duration',
-        time_frame: 'Last 6 months original bank statements with bank seal + 3 years ITR',
-        notes: 'Signed and stamped by issuing bank verifying steady income and self-sufficiency.'
-      },
-      {
-        type: 'Employment & Income Stability Proof',
-        minimum_balance_or_amount: null,
-        time_frame: 'Current / Last 3-6 months',
-        notes: 'Salary slips, business incorporation certificate, or financial sponsor affidavit.'
+        type: 'Proof of Sufficient Travel Funds',
+        minimum_balance_or_amount: 'Adequate liquid funds covering total stay duration',
+        time_frame: 'Last 3 to 6 months bank statements or international credit cards',
+        notes: 'Verifying financial self-sufficiency for living expenses during travel.'
       }
     ],
     other_requirements: [
       {
-        category: 'Travel Medical Insurance',
-        details: 'Comprehensive international emergency policy covering hospitalization, medical evacuation, and repatriation.'
+        category: 'Submission Channel Verification',
+        details: `Check official government immigration portal or diplomatic mission of ${to} to confirm whether your route qualifies for an Online e-Visa, Visa on Arrival (VoA), or Consular Mission submission.`
       },
       {
-        category: 'Biometrics & VAC Appointment',
-        details: 'Mandatory in-person appointment at authorized Visa Application Centre (VFS Global / TLS / BLS) for fingerprinting and document submission.'
+        category: 'Travel Medical Insurance',
+        details: 'Comprehensive international emergency medical insurance covering hospitalization, emergency medical care, and repatriation.'
       }
     ],
     how_to_apply: [
-      `Check requirements and assemble mandatory documents: valid passport, 6-month bank statements, photos, and flight/hotel bookings.`,
-      `Complete the official ${to} consular visa application form online or download the official submission packet.`,
-      `Book an appointment at the authorized Visa Application Centre (VFS Global / Embassy / VAC) and pay the official visa fee.`,
-      `Attend your in-person VAC appointment for document submission, identity verification, and biometric fingerprinting.`,
-      `Track your application status online and collect your stamped passport or receive your official electronic visa grant.`
+      `1️⃣ Verify entry method: Check if ${to} offers an official electronic visa (eVisa), Visa on Arrival (VoA), or requires advance consular filing.`,
+      `2️⃣ Ensure your passport has at least 6 months validity from intended travel date with blank pages.`,
+      `3️⃣ Assemble supporting documents: round-trip flights, hotel vouchers, photographs, and proof of funds.`,
+      `4️⃣ Complete the official application and pay the statutory government visa fees.`,
+      `5️⃣ Receive your approved visa approval / electronic permit before flying or clear immigration upon arrival.`
     ],
     costs: {
-      visa_fee: '₹4,500 – ₹9,200',
-      service_fee: '₹1,500 – ₹2,800 (VAC Processing)',
-      total_fee: '₹6,000 – ₹12,000 Total Reference',
-      notes: 'Official consular visa and VAC logistics fees combined; exchange rates apply.'
+      visa_fee: 'Official Statutory Government Fee (varies by tier and bilateral reciprocity)',
+      service_fee: '₹0 (or nominal portal service charge if applicable)',
+      total_fee: 'Official Government Fee Applies',
+      notes: 'Fee amounts vary by nationality and permit duration. Converted at official consular exchange rates.'
     },
     processing_and_timing: {
-      apply_window: 'Apply 30 to 90 days before your intended travel date.',
-      decision_time: 'Decision: 10 to 15 business days after appointment submission.',
-      max_extension: 'Standard single or multiple entry visa valid per consular approval.'
+      apply_window: 'Apply 2 to 4 weeks prior to planned travel date.',
+      decision_time: 'Standard: 5 to 15 business days (or instant for e-Visa/VoA).',
+      max_extension: 'Subject to local immigration bureau approval in destination country.'
     }
   };
 }
@@ -4894,7 +5235,11 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'bulgaria', aliases: ['sofia'] },
       { primary: 'croatia', aliases: ['zagreb', 'dubrovnik'] },
       { primary: 'ethiopia', aliases: ['addis ababa', 'ethiopian', 'ethiopia evisa'] },
-      { primary: 'jordan', aliases: ['hashemite kingdom of jordan', 'amman', 'petra', 'aqaba', 'jordanian'] }
+      { primary: 'jordan', aliases: ['hashemite kingdom of jordan', 'amman', 'petra', 'aqaba', 'jordanian'] },
+      { primary: 'turkey', aliases: ['turkiye', 'türkiye', 'istanbul', 'ankara', 'antalya', 'turkish'] },
+      { primary: 'nepal', aliases: ['kathmandu', 'pokhara', 'nepali'] },
+      { primary: 'bhutan', aliases: ['thimphu', 'paro', 'bhutanese'] },
+      { primary: 'cambodia', aliases: ['phnom penh', 'siem reap', 'angkor wat', 'cambodian'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));
@@ -4948,6 +5293,16 @@ STRICT DATA ISOLATION & VERIFICATION MANDATES:
 5. CITY-SPECIFIC VAC & CONSULAR LOCATIONS:
    - Auto-populate in processing_and_timing.center_notes all operational VACs and Consulates in ${fromCountry} for ${toCountry}.
 
+6. EVISA, VISA-ON-ARRIVAL & VISA-FREE DESTINATIONS (NO FAKE VFS / BIOMETRICS):
+   - For countries offering Visa-Free, Visa on Arrival (VoA), or direct official government e-Visas (such as Thailand, Malaysia, Maldives, Mauritius, Sri Lanka, Indonesia, Jordan, Nepal, Bhutan, Cambodia, Laos, Vietnam, Kazakhstan, Azerbaijan, Georgia, Seychelles, etc.):
+     * NEVER assert that applicants must visit VFS Global, TLS, or BLS in-person or submit physical biometrics.
+     * Accurately reflect the official government channel (online eVisa portal or airport immigration VoA desk).
+     * Provide exact statutory fees in original government currency.
+
+7. REALISTIC STAY DURATION (NEVER DEFAULT TO 180 DAYS FOR GENERAL TOURIST VISAS):
+   - Most international tourist permits grant 14 to 30 Days (or 60 to 90 Days).
+   - "Up to 6 Months (180 Days)" is strictly reserved for USA B1/B2, UK Standard Visitor, or Canada Visitor Visas. For all other tourist permits, set realistic stay limits (e.g. 30 Days).
+
 Return ONLY a valid JSON object matching this exact schema:
 {
   "passport_country": "${fromCountry}",
@@ -4957,8 +5312,8 @@ Return ONLY a valid JSON object matching this exact schema:
   "source_url": "Official embassy / ministerial portal URL",
   "official_source_name": "Official issuing authority name",
   "validity_and_stay": {
-    "visa_validity": "e.g. 10 Years Multiple Entry or 6 Months or Course Duration",
-    "max_stay_per_entry": "e.g. Up to 6 Months (180 Days) or Up to 90 Days",
+    "visa_validity": "e.g. 10 Years Multiple Entry, 90 Days, or 30 Days",
+    "max_stay_per_entry": "e.g. Up to 30 Days or Up to 90 Days (180 Days only for USA/UK/Canada)",
     "entry_type": "Single Entry / Multiple Entry"
   },
   "documents_required": [

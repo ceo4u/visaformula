@@ -518,7 +518,19 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)' : cleanTo.toLowerCase().includes('jordan') ? '30 Days upon Entry (Extendable up to 3 Months)' : 'Up to 30 to 90 Days')}
+                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (
+                    cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai')
+                      ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)'
+                      : cleanTo.toLowerCase().includes('jordan')
+                      ? '30 Days upon Entry (Extendable up to 3 Months)'
+                      : cleanTo.toLowerCase().includes('nepal')
+                      ? 'Unlimited / Freedom of Movement for Indian Citizens'
+                      : cleanTo.toLowerCase().includes('bhutan')
+                      ? 'Up to 14 Days on Arrival (Extendable)'
+                      : cleanTo.toLowerCase().includes('turkey') || cleanTo.toLowerCase().includes('cambodia')
+                      ? 'Up to 30 Days Single Entry'
+                      : 'Up to 30 to 90 Days'
+                  )}
                 </h4>
               </div>
             </div>
@@ -529,7 +541,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  {data.entry_type || data.validity_and_stay?.entry_type || (cleanTo.toLowerCase().includes('jordan') ? 'Single Entry' : 'Multiple Entry')}
+                  {data.entry_type || data.validity_and_stay?.entry_type || (
+                    cleanTo.toLowerCase().includes('jordan') || cleanTo.toLowerCase().includes('turkey') || cleanTo.toLowerCase().includes('cambodia')
+                      ? 'Single Entry'
+                      : 'Multiple Entry'
+                  )}
                 </h4>
               </div>
             </div>

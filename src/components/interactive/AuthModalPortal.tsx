@@ -514,7 +514,17 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 {loginLoading ? "Authenticating..." : "Log in"} <ArrowRight className="w-4 h-4" />
                             </button>
 
-                            <p className="text-center text-xs text-slate-500 font-semibold pt-2">
+                            <div className="text-center pt-1">
+                                <a
+                                    href={`/forgot-password${loginEmail ? `?email=${encodeURIComponent(loginEmail)}` : ''}`}
+                                    className="text-xs font-bold text-[#00a896] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                                >
+                                    <span>Forgot your password? Reset here</span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                </a>
+                            </div>
+
+                            <p className="text-center text-xs text-slate-500 font-semibold pt-1">
                                 Don't have an account?{" "}
                                 <button
                                     type="button"

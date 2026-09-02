@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mail, ArrowLeft, CheckCircle, Lock, Eye, EyeOff } from "lucide-react";
 
 export function ForgotPasswordPortal() {
@@ -14,6 +14,19 @@ export function ForgotPasswordPortal() {
     const [otpVerified, setOtpVerified] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const sp = new URLSearchParams(window.location.search);
+            const qEmail = sp.get("email");
+            if (qEmail) {
+                setEmail(qEmail);
+            } else {
+                const stored = localStorage.getItem("seeker_email") || "";
+                if (stored) setEmail(stored);
+            }
+        }
+    }, []);
 
     const handleSendOtp = async (e: React.FormEvent) => {
         e.preventDefault();

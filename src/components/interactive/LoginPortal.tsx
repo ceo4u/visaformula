@@ -172,7 +172,7 @@ function LoginPortalContent() {
                                 <label className="block text-xs font-bold text-slate-900">
                                     Email address
                                 </label>
-                                <a href="/forgot-password" className="text-xs font-bold text-slate-900 hover:underline">
+                                <a href={`/forgot-password${email ? `?email=${encodeURIComponent(email)}` : ''}`} className="text-xs font-bold text-slate-900 hover:underline">
                                     Forgot password?
                                 </a>
                             </div>
@@ -197,6 +197,15 @@ function LoginPortalContent() {
                         >
                             Continue <ArrowRight className="w-4 h-4" />
                         </button>
+
+                        <div className="text-center pt-0.5">
+                            <a
+                                href={`/forgot-password${email ? `?email=${encodeURIComponent(email)}` : ''}`}
+                                className="text-xs font-bold text-slate-600 hover:text-black hover:underline"
+                            >
+                                Forgot password?
+                            </a>
+                        </div>
                     </form>
                 ) : (
                     /* Step 1: Password Input */
@@ -209,7 +218,7 @@ function LoginPortalContent() {
                                 <button
                                     type="button"
                                     onClick={() => setLoginStep(0)}
-                                    className="text-xs font-bold text-slate-500 hover:text-slate-900"
+                                    className="text-xs font-bold text-slate-500 hover:text-slate-900 cursor-pointer"
                                 >
                                     Change email
                                 </button>
@@ -234,6 +243,14 @@ function LoginPortalContent() {
                                     {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
                             </div>
+                            <div className="flex justify-end pt-1.5">
+                                <a
+                                    href={`/forgot-password?email=${encodeURIComponent(email)}`}
+                                    className="text-xs font-bold text-slate-600 hover:text-black hover:underline cursor-pointer"
+                                >
+                                    Forgot password?
+                                </a>
+                            </div>
                         </div>
 
                         <button
@@ -243,6 +260,16 @@ function LoginPortalContent() {
                         >
                             {loading ? "Signing in..." : "Sign in"} <ArrowRight className="w-4 h-4" />
                         </button>
+
+                        <div className="text-center pt-0.5">
+                            <a
+                                href={`/forgot-password?email=${encodeURIComponent(email)}`}
+                                className="text-xs font-bold text-[#00a896] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                            >
+                                <span>Forgot your password? Reset with OTP</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </a>
+                        </div>
                     </form>
                 )}
 

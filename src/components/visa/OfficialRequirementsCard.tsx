@@ -683,7 +683,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               Sign in or create a free TravlTik account to unlock verified consular checklists, processing timelines, statutory fees, and immigration filing tools.
             </p>
           </div>
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
               onClick={redirectToLogin}
@@ -691,6 +691,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             >
               Sign In to Continue <ArrowRight className="w-4 h-4" />
             </button>
+            <a
+              href="/forgot-password"
+              className="text-xs text-slate-300 hover:text-white underline font-semibold py-2 px-3 transition-colors"
+            >
+              Forgot password?
+            </a>
           </div>
         </div>
       ) : loading ? (

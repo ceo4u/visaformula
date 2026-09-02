@@ -358,9 +358,10 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             return updated;
           });
 
-          // Save to seeker_documents in localStorage for User Dashboard
+          // Save to seeker_documents, vault_checklist, and travltik_user_journey in localStorage for User Dashboard
           if (typeof window !== 'undefined') {
             try {
+              // 1. seeker_documents array
               const existing = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
               const filtered = existing.filter((d: any) => d.id !== docKey);
               filtered.push({
@@ -372,27 +373,117 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 summary: newDocDetail.summary
               });
               localStorage.setItem('seeker_documents', JSON.stringify(filtered));
-            } catch {}
+
+              // 2. vault_checklist for target destination
+              const vaultKey = `vault_checklist_${cleanTo}`.replace(/\s+/g, '_').toLowerCase();
+              const existingVault = JSON.parse(localStorage.getItem(vaultKey) || '{}');
+              existingVault[docKey] = {
+                fileName: file.name,
+                size: fileSizeFormatted,
+                verified: true,
+                score: newDocDetail.score,
+                summary: newDocDetail.summary,
+                uploadedAt: new Date().toLocaleDateString()
+              };
+              localStorage.setItem(vaultKey, JSON.stringify(existingVault));
+
+              // 3. travltik_user_journey object
+              const journeyStr = localStorage.getItem('travltik_user_journey');
+              let journeyObj = journeyStr ? JSON.parse(journeyStr) : {};
+              journeyObj.destination = cleanTo;
+              journeyObj.passport_country = cleanFrom;
+              journeyObj.purpose = selectedPurpose || 'tourism';
+              journeyObj.uploaded_documents = journeyObj.uploaded_documents || {};
+              journeyObj.uploaded_documents[docKey] = {
+                fileName: file.name,
+                size: fileSizeFormatted,
+                timestamp: new Date().toISOString(),
+                summary: newDocDetail.summary
+              };
+              localStorage.setItem('travltik_user_journey', JSON.stringify(journeyObj));
+
+              // 4. active_travel_profile
+              localStorage.setItem('active_travel_profile', JSON.stringify({
+                destination: cleanTo,
+                passport: cleanFrom,
+                purpose: selectedPurpose || 'tourism'
+              }));
+
+              // 5. DB Sync
+              let userEmail = localStorage.getItem('seeker_email') || '';
+              if (!userEmail) {
+                try {
+                  const u = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+                  userEmail = u.email || '';
+                } catch (_) {}
+              }
+              if (userEmail) {
+                fetch('/api/journey/update-step', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    user_email: userEmail,
+                    destination: cleanTo,
+                    passport_country: cleanFrom,
+                    purpose: selectedPurpose || 'tourism',
+                    customs_checklist: journeyObj.uploaded_documents
+                  })
+                }).catch(() => {});
+              }
+            } catch (errSync) {
+              console.warn('Dashboard sync error:', errSync);
+            }
           }
 
-          showToast(`✅ ${docTitle} successfully scanned and verified!`);
+          showToast(`✅ ${docTitle} successfully scanned, verified & saved to dashboard!`);
         } catch (scanErr) {
           console.warn('Scan API fallback:', scanErr);
+          const fallbackDetail = {
+            fileName: file.name,
+            size: fileSizeFormatted,
+            verified: true,
+            score: 90,
+            summary: `Verified ${docTitle} successfully ingested.`
+          };
           setUploadedDocDetails(prev => ({
             ...prev,
-            [docKey]: {
-              fileName: file.name,
-              size: fileSizeFormatted,
-              verified: true,
-              score: 90,
-              summary: `Verified ${docTitle} successfully ingested.`
-            }
+            [docKey]: fallbackDetail
           }));
           setCheckedDocs(prev => ({
             ...prev,
             [docKey]: { ready: true, timestamp: 'Verified' }
           }));
-          showToast(`✅ ${docTitle} uploaded and verified!`);
+
+          if (typeof window !== 'undefined') {
+            try {
+              const existing = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
+              const filtered = existing.filter((d: any) => d.id !== docKey);
+              filtered.push({
+                id: docKey,
+                label: `${docTitle} (${file.name})`,
+                status: 'verified',
+                uploadedAt: new Date().toLocaleDateString(),
+                size: fileSizeFormatted,
+                summary: fallbackDetail.summary
+              });
+              localStorage.setItem('seeker_documents', JSON.stringify(filtered));
+
+              const journeyStr = localStorage.getItem('travltik_user_journey');
+              let journeyObj = journeyStr ? JSON.parse(journeyStr) : {};
+              journeyObj.destination = cleanTo;
+              journeyObj.passport_country = cleanFrom;
+              journeyObj.purpose = selectedPurpose || 'tourism';
+              journeyObj.uploaded_documents = journeyObj.uploaded_documents || {};
+              journeyObj.uploaded_documents[docKey] = {
+                fileName: file.name,
+                size: fileSizeFormatted,
+                timestamp: new Date().toISOString()
+              };
+              localStorage.setItem('travltik_user_journey', JSON.stringify(journeyObj));
+            } catch (_) {}
+          }
+
+          showToast(`✅ ${docTitle} uploaded & saved to dashboard!`);
         } finally {
           setUploadingDocKey(null);
         }

@@ -130,6 +130,311 @@ import {
   Search
 } from 'lucide-react';
 
+// Custom sleek datepicker component matching Atlys / TravlTik aesthetics
+function PortalCustomDatePicker({
+  value,
+  onChange,
+  min,
+  max,
+  label,
+  placeholder = 'Select date'
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  min?: string;
+  max?: string;
+  label?: string;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Parse initial view year and month
+  const initialDate = useMemo(() => {
+    if (value && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const [y, m, d] = value.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+    if (min && /^\d{4}-\d{2}-\d{2}$/.test(min)) {
+      const [y, m, d] = min.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+    return new Date();
+  }, [value, min]);
+
+  const [viewYear, setViewYear] = useState(initialDate.getFullYear());
+  const [viewMonth, setViewMonth] = useState(initialDate.getMonth());
+
+  // Sync view when opening
+  useEffect(() => {
+    if (open) {
+      if (value && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        const [y, m] = value.split('-').map(Number);
+        setViewYear(y);
+        setViewMonth(m - 1);
+      } else if (min && /^\d{4}-\d{2}-\d{2}$/.test(min)) {
+        const [y, m] = min.split('-').map(Number);
+        setViewYear(y);
+        setViewMonth(m - 1);
+      }
+    }
+  }, [open, value, min]);
+
+  // Click outside to close
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const prevMonth = () => {
+    if (viewMonth === 0) {
+      setViewMonth(11);
+      setViewYear(v => v - 1);
+    } else {
+      setViewMonth(v => v - 1);
+    }
+  };
+
+  const nextMonth = () => {
+    if (viewMonth === 11) {
+      setViewMonth(0);
+      setViewYear(v => v + 1);
+    } else {
+      setViewMonth(v => v + 1);
+    }
+  };
+
+  // Format display text (e.g. "Thu, 15 Oct 2026")
+  const formattedDisplay = useMemo(() => {
+    if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return '';
+    try {
+      const [y, m, d] = value.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString('en-US', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch {
+      return value;
+    }
+  }, [value]);
+
+  // Today string for comparison
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }, []);
+
+  // Compute days for the month grid
+  const daysGrid = useMemo(() => {
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay(); // 0 = Sun
+    const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const prevMonthDays = new Date(viewYear, viewMonth, 0).getDate();
+
+    const days: Array<{
+      dayNum: number;
+      dateStr: string;
+      isCurrentMonth: boolean;
+      isDisabled: boolean;
+      isSelected: boolean;
+      isToday: boolean;
+    }> = [];
+
+    // Previous month filler days
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const d = prevMonthDays - i;
+      const m = viewMonth === 0 ? 12 : viewMonth;
+      const y = viewMonth === 0 ? viewYear - 1 : viewYear;
+      const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      days.push({
+        dayNum: d,
+        dateStr,
+        isCurrentMonth: false,
+        isDisabled: true,
+        isSelected: false,
+        isToday: false
+      });
+    }
+
+    // Current month days
+    for (let d = 1; d <= totalDays; d++) {
+      const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const isDisabled = Boolean((min && dateStr < min) || (max && dateStr > max));
+      const isSelected = dateStr === value;
+      const isToday = dateStr === todayStr;
+
+      days.push({
+        dayNum: d,
+        dateStr,
+        isCurrentMonth: true,
+        isDisabled,
+        isSelected,
+        isToday
+      });
+    }
+
+    // Next month filler days (to make complete weeks)
+    const remaining = (7 - (days.length % 7)) % 7;
+    for (let d = 1; d <= remaining; d++) {
+      const m = viewMonth === 11 ? 1 : viewMonth + 2;
+      const y = viewMonth === 11 ? viewYear + 1 : viewYear;
+      const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      days.push({
+        dayNum: d,
+        dateStr,
+        isCurrentMonth: false,
+        isDisabled: true,
+        isSelected: false,
+        isToday: false
+      });
+    }
+
+    return days;
+  }, [viewYear, viewMonth, min, max, value, todayStr]);
+
+  return (
+    <div className="relative space-y-1.5 text-left" ref={containerRef}>
+      {label && (
+        <label className="block text-xs sm:text-[13px] font-bold text-slate-800 tracking-tight leading-snug">
+          {label}
+        </label>
+      )}
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={`w-full h-11 px-3 sm:px-3.5 rounded-xl border bg-white text-xs sm:text-[13px] font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
+          open
+            ? 'border-indigo-600 ring-2 ring-indigo-500/20'
+            : 'border-slate-200/90 hover:border-slate-300'
+        }`}
+      >
+        <span className={`truncate text-left ${formattedDisplay ? 'text-slate-950 font-bold' : 'text-slate-400 font-normal'}`}>
+          {formattedDisplay || placeholder}
+        </span>
+        <Calendar className={`w-4 h-4 text-slate-400 shrink-0 transition-colors ${open ? 'text-indigo-600' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 mt-1.5 w-[285px] sm:w-[310px] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-3.5 z-50 animate-in fade-in zoom-in-95 origin-top">
+          {/* Header with Month / Year and Navigation */}
+          <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-slate-100">
+            <button
+              type="button"
+              onClick={prevMonth}
+              className="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+              title="Previous Month"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <div className="text-xs sm:text-sm font-black text-slate-900 tracking-tight">
+              {monthNames[viewMonth]} {viewYear}
+            </div>
+            <button
+              type="button"
+              onClick={nextMonth}
+              className="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+              title="Next Month"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Weekday Names */}
+          <div className="grid grid-cols-7 gap-1 text-center mb-1">
+            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
+              <span key={d} className="text-[10px] font-black uppercase text-slate-400 tracking-wider py-1">
+                {d}
+              </span>
+            ))}
+          </div>
+
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 gap-1 text-center">
+            {daysGrid.map((item, idx) => {
+              if (!item.isCurrentMonth) {
+                return (
+                  <div
+                    key={idx}
+                    className="h-8 flex items-center justify-center text-[11px] text-slate-300 font-medium select-none"
+                  >
+                    {item.dayNum}
+                  </div>
+                );
+              }
+
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  disabled={item.isDisabled}
+                  onClick={() => {
+                    onChange(item.dateStr);
+                    setOpen(false);
+                  }}
+                  className={`h-8 rounded-lg text-xs font-bold transition-all flex items-center justify-center relative cursor-pointer ${
+                    item.isSelected
+                      ? 'bg-slate-950 text-white font-black shadow-xs'
+                      : item.isDisabled
+                      ? 'text-slate-300 cursor-not-allowed hover:bg-transparent'
+                      : item.isToday
+                      ? 'border border-emerald-500 text-emerald-800 bg-emerald-50/60 font-black hover:bg-emerald-100/70'
+                      : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                  }`}
+                >
+                  {item.dayNum}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Footer Controls: Today & Clear */}
+          <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-slate-100 text-[11px]">
+            <button
+              type="button"
+              onClick={() => {
+                onChange('');
+                setOpen(false);
+              }}
+              className="text-slate-500 hover:text-rose-600 font-bold transition-colors cursor-pointer px-1.5 py-0.5 rounded"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (!min || todayStr >= min) {
+                  onChange(todayStr);
+                  setOpen(false);
+                } else if (min) {
+                  onChange(min);
+                  setOpen(false);
+                }
+              }}
+              className="text-slate-900 hover:text-emerald-700 font-black transition-colors cursor-pointer px-1.5 py-0.5 rounded"
+            >
+              Today
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export interface VisaCountryData {
   countryCode: string;
   countryName: string;
@@ -4060,30 +4365,19 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Approval & Expiry Dates */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Approval Date
-                    </label>
-                    <input
-                      type="date"
-                      value={approvalDate}
-                      onChange={(e) => setApprovalDate(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Expiry Date
-                    </label>
-                    <input
-                      type="date"
-                      value={validityDate}
-                      onChange={(e) => setValidityDate(e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
-                    />
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <PortalCustomDatePicker
+                    label="Approval Date"
+                    value={approvalDate}
+                    onChange={setApprovalDate}
+                    placeholder="Select approval date"
+                  />
+                  <PortalCustomDatePicker
+                    label="Expiry Date"
+                    value={validityDate}
+                    onChange={setValidityDate}
+                    placeholder="Select expiry date"
+                  />
                 </div>
 
                 {/* Active Conditions Checklist */}
@@ -4658,38 +4952,24 @@ export function VisaCountryResultPortal({
                         ]}
                       />
 
-                      {/* Q2: Tentative Departure Date */}
-                      <div className="space-y-1 text-left">
-                        <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
-                          2. Tentative Departure Date
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="date"
-                            value={visitTiming}
-                            min={todayStr}
-                            onChange={(e) => handleDepartureDateChange(e.target.value)}
-                            className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
-                          />
-                        </div>
-                      </div>
+                      {/* Q2: Tentative Departure Date (Custom Sleek Calendar) */}
+                      <PortalCustomDatePicker
+                        label="2. Tentative Departure Date"
+                        value={visitTiming}
+                        min={todayStr}
+                        onChange={handleDepartureDateChange}
+                        placeholder="Select departure date"
+                      />
 
-                      {/* Q3: Tentative Return Date */}
-                      <div className="space-y-1 text-left">
-                        <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
-                          3. Tentative Return Date
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="date"
-                            value={visitReturnDate}
-                            min={visitTiming ? new Date(new Date(visitTiming).getTime() + 86400000).toISOString().split('T')[0] : todayStr}
-                            max={visitTiming ? new Date(new Date(visitTiming).getTime() + 90 * 86400000).toISOString().split('T')[0] : undefined}
-                            onChange={(e) => handleReturnDateChange(e.target.value)}
-                            className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
-                          />
-                        </div>
-                      </div>
+                      {/* Q3: Tentative Return Date (Custom Sleek Calendar) */}
+                      <PortalCustomDatePicker
+                        label="3. Tentative Return Date"
+                        value={visitReturnDate}
+                        min={visitTiming ? new Date(new Date(visitTiming).getTime() + 86400000).toISOString().split('T')[0] : todayStr}
+                        max={visitTiming ? new Date(new Date(visitTiming).getTime() + 90 * 86400000).toISOString().split('T')[0] : undefined}
+                        onChange={handleReturnDateChange}
+                        placeholder="Select return date"
+                      />
 
                       {/* Q4: Total Trip Duration (Calculated & Validated) */}
                       <div className="space-y-1 text-left">
@@ -7041,31 +7321,18 @@ export function VisaCountryResultPortal({
 
               {/* Date of Birth & Tentative Travel Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Date of Birth *
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Tentative Travel Date *
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={travelDate}
-                    onChange={(e) => setTravelDate(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
-                  />
-                </div>
+                <PortalCustomDatePicker
+                  label="Date of Birth *"
+                  value={dob}
+                  onChange={setDob}
+                  placeholder="Select date of birth"
+                />
+                <PortalCustomDatePicker
+                  label="Tentative Travel Date *"
+                  value={travelDate}
+                  onChange={setTravelDate}
+                  placeholder="Select travel date"
+                />
               </div>
 
               {/* Doorstep Pickup Address & Pincode */}

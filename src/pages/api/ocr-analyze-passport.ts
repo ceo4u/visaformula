@@ -35,50 +35,121 @@ const getGeminiApiKey = (): string => {
   return '';
 };
 
-// Map nationality ISO code to Country Name
+// Map nationality ISO code to Country Name (covering global ICAO codes)
 const mapNationalityCode = (code: string): string => {
   const c = (code || '').toUpperCase().trim();
   const map: Record<string, string> = {
-    AUS: 'Australia',
     IND: 'India',
     USA: 'United States',
     GBR: 'United Kingdom',
     CAN: 'Canada',
+    AUS: 'Australia',
+    NZL: 'New Zealand',
     DEU: 'Germany',
+    FRA: 'France',
+    ITA: 'Italy',
+    ESP: 'Spain',
+    NLD: 'Netherlands',
+    CHE: 'Switzerland',
+    SWE: 'Sweden',
+    NOR: 'Norway',
+    DNK: 'Denmark',
+    FIN: 'Finland',
+    IRL: 'Ireland',
+    AUT: 'Austria',
+    BEL: 'Belgium',
+    PRT: 'Portugal',
+    POL: 'Poland',
+    GRC: 'Greece',
+    JPN: 'Japan',
+    SGP: 'Singapore',
+    MYS: 'Malaysia',
+    KOR: 'South Korea',
+    THA: 'Thailand',
+    PHL: 'Philippines',
+    VNM: 'Vietnam',
+    IDN: 'Indonesia',
+    ARE: 'United Arab Emirates',
+    SAU: 'Saudi Arabia',
+    QAT: 'Qatar',
+    OMN: 'Oman',
+    KWT: 'Kuwait',
+    BHR: 'Bahrain',
     NPL: 'Nepal',
     BGD: 'Bangladesh',
     LKA: 'Sri Lanka',
-    PHL: 'Philippines',
-    NGA: 'Nigeria',
     PAK: 'Pakistan',
-    ARE: 'UAE',
-    NZL: 'New Zealand',
-    FRA: 'France',
-    JPN: 'Japan',
-    SGP: 'Singapore',
-    IRL: 'Ireland'
+    NGA: 'Nigeria',
+    ZAF: 'South Africa',
+    EGY: 'Egypt',
+    KEN: 'Kenya',
+    GHA: 'Ghana',
+    BRA: 'Brazil',
+    MEX: 'Mexico',
+    ARG: 'Argentina',
+    TUR: 'Turkey',
+    ISR: 'Israel',
+    RUS: 'Russia'
   };
   return map[c] || c;
 };
 
-// Normalize any date string (DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, YYYY-MM-DD, DD MMM YYYY) into YYYY-MM-DD
+// Universal date normalizer: handles any global passport format:
+// DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, YYYY-MM-DD, DD MMM YYYY, MMM DD YYYY, bilingual "15 JUL / JUIL 2024"
 function normalizeDateStr(raw: string | undefined): string {
   if (!raw) return '';
-  const s = String(raw).trim();
+  let s = String(raw).trim();
 
-  // Already YYYY-MM-DD
+  // Clean bilingual slashes like "JUL / JUIL" -> "JUL"
+  s = s.replace(/([A-Za-z]{3})\s*[\/|\\]\s*[A-Za-z]{3,4}/g, '$1');
+
+  // 1. Already standard ISO YYYY-MM-DD
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
 
-  // DD/MM/YYYY or DD-MM-YYYY or DD.MM.YYYY
-  const dmyMatch = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
-  if (dmyMatch) {
-    const day = dmyMatch[1].padStart(2, '0');
-    const month = dmyMatch[2].padStart(2, '0');
-    const year = dmyMatch[3];
+  // Month name lookup table (including international / bilingual prefixes)
+  const monthMap: Record<string, string> = {
+    jan: '01', feb: '02', fev: '02', mar: '03', mär: '03',
+    apr: '04', avr: '04', may: '05', mai: '05', jun: '06', juin: '06',
+    jul: '07', juil: '07', aug: '08', aoû: '08', aou: '08',
+    sep: '09', oct: '10', okt: '10', nov: '11', dec: '12', dez: '12', déc: '12'
+  };
+
+  // 2. Format: "15 JUL 2024" or "15-JUL-2024" or "15.JUL.2024"
+  const dMmmYMatch = s.match(/^(\d{1,2})[\s\-\/\.]([A-Za-z\u00C0-\u017F]{3,5})[\s\-\/\.](\d{4})$/);
+  if (dMmmYMatch) {
+    const day = dMmmYMatch[1].padStart(2, '0');
+    const mStr = dMmmYMatch[2].toLowerCase().substring(0, 3);
+    const month = monthMap[mStr] || '01';
+    const year = dMmmYMatch[3];
     return `${year}-${month}-${day}`;
   }
 
-  // YYYY/MM/DD
+  // 3. Format: "JUL 15, 2024" or "JUL 15 2024"
+  const mmmDYMatch = s.match(/^([A-Za-z\u00C0-\u017F]{3,5})[\s\-\/\.](\d{1,2})[,\s\-\/\.]+(\d{4})$/);
+  if (mmmDYMatch) {
+    const mStr = mmmDYMatch[1].toLowerCase().substring(0, 3);
+    const month = monthMap[mStr] || '01';
+    const day = mmmDYMatch[2].padStart(2, '0');
+    const year = mmmDYMatch[3];
+    return `${year}-${month}-${day}`;
+  }
+
+  // 4. Numeric: DD/MM/YYYY or DD-MM-YYYY or DD.MM.YYYY
+  const dmyMatch = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+  if (dmyMatch) {
+    const p1 = parseInt(dmyMatch[1], 10);
+    const p2 = parseInt(dmyMatch[2], 10);
+    const year = dmyMatch[3];
+
+    // If p1 > 12, p1 is definitely day and p2 is month
+    if (p1 > 12 && p2 <= 12) {
+      return `${year}-${String(p2).padStart(2, '0')}-${String(p1).padStart(2, '0')}`;
+    }
+    // Standard international assumption: DD/MM/YYYY
+    return `${year}-${String(p2).padStart(2, '0')}-${String(p1).padStart(2, '0')}`;
+  }
+
+  // 5. Numeric: YYYY/MM/DD or YYYY-MM-DD
   const ymdMatch = s.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
   if (ymdMatch) {
     const year = ymdMatch[1];
@@ -87,11 +158,13 @@ function normalizeDateStr(raw: string | undefined): string {
     return `${year}-${month}-${day}`;
   }
 
-  // Attempt standard Date parsing
-  const parsed = new Date(s);
-  if (!isNaN(parsed.getTime())) {
-    return parsed.toISOString().split('T')[0];
-  }
+  // 6. Attempt fallback Date parsing
+  try {
+    const parsed = new Date(s);
+    if (!isNaN(parsed.getTime()) && parsed.getFullYear() > 1920 && parsed.getFullYear() < 2050) {
+      return parsed.toISOString().split('T')[0];
+    }
+  } catch {}
 
   return s;
 }
@@ -149,7 +222,8 @@ function parseMRZLines(line1: string, line2: string) {
         const yy = parseInt(dobYYMMDD.substring(0, 2), 10);
         const mm = dobYYMMDD.substring(2, 4);
         const dd = dobYYMMDD.substring(4, 6);
-        const fullYear = yy > 45 ? 1900 + yy : 2000 + yy;
+        const currentYY = new Date().getFullYear() % 100;
+        const fullYear = yy > currentYY ? 1900 + yy : 2000 + yy;
         res.dateOfBirth = `${fullYear}-${mm}-${dd}`;
       }
 
@@ -210,13 +284,14 @@ export const POST: APIRoute = async ({ request }) => {
 
     const prompt = `You are the Lead Consular Passport Verification & Biometric OCR Engine for TravlTik.
 Analyze this uploaded passport bio-data page image with 100% precision.
+This can be a passport from ANY country in the world (e.g. India, United States, United Kingdom, Canada, Australia, European Union / Schengen countries, UAE, Singapore, Japan, Nepal, Bangladesh, Philippines, etc.).
 
 Extract:
-1. Surname / Family Name (as written on passport)
-2. Given Name(s) (as written on passport)
-3. Full Name (Format properly: Given Name(s) followed by Surname, e.g. "ARJUN KUMAR SHARMA")
-4. Passport Number (Official document number, e.g. "X1234567")
-5. Nationality (Issuing country name, e.g. "India", "United States", "United Kingdom", etc.)
+1. Surname / Family Name / Nom (as printed on passport)
+2. Given Name(s) / Prénoms (as printed on passport)
+3. Full Name (Format properly: Given Name(s) followed by Surname, e.g. "ARJUN KUMAR SHARMA" or "JOHN EDWARD DOE")
+4. Passport Number / Numéro de passeport (Official document number, e.g. "X1234567")
+5. Nationality (Issuing country full name, e.g. "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", etc.)
 6. Date of Birth (format strictly as YYYY-MM-DD, e.g. "2002-07-15")
 7. Sex (strictly "M" or "F")
 8. Date of Issue (format strictly as YYYY-MM-DD, e.g. "2024-05-20")
@@ -226,8 +301,9 @@ Extract:
     mrzLine2 (starts with passport number and contains dates)
 
 CRITICAL INSTRUCTIONS:
-- Look directly at the printed "Date of Expiry / समाति की तिथि" and "Date of Issue / जारी करने की तिथि" on the document.
-- Convert all dates strictly to YYYY-MM-DD format.
+- Passports from different nations format dates differently (e.g. DD/MM/YYYY, DD MMM YYYY, MM/DD/YYYY, bilingual "15 JUL / JUIL 2024").
+- You MUST standardize ALL extracted dates (Date of Birth, Date of Issue, Date of Expiry) strictly to ISO format: YYYY-MM-DD.
+- Carefully check both the visual inspection text on the passport AND the bottom 2-line Machine Readable Zone (MRZ). The MRZ contains accurate dates in YYMMDD format.
 - Do NOT output placeholder or dummy names. Extract the exact text from the image.
 
 Return ONLY valid JSON matching this schema:

@@ -1749,6 +1749,15 @@ export function AITripPlannerLanding() {
   }, []);
 
   const handleGlobalSearch = () => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('travltik_user');
+      const seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+      const expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+      if (!userStr && !seeker && !expert) {
+        window.location.href = '/login?redirect=/find-experts';
+        return;
+      }
+    }
     const params = new URLSearchParams();
 
     if (activeSearchTab === 'universities') {
@@ -1905,6 +1914,27 @@ export function AITripPlannerLanding() {
     }
   };
 
+  const isUserLoggedIn = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    const travltikUser = localStorage.getItem('travltik_user');
+    return Boolean(
+      (travltikUser && travltikUser !== 'null') ||
+      localStorage.getItem('seeker_email') ||
+      localStorage.getItem('seeker_firstName') ||
+      localStorage.getItem('expert_isLoggedIn') === 'true'
+    );
+  };
+
+  const requireAuthOrRedirect = (targetPath?: string): boolean => {
+    if (typeof window === 'undefined') return false;
+    if (!isUserLoggedIn()) {
+      const dest = targetPath || window.location.pathname + window.location.search || '/';
+      window.location.href = `/login?redirect=${encodeURIComponent(dest)}`;
+      return false;
+    }
+    return true;
+  };
+
   const handlePillClick = (pillId: string, pillLabel: string) => {
     setSelectedPill(pillId);
     let targetPurpose = 'study';
@@ -1918,15 +1948,16 @@ export function AITripPlannerLanding() {
     else if (pillId === 'emergency') targetPurpose = 'visit';
 
     setTravelPurpose(targetPurpose);
-    const dest = journeyDestination && journeyDestination !== 'Country' ? journeyDestination : 'United Kingdom';
+    const dest = journeyDestination && journeyDestination !== 'Country' ? journeyDestination : 'Jordan';
     const pass = passportCountry || 'India';
-    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
+    const targetUrl = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(targetPurpose)}`;
 
-    // Seamlessly navigate to dynamic country visa page
-    window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(targetPurpose)}`;
+    if (!requireAuthOrRedirect(targetUrl)) return;
+    window.location.href = targetUrl;
   };
 
-      const handleViewInDashboard = () => {
+  const handleViewInDashboard = () => {
     autoSaveJourney({
       domestic_country: domesticCountry,
       domestic_state: domesticState,
@@ -1935,12 +1966,7 @@ export function AITripPlannerLanding() {
       domestic_members: domesticMembers
     });
 
-    const isUserLoggedIn = typeof window !== 'undefined' && (
-      Boolean((localStorage.getItem("travltik_user"))) ||
-      Boolean(localStorage.getItem('seeker_email'))
-    );
-
-    if (isUserLoggedIn) {
+    if (isUserLoggedIn()) {
       window.location.href = '/dashboard';
     } else {
       window.location.href = '/login?redirect=/dashboard';
@@ -1948,6 +1974,7 @@ export function AITripPlannerLanding() {
   };
 
   const handleGenerateDomesticItinerary = () => {
+    if (!requireAuthOrRedirect()) return;
     setIsGeneratingDomestic(true);
     autoSaveJourney({
       domestic_country: domesticCountry || 'India',
@@ -1969,21 +1996,30 @@ export function AITripPlannerLanding() {
 
   const handleGeneratePathway = async (e?: React.FormEvent | React.MouseEvent) => {
     if (e) e.preventDefault();
+
+    const targetCountry = (journeyDestination || 'Jordan').trim();
+    const passport = (passportCountry || 'India').trim();
+    let selectedPurpose = (travelPurpose || 'tourism').trim();
+
+    const looking = (serviceLookingFor || '').toLowerCase();
+    const serv = (selectedServiceType || '').toLowerCase();
+    if (looking.includes('study') || serv.includes('student')) selectedPurpose = 'study';
+    else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) selectedPurpose = 'tourism';
+    else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) selectedPurpose = 'work';
+    else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) selectedPurpose = 'pr';
+    else if (looking.includes('business') || serv.includes('business')) selectedPurpose = 'business';
+
+    const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
+    const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
+
+    // Direct Login Required: If not logged in, immediately redirect to login page!
+    if (!requireAuthOrRedirect(destinationUrl)) {
+      return;
+    }
+
     setIsGenerating(true);
 
     try {
-      const targetCountry = (journeyDestination || 'singapore').trim();
-      const passport = (passportCountry || 'india').trim();
-      let selectedPurpose = (travelPurpose || 'tourist').trim();
-
-      const looking = (serviceLookingFor || '').toLowerCase();
-      const serv = (selectedServiceType || '').toLowerCase();
-      if (looking.includes('study') || serv.includes('student')) selectedPurpose = 'study';
-      else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) selectedPurpose = 'tourism';
-      else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) selectedPurpose = 'work';
-      else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) selectedPurpose = 'pr';
-      else if (looking.includes('business') || serv.includes('business')) selectedPurpose = 'business';
-
       setTravelPurpose(selectedPurpose);
       setHasVisaAlready('no');
 
@@ -1998,10 +2034,6 @@ export function AITripPlannerLanding() {
         has_visa: false
       });
 
-      const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'singapore';
-      const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
-
-      // Perform seamless navigation with foolproof fallback
       if (typeof window !== 'undefined') {
         window.location.href = destinationUrl;
       }
@@ -2009,7 +2041,6 @@ export function AITripPlannerLanding() {
       console.error("Navigation error:", error);
       setIsGenerating(false);
     } finally {
-      // Safety unlock timeout in case browser cancels or delays unload
       setTimeout(() => {
         setIsGenerating(false);
       }, 4000);
@@ -2307,7 +2338,10 @@ return (
                 {/* Tab 1: International Services */}
                 <button
                   type="button"
-                  onClick={() => setTravelScopeTab('international')}
+                  onClick={() => {
+                    if (!requireAuthOrRedirect()) return;
+                    setTravelScopeTab('international');
+                  }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
                     travelScopeTab === 'international'
                       ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
@@ -2323,7 +2357,10 @@ return (
                 {/* Tab 2: Domestic Trip Planner */}
                 <button
                   type="button"
-                  onClick={() => setTravelScopeTab('domestic')}
+                  onClick={() => {
+                    if (!requireAuthOrRedirect()) return;
+                    setTravelScopeTab('domestic');
+                  }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'domestic'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
@@ -2338,7 +2375,20 @@ return (
               </div>
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20">
+              <div 
+                onClickCapture={(e) => {
+                  if (!isUserLoggedIn()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const targetCountry = (journeyDestination || 'Jordan').trim();
+                    const passport = (passportCountry || 'India').trim();
+                    const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
+                    const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent((travelPurpose || 'tourism').toLowerCase())}`;
+                    requireAuthOrRedirect(destinationUrl);
+                  }
+                }}
+                className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20"
+              >
                 
                 {/* TAB 1: INTERNATIONAL SERVICES FIELDS */}
                 {travelScopeTab === 'international' && (

@@ -1646,17 +1646,11 @@ export function UserDashboard() {
                         return (
                             <div className="space-y-7 animate-fade-up">
                                 {/* Top Header */}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
-                                                AI Consular Vault
-                                            </span>
-                                            <span className="text-xs font-bold text-slate-400">• 256-bit AES Encrypted</span>
-                                        </div>
-                                        <h2 className="text-2xl font-black text-slate-900 mt-1">Travel Profile &amp; Document Readiness Vault</h2>
+                                        <h2 className="text-2xl font-black text-slate-900">Document Vault &amp; Checklist</h2>
                                         <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Manage universal travel credentials and destination-specific statutory visa checklists with live AI scanning &amp; verification.
+                                            Upload documents for instant AI verification and consular compliance.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -1667,35 +1661,27 @@ export function UserDashboard() {
                                 </div>
 
                                 {/* 1. TRAVEL ROUTE & PROFILE SELECTOR CARD */}
-                                <div className="bg-white rounded-3xl border-2 border-emerald-200/80 p-5 sm:p-6 shadow-sm space-y-5">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                                        <div>
-                                            <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                                                <Globe className="w-4 h-4 text-[#00A86B]" />
-                                                Create Travel Profile &amp; Generate Statutory Checklist
-                                            </h3>
-                                            <p className="text-xs text-slate-500 mt-0.5">
-                                                Select your citizenship, target country, and journey purpose to instantly populate the official embassy checklist.
-                                            </p>
-                                        </div>
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold self-start sm:self-auto">
-                                            <Sparkles className="w-3.5 h-3.5 text-[#00A86B]" /> Active Profile: {destFlag} {normalizedDest}
+                                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+                                    <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                                        <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                                            <Globe className="w-4 h-4 text-[#00A86B]" />
+                                            Trip Profile
+                                        </h3>
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold">
+                                            <Sparkles className="w-3.5 h-3.5 text-[#00A86B]" /> Active: {destFlag} {normalizedDest}
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         {/* Going From (Passport Country) */}
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-black text-slate-700 flex items-center gap-1.5">
-                                                <span>🛂</span> Passport Country (Going From)
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-bold text-slate-700">
+                                                Passport Country
                                             </label>
                                             <select
                                                 value={normalizedPass}
-                                                onChange={(e) => {
-                                                    const pass = e.target.value;
-                                                    setSelectedPassport(pass);
-                                                }}
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
+                                                onChange={(e) => setSelectedPassport(e.target.value)}
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] outline-none"
                                             >
                                                 {dashboardPassportOptions.map(p => (
                                                     <option key={p.value} value={p.value}>
@@ -1706,17 +1692,14 @@ export function UserDashboard() {
                                         </div>
 
                                         {/* Going To (Destination) */}
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-black text-slate-700 flex items-center gap-1.5">
-                                                <span>🎯</span> Destination Country (Going To)
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-bold text-slate-700">
+                                                Destination Country
                                             </label>
                                             <select
                                                 value={normalizedDest}
-                                                onChange={(e) => {
-                                                    const dest = e.target.value;
-                                                    setSelectedDestination(dest);
-                                                }}
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
+                                                onChange={(e) => setSelectedDestination(e.target.value)}
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] outline-none"
                                             >
                                                 {dashboardDestinationOptions.map(d => (
                                                     <option key={d.value} value={d.value}>
@@ -1727,17 +1710,14 @@ export function UserDashboard() {
                                         </div>
 
                                         {/* Purpose */}
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-black text-slate-700 flex items-center gap-1.5">
-                                                <span>🧭</span> Travel Purpose
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-bold text-slate-700">
+                                                Travel Purpose
                                             </label>
                                             <select
                                                 value={selectedPurpose}
-                                                onChange={(e) => {
-                                                    const purp = e.target.value;
-                                                    setSelectedPurpose(purp);
-                                                }}
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
+                                                onChange={(e) => setSelectedPurpose(e.target.value)}
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] outline-none"
                                             >
                                                 {dashboardPurposeOptions.map(pur => (
                                                     <option key={pur.value} value={pur.value}>
@@ -1748,16 +1728,13 @@ export function UserDashboard() {
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                                        <span className="text-[11px] text-slate-500 font-medium">
-                                            Trip profile automatically saves to your dashboard and updates Active Visa Cases.
-                                        </span>
+                                    <div className="flex justify-end pt-1">
                                         <button
                                             type="button"
                                             onClick={() => handleCreateOrSwitchTripProfile(selectedDestination, selectedPassport, selectedPurpose)}
-                                            className="px-5 py-2.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md flex items-center gap-2 cursor-pointer active:scale-95 transition-all"
+                                            className="px-4 py-2 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all"
                                         >
-                                            <span>Update Travel Profile &amp; Checklist</span>
+                                            <span>Update Profile</span>
                                             <ArrowRight className="w-3.5 h-3.5 text-white" />
                                         </button>
                                     </div>
@@ -1765,82 +1742,71 @@ export function UserDashboard() {
 
                                 {/* Confirmation Toast Banner */}
                                 {profileUpdatedToast && (
-                                    <div className="bg-emerald-600 text-white px-5 py-3.5 rounded-2xl text-xs font-black flex items-center justify-between shadow-lg animate-fade-up">
+                                    <div className="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black flex items-center justify-between shadow-md animate-fade-up">
                                         <div className="flex items-center gap-2">
                                             <CheckCircle2 className="w-4 h-4 text-emerald-200" />
-                                            <span>✓ Travel Profile &amp; Statutory Checklist updated to {normalizedDest} ({selectedPurpose})!</span>
+                                            <span>✓ Profile updated to {normalizedDest} ({selectedPurpose})</span>
                                         </div>
-                                        <span className="text-[10px] bg-emerald-700/80 px-2 py-0.5 rounded-md font-extrabold uppercase tracking-wider">Saved to Dashboard</span>
+                                        <span className="text-[10px] bg-emerald-700/80 px-2 py-0.5 rounded-md font-extrabold">Active</span>
                                     </div>
                                 )}
 
                                 {/* 2. ACTIVE TRIP BANNER WITH READINESS PROGRESS GAUGE */}
-                                <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl relative overflow-hidden border border-slate-800 space-y-4">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                        <div className="space-y-2 flex-1">
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
-                                                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                                                    Active Profile • {selectedPurpose}
-                                                </span>
-                                                <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold">
-                                                    Passport: {normalizedPass}
-                                                </span>
-                                            </div>
-
-                                            <h3 className="text-xl sm:text-2xl font-black text-white">
-                                                {destFlag} Trip to {normalizedDest} • {currentDestObj?.defaultVisa || 'Consular Visa Application'}
-                                            </h3>
-
-                                            <p className="text-xs text-slate-300 max-w-xl">
-                                                Statutory document requirements generated according to official consular directives for {normalizedDest}. Complete upload &amp; AI scans to achieve 100% travel readiness.
-                                            </p>
-                                        </div>
-
-                                        {/* Readiness Score Progress Meter */}
-                                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 min-w-[220px] text-center space-y-2 shrink-0">
-                                            <span className="text-[11px] font-black uppercase tracking-wider text-emerald-300 block">
-                                                Travel Readiness Score
+                                <div className="bg-slate-900 rounded-2xl p-5 text-white shadow-md border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-5">
+                                    <div className="space-y-1.5 flex-1">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
+                                                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                                                {selectedPurpose}
                                             </span>
-                                            <div className="text-3xl sm:text-4xl font-black text-white flex items-center justify-center gap-1">
-                                                <span>{readinessScore}%</span>
-                                                <span className="text-sm text-emerald-400 font-extrabold">Ready</span>
-                                            </div>
-                                            <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden mt-2">
-                                                <div
-                                                    className="bg-emerald-400 h-full rounded-full transition-all duration-500 ease-out"
-                                                    style={{ width: `${readinessScore}%` }}
-                                                />
-                                            </div>
-                                            <span className="text-[10px] text-slate-300 font-medium block">
-                                                {verifiedItemsCount} of {totalChecklistItems} documents verified
+                                            <span className="px-2 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold">
+                                                Passport: {normalizedPass}
                                             </span>
                                         </div>
+
+                                        <h3 className="text-lg sm:text-xl font-black text-white">
+                                            {destFlag} Trip to {normalizedDest} • {currentDestObj?.defaultVisa || 'Consular Visa Application'}
+                                        </h3>
+                                    </div>
+
+                                    {/* Readiness Score Progress Meter */}
+                                    <div className="bg-white/10 rounded-xl p-3.5 border border-white/10 min-w-[180px] text-center space-y-1 shrink-0">
+                                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-300 block">
+                                            Readiness Score
+                                        </span>
+                                        <div className="text-2xl font-black text-white flex items-center justify-center gap-1">
+                                            <span>{readinessScore}%</span>
+                                            <span className="text-xs text-emerald-400 font-extrabold">Ready</span>
+                                        </div>
+                                        <div className="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+                                            <div
+                                                className="bg-emerald-400 h-full rounded-full transition-all duration-500"
+                                                style={{ width: `${readinessScore}%` }}
+                                            />
+                                        </div>
+                                        <span className="text-[10px] text-slate-300 font-medium block">
+                                            {verifiedItemsCount} of {totalChecklistItems} verified
+                                        </span>
                                     </div>
                                 </div>
 
                                 {/* 3. SECTION A: GENERALLY IMPORTANT TRAVEL DOCUMENTS (MANDATORY GLOBAL VAULT) */}
-                                <div className="space-y-4">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
-                                        <div>
-                                            <div className="flex items-center gap-2">
-                                                <h3 className="text-lg font-black text-slate-900">
-                                                    1. Generally Important Travel Documents
-                                                </h3>
-                                                <span className="px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black">
-                                                    Universal Travel Assets (3)
-                                                </span>
-                                            </div>
-                                            <p className="text-xs text-slate-500 mt-0.5">
-                                                Core international travel credentials required across all visa authorities, border checkpoints, and consular interviews.
-                                            </p>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-sm font-black text-slate-900">
+                                                1. General Travel Documents
+                                            </h3>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                                Universal (3)
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-xl self-start sm:self-auto">
-                                            {globalTravelDocuments.filter(d => vaultChecklistState[d.key]?.verified).length}/3 Ready
+                                        <span className="text-xs font-bold text-slate-500">
+                                            {globalTravelDocuments.filter(d => vaultChecklistState[d.key]?.verified).length}/3
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                                         {globalTravelDocuments.map((doc) => {
                                             const itemData = vaultChecklistState[doc.key];
                                             const isVerified = Boolean(itemData?.verified);
@@ -1850,48 +1816,38 @@ export function UserDashboard() {
                                             return (
                                                 <div
                                                     key={doc.key}
-                                                    className={`p-5 rounded-3xl border transition-all duration-200 flex flex-col justify-between space-y-4 ${
+                                                    className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
                                                         isVerified
-                                                            ? 'bg-emerald-50/50 border-emerald-300 shadow-xs'
+                                                            ? 'bg-emerald-50/40 border-emerald-200 shadow-2xs'
                                                             : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
                                                     }`}
                                                 >
-                                                    <div className="space-y-3">
+                                                    <div className="space-y-2">
                                                         <div className="flex items-center justify-between">
-                                                            <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-xl shadow-2xs">
+                                                            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-base">
                                                                 {doc.icon}
                                                             </div>
                                                             {isVerified ? (
-                                                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
-                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> OCR Verified ({itemData.score || 96}%)
+                                                                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
+                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> Verified
                                                                 </span>
                                                             ) : (
-                                                                <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
-                                                                    Pending Upload
+                                                                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
+                                                                    Required
                                                                 </span>
                                                             )}
                                                         </div>
 
-                                                        <div>
-                                                            <h4 className="text-xs font-black text-slate-900 leading-snug">
-                                                                {doc.title}
-                                                            </h4>
-                                                            <p className="text-[11px] text-slate-500 font-medium mt-1 leading-relaxed">
-                                                                {doc.description}
-                                                            </p>
-                                                        </div>
+                                                        <h4 className="text-xs font-black text-slate-900 leading-snug">
+                                                            {doc.title}
+                                                        </h4>
 
                                                         {isVerified && itemData && (
-                                                            <div className="bg-white rounded-2xl p-3 border border-emerald-200 text-xs space-y-1">
-                                                                <div className="flex items-center justify-between font-bold text-slate-800">
-                                                                    <span className="truncate max-w-[140px] text-[11px]">{itemData.fileName}</span>
-                                                                    <span className="text-[10px] text-slate-400">{itemData.size}</span>
+                                                            <div className="bg-white rounded-xl p-2 border border-emerald-100 text-[10px] space-y-0.5">
+                                                                <div className="flex items-center justify-between font-bold text-slate-700">
+                                                                    <span className="truncate max-w-[130px]">{itemData.fileName}</span>
+                                                                    <span className="text-slate-400">{itemData.size}</span>
                                                                 </div>
-                                                                {itemData.summary && (
-                                                                    <p className="text-[10px] text-emerald-800 font-medium leading-tight">
-                                                                        ✓ {itemData.summary}
-                                                                    </p>
-                                                                )}
                                                             </div>
                                                         )}
                                                     </div>
@@ -1910,26 +1866,26 @@ export function UserDashboard() {
                                                         />
                                                         <label
                                                             htmlFor={inputId}
-                                                            className={`w-full py-2.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
+                                                            className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
                                                                 isScanning
                                                                     ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
                                                                     : isVerified
-                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
-                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
+                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white'
                                                             }`}
                                                         >
                                                             {isScanning ? (
                                                                 <span className="flex items-center gap-1.5">
-                                                                    <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
-                                                                    Scanning with AI OCR...
+                                                                    <div className="w-3 h-3 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
+                                                                    Scanning...
                                                                 </span>
                                                             ) : isVerified ? (
                                                                 <>
-                                                                    <RefreshCw className="w-3 h-3" /> Re-scan / Replace File
+                                                                    <RefreshCw className="w-3 h-3" /> Re-upload
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan Document
+                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan
                                                                 </>
                                                             )}
                                                         </label>
@@ -1941,27 +1897,22 @@ export function UserDashboard() {
                                 </div>
 
                                 {/* 4. SECTION B: CURRENT TRAVEL READINESS VISA DOCUMENTS (DESTINATION SPECIFIC CHECKLIST) */}
-                                <div className="space-y-4">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
-                                        <div>
-                                            <div className="flex items-center gap-2">
-                                                <h3 className="text-lg font-black text-slate-900">
-                                                    2. Current Travel Readiness Visa Documents
-                                                </h3>
-                                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
-                                                    {selectedDestination} • {selectedPurpose}
-                                                </span>
-                                            </div>
-                                            <p className="text-xs text-slate-500 mt-0.5">
-                                                Official statutory visa checklist generated for your journey to <strong>{selectedDestination}</strong> matching embassy guidelines.
-                                            </p>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-sm font-black text-slate-900">
+                                                2. Visa Checklist • {normalizedDest}
+                                            </h3>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                {selectedPurpose}
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-xl self-start sm:self-auto">
-                                            {destChecklist.filter(d => vaultChecklistState[d.key]?.verified).length}/{destChecklist.length} Ready
+                                        <span className="text-xs font-bold text-slate-500">
+                                            {destChecklist.filter(d => vaultChecklistState[d.key]?.verified).length}/{destChecklist.length}
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                                         {destChecklist.map((doc) => {
                                             const itemData = vaultChecklistState[doc.key];
                                             const isVerified = Boolean(itemData?.verified);
@@ -1971,20 +1922,20 @@ export function UserDashboard() {
                                             return (
                                                 <div
                                                     key={doc.key}
-                                                    className={`p-5 rounded-3xl border transition-all duration-200 flex flex-col justify-between space-y-4 ${
+                                                    className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
                                                         isVerified
-                                                            ? 'bg-emerald-50/50 border-emerald-300 shadow-xs'
+                                                            ? 'bg-emerald-50/40 border-emerald-200 shadow-2xs'
                                                             : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
                                                     }`}
                                                 >
-                                                    <div className="space-y-3">
+                                                    <div className="space-y-2">
                                                         <div className="flex items-center justify-between">
-                                                            <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-xl shadow-2xs">
+                                                            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-base">
                                                                 {doc.icon}
                                                             </div>
                                                             {isVerified ? (
-                                                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
-                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> OCR Verified ({itemData.score || 96}%)
+                                                                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
+                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> Verified
                                                                 </span>
                                                             ) : doc.mandatory ? (
                                                                 <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold border border-rose-200">
@@ -1992,31 +1943,21 @@ export function UserDashboard() {
                                                                 </span>
                                                             ) : (
                                                                 <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
-                                                                    Recommended
+                                                                    Optional
                                                                 </span>
                                                             )}
                                                         </div>
 
-                                                        <div>
-                                                            <h4 className="text-xs font-black text-slate-900 leading-snug">
-                                                                {doc.title}
-                                                            </h4>
-                                                            <p className="text-[11px] text-slate-500 font-medium mt-1 leading-relaxed">
-                                                                {doc.description}
-                                                            </p>
-                                                        </div>
+                                                        <h4 className="text-xs font-black text-slate-900 leading-snug">
+                                                            {doc.title}
+                                                        </h4>
 
                                                         {isVerified && itemData && (
-                                                            <div className="bg-white rounded-2xl p-3 border border-emerald-200 text-xs space-y-1">
-                                                                <div className="flex items-center justify-between font-bold text-slate-800">
-                                                                    <span className="truncate max-w-[140px] text-[11px]">{itemData.fileName}</span>
-                                                                    <span className="text-[10px] text-slate-400">{itemData.size}</span>
+                                                            <div className="bg-white rounded-xl p-2 border border-emerald-100 text-[10px] space-y-0.5">
+                                                                <div className="flex items-center justify-between font-bold text-slate-700">
+                                                                    <span className="truncate max-w-[130px]">{itemData.fileName}</span>
+                                                                    <span className="text-slate-400">{itemData.size}</span>
                                                                 </div>
-                                                                {itemData.summary && (
-                                                                    <p className="text-[10px] text-emerald-800 font-medium leading-tight">
-                                                                        ✓ {itemData.summary}
-                                                                    </p>
-                                                                )}
                                                             </div>
                                                         )}
                                                     </div>
@@ -2035,26 +1976,26 @@ export function UserDashboard() {
                                                         />
                                                         <label
                                                             htmlFor={inputId}
-                                                            className={`w-full py-2.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
+                                                            className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
                                                                 isScanning
                                                                     ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
                                                                     : isVerified
-                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
-                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
+                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white'
                                                             }`}
                                                         >
                                                             {isScanning ? (
                                                                 <span className="flex items-center gap-1.5">
-                                                                    <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
-                                                                    Scanning with AI OCR...
+                                                                    <div className="w-3 h-3 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
+                                                                    Scanning...
                                                                 </span>
                                                             ) : isVerified ? (
                                                                 <>
-                                                                    <RefreshCw className="w-3 h-3" /> Re-scan / Replace File
+                                                                    <RefreshCw className="w-3 h-3" /> Re-upload
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan Document
+                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan
                                                                 </>
                                                             )}
                                                         </label>
@@ -2066,17 +2007,12 @@ export function UserDashboard() {
                                 </div>
 
                                 {/* 5. SECTION C: ADDITIONAL STORED DOCUMENTS IN VAULT */}
-                                <div className="space-y-4 pt-4 border-t border-slate-200">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                        <div>
-                                            <h3 className="text-base font-black text-slate-900">
-                                                3. Additional Custom Files &amp; User Uploads ({documents.length})
-                                            </h3>
-                                            <p className="text-xs text-slate-500">
-                                                Store additional unlisted records, cover letters, or civil certificates in your encrypted cloud vault.
-                                            </p>
-                                        </div>
-                                        <label className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 cursor-pointer self-start sm:self-auto active:scale-95 transition-all">
+                                <div className="space-y-3 pt-3 border-t border-slate-200">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-black text-slate-900">
+                                            3. Extra Documents ({documents.length})
+                                        </h3>
+                                        <label className="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all">
                                             {isScanningVaultDoc ? (
                                                 <span className="flex items-center gap-1.5">
                                                     <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

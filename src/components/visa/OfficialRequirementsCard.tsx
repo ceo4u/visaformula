@@ -507,7 +507,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Validity</span>
                 <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
-                  {data.validity || data.validity_and_stay?.visa_validity || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? '60 Days' : '90 days')}
+                  {data.validity || data.validity_and_stay?.visa_validity || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? '60 Days' : cleanTo.toLowerCase().includes('jordan') ? '30 Days' : '90 days')}
                 </h4>
               </div>
             </div>
@@ -518,7 +518,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)' : 'Up to 6 Months (180 Days)')}
+                  {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)' : cleanTo.toLowerCase().includes('jordan') ? '30 Days upon Entry (Extendable up to 3 Months)' : 'Up to 30 to 90 Days')}
                 </h4>
               </div>
             </div>
@@ -529,7 +529,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  {data.entry_type || data.validity_and_stay?.entry_type || 'Multiple Entry'}
+                  {data.entry_type || data.validity_and_stay?.entry_type || (cleanTo.toLowerCase().includes('jordan') ? 'Single Entry' : 'Multiple Entry')}
                 </h4>
               </div>
             </div>

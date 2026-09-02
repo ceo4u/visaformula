@@ -97,6 +97,7 @@ export function cleanCountryName(str: string): string {
   if (sLow === 'sg' || sLow === 'singapore' || sLow === 'singaporean') return 'Singapore';
   if (sLow === 'th' || sLow === 'thailand' || sLow === 'thai') return 'Thailand';
   if (sLow === 'jp' || sLow === 'japan' || sLow === 'japanese') return 'Japan';
+  if (sLow === 'jo' || sLow === 'jordan' || sLow === 'jordanian') return 'Jordan';
   
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
@@ -167,6 +168,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isEthiopia = isDestination(toLower, 'ethiopia', ['addis ababa', 'ethiopian', 'ethiopia evisa']);
   const isDenmark = isDestination(toLower, 'denmark', ['copenhagen', 'danish', 'aarhus', 'odense']);
   const isYemen = isDestination(toLower, 'yemen', ['sanaa', "sana'a", 'aden', 'yemeni', 'al mukalla']);
+  const isJordan = isDestination(toLower, 'jordan', ['hashemite kingdom of jordan', 'amman', 'petra', 'aqaba', 'jordanian']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -1388,6 +1390,96 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         decision_time: 'Standard: 3 to 5 business days.',
         max_extension: 'Extendable online via NPRA website while in Bahrain.',
         center_notes: 'Available at Bahrain International Airport (BAH).'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // JORDAN PATHWAYS (Official Visa on Arrival / MOI eVisa & Jordan Pass)
+  // ═══════════════════════════════════════════════════════════════
+  if (isJordan) {
+    return {
+      passport_country: from,
+      destination_country: 'Jordan',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Jordan Tourist Visa on Arrival (VoA) / Ministry of Interior (MOI) Online E-Service',
+      source_url: 'https://eservices.moi.gov.jo',
+      official_source_name: 'Ministry of Interior (MOI), The Hashemite Kingdom of Jordan & Jordan Tourism Board (Jordan Pass)',
+      processing_time: 'Instant on Arrival at Queen Alia Airport (AMM) / 24–48 Hours via MOI Online Portal',
+      validity: '30 Days from Date of Entry (or 2 Months via MOI E-Services)',
+      stay_duration: '30 Days upon Entry (Extendable up to 3 Months at local police stations in Jordan)',
+      entry_type: 'Single Entry',
+      validity_and_stay: {
+        visa_validity: '30 Days from arrival / 2 Months (MOI E-Service)',
+        max_stay_per_entry: '30 Days upon entry (Extendable up to 3 Months)',
+        entry_type: 'Single Entry'
+      },
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Original passport valid for a minimum of 6 months beyond the date of arrival in Jordan with at least 2 blank visa pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Jordan Pass QR Code (Recommended) or Visa Fee',
+          description: 'Official digital Jordan Pass (jordanpass.jo) purchased prior to travel. Waives the 40 JOD visa fee if staying 3+ consecutive nights (4 days) and includes entry to Petra & 40+ attractions.',
+          is_mandatory: false
+        },
+        {
+          title: 'Confirmed Return / Onward Flight Ticket',
+          description: 'Verifiable round-trip air ticket arriving and departing from Queen Alia International Airport, Amman (AMM).',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Accommodation Booking / Travel Itinerary',
+          description: 'Confirmed hotel reservations for all nights of stay in Jordan (Amman, Petra/Wadi Musa, Dead Sea, Wadi Rum).',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Basic Travel Subsistence Funds',
+          minimum_balance_or_amount: 'Approx. 500 – 1,000 USD (or equivalent in international credit/debit cards or cash)',
+          time_frame: 'Carried during travel',
+          notes: 'Standard airport immigration spot-check verifying sufficient funds for your holiday stay in Jordan.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'No In-Person VAC or Physical Biometrics',
+          details: 'Jordan does NOT require Indian tourists to visit VFS Global, TLScontact, or BLS. There is no physical biometric appointment, fingerprinting, or consular interview required.'
+        },
+        {
+          category: 'The Jordan Pass Visa Fee Waiver',
+          details: 'Purchasing a Jordan Pass (starting at 70 JOD / approx. ₹8,200 INR at jordanpass.jo) before arrival completely waives the 40 JOD entry visa fee if staying at least 3 consecutive nights (4 days), and covers entrance tickets to 40+ historical sites including Petra (worth 50 JOD alone).'
+        },
+        {
+          category: 'Visa on Arrival (VoA) at AMM Airport',
+          details: 'Eligible Indian tourists with confirmed return tickets and hotel bookings can obtain an official Visa on Arrival directly at Queen Alia International Airport (AMM) in Amman.'
+        },
+        {
+          category: 'Ministry of Interior (MOI) Online E-Service',
+          details: 'Alternatively, travelers can apply in advance for an electronic entry clearance directly on the official Jordan MOI portal (eservices.moi.gov.jo) within 24 to 48 hours.'
+        }
+      ],
+      how_to_apply: [
+        '1️⃣ (Recommended Strategy): Purchase your Jordan Pass online at jordanpass.jo (starts at 70 JOD) at least 3 days before travel to waive the 40 JOD entry visa fee and cover Petra entrance tickets.',
+        '2️⃣ Ensure your passport is valid for at least 6 months with confirmed round-trip flights to Amman (AMM) and hotel reservations.',
+        '3️⃣ (Option A - Visa on Arrival): Fly directly to Queen Alia International Airport (AMM). Proceed to the Visa on Arrival immigration desk, present your passport and Jordan Pass QR code to have the 40 JOD fee 100% waived (or pay 40 JOD by card/cash if without Jordan Pass).',
+        '4️⃣ (Option B - Online MOI E-Service): Alternatively, submit your travel details in advance on the official Jordan MOI portal (eservices.moi.gov.jo) and receive your electronic entry permit.',
+        '5️⃣ Receive your entry stamp granting an initial stay of 30 days. If staying longer, visit any local Jordan police station before day 30 for an extension of up to 3 months for free.'
+      ],
+      costs: {
+        visa_fee: '40 JOD (approx. ₹4,700 INR) on Arrival — OR 0 JOD (100% Waived with Jordan Pass)',
+        service_fee: '0 JOD (No VFS Global / VAC Fees)',
+        total_fee: '0 JOD – 40 JOD (or 70 JOD for Jordan Pass including Petra & 40+ Attractions)',
+        notes: 'Standard single-entry visa fee on arrival is fixed at 40 JOD (approx. ₹4,700 INR). If you stay at least 3 consecutive nights (4 days) and purchase the Jordan Pass (starting at 70 JOD / approx. ₹8,200 INR) prior to arrival, the entire 40 JOD entry visa fee is 100% waived.'
+      },
+      processing_and_timing: {
+        apply_window: 'Purchase Jordan Pass 3 to 14 days before flying, or apply on MOI portal 7 days before departure.',
+        decision_time: 'Instant on Arrival at Queen Alia International Airport (AMM) / 24–48 Hours via MOI portal.',
+        max_extension: 'Standard 30-day stay can be extended up to 3 months (90 days) free of charge at any local police station in Jordan.',
+        center_notes: 'No VAC visit required. Entry available at Queen Alia International Airport (AMM), King Hussein International Airport Aqaba (AQJ), and Sheikh Hussein border crossing.'
       }
     };
   }
@@ -4801,7 +4893,8 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'malta', aliases: ['valletta'] },
       { primary: 'bulgaria', aliases: ['sofia'] },
       { primary: 'croatia', aliases: ['zagreb', 'dubrovnik'] },
-      { primary: 'ethiopia', aliases: ['addis ababa', 'ethiopian', 'ethiopia evisa'] }
+      { primary: 'ethiopia', aliases: ['addis ababa', 'ethiopian', 'ethiopia evisa'] },
+      { primary: 'jordan', aliases: ['hashemite kingdom of jordan', 'amman', 'petra', 'aqaba', 'jordanian'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));

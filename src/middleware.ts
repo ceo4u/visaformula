@@ -26,12 +26,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://cdn.jsdelivr.net https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.googleapis.com; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://checkout.razorpay.com https://cdn.jsdelivr.net https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.googleapis.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.cdnfonts.com; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' data: https://fonts.gstatic.com https://fonts.cdnfonts.com; " +
     "connect-src 'self' https: wss:; " +
-    "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://accounts.google.com https://visaformula-auth.firebaseapp.com https://*.firebaseapp.com;"
+    "frame-src 'self' https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://accounts.google.com https://visaformula-auth.firebaseapp.com https://*.firebaseapp.com;"
   );
 
   return response;

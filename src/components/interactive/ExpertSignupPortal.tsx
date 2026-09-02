@@ -6,6 +6,7 @@ import {
   Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown, Edit2, Eye, EyeOff
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
+import { TurnstileWidget } from "../common/TurnstileWidget";
 
 // ─── Custom Dropdown (no browser-blue) ───────────────────────────────────────
 interface CustomSelectProps {
@@ -218,12 +219,14 @@ function ExpertSignupPortalContent() {
     return () => clearInterval(timer);
   }, [resendCooldown]);
 
+  const [turnstileToken, setTurnstileToken] = useState("");
+
   // Google OAuth Signup for Expert / Consultant
   const handleGoogleSignup = async () => {
     setGoogleLoading(true);
     setValidationError("");
     try {
-      const res = await signInWithGoogle('expert', 'signup');
+      const res = await signInWithGoogle('expert', 'signup', turnstileToken);
       if (res && res.redirect) {
         window.location.href = res.redirect;
         return;
@@ -453,8 +456,12 @@ function ExpertSignupPortalContent() {
         // Complete Expert DB Registration
         fetch("/api/register/expert", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            ...(turnstileToken ? { "x-turnstile-token": turnstileToken } : {})
+          },
           body: JSON.stringify({
+            turnstileToken,
             business_name: businessName || `${firstName} ${lastName}`.trim(),
             email: emailAddress,
             password: password,
@@ -575,6 +582,14 @@ function ExpertSignupPortalContent() {
                   )}
                   <span>{googleLoading ? "Signing in with Google..." : "Continue with Google"}</span>
                 </button>
+
+                {/* Cloudflare Turnstile Bot Protection */}
+                <TurnstileWidget
+                  onSuccess={(t) => setTurnstileToken(t)}
+                  onError={() => setTurnstileToken("")}
+                  onExpire={() => setTurnstileToken("")}
+                  theme="light"
+                />
               </div>
 
               <div className="relative flex items-center justify-center">
@@ -1421,6 +1436,14 @@ function ExpertSignupPortalContent() {
                   </button>
                 )}
               </div>
+
+              {/* Cloudflare Turnstile Bot Protection */}
+              <TurnstileWidget
+                onSuccess={(t) => setTurnstileToken(t)}
+                onError={() => setTurnstileToken("")}
+                onExpire={() => setTurnstileToken("")}
+                theme="light"
+              />
 
               <button
                 type="button"

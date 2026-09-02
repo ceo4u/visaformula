@@ -2,6 +2,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
 import { sanitizeCurrencyCodes } from '../../../lib/country-matching';
+import { verifyTurnstileToken } from '../../../lib/verify-turnstile';
 import fs from 'fs';
 import path from 'path';
 
@@ -4724,6 +4725,20 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const turnstileToken = body.turnstileToken || body.token || tokenHeader;
+
+    // Verify Cloudflare Turnstile token
+    if (turnstileToken) {
+      const isHuman = await verifyTurnstileToken(turnstileToken, request);
+      if (!isHuman) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Security validation failed. Human verification required.' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
     const rawFrom = body.fromCountry || body.passportCountry || 'India';
     const rawTo = body.toCountry || body.destinationCountry || 'Greece';
     const purpose = body.purpose || 'Tourism / Vacation';

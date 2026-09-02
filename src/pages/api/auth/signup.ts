@@ -1,8 +1,20 @@
 import type { APIRoute } from 'astro';
+import { verifyTurnstileToken } from '../../../lib/verify-turnstile';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const turnstileToken = body.turnstileToken || tokenHeader;
+
+    const isHuman = await verifyTurnstileToken(turnstileToken, request);
+    if (!isHuman) {
+      return new Response(
+        JSON.stringify({ error: 'Security validation failed. Human verification required.' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { email, password, role } = body;
 
     // 1. Validation

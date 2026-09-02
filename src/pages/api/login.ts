@@ -1,11 +1,25 @@
 import type { APIRoute } from 'astro';
 import { loginUser, createSession } from '../../backend/auth';
+import { verifyTurnstileToken } from '../../lib/verify-turnstile';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const { email, password, turnstileToken } = body;
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const cfToken = turnstileToken || tokenHeader;
+
+    // Verify Cloudflare Turnstile token
+    const isHuman = await verifyTurnstileToken(cfToken, request);
+    if (!isHuman) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Security validation failed. Human verification required.' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     if (!email || !password) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email and password are required.' }), {
         status: 400,

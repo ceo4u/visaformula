@@ -4,6 +4,7 @@ import {
     Sparkles, ShieldCheck, GraduationCap, Briefcase, Plane, Home, X, Globe, User, Phone, MapPin, Edit2 
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
+import { TurnstileWidget } from "../common/TurnstileWidget";
 
 const goals = [
     { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
@@ -81,6 +82,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // Google SSO States
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
+    const [turnstileToken, setTurnstileToken] = useState("");
 
     // Email Edit & Dev Helper States
     const [isEditingEmail, setIsEditingEmail] = useState(false);
@@ -113,7 +115,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google Auth...");
         try {
-            const res = await signInWithGoogle('seeker', activeTab);
+            const res = await signInWithGoogle('seeker', activeTab, turnstileToken);
             setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
             if (res && res.redirect) {
                 window.location.href = res.redirect;
@@ -143,7 +145,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setLoginError("");
         setLoginLoading(true);
         try {
-            await signIn(loginEmail, loginPassword);
+            await signIn(loginEmail, loginPassword, turnstileToken);
             const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
             if (userStr) {
                 try {
@@ -223,8 +225,12 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         try {
             const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    ...(turnstileToken ? { "x-turnstile-token": turnstileToken } : {})
+                },
                 body: JSON.stringify({
+                    turnstileToken,
                     first_name: firstName,
                     last_name: lastName,
                     email: signupEmail,
@@ -246,14 +252,21 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 })
             });
             
-            if (response.ok) {
-                const data = await response.json();
-                if (data.user && typeof window !== "undefined") {
-                    localStorage.setItem("travltik_user", JSON.stringify(data.user));
-                }
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                setSignupError(errData.message || errData.error || "Registration failed. Please check your details.");
+                setSignupLoading(false);
+                return;
             }
-        } catch (err) {
-            console.warn("Fallback to local simulation mode.", err);
+
+            const data = await response.json();
+            if (data.user && typeof window !== "undefined") {
+                localStorage.setItem("travltik_user", JSON.stringify(data.user));
+            }
+        } catch (err: any) {
+            setSignupError(err?.message || "Registration request failed.");
+            setSignupLoading(false);
+            return;
         }
 
         // Dispatch Welcome Email
@@ -484,6 +497,14 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Cloudflare Turnstile Bot Protection */}
+                            <TurnstileWidget
+                                onSuccess={(t) => setTurnstileToken(t)}
+                                onError={() => setTurnstileToken("")}
+                                onExpire={() => setTurnstileToken("")}
+                                theme="light"
+                            />
 
                             <button
                                 type="submit"
@@ -827,6 +848,14 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     {signupError}
                                 </div>
                             )}
+
+                            {/* Cloudflare Turnstile Bot Protection */}
+                            <TurnstileWidget
+                                onSuccess={(t) => setTurnstileToken(t)}
+                                onError={() => setTurnstileToken("")}
+                                onExpire={() => setTurnstileToken("")}
+                                theme="light"
+                            />
 
                             {/* 7. Submit Action Button */}
                             <button

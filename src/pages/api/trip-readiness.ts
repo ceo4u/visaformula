@@ -2,6 +2,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
 import { getPool, runMigrations } from '../../backend/db';
+import { verifyTurnstileToken } from '../../lib/verify-turnstile';
 import fs from 'fs';
 import path from 'path';
 
@@ -90,6 +91,21 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3, initial
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const turnstileToken = body.turnstileToken || body.token || tokenHeader;
+
+    // Verify Cloudflare Turnstile token
+    const isHuman = await verifyTurnstileToken(turnstileToken, request);
+    if (!isHuman) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Security validation failed. Human verification required.'
+        }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const passport_country = body.passport_country || body.passportCountry || body.fromCountry || body.from;
     const destination = body.destination || body.destination_country || body.toCountry || body.to;
     const purpose = body.purpose || body.travel_purpose || body.purpose_of_visit || 'Tourism / Vacation';

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
+import { TurnstileWidget } from "../common/TurnstileWidget";
 
 function LoginPortalContent() {
     const { signIn, signInWithGoogle } = useAuth();
@@ -12,6 +13,7 @@ function LoginPortalContent() {
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
+    const [turnstileToken, setTurnstileToken] = useState("");
 
     const formatAuthError = (errMessage?: string) => {
         if (!errMessage) return "";
@@ -42,7 +44,7 @@ function LoginPortalContent() {
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google...");
         try {
-            const res = await signInWithGoogle('seeker', 'login');
+            const res = await signInWithGoogle('seeker', 'login', turnstileToken);
             setGoogleLoadingText("Authenticated! Redirecting...");
             if (res?.redirect) {
                 window.location.href = res.redirect;
@@ -51,7 +53,7 @@ function LoginPortalContent() {
             window.location.href = res?.user?.type === "expert" ? "/consultant/dashboard" : "/dashboard";
         } catch (e: any) {
             const cleanErr = formatAuthError(e?.message || e?.code);
-            if (cleanErr) setError(cleanErr);
+            setError(cleanErr || e?.message || "Google sign-in failed.");
         } finally {
             setGoogleLoading(false);
         }
@@ -76,7 +78,7 @@ function LoginPortalContent() {
         setError("");
         setLoading(true);
         try {
-            await signIn(email, password);
+            await signIn(email, password, turnstileToken);
             const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
             if (userStr) {
                 try {
@@ -90,7 +92,7 @@ function LoginPortalContent() {
             window.location.href = "/dashboard";
         } catch (err: any) {
             const cleanErr = formatAuthError(err?.message || err?.code);
-            setError(cleanErr || "Invalid email or password.");
+            setError(cleanErr || err?.message || "Invalid email or password.");
         } finally {
             setLoading(false);
         }
@@ -216,6 +218,14 @@ function LoginPortalContent() {
                         </button>
                     </form>
                 )}
+
+                {/* Cloudflare Turnstile Bot Protection */}
+                <TurnstileWidget
+                    onSuccess={(t) => setTurnstileToken(t)}
+                    onError={() => setTurnstileToken("")}
+                    onExpire={() => setTurnstileToken("")}
+                    theme="light"
+                />
 
                 {/* Divider */}
                 <div className="flex items-center gap-3 my-3">

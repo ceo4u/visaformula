@@ -3,12 +3,24 @@ import { getPool, runMigrations } from '../../../backend/db';
 import bcrypt from 'bcryptjs';
 import { sendWelcomeEmail } from '../../../lib/email';
 import { deleteOtpRecord } from '../../../lib/otp';
+import { verifyTurnstileToken } from '../../../lib/verify-turnstile';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const turnstileToken = body.turnstileToken || tokenHeader;
+
+    const isHuman = await verifyTurnstileToken(turnstileToken, request);
+    if (!isHuman) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Security validation failed. Human verification required.' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const { 
       business_name, email, password, contact_number, advisor_type, 
       about_me, portfolio_link, office_address, gov_registration_number, 

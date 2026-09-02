@@ -17,9 +17,9 @@ export interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    signIn: (email: string, password: string) => Promise<void>;
+    signIn: (email: string, password: string, turnstileToken?: string) => Promise<void>;
     signUp: (email: string, password: string, name: string) => Promise<void>;
-    signInWithGoogle: (role?: 'seeker' | 'expert', mode?: 'login' | 'signup') => Promise<any>;
+    signInWithGoogle: (role?: 'seeker' | 'expert', mode?: 'login' | 'signup', turnstileToken?: string) => Promise<any>;
     signOut: () => Promise<void>;
 }
 
@@ -115,18 +115,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         init();
     }, []);
 
-    const signIn = async (email: string, password: string) => {
+    const signIn = async (email: string, password: string, turnstileToken?: string) => {
         try {
             const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/login`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                headers: { 
+                    "Content-Type": "application/json",
+                    ...(turnstileToken ? { "x-turnstile-token": turnstileToken } : {})
+                },
+                body: JSON.stringify({ email, password, turnstileToken })
             });
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.user);
                 if (typeof window !== "undefined") {
-                    localStorage.setItem("travltik_user", JSON.stringify(data.user));
                     localStorage.setItem("travltik_user", JSON.stringify(data.user));
                     if (data.user && data.user.rawUser) {
                         const raw = data.user.rawUser;
@@ -163,13 +165,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const contentType = response.headers.get("content-type");
                     if (contentType && contentType.includes("application/json")) {
                         const data = await response.json();
-                        msg = data.message || msg;
+                        msg = data.message || data.error || msg;
                     }
                 } catch(e) {}
                 throw new Error(msg);
             }
         } catch (error: any) {
-            // Fallback: Check local storage for registered users
             if (typeof window !== "undefined") {
                 const seekerEmail = localStorage.getItem("seeker_email");
                 const expertEmail = localStorage.getItem("expert_email");
@@ -215,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker', mode: 'login' | 'signup' = 'login') => {
+    const signInWithGoogle = async (role: 'seeker' | 'expert' = 'seeker', mode: 'login' | 'signup' = 'login', turnstileToken?: string) => {
         let fbUser: any = null;
         let idToken: string | null = null;
         let googleEmail = '';
@@ -251,9 +252,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // STRICT DATABASE-BACKED AUTHENTICATION — NO DUMMY LOCALSTORAGE
         const resp = await fetch('/api/auth/google', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                ...(turnstileToken ? { 'x-turnstile-token': turnstileToken } : {})
+            },
             body: JSON.stringify({
                 idToken,
+                turnstileToken,
                 googleProfile: {
                     email: googleEmail,
                     name: googleName,

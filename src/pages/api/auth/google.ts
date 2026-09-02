@@ -8,6 +8,7 @@ import type { APIRoute } from 'astro';
 import { runMigrations, getPool } from '../../../backend/db';
 import { createSession } from '../../../backend/auth';
 import { verifyFirebaseToken } from '../../../lib/firebase-admin';
+import { verifyTurnstileToken } from '../../../lib/verify-turnstile';
 
 export const prerender = false;
 
@@ -17,6 +18,19 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
+    const tokenHeader = request.headers.get('x-turnstile-token');
+    const turnstileToken = body.turnstileToken || tokenHeader;
+
+    if (turnstileToken) {
+      const isHuman = await verifyTurnstileToken(turnstileToken, request);
+      if (!isHuman) {
+        return new Response(
+          JSON.stringify({ status: 'error', message: 'Security validation failed. Human verification required.' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
     const { idToken, googleProfile, role: requestedRole = 'seeker', mode = 'login' } = body;
 
     let email = '';

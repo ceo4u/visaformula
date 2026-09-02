@@ -21,10 +21,10 @@ export default defineConfig({
     }),
   ],
   vite: {
-    envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_'],
+    envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_', 'TURNSTILE_'],
     ssr: {
       external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
-      noExternal: ['lucide-react', 'firebase', 'firebase/app', 'firebase/auth'],
+      noExternal: ['lucide-react', 'firebase', 'firebase/app', 'firebase/auth', '@marsidev/react-turnstile'],
     },
     optimizeDeps: {
       include: [
@@ -34,6 +34,7 @@ export default defineConfig({
         'lucide-react',
         'firebase/app',
         'firebase/auth',
+        '@marsidev/react-turnstile',
       ],
       force: false,
     },

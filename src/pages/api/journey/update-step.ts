@@ -24,7 +24,8 @@ export const POST: APIRoute = async ({ request }) => {
       peer_network_joined = false,
       forex_ordered = false,
       customs_checklist = {},
-      settlement_checklist = {}
+      settlement_checklist = {},
+      uploaded_documents = {}
     } = body;
 
     const email = (user_email || '').trim().toLowerCase();
@@ -42,6 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
     const completedStepsStr = JSON.stringify(Array.isArray(completed_steps) ? completed_steps : []);
     const customsChecklistStr = JSON.stringify(typeof customs_checklist === 'object' ? customs_checklist : {});
     const settlementChecklistStr = JSON.stringify(typeof settlement_checklist === 'object' ? settlement_checklist : {});
+    const uploadedDocsStr = JSON.stringify(typeof uploaded_documents === 'object' ? uploaded_documents : {});
 
     await p.query(
       `INSERT INTO user_journey_checklists (
@@ -62,8 +64,9 @@ export const POST: APIRoute = async ({ request }) => {
         forex_ordered,
         customs_checklist,
         settlement_checklist,
+        uploaded_documents,
         updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, CURRENT_TIMESTAMP)
       ON CONFLICT (user_email) DO UPDATE SET
         passport_country = EXCLUDED.passport_country,
         destination = EXCLUDED.destination,
@@ -81,6 +84,7 @@ export const POST: APIRoute = async ({ request }) => {
         forex_ordered = EXCLUDED.forex_ordered,
         customs_checklist = EXCLUDED.customs_checklist,
         settlement_checklist = EXCLUDED.settlement_checklist,
+        uploaded_documents = EXCLUDED.uploaded_documents,
         updated_at = CURRENT_TIMESTAMP`,
       [
         email,
@@ -99,7 +103,8 @@ export const POST: APIRoute = async ({ request }) => {
         Boolean(peer_network_joined),
         Boolean(forex_ordered),
         customsChecklistStr,
-        settlementChecklistStr
+        settlementChecklistStr,
+        uploadedDocsStr
       ]
     );
 

@@ -840,12 +840,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               <div>
                 <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
                 <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
-                  {data.entry_type || data.validity_and_stay?.entry_type || (
-                    cleanTo.toLowerCase().includes('jordan') || cleanTo.toLowerCase().includes('turkey') || cleanTo.toLowerCase().includes('cambodia')
-                      ? 'Single Entry'
-                      : 'Multiple Entry'
-                  )}
+                  Single or Multiple Entry (both options available)
                 </h4>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-1">
+                  (Approval depends on sole discretion of embassy and filed application purpose)
+                </p>
               </div>
             </div>
           </div>
@@ -931,14 +930,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               </button>
             </div>
 
-            {/* Official Consular Checklist Table (Distinct S.NO, READY Checkbox & DOCUMENT Columns) */}
+            {/* Official Consular Checklist Table (Distinct S.NO, DOCUMENT & RIGHT-ALIGNED READY Checkbox) */}
             <div className="border border-slate-300 rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-100/90 border-b border-slate-300 text-xs font-black text-slate-900 uppercase tracking-wider">
                     <th className="py-3 sm:py-4 px-1.5 sm:px-3 w-10 sm:w-16 text-center border-r border-slate-300 text-[11px] sm:text-xs">#</th>
-                    <th className="py-3 sm:py-4 px-2 sm:px-4 w-16 sm:w-24 text-center border-r border-slate-300 text-[11px] sm:text-xs">READY</th>
-                    <th className="py-3 sm:py-4 px-3 sm:px-8 text-[11px] sm:text-xs">DOCUMENT</th>
+                    <th className="py-3 sm:py-4 px-3 sm:px-8 text-[11px] sm:text-xs border-r border-slate-300">DOCUMENT</th>
+                    <th className="py-3 sm:py-4 px-2 sm:px-4 w-16 sm:w-24 text-center text-[11px] sm:text-xs">READY</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-sm">
@@ -960,32 +959,8 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                             </span>
                           </td>
 
-                          {/* Col 2: Interactive Ready Checklist */}
-                          <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center border-r border-slate-200 align-top pt-4 sm:pt-5">
-                            <div 
-                              onClick={() => toggleDocReady(docKey)}
-                              className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
-                              title={isReady ? "Marked as Ready" : "Click to mark as Ready"}
-                            >
-                              <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
-                                isReady
-                                  ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
-                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
-                              }`}>
-                                {isReady ? (
-                                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
-                                ) : (
-                                  <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
-                                )}
-                              </div>
-                              {isReady && (
-                                <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
-                              )}
-                            </div>
-                          </td>
-
-                          {/* Col 3: Document Details */}
-                          <td className="py-3 sm:py-5 px-3 sm:px-8 align-top space-y-2 min-w-0">
+                          {/* Col 2: Document Details */}
+                          <td className="py-3 sm:py-5 px-3 sm:px-8 border-r border-slate-200 align-top space-y-2 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <strong className="font-black text-slate-950 block text-[13px] sm:text-[17px] tracking-tight leading-snug break-words">
                                 {doc.title}
@@ -1105,6 +1080,30 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                 </div>
                               </div>
                             )}
+                          </td>
+
+                          {/* Col 3: Interactive Ready Checklist (RIGHT SIDE) */}
+                          <td className="py-3 sm:py-5 px-1.5 sm:px-3 text-center align-top pt-4 sm:pt-5">
+                            <div 
+                              onClick={() => toggleDocReady(docKey)}
+                              className="flex flex-col items-center justify-center gap-1 cursor-pointer select-none group"
+                              title={isReady ? "Marked as Ready" : "Click to mark as Ready"}
+                            >
+                              <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 transition-all flex items-center justify-center shadow-xs ${
+                                isReady
+                                  ? 'bg-emerald-600 border-emerald-600 text-white scale-105 shadow-emerald-200'
+                                  : 'border-slate-300 bg-white group-hover:border-emerald-500'
+                              }`}>
+                                {isReady ? (
+                                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] text-white" />
+                                ) : (
+                                  <div className="w-2 h-2 rounded-xs bg-slate-200 group-hover:bg-emerald-400 transition-colors" />
+                                )}
+                              </div>
+                              {isReady && (
+                                <span className="text-[9px] font-black text-emerald-700 uppercase tracking-tighter hidden sm:block">Ready</span>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       );

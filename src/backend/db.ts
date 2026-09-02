@@ -479,10 +479,12 @@ export async function runMigrations() {
       forex_ordered BOOLEAN DEFAULT FALSE,
       customs_checklist TEXT,
       settlement_checklist TEXT,
+      uploaded_documents TEXT,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_journey_email ON user_journey_checklists (user_email);`);
+  await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS uploaded_documents TEXT;`);
 
   // 19. AI Features Rate Limiting Table (Max 3 / Hour)
   await p.query(`

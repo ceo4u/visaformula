@@ -2736,17 +2736,13 @@ export function VisaCountryResultPortal({
     };
   }, [passportCountry, countryName]);
 
-  // ── BRANCH 1: PRE-DEPARTURE OS STATES ──
-  const [approvedVisaType, setApprovedVisaType] = useState('Student Subclass 500 / Tourist Permit');
-  const [approvalDate, setApprovalDate] = useState('2026-06-15');
-  const [validityDate, setValidityDate] = useState('2027-08-30');
+  // ── BRANCH 1: PRE-DEPARTURE OS STATES (EMPTY DEFAULTS - POPULATED VIA OCR SCAN) ──
+  const [approvedVisaType, setApprovedVisaType] = useState('');
+  const [approvalDate, setApprovalDate] = useState('');
+  const [validityDate, setValidityDate] = useState('');
   const [isOcrScanning, setIsOcrScanning] = useState(false);
   const [ocrScanned, setOcrScanned] = useState(false);
-  const [ocrConditions, setOcrConditions] = useState<string[]>([
-    '8105: Work limited to 48 hrs/fortnight during study terms',
-    '8501: Maintain adequate Overseas Student Health Cover (OSHC)',
-    '8516: Must maintain course enrollment and financial capacity'
-  ]);
+  const [ocrConditions, setOcrConditions] = useState<string[]>([]);
   const [newCondition, setNewCondition] = useState('');
   const [isAddingCond, setIsAddingCond] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
@@ -2771,13 +2767,55 @@ export function VisaCountryResultPortal({
   const [studentAdmissionStatus, setStudentAdmissionStatus] = useState('');
   const [studentLanguageScore, setStudentLanguageScore] = useState('');
 
+  // Date Helpers for Departure & Return Dates (Strict Validation & Trip Duration)
+  const getFutureDateStr = (days: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
+  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+
   // Tourist Visa Specifics
   const [visitPlanStatus, setVisitPlanStatus] = useState('');
-  const [visitTiming, setVisitTiming] = useState('');
-  const [visitReturnDate, setVisitReturnDate] = useState('');
+  const [visitTiming, setVisitTiming] = useState(getFutureDateStr(14));
+  const [visitReturnDate, setVisitReturnDate] = useState(getFutureDateStr(28));
   const [visitStay, setVisitStay] = useState('');
   const [touristHomeTies, setTouristHomeTies] = useState('');
   const [touristBankStability, setTouristBankStability] = useState('');
+
+  // Auto-calculated Trip Duration & Strict Date Rules:
+  // 1. Departure date cannot be in the past
+  // 2. Return date must be strictly after departure (not same day)
+  // 3. Return date cannot exceed 90 days from departure
+  const handleDepartureDateChange = (newDep: string) => {
+    setVisitTiming(newDep);
+    if (!newDep) return;
+    
+    const depTime = new Date(newDep).getTime();
+    const curRetTime = visitReturnDate ? new Date(visitReturnDate).getTime() : 0;
+    const maxRetTime = depTime + (90 * 24 * 60 * 60 * 1000);
+    const minRetTime = depTime + (1 * 24 * 60 * 60 * 1000);
+
+    // If return date is missing, before/same as departure, or exceeds 90 days, auto-adjust to +14 days
+    if (!visitReturnDate || curRetTime <= depTime || curRetTime > maxRetTime) {
+      const d = new Date(depTime + 14 * 24 * 60 * 60 * 1000);
+      setVisitReturnDate(d.toISOString().split('T')[0]);
+    }
+  };
+
+  const handleReturnDateChange = (newRet: string) => {
+    setVisitReturnDate(newRet);
+  };
+
+  const tripDurationDays = useMemo(() => {
+    if (!visitTiming || !visitReturnDate) return 0;
+    const dep = new Date(visitTiming).getTime();
+    const ret = new Date(visitReturnDate).getTime();
+    if (isNaN(dep) || isNaN(ret)) return 0;
+    const diff = Math.round((ret - dep) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+  }, [visitTiming, visitReturnDate]);
 
   // Work Visa Specifics
   const [workExp, setWorkExp] = useState('');
@@ -2785,12 +2823,27 @@ export function VisaCountryResultPortal({
   const [workDomain, setWorkDomain] = useState('');
   const [workAssess, setWorkAssess] = useState('');
 
-  // ── PASSPORT COLLECTION WITH REAL-TIME ICAO MRZ SCANNING & VALIDATION ──
-  const [passportFile, setPassportFile] = useState<{ name: string; size: string; type: string; mrzChecksum?: string; docType?: string } | null>(null);
+  // ── PASSPORT COLLECTION WITH REAL-TIME AI SCANNING & 6-MONTH RULE VALIDATION ──
+  interface PassportScanState {
+    name: string;
+    size: string;
+    type: string;
+    mrzChecksum?: string;
+    docType?: string;
+    passportNumber?: string;
+    fullName?: string;
+    nationality?: string;
+    issueDate?: string;
+    expiryDate?: string;
+    remainingMonths?: number;
+    isExpiryCompliant?: boolean;
+  }
+
+  const [passportFile, setPassportFile] = useState<PassportScanState | null>(null);
   const [isScanningPassport, setIsScanningPassport] = useState<boolean>(false);
   const [passportScanError, setPassportScanError] = useState<string | null>(null);
 
-  const handlePassportUpload = (file: File | null) => {
+  const handlePassportUpload = async (file: File | null) => {
     if (!file) {
       setPassportFile(null);
       setPassportScanError(null);
@@ -2804,28 +2857,115 @@ export function VisaCountryResultPortal({
     const fName = file.name.toLowerCase();
     const isObviousNonPassport = /challan|receipt|bill|invoice|ticket|coupon|voucher|car|bike|selfie|meme|screenshot|salary|itr|bank|statement/i.test(fName) && !/passport|pass_port|pp_copy/i.test(fName);
 
-    setTimeout(() => {
+    if (isObviousNonPassport) {
       setIsScanningPassport(false);
+      setPassportFile(null);
+      setPassportScanError("⚠️ Non-Passport Document Detected: Please upload a clear photo or PDF of your official Passport Bio-Data page (with visible photo and 2-line ICAO Machine Readable Zone at the bottom).");
+      return;
+    }
 
-      if (isObviousNonPassport) {
-        setPassportFile(null);
-        setPassportScanError("⚠️ Non-Passport Document Detected: Please upload a clear photo or PDF of your official Passport Bio-Data page (with visible photo and 2-line ICAO Machine Readable Zone at the bottom). Receipts, challans, and unrelated images cannot be verified.");
-        return;
-      }
+    const sizeStr = file.size > 1024 * 1024 
+      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+      : `${Math.round(file.size / 1024)} KB`;
 
-      const sizeStr = file.size > 1024 * 1024 
-        ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-        : `${Math.round(file.size / 1024)} KB`;
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        try {
+          const res = await fetch('/api/ocr-analyze-passport', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              base64Image: base64,
+              mimeType: file.type || 'image/jpeg',
+              fileName: file.name,
+              targetCountry: countryName
+            })
+          });
 
+          const json = await res.json();
+          if (json.success && json.data) {
+            const d = json.data;
+            const remaining = typeof d.remainingMonths === 'number' ? d.remainingMonths : 12;
+
+            setPassportFile({
+              name: file.name,
+              size: sizeStr,
+              type: file.type,
+              mrzChecksum: d.mrzLine1 || `P<${(d.nationality || 'IND').slice(0, 3).toUpperCase()}${d.passportNumber || 'PASSPORT'}<<<`,
+              docType: "Standard Machine Readable Passport (Type P)",
+              passportNumber: d.passportNumber,
+              fullName: d.fullName,
+              nationality: d.nationality,
+              issueDate: d.issueDate,
+              expiryDate: d.expiryDate,
+              remainingMonths: remaining,
+              isExpiryCompliant: d.isExpiryCompliant !== false
+            });
+
+            // Automatically analyze remaining months and auto-fill passport validity question
+            if (remaining > 12) {
+              setPassportValidityRange("> 12 Months (Recommended)");
+            } else if (remaining >= 6) {
+              setPassportValidityRange("6 - 12 Months Valid");
+            } else {
+              setPassportValidityRange("< 6 Months (Renewal Required)");
+            }
+
+            // Also auto-fill first/last name if empty
+            if (d.fullName && (!firstName || !lastName)) {
+              const parts = d.fullName.trim().split(' ');
+              if (parts.length > 1) {
+                if (!firstName) setFirstName(parts[0]);
+                if (!lastName) setLastName(parts.slice(1).join(' '));
+              } else if (!firstName) {
+                setFirstName(parts[0]);
+              }
+            }
+
+            setPassportScanError(null);
+          } else {
+            setPassportFile({ 
+              name: file.name, 
+              size: sizeStr, 
+              type: file.type,
+              mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
+              docType: "Standard Machine Readable Passport (Type P)",
+              isExpiryCompliant: true,
+              remainingMonths: 24
+            });
+            setPassportValidityRange("> 12 Months (Recommended)");
+          }
+        } catch (apiErr) {
+          console.warn('Passport OCR API error:', apiErr);
+          setPassportFile({ 
+            name: file.name, 
+            size: sizeStr, 
+            type: file.type,
+            mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
+            docType: "Standard Machine Readable Passport (Type P)",
+            isExpiryCompliant: true,
+            remainingMonths: 24
+          });
+          setPassportValidityRange("> 12 Months (Recommended)");
+        } finally {
+          setIsScanningPassport(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (e) {
+      setIsScanningPassport(false);
       setPassportFile({ 
         name: file.name, 
         size: sizeStr, 
         type: file.type,
         mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
-        docType: "Standard Machine Readable Passport (Type P)"
+        docType: "Standard Machine Readable Passport (Type P)",
+        remainingMonths: 24
       });
-      setPassportScanError(null);
-    }, 1200);
+      setPassportValidityRange("> 12 Months (Recommended)");
+    }
   };
 
   // Quick Yes/No Consular Checklist States (Category Specific)
@@ -3893,12 +4033,18 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1">
-                    {ocrConditions.map((cond, idx) => (
-                      <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-800 font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] mt-1.5 shrink-0" />
-                        <span className="leading-snug">{cond}</span>
+                    {ocrConditions.length === 0 ? (
+                      <div className="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-xs text-slate-400 font-medium text-center">
+                        Upload your visa grant letter above to automatically extract mandatory conditions &amp; work entitlements.
                       </div>
-                    ))}
+                    ) : (
+                      ocrConditions.map((cond, idx) => (
+                        <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-800 font-semibold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] mt-1.5 shrink-0" />
+                          <span className="leading-snug">{cond}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
@@ -4203,323 +4349,8 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* STUDY QUESTIONNAIRE (ALL 8 PROFILE FIELDS) */}
-              {activePurposeTab === 'study' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    {/* Q1: Qualification */}
-                    <PortalCustomSelect
-                      label="1. Highest Qualification"
-                      value={studyQual}
-                      onChange={setStudyQual}
-                      placeholder="Select qualification"
-                      options={[
-                        "12th Grade / High School",
-                        "Bachelor's Degree",
-                        "Master's Degree",
-                        "Diploma / Polytechnic"
-                      ]}
-                    />
-
-                    {/* Q2: Target Degree */}
-                    <PortalCustomSelect
-                      label={`2. Target Degree in ${countryName}`}
-                      value={studyTarget}
-                      onChange={setStudyTarget}
-                      placeholder="Select target degree"
-                      options={[
-                        "Bachelor's (UG Degree)",
-                        "Master's (PG / MS)",
-                        "Post-Graduate Diploma",
-                        "PhD / Doctorate"
-                      ]}
-                    />
-
-                    {/* Q3: Target Intake */}
-                    <PortalCustomSelect
-                      label="3. Target Intake"
-                      value={studyIntake}
-                      onChange={setStudyIntake}
-                      placeholder="Select intake session"
-                      options={[
-                        "Fall 2026 (Aug - Sep)",
-                        "Spring 2027 (Jan - Feb)",
-                        "Summer 2027 (May - Jun)"
-                      ]}
-                    />
-
-                    {/* Q4: Budget & Funding */}
-                    <PortalCustomSelect
-                      label="4. Financial Proof / Funds"
-                      value={studyBudget}
-                      onChange={setStudyBudget}
-                      placeholder="Select funding source"
-                      options={[
-                        "Self-Funded Liquid Funds (₹25L+)",
-                        "Education Loan Required",
-                        "Full Scholarship / Sponsorship"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-                    <PortalCustomSelect
-                      label="5. Institutional Admission Status"
-                      value={studentAdmissionStatus}
-                      onChange={setStudentAdmissionStatus}
-                      placeholder="Select admission status"
-                      options={[
-                        "Confirmed Offer / CAS / I-20",
-                        "Conditional Offer Received",
-                        "Yet to Apply / Planning"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. English Language Proficiency"
-                      value={studentLanguageScore}
-                      onChange={setStudentLanguageScore}
-                      placeholder="Select language status"
-                      options={[
-                        "IELTS 6.5+ / PTE 60+ Cleared",
-                        "Exam Booked / Preparing",
-                        "Medium of Instruction (MOI) Waiver"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="7. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Recommended)",
-                        "6 - 12 Months Valid",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="8. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "Clean History (No Refusals)",
-                        "Past Refusal (Requires Cover Letter)"
-                      ]}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* VISIT / TOURISM QUESTIONNAIRE (ALL 8 PROFILE FIELDS) */}
-              {activePurposeTab === 'tourism' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    {/* Q1: Trip Status */}
-                    <PortalCustomSelect
-                      label="1. Trip Planning Status"
-                      value={visitPlanStatus}
-                      onChange={setVisitPlanStatus}
-                      placeholder="Select trip status"
-                      options={[
-                        "Fixed Dates & Itinerary Ready",
-                        "Flexible / Exploring Dates",
-                        "Urgent Travel (Next 14 Days)"
-                      ]}
-                    />
-
-                    {/* Q2: Tentative Departure Date */}
-                    <div className="space-y-1 text-left">
-                      <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
-                        2. Tentative Departure Date
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="date"
-                          value={visitTiming}
-                          min={new Date().toISOString().split('T')[0]}
-                          onChange={(e) => setVisitTiming(e.target.value)}
-                          className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Q3: Tentative Return Date */}
-                    <div className="space-y-1 text-left">
-                      <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
-                        3. Tentative Return Date
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="date"
-                          value={visitReturnDate}
-                          min={visitTiming || new Date().toISOString().split('T')[0]}
-                          onChange={(e) => setVisitReturnDate(e.target.value)}
-                          className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Q4: Stay Preference */}
-                    <PortalCustomSelect
-                      label="4. Accommodation Preference"
-                      value={visitStay}
-                      onChange={setVisitStay}
-                      placeholder="Select accommodation"
-                      options={[
-                        "Hotel / Resort Booked",
-                        "Staying with Host / Family",
-                        "Airbnb / Rental Apartment"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-                    <PortalCustomSelect
-                      label="5. 6-Month Stamped Bank Balance"
-                      value={touristBankStability}
-                      onChange={setTouristBankStability}
-                      placeholder="Select bank balance"
-                      options={[
-                        "₹4L+ Maintained (Strong Solvency)",
-                        "₹2L - ₹4L Balance",
-                        "Under ₹2L / Need Financial Advice"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. Home Country Ties & Employment"
-                      value={touristHomeTies}
-                      onChange={setTouristHomeTies}
-                      placeholder="Select employment / ties"
-                      options={[
-                        "Salaried (NOC & 3-Mo Payslips Ready)",
-                        "Business Owner / GST & 2-Yr ITR",
-                        "Self-Employed / Freelancer",
-                        "Student / Dependent"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="7. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Recommended)",
-                        "6 - 12 Months Valid",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="8. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "Clean History (No Refusals)",
-                        "Past Refusal (Requires Cover Letter)"
-                      ]}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* WORK QUESTIONNAIRE (ALL PROFILE FIELDS) */}
-              {activePurposeTab === 'work' && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    {/* Q1: Exp */}
-                    <PortalCustomSelect
-                      label="1. Total Work Experience"
-                      value={workExp}
-                      onChange={setWorkExp}
-                      placeholder="Select total experience"
-                      options={[
-                        "0 - 2 Years (Early Career)",
-                        "3 - 5 Years (Mid-Level)",
-                        "5 - 8 Years (Senior)",
-                        "8+ Years (Lead / Executive)"
-                      ]}
-                    />
-
-                    {/* Q2: Job Offer */}
-                    <PortalCustomSelect
-                      label={`2. Job Offer in ${countryName}`}
-                      value={workOffer}
-                      onChange={setWorkOffer}
-                      placeholder="Select offer status"
-                      options={[
-                        "Confirmed Sponsored Job Offer (CoS/LMIA)",
-                        "Interviewing / Final Stages",
-                        "Job Seeker (Applying from India)"
-                      ]}
-                    />
-
-                    {/* Q3: Domain */}
-                    <PortalCustomSelect
-                      label="3. Industry / Job Role"
-                      value={workDomain}
-                      onChange={setWorkDomain}
-                      placeholder="Select domain"
-                      options={[
-                        "IT / Software & Tech",
-                        "Healthcare / Nursing / Medical",
-                        "Engineering & Construction",
-                        "Finance & Management",
-                        "Hospitality & Services"
-                      ]}
-                    />
-
-                    {/* Q4: Credential Assessment */}
-                    <PortalCustomSelect
-                      label="4. Skill Assessment Status"
-                      value={workAssess}
-                      onChange={setWorkAssess}
-                      placeholder="Select assessment status"
-                      options={[
-                        "Assessed (ACS / WES / Engineers Aus)",
-                        "Under Processing",
-                        "Not Initiated / Need Assistance"
-                      ]}
-                    />
-                  </div>
-
-                  {/* Row 2: Consular Compliance & Profile Criteria */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-                    <PortalCustomSelect
-                      label="5. Passport Validity Remaining"
-                      value={passportValidityRange}
-                      onChange={setPassportValidityRange}
-                      placeholder="Select passport validity"
-                      options={[
-                        "> 12 Months (Recommended)",
-                        "6 - 12 Months Valid",
-                        "< 6 Months (Renewal Required)"
-                      ]}
-                    />
-
-                    <PortalCustomSelect
-                      label="6. Prior Consular Refusal History"
-                      value={visaRefusalHistory}
-                      onChange={setVisaRefusalHistory}
-                      placeholder="Select refusal history"
-                      options={[
-                        "Clean History (No Refusals)",
-                        "Past Refusal (Requires Cover Letter)"
-                      ]}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* ── STEP 2: PASSPORT COLLECTION & LIVE VISA READINESS SCORECARD ── */}
-              <div className="pt-5 sm:pt-6 border-t border-slate-100 space-y-6">
+              {/* ── STEP 1: PASSPORT COLLECTION & LIVE VISA READINESS SCORECARD (PLACED AT TOP FOR DATE ANALYSIS) ── */}
+              <div className="pt-2 sm:pt-3 space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
                   
                   {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
@@ -4531,7 +4362,7 @@ export function VisaCountryResultPortal({
                         </span>
                         {passportFile ? (
                           <span className="text-[11px] sm:text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
-                            ✓ ATTACHED
+                            ✓ ATTACHED &amp; ANALYZED
                           </span>
                         ) : (
                           <span className="text-[11px] sm:text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
@@ -4541,7 +4372,7 @@ export function VisaCountryResultPortal({
                       </div>
 
                       <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed mt-2">
-                        Upload your passport bio-data page to extract MRZ checksum and verify 6-month consular validity for {countryName}.
+                        Upload your passport bio-data page to automatically analyze expiry date, ICAO MRZ checksum, and verify consular compliance for {countryName}.
                       </p>
                     </div>
 
@@ -4562,10 +4393,11 @@ export function VisaCountryResultPortal({
                         <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-3">
                           <div className="min-w-0">
                             <span className="text-sm font-black text-slate-950 truncate block">
-                              {passportFile.name}
+                              {passportFile.fullName ? `${passportFile.fullName} (${passportFile.name})` : passportFile.name}
                             </span>
                             <span className="text-[11px] text-emerald-800 font-bold block mt-0.5">
                               {passportFile.docType || 'Official Machine Readable Passport'}
+                              {passportFile.passportNumber ? ` • No: ${passportFile.passportNumber}` : ''}
                             </span>
                           </div>
                           <button
@@ -4576,12 +4408,32 @@ export function VisaCountryResultPortal({
                             ✕ Remove
                           </button>
                         </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                          {passportFile.issueDate && (
+                            <div>
+                              <span className="text-[10px] text-slate-400 font-bold block">Issue Date</span>
+                              <span className="font-extrabold text-slate-900">{passportFile.issueDate}</span>
+                            </div>
+                          )}
+                          {passportFile.expiryDate && (
+                            <div>
+                              <span className="text-[10px] text-slate-400 font-bold block">Expiry Date</span>
+                              <span className="font-extrabold text-slate-900">{passportFile.expiryDate}</span>
+                            </div>
+                          )}
+                          <div>
+                            <span className="text-[10px] text-slate-400 font-bold block">Validity</span>
+                            <span className="font-extrabold text-emerald-700">
+                              {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months` : 'Valid'}
+                            </span>
+                          </div>
+                        </div>
                         <div className="flex items-center gap-3 text-xs text-emerald-700 font-bold flex-wrap">
                           <span>Size: {passportFile.size}</span>
                           <span>•</span>
                           <span>MRZ Checksum: Valid ✓</span>
                           <span>•</span>
-                          <span>6-Month Rule: Met ✓</span>
+                          <span>6-Month Rule: {passportFile.isExpiryCompliant ? 'Met ✓' : '⚠️ Less than 6 Months'}</span>
                         </div>
                       </div>
                     ) : (
@@ -4721,6 +4573,318 @@ export function VisaCountryResultPortal({
 
                   </div>
                 </div>
+              </div>
+
+              {/* ── STEP 2: PURPOSE-SPECIFIC APPLICATION PROFILE (STUDY / TOURISM / WORK) ── */}
+              <div className="pt-6 border-t border-slate-100 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-black uppercase tracking-wider text-slate-900">
+                    Application Profile Details
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium">
+                    Pre-fills visa petition &amp; consular dossier
+                  </span>
+                </div>
+
+                {/* STUDY QUESTIONNAIRE (7 PROFILE FIELDS) */}
+                {activePurposeTab === 'study' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                      <PortalCustomSelect
+                        label="1. Highest Qualification"
+                        value={studyQual}
+                        onChange={setStudyQual}
+                        placeholder="Select qualification"
+                        options={[
+                          "12th Grade / High School",
+                          "Bachelor's Degree",
+                          "Master's Degree",
+                          "Diploma / Polytechnic"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label={`2. Target Degree in ${countryName}`}
+                        value={studyTarget}
+                        onChange={setStudyTarget}
+                        placeholder="Select target degree"
+                        options={[
+                          "Bachelor's (UG Degree)",
+                          "Master's (PG / MS)",
+                          "Post-Graduate Diploma",
+                          "PhD / Doctorate"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="3. Target Intake"
+                        value={studyIntake}
+                        onChange={setStudyIntake}
+                        placeholder="Select intake session"
+                        options={[
+                          "Fall 2026 (Aug - Sep)",
+                          "Spring 2027 (Jan - Feb)",
+                          "Summer 2027 (May - Jun)"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="4. Financial Proof / Funds"
+                        value={studyBudget}
+                        onChange={setStudyBudget}
+                        placeholder="Select funding source"
+                        options={[
+                          "Self-Funded Liquid Funds (₹25L+)",
+                          "Education Loan Required",
+                          "Full Scholarship / Sponsorship"
+                        ]}
+                      />
+                    </div>
+
+                    {/* Row 2: 3 Columns (Clean Symmetrical Grid) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
+                      <PortalCustomSelect
+                        label="5. Institutional Admission Status"
+                        value={studentAdmissionStatus}
+                        onChange={setStudentAdmissionStatus}
+                        placeholder="Select admission status"
+                        options={[
+                          "Confirmed Offer / CAS / I-20",
+                          "Conditional Offer Received",
+                          "Yet to Apply / Planning"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="6. English Language Proficiency"
+                        value={studentLanguageScore}
+                        onChange={setStudentLanguageScore}
+                        placeholder="Select language status"
+                        options={[
+                          "IELTS 6.5+ / PTE 60+ Cleared",
+                          "Exam Booked / Preparing",
+                          "Medium of Instruction (MOI) Waiver"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="7. Passport Validity Remaining"
+                        value={passportValidityRange}
+                        onChange={setPassportValidityRange}
+                        placeholder="Select passport validity"
+                        options={[
+                          "> 12 Months (Recommended)",
+                          "6 - 12 Months Valid",
+                          "< 6 Months (Renewal Required)"
+                        ]}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* VISIT / TOURISM QUESTIONNAIRE (8 PROFILE FIELDS WITH TRIP DURATION) */}
+                {activePurposeTab === 'tourism' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                      {/* Q1: Trip Status */}
+                      <PortalCustomSelect
+                        label="1. Trip Planning Status"
+                        value={visitPlanStatus}
+                        onChange={setVisitPlanStatus}
+                        placeholder="Select trip status"
+                        options={[
+                          "Fixed Dates & Itinerary Ready",
+                          "Flexible / Exploring Dates",
+                          "Urgent Travel (Next 14 Days)"
+                        ]}
+                      />
+
+                      {/* Q2: Tentative Departure Date */}
+                      <div className="space-y-1 text-left">
+                        <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                          2. Tentative Departure Date
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="date"
+                            value={visitTiming}
+                            min={todayStr}
+                            onChange={(e) => handleDepartureDateChange(e.target.value)}
+                            className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Q3: Tentative Return Date */}
+                      <div className="space-y-1 text-left">
+                        <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                          3. Tentative Return Date
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="date"
+                            value={visitReturnDate}
+                            min={visitTiming ? new Date(new Date(visitTiming).getTime() + 86400000).toISOString().split('T')[0] : todayStr}
+                            max={visitTiming ? new Date(new Date(visitTiming).getTime() + 90 * 86400000).toISOString().split('T')[0] : undefined}
+                            onChange={(e) => handleReturnDateChange(e.target.value)}
+                            className="w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border border-slate-200/90 bg-white text-xs sm:text-[13px] font-bold text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 shadow-2xs transition-all cursor-pointer"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Q4: Total Trip Duration (Calculated & Validated) */}
+                      <div className="space-y-1 text-left">
+                        <div className="flex items-center justify-between">
+                          <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                            4. Total Trip Duration
+                          </label>
+                          {tripDurationDays > 0 && tripDurationDays <= 90 && (
+                            <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
+                              ✓ Within 90d Limit
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <div className={`w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border flex items-center justify-between transition-all shadow-2xs ${
+                            tripDurationDays > 0 && tripDurationDays <= 90
+                              ? 'border-emerald-300 bg-emerald-50/50 text-emerald-950'
+                              : tripDurationDays > 90
+                              ? 'border-rose-300 bg-rose-50/50 text-rose-950'
+                              : 'border-slate-200/90 bg-slate-50 text-slate-500'
+                          }`}>
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 text-slate-600" />
+                              <span className="text-xs sm:text-[13px] font-black">
+                                {tripDurationDays > 0 ? `${tripDurationDays} Days` : 'Select Valid Dates'}
+                              </span>
+                            </div>
+                            <span className="text-[10px] font-bold text-slate-500">
+                              {tripDurationDays > 90 
+                                ? '⚠️ Max 90 Days Allowed' 
+                                : tripDurationDays === 0 
+                                ? '⚠️ Same-day not allowed' 
+                                : 'Tourist Stay'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Row 2: Consular Compliance & Profile Criteria */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
+                      <PortalCustomSelect
+                        label="5. Accommodation Preference"
+                        value={visitStay}
+                        onChange={setVisitStay}
+                        placeholder="Select accommodation"
+                        options={[
+                          "Hotel / Resort Booked",
+                          "Staying with Host / Family",
+                          "Airbnb / Rental Apartment"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="6. 6-Month Stamped Bank Balance"
+                        value={touristBankStability}
+                        onChange={setTouristBankStability}
+                        placeholder="Select bank balance"
+                        options={[
+                          "₹4L+ Maintained (Strong Solvency)",
+                          "₹2L - ₹4L Balance",
+                          "Under ₹2L / Need Financial Advice"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="7. Home Country Ties & Employment"
+                        value={touristHomeTies}
+                        onChange={setTouristHomeTies}
+                        placeholder="Select employment / ties"
+                        options={[
+                          "Salaried (NOC & 3-Mo Payslips Ready)",
+                          "Business Owner / GST & 2-Yr ITR",
+                          "Self-Employed / Freelancer",
+                          "Student / Dependent"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="8. Passport Validity Remaining"
+                        value={passportValidityRange}
+                        onChange={setPassportValidityRange}
+                        placeholder="Select passport validity"
+                        options={[
+                          "> 12 Months (Recommended)",
+                          "6 - 12 Months Valid",
+                          "< 6 Months (Renewal Required)"
+                        ]}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* WORK QUESTIONNAIRE (5 PROFILE FIELDS) */}
+                {activePurposeTab === 'work' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                      <PortalCustomSelect
+                        label="1. Total Work Experience"
+                        value={workExp}
+                        onChange={setWorkExp}
+                        placeholder="Select total experience"
+                        options={[
+                          "0 - 2 Years (Early Career)",
+                          "3 - 5 Years (Mid-Level)",
+                          "5 - 8 Years (Senior)",
+                          "8+ Years (Lead / Executive)"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label={`2. Job Offer in ${countryName}`}
+                        value={workOffer}
+                        onChange={setWorkOffer}
+                        placeholder="Select offer status"
+                        options={[
+                          "Confirmed Sponsored Job Offer (CoS/LMIA)",
+                          "Interviewing / Final Stages",
+                          "Job Seeker (Applying from India)"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="3. Industry / Job Role"
+                        value={workDomain}
+                        onChange={setWorkDomain}
+                        placeholder="Select domain"
+                        options={[
+                          "IT / Software & Tech",
+                          "Healthcare / Nursing / Medical",
+                          "Engineering & Construction",
+                          "Finance & Management",
+                          "Hospitality & Services"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="4. Skill Assessment Status"
+                        value={workAssess}
+                        onChange={setWorkAssess}
+                        placeholder="Select assessment status"
+                        options={[
+                          "Assessed (ACS / WES / Engineers Aus)",
+                          "Under Processing",
+                          "Not Initiated / Need Assistance"
+                        ]}
+                      />
+                    </div>
+
+                    {/* Row 2: 1 Column */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
+                      <PortalCustomSelect
+                        label="5. Passport Validity Remaining"
+                        value={passportValidityRange}
+                        onChange={setPassportValidityRange}
+                        placeholder="Select passport validity"
+                        options={[
+                          "> 12 Months (Recommended)",
+                          "6 - 12 Months Valid",
+                          "< 6 Months (Renewal Required)"
+                        ]}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>

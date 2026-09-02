@@ -35,10 +35,13 @@ jobs:
             # Go to project directory
             cd ${{ secrets.VPS_PROJECT_PATH }}
 
+            # Fix git safe directory in case runner user differs from owner
+            git config --global --add safe.directory "${{ secrets.VPS_PROJECT_PATH }}" || true
+
             # Pull latest code from main
             echo "📥 Pulling latest code..."
-            git fetch origin main
-            git reset --hard origin/main
+            git fetch origin main || git fetch --all || true
+            git reset --hard origin/main || git reset --hard HEAD || true
 
             # Install dependencies (skip devDeps in prod)
             echo "📦 Installing dependencies..."

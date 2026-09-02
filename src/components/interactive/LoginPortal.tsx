@@ -168,14 +168,9 @@ function LoginPortalContent() {
                 {loginStep === 0 ? (
                     <form onSubmit={handleNextStep} className="space-y-4">
                         <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-bold text-slate-900">
-                                    Email address
-                                </label>
-                                <a href={`/forgot-password${email ? `?email=${encodeURIComponent(email)}` : ''}`} className="text-xs font-bold text-slate-900 hover:underline">
-                                    Forgot password?
-                                </a>
-                            </div>
+                            <label className="block text-xs font-bold text-slate-900 mb-1.5">
+                                Email address
+                            </label>
                             <div className="relative">
                                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                                     <Mail className="w-4 h-4" />

@@ -3089,18 +3089,36 @@ export function VisaCountryResultPortal({
     let redFlags: string[] = [];
     let filledCount = 0;
 
-    // Pillar 1: Passport & Identity (30% weight)
+    // Pillar 1: Passport & Identity (35% weight)
     let passportScore = 0;
+    let validityBonus = 0;
+    const remainingMonths = passportFile?.remainingMonths ?? (
+      passportValidityRange.includes('> 12 Months') ? 36 : passportValidityRange.includes('6 - 12 Months') ? 9 : 3
+    );
+
     if (passportFile) {
-      filledCount++;
-      passportScore += 15;
-    }
-    if (passportValidityRange) {
+      filledCount += 2;
+      passportScore += 20; // Official bio-data scanned & MRZ valid
+
+      if (passportFile.isExpiryCompliant || remainingMonths >= 6) {
+        if (remainingMonths >= 12) {
+          // Outstanding long-term validity (e.g. 92 months / 7-10 years)
+          passportScore += 25; // 45 pts total for passport pillar
+          validityBonus = 15; // Extra boost for verified long-term validity
+          recommendations.unshift(`🌟 Exceptional Passport Validity: ${remainingMonths} months remaining (${Math.floor(remainingMonths / 12)} years). Flawlessly compliant with ${countryName} 6-month rule.`);
+        } else {
+          passportScore += 15;
+          recommendations.push(`Passport validity: ${remainingMonths} months remaining. Meets minimum 6-month threshold.`);
+        }
+      } else {
+        redFlags.push(`⚠️ Passport expires in ${remainingMonths} months. Minimum 6-month validity required by ${countryName} consular rules. Renewal strongly advised.`);
+      }
+    } else if (passportValidityRange) {
       filledCount++;
       if (passportValidityRange.includes('> 12 Months')) {
-        passportScore += 15;
+        passportScore += 25;
       } else if (passportValidityRange.includes('6 - 12 Months')) {
-        passportScore += 10;
+        passportScore += 15;
       } else {
         redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${countryName} consular rules.`);
       }
@@ -3243,10 +3261,11 @@ export function VisaCountryResultPortal({
 
     if (filledCount === 0 && docsReadyCount === 0 && !passportFile) {
       finalScore = 0;
-      recommendations = ['Select your profile details or mark required documents as Ready above to calculate your exact consular approval readiness score.'];
+      recommendations = ['Select your profile details or upload your passport bio-data above to calculate your exact consular approval readiness score.'];
     } else {
-      const totalRaw = passportScore + finScore + itinScore + tiesScore + docsScore - refusalPenalty;
-      finalScore = Math.max(15, Math.min(98, totalRaw));
+      const totalRaw = passportScore + validityBonus + finScore + itinScore + tiesScore + docsScore - refusalPenalty;
+      const minBase = (passportFile && (passportFile.remainingMonths || 0) >= 12) ? 68 : (passportFile && (passportFile.remainingMonths || 0) >= 6) ? 55 : 15;
+      finalScore = Math.max(minBase, Math.min(98, totalRaw));
     }
 
     return {
@@ -4928,7 +4947,13 @@ export function VisaCountryResultPortal({
                               : `+${((docsReadyCount / docsTotalCount) * 3.5).toFixed(1)} pts (${docsReadyCount}/${docsTotalCount} Docs)`}
                           </span>
                         ) : passportFile ? (
-                          <span className="text-emerald-600 font-black">+2.0 pts (Passport Verified)</span>
+                          <span className="text-emerald-600 font-black">
+                            {passportFile.remainingMonths !== undefined && passportFile.remainingMonths >= 12
+                              ? `+4.0 pts (${passportFile.remainingMonths} Mos Valid ✓)`
+                              : passportFile.remainingMonths !== undefined && passportFile.remainingMonths >= 6
+                              ? `+3.0 pts (${passportFile.remainingMonths} Mos Valid)`
+                              : '+2.0 pts (Passport Verified)'}
+                          </span>
                         ) : readinessMetrics.filledCount > 0 ? (
                           <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
                         ) : (
@@ -4937,6 +4962,12 @@ export function VisaCountryResultPortal({
                       </span>
                     </div>
                   </div>
+
+                  {passportFile && (
+                    <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full shadow-2xs text-center">
+                      <span>✓ Passport Validity Analyzed: {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months Remaining` : 'Verified'} (Consular 6-Month Rule Passed)</span>
+                    </div>
+                  )}
 
                   {docsReadyCount > 0 && (
                     <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full shadow-2xs">

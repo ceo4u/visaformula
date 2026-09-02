@@ -554,6 +554,253 @@ export function UserDashboard() {
         uploadedAt: string;
     }>>({});
 
+    // ── SECRET DOCUMENT VAULT ENCRYPTION & PASSWORD PROTECTION ──
+    const [isVaultUnlocked, setIsVaultUnlocked] = useState(false);
+    const [hasVaultPassword, setHasVaultPassword] = useState<boolean | null>(null);
+    const [vaultPasswordInput, setVaultPasswordInput] = useState("");
+    const [vaultPasswordConfirm, setVaultPasswordConfirm] = useState("");
+    const [vaultOldPasswordInput, setVaultOldPasswordInput] = useState("");
+    const [vaultAccountPasswordInput, setVaultAccountPasswordInput] = useState("");
+    const [vaultError, setVaultError] = useState<string | null>(null);
+    const [vaultSuccess, setVaultSuccess] = useState<string | null>(null);
+    const [showVaultPassword, setShowVaultPassword] = useState(false);
+    const [showVaultOldPassword, setShowVaultOldPassword] = useState(false);
+    const [isVaultSubmitting, setIsVaultSubmitting] = useState(false);
+    const [showChangeVaultPasswordModal, setShowChangeVaultPasswordModal] = useState(false);
+    const [showResetVaultPasswordModal, setShowResetVaultPasswordModal] = useState(false);
+
+    const checkVaultPasswordStatus = async () => {
+        const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
+        if (!targetEmail) {
+            const localPass = typeof window !== 'undefined' ? localStorage.getItem('travltik_vault_pass_guest') : null;
+            setHasVaultPassword(Boolean(localPass));
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/user/vault-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'get_status', email: targetEmail })
+            });
+            const data = await res.json();
+            const localPass = typeof window !== 'undefined' ? localStorage.getItem(`travltik_vault_pass_${targetEmail}`) : null;
+            if (data.success) {
+                setHasVaultPassword(data.hasPassword || Boolean(localPass));
+            } else {
+                setHasVaultPassword(Boolean(localPass));
+            }
+        } catch {
+            const localPass = typeof window !== 'undefined' ? localStorage.getItem(`travltik_vault_pass_${targetEmail}`) : null;
+            setHasVaultPassword(Boolean(localPass));
+        }
+    };
+
+    const handleUnlockVault = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        setVaultError(null);
+        if (!vaultPasswordInput.trim()) {
+            setVaultError("Please enter your secret vault password.");
+            return;
+        }
+
+        setIsVaultSubmitting(true);
+        const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
+
+        try {
+            const res = await fetch('/api/user/vault-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'verify',
+                    email: targetEmail || 'guest@travltik.com',
+                    password: vaultPasswordInput.trim()
+                })
+            });
+            const data = await res.json();
+            const localPass = typeof window !== 'undefined' ? localStorage.getItem(`travltik_vault_pass_${targetEmail}`) : null;
+
+            if (data.success || (localPass && localPass === vaultPasswordInput.trim())) {
+                setIsVaultUnlocked(true);
+                setVaultPasswordInput("");
+                setVaultError(null);
+            } else {
+                setVaultError(data.message || "Incorrect secret vault password. Please try again.");
+            }
+        } catch {
+            const localPass = typeof window !== 'undefined' ? localStorage.getItem(`travltik_vault_pass_${targetEmail}`) : null;
+            if (localPass && localPass === vaultPasswordInput.trim()) {
+                setIsVaultUnlocked(true);
+                setVaultPasswordInput("");
+                setVaultError(null);
+            } else {
+                setVaultError("Incorrect secret vault password. Please try again.");
+            }
+        } finally {
+            setIsVaultSubmitting(false);
+        }
+    };
+
+    const handleSetInitialVaultPassword = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        setVaultError(null);
+
+        if (!vaultPasswordInput || vaultPasswordInput.length < 4) {
+            setVaultError("Vault password must be at least 4 characters.");
+            return;
+        }
+
+        if (vaultPasswordInput !== vaultPasswordConfirm) {
+            setVaultError("Passwords do not match. Please verify.");
+            return;
+        }
+
+        setIsVaultSubmitting(true);
+        const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '') || 'seeker@travltik.com';
+
+        try {
+            await fetch('/api/user/vault-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'set',
+                    email: targetEmail,
+                    password: vaultPasswordInput.trim()
+                })
+            });
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(`travltik_vault_pass_${targetEmail}`, vaultPasswordInput.trim());
+            }
+            setHasVaultPassword(true);
+            setIsVaultUnlocked(true);
+            setVaultPasswordInput("");
+            setVaultPasswordConfirm("");
+            setVaultSuccess("Secret vault password created! Your Document Vault is now secured.");
+            setTimeout(() => setVaultSuccess(null), 4000);
+        } catch {
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(`travltik_vault_pass_${targetEmail}`, vaultPasswordInput.trim());
+            }
+            setHasVaultPassword(true);
+            setIsVaultUnlocked(true);
+            setVaultPasswordInput("");
+            setVaultPasswordConfirm("");
+            setVaultSuccess("Secret vault password created! Your Document Vault is now secured.");
+            setTimeout(() => setVaultSuccess(null), 4000);
+        } finally {
+            setIsVaultSubmitting(false);
+        }
+    };
+
+    const handleLockVault = () => {
+        setIsVaultUnlocked(false);
+        setVaultPasswordInput("");
+        setVaultError(null);
+    };
+
+    const handleChangeVaultPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setVaultError(null);
+        if (!vaultOldPasswordInput) {
+            setVaultError("Please enter your current vault password.");
+            return;
+        }
+        if (!vaultPasswordInput || vaultPasswordInput.length < 4) {
+            setVaultError("New password must be at least 4 characters.");
+            return;
+        }
+        if (vaultPasswordInput !== vaultPasswordConfirm) {
+            setVaultError("New passwords do not match.");
+            return;
+        }
+
+        setIsVaultSubmitting(true);
+        const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
+
+        try {
+            const res = await fetch('/api/user/vault-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'change',
+                    email: targetEmail,
+                    currentPassword: vaultOldPasswordInput.trim(),
+                    newPassword: vaultPasswordInput.trim()
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`travltik_vault_pass_${targetEmail}`, vaultPasswordInput.trim());
+                }
+                setShowChangeVaultPasswordModal(false);
+                setVaultOldPasswordInput("");
+                setVaultPasswordInput("");
+                setVaultPasswordConfirm("");
+                setVaultSuccess("Vault secret password successfully updated!");
+                setTimeout(() => setVaultSuccess(null), 4000);
+            } else {
+                setVaultError(data.message || "Failed to update vault password.");
+            }
+        } catch {
+            setVaultError("Network error. Please try again.");
+        } finally {
+            setIsVaultSubmitting(false);
+        }
+    };
+
+    const handleResetVaultPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setVaultError(null);
+        if (!vaultAccountPasswordInput) {
+            setVaultError("Please enter your account login password.");
+            return;
+        }
+        if (!vaultPasswordInput || vaultPasswordInput.length < 4) {
+            setVaultError("New vault password must be at least 4 characters.");
+            return;
+        }
+        if (vaultPasswordInput !== vaultPasswordConfirm) {
+            setVaultError("New vault passwords do not match.");
+            return;
+        }
+
+        setIsVaultSubmitting(true);
+        const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
+
+        try {
+            const res = await fetch('/api/user/vault-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'reset',
+                    email: targetEmail,
+                    accountPassword: vaultAccountPasswordInput.trim(),
+                    newPassword: vaultPasswordInput.trim()
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`travltik_vault_pass_${targetEmail}`, vaultPasswordInput.trim());
+                }
+                setShowResetVaultPasswordModal(false);
+                setVaultAccountPasswordInput("");
+                setVaultPasswordInput("");
+                setVaultPasswordConfirm("");
+                setIsVaultUnlocked(true);
+                setVaultSuccess("Vault password has been reset with your account verification!");
+                setTimeout(() => setVaultSuccess(null), 4000);
+            } else {
+                setVaultError(data.message || "Account verification failed. Incorrect password.");
+            }
+        } catch {
+            setVaultError("Network error. Please try again.");
+        } finally {
+            setIsVaultSubmitting(false);
+        }
+    };
+
     // Password reset & change states for profile tab
     const [currentPwd, setCurrentPwd] = useState("");
     const [newPwd, setNewPwd] = useState("");
@@ -1186,6 +1433,16 @@ export function UserDashboard() {
         localStorage.setItem("seeker_ielts", JSON.stringify(newScore));
     };
 
+    useEffect(() => {
+        if (activeTab === "scanned-documents") {
+            checkVaultPasswordStatus();
+        } else {
+            setIsVaultUnlocked(false);
+            setVaultPasswordInput("");
+            setVaultError(null);
+        }
+    }, [activeTab]);
+
     const handleLogout = () => {
         localStorage.removeItem("travltik_user"); localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");
@@ -1585,8 +1842,21 @@ export function UserDashboard() {
                                             View Vault <ChevronRight className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
-
-                                    {documents.length === 0 ? (
+                                    {hasVaultPassword && !isVaultUnlocked ? (
+                                        <div className="p-7 text-center bg-slate-50/80 rounded-2xl border border-slate-200 space-y-3">
+                                            <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
+                                                <Lock className="w-5 h-5" />
+                                            </div>
+                                            <h4 className="text-sm font-black text-slate-900">Document Vault Protected</h4>
+                                            <p className="text-xs text-slate-500 max-w-xs mx-auto">Your immigration files are encrypted and locked. Enter your secret password in the Document Vault to view or upload documents.</p>
+                                            <button
+                                                onClick={() => setActiveTab("scanned-documents")}
+                                                className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
+                                            >
+                                                <KeyRound className="w-3.5 h-3.5 text-emerald-400" /> Unlock Vault
+                                            </button>
+                                        </div>
+                                    ) : documents.length === 0 ? (
                                         <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-3">
                                             <FileText className="w-10 h-10 text-slate-400 mx-auto" />
                                             <h4 className="text-sm font-extrabold text-slate-900">No Documents Uploaded Yet</h4>
@@ -1885,18 +2155,217 @@ export function UserDashboard() {
                         const verifiedItemsCount = allChecklistItems.filter(item => vaultChecklistState[item.key]?.verified).length;
                         const readinessScore = totalChecklistItems > 0 ? Math.round((verifiedItemsCount / totalChecklistItems) * 100) : 0;
 
+                        if (hasVaultPassword === null) {
+                            return (
+                                <div className="bg-white rounded-3xl border border-slate-200/90 p-12 text-center space-y-4 shadow-sm animate-fade-up">
+                                    <div className="w-10 h-10 border-3 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-900">Verifying Vault Security...</h3>
+                                    <p className="text-xs text-slate-500 font-medium">Checking encrypted secret protection</p>
+                                </div>
+                            );
+                        }
+
+                        if (!hasVaultPassword) {
+                            return (
+                                <div className="max-w-xl mx-auto py-6 animate-fade-up">
+                                    <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+                                        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-6 sm:p-8 text-white text-center relative overflow-hidden">
+                                            <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-4 text-emerald-400 shadow-inner">
+                                                <Lock className="w-8 h-8" />
+                                            </div>
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black uppercase tracking-wider mb-2">
+                                                Document Vault Protection
+                                            </span>
+                                            <h2 className="text-xl sm:text-2xl font-black text-white">Create Secret Vault Password</h2>
+                                            <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-md mx-auto mt-2 leading-relaxed">
+                                                Protect your passport scans, financial statements, and biometric records. You will enter this password every time you access your Document Vault.
+                                            </p>
+                                        </div>
+
+                                        <form onSubmit={handleSetInitialVaultPassword} className="p-6 sm:p-8 space-y-5">
+                                            {vaultError && (
+                                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                                    <span>{vaultError}</span>
+                                                </div>
+                                            )}
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Create Secret Password</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type={showVaultPassword ? "text" : "password"}
+                                                        value={vaultPasswordInput}
+                                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                                        placeholder="Enter secret password (min 4 chars)"
+                                                        className="w-full h-11 pl-4 pr-10 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                    >
+                                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                                <span className="text-[10px] text-slate-400 font-medium block">Can be alphanumeric or a secure 4-8 digit numeric PIN.</span>
+                                            </div>
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Confirm Secret Password</label>
+                                                <input
+                                                    type={showVaultPassword ? "text" : "password"}
+                                                    value={vaultPasswordConfirm}
+                                                    onChange={(e) => setVaultPasswordConfirm(e.target.value)}
+                                                    placeholder="Re-enter secret password"
+                                                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isVaultSubmitting}
+                                                className="w-full h-12 bg-slate-950 hover:bg-slate-900 text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                            >
+                                                {isVaultSubmitting ? (
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <>
+                                                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                                                        <span>Set Secret Password &amp; Open Vault</span>
+                                                    </>
+                                                )}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        if (!isVaultUnlocked) {
+                            return (
+                                <div className="max-w-md mx-auto py-10 animate-fade-up">
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-8 text-center space-y-6">
+                                        <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+                                            <div className="absolute inset-0 bg-emerald-500/10 rounded-full animate-ping opacity-75" />
+                                            <div className="w-20 h-20 rounded-2xl bg-slate-950 border border-slate-800 text-emerald-400 flex items-center justify-center shadow-lg relative z-10">
+                                                <Lock className="w-9 h-9" />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-black uppercase tracking-wider mb-2">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                                Protected Document Vault
+                                            </span>
+                                            <h2 className="text-2xl font-black text-slate-950">Vault is Locked</h2>
+                                            <p className="text-xs text-slate-500 font-medium mt-1.5 max-w-xs mx-auto">
+                                                Enter your secret vault password to access your passport copies and confidential visa documents.
+                                            </p>
+                                        </div>
+
+                                        <form onSubmit={handleUnlockVault} className="space-y-4 text-left">
+                                            {vaultError && (
+                                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                                    <span>{vaultError}</span>
+                                                </div>
+                                            )}
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Secret Password</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type={showVaultPassword ? "text" : "password"}
+                                                        value={vaultPasswordInput}
+                                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                                        placeholder="Enter your secret password"
+                                                        autoFocus
+                                                        className="w-full h-12 pl-4 pr-10 rounded-xl border border-slate-200 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                    >
+                                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isVaultSubmitting}
+                                                className="w-full h-12 bg-slate-950 hover:bg-black text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                            >
+                                                {isVaultSubmitting ? (
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <>
+                                                        <KeyRound className="w-4 h-4 text-emerald-400" />
+                                                        <span>Unlock Document Vault</span>
+                                                    </>
+                                                )}
+                                            </button>
+
+                                            <div className="text-center pt-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setShowResetVaultPasswordModal(true);
+                                                        setVaultError(null);
+                                                    }}
+                                                    className="text-xs font-bold text-slate-500 hover:text-slate-900 underline cursor-pointer"
+                                                >
+                                                    Forgot secret vault password?
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            );
+                        }
+
                         return (
                             <div className="space-y-7 animate-fade-up">
                                 {/* Top Header */}
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <div>
-                                        <h2 className="text-2xl font-black text-slate-900">Document Vault &amp; Checklist</h2>
+                                        <div className="flex items-center gap-2">
+                                            <h2 className="text-2xl font-black text-slate-900">Document Vault &amp; Checklist</h2>
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black border border-emerald-200">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                                Vault Protected
+                                            </span>
+                                        </div>
                                         <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Official AI consular checklist and application steps.
+                                            Official AI consular checklist and application steps. Protected by secret password.
                                         </p>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowChangeVaultPasswordModal(true);
+                                                setVaultError(null);
+                                            }}
+                                            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer"
+                                        >
+                                            <KeyRound className="w-3.5 h-3.5 text-slate-600" />
+                                            <span>Change Password</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleLockVault}
+                                            className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                                        >
+                                            <Lock className="w-3.5 h-3.5 text-rose-400" />
+                                            <span>Lock Vault</span>
+                                        </button>
+                                        <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
                                             {verifiedItemsCount}/{totalChecklistItems} Verified
                                         </span>
                                     </div>
@@ -2571,6 +3040,223 @@ export function UserDashboard() {
                             <div className="flex gap-3 pt-3">
                                 <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors cursor-pointer">Cancel</button>
                                 <button type="submit" className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ── MODAL: CHANGE VAULT SECRET PASSWORD ── */}
+            {showChangeVaultPasswordModal && (
+                <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center shadow-xs">
+                                    <KeyRound className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-black text-slate-950">Change Vault Password</h3>
+                                    <p className="text-xs text-slate-500 font-medium">Update your secret document password</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    setShowChangeVaultPasswordModal(false);
+                                    setVaultError(null);
+                                    setVaultOldPasswordInput("");
+                                    setVaultPasswordInput("");
+                                    setVaultPasswordConfirm("");
+                                }}
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleChangeVaultPassword} className="space-y-4 pt-4">
+                            {vaultError && (
+                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                    <span>{vaultError}</span>
+                                </div>
+                            )}
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">Current Secret Password</label>
+                                <div className="relative">
+                                    <input
+                                        type={showVaultOldPassword ? "text" : "password"}
+                                        value={vaultOldPasswordInput}
+                                        onChange={(e) => setVaultOldPasswordInput(e.target.value)}
+                                        placeholder="Enter current password"
+                                        className="w-full h-11 pl-3.5 pr-10 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowVaultOldPassword(!showVaultOldPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                    >
+                                        {showVaultOldPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">New Secret Password</label>
+                                <div className="relative">
+                                    <input
+                                        type={showVaultPassword ? "text" : "password"}
+                                        value={vaultPasswordInput}
+                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                        placeholder="Enter new password (min 4 chars)"
+                                        className="w-full h-11 pl-3.5 pr-10 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                    >
+                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">Confirm New Password</label>
+                                <input
+                                    type={showVaultPassword ? "text" : "password"}
+                                    value={vaultPasswordConfirm}
+                                    onChange={(e) => setVaultPasswordConfirm(e.target.value)}
+                                    placeholder="Re-enter new password"
+                                    className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                    required
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowChangeVaultPasswordModal(false)}
+                                    className="flex-1 py-2.5 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isVaultSubmitting}
+                                    className="flex-1 py-2.5 bg-slate-950 hover:bg-black text-white rounded-xl font-black text-xs shadow-md cursor-pointer disabled:opacity-50"
+                                >
+                                    {isVaultSubmitting ? "Updating..." : "Save New Password"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ── MODAL: RESET VAULT SECRET PASSWORD ── */}
+            {showResetVaultPasswordModal && (
+                <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center shadow-xs">
+                                    <ShieldCheck className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-black text-slate-950">Reset Vault Password</h3>
+                                    <p className="text-xs text-slate-500 font-medium">Verify account to restore vault access</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    setShowResetVaultPasswordModal(false);
+                                    setVaultError(null);
+                                    setVaultAccountPasswordInput("");
+                                    setVaultPasswordInput("");
+                                    setVaultPasswordConfirm("");
+                                }}
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleResetVaultPassword} className="space-y-4 pt-4">
+                            <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                Enter your TravlTik login account password to securely verify your identity and reset your secret Document Vault password.
+                            </p>
+
+                            {vaultError && (
+                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                    <span>{vaultError}</span>
+                                </div>
+                            )}
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">Your Account Login Password</label>
+                                <input
+                                    type="password"
+                                    value={vaultAccountPasswordInput}
+                                    onChange={(e) => setVaultAccountPasswordInput(e.target.value)}
+                                    placeholder="Enter your main account login password"
+                                    className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">New Secret Vault Password</label>
+                                <div className="relative">
+                                    <input
+                                        type={showVaultPassword ? "text" : "password"}
+                                        value={vaultPasswordInput}
+                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                        placeholder="Enter new secret password (min 4 chars)"
+                                        className="w-full h-11 pl-3.5 pr-10 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                    >
+                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">Confirm New Vault Password</label>
+                                <input
+                                    type={showVaultPassword ? "text" : "password"}
+                                    value={vaultPasswordConfirm}
+                                    onChange={(e) => setVaultPasswordConfirm(e.target.value)}
+                                    placeholder="Re-enter new secret password"
+                                    className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                    required
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowResetVaultPasswordModal(false)}
+                                    className="flex-1 py-2.5 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isVaultSubmitting}
+                                    className="flex-1 py-2.5 bg-slate-950 hover:bg-black text-white rounded-xl font-black text-xs shadow-md cursor-pointer disabled:opacity-50"
+                                >
+                                    {isVaultSubmitting ? "Verifying..." : "Verify & Reset Vault"}
+                                </button>
                             </div>
                         </form>
                     </div>

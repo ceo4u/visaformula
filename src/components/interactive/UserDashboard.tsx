@@ -4,7 +4,7 @@ import {
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
-    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw
+    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard
 } from "lucide-react";
 
 export interface VaultDocItem {
@@ -39,6 +39,28 @@ export function normalizeCountryName(val: string): string {
   if (s.includes('japan') || s.includes('japanese')) return 'Japan';
   if (s.includes('jordan') || s.includes('jordanian')) return 'Jordan';
   return val;
+}
+
+export function getAiDocIcon(title: string): string {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport')) return '🛂';
+  if (t.includes('photo') || t.includes('picture')) return '📸';
+  if (t.includes('flight') || t.includes('ticket') || t.includes('air') || t.includes('travel')) return '✈️';
+  if (t.includes('hotel') || t.includes('stay') || t.includes('accommodation') || t.includes('host') || t.includes('address')) return '🏨';
+  if (t.includes('bank') || t.includes('financial') || t.includes('funds') || t.includes('statement') || t.includes('solvency')) return '💰';
+  if (t.includes('ds-160') || t.includes('form') || t.includes('application') || t.includes('schengen')) return '📝';
+  if (t.includes('appointment') || t.includes('schedule') || t.includes('confirmation')) return '📅';
+  if (t.includes('employment') || t.includes('work') || t.includes('leave') || t.includes('noc') || t.includes('job') || t.includes('ties')) return '💼';
+  if (t.includes('insurance') || t.includes('medical') || t.includes('health')) return '🛡️';
+  if (t.includes('student') || t.includes('cas') || t.includes('i-20') || t.includes('admit') || t.includes('degree')) return '🎓';
+  if (t.includes('invitation') || t.includes('sponsor')) return '✉️';
+  return '📄';
+}
+
+export function cleanStepText(step: string, idx: number): { stepNum: number; text: string } {
+  let text = (step || '').replace(/^[0-9]+[?.\-:\s]+/, '').replace(/^Step\s*[0-9]+[:\s-]*/i, '').trim();
+  text = text.replace(/^\?\?+\s*/, '').trim();
+  return { stepNum: idx + 1, text };
 }
 
 export const dashboardPassportOptions = [
@@ -520,6 +542,8 @@ export function UserDashboard() {
     const [selectedPurpose, setSelectedPurpose] = useState('Tourism / Vacation');
     const [profileUpdatedToast, setProfileUpdatedToast] = useState(false);
     const [scanningDocKey, setScanningDocKey] = useState<string | null>(null);
+    const [aiVisaData, setAiVisaData] = useState<any>(null);
+    const [isLoadingAi, setIsLoadingAi] = useState(false);
     const [vaultChecklistState, setVaultChecklistState] = useState<Record<string, {
         fileName: string;
         size: string;
@@ -528,6 +552,70 @@ export function UserDashboard() {
         summary?: string;
         uploadedAt: string;
     }>>({});
+
+    const fetchAiRequirements = async (dest: string, pass: string, purp: string) => {
+        const cleanDest = normalizeCountryName(dest);
+        const cleanPass = normalizeCountryName(pass);
+        const cacheKey = `travltik_ai_res_${cleanDest}_${purp}`.replace(/\s+/g, '_').toLowerCase();
+
+        // 1. Instant load from local cache if present
+        try {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (parsed && (parsed.destination_country || parsed.documents_required)) {
+                    setAiVisaData(parsed);
+                }
+            } else {
+                const lastAi = localStorage.getItem('travltik_last_ai_requirements');
+                if (lastAi) {
+                    const parsed = JSON.parse(lastAi);
+                    if (parsed && normalizeCountryName(parsed.destination_country || '') === cleanDest) {
+                        setAiVisaData(parsed);
+                    }
+                }
+            }
+        } catch(e) {}
+
+        // 2. Fetch fresh AI requirements from server
+        setIsLoadingAi(true);
+        try {
+            let userEmail = localStorage.getItem('seeker_email') || '';
+            if (!userEmail) {
+                try {
+                    const u = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+                    userEmail = u.email || 'seeker@travltik.com';
+                } catch(e) {
+                    userEmail = 'seeker@travltik.com';
+                }
+            }
+
+            const res = await fetch('/api/visa/ai-requirements', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fromCountry: cleanPass,
+                    toCountry: cleanDest,
+                    purpose: purp,
+                    userEmail: userEmail || 'seeker@travltik.com',
+                    isLoggedIn: true
+                })
+            });
+
+            const json = await res.json();
+            if (json?.success && json.data) {
+                setAiVisaData(json.data);
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify(json.data));
+                    localStorage.setItem('travltik_last_ai_requirements', JSON.stringify(json.data));
+                } catch(e) {}
+            }
+        } catch(err) {
+            console.warn('AI requirements fetch fallback:', err);
+        } finally {
+            setIsLoadingAi(false);
+        }
+    };
 
     const handleCreateOrSwitchTripProfile = (dest?: string, pass?: string, purp?: string) => {
         const targetDest = normalizeCountryName(dest || selectedDestination || 'United States');
@@ -617,6 +705,8 @@ export function UserDashboard() {
                 });
             }
         } catch(e) {}
+
+        fetchAiRequirements(targetDest, targetPass, targetPurp);
 
         setProfileUpdatedToast(true);
         setTimeout(() => setProfileUpdatedToast(false), 3500);
@@ -805,6 +895,8 @@ export function UserDashboard() {
                     setVaultChecklistState(JSON.parse(savedChecklistStr));
                 } catch(e) {}
             }
+
+            fetchAiRequirements(initialDest, initialPass, initialPurp);
 
             const userStr = (localStorage.getItem("travltik_user"));
             const savedEmail = localStorage.getItem("seeker_email");
@@ -1637,7 +1729,19 @@ export function UserDashboard() {
                             normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
                         );
                         const destFlag = currentDestObj?.flag || '🌍';
-                        const destChecklist = getDestinationChecklist(normalizedDest, selectedPurpose);
+
+                        // Dynamic statutory checklist derived from AI search result or verified consular data
+                        const destChecklist: VaultDocItem[] = (aiVisaData?.documents_required && aiVisaData.documents_required.length > 0)
+                            ? aiVisaData.documents_required.map((doc: any, idx: number) => ({
+                                key: `doc_req_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                                title: doc.title,
+                                description: doc.description || '',
+                                icon: getAiDocIcon(doc.title),
+                                mandatory: doc.is_mandatory !== false,
+                                hint: doc.is_mandatory !== false ? 'Mandatory Statutory Requirement' : 'Supporting / Optional'
+                            }))
+                            : getDestinationChecklist(normalizedDest, selectedPurpose);
+
                         const allChecklistItems = [...globalTravelDocuments, ...destChecklist];
                         const totalChecklistItems = allChecklistItems.length;
                         const verifiedItemsCount = allChecklistItems.filter(item => vaultChecklistState[item.key]?.verified).length;
@@ -1650,7 +1754,7 @@ export function UserDashboard() {
                                     <div>
                                         <h2 className="text-2xl font-black text-slate-900">Document Vault &amp; Checklist</h2>
                                         <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Upload documents for instant AI verification and consular compliance.
+                                            Official AI consular checklist and application steps.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -1762,10 +1866,26 @@ export function UserDashboard() {
                                             <span className="px-2 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold">
                                                 Passport: {normalizedPass}
                                             </span>
+                                            {(aiVisaData?.processing_time || aiVisaData?.processing_and_timing?.decision_time) && (
+                                                <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-bold">
+                                                    ⏱️ {aiVisaData.processing_time || aiVisaData.processing_and_timing?.decision_time}
+                                                </span>
+                                            )}
+                                            {(aiVisaData?.costs?.total_fee || aiVisaData?.costs?.visa_fee) && (
+                                                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] font-bold">
+                                                    💳 {aiVisaData.costs?.total_fee || aiVisaData.costs?.visa_fee}
+                                                </span>
+                                            )}
+                                            {isLoadingAi && (
+                                                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold flex items-center gap-1">
+                                                    <div className="w-2 h-2 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                                                    Syncing...
+                                                </span>
+                                            )}
                                         </div>
 
                                         <h3 className="text-lg sm:text-xl font-black text-white">
-                                            {destFlag} Trip to {normalizedDest} • {currentDestObj?.defaultVisa || 'Consular Visa Application'}
+                                            {destFlag} Trip to {normalizedDest} • {aiVisaData?.visa_type || currentDestObj?.defaultVisa || 'Consular Visa Application'}
                                         </h3>
                                     </div>
 
@@ -1789,6 +1909,86 @@ export function UserDashboard() {
                                         </span>
                                     </div>
                                 </div>
+
+                                {/* ── AI STEPS ROADMAP (HOW TO APPLY) ── */}
+                                {aiVisaData?.how_to_apply && aiVisaData.how_to_apply.length > 0 && (
+                                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
+                                                    <Compass className="w-4 h-4 text-[#00A86B]" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-sm font-black text-slate-900">
+                                                        Application Steps • {normalizedDest}
+                                                    </h3>
+                                                    <span className="text-[10px] font-semibold text-slate-400">
+                                                        Official Consular Application Roadmap
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                                {aiVisaData.how_to_apply.length} Steps
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                            {aiVisaData.how_to_apply.map((stepStr: string, idx: number) => {
+                                                const { stepNum, text } = cleanStepText(stepStr, idx);
+                                                return (
+                                                    <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 flex items-start gap-3 hover:border-slate-300 transition-all">
+                                                        <span className="w-6 h-6 rounded-full bg-slate-900 text-white text-[11px] font-black flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                                                            {stepNum}
+                                                        </span>
+                                                        <div className="space-y-0.5 min-w-0">
+                                                            <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 block">
+                                                                Step {stepNum}
+                                                            </span>
+                                                            <p className="text-xs font-bold text-slate-800 leading-snug">
+                                                                {text}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* ── AI FINANCIAL SOLVENCY BENCHMARK ── */}
+                                {aiVisaData?.financial_proofs && aiVisaData.financial_proofs.length > 0 && (
+                                    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                            <h4 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                                                <ShieldCheck className="w-4 h-4 text-[#00A86B]" />
+                                                Financial Proofs &amp; Solvency Benchmarks
+                                            </h4>
+                                            <span className="text-[10px] font-bold text-slate-500">
+                                                Consular Requirement
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                                            {aiVisaData.financial_proofs.map((fin: any, fIdx: number) => (
+                                                <div key={fIdx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs space-y-1">
+                                                    <div className="flex items-center justify-between gap-1">
+                                                        <span className="font-black text-slate-900 truncate">{fin.type}</span>
+                                                        {fin.minimum_balance_or_amount && (
+                                                            <span className="text-[10px] font-black text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">
+                                                                {fin.minimum_balance_or_amount}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    {fin.time_frame && (
+                                                        <p className="text-[10px] text-slate-500 font-semibold">{fin.time_frame}</p>
+                                                    )}
+                                                    {fin.notes && (
+                                                        <p className="text-[11px] text-slate-700 font-medium line-clamp-2">{fin.notes}</p>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* 3. SECTION A: GENERALLY IMPORTANT TRAVEL DOCUMENTS (MANDATORY GLOBAL VAULT) */}
                                 <div className="space-y-3">

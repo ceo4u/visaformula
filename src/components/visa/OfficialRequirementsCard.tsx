@@ -469,6 +469,11 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
       }
       if (json.success && json.data) {
         setData(json.data);
+        try {
+          const cacheKey = `travltik_ai_res_${cleanTo}_${currPurpose}`.replace(/\s+/g, '_').toLowerCase();
+          localStorage.setItem(cacheKey, JSON.stringify(json.data));
+          localStorage.setItem('travltik_last_ai_requirements', JSON.stringify(json.data));
+        } catch(e) {}
       }
     } catch (e) {
       console.error('Failed to load requirements:', e);

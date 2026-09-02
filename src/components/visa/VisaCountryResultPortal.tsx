@@ -4349,229 +4349,120 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* ── STEP 1: PASSPORT COLLECTION & LIVE VISA READINESS SCORECARD (PLACED AT TOP FOR DATE ANALYSIS) ── */}
-              <div className="pt-2 sm:pt-3 space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
-                  
-                  {/* LEFT COLUMN: PASSPORT BIO-DATA UPLOAD */}
-                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-5 text-left flex flex-col justify-between shadow-sm">
-                    <div>
-                      <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-1.5 whitespace-nowrap">
-                          <span>📘 Passport Bio-Data (Upload)</span>
+              {/* ── STEP 1: PASSPORT BIO-DATA (UPLOAD & REAL-TIME AI ANALYSIS) ── */}
+              <div className="pt-2 sm:pt-3">
+                <div className="bg-slate-50/60 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 space-y-4 text-left shadow-2xs">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-1.5 whitespace-nowrap">
+                        <span>📘 1. Passport Bio-Data (Upload &amp; Verification)</span>
+                      </span>
+                      {passportFile ? (
+                        <span className="text-[11px] sm:text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
+                          ✓ ATTACHED &amp; ANALYZED
                         </span>
-                        {passportFile ? (
-                          <span className="text-[11px] sm:text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
-                            ✓ ATTACHED &amp; ANALYZED
-                          </span>
-                        ) : (
-                          <span className="text-[11px] sm:text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
-                            UPLOAD REQUIRED
-                          </span>
-                        )}
-                      </div>
+                      ) : (
+                        <span className="text-[11px] sm:text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
+                          UPLOAD REQUIRED
+                        </span>
+                      )}
+                    </div>
 
-                      <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed mt-2">
-                        Upload your passport bio-data page to automatically analyze expiry date, ICAO MRZ checksum, and verify consular compliance for {countryName}.
+                    <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed mt-2">
+                      Upload your passport bio-data page to automatically analyze expiry date, ICAO MRZ checksum, and verify consular compliance for {countryName}.
+                    </p>
+                  </div>
+
+                  {isScanningPassport ? (
+                    <div className="border border-indigo-200 bg-indigo-50/50 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[180px] sm:min-h-[220px] animate-pulse">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md animate-bounce">
+                        <Sparkles className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="text-sm sm:text-base font-black text-slate-900">
+                        Scanning ICAO 9303 MRZ Lines &amp; Document Security...
+                      </span>
+                      <p className="text-xs text-slate-500 font-semibold max-w-xs">
+                        Verifying passport validity, photo biometric specs &amp; 6-month consular compliance.
                       </p>
                     </div>
-
-                    {isScanningPassport ? (
-                      <div className="border border-indigo-200 bg-indigo-50/50 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[190px] sm:min-h-[240px] animate-pulse">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md animate-bounce">
-                          <Sparkles className="w-6 h-6 text-white" />
+                  ) : passportFile ? (
+                    <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-3 shadow-xs">
+                      <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-3">
+                        <div className="min-w-0">
+                          <span className="text-sm font-black text-slate-950 truncate block">
+                            {passportFile.fullName ? `${passportFile.fullName} (${passportFile.name})` : passportFile.name}
+                          </span>
+                          <span className="text-[11px] text-emerald-800 font-bold block mt-0.5">
+                            {passportFile.docType || 'Official Machine Readable Passport'}
+                            {passportFile.passportNumber ? ` • No: ${passportFile.passportNumber}` : ''}
+                          </span>
                         </div>
-                        <span className="text-sm sm:text-base font-black text-slate-900">
-                          Scanning ICAO 9303 MRZ Lines &amp; Document Security...
-                        </span>
-                        <p className="text-xs text-slate-500 font-semibold max-w-xs">
-                          Verifying passport validity, photo biometric specs &amp; 6-month consular compliance.
-                        </p>
+                        <button
+                          type="button"
+                          onClick={() => handlePassportUpload(null)}
+                          className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors shrink-0"
+                        >
+                          ✕ Remove
+                        </button>
                       </div>
-                    ) : passportFile ? (
-                      <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-3 shadow-xs">
-                        <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-3">
-                          <div className="min-w-0">
-                            <span className="text-sm font-black text-slate-950 truncate block">
-                              {passportFile.fullName ? `${passportFile.fullName} (${passportFile.name})` : passportFile.name}
-                            </span>
-                            <span className="text-[11px] text-emerald-800 font-bold block mt-0.5">
-                              {passportFile.docType || 'Official Machine Readable Passport'}
-                              {passportFile.passportNumber ? ` • No: ${passportFile.passportNumber}` : ''}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handlePassportUpload(null)}
-                            className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors shrink-0"
-                          >
-                            ✕ Remove
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
-                          {passportFile.issueDate && (
-                            <div>
-                              <span className="text-[10px] text-slate-400 font-bold block">Issue Date</span>
-                              <span className="font-extrabold text-slate-900">{passportFile.issueDate}</span>
-                            </div>
-                          )}
-                          {passportFile.expiryDate && (
-                            <div>
-                              <span className="text-[10px] text-slate-400 font-bold block">Expiry Date</span>
-                              <span className="font-extrabold text-slate-900">{passportFile.expiryDate}</span>
-                            </div>
-                          )}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                        {passportFile.issueDate && (
                           <div>
-                            <span className="text-[10px] text-slate-400 font-bold block">Validity</span>
-                            <span className="font-extrabold text-emerald-700">
-                              {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months` : 'Valid'}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-emerald-700 font-bold flex-wrap">
-                          <span>Size: {passportFile.size}</span>
-                          <span>•</span>
-                          <span>MRZ Checksum: Valid ✓</span>
-                          <span>•</span>
-                          <span>6-Month Rule: {passportFile.isExpiryCompliant ? 'Met ✓' : '⚠️ Less than 6 Months'}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {passportScanError && (
-                          <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-800 leading-relaxed text-left flex items-start gap-2 animate-fadeIn">
-                            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-                            <span>{passportScanError}</span>
+                            <span className="text-[10px] text-slate-400 font-bold block">Issue Date</span>
+                            <span className="font-extrabold text-slate-900">{passportFile.issueDate}</span>
                           </div>
                         )}
-                        <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/30 rounded-2xl py-8 sm:py-14 px-4 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[190px] sm:min-h-[240px]">
-                          <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-3 sm:mb-4 transition-all shadow-xs">
-                            <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600 stroke-[2.5]" />
+                        {passportFile.expiryDate && (
+                          <div>
+                            <span className="text-[10px] text-slate-400 font-bold block">Expiry Date</span>
+                            <span className="font-extrabold text-slate-900">{passportFile.expiryDate}</span>
                           </div>
-                          <span className="text-sm sm:text-lg font-heading font-black text-slate-950 tracking-tight">
-                            Click or Drag to Upload Passport
+                        )}
+                        <div>
+                          <span className="text-[10px] text-slate-400 font-bold block">Validity</span>
+                          <span className="font-extrabold text-emerald-700">
+                            {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months` : 'Valid'}
                           </span>
-                          <span className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-1">
-                            Only Passport Bio-Data Page (PDF, JPG, PNG)
-                          </span>
-                          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-700 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-colors">
-                            <span>📁 Browse Passport File</span>
-                          </div>
-                          <input
-                            type="file"
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            className="hidden"
-                            onChange={(e) => handlePassportUpload(e.target.files?.[0] || null)}
-                          />
-                        </label>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* RIGHT COLUMN: CIRCULAR GAUGE VISA READINESS SCORECARD (CREDIT SCORE STYLE) */}
-                  <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-sm flex flex-col justify-between items-center text-center space-y-4">
-                    
-                    {/* Card Header */}
-                    <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
-                      <div>
-                        <h4 className="text-base sm:text-xl font-heading font-black text-slate-950 tracking-tight">
-                          Your Visa Readiness Score
-                        </h4>
-                        <p className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-0.5">
-                          {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                        </p>
-                      </div>
-
-                      <span className={`px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-black uppercase tracking-wider shrink-0 ${
-                        readinessMetrics.score >= 85
-                          ? 'bg-[#D97706] text-white shadow-xs'
-                          : readinessMetrics.score >= 70
-                          ? 'bg-emerald-600 text-white shadow-xs'
-                          : readinessMetrics.score >= 50
-                          ? 'bg-blue-600 text-white shadow-xs'
-                          : readinessMetrics.score > 0
-                          ? 'bg-orange-500 text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-500 border border-slate-200'
-                      }`}>
-                        {readinessMetrics.score >= 85
-                          ? 'EXCEPTIONAL'
-                          : readinessMetrics.score >= 70
-                          ? 'EXCELLENT'
-                          : readinessMetrics.score >= 50
-                          ? 'GOOD'
-                          : readinessMetrics.score > 0
-                          ? 'FAIR'
-                          : 'PENDING'}
-                      </span>
-                    </div>
-
-                    {/* Center: Circular Rainbow Gauge */}
-                    <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center my-1">
-                      <svg className="w-full h-full" viewBox="0 0 200 200">
-                        <defs>
-                          <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#F43F5E" />
-                            <stop offset="35%" stopColor="#FB923C" />
-                            <stop offset="65%" stopColor="#FACC15" />
-                            <stop offset="100%" stopColor="#22C55E" />
-                          </linearGradient>
-                        </defs>
-
-                        {/* Background Arc */}
-                        <path
-                          d="M 46 150 A 70 70 0 1 1 154 150"
-                          fill="none"
-                          stroke="#E2E8F0"
-                          strokeWidth="15"
-                          strokeLinecap="round"
-                        />
-
-                        {/* Foreground Rainbow Score Arc */}
-                        <path
-                          d="M 46 150 A 70 70 0 1 1 154 150"
-                          fill="none"
-                          stroke="url(#rainbowGauge)"
-                          strokeWidth="15"
-                          strokeLinecap="round"
-                          strokeDasharray="318"
-                          strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
-                          className="transition-all duration-1000 ease-out"
-                        />
-                      </svg>
-
-                      {/* Center Number & Points (Clean Out of 10 Scale) */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
-                        <div className="flex items-baseline justify-center gap-1">
-                          <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
-                            {readinessMetrics.score > 0
-                              ? (readinessMetrics.score / 10).toFixed(1)
-                              : '0.0'}
-                          </span>
-                          <span className="text-sm sm:text-xl font-bold text-slate-400">/ 10</span>
                         </div>
-                        <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
-                          {passportFile ? (
-                            <span className="text-emerald-600 font-black">+2.0 pts (Passport)</span>
-                          ) : readinessMetrics.filledCount > 0 ? (
-                            <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
-                          ) : (
-                            <span className="text-slate-400">0.0 pts</span>
-                          )}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-emerald-700 font-bold flex-wrap">
+                        <span>Size: {passportFile.size}</span>
+                        <span>•</span>
+                        <span>MRZ Checksum: Valid ✓</span>
+                        <span>•</span>
+                        <span>6-Month Rule: {passportFile.isExpiryCompliant ? 'Met ✓' : '⚠️ Less than 6 Months'}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {passportScanError && (
+                        <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-800 leading-relaxed text-left flex items-start gap-2 animate-fadeIn">
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{passportScanError}</span>
+                        </div>
+                      )}
+                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-white hover:bg-indigo-50/30 rounded-2xl py-8 sm:py-12 px-4 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[170px] sm:min-h-[200px]">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-2.5 sm:mb-3 transition-all shadow-xs">
+                          <Upload className="w-6 h-6 text-indigo-600 stroke-[2.5]" />
+                        </div>
+                        <span className="text-sm sm:text-base font-heading font-black text-slate-950 tracking-tight">
+                          Click or Drag to Upload Passport
                         </span>
-                      </div>
+                        <span className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-1">
+                          Only Passport Bio-Data Page (PDF, JPG, PNG)
+                        </span>
+                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-700 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-colors">
+                          <span>📁 Browse Passport File</span>
+                        </div>
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          className="hidden"
+                          onChange={(e) => handlePassportUpload(e.target.files?.[0] || null)}
+                        />
+                      </label>
                     </div>
-
-                    {/* Card Footer */}
-                    <div className="w-full pt-3 border-t border-slate-100 space-y-1">
-                      <div className="text-xs sm:text-sm font-black text-slate-800">
-                        TravlTik Consular AI
-                      </div>
-                      <div className="text-xs text-slate-500 font-semibold">
-                        Score calculated using official {countryName} immigration benchmarks
-                      </div>
-                    </div>
-
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -4885,6 +4776,113 @@ export function VisaCountryResultPortal({
                     </div>
                   </div>
                 )}
+              </div>
+
+              {/* ── STEP 3: YOUR VISA READINESS SCORE (POSITIONED BELOW THE FIELDS) ── */}
+              <div className="pt-6 border-t border-slate-200/80">
+                <div className="bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xs max-w-2xl mx-auto flex flex-col justify-between items-center text-center space-y-4">
+                  
+                  {/* Card Header */}
+                  <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
+                    <div>
+                      <h4 className="text-base sm:text-xl font-heading font-black text-slate-950 tracking-tight">
+                        Your Visa Readiness Score
+                      </h4>
+                      <p className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-0.5">
+                        {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </p>
+                    </div>
+
+                    <span className={`px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-black uppercase tracking-wider shrink-0 ${
+                      readinessMetrics.score >= 85
+                        ? 'bg-[#D97706] text-white shadow-xs'
+                        : readinessMetrics.score >= 70
+                        ? 'bg-emerald-600 text-white shadow-xs'
+                        : readinessMetrics.score >= 50
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : readinessMetrics.score > 0
+                        ? 'bg-orange-500 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-500 border border-slate-200'
+                    }`}>
+                      {readinessMetrics.score >= 85
+                        ? 'EXCEPTIONAL'
+                        : readinessMetrics.score >= 70
+                        ? 'EXCELLENT'
+                        : readinessMetrics.score >= 50
+                        ? 'GOOD'
+                        : readinessMetrics.score > 0
+                        ? 'FAIR'
+                        : 'PENDING'}
+                    </span>
+                  </div>
+
+                  {/* Center: Circular Rainbow Gauge */}
+                  <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center my-2">
+                    <svg className="w-full h-full" viewBox="0 0 200 200">
+                      <defs>
+                        <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#F43F5E" />
+                          <stop offset="35%" stopColor="#FB923C" />
+                          <stop offset="65%" stopColor="#FACC15" />
+                          <stop offset="100%" stopColor="#22C55E" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Background Arc */}
+                      <path
+                        d="M 46 150 A 70 70 0 1 1 154 150"
+                        fill="none"
+                        stroke="#E2E8F0"
+                        strokeWidth="15"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Foreground Rainbow Score Arc */}
+                      <path
+                        d="M 46 150 A 70 70 0 1 1 154 150"
+                        fill="none"
+                        stroke="url(#rainbowGauge)"
+                        strokeWidth="15"
+                        strokeLinecap="round"
+                        strokeDasharray="318"
+                        strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
+                        className="transition-all duration-1000 ease-out"
+                      />
+                    </svg>
+
+                    {/* Center Number & Points (Clean Out of 10 Scale) */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
+                      <div className="flex items-baseline justify-center gap-1">
+                        <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
+                          {readinessMetrics.score > 0
+                            ? (readinessMetrics.score / 10).toFixed(1)
+                            : '0.0'}
+                        </span>
+                        <span className="text-sm sm:text-xl font-bold text-slate-400">/ 10</span>
+                      </div>
+                      <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
+                        {passportFile ? (
+                          <span className="text-emerald-600 font-black">+2.0 pts (Passport Verified)</span>
+                        ) : readinessMetrics.filledCount > 0 ? (
+                          <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
+                        ) : (
+                          <span className="text-slate-400">0.0 pts</span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card Footer */}
+                  <div className="w-full pt-3 border-t border-slate-100 space-y-1">
+                    <div className="text-xs sm:text-sm font-black text-slate-800">
+                      TravlTik Consular AI
+                    </div>
+                    <div className="text-xs text-slate-500 font-semibold">
+                      Score calculated using official {countryName} immigration benchmarks
+                    </div>
+                  </div>
+
+                </div>
               </div>
 
             </div>

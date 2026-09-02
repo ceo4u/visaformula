@@ -463,10 +463,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         redirectToLogin();
         return;
       }
-      if (json.hourlyLimitReached || res.status === 429) {
-        setHourlyLimitReached(true);
-        setHourlyLimitMessage(json.message || 'Hourly limit reached');
-      }
       if (json.success && json.data) {
         setData(json.data);
         try {
@@ -662,13 +658,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         </p>
       </div>
 
-      {/* Hourly limit small notice */}
-      {hourlyLimitReached && (
-        <div className="p-3 bg-amber-50 border border-amber-200/90 rounded-2xl text-left flex items-center gap-2 animate-in fade-in duration-200">
-          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-          <p className="text-xs text-rose-500 font-medium tracking-tight">Hourly limit reached</p>
-        </div>
-      )}
 
       {loginRequired ? (
         <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-3xl p-7 sm:p-12 text-center space-y-5 shadow-xl border border-white/10 my-4 animate-in fade-in duration-200">

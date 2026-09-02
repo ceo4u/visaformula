@@ -137,21 +137,6 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // 2. AI Rate Limiting: Max 3 times per 1 hour
-    const rateLimitCheck = await checkAIRateLimit(userEmail || clientIp);
-    if (!rateLimitCheck.allowed) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          hourlyLimitReached: true,
-          error: 'hourly_limit_reached',
-          message: 'Hourly limit reached',
-          remaining: 0,
-          resetInSeconds: rateLimitCheck.resetInSeconds
-        }),
-        { status: 429, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
 
     const passport_country = body.passport_country || body.passportCountry || body.fromCountry || body.from;
     const destination = body.destination || body.destination_country || body.toCountry || body.to;

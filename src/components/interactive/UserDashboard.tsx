@@ -931,8 +931,12 @@ export function UserDashboard() {
                                     if (!savedP && res.data.destination) {
                                         const normD = normalizeCountryName(res.data.destination);
                                         const normP = normalizeCountryName(res.data.passport_country || 'India');
+                                        const rawPurp = (res.data.purpose || 'tourism').toLowerCase();
+                                        const normPurp = rawPurp.includes('study') ? 'Higher Studies' : rawPurp.includes('work') ? 'Employment / Work' : 'Tourism / Vacation';
                                         setSelectedDestination(normD);
                                         setSelectedPassport(normP);
+                                        setSelectedPurpose(normPurp);
+                                        fetchAiRequirements(normD, normP, normPurp);
                                     }
                                 }
                             })
@@ -1345,74 +1349,102 @@ export function UserDashboard() {
                             </div>
 
                             {/* Section: My Journey & Application Dashboard Widget */}
-                            {journeyData && (
-                                <div className="space-y-4 animate-fade-up">
-                                    {/* CARD 1: OVERSEAS VISA / STUDY ABROAD PATHWAY */}
-                                    <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
-                                        <div className="space-y-2 z-10 flex-1">
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
-                                                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                                                    {journeyData.has_visa 
-                                                        ? 'Active Visa • Departure Safeguard Roadmap' 
-                                                        : (journeyData.purpose === 'study' ? '🎓 Study Abroad Pathway (In Progress)' : '✈️ Overseas Visa Application (In Progress)')}
-                                                </span>
-                                                {journeyData.readiness_score && (
-                                                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black">
-                                                        Readiness: {journeyData.readiness_score}%
+                            {journeyData && (() => {
+                                const rawPurp = String(journeyData.purpose || selectedPurpose || 'tourism').toLowerCase();
+                                const isStudy = rawPurp.includes('study') || rawPurp.includes('student');
+                                const isWork = rawPurp.includes('work') || rawPurp.includes('employ') || rawPurp.includes('job');
+                                const isTourism = !isStudy && !isWork;
+
+                                const currentDest = journeyData.destination || selectedDestination || 'Destination';
+                                const currentPass = journeyData.passport_country || journeyData.passportCountry || selectedPassport || 'India';
+                                
+                                const displayVisaTitle = isStudy
+                                    ? (journeyData.matched_university || journeyData.visa_type || `${currentDest} Student Visa Pathway`)
+                                    : isWork
+                                        ? (journeyData.visa_type || `${currentDest} Work Permit & Employment Visa`)
+                                        : (journeyData.visa_type || `${currentDest} Tourist & Visitor Visa`);
+
+                                const displayBadge = journeyData.has_visa
+                                    ? 'Active Visa • Departure Safeguard Roadmap'
+                                    : isStudy
+                                        ? '🎓 Study Abroad Pathway (In Progress)'
+                                        : isWork
+                                            ? '💼 Work & Relocation Pathway (In Progress)'
+                                            : '✈️ Tourist Visa Application (In Progress)';
+
+                                const displayPurposeLabel = isStudy
+                                    ? 'Higher Studies'
+                                    : isWork
+                                        ? 'Employment / Work'
+                                        : 'Tourism / Vacation';
+
+                                return (
+                                    <div className="space-y-4 animate-fade-up">
+                                        {/* CARD 1: OVERSEAS VISA / TOURIST / STUDY APPLICATION */}
+                                        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
+                                            <div className="space-y-2 z-10 flex-1">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
+                                                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                                                        {displayBadge}
                                                     </span>
-                                                )}
+                                                    {journeyData.readiness_score && (
+                                                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black">
+                                                            Readiness: {journeyData.readiness_score}%
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+                                                    {journeyData.destination_flag ? `${journeyData.destination_flag} ` : ''}{currentDest} • {displayVisaTitle}
+                                                </h3>
+
+                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
+                                                    <span>Passport: <strong className="text-white">{currentPass}</strong></span>
+                                                    <span>• Purpose: <strong className="text-emerald-400 font-bold">{displayPurposeLabel}</strong></span>
+                                                    {isStudy && journeyData.selected_course_major && (
+                                                        <span>• Major: <strong className="text-emerald-400 font-bold">{journeyData.selected_course_major}</strong></span>
+                                                    )}
+                                                    {journeyData.visa_type && (
+                                                        <span>• Visa: <strong className="text-white">{journeyData.visa_type}</strong></span>
+                                                    )}
+                                                    {journeyData.stay_duration && (
+                                                        <span>• Duration: <strong className="text-slate-300">{journeyData.stay_duration}</strong></span>
+                                                    )}
+                                                    {isStudy && journeyData.target_degree && (
+                                                        <span>• Target Degree: <strong className="text-emerald-400 uppercase">{journeyData.target_degree}</strong></span>
+                                                    )}
+                                                </div>
+
+                                                {/* Status Highlights */}
+                                                <div className="pt-2 flex flex-wrap items-center gap-2">
+                                                    {isStudy && journeyData.cas_i20_number && (
+                                                        <span className="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
+                                                            CAS / I-20: {journeyData.cas_i20_number} ✓
+                                                        </span>
+                                                    )}
+                                                    {journeyData.uploaded_documents && Object.keys(journeyData.uploaded_documents).length > 0 && (
+                                                        <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+                                                            📄 {Object.keys(journeyData.uploaded_documents).length} Documents Uploaded &amp; Verified
+                                                        </span>
+                                                    )}
+                                                    {journeyData.final_dossier_submitted && (
+                                                        <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs">
+                                                            Dossier Filed to Concierge Vault ✓
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
 
-                                            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                                                {journeyData.destination_flag ? `${journeyData.destination_flag} ` : ''}{journeyData.destination || 'Destination'} • {journeyData.matched_university || journeyData.visa_type || 'Student Visa Pathway'}
-                                            </h3>
-
-                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
-                                                <span>Passport: <strong className="text-white">{journeyData.passport_country || journeyData.passportCountry || 'India'}</strong></span>
-                                                {journeyData.selected_course_major && (
-                                                    <span>• Major: <strong className="text-emerald-400 font-bold">{journeyData.selected_course_major}</strong></span>
-                                                )}
-                                                {journeyData.visa_type && (
-                                                    <span>• Visa: <strong className="text-white">{journeyData.visa_type}</strong></span>
-                                                )}
-                                                {journeyData.stay_duration && (
-                                                    <span>• Duration: <strong className="text-slate-300">{journeyData.stay_duration}</strong></span>
-                                                )}
-                                                {journeyData.target_degree && (
-                                                    <span>• Target Degree: <strong className="text-emerald-400 uppercase">{journeyData.target_degree}</strong></span>
-                                                )}
-                                            </div>
-
-                                            {/* Status Highlights */}
-                                            <div className="pt-2 flex flex-wrap items-center gap-2">
-                                                {journeyData.cas_i20_number && (
-                                                    <span className="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
-                                                        CAS / I-20: {journeyData.cas_i20_number} ✓
-                                                    </span>
-                                                )}
-                                                {journeyData.uploaded_documents && Object.keys(journeyData.uploaded_documents).length > 0 && (
-                                                    <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
-                                                        📄 {Object.keys(journeyData.uploaded_documents).length} Documents Uploaded &amp; Verified
-                                                    </span>
-                                                )}
-                                                {journeyData.final_dossier_submitted && (
-                                                    <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs">
-                                                        Dossier Filed to Concierge Vault ✓
-                                                    </span>
-                                                )}
+                                            <div className="z-10 shrink-0 flex items-center gap-3">
+                                                <a
+                                                    href={currentDest ? `/visa/${encodeURIComponent(currentDest.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(rawPurp || 'tourism')}&passport=${encodeURIComponent(currentPass || 'India')}` : '/#need-visa-pathway-dashboard'}
+                                                    className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95 text-center"
+                                                >
+                                                    <span>Resume Pathway →</span>
+                                                </a>
                                             </div>
                                         </div>
-
-                                        <div className="z-10 shrink-0 flex items-center gap-3">
-                                            <a
-                                                href={journeyData.destination ? `/visa/${encodeURIComponent(journeyData.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(journeyData.purpose || 'study')}&passport=${encodeURIComponent(journeyData.passport_country || 'India')}` : '/#need-visa-pathway-dashboard'}
-                                                className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95 text-center"
-                                            >
-                                                <span>Resume Pathway →</span>
-                                            </a>
-                                        </div>
-                                    </div>
 
                                     {/* CARD 2: DOMESTIC TRIP BOOKING (IF CONFIGURED) */}
                                     {(journeyData.domestic_destination || journeyData.domestic_country) && (
@@ -1448,7 +1480,8 @@ export function UserDashboard() {
                                         </div>
                                     )}
                                 </div>
-                            )}
+                                );
+                            })()}
 
                             {/* Section: IELTS Score Breakdown & Document Vault */}
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

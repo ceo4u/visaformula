@@ -8,5 +8,18 @@ import { VFSAppointmentPortal } from '../components/interactive/VFSAppointmentPo
   title="VFS Appointment Booking Support" 
   description="Schedule your consular biometric collection and visa document submission appointments with expert assistance and verified guidance."
 >
+  <script is:inline>
+    (function() {
+      try {
+        var user = localStorage.getItem('travltik_user');
+        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+        if (!user && !seeker && !expert) {
+          var targetUrl = window.location.pathname + window.location.search;
+          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
+        }
+      } catch(e) {}
+    })();
+  </script>
   <VFSAppointmentPortal client:only="react" />
 </Layout>

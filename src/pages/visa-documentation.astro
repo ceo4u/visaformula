@@ -8,5 +8,18 @@ import { VisaDocumentationPortal } from '../components/interactive/VisaDocumenta
   title="Visa Documentation Filing" 
   description="Get your visa documents verified by AI and human experts. Submit clean, audit-ready files to maximize approval rates for student, tourist, and work visas."
 >
+  <script is:inline>
+    (function() {
+      try {
+        var user = localStorage.getItem('travltik_user');
+        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+        if (!user && !seeker && !expert) {
+          var targetUrl = window.location.pathname + window.location.search;
+          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
+        }
+      } catch(e) {}
+    })();
+  </script>
   <VisaDocumentationPortal client:only="react" />
 </Layout>

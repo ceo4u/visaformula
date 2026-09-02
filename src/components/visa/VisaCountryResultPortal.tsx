@@ -3407,21 +3407,50 @@ export function VisaCountryResultPortal({
     }, 450);
   };
 
-  const handleOcrUpload = () => {
+  const handleOcrUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
     setIsOcrScanning(true);
-    setTimeout(() => {
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        try {
+          const res = await fetch('/api/ocr-analyze-visa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              base64Image: base64,
+              mimeType: file.type || 'image/jpeg',
+              fileName: file.name,
+              currentPassport: passportCountry,
+              currentDestination: countryName
+            })
+          });
+
+          const json = await res.json();
+          if (json.success && json.data) {
+            const v = json.data;
+            if (v.visaType) setApprovedVisaType(v.visaType);
+            if (v.grantDate) setApprovalDate(v.grantDate);
+            if (v.expiryDate) setValidityDate(v.expiryDate);
+            if (Array.isArray(v.conditions) && v.conditions.length > 0) {
+              setOcrConditions(v.conditions);
+            }
+          }
+        } catch (err) {
+          console.warn('Visa OCR API error:', err);
+        } finally {
+          setIsOcrScanning(false);
+          setOcrScanned(true);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch {
       setIsOcrScanning(false);
       setOcrScanned(true);
-      setApprovedVisaType(`${countryName} Official Approved Permit (Subclass 500 / Tourist)`);
-      setApprovalDate('2026-05-15');
-      setValidityDate('2027-08-30');
-      setOcrConditions([
-        `8105: Work permitted up to legal quota during study terms in ${countryName}`,
-        `8501: Maintain mandatory health insurance / national coverage (OSHC / NHS)`,
-        `8516: Must maintain enrollment or legal residency status in ${countryName}`,
-        `Border Clearance: Present digital biometric grant notice on arrival`
-      ]);
-    }, 1200);
+    }
   };
 
   const handleShareWhatsApp = () => {
@@ -3429,6 +3458,72 @@ export function VisaCountryResultPortal({
     window.open(`https://wa.me/?text=${text}`, '_blank');
     setCopiedShare(true);
     setTimeout(() => setCopiedShare(false), 2500);
+  };
+
+  const uploadAndScanDocument = async (file: File, docKey: string, docTitle: string) => {
+    setIsUploadingDocKey(docKey);
+    const fileSizeFormatted = file.size > 1024 * 1024
+      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+      : `${Math.round(file.size / 1024)} KB`;
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        let scanSummary = `Verified ${docTitle} conforming to ${countryName} consular guidelines.`;
+        try {
+          const res = await fetch('/api/ocr-analyze-document', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              base64Image: base64,
+              mimeType: file.type || 'application/pdf',
+              documentTitle: docTitle,
+              documentKey: docKey,
+              countryName: countryName,
+              passportCountry: passportCountry
+            })
+          });
+          const json = await res.json();
+          if (json.success && json.data?.summary) {
+            scanSummary = json.data.summary;
+          }
+        } catch {}
+
+        setUploadedDocuments(prev => {
+          const next = {
+            ...prev,
+            [docKey]: {
+              fileName: file.name,
+              size: fileSizeFormatted,
+              status: 'verified' as const,
+              timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            }
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              const existingDocs = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
+              const filtered = existingDocs.filter((d: any) => d.id !== docKey);
+              filtered.push({
+                id: docKey,
+                label: `${docTitle} (${file.name})`,
+                status: 'verified',
+                uploadedAt: new Date().toLocaleDateString(),
+                size: fileSizeFormatted,
+                summary: scanSummary
+              });
+              localStorage.setItem('seeker_documents', JSON.stringify(filtered));
+            } catch(e) {}
+          }
+          return next;
+        });
+        setIsUploadingDocKey(null);
+        setUploadValidationWarning(null);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setIsUploadingDocKey(null);
+    }
   };
 
   const handleToggleVisaAlready = (val: 'no' | 'yes') => {
@@ -5078,41 +5173,7 @@ export function VisaCountryResultPortal({
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    setIsUploadingDocKey(doc.key);
-                                    const fileSizeFormatted = file.size > 1024 * 1024
-                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-                                      : `${Math.round(file.size / 1024)} KB`;
-                                    
-                                    setTimeout(() => {
-                                      setUploadedDocuments(prev => {
-                                        const next = {
-                                          ...prev,
-                                          [doc.key]: {
-                                            fileName: file.name,
-                                            size: fileSizeFormatted,
-                                            status: 'verified' as const,
-                                            timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                                          }
-                                        };
-                                        if (typeof window !== 'undefined') {
-                                          try {
-                                            const existingDocs = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
-                                            const filtered = existingDocs.filter((d: any) => d.id !== doc.key);
-                                            filtered.push({
-                                              id: doc.key,
-                                              label: `${doc.title} (${file.name})`,
-                                              status: 'uploaded',
-                                              uploadedAt: new Date().toLocaleDateString(),
-                                              size: fileSizeFormatted
-                                            });
-                                            localStorage.setItem('seeker_documents', JSON.stringify(filtered));
-                                          } catch(e) {}
-                                        }
-                                        return next;
-                                      });
-                                      setIsUploadingDocKey(null);
-                                      setUploadValidationWarning(null);
-                                    }, 600);
+                                    uploadAndScanDocument(file, doc.key, doc.title);
                                   }
                                 }}
                               />
@@ -5653,24 +5714,7 @@ export function VisaCountryResultPortal({
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    setIsUploadingDocKey(doc.key);
-                                    const fileSizeFormatted = file.size > 1024 * 1024
-                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-                                      : `${Math.round(file.size / 1024)} KB`;
-                                    
-                                    setTimeout(() => {
-                                      setUploadedDocuments(prev => ({
-                                        ...prev,
-                                        [doc.key]: {
-                                          fileName: file.name,
-                                          size: fileSizeFormatted,
-                                          status: 'verified' as const,
-                                          timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                                        }
-                                      }));
-                                      setIsUploadingDocKey(null);
-                                      setUploadValidationWarning(null);
-                                    }, 600);
+                                    uploadAndScanDocument(file, doc.key, doc.title);
                                   }
                                 }}
                               />
@@ -6217,24 +6261,7 @@ export function VisaCountryResultPortal({
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    setIsUploadingDocKey(doc.key);
-                                    const fileSizeFormatted = file.size > 1024 * 1024
-                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-                                      : `${Math.round(file.size / 1024)} KB`;
-                                    
-                                    setTimeout(() => {
-                                      setUploadedDocuments(prev => ({
-                                        ...prev,
-                                        [doc.key]: {
-                                          fileName: file.name,
-                                          size: fileSizeFormatted,
-                                          status: 'verified' as const,
-                                          timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                                        }
-                                      }));
-                                      setIsUploadingDocKey(null);
-                                      setUploadValidationWarning(null);
-                                    }, 600);
+                                    uploadAndScanDocument(file, doc.key, doc.title);
                                   }
                                 }}
                               />

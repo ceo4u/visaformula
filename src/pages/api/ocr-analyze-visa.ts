@@ -8,20 +8,26 @@ export const prerender = false;
 
 // Resolve Gemini API key safely
 const getGeminiApiKey = (): string => {
-  let key = (import.meta?.env?.GEMINI_API_KEY as string | undefined)?.trim();
-  if (key) return key;
-
-  key = (process.env.GEMINI_API_KEY as string | undefined)?.trim();
+  let key = (
+    process.env.GEMINI_API_KEY ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY ||
+    process.env.PUBLIC_GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    ''
+  )?.trim();
   if (key) return key;
 
   try {
-    const envPath = path.resolve(process.cwd(), '.env');
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, 'utf8');
-      const match = content.match(/^GEMINI_API_KEY\s*=\s*(.*)$/m);
-      if (match) {
-        key = match[1].trim().replace(/^["']|["']$/g, '');
-        if (key) return key;
+    const envFiles = ['.env', '.env.local'];
+    for (const f of envFiles) {
+      const envPath = path.resolve(process.cwd(), f);
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
+        if (match) {
+          key = match[1].trim().replace(/^["']|["']$/g, '');
+          if (key) return key;
+        }
       }
     }
   } catch (err) {}
@@ -73,8 +79,8 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         const ai = new GoogleGenAI({ apiKey });
         
-        // Strip data URL header if present
-        const cleanBase64 = base64Image.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '').trim();
+        // Strip data URL header if present (handles images, PDFs, etc.)
+        const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '').trim();
 
         const prompt = `You are a high-accuracy government visa document and passport OCR engine.
 Analyze this uploaded visa sticker / grant letter image with 100% precision.
@@ -101,7 +107,7 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-3.7-flash',
+            model: 'gemini-3.6-flash',
             contents: [
               {
                 role: 'user',
@@ -109,7 +115,7 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
                   { text: prompt },
                   {
                     inlineData: {
-                      mimeType: mimeType || 'image/jpeg',
+                      mimeType: mimeType && mimeType.includes('pdf') ? 'application/pdf' : (mimeType || 'image/jpeg'),
                       data: cleanBase64
                     }
                   }
@@ -127,7 +133,7 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
                   { text: prompt },
                   {
                     inlineData: {
-                      mimeType: mimeType || 'image/jpeg',
+                      mimeType: mimeType && mimeType.includes('pdf') ? 'application/pdf' : (mimeType || 'image/jpeg'),
                       data: cleanBase64
                     }
                   }

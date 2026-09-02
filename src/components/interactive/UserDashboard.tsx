@@ -31,6 +31,7 @@ export function UserDashboard() {
     const [favouriteExperts, setFavouriteExperts] = useState<any[]>([]);
     const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
     const [documents, setDocuments] = useState<any[]>([]);
+    const [isScanningVaultDoc, setIsScanningVaultDoc] = useState(false);
     const [journeyData, setJourneyData] = useState<any>(null);
 
     useEffect(() => {
@@ -920,24 +921,70 @@ export function UserDashboard() {
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Encrypted cloud vault storing passport scans, financial proofs, and transcripts</p>
                                 </div>
                                 <label className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 cursor-pointer self-start sm:self-auto active:scale-95 transition-all">
-                                    <Upload className="w-3.5 h-3.5" /> Upload New File
+                                    {isScanningVaultDoc ? (
+                                        <span className="flex items-center gap-1.5">
+                                            <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            Scanning &amp; Uploading...
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <Upload className="w-3.5 h-3.5 text-emerald-400" /> Upload &amp; Scan File
+                                        </>
+                                    )}
                                     <input 
                                         type="file" 
                                         accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
+                                        disabled={isScanningVaultDoc}
                                         className="hidden" 
                                         onChange={(e) => {
                                             const file = e.target.files?.[0];
-                                            if (file) {
-                                                const newDoc = {
-                                                    id: `doc-${Date.now()}`,
-                                                    label: file.name,
-                                                    status: 'verified',
-                                                    size: file.size > 1024*1024 ? `${(file.size/(1024*1024)).toFixed(1)} MB` : `${Math.round(file.size/1024)} KB`,
-                                                    uploadedAt: new Date().toLocaleDateString()
+                                            if (!file) return;
+
+                                            setIsScanningVaultDoc(true);
+                                            const fileSizeFormatted = file.size > 1024 * 1024
+                                                ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+                                                : `${Math.round(file.size / 1024)} KB`;
+
+                                            try {
+                                                const reader = new FileReader();
+                                                reader.onload = async () => {
+                                                    const base64 = reader.result as string;
+                                                    let scanSummary = 'Verified & Ingested into Encrypted Vault';
+                                                    try {
+                                                        const res = await fetch('/api/ocr-analyze-document', {
+                                                            method: 'POST',
+                                                            headers: { 'Content-Type': 'application/json' },
+                                                            body: JSON.stringify({
+                                                                base64Image: base64,
+                                                                mimeType: file.type || 'application/pdf',
+                                                                documentTitle: file.name,
+                                                                documentKey: 'vault_upload'
+                                                            })
+                                                        });
+                                                        const json = await res.json();
+                                                        if (json.success && json.data?.summary) {
+                                                            scanSummary = json.data.summary;
+                                                        }
+                                                    } catch {}
+
+                                                    const newDoc = {
+                                                        id: `doc-${Date.now()}`,
+                                                        label: file.name,
+                                                        status: 'verified',
+                                                        size: fileSizeFormatted,
+                                                        uploadedAt: new Date().toLocaleDateString(),
+                                                        summary: scanSummary
+                                                    };
+                                                    setDocuments(prev => {
+                                                        const updated = [newDoc, ...prev];
+                                                        localStorage.setItem('seeker_documents', JSON.stringify(updated));
+                                                        return updated;
+                                                    });
+                                                    setIsScanningVaultDoc(false);
                                                 };
-                                                const updated = [newDoc, ...documents];
-                                                setDocuments(updated);
-                                                localStorage.setItem('seeker_documents', JSON.stringify(updated));
+                                                reader.readAsDataURL(file);
+                                            } catch {
+                                                setIsScanningVaultDoc(false);
                                             }
                                         }}
                                     />

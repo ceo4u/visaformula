@@ -6,6 +6,19 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
 ---
 
 <Layout title="Self Apply — Your Visa, Your Way" description="Fill your application yourself. Get AI-powered suggestions and add our services if you need help." hideHeader={true} hideFooter={true}>
+  <script is:inline>
+    (function() {
+      try {
+        var user = localStorage.getItem('travltik_user');
+        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+        if (!user && !seeker && !expert) {
+          var targetUrl = window.location.pathname + window.location.search;
+          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
+        }
+      } catch(e) {}
+    })();
+  </script>
   <script src="https://checkout.razorpay.com/v1/checkout.js" is:inline></script>
   <div id="razorpay-config" data-key={razorpayKeyId} style="display: none;"></div>
   <!-- CSS Styles directly copied from source -->

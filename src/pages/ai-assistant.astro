@@ -8,5 +8,18 @@ import { AIAssistantPortal } from '../components/interactive/AIAssistantPortal';
   title="AI Eligibility Assistant & Visa Checklists" 
   description="Audit your eligibility subclass match scores, review document checklists, and talk to our Digital Diplomat immigration assistant."
 >
+  <script is:inline>
+    (function() {
+      try {
+        var user = localStorage.getItem('travltik_user');
+        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+        if (!user && !seeker && !expert) {
+          var targetUrl = window.location.pathname + window.location.search;
+          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
+        }
+      } catch(e) {}
+    })();
+  </script>
   <AIAssistantPortal client:only="react" />
 </Layout>

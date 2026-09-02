@@ -8,5 +8,18 @@ import { VisaFormFilingPortal } from '../components/interactive/VisaFormFilingPo
   title="Visa Form Filing" 
   description="Get your visa application forms filled accurately by professionals. DS-160, IMM 1294, VAF, or Schengen visa forms filled with 12-hour turnaround time."
 >
+  <script is:inline>
+    (function() {
+      try {
+        var user = localStorage.getItem('travltik_user');
+        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
+        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
+        if (!user && !seeker && !expert) {
+          var targetUrl = window.location.pathname + window.location.search;
+          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
+        }
+      } catch(e) {}
+    })();
+  </script>
   <VisaFormFilingPortal client:only="react" />
 </Layout>

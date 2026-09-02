@@ -132,6 +132,7 @@ interface Props {
   countryName: string;
   passportCountry: string;
   purpose?: string;
+  onDocsReadyChange?: (readyCount: number, totalCount: number) => void;
 }
 
 function cleanCountryName(str: string): string {
@@ -227,7 +228,8 @@ const PURPOSE_OPTIONS = [
 export const OfficialRequirementsCard: React.FC<Props> = ({
   countryName,
   passportCountry,
-  purpose = 'Tourism / Vacation'
+  purpose = 'Tourism / Vacation',
+  onDocsReadyChange
 }) => {
   const cleanFrom = useMemo(() => cleanCountryName(passportCountry), [passportCountry]);
   const cleanTo = useMemo(() => cleanCountryName(countryName), [countryName]);
@@ -635,6 +637,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   const readinessPercentage = totalItemsCount > 0 
     ? Math.round((readyItemsCount / totalItemsCount) * 100) 
     : 0;
+
+  useEffect(() => {
+    if (onDocsReadyChange && totalItemsCount > 0) {
+      onDocsReadyChange(readyItemsCount, totalItemsCount);
+    }
+  }, [readyItemsCount, totalItemsCount, onDocsReadyChange]);
 
   const scrollToSection = (elementId: string) => {
     const el = document.getElementById(elementId);

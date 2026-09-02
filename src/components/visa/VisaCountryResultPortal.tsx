@@ -2776,13 +2776,17 @@ export function VisaCountryResultPortal({
 
   const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
 
-  // Tourist Visa Specifics
+  // Tourist Visa Specifics (No pre-filled dates, user selects)
   const [visitPlanStatus, setVisitPlanStatus] = useState('');
-  const [visitTiming, setVisitTiming] = useState(getFutureDateStr(14));
-  const [visitReturnDate, setVisitReturnDate] = useState(getFutureDateStr(28));
+  const [visitTiming, setVisitTiming] = useState('');
+  const [visitReturnDate, setVisitReturnDate] = useState('');
   const [visitStay, setVisitStay] = useState('');
   const [touristHomeTies, setTouristHomeTies] = useState('');
   const [touristBankStability, setTouristBankStability] = useState('');
+
+  // Track Documents Checklist Readiness to directly impact Visa Readiness Score
+  const [docsReadyCount, setDocsReadyCount] = useState(0);
+  const [docsTotalCount, setDocsTotalCount] = useState(0);
 
   // Auto-calculated Trip Duration & Strict Date Rules:
   // 1. Departure date cannot be in the past
@@ -2792,15 +2796,14 @@ export function VisaCountryResultPortal({
     setVisitTiming(newDep);
     if (!newDep) return;
     
-    const depTime = new Date(newDep).getTime();
-    const curRetTime = visitReturnDate ? new Date(visitReturnDate).getTime() : 0;
-    const maxRetTime = depTime + (90 * 24 * 60 * 60 * 1000);
-    const minRetTime = depTime + (1 * 24 * 60 * 60 * 1000);
-
-    // If return date is missing, before/same as departure, or exceeds 90 days, auto-adjust to +14 days
-    if (!visitReturnDate || curRetTime <= depTime || curRetTime > maxRetTime) {
-      const d = new Date(depTime + 14 * 24 * 60 * 60 * 1000);
-      setVisitReturnDate(d.toISOString().split('T')[0]);
+    // If return date is already chosen, validate it
+    if (visitReturnDate) {
+      const depTime = new Date(newDep).getTime();
+      const curRetTime = new Date(visitReturnDate).getTime();
+      const maxRetTime = depTime + (90 * 24 * 60 * 60 * 1000);
+      if (curRetTime <= depTime || curRetTime > maxRetTime) {
+        setVisitReturnDate(''); // Reset invalid return date so user picks a valid one
+      }
     }
   };
 
@@ -3198,21 +3201,38 @@ export function VisaCountryResultPortal({
       }
     }
 
+    // Pillar 5: Required Embassy Documents Checklist (Direct impact on Visa Readiness Score)
+    let docsScore = 0;
+    if (docsTotalCount > 0) {
+      filledCount += docsReadyCount;
+      const docRatio = docsReadyCount / docsTotalCount;
+      // All documents ready adds up to +35 points!
+      docsScore = Math.round(docRatio * 35);
+      if (docRatio === 1) {
+        recommendations.unshift(`🌟 100% of required embassy documents are verified and ready! Exceptional approval readiness for ${countryName}.`);
+      } else if (docRatio >= 0.5) {
+        recommendations.push(`Keep remaining ${docsTotalCount - docsReadyCount} documents ready to reach a 9.5+ readiness rating.`);
+      } else {
+        recommendations.push(`Mark required documents as Ready in the Documents Checklist above to maximize your readiness score.`);
+      }
+    }
+
     // Calculation
     let refusalPenalty = visaRefusalHistory.includes('Past Refusal') ? 12 : 0;
     let finalScore = 0;
 
-    if (filledCount === 0) {
+    if (filledCount === 0 && docsReadyCount === 0 && !passportFile) {
       finalScore = 0;
-      recommendations = ['Select your profile details in the fields above to calculate your exact consular approval readiness score.'];
+      recommendations = ['Select your profile details or mark required documents as Ready above to calculate your exact consular approval readiness score.'];
     } else {
-      const totalRaw = passportScore + finScore + itinScore + tiesScore - refusalPenalty;
-      finalScore = Math.max(10, Math.min(98, totalRaw));
+      const totalRaw = passportScore + finScore + itinScore + tiesScore + docsScore - refusalPenalty;
+      finalScore = Math.max(15, Math.min(98, totalRaw));
     }
 
     return {
       score: finalScore,
       filledCount,
+      docsScore,
       category: activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist / Visit Visa',
       statusText: filledCount === 0 
         ? 'Awaiting Profile Selections' 
@@ -3239,6 +3259,7 @@ export function VisaCountryResultPortal({
       redFlags,
       pillars: [
         { name: 'Passport & Identity', score: passportScore, max: 30, value: passportValidityRange || 'Select Validity' },
+        { name: 'Embassy Documents', score: docsScore, max: 35, value: docsTotalCount > 0 ? `${docsReadyCount}/${docsTotalCount} Ready` : 'Checklist Active' },
         { name: 'Financial Sufficiency', score: finScore, max: 35, value: (activePurposeTab === 'study' ? studyBudget : activePurposeTab === 'tourism' ? touristBankStability : workOffer) || 'Select Funding' },
         { name: 'Trip Itinerary / Intake', score: itinScore, max: 15, value: (activePurposeTab === 'study' ? studyIntake : activePurposeTab === 'tourism' ? visitTiming : workAssess) || 'Select Timing' },
         { name: 'Ties & Sponsorship', score: tiesScore, max: 20, value: (activePurposeTab === 'study' ? studentAdmissionStatus : activePurposeTab === 'tourism' ? touristHomeTies : workExp) || 'Select Status' }
@@ -3246,11 +3267,13 @@ export function VisaCountryResultPortal({
     };
   }, [
     activePurposeTab,
+    passportFile,
     passportValidityRange,
     visaRefusalHistory,
     studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
     visitPlanStatus, visitTiming, visitReturnDate, visitStay, touristHomeTies, touristBankStability,
     workExp, workOffer, workDomain, workAssess,
+    docsReadyCount, docsTotalCount,
     countryName
   ]);
 
@@ -3782,7 +3805,11 @@ export function VisaCountryResultPortal({
             (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
             (activePurposeTab === 'family' || initialPurpose === 'family') ? 'Family / Friends Visit' :
             'Tourism / Vacation'
-          } 
+          }
+          onDocsReadyChange={(ready, total) => {
+            setDocsReadyCount(ready);
+            setDocsTotalCount(total);
+          }}
         />
       </section>
 
@@ -4641,12 +4668,18 @@ export function VisaCountryResultPortal({
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4 text-slate-600" />
                               <span className="text-xs sm:text-[13px] font-black">
-                                {tripDurationDays > 0 ? `${tripDurationDays} Days` : 'Select Valid Dates'}
+                                {tripDurationDays > 0 
+                                  ? `${tripDurationDays} Days` 
+                                  : (!visitTiming || !visitReturnDate) 
+                                  ? 'Select Dates Above' 
+                                  : 'Invalid Dates'}
                               </span>
                             </div>
                             <span className="text-[10px] font-bold text-slate-500">
                               {tripDurationDays > 90 
                                 ? '⚠️ Max 90 Days Allowed' 
+                                : (!visitTiming || !visitReturnDate)
+                                ? 'Auto-calculated'
                                 : tripDurationDays === 0 
                                 ? '⚠️ Same-day not allowed' 
                                 : 'Tourist Stay'}
@@ -4861,7 +4894,13 @@ export function VisaCountryResultPortal({
                         <span className="text-sm sm:text-xl font-bold text-slate-400">/ 10</span>
                       </div>
                       <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
-                        {passportFile ? (
+                        {docsReadyCount > 0 && docsTotalCount > 0 ? (
+                          <span className="text-emerald-600 font-black">
+                            {docsReadyCount === docsTotalCount 
+                              ? '🌟 All Docs Ready (+3.5 pts)' 
+                              : `+${((docsReadyCount / docsTotalCount) * 3.5).toFixed(1)} pts (${docsReadyCount}/${docsTotalCount} Docs)`}
+                          </span>
+                        ) : passportFile ? (
                           <span className="text-emerald-600 font-black">+2.0 pts (Passport Verified)</span>
                         ) : readinessMetrics.filledCount > 0 ? (
                           <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
@@ -4871,6 +4910,12 @@ export function VisaCountryResultPortal({
                       </span>
                     </div>
                   </div>
+
+                  {docsReadyCount > 0 && (
+                    <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full shadow-2xs">
+                      <span>✓ {docsReadyCount} of {docsTotalCount} Required Embassy Documents Ready &amp; Verified</span>
+                    </div>
+                  )}
 
                   {/* Card Footer */}
                   <div className="w-full pt-3 border-t border-slate-100 space-y-1">

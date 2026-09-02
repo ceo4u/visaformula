@@ -129,7 +129,7 @@ Return ONLY valid JSON:
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-2.5-flash',
             contents: [
               {
                 role: 'user',
@@ -145,9 +145,9 @@ Return ONLY valid JSON:
               }
             ]
           });
-        } catch (f35Err) {
+        } catch (flashErr) {
           response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-1.5-flash',
             contents: [
               {
                 role: 'user',

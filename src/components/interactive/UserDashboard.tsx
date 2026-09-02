@@ -1726,16 +1726,6 @@ export function UserDashboard() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Visa Goals:</span>
-                                    <span className="font-black text-slate-900 block">{selectedGoals.join(", ") || "Not specified"}</span>
-                                </div>
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Target Destinations:</span>
-                                    <span className="font-black text-slate-900 block">{selectedDests.join(", ") || "Not specified"}</span>
-                                </div>
-                            </div>
 
                             {/* Account Security Option */}
                             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs pt-4 border-t">

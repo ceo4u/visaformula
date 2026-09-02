@@ -16,29 +16,55 @@ export interface VaultDocItem {
   hint: string;
 }
 
+export function normalizeCountryName(val: string): string {
+  const s = (val || '').toLowerCase().trim();
+  if (!s) return 'United States';
+  if ((s.includes('unit') && s.includes('state')) || s === 'us' || s === 'usa' || s.includes('america') || s === 'american') return 'United States';
+  if (s.includes('emirate') || s.includes('uae') || s.includes('dubai') || s.includes('abu dhabi') || s.includes('emirati')) return 'United Arab Emirates';
+  if (s.includes('india') || s === 'in' || s.includes('indian')) return 'India';
+  if (s.includes('kingdom') || s === 'uk' || s.includes('britain') || s.includes('british') || s.includes('england')) return 'United Kingdom';
+  if (s.includes('canada') || s.includes('canadian')) return 'Canada';
+  if (s.includes('australia') || s.includes('australian')) return 'Australia';
+  if (s.includes('germany') || s.includes('german') || s.includes('deutschland')) return 'Germany';
+  if (s.includes('nepal') || s.includes('nepalese') || s.includes('nepali')) return 'Nepal';
+  if (s.includes('bangladesh') || s.includes('bangladeshi')) return 'Bangladesh';
+  if (s.includes('sri lanka') || s.includes('sri lankan')) return 'Sri Lanka';
+  if (s.includes('philippine') || s.includes('filipino')) return 'Philippines';
+  if (s.includes('nigeria') || s.includes('nigerian')) return 'Nigeria';
+  if (s.includes('pakistan') || s.includes('pakistani')) return 'Pakistan';
+  if (s.includes('france') || s.includes('french')) return 'France';
+  if (s.includes('new zealand') || s.includes('kiwi')) return 'New Zealand';
+  if (s.includes('ireland') || s.includes('irish')) return 'Ireland';
+  if (s.includes('singapore') || s.includes('singaporean')) return 'Singapore';
+  if (s.includes('japan') || s.includes('japanese')) return 'Japan';
+  if (s.includes('jordan') || s.includes('jordanian')) return 'Jordan';
+  return val;
+}
+
 export const dashboardPassportOptions = [
-  { value: 'India', label: 'India', flag: '🇮🇳' },
-  { value: 'Nepal', label: 'Nepal', flag: '🇳🇵' },
-  { value: 'Bangladesh', label: 'Bangladesh', flag: '🇧🇩' },
-  { value: 'Sri Lanka', label: 'Sri Lanka', flag: '🇱🇰' },
-  { value: 'Philippines', label: 'Philippines', flag: '🇵🇭' },
-  { value: 'Nigeria', label: 'Nigeria', flag: '🇳🇬' },
-  { value: 'Pakistan', label: 'Pakistan', flag: '🇵🇰' },
-  { value: 'UAE', label: 'UAE', flag: '🇦🇪' },
-  { value: 'United States', label: 'United States', flag: '🇺🇸' },
-  { value: 'United Kingdom', label: 'United Kingdom', flag: '🇬🇧' },
-  { value: 'Canada', label: 'Canada', flag: '🇨🇦' },
-  { value: 'Australia', label: 'Australia', flag: '🇦🇺' },
+  { value: 'India', label: 'India (Indian)', flag: '🇮🇳' },
+  { value: 'United States', label: 'United States (American)', flag: '🇺🇸' },
+  { value: 'United Arab Emirates', label: 'United Arab Emirates (Emirati)', flag: '🇦🇪' },
+  { value: 'United Kingdom', label: 'United Kingdom (British)', flag: '🇬🇧' },
+  { value: 'Canada', label: 'Canada (Canadian)', flag: '🇨🇦' },
+  { value: 'Australia', label: 'Australia (Australian)', flag: '🇦🇺' },
+  { value: 'Nepal', label: 'Nepal (Nepalese)', flag: '🇳🇵' },
+  { value: 'Bangladesh', label: 'Bangladesh (Bangladeshi)', flag: '🇧🇩' },
+  { value: 'Sri Lanka', label: 'Sri Lanka (Sri Lankan)', flag: '🇱🇰' },
+  { value: 'Philippines', label: 'Philippines (Philippine)', flag: '🇵🇭' },
+  { value: 'Nigeria', label: 'Nigeria (Nigerian)', flag: '🇳🇬' },
+  { value: 'Pakistan', label: 'Pakistan (Pakistani)', flag: '🇵🇰' },
+  { value: 'Germany', label: 'Germany (German)', flag: '🇩🇪' },
   { value: 'Other', label: 'Other Country', flag: '🌍' }
 ];
 
 export const dashboardDestinationOptions = [
   { value: 'United States', label: 'United States (USA)', flag: '🇺🇸', defaultVisa: 'B1/B2 Visitor Visa' },
+  { value: 'United Arab Emirates', label: 'United Arab Emirates (UAE / Dubai)', flag: '🇦🇪', defaultVisa: '30/60 Days Tourist Visa' },
   { value: 'Canada', label: 'Canada', flag: '🇨🇦', defaultVisa: 'Visitor Visa / Study Permit' },
   { value: 'United Kingdom', label: 'United Kingdom (UK)', flag: '🇬🇧', defaultVisa: 'Standard Visitor Visa' },
   { value: 'Australia', label: 'Australia', flag: '🇦🇺', defaultVisa: 'Subclass 600 / Subclass 500' },
   { value: 'Germany', label: 'Germany / Schengen', flag: '🇩🇪', defaultVisa: 'Schengen Visa Type C' },
-  { value: 'UAE', label: 'UAE / Dubai', flag: '🇦🇪', defaultVisa: '30/60 Days Tourist Visa' },
   { value: 'Jordan', label: 'Jordan', flag: '🇯🇴', defaultVisa: 'Jordan Pass / Entry Visa' },
   { value: 'Singapore', label: 'Singapore', flag: '🇸🇬', defaultVisa: 'e-Visa / Tourist Pass' },
   { value: 'France', label: 'France / Schengen', flag: '🇫🇷', defaultVisa: 'Short-Stay Schengen Visa' },
@@ -386,6 +412,43 @@ export function getDestinationChecklist(dest: string, purp: string): VaultDocIte
     ];
   }
 
+  if (d.includes('emirate') || d.includes('uae') || d.includes('dubai') || d.includes('abu dhabi')) {
+    return [
+      {
+        key: 'uae_ticket',
+        title: 'Confirmed Return Flight Ticket (Within 30/60 Days)',
+        description: 'Confirmed roundtrip air ticket with onward journey booking reference.',
+        icon: '✈️',
+        mandatory: true,
+        hint: 'Airline booking reference / PNR'
+      },
+      {
+        key: 'uae_hotel',
+        title: 'Hotel Reservation / Resident Host Sponsorship Letter',
+        description: 'Confirmed hotel booking voucher or host invitation with valid Emirates ID copy.',
+        icon: '🏨',
+        mandatory: true,
+        hint: 'Confirmed stay accommodation'
+      },
+      {
+        key: 'uae_funds',
+        title: 'Proof of Financial Means (3-Month Bank Statements)',
+        description: 'Bank statements showing sufficient funds for stay duration in UAE.',
+        icon: '🏦',
+        mandatory: true,
+        hint: 'Bank statement with official stamp'
+      },
+      {
+        key: 'uae_photo',
+        title: 'Passport Size Photograph (Recent, White Background, 35x45mm)',
+        description: 'High-contrast studio photograph adhering to UAE ICP biometric guidelines.',
+        icon: '📸',
+        mandatory: true,
+        hint: 'Studio photo with white backdrop'
+      }
+    ];
+  }
+
   // Default international travel checklist
   return [
     {
@@ -455,6 +518,7 @@ export function UserDashboard() {
     const [selectedPassport, setSelectedPassport] = useState('India');
     const [selectedDestination, setSelectedDestination] = useState('United States');
     const [selectedPurpose, setSelectedPurpose] = useState('Tourism / Vacation');
+    const [profileUpdatedToast, setProfileUpdatedToast] = useState(false);
     const [scanningDocKey, setScanningDocKey] = useState<string | null>(null);
     const [vaultChecklistState, setVaultChecklistState] = useState<Record<string, {
         fileName: string;
@@ -465,42 +529,68 @@ export function UserDashboard() {
         uploadedAt: string;
     }>>({});
 
-    const handleCreateOrSwitchTripProfile = (dest: string, pass: string, purp: string) => {
-        setSelectedDestination(dest);
-        setSelectedPassport(pass);
-        setSelectedPurpose(purp);
+    const handleCreateOrSwitchTripProfile = (dest?: string, pass?: string, purp?: string) => {
+        const targetDest = normalizeCountryName(dest || selectedDestination || 'United States');
+        const targetPass = normalizeCountryName(pass || selectedPassport || 'India');
+        const targetPurp = purp || selectedPurpose || 'Tourism / Vacation';
 
-        const destObj = dashboardDestinationOptions.find(d => d.value.toLowerCase() === dest.toLowerCase());
+        setSelectedDestination(targetDest);
+        setSelectedPassport(targetPass);
+        setSelectedPurpose(targetPurp);
+
+        const destObj = dashboardDestinationOptions.find(d => 
+            normalizeCountryName(d.value) === targetDest || d.value.toLowerCase() === targetDest.toLowerCase() || d.label.toLowerCase().includes(targetDest.toLowerCase())
+        );
         const flag = destObj?.flag || '🌍';
-        const visaType = destObj?.defaultVisa || `${dest} Visa Permit`;
+        const visaType = destObj?.defaultVisa || `${targetDest} Visa Permit`;
 
         const newProfile = {
-            destination: dest,
+            destination: targetDest,
             destinationFlag: flag,
-            passport: pass,
-            purpose: purp,
+            passport: targetPass,
+            purpose: targetPurp,
             visaType,
             createdAt: new Date().toLocaleDateString()
         };
 
         localStorage.setItem("active_travel_profile", JSON.stringify(newProfile));
 
+        // Sync to journeyData state
+        setJourneyData((prev: any) => ({
+            ...(prev || {}),
+            destination: targetDest,
+            destination_flag: flag,
+            passport_country: targetPass,
+            purpose: targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism',
+            visa_type: visaType
+        }));
+
+        try {
+            const j = JSON.parse(localStorage.getItem("travltik_user_journey") || "{}");
+            j.destination = targetDest;
+            j.destination_flag = flag;
+            j.passport_country = targetPass;
+            j.purpose = targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism';
+            j.visa_type = visaType;
+            localStorage.setItem("travltik_user_journey", JSON.stringify(j));
+        } catch(e) {}
+
         // Create or update Active Visa Case in dashboard
         try {
             const existingCases = JSON.parse(localStorage.getItem("active_visa_cases") || "[]");
-            const caseId = `case-${dest.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-            const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination !== dest);
+            const caseId = `case-${targetDest.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+            const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination !== targetDest);
             const newCase = {
                 id: caseId,
-                trackingId: `TT-${dest.slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-                destination: dest,
+                trackingId: `TT-${targetDest.slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+                destination: targetDest,
                 destinationFlag: flag,
                 visaType,
-                purpose: purp.toLowerCase(),
-                passport: pass,
+                purpose: targetPurp.toLowerCase(),
+                passport: targetPass,
                 status: "Travel Profile & Document Checklist Active",
                 stage: "Document Vault Verification",
-                progress: 50,
+                progress: 45,
                 documentsCount: 6,
                 submittedAt: "Active",
                 targetDate: "Consular Filing Ready"
@@ -511,7 +601,7 @@ export function UserDashboard() {
         } catch(e) {}
 
         // Load or initialize checklist for this new destination
-        const storageKey = `vault_checklist_${dest}`.replace(/\s+/g, '_').toLowerCase();
+        const storageKey = `vault_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
         try {
             const saved = localStorage.getItem(storageKey);
             if (saved) {
@@ -527,6 +617,9 @@ export function UserDashboard() {
                 });
             }
         } catch(e) {}
+
+        setProfileUpdatedToast(true);
+        setTimeout(() => setProfileUpdatedToast(false), 3500);
     };
 
     const handleVaultDocScan = async (file: File, docKey: string, docTitle: string) => {
@@ -685,22 +778,25 @@ export function UserDashboard() {
             if (savedProfileStr) {
                 try {
                     const p = JSON.parse(savedProfileStr);
-                    if (p.destination) { setSelectedDestination(p.destination); initialDest = p.destination; }
-                    if (p.passport) { setSelectedPassport(p.passport); initialPass = p.passport; }
-                    if (p.purpose) { setSelectedPurpose(p.purpose); initialPurp = p.purpose; }
+                    if (p.destination) initialDest = normalizeCountryName(p.destination);
+                    if (p.passport) initialPass = normalizeCountryName(p.passport);
+                    if (p.purpose) initialPurp = p.purpose;
                 } catch(e) {}
             } else if (localJourney) {
                 try {
                     const p = JSON.parse(localJourney);
-                    if (p.destination) { setSelectedDestination(p.destination); initialDest = p.destination; }
-                    if (p.passport_country || p.passportCountry) { setSelectedPassport(p.passport_country || p.passportCountry); initialPass = p.passport_country || p.passportCountry; }
+                    if (p.destination) initialDest = normalizeCountryName(p.destination);
+                    if (p.passport_country || p.passportCountry) initialPass = normalizeCountryName(p.passport_country || p.passportCountry);
                     if (p.purpose) {
                         const mPurp = p.purpose === 'study' ? 'Higher Studies' : p.purpose === 'work' ? 'Employment / Work' : 'Tourism / Vacation';
-                        setSelectedPurpose(mPurp);
                         initialPurp = mPurp;
                     }
                 } catch(e) {}
             }
+
+            setSelectedDestination(initialDest);
+            setSelectedPassport(initialPass);
+            setSelectedPurpose(initialPurp);
 
             const storageKey = `vault_checklist_${initialDest}`.replace(/\s+/g, '_').toLowerCase();
             const savedChecklistStr = localStorage.getItem(storageKey);
@@ -737,7 +833,16 @@ export function UserDashboard() {
                         fetch(`/api/journey/status?email=${encodeURIComponent(u.email)}`)
                             .then(r => r.json())
                             .then(res => {
-                                if (res?.success && res.data) setJourneyData(res.data);
+                                if (res?.success && res.data) {
+                                    setJourneyData(res.data);
+                                    const savedP = localStorage.getItem("active_travel_profile");
+                                    if (!savedP && res.data.destination) {
+                                        const normD = normalizeCountryName(res.data.destination);
+                                        const normP = normalizeCountryName(res.data.passport_country || 'India');
+                                        setSelectedDestination(normD);
+                                        setSelectedPassport(normP);
+                                    }
+                                }
                             })
                             .catch(() => {});
                     }
@@ -1526,13 +1631,17 @@ export function UserDashboard() {
 
                     {/* 4. TAB: DOCUMENT VAULT & TRAVEL READINESS CHECKLIST */}
                     {activeTab === "scanned-documents" && (() => {
-                        const destChecklist = getDestinationChecklist(selectedDestination, selectedPurpose);
+                        const normalizedDest = normalizeCountryName(selectedDestination);
+                        const normalizedPass = normalizeCountryName(selectedPassport);
+                        const currentDestObj = dashboardDestinationOptions.find(d => 
+                            normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
+                        );
+                        const destFlag = currentDestObj?.flag || '🌍';
+                        const destChecklist = getDestinationChecklist(normalizedDest, selectedPurpose);
                         const allChecklistItems = [...globalTravelDocuments, ...destChecklist];
                         const totalChecklistItems = allChecklistItems.length;
                         const verifiedItemsCount = allChecklistItems.filter(item => vaultChecklistState[item.key]?.verified).length;
                         const readinessScore = totalChecklistItems > 0 ? Math.round((verifiedItemsCount / totalChecklistItems) * 100) : 0;
-                        const currentDestObj = dashboardDestinationOptions.find(d => d.value.toLowerCase() === selectedDestination.toLowerCase());
-                        const destFlag = currentDestObj?.flag || '🌍';
 
                         return (
                             <div className="space-y-7 animate-fade-up">
@@ -1570,7 +1679,7 @@ export function UserDashboard() {
                                             </p>
                                         </div>
                                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold self-start sm:self-auto">
-                                            <Sparkles className="w-3.5 h-3.5 text-[#00A86B]" /> Active Profile: {destFlag} {selectedDestination}
+                                            <Sparkles className="w-3.5 h-3.5 text-[#00A86B]" /> Active Profile: {destFlag} {normalizedDest}
                                         </span>
                                     </div>
 
@@ -1581,11 +1690,10 @@ export function UserDashboard() {
                                                 <span>🛂</span> Passport Country (Going From)
                                             </label>
                                             <select
-                                                value={selectedPassport}
+                                                value={normalizedPass}
                                                 onChange={(e) => {
                                                     const pass = e.target.value;
                                                     setSelectedPassport(pass);
-                                                    handleCreateOrSwitchTripProfile(selectedDestination, pass, selectedPurpose);
                                                 }}
                                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
                                             >
@@ -1603,11 +1711,10 @@ export function UserDashboard() {
                                                 <span>🎯</span> Destination Country (Going To)
                                             </label>
                                             <select
-                                                value={selectedDestination}
+                                                value={normalizedDest}
                                                 onChange={(e) => {
                                                     const dest = e.target.value;
                                                     setSelectedDestination(dest);
-                                                    handleCreateOrSwitchTripProfile(dest, selectedPassport, selectedPurpose);
                                                 }}
                                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
                                             >
@@ -1629,7 +1736,6 @@ export function UserDashboard() {
                                                 onChange={(e) => {
                                                     const purp = e.target.value;
                                                     setSelectedPurpose(purp);
-                                                    handleCreateOrSwitchTripProfile(selectedDestination, selectedPassport, purp);
                                                 }}
                                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-100 transition-all outline-none"
                                             >
@@ -1649,13 +1755,24 @@ export function UserDashboard() {
                                         <button
                                             type="button"
                                             onClick={() => handleCreateOrSwitchTripProfile(selectedDestination, selectedPassport, selectedPurpose)}
-                                            className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all"
+                                            className="px-5 py-2.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md flex items-center gap-2 cursor-pointer active:scale-95 transition-all"
                                         >
                                             <span>Update Travel Profile &amp; Checklist</span>
-                                            <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+                                            <ArrowRight className="w-3.5 h-3.5 text-white" />
                                         </button>
                                     </div>
                                 </div>
+
+                                {/* Confirmation Toast Banner */}
+                                {profileUpdatedToast && (
+                                    <div className="bg-emerald-600 text-white px-5 py-3.5 rounded-2xl text-xs font-black flex items-center justify-between shadow-lg animate-fade-up">
+                                        <div className="flex items-center gap-2">
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                                            <span>✓ Travel Profile &amp; Statutory Checklist updated to {normalizedDest} ({selectedPurpose})!</span>
+                                        </div>
+                                        <span className="text-[10px] bg-emerald-700/80 px-2 py-0.5 rounded-md font-extrabold uppercase tracking-wider">Saved to Dashboard</span>
+                                    </div>
+                                )}
 
                                 {/* 2. ACTIVE TRIP BANNER WITH READINESS PROGRESS GAUGE */}
                                 <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl relative overflow-hidden border border-slate-800 space-y-4">
@@ -1667,16 +1784,16 @@ export function UserDashboard() {
                                                     Active Profile • {selectedPurpose}
                                                 </span>
                                                 <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold">
-                                                    Passport: {selectedPassport}
+                                                    Passport: {normalizedPass}
                                                 </span>
                                             </div>
 
                                             <h3 className="text-xl sm:text-2xl font-black text-white">
-                                                {destFlag} Trip to {selectedDestination} • {currentDestObj?.defaultVisa || 'Consular Visa Application'}
+                                                {destFlag} Trip to {normalizedDest} • {currentDestObj?.defaultVisa || 'Consular Visa Application'}
                                             </h3>
 
                                             <p className="text-xs text-slate-300 max-w-xl">
-                                                Statutory document requirements generated according to official consular directives for {selectedDestination}. Complete upload &amp; AI scans to achieve 100% travel readiness.
+                                                Statutory document requirements generated according to official consular directives for {normalizedDest}. Complete upload &amp; AI scans to achieve 100% travel readiness.
                                             </p>
                                         </div>
 

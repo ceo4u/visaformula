@@ -4040,9 +4040,9 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           is_mandatory: true
         },
         {
-          title: isGreece ? 'Harmonised Schengen Visa Application Form (NOT DS-160)' : 'Schengen Visa Application Form',
+          title: 'Harmonised Schengen Visa Application Form',
           description: isGreece
-            ? 'Official Harmonised Schengen Visa Application Form — completed online via the GVCW E-VISA Portal (in-gr.gvcworld.eu) or downloaded from the Embassy of Greece website. ⚠️ IMPORTANT: DS-160 is EXCLUSIVELY for US Visas — submitting DS-160 for a Greece visa will result in immediate rejection at the counter.'
+            ? 'Official Harmonised Schengen Visa Application Form — completed online via the GVCW E-VISA Portal (in-gr.gvcworld.eu) or downloaded from the Embassy of Greece website.'
             : 'Completed Harmonised Schengen Visa Application Form — fully filled, signed, and dated by the applicant. Available from the official embassy or VFS portal.',
           is_mandatory: true
         },
@@ -4131,8 +4131,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         {
           category: '⚠️ Application Form — CRITICAL',
           details: isGreece
-            ? 'Use ONLY the Harmonised Schengen Visa Application Form from GVCW (in-gr.gvcworld.eu) or the Embassy of Greece. DS-160 is a US Nonimmigrant Visa form — submitting it for Greece will result in IMMEDIATE REJECTION. The GVCW e-portal guides applicants through the correct form online.'
-            : 'Use the official Harmonised Schengen Visa Application Form from your target country\'s embassy or authorized VAC portal. Do NOT use DS-160 (US visa form).'
+            ? 'Use ONLY the official Harmonised Schengen Visa Application Form from GVCW (in-gr.gvcworld.eu) or the Embassy of Greece. The GVCW e-portal guides applicants through completing and submitting the correct form online.'
+            : 'Use the official Harmonised Schengen Visa Application Form from your target country\'s embassy or authorized VAC portal.'
         },
         {
           category: 'Schengen 90/180 Day Rule',
@@ -5308,9 +5308,10 @@ STRICT DATA ISOLATION & VERIFICATION MANDATES:
 1. ZERO CROSS-CONTAMINATION (NO HYBRID RULES):
    - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia, Singapore, GCC.
    - For USA: strictly 2x2 inches (51x51mm) photo, DS-160 barcode, $185 MRV fee, 10-year B1/B2 validity, CBP 180-day stay rule.
+   - For non-US destinations (such as Greece, Schengen, UK, Canada, Australia): NEVER write or mention Form DS-160 anywhere. DS-160 is strictly for US visas only.
    - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
    - For GCC (UAE, Saudi, Oman, Qatar, Bahrain, Kuwait): Minimum 6 months passport validity from arrival. Never display 3-month or 10-year Schengen rules.
-   - For Schengen / EU: strictly Harmonised Schengen Visa Application Form (NEVER DS-160 which is US only), €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
+   - For Schengen / EU: strictly Harmonised Schengen Visa Application Form, €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
 
 2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
    - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."

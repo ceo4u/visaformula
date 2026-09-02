@@ -29,32 +29,17 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
     process.env.PUBLIC_TURNSTILE_SITE_KEY ||
     '0x4AAAAAAEkYe7hsfnXhxfvB';
 
-  // Cloudflare Turnstile restricts production keys to approved hostnames (e.g. travltik.com).
-  // When running on localhost, Cloudflare throws "Unable to connect to website" if localhost is not in the allowed domains.
-  // Cloudflare's official testing sitekey '1x00000000000000000000AA' always passes on localhost/dev.
-  const [activeSiteKey, setActiveSiteKey] = React.useState<string>(configuredSiteKey);
+  // Use real configured site key (0x4AAAAAAEkYe7hsfnXhxfvB)
+  const siteKey = configuredSiteKey;
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const host = window.location.hostname;
-      const isLocal = host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.') || host.endsWith('.local');
-      if (isLocal) {
-        // Use Cloudflare's official localhost test sitekey
-        setActiveSiteKey('1x00000000000000000000AA');
-      } else {
-        setActiveSiteKey(configuredSiteKey);
-      }
-    }
-  }, [configuredSiteKey]);
-
-  if (!activeSiteKey) {
+  if (!siteKey) {
     return null;
   }
 
   return (
     <div className={`flex justify-center my-3 w-full ${className}`}>
       <Turnstile
-        siteKey={activeSiteKey}
+        siteKey={siteKey}
         onSuccess={onSuccess}
         onError={onError}
         onExpire={onExpire}

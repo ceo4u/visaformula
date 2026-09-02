@@ -4163,7 +4163,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       ],
       how_to_apply: isGreece ? [
         '1️⃣ Register on the GVCW E-VISA Portal (in-gr.gvcworld.eu) and fill in the Harmonised Schengen Visa Application Form online.',
-        '2️⃣ Pay the visa fee online: €90 (Embassy fee) + €30 (GVCW VAC service charge) = €120 total.',
+        '2️⃣ Pay the visa & VAC service fee (€90 Embassy fee + €30 GVCW VAC service charge = €120 total) in-person at the GVCW Visa Application Center (VAC) counter during your appointment.',
         '3️⃣ Compile your complete document dossier: passport, photos, insurance, flight itinerary (with PNR), hotel bookings, day-by-day travel plan, bank statements (3-6 months, bank-stamped), ITR (3 years), employment/NOC letter.',
         '4️⃣ Book your in-person appointment at the nearest GVCW VAC (available in 8 Indian cities).',
         '5️⃣ Attend the appointment for biometric submission (fingerprints + photo) and hand over your document dossier.',
@@ -4171,7 +4171,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         '7️⃣ Collect your passport with the Schengen visa sticker from the VAC or via courier.'
       ] : [
         'Complete the Harmonised Schengen Visa Application Form from the official embassy/VFS portal.',
-        'Pay the visa fee online (€90 embassy + VAC service fee).',
+        'Pay the visa fee (€90 embassy + VAC service fee) in-person at the Visa Application Center counter during submission.',
         'Compile your document dossier: passport, photos, insurance, flights, hotel, bank statements, ITR, employment proof.',
         'Book an in-person appointment at the authorized VAC in India.',
         'Attend appointment for biometrics and document submission.',

@@ -132,10 +132,8 @@ const defaultSchema = {
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
   
-  <!-- Critical Layout Reset (Prevents unstyled massive logo / menu flash during CDN/cache hydration) -->
+  <!-- Critical Layout Reset (Prevents unstyled massive logo flash during hydration) -->
   <style is:inline>
-    img { max-width: 100%; height: auto; }
-    .hidden { display: none !important; }
     #header-logo-img { max-height: 46px !important; width: auto !important; }
   </style>
 

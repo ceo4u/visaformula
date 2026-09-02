@@ -4,7 +4,8 @@ import {
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
-    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard
+    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard,
+    Eye, EyeOff, Mail, KeyRound
 } from "lucide-react";
 
 export interface VaultDocItem {
@@ -552,6 +553,93 @@ export function UserDashboard() {
         summary?: string;
         uploadedAt: string;
     }>>({});
+
+    // Password reset & change states for profile tab
+    const [currentPwd, setCurrentPwd] = useState("");
+    const [newPwd, setNewPwd] = useState("");
+    const [confirmNewPwd, setConfirmNewPwd] = useState("");
+    const [showCurrentPwd, setShowCurrentPwd] = useState(false);
+    const [showNewPwd, setShowNewPwd] = useState(false);
+    const [isChangingPwd, setIsChangingPwd] = useState(false);
+    const [changePwdSuccess, setChangePwdSuccess] = useState(false);
+    const [changePwdError, setChangePwdError] = useState("");
+
+    const [isSendingEmailReset, setIsSendingEmailReset] = useState(false);
+    const [emailResetMsg, setEmailResetMsg] = useState("");
+    const [emailResetError, setEmailResetError] = useState("");
+
+    const handleDirectPasswordChange = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setChangePwdError("");
+        setChangePwdSuccess(false);
+
+        if (newPwd.length < 8) {
+            setChangePwdError("New password must be at least 8 characters long.");
+            return;
+        }
+
+        if (newPwd !== confirmNewPwd) {
+            setChangePwdError("New passwords do not match.");
+            return;
+        }
+
+        setIsChangingPwd(true);
+        try {
+            const res = await fetch('/api/auth/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    currentPassword: currentPwd,
+                    newPassword: newPwd
+                })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                setChangePwdSuccess(true);
+                setCurrentPwd("");
+                setNewPwd("");
+                setConfirmNewPwd("");
+                setTimeout(() => setChangePwdSuccess(false), 5000);
+            } else {
+                setChangePwdError(data.message || "Failed to update password.");
+            }
+        } catch (err: any) {
+            setChangePwdError("Server connection error. Please try again.");
+        } finally {
+            setIsChangingPwd(false);
+        }
+    };
+
+    const handleSendEmailReset = async () => {
+        setEmailResetError("");
+        setEmailResetMsg("");
+
+        const targetEmail = email || localStorage.getItem("seeker_email") || "";
+        if (!targetEmail) {
+            setEmailResetError("No registered email found in your profile.");
+            return;
+        }
+
+        setIsSendingEmailReset(true);
+        try {
+            const res = await fetch('/api/auth/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: targetEmail })
+            });
+            const data = await res.json();
+            if (res.ok && (data.status === 'success' || data.success)) {
+                setEmailResetMsg("A 6-digit verification code has been dispatched to your email address!");
+            } else {
+                setEmailResetError(data.message || "Failed to send reset code. Please try again.");
+            }
+        } catch (err: any) {
+            setEmailResetError("Connection error. Please try again.");
+        } finally {
+            setIsSendingEmailReset(false);
+        }
+    };
 
     const fetchAiRequirements = async (dest: string, pass: string, purp: string) => {
         const cleanDest = normalizeCountryName(dest);
@@ -1601,43 +1689,219 @@ export function UserDashboard() {
 
                     {/* 2. TAB: PROFILE & SETTINGS */}
                     {activeTab === "profile" && (
-                        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6 animate-fade-up">
-                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                                <div>
-                                    <h2 className="text-xl font-black text-slate-900">Personal & Visa Profile</h2>
-                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
-                                </div>
-                                <button onClick={() => setShowProfileModal(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
-                                    <Edit2 className="w-3.5 h-3.5" /> Edit Details
-                                </button>
-                            </div>
-
-                            <div className="flex flex-col md:flex-row gap-6 items-start">
-                                {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
-                                    <img src={profilePhoto} alt={fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
-                                ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-[#00A86B] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
-                                        {(userDisplayName || "U").charAt(0).toUpperCase()}
+                        <div className="space-y-6 animate-fade-up">
+                            {/* Personal & Visa Profile */}
+                            <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                    <div>
+                                        <h2 className="text-xl font-black text-slate-900">Personal &amp; Visa Profile</h2>
+                                        <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
                                     </div>
-                                )}
-                                <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Traveller</span>
+                                        <button 
+                                            onClick={() => document.getElementById('security-password-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                            className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200"
+                                        >
+                                            <KeyRound className="w-3.5 h-3.5 text-[#00a896]" /> Reset Password
+                                        </button>
+                                        <button onClick={() => setShowProfileModal(true)} className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer transition-all">
+                                            <Edit2 className="w-3.5 h-3.5" /> Edit Details
+                                        </button>
                                     </div>
-                                    <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
-                                    <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
+                                </div>
+
+                                <div className="flex flex-col md:flex-row gap-6 items-start">
+                                    {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
+                                        <img src={profilePhoto} alt={fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                    ) : (
+                                        <div className="w-24 h-24 rounded-2xl bg-[#00A86B] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                            {(userDisplayName || "U").charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <div className="space-y-2 flex-1">
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
+                                            <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Traveller</span>
+                                        </div>
+                                        <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
+                                        <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
+                                    <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                        <span className="font-bold text-slate-500 block">Visa Goals:</span>
+                                        <span className="font-black text-slate-900 block">{selectedGoals.join(", ") || "Not specified"}</span>
+                                    </div>
+                                    <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                        <span className="font-bold text-slate-500 block">Target Destinations:</span>
+                                        <span className="font-black text-slate-900 block">{selectedDests.join(", ") || "Not specified"}</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Visa Goals:</span>
-                                    <span className="font-black text-slate-900 block">{selectedGoals.join(", ") || "Not specified"}</span>
+                            {/* Security & Password Reset Section */}
+                            <div id="security-password-section" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black">
+                                            <KeyRound className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-black text-slate-900">Security &amp; Password Reset</h3>
+                                            <p className="text-xs font-medium text-slate-500">
+                                                Update your account password directly or send a 6-digit verification code to your email
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200 text-xs font-bold self-start sm:self-auto">
+                                        <ShieldCheck className="w-3.5 h-3.5" /> 256-Bit Encrypted
+                                    </span>
                                 </div>
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Target Destinations:</span>
-                                    <span className="font-black text-slate-900 block">{selectedDests.join(", ") || "Not specified"}</span>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    {/* Option 1: Direct Password Change Form */}
+                                    <form onSubmit={handleDirectPasswordChange} className="p-5 bg-slate-50/80 border border-slate-200/80 rounded-2xl space-y-4">
+                                        <div className="flex items-center justify-between border-b border-slate-200/60 pb-2.5">
+                                            <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                                <Lock className="w-3.5 h-3.5 text-slate-700" /> Change Password Directly
+                                            </h4>
+                                            <span className="text-[10px] text-slate-400 font-bold">Min 8 characters</span>
+                                        </div>
+
+                                        {changePwdSuccess && (
+                                            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 animate-fade-up">
+                                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                                                <span>Password updated successfully!</span>
+                                            </div>
+                                        )}
+
+                                        {changePwdError && (
+                                            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold animate-fade-up">
+                                                {changePwdError}
+                                            </div>
+                                        )}
+
+                                        <div className="space-y-1">
+                                            <label className="block text-xs font-bold text-slate-700">
+                                                Current Password <span className="text-[10px] font-normal text-slate-400">(Optional if first-time setup)</span>
+                                            </label>
+                                            <div className="relative">
+                                                <input
+                                                    type={showCurrentPwd ? "text" : "password"}
+                                                    value={currentPwd}
+                                                    onChange={(e) => setCurrentPwd(e.target.value)}
+                                                    placeholder="Enter current password"
+                                                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-900 pr-10 focus:outline-none focus:border-[#00A86B]"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowCurrentPwd(!showCurrentPwd)}
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                >
+                                                    {showCurrentPwd ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <label className="block text-xs font-bold text-slate-700">
+                                                New Password *
+                                            </label>
+                                            <div className="relative">
+                                                <input
+                                                    type={showNewPwd ? "text" : "password"}
+                                                    required
+                                                    value={newPwd}
+                                                    onChange={(e) => setNewPwd(e.target.value)}
+                                                    placeholder="Enter at least 8 characters"
+                                                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-900 pr-10 focus:outline-none focus:border-[#00A86B]"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowNewPwd(!showNewPwd)}
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                >
+                                                    {showNewPwd ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <label className="block text-xs font-bold text-slate-700">
+                                                Confirm New Password *
+                                            </label>
+                                            <input
+                                                type="password"
+                                                required
+                                                value={confirmNewPwd}
+                                                onChange={(e) => setConfirmNewPwd(e.target.value)}
+                                                placeholder="Repeat new password"
+                                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#00A86B]"
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={isChangingPwd}
+                                            className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:bg-slate-400 active:scale-95"
+                                        >
+                                            {isChangingPwd ? "Updating..." : "Update Password"}
+                                        </button>
+                                    </form>
+
+                                    {/* Option 2: Email OTP Reset */}
+                                    <div className="p-5 bg-gradient-to-br from-emerald-50/40 via-white to-slate-50 border border-slate-200/80 rounded-2xl flex flex-col justify-between space-y-4">
+                                        <div className="space-y-3">
+                                            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                                                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                                    <Mail className="w-3.5 h-3.5 text-[#00A86B]" /> Reset via Email OTP
+                                                </h4>
+                                                <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">Recommended</span>
+                                            </div>
+
+                                            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                                                Forgot your current password? We can send a secure 6-digit verification code directly to your registered account email:
+                                            </p>
+
+                                            <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs font-bold text-slate-800 flex items-center justify-between shadow-2xs">
+                                                <span className="truncate max-w-[200px]">{email || localStorage.getItem("seeker_email") || "your-email@example.com"}</span>
+                                                <span className="text-[10px] text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded">Verified</span>
+                                            </div>
+
+                                            {emailResetMsg && (
+                                                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 animate-fade-up">
+                                                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                                                    <span>{emailResetMsg}</span>
+                                                </div>
+                                            )}
+
+                                            {emailResetError && (
+                                                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold animate-fade-up">
+                                                    {emailResetError}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-2 pt-2">
+                                            <button
+                                                type="button"
+                                                disabled={isSendingEmailReset}
+                                                onClick={handleSendEmailReset}
+                                                className="w-full bg-[#00A86B] hover:bg-[#008f5a] text-white font-black py-3 rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:bg-slate-400"
+                                            >
+                                                <Mail className="w-3.5 h-3.5" />
+                                                <span>{isSendingEmailReset ? "Sending OTP..." : "Send Reset Code to Email"}</span>
+                                            </button>
+
+                                            <a
+                                                href={`/forgot-password?email=${encodeURIComponent(email || localStorage.getItem("seeker_email") || '')}`}
+                                                className="block text-center text-xs font-bold text-slate-600 hover:text-slate-900 hover:underline pt-1"
+                                            >
+                                                Have a reset code? Open Reset Portal →
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

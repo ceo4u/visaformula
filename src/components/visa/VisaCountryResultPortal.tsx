@@ -3388,13 +3388,13 @@ export function VisaCountryResultPortal({
   const [pickupAddress, setPickupAddress] = useState('');
   const [isSubmittingModal, setIsSubmittingModal] = useState(false);
 
-  // ── REAL-TIME DYNAMIC VISA READINESS & APPROVAL SCORECARD ──
+  // ── REAL-TIME DYNAMIC VISA READINESS & APPROVAL SCORECARD (CATEGORY-SPECIFIC) ──
   const readinessMetrics = useMemo(() => {
     let recommendations: string[] = [];
     let redFlags: string[] = [];
     let filledCount = 0;
 
-    // Pillar 1: Passport & Identity (35% weight)
+    // ── COMMON PILLAR 1: PASSPORT & IDENTITY (25 pts max) ──
     let passportScore = 0;
     let validityBonus = 0;
     const remainingMonths = passportFile?.remainingMonths ?? (
@@ -3403,17 +3403,16 @@ export function VisaCountryResultPortal({
 
     if (passportFile) {
       filledCount += 2;
-      passportScore += 20; // Official bio-data scanned & MRZ valid
+      passportScore += 15; // Bio-data scanned & verified
 
       if (passportFile.isExpiryCompliant || remainingMonths >= 6) {
         if (remainingMonths >= 12) {
-          // Outstanding long-term validity (e.g. 92 months / 7-10 years)
-          passportScore += 25; // 45 pts total for passport pillar
-          validityBonus = 15; // Extra boost for verified long-term validity
-          recommendations.unshift(`🌟 Exceptional Passport Validity: ${remainingMonths} months remaining (${Math.floor(remainingMonths / 12)} years). Flawlessly compliant with ${countryName} 6-month rule.`);
+          passportScore += 10; // 25 pts full score for passport
+          validityBonus = 10; // Extra long-term validity bonus
+          recommendations.unshift(`🌟 Exceptional Passport Validity: ${remainingMonths} months remaining (${Math.floor(remainingMonths / 12)} years). Flawlessly compliant with ${countryName} consular rules.`);
         } else {
-          passportScore += 15;
-          recommendations.push(`Passport validity: ${remainingMonths} months remaining. Meets minimum 6-month threshold.`);
+          passportScore += 7;
+          recommendations.push(`Passport validity: ${remainingMonths} months remaining. Meets minimum 6-month threshold for ${countryName}.`);
         }
       } else {
         redFlags.push(`⚠️ Passport expires in ${remainingMonths} months. Minimum 6-month validity required by ${countryName} consular rules. Renewal strongly advised.`);
@@ -3421,163 +3420,283 @@ export function VisaCountryResultPortal({
     } else if (passportValidityRange) {
       filledCount++;
       if (passportValidityRange.includes('> 12 Months')) {
-        passportScore += 25;
+        passportScore += 22;
+        validityBonus = 5;
       } else if (passportValidityRange.includes('6 - 12 Months')) {
         passportScore += 15;
       } else {
-        redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${countryName} consular rules.`);
+        redFlags.push(`Passport expires in under 6 months. Consular 6-month rule violation risk.`);
       }
     }
 
-    // Pillar 2: Financial Sufficiency (35% weight)
-    let finScore = 0;
-    // Pillar 3: Travel Itinerary (15% weight)
-    let itinScore = 0;
-    // Pillar 4: Home Ties & Purpose (20% weight)
-    let tiesScore = 0;
+    // Category Identification
+    const categoryName = activePurposeTab === 'study' 
+      ? 'Student Visa' 
+      : activePurposeTab === 'work' 
+      ? 'Work Visa' 
+      : activePurposeTab === 'business'
+      ? 'Business Visa'
+      : activePurposeTab === 'family'
+      ? 'Family Visit Visa'
+      : 'Tourist Visa';
 
+    let categoryPillars: Array<{ name: string; score: number; max: number; value: string }> = [];
+    let categoryScoreRaw = 0;
+
+    // ── 1. STUDENT VISA SCORING ──
     if (activePurposeTab === 'study') {
-      if (studyQual) filledCount++;
-      if (studyTarget) filledCount++;
-      if (studyIntake) {
-        filledCount++;
-        itinScore = 15;
-      }
-      if (studyBudget) {
-        filledCount++;
-        if (studyBudget.includes('Self-Funded') || studyBudget.includes('Scholarship')) {
-          finScore = 35;
-        } else if (studyBudget.includes('Loan')) {
-          finScore = 32;
-          recommendations.push('Attach unconditional bank loan sanction letter and co-sponsor income tax returns.');
-        } else {
-          finScore = 22;
-          recommendations.push('Prepare liquid savings statement covering 1st-year tuition + living costs.');
-        }
-      }
+      let admissionScore = 0;
+      let fundingScore = 0;
+      let academicScore = 0;
 
+      // Admission Status (25 pts max)
       if (studentAdmissionStatus) {
         filledCount++;
         if (studentAdmissionStatus.includes('Confirmed')) {
-          tiesScore = 20;
+          admissionScore = 25;
+          recommendations.push(`✓ Confirmed institutional offer / CAS / I-20 recorded for ${countryName}.`);
         } else if (studentAdmissionStatus.includes('Conditional')) {
-          tiesScore = 14;
-          recommendations.push('Fulfill academic conditions to convert offer into unconditional Form I-20 / CAS.');
+          admissionScore = 15;
+          recommendations.push('Clear pending academic conditions to convert conditional offer into unconditional Form I-20 / CAS.');
         } else {
-          tiesScore = 8;
-          redFlags.push('Formal institutional admission letter is mandatory before scheduling embassy interview.');
+          admissionScore = 6;
+          redFlags.push('Formal university admission letter / CAS is mandatory before embassy interview.');
         }
       }
 
-      if (studentLanguageScore) filledCount++;
-
-      if (filledCount > 0) {
-        recommendations.push(`Upload Form I-20 / CAS and 6-month stamped bank statements for ${countryName}.`);
-      }
-    } else if (activePurposeTab === 'tourism') {
-      if (visitPlanStatus) {
+      // Tuition & Funds Proof (25 pts max)
+      if (studyBudget) {
         filledCount++;
-        itinScore = 15;
+        if (studyBudget.includes('Self-Funded') || studyBudget.includes('Scholarship')) {
+          fundingScore = 25;
+          recommendations.push('Proof of liquid funds covers 1st-year tuition and cost of living.');
+        } else if (studyBudget.includes('Loan')) {
+          fundingScore = 20;
+          recommendations.push('Attach official bank loan sanction letter with collateral / co-borrower tax returns.');
+        } else {
+          fundingScore = 10;
+          redFlags.push('Insufficient verified liquid funds. May require additional sponsor documentation.');
+        }
       }
-      if (visitTiming) filledCount++;
-      if (visitReturnDate) filledCount++;
-      if (visitStay) filledCount++;
 
+      // Language Proficiency & Intake (15 pts max)
+      if (studentLanguageScore) {
+        filledCount++;
+        if (studentLanguageScore.includes('Cleared')) {
+          academicScore += 10;
+          recommendations.push('✓ English language proficiency requirement satisfied (IELTS 6.5+ / PTE 60+).');
+        } else if (studentLanguageScore.includes('MOI')) {
+          academicScore += 7;
+          recommendations.push('Medium of Instruction waiver requires official institutional certificate.');
+        } else {
+          academicScore += 4;
+        }
+      }
+
+      if (studyIntake) {
+        filledCount++;
+        academicScore += 5;
+      }
+      if (studyQual) filledCount++;
+      if (studyTarget) filledCount++;
+
+      categoryScoreRaw = admissionScore + fundingScore + academicScore;
+
+      categoryPillars = [
+        { name: 'Passport & Identity', score: passportScore, max: 25, value: passportFile ? `${remainingMonths} Mos Valid` : passportValidityRange || 'Select Validity' },
+        { name: 'Institution Admission (I-20/CAS)', score: admissionScore, max: 25, value: studentAdmissionStatus || 'Select Admission' },
+        { name: 'Tuition & Living Funds', score: fundingScore, max: 25, value: studyBudget || 'Select Funding' },
+        { name: 'Language & Academic Intake', score: academicScore, max: 15, value: studentLanguageScore ? `${studentLanguageScore.slice(0, 15)}...` : 'Select Exam' }
+      ];
+    } 
+    // ── 2. WORK VISA SCORING ──
+    else if (activePurposeTab === 'work') {
+      let offerScore = 0;
+      let expScore = 0;
+      let assessScore = 0;
+
+      // Sponsored Job Offer (30 pts max)
+      if (workOffer) {
+        filledCount++;
+        if (workOffer.includes('Confirmed') || workOffer.includes('Approved')) {
+          offerScore = 30;
+          recommendations.push(`✓ Official employer sponsorship petition (CoS/LMIA) attached for ${countryName}.`);
+        } else if (workOffer.includes('Interviewing')) {
+          offerScore = 15;
+          recommendations.push('Request formal sponsorship certificate once final employment interview is cleared.');
+        } else {
+          offerScore = 6;
+          redFlags.push(`Consular work visas require an approved employer sponsorship petition from ${countryName}.`);
+        }
+      }
+
+      // Professional Experience (15 pts max)
+      if (workExp) {
+        filledCount++;
+        if (workExp.includes('8+')) {
+          expScore = 15;
+        } else if (workExp.includes('5 - 8')) {
+          expScore = 13;
+        } else if (workExp.includes('3 - 5')) {
+          expScore = 10;
+        } else {
+          expScore = 6;
+        }
+      }
+
+      // Skills Assessment / ECA (15 pts max)
+      if (workAssess) {
+        filledCount++;
+        if (workAssess.includes('Assessed')) {
+          assessScore = 15;
+          recommendations.push('✓ Educational and occupational skills assessment verified (WES/ACS).');
+        } else if (workAssess.includes('Progress')) {
+          assessScore = 8;
+          recommendations.push('Expedite credential assessment report for consular filing.');
+        } else {
+          assessScore = 3;
+          recommendations.push('Obtain professional qualification equivalency evaluation before filing.');
+        }
+      }
+
+      if (workDomain) {
+        filledCount++;
+      }
+
+      categoryScoreRaw = offerScore + expScore + assessScore;
+
+      categoryPillars = [
+        { name: 'Passport & Identity', score: passportScore, max: 25, value: passportFile ? `${remainingMonths} Mos Valid` : passportValidityRange || 'Select Validity' },
+        { name: 'Employer Sponsorship (CoS/LMIA)', score: offerScore, max: 30, value: workOffer || 'Select Offer' },
+        { name: 'Work Experience', score: expScore, max: 15, value: workExp || 'Select Experience' },
+        { name: 'Skill Assessment (ECA)', score: assessScore, max: 15, value: workAssess || 'Select Assessment' }
+      ];
+    }
+    // ── 3. TOURIST / VISIT / BUSINESS / FAMILY VISA SCORING ──
+    else {
+      let finScore = 0;
+      let tiesScore = 0;
+      let itinScore = 0;
+
+      // Financial Sufficiency (25 pts max)
       if (touristBankStability) {
         filledCount++;
         if (touristBankStability.includes('₹4L+')) {
-          finScore = 35;
+          finScore = 25;
+          recommendations.push('✓ Strong financial solvency: ₹4L+ 6-month maintained balance demonstrates trip affordability.');
         } else if (touristBankStability.includes('₹2L - ₹4L')) {
-          finScore = 26;
+          finScore = 18;
+          recommendations.push('Bank balance meets standard threshold; keep latest 6-month stamped statement ready.');
         } else {
-          finScore = 12;
-          redFlags.push('Recent lump-sum deposits or low balance may trigger consular queries under financial solvency rules.');
+          finScore = 8;
+          redFlags.push('Bank balance below recommended threshold. Provide additional co-sponsor or financial proof.');
         }
       }
 
+      // Home Country Ties & Employment (20 pts max)
       if (touristHomeTies) {
         filledCount++;
         if (touristHomeTies.includes('Salaried')) {
           tiesScore = 20;
+          recommendations.push('✓ Salaried status with Employer NOC & 3-month payslips strongly satisfies return intent.');
         } else if (touristHomeTies.includes('Business')) {
           tiesScore = 18;
+          recommendations.push('✓ Business ownership with GST & 2-year ITR establishes solid home ties.');
+        } else if (touristHomeTies.includes('Self-Employed')) {
+          tiesScore = 12;
+          recommendations.push('Attach client contracts and bank transaction statements to substantiate income.');
         } else {
           tiesScore = 10;
-          recommendations.push('Provide property deeds, ongoing contracts, or family ties proof to establish return intent.');
         }
       }
 
-      if (filledCount > 0) {
-        recommendations.push(`Keep confirmed round-trip flight booking and hotel vouchers ready for ${countryName}.`);
-      }
-    } else {
-      // Work Visa
-      if (workExp) filledCount++;
-      if (workOffer) {
+      // Travel Dates & Itinerary (15 pts max)
+      if (visitTiming && visitReturnDate) {
+        filledCount += 2;
+        if (tripDurationDays > 0 && tripDurationDays <= 90) {
+          itinScore += 10;
+          recommendations.push(`✓ Itinerary set: ${tripDurationDays}-day round-trip compliant with standard tourist limits.`);
+        } else if (tripDurationDays > 90) {
+          itinScore += 4;
+          redFlags.push(`⚠️ Trip duration (${tripDurationDays} days) exceeds typical 90-day tourist stay limit.`);
+        }
+      } else if (visitTiming || visitReturnDate) {
         filledCount++;
-        if (workOffer.includes('Confirmed') || workOffer.includes('Approved')) {
-          finScore = 35;
-          tiesScore = 20;
+        itinScore += 5;
+      }
+
+      if (visitPlanStatus) {
+        filledCount++;
+        if (visitPlanStatus.includes('Fixed')) {
+          itinScore += 5;
         } else {
-          finScore = 15;
-          tiesScore = 10;
-          redFlags.push(`Official employer sponsorship petition or labour clearance is mandatory for ${countryName} work visa.`);
+          itinScore += 3;
         }
       }
 
-      if (workDomain) filledCount++;
-      if (workAssess) {
+      if (visitStay) {
         filledCount++;
-        if (workAssess.includes('Assessed')) {
-          itinScore = 15;
-        } else {
-          itinScore = 8;
-          recommendations.push('Complete ECA educational credential evaluation (WES/ACS) for qualification equivalency.');
+        if (visitStay.includes('Hotel')) {
+          recommendations.push('Confirmed hotel reservation is required for consular document verification.');
         }
       }
+
+      categoryScoreRaw = finScore + tiesScore + itinScore;
+
+      categoryPillars = [
+        { name: 'Passport & Identity', score: passportScore, max: 25, value: passportFile ? `${remainingMonths} Mos Valid` : passportValidityRange || 'Select Validity' },
+        { name: 'Financial Solvency', score: finScore, max: 25, value: touristBankStability || 'Select Balance' },
+        { name: 'Home Country Ties', score: tiesScore, max: 20, value: touristHomeTies || 'Select Ties' },
+        { name: 'Trip Itinerary & Dates', score: itinScore, max: 15, value: visitTiming ? `${tripDurationDays}d (${visitTiming})` : 'Select Dates' }
+      ];
     }
 
-    if (visaRefusalHistory) {
-      filledCount++;
-      if (visaRefusalHistory.includes('Past Refusal')) {
-        redFlags.push('Prior refusal recorded. Include a strong cover letter addressing previous refusal grounds.');
-      }
-    }
-
-    // Pillar 5: Required Embassy Documents Checklist (Direct impact on Visa Readiness Score)
+    // ── COMMON PILLAR: EMBASSY DOCUMENTS CHECKLIST (15 pts max) ──
     let docsScore = 0;
     if (docsTotalCount > 0) {
       filledCount += docsReadyCount;
       const docRatio = docsReadyCount / docsTotalCount;
-      // All documents ready adds up to +35 points!
-      docsScore = Math.round(docRatio * 35);
+      docsScore = Math.round(docRatio * 15);
       if (docRatio === 1) {
-        recommendations.unshift(`🌟 100% of required embassy documents are verified and ready! Exceptional approval readiness for ${countryName}.`);
+        recommendations.unshift(`🌟 100% of required ${countryName} embassy documents are verified and ready!`);
       } else if (docRatio >= 0.5) {
-        recommendations.push(`Keep remaining ${docsTotalCount - docsReadyCount} documents ready to reach a 9.5+ readiness rating.`);
-      } else {
-        recommendations.push(`Mark required documents as Ready in the Documents Checklist above to maximize your readiness score.`);
+        recommendations.push(`${docsReadyCount}/${docsTotalCount} checklist documents ready. Prepare remaining for maximum score.`);
       }
     }
 
-    // Calculation
-    let refusalPenalty = visaRefusalHistory.includes('Past Refusal') ? 12 : 0;
-    let finalScore = 0;
+    categoryPillars.push({
+      name: 'Embassy Checklist',
+      score: docsScore,
+      max: 15,
+      value: docsTotalCount > 0 ? `${docsReadyCount}/${docsTotalCount} Ready` : 'Checklist Active'
+    });
 
+    // Past Refusal Impact
+    let refusalPenalty = 0;
+    if (visaRefusalHistory) {
+      filledCount++;
+      if (visaRefusalHistory.includes('Past Refusal')) {
+        refusalPenalty = 10;
+        redFlags.push('Prior visa refusal recorded. Attach a dedicated consular explanation letter addressing previous grounds.');
+      }
+    }
+
+    // Final Score Calculation (Strict 0 to 100 scale, out of 10.0)
+    let finalScore = 0;
     if (filledCount === 0 && docsReadyCount === 0 && !passportFile) {
       finalScore = 0;
-      recommendations = ['Select your profile details or upload your passport bio-data above to calculate your exact consular approval readiness score.'];
+      recommendations = [`Select your ${categoryName} details or upload passport to calculate your official consular approval readiness.`];
     } else {
-      const totalRaw = passportScore + validityBonus + finScore + itinScore + tiesScore + docsScore - refusalPenalty;
-      const minBase = (passportFile && (passportFile.remainingMonths || 0) >= 12) ? 68 : (passportFile && (passportFile.remainingMonths || 0) >= 6) ? 55 : 15;
-      finalScore = Math.max(minBase, Math.min(98, totalRaw));
+      const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
+      const minBase = (passportFile && remainingMonths >= 12) ? 68 : (passportFile && remainingMonths >= 6) ? 55 : 15;
+      finalScore = Math.max(minBase, Math.min(98, rawTotal));
     }
 
     return {
       score: finalScore,
       filledCount,
       docsScore,
-      category: activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist / Visit Visa',
+      category: categoryName,
       statusText: filledCount === 0 
         ? 'Awaiting Profile Selections' 
         : finalScore >= 85 
@@ -3601,13 +3720,7 @@ export function VisaCountryResultPortal({
         : 'bg-rose-500',
       recommendations,
       redFlags,
-      pillars: [
-        { name: 'Passport & Identity', score: passportScore, max: 30, value: passportValidityRange || 'Select Validity' },
-        { name: 'Embassy Documents', score: docsScore, max: 35, value: docsTotalCount > 0 ? `${docsReadyCount}/${docsTotalCount} Ready` : 'Checklist Active' },
-        { name: 'Financial Sufficiency', score: finScore, max: 35, value: (activePurposeTab === 'study' ? studyBudget : activePurposeTab === 'tourism' ? touristBankStability : workOffer) || 'Select Funding' },
-        { name: 'Trip Itinerary / Intake', score: itinScore, max: 15, value: (activePurposeTab === 'study' ? studyIntake : activePurposeTab === 'tourism' ? visitTiming : workAssess) || 'Select Timing' },
-        { name: 'Ties & Sponsorship', score: tiesScore, max: 20, value: (activePurposeTab === 'study' ? studentAdmissionStatus : activePurposeTab === 'tourism' ? touristHomeTies : workExp) || 'Select Status' }
-      ]
+      pillars: categoryPillars
     };
   }, [
     activePurposeTab,
@@ -3615,7 +3728,7 @@ export function VisaCountryResultPortal({
     passportValidityRange,
     visaRefusalHistory,
     studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
-    visitPlanStatus, visitTiming, visitReturnDate, visitStay, touristHomeTies, touristBankStability,
+    visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
     workExp, workOffer, workDomain, workAssess,
     docsReadyCount, docsTotalCount,
     countryName
@@ -5144,6 +5257,11 @@ export function VisaCountryResultPortal({
                   {/* Card Header */}
                   <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
                     <div>
+                      <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-700 tracking-wider mb-0.5">
+                        <span>{readinessMetrics.category}</span>
+                        <span>•</span>
+                        <span>Consular Readiness</span>
+                      </div>
                       <h4 className="text-base sm:text-xl font-heading font-black text-slate-950 tracking-tight">
                         Your Visa Readiness Score
                       </h4>
@@ -5249,9 +5367,73 @@ export function VisaCountryResultPortal({
                     </div>
                   )}
 
-                  {docsReadyCount > 0 && (
-                    <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full shadow-2xs">
-                      <span>✓ {docsReadyCount} of {docsTotalCount} Required Embassy Documents Ready &amp; Verified</span>
+                  {/* Category Assessment Pillars Grid */}
+                  <div className="w-full pt-4 border-t border-slate-100 text-left">
+                    <div className="flex items-center justify-between pb-2.5">
+                      <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
+                        {readinessMetrics.category} Evaluation Pillars
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-700 font-mono">
+                        {(readinessMetrics.score / 10).toFixed(1)} / 10.0 Pts
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+                      {readinessMetrics.pillars.map((pillar, idx) => {
+                        const pct = Math.min(100, Math.round((pillar.score / pillar.max) * 100));
+                        return (
+                          <div
+                            key={idx}
+                            className="p-3 rounded-xl sm:rounded-2xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-50 transition-colors"
+                          >
+                            <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+                              <span className="truncate pr-1">{pillar.name}</span>
+                              <span className="font-mono text-emerald-700 font-extrabold text-[11px] shrink-0">
+                                {(pillar.score / 10).toFixed(1)} / {(pillar.max / 10).toFixed(1)}
+                              </span>
+                            </div>
+                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1.5">
+                              <div
+                                className="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <div className="text-[10px] text-slate-500 font-medium truncate mt-1">
+                              {pillar.value}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Consular Alerts / Red Flags */}
+                  {readinessMetrics.redFlags.length > 0 && (
+                    <div className="w-full space-y-1.5 text-left">
+                      {readinessMetrics.redFlags.slice(0, 2).map((rf, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-semibold leading-relaxed"
+                        >
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{rf}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Top Recommendations */}
+                  {readinessMetrics.recommendations.length > 0 && (
+                    <div className="w-full space-y-1.5 text-left">
+                      {readinessMetrics.recommendations.slice(0, 2).map((rec, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-emerald-950 text-xs font-semibold leading-relaxed"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>{rec}</span>
+                        </div>
+                      ))}
                     </div>
                   )}
 

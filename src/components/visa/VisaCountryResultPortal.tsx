@@ -3894,56 +3894,12 @@ export function VisaCountryResultPortal({
 
                   <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1">
                     {ocrConditions.map((cond, idx) => (
-                      <div key={idx} className="flex items-start justify-between gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-800 font-semibold">
-                        <div className="flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] mt-1.5 shrink-0" />
-                          <span className="leading-snug">{cond}</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setOcrConditions(ocrConditions.filter((_, i) => i !== idx))}
-                          className="text-slate-400 hover:text-red-500 p-0.5 cursor-pointer"
-                          title="Remove condition"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                      <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-800 font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] mt-1.5 shrink-0" />
+                        <span className="leading-snug">{cond}</span>
                       </div>
                     ))}
                   </div>
-
-                  {isAddingCond ? (
-                    <div className="flex gap-2 pt-1">
-                      <input
-                        type="text"
-                        value={newCondition}
-                        onChange={(e) => setNewCondition(e.target.value)}
-                        placeholder="e.g. Work limited to 48 hrs / fortnight"
-                        className="flex-1 px-3 py-1.5 text-xs font-medium rounded-xl border border-slate-300"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (newCondition.trim()) {
-                            setOcrConditions([...ocrConditions, newCondition.trim()]);
-                            setNewCondition('');
-                            setIsAddingCond(false);
-                          }
-                        }}
-                        className="px-3 py-1.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl cursor-pointer"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setIsAddingCond(true)}
-                      className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 pt-1 cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add custom condition manually</span>
-                    </button>
-                  )}
                 </div>
               </div>
 
@@ -3980,7 +3936,7 @@ export function VisaCountryResultPortal({
                         </span>
                       </div>
                       <h4 className="text-xs sm:text-sm font-bold text-slate-900">
-                        1. Join Expat &amp; Student Community
+                        1. Expat &amp; Student Community
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
                         Connect with verified peers &amp; alumni already living in {countryName}.
@@ -3992,7 +3948,7 @@ export function VisaCountryResultPortal({
                       className="w-full py-2 px-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs text-center cursor-pointer select-none"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      <span>Join Discord Community</span>
+                      <span>Discord Community</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </a>
                   </div>
@@ -4091,7 +4047,7 @@ export function VisaCountryResultPortal({
                     </button>
                   </div>
 
-                  {/* Step 5: Multi-Currency Card & 5G eSIM */}
+                  {/* Step 5: Forex Card & 5G eSIM */}
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3">
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
@@ -4101,7 +4057,7 @@ export function VisaCountryResultPortal({
                         </span>
                       </div>
                       <h4 className="text-xs sm:text-sm font-bold text-slate-900">
-                        5. Multi-Currency Card &amp; 5G eSIM
+                        5. Forex Card &amp; 5G eSIM
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
                         Zero forex markup debit card &amp; instant QR eSIM.
@@ -4121,7 +4077,7 @@ export function VisaCountryResultPortal({
                     </button>
                   </div>
 
-                  {/* Step 6: Customs Cash & Doctor Prescription */}
+                  {/* Step 6: Easy Customs Rules */}
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3">
                     <div>
                       <div className="flex items-center justify-between mb-1.5">

@@ -1200,7 +1200,7 @@ export function UserDashboard() {
 
     const navItems = [
         { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
-        { id: "cases", label: "Active Visa Cases", icon: Briefcase },
+        { id: "cases", label: "Your Applications", icon: Briefcase },
         { id: "consultations", label: "Bookings & Sessions", icon: Calendar },
         { id: "scanned-documents", label: "Document Vault", icon: FileText },
         { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
@@ -1415,7 +1415,7 @@ export function UserDashboard() {
 
                                 <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
                                     <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Active Cases</span>
+                                        <span className="text-xs font-bold text-slate-400 block">Your Applications</span>
                                         <span className="text-2xl font-black text-slate-900 mt-1 block">{visasProcessingState.length}</span>
                                         <span className="text-[11px] font-bold text-slate-500 mt-1 inline-block">Under Review</span>
                                     </div>
@@ -1763,7 +1763,7 @@ export function UserDashboard() {
                         <div className="space-y-6 animate-fade-up">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-900">Active Visa Cases ({visasProcessingState.length})</h2>
+                                    <h2 className="text-xl font-black text-slate-900">Your Applications ({visasProcessingState.length})</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
                                 </div>
                                 <a href="/#need-visa-pathway-dashboard" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 self-start sm:self-auto">

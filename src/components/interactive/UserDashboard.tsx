@@ -346,7 +346,7 @@ export function UserDashboard() {
                         )}
                         <div className="hidden md:block text-left">
                             <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{fullName}</h4>
-                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-slate-700/80 mt-0.5">Visa Seeker</span>
+                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200 mt-0.5">Traveller</span>
                         </div>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                     </div>
@@ -456,7 +456,7 @@ export function UserDashboard() {
                                     👤
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">Complete your seeker profile details</h4>
+                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">Complete your traveller profile details</h4>
                                     <p className="text-xs font-medium text-slate-500 mt-1 leading-relaxed">
                                         Please add your phone number, citizenship country, and target visa goals to receive personalized consultant matches.
                                     </p>
@@ -780,7 +780,7 @@ export function UserDashboard() {
                                 <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-2">
                                         <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-slate-700">Verified Seeker</span>
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Traveller</span>
                                     </div>
                                     <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
                                     <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
@@ -1065,7 +1065,7 @@ export function UserDashboard() {
                     <div className="relative z-10 w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 p-6 sm:p-8 space-y-5 animate-fade-up max-h-[90vh] overflow-y-auto no-scrollbar">
                         <div className="flex justify-between items-center pb-3 border-b border-slate-100">
                             <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                                <Settings className="w-4 h-4 text-[#00a896]" /> Edit Seeker Profile Details
+                                <Settings className="w-4 h-4 text-[#00a896]" /> Edit Traveller Profile Details
                             </h3>
                             <button onClick={() => setShowProfileModal(false)} className="p-1 text-slate-400 hover:text-slate-700 cursor-pointer">
                                 <X className="w-5 h-5" />

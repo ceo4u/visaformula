@@ -4430,6 +4430,24 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       };
     }
 
+    const fromLower = from.toLowerCase();
+    const isIndiaOrigin = fromLower.includes('india');
+    const isUSOrigin = fromLower.includes('united states') || fromLower.includes('usa') || fromLower === 'us';
+
+    const uaeCosts = isIndiaOrigin ? {
+      visa_fee: '₹6,400 (30 Days) / ₹11,800 (60 Days)',
+      service_fee: '₹0 (Included)',
+      total_fee: '₹6,400 – ₹11,800 Total Reference',
+      notes: 'Includes mandatory health and emergency medical insurance coverage under ICP/GDRFA.'
+    } : {
+      visa_fee: '90 USD (30 Days) / 175 USD (60 Days) [approx. 330 – 640 AED]',
+      service_fee: '0 USD (Included)',
+      total_fee: '90 USD – 175 USD Total Reference (approx. 330 – 640 AED)',
+      notes: isUSOrigin
+        ? 'US regular passport holders receive a 30-day entry permit on arrival at UAE airports free of charge. Pre-arranged 30/60 days tourist e-Visas (approx. 90–175 USD / 330–640 AED) are applicable for extended stays, specific permit tiers, or advance entry clearance.'
+        : 'Includes mandatory health and emergency medical insurance coverage under ICP/GDRFA.'
+    };
+
     return {
       passport_country: from,
       destination_country: 'United Arab Emirates',
@@ -4437,6 +4455,15 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       visa_type: 'UAE Tourist e-Visa (30 / 60 Days Single or Multiple Entry)',
       source_url: 'https://smartservices.icp.gov.ae',
       official_source_name: 'Federal Authority for Identity, Citizenship, Customs & Port Security (ICP) / GDRFA Dubai',
+      processing_time: 'Decision: Fast 24 to 72 working hours (Express processing available in 8 hours)',
+      validity: '60 Days (Entry window from electronic issuance)',
+      stay_duration: 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)',
+      entry_type: 'Single / Multiple Entry (based on permit tier)',
+      validity_and_stay: {
+        visa_validity: '60 Days from electronic issuance',
+        max_stay_per_entry: 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)',
+        entry_type: 'Single / Multiple Entry'
+      },
       documents_required: [
         { title: 'Passport Bio-Page & Last Page Scan', description: 'Clear color scan of passport valid for minimum 6 months from entry date.', is_mandatory: true },
         { title: 'Passport-Size Digital Photograph', description: 'Recent color photograph with white background, neutral expression, and 80% face coverage.', is_mandatory: true },
@@ -4444,11 +4471,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         { title: 'Hotel Booking / Host Address', description: 'Confirmed hotel stay voucher or UAE resident host details & Emirates ID.', is_mandatory: false }
       ],
       financial_proofs: [
-        { type: 'Basic Financial Sufficiency', minimum_balance_or_amount: 'AED 3,000 or equivalent in cash / international credit cards upon airport arrival', time_frame: 'Current', notes: 'Standard immigration spot-check requirement at UAE airports.' }
+        { type: 'Basic Financial Sufficiency', minimum_balance_or_amount: 'AED 3,000 or equivalent (approx. $820 USD) in cash / international credit cards upon airport arrival', time_frame: 'Current', notes: 'Standard immigration spot-check requirement at UAE airports.' }
       ],
       other_requirements: [
         { category: '100% Paperless E-Visa', details: 'Issued as an official electronic PDF entry permit. No physical consulate visit or biometrics required.' },
-        { category: 'Entry Window', details: 'Valid for entry into UAE within 60 days from date of electronic issuance.' }
+        { category: 'Entry Window', details: 'Valid for entry into UAE within 60 days from date of electronic issuance.' },
+        ...(isUSOrigin ? [{ category: 'Visa on Arrival Option for US Citizens', details: 'US passport holders are eligible for a 30-day visa on arrival free of charge at all UAE international airports, extendable for an additional 30 days.' }] : [])
       ],
       how_to_apply: [
         'Submit color scan of your valid passport (front and back page) and white-background photograph.',
@@ -4457,12 +4485,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         'Application undergoes rapid automated security clearance with UAE immigration authorities.',
         'Receive your official approved UAE e-Visa PDF via email and download it for airline check-in.'
       ],
-      costs: {
-        visa_fee: '₹6,400 (30 Days) / ₹11,800 (60 Days)',
-        service_fee: '₹0 (Included)',
-        total_fee: '₹6,400 – ₹11,800 Total Reference',
-        notes: 'Includes mandatory COVID-19 & emergency health insurance coverage.'
-      },
+      costs: uaeCosts,
       processing_and_timing: {
         apply_window: 'Apply 7 to 30 days before planned departure date.',
         decision_time: 'Decision: Fast 24 to 72 working hours (Express processing available in 8 hours).',

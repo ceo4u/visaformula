@@ -548,7 +548,7 @@ export function ConsultantDashboard() {
                         )}
                         <div className="hidden md:block text-left">
                             <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
-                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Basic Plan</span>
+                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Service Provider</span>
                         </div>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                     </div>
@@ -692,7 +692,7 @@ export function ConsultantDashboard() {
                                         <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">🟢 LIVE LISTING</span>
                                     </div>
                                     <p className="text-xs font-semibold text-emerald-800 mt-1 leading-relaxed">
-                                        Your profile is published and publicly discoverable by visa seekers across the Find Experts directory.
+                                        Your profile is published and publicly discoverable by travellers across the Find Experts directory.
                                     </p>
                                 </div>
                             </div>
@@ -899,7 +899,7 @@ export function ConsultantDashboard() {
                                     <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
                                         <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
                                         <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
-                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on TravlTik.</p>
+                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of travellers on TravlTik.</p>
                                     </div>
                                 )}
 

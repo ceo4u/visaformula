@@ -15,6 +15,31 @@ function LoginPortalContent() {
     const [googleLoadingText, setGoogleLoadingText] = useState("");
     const [turnstileToken, setTurnstileToken] = useState("");
 
+    const getRedirectDestination = (userType?: string): string => {
+        if (typeof window === "undefined") return "/dashboard";
+        const params = new URLSearchParams(window.location.search);
+        const redirectParam = params.get("redirect");
+        if (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")) {
+            return redirectParam;
+        }
+        return userType === "expert" ? "/consultant/dashboard" : "/dashboard";
+    };
+
+    // Fast check: If already logged in, redirect immediately without waiting or buffering
+    React.useEffect(() => {
+        if (typeof window !== "undefined") {
+            const userStr = localStorage.getItem("travltik_user");
+            if (userStr && userStr !== "null") {
+                try {
+                    const parsed = JSON.parse(userStr);
+                    if (parsed && (parsed.email || parsed.uid)) {
+                        window.location.href = getRedirectDestination(parsed.type);
+                    }
+                } catch (e) {}
+            }
+        }
+    }, []);
+
     const formatAuthError = (errMessage?: string) => {
         if (!errMessage) return "";
         const msg = String(errMessage);
@@ -44,13 +69,17 @@ function LoginPortalContent() {
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google...");
         try {
+            const targetDestination = getRedirectDestination();
+            if (typeof window !== "undefined") {
+                sessionStorage.setItem("google_auth_return", targetDestination);
+            }
             const res = await signInWithGoogle('seeker', 'login', turnstileToken);
             setGoogleLoadingText("Authenticated! Redirecting...");
             if (res?.redirect) {
                 window.location.href = res.redirect;
                 return;
             }
-            window.location.href = res?.user?.type === "expert" ? "/consultant/dashboard" : "/dashboard";
+            window.location.href = getRedirectDestination(res?.user?.type);
         } catch (e: any) {
             const cleanErr = formatAuthError(e?.message || e?.code);
             setError(cleanErr || e?.message || "Google sign-in failed.");
@@ -80,16 +109,14 @@ function LoginPortalContent() {
         try {
             await signIn(email, password, turnstileToken);
             const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
+            let resolvedType: string | undefined;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);
-                    if (userObj.type === "expert") {
-                        window.location.href = "/consultant/dashboard";
-                        return;
-                    }
+                    resolvedType = userObj.type;
                 } catch (e) {}
             }
-            window.location.href = "/dashboard";
+            window.location.href = getRedirectDestination(resolvedType);
         } catch (err: any) {
             const cleanErr = formatAuthError(err?.message || err?.code);
             setError(cleanErr || err?.message || "Invalid email or password.");

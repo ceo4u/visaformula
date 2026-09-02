@@ -484,6 +484,16 @@ export async function runMigrations() {
   `);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_journey_email ON user_journey_checklists (user_email);`);
 
+  // 19. AI Features Rate Limiting Table (Max 3 / Hour)
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS ai_rate_limits (
+      id SERIAL PRIMARY KEY,
+      identifier VARCHAR(255) NOT NULL,
+      accessed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ai_rate_limits_id_time ON ai_rate_limits (identifier, accessed_at);`);
+
   // ── CHANNEL PARTNER TABLES ──
   await p.query(`
     CREATE TABLE IF NOT EXISTS channel_partners (

@@ -50,7 +50,16 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
   const handleOpenCheckout = (amount: number, title: string) => {
     if (typeof window !== 'undefined') {
-      const email = localStorage.getItem('seeker_email') || localStorage.getItem('travltik_email') || '';
+      const userStr = localStorage.getItem('travltik_user');
+      const seekerEmail = localStorage.getItem('seeker_email');
+      const isLoggedIn = (userStr && userStr !== 'null') || Boolean(seekerEmail);
+      if (!isLoggedIn) {
+        const currentUrl = window.location.pathname + window.location.search;
+        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+        return;
+      }
+
+      const email = seekerEmail || localStorage.getItem('travltik_email') || '';
       const name = localStorage.getItem('seeker_firstName') || localStorage.getItem('travltik_name') || '';
       const phone = localStorage.getItem('seeker_phone') || '';
       if (email) setApplicantEmail(email);

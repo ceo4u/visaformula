@@ -1076,6 +1076,10 @@ export function FindExpertsPortal() {
                                                     <button
                                                         type="button"
                                                         onClick={() => {
+                                                            if (!isUserLoggedIn()) {
+                                                                window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+                                                                return;
+                                                            }
                                                             setQuoteExpert(e);
                                                             setQuoteModalOpen(true);
                                                         }}
@@ -1087,6 +1091,10 @@ export function FindExpertsPortal() {
                                                     <button
                                                         type="button"
                                                         onClick={() => {
+                                                            if (!isUserLoggedIn()) {
+                                                                window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+                                                                return;
+                                                            }
                                                             setReviewExpert(e);
                                                             setReviewModalOpen(true);
                                                         }}
@@ -1099,6 +1107,10 @@ export function FindExpertsPortal() {
                                                     <button 
                                                         type="button"
                                                         onClick={() => {
+                                                            if (!isUserLoggedIn()) {
+                                                                window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+                                                                return;
+                                                            }
                                                             setPaymentExpert(e);
                                                             setPaymentModalOpen(true);
                                                         }} 
@@ -1213,7 +1225,7 @@ export function FindExpertsPortal() {
 
                         <div className="pt-2 space-y-2">
                             <a
-                                href="/login"
+                                href="/login?redirect=/find-experts"
                                 className="block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all text-center"
                             >
                                 Log In Now

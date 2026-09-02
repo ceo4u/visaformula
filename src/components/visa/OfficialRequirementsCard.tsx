@@ -251,10 +251,30 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   const [checkedDocs, setCheckedDocs] = useState<Record<string, { ready: boolean; timestamp: string }>>({});
   const [isSavedToProfile, setIsSavedToProfile] = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [loginRequired, setLoginRequired] = useState(false);
+  const [hourlyLimitReached, setHourlyLimitReached] = useState(false);
+  const [hourlyLimitMessage, setHourlyLimitMessage] = useState('Hourly limit reached');
   const [toastMessage, setToastMessage] = useState('');
   const [showMockQuestions, setShowMockQuestions] = useState(false);
 
   const storageKey = `travltik_checklist_${cleanTo}_${selectedPurpose}`.replace(/\s+/g, '_').toLowerCase();
+
+  const redirectToLogin = () => {
+    if (typeof window === 'undefined') return;
+    const currentUrl = window.location.pathname + window.location.search;
+    window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+  };
+
+  const isUserLoggedIn = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    const travltikUser = localStorage.getItem('travltik_user');
+    return Boolean(
+      (travltikUser && travltikUser !== 'null') ||
+      localStorage.getItem('seeker_email') ||
+      localStorage.getItem('seeker_firstName') ||
+      localStorage.getItem('expert_isLoggedIn')
+    );
+  };
 
   useEffect(() => {
     try {
@@ -274,18 +294,50 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   }, [cleanFrom, cleanTo, selectedPurpose]);
 
   const fetchRequirements = async (currPurpose: string) => {
+    if (!isUserLoggedIn()) {
+      setLoading(false);
+      setLoginRequired(true);
+      return;
+    }
+
     setLoading(true);
+    setLoginRequired(false);
+    setHourlyLimitReached(false);
     try {
+      let userEmail = '';
+      if (typeof window !== 'undefined') {
+        userEmail = localStorage.getItem('seeker_email') || '';
+        if (!userEmail) {
+          try {
+            const parsed = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+            userEmail = parsed.email || '';
+          } catch (_) {}
+        }
+      }
+
       const res = await fetch('/api/visa/ai-requirements', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(userEmail ? { 'x-user-email': userEmail } : {})
+        },
         body: JSON.stringify({
           fromCountry: cleanFrom,
           toCountry: cleanTo,
-          purpose: currPurpose
+          purpose: currPurpose,
+          userEmail
         })
       });
       const json = await res.json();
+      if (json.loginRequired || res.status === 401) {
+        setLoginRequired(true);
+        redirectToLogin();
+        return;
+      }
+      if (json.hourlyLimitReached || res.status === 429) {
+        setHourlyLimitReached(true);
+        setHourlyLimitMessage(json.message || 'Hourly limit reached');
+      }
       if (json.success && json.data) {
         setData(json.data);
       }
@@ -301,16 +353,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
     setTimeout(() => setToastMessage(''), 3500);
   };
 
-  const isUserLoggedIn = (): boolean => {
-    if (typeof window === 'undefined') return false;
-    return Boolean(
-      localStorage.getItem('travltik_user') || 
-      (localStorage.getItem("travltik_user")) || 
-      localStorage.getItem('seeker_firstName')
-    );
-  };
-
   const toggleDocReady = (docKey: string) => {
+    if (!isUserLoggedIn()) {
+      redirectToLogin();
+      return;
+    }
+
     const now = new Date();
     const formattedTimestamp = now.toLocaleString('en-US', {
       month: 'short',
@@ -341,7 +389,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
   const handleSaveChecklistToProfile = () => {
     if (!isUserLoggedIn()) {
-      setShowAuthPrompt(true);
+      redirectToLogin();
       return;
     }
 
@@ -480,7 +528,38 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         </p>
       </div>
 
-      {loading ? (
+      {/* Hourly limit small notice */}
+      {hourlyLimitReached && (
+        <div className="p-3 bg-amber-50 border border-amber-200/90 rounded-2xl text-left flex items-center gap-2 animate-in fade-in duration-200">
+          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+          <p className="text-xs text-rose-500 font-medium tracking-tight">Hourly limit reached</p>
+        </div>
+      )}
+
+      {loginRequired ? (
+        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-3xl p-7 sm:p-12 text-center space-y-5 shadow-xl border border-white/10 my-4 animate-in fade-in duration-200">
+          <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto text-amber-400">
+            <Lock className="w-8 h-8" />
+          </div>
+          <div className="space-y-2 max-w-lg mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Login Required to View Visa Requirements
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Sign in or create a free TravlTik account to unlock verified consular checklists, processing timelines, statutory fees, and immigration filing tools.
+            </p>
+          </div>
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={redirectToLogin}
+              className="inline-flex items-center justify-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
+            >
+              Sign In to Continue <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      ) : loading ? (
         <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
           <div className="w-10 h-10 border-4 border-slate-200 border-t-[#009e86] rounded-full animate-spin mx-auto" />
           <p className="text-xs font-bold text-slate-500">Extracting official consular and VFS visa guidelines...</p>

@@ -3,6 +3,7 @@ import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
 import { getPool, runMigrations } from '../../backend/db';
 import { verifyTurnstileToken } from '../../lib/verify-turnstile';
+import { checkAIRateLimit } from '../../lib/ai-rate-limiter';
 import fs from 'fs';
 import path from 'path';
 
@@ -22,13 +23,16 @@ const getGeminiApiKey = (): string => {
   if (key) return key;
 
   try {
-    const envPath = path.resolve(process.cwd(), '.env');
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, 'utf8');
-      const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
-      if (match) {
-        key = match[1].trim().replace(/^["']|["']$/g, '');
-        if (key) return key;
+    const envFiles = ['.env', '.env.local'];
+    for (const f of envFiles) {
+      const envPath = path.resolve(process.cwd(), f);
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        const match = content.match(/^(?:GEMINI_API_KEY|NEXT_PUBLIC_GEMINI_API_KEY|PUBLIC_GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.*)$/m);
+        if (match) {
+          key = match[1].trim().replace(/^["']|["']$/g, '');
+          if (key) return key;
+        }
       }
     }
   } catch (err) {}
@@ -103,6 +107,49 @@ export const POST: APIRoute = async ({ request }) => {
           error: 'Security validation failed. Human verification required.'
         }),
         { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // 1. Feature Access Protection: User must be signed in
+    const userEmail = (
+      body.userEmail ||
+      body.email ||
+      request.headers.get('x-user-email') ||
+      ''
+    ).trim().toLowerCase();
+
+    const clientIp = (
+      request.headers.get('cf-connecting-ip') ||
+      request.headers.get('x-forwarded-for')?.split(',')[0] ||
+      'anonymous'
+    ).trim();
+
+    const isLoggedIn = Boolean(userEmail || body.isLoggedIn || body.user || request.headers.get('x-user-id'));
+    if (!isLoggedIn) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          loginRequired: true,
+          error: 'login_required',
+          message: 'Sign in required to access official visa requirements and AI features.'
+        }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // 2. AI Rate Limiting: Max 3 times per 1 hour
+    const rateLimitCheck = await checkAIRateLimit(userEmail || clientIp);
+    if (!rateLimitCheck.allowed) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          hourlyLimitReached: true,
+          error: 'hourly_limit_reached',
+          message: 'Hourly limit reached',
+          remaining: 0,
+          resetInSeconds: rateLimitCheck.resetInSeconds
+        }),
+        { status: 429, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -269,7 +316,7 @@ Generate pre-departure clearance and visa readiness for:
     const response = await executeWithRetry(async () => {
       try {
         return await ai.models.generateContent({
-          model: 'gemini-3.7-flash',
+          model: 'gemini-3.6-flash',
           contents: [
             {
               role: 'user',
@@ -283,7 +330,7 @@ Generate pre-departure clearance and visa readiness for:
             tools: [{ googleSearch: {} } as any]
           }
         });
-      } catch (f37Err) {
+      } catch (f36Err) {
         return await ai.models.generateContent({
           model: 'gemini-2.5-flash',
           contents: [

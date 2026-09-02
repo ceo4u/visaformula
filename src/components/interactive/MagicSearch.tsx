@@ -90,7 +90,8 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                 if (e.target && 'blur' in e.target) {
                     (e.target as any).blur();
                 }
-                window.location.href = "/login";
+                const targetRedirect = window.location.pathname + window.location.search;
+                window.location.href = `/login?redirect=${encodeURIComponent(targetRedirect || '/find-experts')}`;
                 return false;
             }
         }
@@ -102,6 +103,17 @@ export function MagicSearch({ className = "" }: { className?: string }) {
     };
 
     const handleSearch = () => {
+        if (typeof window !== "undefined") {
+            const seekerFirst = localStorage.getItem("seeker_firstName");
+            const expertBusiness = localStorage.getItem("expert_businessName");
+            const userStr = localStorage.getItem("travltik_user");
+            const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
+            if (!isLoggedIn) {
+                window.location.href = `/login?redirect=/find-experts`;
+                return;
+            }
+        }
+
         if (!passport || !residing || !lookingForVisa || !destination) {
             setValidationError(true);
             return;

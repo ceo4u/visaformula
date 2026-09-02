@@ -57,6 +57,15 @@ export const POST: APIRoute = async ({ request }) => {
       }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
+    // Block reset if account was created via Google Sign-In (no password set)
+    if (!user.password_hash || user.password_hash.trim() === '') {
+      return new Response(JSON.stringify({
+        status: 'error',
+        isGoogleAccount: true,
+        message: 'This account was registered using Google Sign-In and does not have a password. Please log in using Google.',
+      }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    }
+
 
     // ── Generate 6-digit numeric OTP ────────────────────────────
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();

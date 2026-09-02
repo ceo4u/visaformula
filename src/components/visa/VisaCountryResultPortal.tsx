@@ -2836,6 +2836,7 @@ export function VisaCountryResultPortal({
     passportNumber?: string;
     fullName?: string;
     nationality?: string;
+    dateOfBirth?: string;
     issueDate?: string;
     expiryDate?: string;
     remainingMonths?: number;
@@ -2845,6 +2846,55 @@ export function VisaCountryResultPortal({
   const [passportFile, setPassportFile] = useState<PassportScanState | null>(null);
   const [isScanningPassport, setIsScanningPassport] = useState<boolean>(false);
   const [passportScanError, setPassportScanError] = useState<string | null>(null);
+
+  // Client-side instant image optimization to prevent multi-megabyte payloads from hanging the OCR engine
+  const optimizeImageForOCR = async (file: File): Promise<{ base64: string; mimeType: string }> => {
+    if (file.type === 'application/pdf') {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({ base64: reader.result as string, mimeType: 'application/pdf' });
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1600;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, w, h);
+            const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.88);
+            resolve({ base64: optimizedBase64, mimeType: 'image/jpeg' });
+            return;
+          }
+          resolve({ base64: e.target?.result as string, mimeType: file.type || 'image/jpeg' });
+        };
+        img.onerror = () => {
+          resolve({ base64: e.target?.result as string, mimeType: file.type || 'image/jpeg' });
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   const handlePassportUpload = async (file: File | null) => {
     if (!file) {
@@ -2872,102 +2922,72 @@ export function VisaCountryResultPortal({
       : `${Math.round(file.size / 1024)} KB`;
 
     try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const base64 = reader.result as string;
-        try {
-          const res = await fetch('/api/ocr-analyze-passport', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              base64Image: base64,
-              mimeType: file.type || 'image/jpeg',
-              fileName: file.name,
-              targetCountry: countryName
-            })
-          });
+      const { base64, mimeType } = await optimizeImageForOCR(file);
 
-          const json = await res.json();
-          if (json.success && json.data) {
-            const d = json.data;
-            const remaining = typeof d.remainingMonths === 'number' ? d.remainingMonths : 12;
-
-            setPassportFile({
-              name: file.name,
-              size: sizeStr,
-              type: file.type,
-              mrzChecksum: d.mrzLine1 || `P<${(d.nationality || 'IND').slice(0, 3).toUpperCase()}${d.passportNumber || 'PASSPORT'}<<<`,
-              docType: "Standard Machine Readable Passport (Type P)",
-              passportNumber: d.passportNumber,
-              fullName: d.fullName,
-              nationality: d.nationality,
-              issueDate: d.issueDate,
-              expiryDate: d.expiryDate,
-              remainingMonths: remaining,
-              isExpiryCompliant: d.isExpiryCompliant !== false
-            });
-
-            // Automatically analyze remaining months and auto-fill passport validity question
-            if (remaining > 12) {
-              setPassportValidityRange("> 12 Months (Recommended)");
-            } else if (remaining >= 6) {
-              setPassportValidityRange("6 - 12 Months Valid");
-            } else {
-              setPassportValidityRange("< 6 Months (Renewal Required)");
-            }
-
-            // Also auto-fill first/last name if empty
-            if (d.fullName && (!firstName || !lastName)) {
-              const parts = d.fullName.trim().split(' ');
-              if (parts.length > 1) {
-                if (!firstName) setFirstName(parts[0]);
-                if (!lastName) setLastName(parts.slice(1).join(' '));
-              } else if (!firstName) {
-                setFirstName(parts[0]);
-              }
-            }
-
-            setPassportScanError(null);
-          } else {
-            setPassportFile({ 
-              name: file.name, 
-              size: sizeStr, 
-              type: file.type,
-              mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
-              docType: "Standard Machine Readable Passport (Type P)",
-              isExpiryCompliant: true,
-              remainingMonths: 24
-            });
-            setPassportValidityRange("> 12 Months (Recommended)");
-          }
-        } catch (apiErr) {
-          console.warn('Passport OCR API error:', apiErr);
-          setPassportFile({ 
-            name: file.name, 
-            size: sizeStr, 
-            type: file.type,
-            mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
-            docType: "Standard Machine Readable Passport (Type P)",
-            isExpiryCompliant: true,
-            remainingMonths: 24
-          });
-          setPassportValidityRange("> 12 Months (Recommended)");
-        } finally {
-          setIsScanningPassport(false);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch (e) {
-      setIsScanningPassport(false);
-      setPassportFile({ 
-        name: file.name, 
-        size: sizeStr, 
-        type: file.type,
-        mrzChecksum: "P<IND" + Math.random().toString(36).substring(2, 9).toUpperCase() + "<<<",
-        docType: "Standard Machine Readable Passport (Type P)",
-        remainingMonths: 24
+      const res = await fetch('/api/ocr-analyze-passport', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          base64Image: base64,
+          mimeType: mimeType,
+          fileName: file.name,
+          targetCountry: countryName
+        })
       });
-      setPassportValidityRange("> 12 Months (Recommended)");
+
+      const json = await res.json();
+      if (json.success && json.data) {
+        const d = json.data;
+        const remaining = typeof d.remainingMonths === 'number' ? d.remainingMonths : 12;
+
+        setPassportFile({
+          name: file.name,
+          size: sizeStr,
+          type: file.type,
+          mrzChecksum: d.mrzLine1 || `P<${(d.nationality || 'IND').slice(0, 3).toUpperCase()}${d.passportNumber || 'PASSPORT'}<<<`,
+          docType: "Standard Machine Readable Passport (Type P)",
+          passportNumber: d.passportNumber,
+          fullName: d.fullName,
+          nationality: d.nationality,
+          dateOfBirth: d.dateOfBirth,
+          issueDate: d.issueDate,
+          expiryDate: d.expiryDate,
+          remainingMonths: remaining,
+          isExpiryCompliant: d.isExpiryCompliant !== false
+        });
+
+        // Automatically analyze remaining months and auto-fill passport validity question
+        if (remaining > 12) {
+          setPassportValidityRange("> 12 Months (Recommended)");
+        } else if (remaining >= 6) {
+          setPassportValidityRange("6 - 12 Months Valid");
+        } else {
+          setPassportValidityRange("< 6 Months (Renewal Required)");
+        }
+
+        // Also auto-fill first/last name if empty
+        if (d.fullName && (!firstName || !lastName)) {
+          const parts = d.fullName.trim().split(' ');
+          if (parts.length > 1) {
+            if (!firstName) setFirstName(parts[0]);
+            if (!lastName) setLastName(parts.slice(1).join(' '));
+          } else if (!firstName) {
+            setFirstName(parts[0]);
+          }
+        }
+
+        setPassportScanError(null);
+      } else {
+        setPassportFile(null);
+        setPassportScanError(json.error || "Could not clearly read passport details. Please upload a clearer photo or PDF.");
+      }
+    } catch (e: any) {
+      console.warn('Passport OCR error:', e);
+      setIsScanningPassport(false);
+      setPassportFile(null);
+      setPassportScanError("Scan failed. Please upload a clear photo of the passport bio-data page.");
+    } finally {
+      setIsScanningPassport(false);
     }
   };
 
@@ -4416,12 +4436,13 @@ export function VisaCountryResultPortal({
                     <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-3 shadow-xs">
                       <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-3">
                         <div className="min-w-0">
-                          <span className="text-sm font-black text-slate-950 truncate block">
-                            {passportFile.fullName ? `${passportFile.fullName} (${passportFile.name})` : passportFile.name}
+                          <span className="text-sm sm:text-base font-black text-slate-950 truncate block">
+                            {passportFile.fullName ? passportFile.fullName : passportFile.name}
                           </span>
-                          <span className="text-[11px] text-emerald-800 font-bold block mt-0.5">
+                          <span className="text-[11px] sm:text-xs text-emerald-800 font-bold block mt-0.5">
                             {passportFile.docType || 'Official Machine Readable Passport'}
-                            {passportFile.passportNumber ? ` • No: ${passportFile.passportNumber}` : ''}
+                            {passportFile.passportNumber ? ` • Passport No: ${passportFile.passportNumber}` : ''}
+                            {passportFile.nationality ? ` • ${passportFile.nationality}` : ''}
                           </span>
                         </div>
                         <button
@@ -4432,7 +4453,13 @@ export function VisaCountryResultPortal({
                           ✕ Remove
                         </button>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                        {passportFile.dateOfBirth && (
+                          <div>
+                            <span className="text-[10px] text-slate-400 font-bold block">Date of Birth</span>
+                            <span className="font-extrabold text-slate-900">{passportFile.dateOfBirth}</span>
+                          </div>
+                        )}
                         {passportFile.issueDate && (
                           <div>
                             <span className="text-[10px] text-slate-400 font-bold block">Issue Date</span>

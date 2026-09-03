@@ -2665,6 +2665,57 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
   }
 ];
 
+// Curated 4K Retina Landmark Photography
+function getCountry4kLandmark(cName: string, cSlug: string): string {
+  const norm = (cName + ' ' + cSlug).toLowerCase();
+  if (norm.includes('greece') || norm.includes('athens') || norm.includes('santorini')) {
+    return 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&auto=format&fit=crop&q=90'; // Oia, Santorini
+  }
+  if (norm.includes('united states') || norm.includes('usa') || norm.includes('america')) {
+    return 'https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?w=1200&auto=format&fit=crop&q=90'; // New York & Statue of Liberty
+  }
+  if (norm.includes('united kingdom') || norm.includes('uk') || norm.includes('england') || norm.includes('london')) {
+    return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&auto=format&fit=crop&q=90'; // London Big Ben
+  }
+  if (norm.includes('france') || norm.includes('paris')) {
+    return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&auto=format&fit=crop&q=90'; // Eiffel Tower
+  }
+  if (norm.includes('italy') || norm.includes('rome')) {
+    return 'https://images.unsplash.com/photo-1529260830199-42c24126f198?w=1200&auto=format&fit=crop&q=90'; // Colosseum, Rome
+  }
+  if (norm.includes('spain') || norm.includes('madrid') || norm.includes('barcelona')) {
+    return 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=1200&auto=format&fit=crop&q=90'; // Seville, Spain
+  }
+  if (norm.includes('germany') || norm.includes('berlin') || norm.includes('munich')) {
+    return 'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1200&auto=format&fit=crop&q=90'; // Brandenburg Gate
+  }
+  if (norm.includes('switzerland') || norm.includes('swiss') || norm.includes('zurich')) {
+    return 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=1200&auto=format&fit=crop&q=90'; // Zermatt Matterhorn
+  }
+  if (norm.includes('emirates') || norm.includes('uae') || norm.includes('dubai')) {
+    return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&auto=format&fit=crop&q=90'; // Burj Khalifa
+  }
+  if (norm.includes('japan') || norm.includes('tokyo') || norm.includes('kyoto')) {
+    return 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&auto=format&fit=crop&q=90'; // Mount Fuji
+  }
+  if (norm.includes('singapore')) {
+    return 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&auto=format&fit=crop&q=90'; // Marina Bay
+  }
+  if (norm.includes('australia') || norm.includes('sydney')) {
+    return 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&auto=format&fit=crop&q=90'; // Sydney Opera House
+  }
+  if (norm.includes('canada') || norm.includes('toronto')) {
+    return 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1200&auto=format&fit=crop&q=90'; // Canadian Rockies
+  }
+  if (norm.includes('thailand') || norm.includes('bangkok')) {
+    return 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=1200&auto=format&fit=crop&q=90'; // Bangkok
+  }
+  if (norm.includes('turkey') || norm.includes('istanbul')) {
+    return 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200&auto=format&fit=crop&q=90'; // Istanbul
+  }
+  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&auto=format&fit=crop&q=90';
+}
+
 // Helper to resolve 4K vector flag for any destination country
 function get4kCountryFlag(countryName: string, slug: string): string {
   const s = `${countryName} ${slug}`.toLowerCase().trim();
@@ -2723,7 +2774,7 @@ export function VisaCountryResultPortal({
 
   const countryName = baseData.countryName || slugClean.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const flagEmoji = baseData.flagEmoji || '🌍';
-  const heroImage = baseData.heroImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&auto=format&fit=crop&q=85';
+  const heroImage = getCountry4kLandmark(countryName, slugClean);
   const lengthOfStay = 'Depending on application';
   const validity = baseData.validity || '90 Days';
   const entryType = 'Single / Multiple (Depending on application)';
@@ -4630,14 +4681,62 @@ All documents must be genuine, valid and meet official consular standards to avo
   const pendingDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'pending').length;
   const notStartedDocsCount = portalDocItems.filter(d => !portalUploadedDocs[d.key] || portalUploadedDocs[d.key]?.status === 'not_started').length;
 
-  const readinessPercent = totalDocsCount > 0 ? Math.round((completedDocsCount / totalDocsCount) * 100) : 0;
-  const readinessLabel = readinessPercent === 100 ? 'All Ready!' : readinessPercent >= 50 ? 'Good Progress' : readinessPercent > 0 ? 'In Progress' : 'Ready to Start';
+  // Dynamic Visa Readiness Scoring (Profile Questionnaire + Document Availability)
+  let profileScore = 0;
+  if (visitPlanStatus) profileScore += 8;
+  if (visitTiming && visitReturnDate && tripDurationDays > 0) profileScore += 8;
+  if (visitStay) profileScore += 7;
+  if (touristBankStability) {
+    if (touristBankStability.includes('4L+')) profileScore += 12;
+    else if (touristBankStability.includes('2L')) profileScore += 8;
+    else profileScore += 4;
+  }
+  if (touristHomeTies) {
+    if (touristHomeTies.includes('Salaried') || touristHomeTies.includes('Business')) profileScore += 10;
+    else profileScore += 6;
+  }
+  if (passportValidityRange) {
+    if (passportValidityRange.includes('> 12')) profileScore += 5;
+    else if (passportValidityRange.includes('6 - 12')) profileScore += 4;
+    else profileScore += 1;
+  }
+
+  // Also calculate if study/work purpose selected
+  if (activePurposeTab === 'study') {
+    let sScore = 0;
+    if (studyQual) sScore += 8;
+    if (studyTarget) sScore += 8;
+    if (studyIntake) sScore += 7;
+    if (studyBudget) sScore += 10;
+    if (studentAdmissionStatus) sScore += 10;
+    if (studentLanguageScore) sScore += 7;
+    profileScore = sScore;
+  } else if (activePurposeTab === 'work') {
+    let wScore = 0;
+    if (workExp) wScore += 12;
+    if (workOffer) wScore += 15;
+    if (workSponsor) wScore += 13;
+    if (workSalary) wScore += 10;
+    profileScore = wScore;
+  }
+
+  const docsScore = totalDocsCount > 0 ? Math.round((completedDocsCount / totalDocsCount) * 50) : 0;
+  const readinessPercent = Math.min(100, profileScore + docsScore);
+  const readinessLabel = readinessPercent >= 80 
+    ? 'Visa Ready! (High Approval)' 
+    : readinessPercent >= 60 
+    ? 'Good Progress' 
+    : readinessPercent >= 30 
+    ? 'Moderate Readiness' 
+    : readinessPercent > 0 
+    ? 'In Progress' 
+    : 'Ready to Start';
 
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
       {/* ── PREMIUM VISA DETAILS WORKSPACE (MATCHING EXACT SPECIFICATION media_1788458534453) ── */}
-      <section className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-3 sm:pt-6 space-y-6 font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','Plus_Jakarta_Sans',sans-serif] antialiased subpixel-antialiased text-slate-900">
+      <section className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-3 sm:pt-6 space-y-6 font-sans antialiased subpixel-antialiased text-slate-900 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
         
 {/* ── MOBILE VIEW: MATCHING EXACT SPECIFICATION media_1788466960444.png (Visible on Mobile, hidden on Desktop) ── */}
         <div className="lg:hidden space-y-4 text-left">
@@ -5462,44 +5561,44 @@ All documents must be genuine, valid and meet official consular standards to avo
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-                      <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5">
-                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold">
-                          <Clock className="w-3.5 h-3.5 text-teal-600" />
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                      <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-3 text-left space-y-1">
+                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                          <Clock className="w-3.5 h-3.5 text-slate-700" />
                           <span>Processing Time</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
-                          {aiData?.processing_and_timing?.decision_time?.split('.')[0] || (processingDays ? `${processingDays} - ${processingDays + 5} Working Days` : '15 - 20 Working Days')}
+                        <strong className="text-xs font-black text-slate-950 block">
+                          {processingDays ? `${processingDays}–${processingDays + 5} Days` : '15 Calendar Days'}
                         </strong>
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5">
-                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold">
-                          <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                      <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-3 text-left space-y-1">
+                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                          <Calendar className="w-3.5 h-3.5 text-slate-700" />
                           <span>Validity</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
-                          {aiData?.processing_and_timing?.max_extension?.split('(')[0]?.trim() || validity || 'Up to 90 Days'}
+                        <strong className="text-xs font-black text-slate-950 block">
+                          {isSchengen ? 'Up to 90 Days' : validity ? validity.split('(')[0].trim() : 'Up to 90 Days'}
                         </strong>
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5">
-                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold">
-                          <RotateCw className="w-3.5 h-3.5 text-sky-600" />
+                      <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-3 text-left space-y-1">
+                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                          <RotateCw className="w-3.5 h-3.5 text-slate-700" />
                           <span>Stay Period</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1">
-                          Up to 90 Days
+                        <strong className="text-xs font-black text-slate-950 block">
+                          {isSchengen ? '90 Days in 180 Days' : 'Up to 90 Days'}
                         </strong>
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5">
-                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold">
-                          <Plane className="w-3.5 h-3.5 text-violet-600" />
+                      <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-3 text-left space-y-1">
+                        <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                          <Plane className="w-3.5 h-3.5 text-slate-700" />
                           <span>Entry Type</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
-                          {aiData?.visa_type?.split('/')[0]?.trim() || 'Short Stay'}
+                        <strong className="text-xs font-black text-slate-950 block">
+                          {isSchengen ? 'Schengen Short-Stay (C)' : 'Single / Multiple Entry'}
                         </strong>
                       </div>
                     </div>
@@ -5536,36 +5635,188 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                 {/* 4 Feature Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="bg-sky-50/60 border border-sky-100 rounded-2xl p-4 space-y-1">
-                    <div className="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center">
-                      <Compass className="w-4 h-4" />
+                  <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] space-y-2 hover:border-slate-300 transition-all text-left">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center shadow-2xs">
+                      <Compass className="w-4 h-4 stroke-[2]" />
                     </div>
-                    <strong className="text-xs font-black text-slate-950 block pt-1">Tourism</strong>
-                    <p className="text-[11px] text-slate-500 font-medium leading-snug">Holiday or leisure trip</p>
+                    <div>
+                      <strong className="text-xs font-bold text-slate-950 block">Tourism &amp; Holiday</strong>
+                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">Leisure travel and sightseeing</p>
+                    </div>
                   </div>
 
-                  <div className="bg-purple-50/60 border border-purple-100 rounded-2xl p-4 space-y-1">
-                    <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
-                      <Users className="w-4 h-4" />
+                  <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] space-y-2 hover:border-slate-300 transition-all text-left">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center shadow-2xs">
+                      <Users className="w-4 h-4 stroke-[2]" />
                     </div>
-                    <strong className="text-xs font-black text-slate-950 block pt-1">Visit Family/ Friends</strong>
-                    <p className="text-[11px] text-slate-500 font-medium leading-snug">Meet family or friends</p>
+                    <div>
+                      <strong className="text-xs font-bold text-slate-950 block">Family &amp; Friends</strong>
+                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">Meet family, relatives, or hosts</p>
+                    </div>
                   </div>
 
-                  <div className="bg-rose-50/60 border border-rose-100 rounded-2xl p-4 space-y-1">
-                    <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center">
-                      <Calendar className="w-4 h-4" />
+                  <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] space-y-2 hover:border-slate-300 transition-all text-left">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center shadow-2xs">
+                      <Calendar className="w-4 h-4 stroke-[2]" />
                     </div>
-                    <strong className="text-xs font-black text-slate-950 block pt-1">Events</strong>
-                    <p className="text-[11px] text-slate-500 font-medium leading-snug">Attend events or meetings</p>
+                    <div>
+                      <strong className="text-xs font-bold text-slate-950 block">Events &amp; Meetings</strong>
+                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">Attend exhibitions or congress</p>
+                    </div>
                   </div>
 
-                  <div className="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 space-y-1">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                      <ShieldCheck className="w-4 h-4" />
+                  <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] space-y-2 hover:border-slate-300 transition-all text-left">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center shadow-2xs">
+                      <ShieldCheck className="w-4 h-4 stroke-[2]" />
                     </div>
-                    <strong className="text-xs font-black text-slate-950 block pt-1">Short Term Stay</strong>
-                    <p className="text-[11px] text-slate-500 font-medium leading-snug">Up to 90 days within 180 days</p>
+                    <div>
+                      <strong className="text-xs font-bold text-slate-950 block">Short-Term Stay</strong>
+                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">Up to 90 days within 180 days</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
+                <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-2xs space-y-4 text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-100 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950">
+                        Application Profile Details
+                      </span>
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
+                        +{profileScore}/50 pts
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-slate-400 font-semibold">
+                      Pre-fills visa petition &amp; consular dossier
+                    </span>
+                  </div>
+
+                  {/* 8 PROFILE FIELDS WITH AUTO-CALCULATED DURATION */}
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                      {/* Q1: Trip Status */}
+                      <PortalCustomSelect
+                        label="1. Trip Planning Status"
+                        value={visitPlanStatus}
+                        onChange={setVisitPlanStatus}
+                        placeholder="Select trip status"
+                        options={[
+                          "Fixed Dates & Itinerary Ready",
+                          "Flexible / Exploring Dates",
+                          "Urgent Travel (Next 14 Days)"
+                        ]}
+                      />
+
+                      {/* Q2: Tentative Departure Date */}
+                      <PortalCustomDatePicker
+                        label="2. Tentative Departure Date"
+                        value={visitTiming}
+                        min={todayStr}
+                        onChange={handleDepartureDateChange}
+                        placeholder="Select departure date"
+                      />
+
+                      {/* Q3: Tentative Return Date */}
+                      <PortalCustomDatePicker
+                        label="3. Tentative Return Date"
+                        value={visitReturnDate}
+                        min={visitTiming ? new Date(new Date(visitTiming).getTime() + 86400000).toISOString().split('T')[0] : todayStr}
+                        max={visitTiming ? new Date(new Date(visitTiming).getTime() + 90 * 86400000).toISOString().split('T')[0] : undefined}
+                        onChange={handleReturnDateChange}
+                        placeholder="Select return date"
+                      />
+
+                      {/* Q4: Total Trip Duration (Auto-calculated) */}
+                      <div className="space-y-1 text-left">
+                        <div className="flex items-center justify-between">
+                          <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
+                            4. Total Trip Duration
+                          </label>
+                          {tripDurationDays > 0 && tripDurationDays <= 90 && (
+                            <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
+                              ✓ Within 90d Limit
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <div className={`w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border flex items-center justify-between transition-all shadow-2xs ${
+                            tripDurationDays > 0 && tripDurationDays <= 90
+                              ? 'border-emerald-300 bg-emerald-50/50 text-emerald-950'
+                              : tripDurationDays > 90
+                              ? 'border-rose-300 bg-rose-50/50 text-rose-950'
+                              : 'border-slate-200/90 bg-slate-50 text-slate-500'
+                          }`}>
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 text-slate-600" />
+                              <span className="text-xs sm:text-[13px] font-black">
+                                {tripDurationDays > 0 
+                                  ? `${tripDurationDays} Days` 
+                                  : (!visitTiming || !visitReturnDate) 
+                                  ? 'Select Dates Above' 
+                                  : 'Invalid Dates'}
+                              </span>
+                            </div>
+                            <span className="text-[10px] font-bold text-slate-500">
+                              {tripDurationDays > 90 
+                                ? '⚠️ Max 90 Days' 
+                                : (!visitTiming || !visitReturnDate)
+                                ? 'Auto-calculated'
+                                : 'Tourist Stay'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Row 2: Consular Compliance & Profile Criteria */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
+                      <PortalCustomSelect
+                        label="5. Accommodation Preference"
+                        value={visitStay}
+                        onChange={setVisitStay}
+                        placeholder="Select accommodation"
+                        options={[
+                          "Hotel / Resort Booked",
+                          "Staying with Host / Family",
+                          "Airbnb / Rental Apartment"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="6. 6-Month Stamped Bank Balance"
+                        value={touristBankStability}
+                        onChange={setTouristBankStability}
+                        placeholder="Select bank balance"
+                        options={[
+                          "₹4L+ Maintained (Strong Solvency)",
+                          "₹2L - ₹4L Balance",
+                          "Under ₹2L / Need Financial Advice"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="7. Home Country Ties & Employment"
+                        value={touristHomeTies}
+                        onChange={setTouristHomeTies}
+                        placeholder="Select employment / ties"
+                        options={[
+                          "Salaried (NOC & 3-Mo Payslips Ready)",
+                          "Business Owner / GST & 2-Yr ITR",
+                          "Self-Employed / Freelancer",
+                          "Student / Dependent"
+                        ]}
+                      />
+                      <PortalCustomSelect
+                        label="8. Passport Validity Remaining"
+                        value={passportValidityRange}
+                        onChange={setPassportValidityRange}
+                        placeholder="Select passport validity"
+                        options={[
+                          "> 12 Months (Recommended)",
+                          "6 - 12 Months Valid",
+                          "< 6 Months (Renewal Required)"
+                        ]}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

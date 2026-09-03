@@ -4743,17 +4743,17 @@ All documents must be genuine, valid and meet official consular standards to avo
                     onClick={() => setSidebarTab(item.id)}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-emerald-50/90 text-emerald-900 border border-emerald-200/80 font-black shadow-2xs'
-                        : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50 border border-transparent font-bold'
+                        ? 'bg-slate-900 text-white font-extrabold shadow-sm'
+                        : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50 border border-transparent font-semibold'
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className={isActive ? 'text-emerald-700' : 'text-slate-400'}>{item.icon}</span>
+                      <span className={isActive ? 'text-white' : 'text-slate-400'}>{item.icon}</span>
                       <span>{item.label}</span>
                     </div>
                     {item.badge && (
                       <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                        isActive ? 'bg-emerald-200/60 text-emerald-900' : 'bg-slate-100 text-slate-600'
+                        isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
                       }`}>
                         {item.badge}
                       </span>
@@ -4767,7 +4767,7 @@ All documents must be genuine, valid and meet official consular standards to avo
             <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs space-y-3 text-left">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <h3 className="text-xs font-black text-slate-950 uppercase tracking-wider">Visa Readiness</h3>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-slate-900 text-white shadow-2xs">
                   Live
                 </span>
               </div>
@@ -4783,7 +4783,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
-                      className="text-teal-600"
+                      className="text-slate-900"
                       strokeDasharray="${readinessPercent}, 100"
                       strokeWidth="3.5"
                       strokeLinecap="round"
@@ -4796,13 +4796,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                     <span className="text-xl font-black text-slate-950">{readinessPercent}%</span>
                   </div>
                 </div>
-                <span className="text-xs font-black text-teal-700 mt-1">{readinessLabel}</span>
+                <span className="text-xs font-extrabold text-slate-950 mt-1">{readinessLabel}</span>
               </div>
 
               <div className="space-y-1.5 text-xs font-bold pt-1 border-t border-slate-100">
                 <div className="flex items-center justify-between text-slate-600">
-                  <span className="flex items-center gap-1.5 text-emerald-700">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" /> Completed
+                  <span className="flex items-center gap-1.5 text-slate-900 font-bold">
+                    <Check className="w-3.5 h-3.5 stroke-[3] text-emerald-600" /> Completed
                   </span>
                   <strong className="text-slate-950 font-black">{completedDocsCount}</strong>
                 </div>
@@ -4849,7 +4849,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   const el = document.getElementById('consultants-section');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-black transition-all shadow-xs cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center justify-center gap-1.5"
               >
                 Consult an Expert
               </button>
@@ -5248,7 +5248,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <button
                         type="button"
                         onClick={() => setSidebarTab('documents')}
-                        className="px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-black transition-all cursor-pointer shadow-md flex items-center gap-1.5"
+                        className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-extrabold transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
                       >
                         <span>View Document Checklist</span>
                         <ArrowRight className="w-3.5 h-3.5" />

@@ -132,7 +132,10 @@ import {
   Bell,
   Eye,
   MoreVertical,
-  LayoutDashboard
+  LayoutDashboard,
+  Info,
+  Heart,
+  Download
 } from 'lucide-react';
 
 // Custom sleek datepicker component matching Atlys / TravlTik aesthetics
@@ -2662,6 +2665,50 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
   }
 ];
 
+// Helper to resolve 4K vector flag for any destination country
+function get4kCountryFlag(countryName: string, slug: string): string {
+  const s = `${countryName} ${slug}`.toLowerCase().trim();
+  if (s.includes('united states') || s.includes('usa') || s.includes('u.s.') || s === 'us') return 'us';
+  if (s.includes('united kingdom') || s.includes('uk') || s.includes('britain') || s.includes('england')) return 'gb';
+  if (s.includes('united arab emirates') || s.includes('uae') || s.includes('dubai')) return 'ae';
+  if (s.includes('canada')) return 'ca';
+  if (s.includes('australia')) return 'au';
+  if (s.includes('germany') || s.includes('deutschland')) return 'de';
+  if (s.includes('france')) return 'fr';
+  if (s.includes('italy')) return 'it';
+  if (s.includes('spain')) return 'es';
+  if (s.includes('greece')) return 'gr';
+  if (s.includes('japan')) return 'jp';
+  if (s.includes('singapore')) return 'sg';
+  if (s.includes('china')) return 'cn';
+  if (s.includes('thailand')) return 'th';
+  if (s.includes('vietnam')) return 'vn';
+  if (s.includes('mauritius')) return 'mu';
+  if (s.includes('switzerland')) return 'ch';
+  if (s.includes('netherlands') || s.includes('holland')) return 'nl';
+  if (s.includes('portugal')) return 'pt';
+  if (s.includes('austria')) return 'at';
+  if (s.includes('ireland')) return 'ie';
+  if (s.includes('new zealand')) return 'nz';
+  if (s.includes('turkey') || s.includes('türkiye')) return 'tr';
+  if (s.includes('russia')) return 'ru';
+  if (s.includes('brazil')) return 'br';
+  if (s.includes('south africa')) return 'za';
+  if (s.includes('korea')) return 'kr';
+  if (s.includes('malaysia')) return 'my';
+  if (s.includes('indonesia')) return 'id';
+  if (s.includes('philippines')) return 'ph';
+  if (s.includes('egypt')) return 'eg';
+  if (s.includes('saudi')) return 'sa';
+  if (s.includes('qatar')) return 'qa';
+  if (s.includes('oman')) return 'om';
+  if (s.includes('kuwait')) return 'kw';
+  if (s.includes('bahrain')) return 'bh';
+  if (s.includes('india')) return 'in';
+  if (s.includes('schengen')) return 'eu';
+  return (slug || 'un').replace(/[^a-z]/g, '').slice(0, 2) || 'un';
+}
+
 export function VisaCountryResultPortal({ 
   countrySlug, 
   initialPassport = 'India', 
@@ -2683,6 +2730,7 @@ export function VisaCountryResultPortal({
   const visaType = baseData.visaType || 'Official E-Visa';
   const processingDays = baseData.processingDays || 4;
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
+  const flagCode4k = useMemo(() => get4kCountryFlag(countryName, slugClean), [countryName, slugClean]);
 
   const variants = baseData.variants || [
     { id: 'standard', label: `Standard Tourist Entry`, stay: 'Depending on application', govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },
@@ -2753,6 +2801,71 @@ export function VisaCountryResultPortal({
   const [portalDocSearch, setPortalDocSearch] = useState('');
   const [portalDocFilter, setPortalDocFilter] = useState<'all' | 'mandatory' | 'recommended'>('all');
   const [inspectDocItem, setInspectDocItem] = useState<any | null>(null);
+
+  // ── LIVE AI & CONSULAR REGISTRY DATA (Dynamic zero-dummy data) ──
+  const [aiData, setAiData] = useState<any | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cacheKey = `travltik_ai_res_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+        const cached = localStorage.getItem(cacheKey) || localStorage.getItem('travltik_last_ai_requirements');
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+    }
+    return null;
+  });
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchLiveAiRequirements = async () => {
+      setIsAiLoading(true);
+      try {
+        let userEmail = 'seeker@travltik.com';
+        try {
+          const parsed = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+          if (parsed.email) userEmail = parsed.email;
+          else if (localStorage.getItem('seeker_email')) userEmail = localStorage.getItem('seeker_email')!;
+        } catch (_) {}
+
+        const cleanPurpose = 
+          (activePurposeTab === 'pr' || initialPurpose === 'pr') ? 'Permanent Residency (PR) / Immigration' :
+          (activePurposeTab === 'study' || initialPurpose === 'study') ? 'Higher Studies' :
+          (activePurposeTab === 'work' || initialPurpose === 'work') ? 'Employment / Work' :
+          (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
+          (activePurposeTab === 'family' || initialPurpose === 'family') ? 'Family / Friends Visit' :
+          'Tourism / Vacation';
+
+        const res = await fetch('/api/visa/ai-requirements', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fromCountry: passportCountry,
+            toCountry: countryName,
+            purpose: cleanPurpose,
+            userEmail,
+            isLoggedIn: true
+          })
+        });
+        const json = await res.json();
+        if (json.success && json.data && mounted) {
+          setAiData(json.data);
+          try {
+            const cacheKey = `travltik_ai_res_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+            localStorage.setItem(cacheKey, JSON.stringify(json.data));
+          } catch(e) {}
+        }
+      } catch (err) {
+        console.error('Failed to fetch live AI requirements:', err);
+      } finally {
+        if (mounted) setIsAiLoading(false);
+      }
+    };
+
+    fetchLiveAiRequirements();
+    return () => { mounted = false; };
+  }, [countryName, passportCountry, activePurposeTab]);
+
+  // Dynamic user-uploaded documents (Starts empty: users fill their own data)
   const [portalUploadedDocs, setPortalUploadedDocs] = useState<Record<string, {
     fileName: string;
     fileSize: string;
@@ -2761,52 +2874,13 @@ export function VisaCountryResultPortal({
     status: 'completed' | 'in_progress' | 'pending' | 'not_started';
     docNumber?: string;
   }>>(() => {
-    return {
-      passport: {
-        fileName: 'passport_scan.pdf',
-        fileSize: '1.8 MB',
-        uploadedAt: '12 May 2025',
-        validDate: 'Expiry: 22 Aug 2026',
-        status: 'completed',
-        docNumber: 'P1234567'
-      },
-      form: {
-        fileName: 'visa_application_form.pdf',
-        fileSize: '420 KB',
-        uploadedAt: '12 May 2025',
-        status: 'completed'
-      },
-      photos: {
-        fileName: 'photo.jpg',
-        fileSize: '850 KB',
-        uploadedAt: '12 May 2025',
-        status: 'completed'
-      },
-      flight: {
-        fileName: 'itinerary.pdf',
-        fileSize: '610 KB',
-        uploadedAt: '12 May 2025',
-        status: 'in_progress'
-      },
-      hotel: {
-        fileName: 'hotel_booking.pdf',
-        fileSize: '540 KB',
-        uploadedAt: '12 May 2025',
-        status: 'completed'
-      },
-      insurance: {
-        fileName: 'insurance.pdf',
-        fileSize: '320 KB',
-        uploadedAt: 'Expired on 01 May 2025',
-        status: 'pending'
-      },
-      bank: {
-        fileName: 'bank_statements.pdf',
-        fileSize: '2.4 MB',
-        uploadedAt: '12 May 2025',
-        status: 'in_progress'
-      }
-    };
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`portal_docs_${slugClean}`);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
   });
 
   const handlePortalFileUpload = (docKey: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -2815,15 +2889,23 @@ export function VisaCountryResultPortal({
     const now = new Date();
     const formattedDate = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
     const sizeStr = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : Math.round(file.size / 1024) + ' KB';
-    setPortalUploadedDocs(prev => ({
-      ...prev,
-      [docKey]: {
-        fileName: file.name,
-        fileSize: sizeStr,
-        uploadedAt: formattedDate,
-        status: 'completed'
+    setPortalUploadedDocs(prev => {
+      const updated = {
+        ...prev,
+        [docKey]: {
+          fileName: file.name,
+          fileSize: sizeStr,
+          uploadedAt: formattedDate,
+          status: 'completed' as const
+        }
+      };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`portal_docs_${slugClean}`, JSON.stringify(updated));
+        } catch (err) {}
       }
-    }));
+      return updated;
+    });
   };
 
   // Consultant Filter & Booking States
@@ -4422,11 +4504,140 @@ All documents must be genuine, valid and meet official consular standards to avo
     }
   ];
 
+    // Dynamic Official Checklist populated directly from live AI / Consular Registry
+  const portalDocItems = useMemo(() => {
+    if (aiData?.documents_required && aiData.documents_required.length > 0) {
+      return aiData.documents_required.map((doc: any, idx: number) => {
+        const key = `doc_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const isMandatory = doc.is_mandatory !== false;
+        
+        const titleLower = doc.title.toLowerCase();
+        let icon = <FileText className="w-4 h-4" />;
+        let iconBg = 'bg-purple-100 text-purple-700';
+
+        if (titleLower.includes('passport') || titleLower.includes('travel doc')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-purple-100 text-purple-700';
+        } else if (titleLower.includes('photo') || titleLower.includes('picture')) {
+          icon = <Camera className="w-4 h-4" />;
+          iconBg = 'bg-amber-100 text-amber-700';
+        } else if (titleLower.includes('flight') || titleLower.includes('ticket') || titleLower.includes('itinerary') || titleLower.includes('travel')) {
+          icon = <Plane className="w-4 h-4" />;
+          iconBg = 'bg-sky-100 text-sky-700';
+        } else if (titleLower.includes('hotel') || titleLower.includes('stay') || titleLower.includes('accommodation')) {
+          icon = <Building2 className="w-4 h-4" />;
+          iconBg = 'bg-indigo-100 text-indigo-700';
+        } else if (titleLower.includes('insurance') || titleLower.includes('medical')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-rose-100 text-rose-700';
+        } else if (titleLower.includes('bank') || titleLower.includes('financial') || titleLower.includes('solvency') || titleLower.includes('fund') || titleLower.includes('tax') || titleLower.includes('itr') || titleLower.includes('employment')) {
+          icon = <CreditCard className="w-4 h-4" />;
+          iconBg = 'bg-teal-100 text-teal-700';
+        } else if (titleLower.includes('form') || titleLower.includes('application') || titleLower.includes('ds-160') || titleLower.includes('appointment')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-emerald-100 text-emerald-700';
+        } else if (titleLower.includes('letter') || titleLower.includes('cover') || titleLower.includes('invitation')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-pink-100 text-pink-700';
+        }
+
+        const sentences = doc.description
+          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
+          : ['Statutory consular requirement for official entry'];
+
+        return {
+          key,
+          name: doc.title,
+          mandatory: isMandatory,
+          iconBg,
+          icon,
+          conditions: sentences.slice(0, 3)
+        };
+      });
+    }
+
+    // Default fallback based on country if AI is still fetching
+    const isUS = countryName.toLowerCase().includes('united states');
+    return [
+      {
+        key: 'passport',
+        name: 'Valid Passport',
+        mandatory: true,
+        iconBg: 'bg-purple-100 text-purple-700',
+        icon: <FileText className="w-4 h-4" />,
+        conditions: [
+          `Valid for at least ${isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'}`,
+          'Issued within the last 10 years',
+          'Minimum 2 blank pages'
+        ]
+      },
+      {
+        key: 'form',
+        name: isUS ? 'Form DS-160 Confirmation Page' : 'Visa Application Form',
+        mandatory: true,
+        iconBg: 'bg-emerald-100 text-emerald-700',
+        icon: <FileText className="w-4 h-4" />,
+        conditions: [
+          isUS ? 'Complete online at ceac.state.gov with barcode' : 'Fully filled and signed',
+          'Confirmation printed within last 30 days'
+        ]
+      },
+      {
+        key: 'photos',
+        name: 'Photographs',
+        mandatory: true,
+        iconBg: 'bg-amber-100 text-amber-700',
+        icon: <Camera className="w-4 h-4" />,
+        conditions: [
+          'Recent photographs taken within last 6 months',
+          isUS ? '2x2 inches (51x51mm), white background' : '35mm x 45mm, white background',
+          'No glasses, neutral facial expression'
+        ]
+      },
+      {
+        key: 'flight',
+        name: 'Travel Purpose & Itinerary',
+        mandatory: true,
+        iconBg: 'bg-sky-100 text-sky-700',
+        icon: <Plane className="w-4 h-4" />,
+        conditions: [
+          'Confirmed round-trip flight reservations or detailed itinerary',
+          'Verifiable PNR booking confirmation'
+        ]
+      },
+      {
+        key: 'bank',
+        name: 'Employment & Financial Proofs',
+        mandatory: true,
+        iconBg: 'bg-teal-100 text-teal-700',
+        icon: <CreditCard className="w-4 h-4" />,
+        conditions: [
+          'Official stamped bank statements for the last 3-6 months',
+          'Proof of ongoing employment, payslips or business registration',
+          'Income tax returns establishing strong ties to home country'
+        ]
+      }
+    ];
+  }, [aiData, isSchengen, countryName]);
+
+  // Dynamic user-driven counts
+  const totalDocsCount = portalDocItems.length;
+  const mandatoryDocsCount = portalDocItems.filter(d => d.mandatory).length;
+  const recommendedDocsCount = portalDocItems.filter(d => !d.mandatory).length;
+
+  const completedDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'completed').length;
+  const inProgressDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'in_progress').length;
+  const pendingDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'pending').length;
+  const notStartedDocsCount = portalDocItems.filter(d => !portalUploadedDocs[d.key] || portalUploadedDocs[d.key]?.status === 'not_started').length;
+
+  const readinessPercent = totalDocsCount > 0 ? Math.round((completedDocsCount / totalDocsCount) * 100) : 0;
+  const readinessLabel = readinessPercent === 100 ? 'All Ready!' : readinessPercent >= 50 ? 'Good Progress' : readinessPercent > 0 ? 'In Progress' : 'Ready to Start';
+
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
       {/* ── PREMIUM VISA DETAILS WORKSPACE (MATCHING EXACT SPECIFICATION media_1788458534453) ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-6 space-y-6">
+      <section className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-3 sm:pt-6 space-y-6 font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','Plus_Jakarta_Sans',sans-serif] antialiased subpixel-antialiased text-slate-900">
         
         {/* TOP MOBILE APP HEADER (Visible on Mobile & Tablet, hidden on Desktop) */}
         <div className="lg:hidden bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs flex items-center justify-between">
@@ -4454,7 +4665,7 @@ All documents must be genuine, valid and meet official consular standards to avo
         <div className="lg:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
           {[
             { id: 'overview', label: 'Overview' },
-            { id: 'documents', label: 'Documents', badge: '12' },
+            { id: 'documents', label: 'Documents', badge: totalDocsCount.toString() },
             { id: 'requirements', label: 'Conditions & Requirements' },
             { id: 'steps', label: 'Steps to Follow' },
             { id: 'fees', label: 'Fees & Payment' },
@@ -4488,16 +4699,26 @@ All documents must be genuine, valid and meet official consular standards to avo
           <aside className="hidden lg:block lg:col-span-3 space-y-4 sticky top-4">
             
             {/* 1. Country & Visa Identity Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center text-2xl shadow-inner shrink-0">
-                {flagEmoji}
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center gap-3.5 transition-all">
+              {/* 4K Vector Country Flag Circle */}
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.08)] shrink-0 flex items-center justify-center bg-slate-100 relative ring-2 ring-slate-100/90">
+                <img
+                  src={`https://flagcdn.com/${flagCode4k}.svg`}
+                  srcSet={`https://flagcdn.com/w160/${flagCode4k}.png 1x, https://flagcdn.com/w320/${flagCode4k}.png 2x, https://flagcdn.com/${flagCode4k}.svg 3x`}
+                  alt={`${countryName} flag`}
+                  className="w-full h-full object-cover object-center scale-110 drop-shadow-xs"
+                  loading="eager"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = `https://flagcdn.com/w160/${flagCode4k}.png`;
+                  }}
+                />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-sm font-black text-slate-950 truncate leading-snug">
-                  {countryName} Tourist Visa
+                <h2 className="text-sm font-extrabold text-slate-950 truncate leading-snug tracking-tight">
+                  {countryName} {aiData?.visa_type ? (aiData.visa_type.includes('Visa') ? '' : 'Visa') : 'Tourist Visa'}
                 </h2>
-                <span className="text-xs font-bold text-slate-400 block truncate">
-                  {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'}
+                <span className="text-xs font-semibold text-slate-400 block truncate">
+                  {aiData?.official_source_name || (activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa')}
                 </span>
               </div>
             </div>
@@ -4506,7 +4727,7 @@ All documents must be genuine, valid and meet official consular standards to avo
             <nav className="bg-white rounded-2xl border border-slate-200/90 p-2 shadow-2xs space-y-1">
               {[
                 { id: 'overview', label: 'Overview', icon: <LayoutDashboard className="w-4 h-4" /> },
-                { id: 'documents', label: 'Documents', icon: <FileText className="w-4 h-4" />, badge: '12' },
+                { id: 'documents', label: 'Documents', icon: <FileText className="w-4 h-4" />, badge: totalDocsCount.toString() },
                 { id: 'requirements', label: 'Conditions & Requirements', icon: <ShieldCheck className="w-4 h-4" /> },
                 { id: 'steps', label: 'Steps to Follow', icon: <Compass className="w-4 h-4" /> },
                 { id: 'fees', label: 'Fees & Payment', icon: <CreditCard className="w-4 h-4" /> },
@@ -4563,7 +4784,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     />
                     <path
                       className="text-teal-600"
-                      strokeDasharray="72, 100"
+                      strokeDasharray="${readinessPercent}, 100"
                       strokeWidth="3.5"
                       strokeLinecap="round"
                       stroke="currentColor"
@@ -4572,10 +4793,10 @@ All documents must be genuine, valid and meet official consular standards to avo
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-xl font-black text-slate-950">72%</span>
+                    <span className="text-xl font-black text-slate-950">{readinessPercent}%</span>
                   </div>
                 </div>
-                <span className="text-xs font-black text-teal-700 mt-1">Good Progress</span>
+                <span className="text-xs font-black text-teal-700 mt-1">{readinessLabel}</span>
               </div>
 
               <div className="space-y-1.5 text-xs font-bold pt-1 border-t border-slate-100">
@@ -4583,25 +4804,25 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <span className="flex items-center gap-1.5 text-emerald-700">
                     <Check className="w-3.5 h-3.5 stroke-[3]" /> Completed
                   </span>
-                  <strong className="text-slate-950 font-black">5</strong>
+                  <strong className="text-slate-950 font-black">{completedDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600">
                   <span className="flex items-center gap-1.5 text-amber-700">
                     <Clock className="w-3.5 h-3.5" /> In Progress
                   </span>
-                  <strong className="text-slate-950 font-black">3</strong>
+                  <strong className="text-slate-950 font-black">{inProgressDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600">
                   <span className="flex items-center gap-1.5 text-rose-600">
                     <AlertCircle className="w-3.5 h-3.5" /> Pending
                   </span>
-                  <strong className="text-slate-950 font-black">3</strong>
+                  <strong className="text-slate-950 font-black">{pendingDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600">
                   <span className="flex items-center gap-1.5 text-slate-400">
                     <Plus className="w-3.5 h-3.5" /> Not Started
                   </span>
-                  <strong className="text-slate-950 font-black">1</strong>
+                  <strong className="text-slate-950 font-black">{notStartedDocsCount}</strong>
                 </div>
               </div>
             </div>
@@ -4657,11 +4878,11 @@ All documents must be genuine, valid and meet official consular standards to avo
                 
                 {/* Header Title & Description */}
                 <div className="space-y-1 text-left">
-                  <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
                     Documents Required
                   </h1>
                   <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
-                    Upload and verify all documents as per the official requirements of the Embassy of {countryName}.
+                    Upload and verify all documents as per official requirements of {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
                   </p>
                 </div>
 
@@ -4674,7 +4895,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Total</span>
-                      <strong className="text-lg font-black text-slate-950">12</strong>
+                      <strong className="text-lg font-black text-slate-950">{totalDocsCount}</strong>
                     </div>
                   </div>
 
@@ -4685,7 +4906,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Mandatory</span>
-                      <strong className="text-lg font-black text-slate-950">9</strong>
+                      <strong className="text-lg font-black text-slate-950">{mandatoryDocsCount}</strong>
                     </div>
                   </div>
 
@@ -4696,7 +4917,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Recommended</span>
-                      <strong className="text-lg font-black text-slate-950">3</strong>
+                      <strong className="text-lg font-black text-slate-950">{recommendedDocsCount}</strong>
                     </div>
                   </div>
 
@@ -4707,18 +4928,18 @@ All documents must be genuine, valid and meet official consular standards to avo
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Completed</span>
-                      <strong className="text-lg font-black text-slate-950">5</strong>
+                      <strong className="text-lg font-black text-slate-950">{completedDocsCount}</strong>
                     </div>
                   </div>
 
-                  {/* Pending */}
+                  {/* Pending / Not Started */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-orange-50 text-orange-700 border border-orange-200/70 flex items-center justify-center shrink-0">
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Pending</span>
-                      <strong className="text-lg font-black text-slate-950">4</strong>
+                      <strong className="text-lg font-black text-slate-950">{notStartedDocsCount + pendingDocsCount}</strong>
                     </div>
                   </div>
                 </div>
@@ -4746,9 +4967,9 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                   <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar">
                     {[
-                      { id: 'all', label: 'All (12)' },
-                      { id: 'mandatory', label: 'Mandatory (9)' },
-                      { id: 'recommended', label: 'Recommended (3)' }
+                      { id: 'all', label: `All (${totalDocsCount})` },
+                      { id: 'mandatory', label: `Mandatory (${mandatoryDocsCount})` },
+                      { id: 'recommended', label: `Recommended (${recommendedDocsCount})` }
                     ].map(flt => (
                       <button
                         key={flt.id}
@@ -4756,8 +4977,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                         onClick={() => setPortalDocFilter(flt.id as any)}
                         className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                           portalDocFilter === flt.id
-                            ? 'bg-emerald-50 text-emerald-900 border border-emerald-300 shadow-2xs'
-                            : 'bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50'
+                            ? 'bg-slate-950 text-white font-bold shadow-xs'
+                            : 'bg-slate-100/80 hover:bg-slate-200/70 text-slate-600 font-semibold border border-transparent'
                         }`}
                       >
                         {flt.label}
@@ -4780,100 +5001,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 text-xs font-medium">
-                        {[
-                          {
-                            key: 'passport',
-                            name: 'Passport',
-                            mandatory: true,
-                            iconBg: 'bg-purple-100 text-purple-700',
-                            icon: <FileText className="w-4 h-4" />,
-                            conditions: [
-                              `Valid for at least ${isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'}`,
-                              'Issued within the last 10 years',
-                              'Minimum 2 blank pages'
-                            ]
-                          },
-                          {
-                            key: 'form',
-                            name: countryName.toLowerCase().includes('united states') ? 'Visa Application Form (DS-160)' : 'Visa Application Form',
-                            mandatory: true,
-                            iconBg: 'bg-emerald-100 text-emerald-700',
-                            icon: <FileText className="w-4 h-4" />,
-                            conditions: [
-                              'Fully filled and signed',
-                              'Date of confirmation within last 30 days'
-                            ]
-                          },
-                          {
-                            key: 'photos',
-                            name: 'Photographs',
-                            mandatory: true,
-                            iconBg: 'bg-amber-100 text-amber-700',
-                            icon: <Camera className="w-4 h-4" />,
-                            conditions: [
-                              'Recent (taken within last 6 months)',
-                              countryName.toLowerCase().includes('united states') ? '2x2 inches (51x51mm), white background' : '35mm x 45mm, white background',
-                              'No glasses, no headgear'
-                            ]
-                          },
-                          {
-                            key: 'flight',
-                            name: 'Travel Itinerary',
-                            mandatory: true,
-                            iconBg: 'bg-sky-100 text-sky-700',
-                            icon: <Plane className="w-4 h-4" />,
-                            conditions: [
-                              'Confirmed flight tickets with verifiable PNR',
-                              'Round trip itinerary'
-                            ]
-                          },
-                          {
-                            key: 'hotel',
-                            name: 'Hotel Reservation / Accommodation',
-                            mandatory: true,
-                            iconBg: 'bg-indigo-100 text-indigo-700',
-                            icon: <Building2 className="w-4 h-4" />,
-                            conditions: [
-                              'Confirmed booking for entire stay',
-                              'Hotel name and address required'
-                            ]
-                          },
-                          {
-                            key: 'insurance',
-                            name: 'Travel Insurance',
-                            mandatory: true,
-                            iconBg: 'bg-rose-100 text-rose-700',
-                            icon: <ShieldCheck className="w-4 h-4" />,
-                            conditions: [
-                              isSchengen ? 'Minimum coverage of €30,000 across Schengen area' : 'Emergency medical coverage up to $50,000 USD',
-                              'Valid for entire duration of stay'
-                            ]
-                          },
-                          {
-                            key: 'bank',
-                            name: 'Bank Statements',
-                            mandatory: true,
-                            iconBg: 'bg-teal-100 text-teal-700',
-                            icon: <CreditCard className="w-4 h-4" />,
-                            conditions: [
-                              'Last 3-6 months statements',
-                              'Sufficient balance to cover stay',
-                              'Name & account number visible, bank stamped'
-                            ]
-                          },
-                          {
-                            key: 'cover_letter',
-                            name: 'Cover Letter',
-                            mandatory: false,
-                            iconBg: 'bg-pink-100 text-pink-700',
-                            icon: <FileText className="w-4 h-4" />,
-                            conditions: [
-                              'Purpose of visit & daily itinerary',
-                              'Details of stay and return intent',
-                              "Applicant's contact details"
-                            ]
-                          }
-                        ]
+                        {portalDocItems
                         .filter(item => {
                           if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
                           if (portalDocFilter === 'recommended' && item.mandatory) return false;
@@ -5063,8 +5191,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <Clock className="w-3.5 h-3.5 text-teal-600" />
                           <span>Processing Time</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1">
-                          {processingDays ? `${processingDays} - ${processingDays + 5} Working Days` : '15 - 20 Working Days'}
+                        <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
+                          {aiData?.processing_and_timing?.decision_time?.split('.')[0] || (processingDays ? `${processingDays} - ${processingDays + 5} Working Days` : '15 - 20 Working Days')}
                         </strong>
                       </div>
 
@@ -5073,8 +5201,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                           <span>Validity</span>
                         </div>
-                        <strong className="text-xs font-black text-slate-900 block mt-1">
-                          {validity || 'Up to 90 Days'}
+                        <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
+                          {aiData?.processing_and_timing?.max_extension?.split('(')[0]?.trim() || validity || 'Up to 90 Days'}
                         </strong>
                       </div>
 
@@ -5094,7 +5222,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>Entry Type</span>
                         </div>
                         <strong className="text-xs font-black text-slate-900 block mt-1 truncate">
-                          Short Stay
+                          {aiData?.visa_type?.split('/')[0]?.trim() || 'Short Stay'}
                         </strong>
                       </div>
                     </div>
@@ -5188,25 +5316,34 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
             )}
 
-            {/* TAB: STEPS TO FOLLOW */}
+            {/* TAB: STEPS TO FOLLOW (LIVE AI / CONSULAR VERIFIED) */}
             {sidebarTab === 'steps' && (
               <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
                 <div>
                   <h2 className="text-xl font-black text-slate-950">Steps to Follow</h2>
                   <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    Follow these simple steps to complete your {countryName} visa application.
+                    Official step-by-step application procedure for {countryName}.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    { step: 1, title: 'Check Eligibility', desc: 'Ensure you meet all the requirements and valid stay conditions.' },
-                    { step: 2, title: 'Gather Documents', desc: 'Collect and verify all required passport scans and financial proofs.' },
-                    { step: 3, title: 'Fill Application', desc: 'Complete the consular visa application form accurately with zero discrepancies.' },
-                    { step: 4, title: 'Book Appointment', desc: 'Schedule an official biometric or interview appointment at the visa center.' },
-                    { step: 5, title: 'Attend and Submit', desc: 'Attend the appointment and submit your physical documents and biometrics.' },
-                    { step: 6, title: 'Track Application', desc: 'Track your application status online with guaranteed consular updates.' }
-                  ].map((s, idx) => (
+                  {(aiData?.how_to_apply && aiData.how_to_apply.length > 0
+                    ? aiData.how_to_apply.map((rawStep: string, idx: number) => {
+                        const cleanText = rawStep.replace(/^[0-9]+[️⃣.)]s*/, '').trim();
+                        const parts = cleanText.split(':');
+                        const title = parts.length > 1 ? parts[0].trim() : `Step ${idx + 1}`;
+                        const desc = parts.length > 1 ? parts.slice(1).join(':').trim() : cleanText;
+                        return { step: idx + 1, title, desc };
+                      })
+                    : [
+                        { step: 1, title: 'Check Eligibility', desc: 'Ensure you meet all the requirements and valid stay conditions.' },
+                        { step: 2, title: 'Gather Documents', desc: 'Collect and verify all required passport scans and financial proofs.' },
+                        { step: 3, title: 'Fill Application', desc: 'Complete the consular visa application form accurately with zero discrepancies.' },
+                        { step: 4, title: 'Book Appointment', desc: 'Schedule an official biometric or interview appointment at the visa center.' },
+                        { step: 5, title: 'Attend and Submit', desc: 'Attend the appointment and submit your physical documents and biometrics.' },
+                        { step: 6, title: 'Track Application', desc: 'Track your application status online with guaranteed consular updates.' }
+                      ]
+                  ).map((s: any, idx: number) => (
                     <div key={idx} className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-2">
                       <span className="w-8 h-8 rounded-full bg-slate-950 text-white text-xs font-black flex items-center justify-center shadow-xs">
                         {s.step}
@@ -5219,65 +5356,68 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
             )}
 
-            {/* TAB: FEES & PAYMENT */}
+            {/* TAB: FEES & PAYMENT (LIVE AI / CONSULAR VERIFIED) */}
             {sidebarTab === 'fees' && (
               <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
                 <div>
                   <h2 className="text-xl font-black text-slate-950">Fees &amp; Payment Details</h2>
                   <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    Official consular and service fees for {countryName}.
+                    Official statutory fees verified from {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
                   </p>
                 </div>
 
                 <div className="max-w-xl space-y-3">
                   <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">Visa Fee (Adult)</span>
+                    <span className="text-slate-600">Consular Visa Fee</span>
                     <strong className="text-slate-950 text-sm">
-                      {countryName.toLowerCase().includes('united states') ? '$185 USD' : isSchengen ? '€90 EUR' : '₹6,500 INR'}
-                    </strong>
-                  </div>
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">Visa Fee (Child 6-12 yrs)</span>
-                    <strong className="text-slate-950 text-sm">
-                      {countryName.toLowerCase().includes('united states') ? '$185 USD' : isSchengen ? '€45 EUR' : '₹3,250 INR'}
+                      {aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
                     </strong>
                   </div>
                   <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
                     <span className="text-slate-600">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-slate-950 text-sm">
-                      {countryName.toLowerCase().includes('united states') ? '$0 (Included)' : isSchengen ? '€28 EUR' : '₹2,500 INR'}
+                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
-                    <span className="font-black text-slate-950 text-sm">Total Estimated Fee</span>
+                    <span className="font-black text-slate-950 text-sm">Total Official Fee</span>
                     <strong className="text-xl font-black text-teal-700">
-                      {countryName.toLowerCase().includes('united states') ? '$185 USD' : isSchengen ? '€118 EUR' : '₹9,000 INR'}
+                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
                     </strong>
                   </div>
                 </div>
+                {aiData?.costs?.notes && (
+                  <p className="text-xs text-slate-600 font-medium p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                    ℹ️ {aiData.costs.notes}
+                  </p>
+                )}
                 <p className="text-[11px] text-slate-400 font-semibold">
                   Fees are non-refundable and subject to official consular exchange rates.
                 </p>
               </div>
             )}
 
-            {/* TAB: PROCESSING TIME */}
+            {/* TAB: PROCESSING TIME (LIVE AI / CONSULAR VERIFIED) */}
             {sidebarTab === 'processing' && (
               <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
                 <h2 className="text-xl font-black text-slate-950">Processing Time &amp; Turnaround</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-5 rounded-2xl bg-teal-50/60 border border-teal-200/80 space-y-2">
-                    <span className="text-xs font-bold text-teal-700 uppercase">Standard Decision</span>
-                    <h3 className="text-2xl font-black text-teal-950">15 - 20 Working Days</h3>
+                    <span className="text-xs font-bold text-teal-700 uppercase">Official Decision Time</span>
+                    <h3 className="text-xl sm:text-2xl font-black text-teal-950">
+                      {aiData?.processing_and_timing?.decision_time || '15 - 20 Working Days'}
+                    </h3>
                     <p className="text-xs text-slate-600 font-medium">
-                      Calculated from the date biometric submission is completed at the consular center.
+                      {aiData?.processing_and_timing?.center_notes || 'Calculated from the date biometric submission is completed at the consular center.'}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 space-y-2">
-                    <span className="text-xs font-bold text-indigo-700 uppercase">Appointment Availability</span>
-                    <h3 className="text-2xl font-black text-indigo-950">3 - 7 Days</h3>
+                    <span className="text-xs font-bold text-indigo-700 uppercase">Recommended Filing Window</span>
+                    <h3 className="text-xl sm:text-2xl font-black text-indigo-950">
+                      {aiData?.processing_and_timing?.apply_window || '15 Days to 3 Months Before'}
+                    </h3>
                     <p className="text-xs text-slate-600 font-medium">
-                      Average wait time for biometric appointment slots across competent centers.
+                      {aiData?.processing_and_timing?.max_extension || 'Plan in advance to avoid consular peak season appointment delays.'}
                     </p>
                   </div>
                 </div>

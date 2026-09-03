@@ -4766,7 +4766,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                 const el = document.getElementById('mobile-workspace-content');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white text-xs font-extrabold transition-all shadow-sm cursor-pointer text-center"
+              className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-extrabold transition-all shadow-sm cursor-pointer text-center flex items-center justify-center gap-1.5"
             >
               Continue Checklist
             </button>
@@ -4815,7 +4815,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <a
                     href="#download"
                     onClick={(e) => { e.preventDefault(); window.print(); }}
-                    className="text-[11px] font-bold text-teal-700 hover:text-teal-800 flex items-center gap-1"
+                    className="text-[11px] font-bold text-slate-900 hover:text-black flex items-center gap-1"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download Checklist</span>
@@ -4871,7 +4871,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     const el = document.getElementById('consultants-section');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="w-full py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-teal-700 text-xs font-extrabold transition-all cursor-pointer text-center"
+                  className="w-full py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-900 text-xs font-extrabold transition-all cursor-pointer text-center"
                 >
                   View All Documents
                 </button>

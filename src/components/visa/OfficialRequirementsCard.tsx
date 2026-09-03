@@ -40,43 +40,50 @@ import {
 } from 'lucide-react';
 import type { StructuredVisaRequirements } from '../../pages/api/visa/ai-requirements';
 
-// Helper to ensure clean, crisp spacing in currency and fee strings
-function cleanFeeText(text: string | undefined): string {
-  if (!text) return '';
-  return text
-    .replace(/([0-9A-Z]+)\(/g, '$1 (')
-    .replace(/INR([a-zA-Z])/g, 'INR $1')
-    .replace(/EUR([a-zA-Z])/g, 'EUR $1')
-    .replace(/USD([a-zA-Z])/g, 'USD $1')
+// Helper to parse fees into short, accurate iOS-style amounts
+function parseCleanFee(feeStr: string | undefined): { primary: string; approx: string; note: string } {
+  if (!feeStr) return { primary: 'Statutory Fee', approx: '', note: '' };
+  
+  let text = feeStr
     .replace(/EURTotal/gi, 'EUR Total')
     .replace(/INRTotal/gi, 'INR Total')
-    .replace(/\s+/g, ' ')
+    .replace(/([0-9A-Z]+)\(/g, '$1 (')
+    .replace(/INR([a-zA-Z])/g, 'INR $1')
+    .replace(/\s*Total\s*Reference/gi, '')
     .trim();
-}
 
-// Helper to get concise 1-line requirement with optional extra notes for clean Atlys UI
-function getCleanDocShortSummary(title: string, fullDesc: string): { summary: string; hasExtra: boolean; extraNotes: string } {
-  if (!fullDesc) return { summary: '', hasExtra: false, extraNotes: '' };
-  const cleaned = fullDesc.trim();
-  const sentences = cleaned.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map(s => s.trim()).filter(Boolean);
-  const primary = sentences[0] || cleaned;
-  const rest = sentences.slice(1).join(' ');
-  return {
-    summary: primary,
-    hasExtra: rest.length > 5,
-    extraNotes: rest
-  };
+  // Extract primary amount e.g. "90 EUR", "€90", "30 EUR", "120 EUR", "185 USD", "$185"
+  const primaryMatch = text.match(/(?:€|£|\$|₹)?\s*\d[\d,.]*\s*(?:EUR|USD|GBP|INR|CAD|AUD|DKK|JOD)?/i);
+  let primary = primaryMatch ? primaryMatch[0].trim() : text;
+
+  // Extract approx in INR or local currency
+  const approxMatch = text.match(/\((?:approx\.?|~)?\s*([^)]+)\)/i);
+  let approx = '';
+  if (approxMatch) {
+    let raw = approxMatch[1]
+      .replace(/at current exchange rate/gi, '')
+      .replace(/approx\.?/gi, '')
+      .replace(/INR\s*at/gi, '')
+      .trim();
+    if (raw) {
+      approx = `~ ${raw.startsWith('₹') ? raw : '₹' + raw}`.replace(/₹₹/g, '₹');
+    }
+  }
+
+  // Extract extra note e.g. "GVCW VAC Service Charge"
+  let note = '';
+  if (text.includes('—')) {
+    const afterDash = text.split('—')[1]?.split('(')[0]?.trim();
+    if (afterDash) note = afterDash;
+  }
+
+  return { primary, approx, note };
 }
 
 // Helper to convert paragraph text into clean, point-wise items
 function formatDetailsAsPoints(text: string): string[] {
   if (!text) return [];
-  // Split on sentence boundaries, colons, or newlines
-  const rawParts = text
-    .split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+|(?<=:\s+)(?=[A-Z0-9])/)
-    .map(s => s.trim())
-    .filter(s => s.length > 5);
-
+  const rawParts = text.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+|(?<=:\s+)(?=[A-Z0-9])/).map(s => s.trim()).filter(s => s.length > 5);
   return rawParts.length > 0 ? rawParts : [text];
 }
 
@@ -1279,12 +1286,13 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             )}
           </div>
 
-          {/* ── 3. OFFICIAL VISA FEES & EMBASSY CHARGES (DEDICATED SECTION BELOW DOCUMENTS CHECKLIST) ── */}
-          <div id="section-visa-fees" className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24 w-full">
-            {/* Header */}
+          {/* ── 3. OFFICIAL VISA FEES & EMBASSY CHARGES (APPLE iOS CLEAN & ACCURATE DESIGN) ── */}
+          <div id="section-visa-fees" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-9 border border-slate-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-6 text-left scroll-mt-24 w-full">
+            
+            {/* Header: iOS Glass Top Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div className="flex items-center gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
                   <DollarSign className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
@@ -1302,85 +1310,135 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </div>
               </div>
 
-              {/* Total Summary Badge */}
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/90 px-4 py-2.5 rounded-2xl shrink-0 flex items-center gap-3 shadow-2xs">
-                <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 block">Total Statutory Cost</span>
-                  <strong className="text-lg sm:text-xl font-black text-emerald-900 leading-none">
-                    {cleanFeeText(data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, "").replace(/\s*Reference/gi, "").trim() : (data.costs?.visa_fee || "Consular Tariff"))}
-                  </strong>
-                </div>
-              </div>
+              {/* Total Summary Badge (iOS Capsule Pill) */}
+              {(() => {
+                const totalParsed = parseCleanFee(data.costs?.total_fee || data.costs?.visa_fee);
+                return (
+                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/90 px-4 py-2.5 rounded-2xl shrink-0 flex items-center gap-3 shadow-2xs">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 block">Total Statutory Cost</span>
+                      <div className="flex items-baseline gap-1.5 mt-0.5">
+                        <strong className="text-lg sm:text-xl font-black text-emerald-950 leading-none font-heading">
+                          {totalParsed.primary}
+                        </strong>
+                        {totalParsed.approx && (
+                          <span className="text-xs font-bold text-emerald-700 font-mono">
+                            ({totalParsed.approx})
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
-            {/* 3-Pillar Cost Breakdown Cards */}
+            {/* 3-Pillar Cost Breakdown Cards (iOS Minimal Squircle Cards) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              
               {/* Card 1: Consular Visa Fee */}
-              <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
-                    Government Fee
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">
-                    Visa Application / Filing Fee
-                  </h4>
-                  <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-                    {cleanFeeText(data.costs?.visa_fee) || "Statutory Fee"}
-                  </p>
-                </div>
-                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
-                  Official embassy or consular processing fee payable directly upon application submission.
-                </p>
-              </div>
+              {(() => {
+                const f1 = parseCleanFee(data.costs?.visa_fee);
+                return (
+                  <div className="bg-slate-50/70 hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all shadow-2xs hover:shadow-xs active:scale-[0.99]">
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
+                        Government Fee
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-700">
+                        Visa Application / Filing Fee
+                      </h4>
+                      <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
+                        <span className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight font-heading">
+                          {f1.primary}
+                        </span>
+                        {f1.approx && (
+                          <span className="text-xs sm:text-sm font-bold text-slate-500 font-mono">
+                            {f1.approx}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed pt-2 border-t border-slate-100">
+                      Official processing fee payable directly to consular mission.
+                    </p>
+                  </div>
+                );
+              })()}
 
               {/* Card 2: Biometrics / VAC Fee */}
-              <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
-                    Logistics &amp; Biometrics
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">
-                    VAC &amp; Biometric Enrollment Fee
-                  </h4>
-                  <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-                    {cleanFeeText(data.costs?.service_fee) || "VFS / VAC Standard Fee"}
-                  </p>
-                </div>
-                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
-                  Mandatory fingerprinting, digital photo capture, and visa application center logistics charge.
-                </p>
-              </div>
+              {(() => {
+                const f2 = parseCleanFee(data.costs?.service_fee);
+                return (
+                  <div className="bg-slate-50/70 hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all shadow-2xs hover:shadow-xs active:scale-[0.99]">
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
+                        Logistics &amp; Biometrics
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-700">
+                        VAC &amp; Biometric Enrollment
+                      </h4>
+                      <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
+                        <span className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight font-heading">
+                          {f2.primary}
+                        </span>
+                        {f2.approx && (
+                          <span className="text-xs sm:text-sm font-bold text-slate-500 font-mono">
+                            {f2.approx}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed pt-2 border-t border-slate-100">
+                      {f2.note ? `${f2.note} • Digital photo & fingerprints charge.` : 'Mandatory digital fingerprinting & photo logistics.'}
+                    </p>
+                  </div>
+                );
+              })()}
 
-              {/* Card 3: Total Payable */}
-              <div className="bg-emerald-50/70 border-2 border-emerald-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-2xs">
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-md inline-block">
-                    Estimated Total
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-bold text-emerald-950">
-                    Total Estimated Statutory Outlay
-                  </h4>
-                  <p className="text-xl sm:text-2xl font-black text-emerald-900 tracking-tight">
-                    {cleanFeeText(data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, "").replace(/\s*Reference/gi, "").trim() : data.costs?.visa_fee)}
-                  </p>
-                </div>
-                <p className="text-[11px] text-emerald-800 font-semibold leading-relaxed">
-                  Total statutory fees required per adult applicant for official {cleanTo} visa adjudication.
-                </p>
-              </div>
+              {/* Card 3: Total Outlay */}
+              {(() => {
+                const f3 = parseCleanFee(data.costs?.total_fee || data.costs?.visa_fee);
+                return (
+                  <div className="bg-gradient-to-br from-emerald-50/80 to-teal-50/40 border-2 border-emerald-300/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-xs transition-all active:scale-[0.99]">
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-md inline-block">
+                        Estimated Total
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-bold text-emerald-950">
+                        Total Statutory Outlay
+                      </h4>
+                      <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
+                        <span className="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight font-heading">
+                          {f3.primary}
+                        </span>
+                        {f3.approx && (
+                          <span className="text-xs sm:text-sm font-bold text-emerald-700 font-mono">
+                            {f3.approx}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-emerald-800 font-semibold leading-relaxed pt-2 border-t border-emerald-200/60">
+                      All-inclusive official statutory cost per adult applicant for {cleanTo}.
+                    </p>
+                  </div>
+                );
+              })()}
+
             </div>
 
-            {/* Essential Payment Rules & Information Banner */}
-            <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 text-xs text-slate-600 space-y-2.5">
-              <div className="flex items-center gap-2 font-bold text-slate-900">
-                <Info className="w-4 h-4 text-[#00A86B] shrink-0" />
-                <span>Important Consular Payment Guidelines &amp; Policies</span>
+            {/* Essential Payment Rules & Policies (iOS Concise Bullet Points) */}
+            <div className="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-2.5 text-left">
+              <div className="flex items-center gap-2 font-bold text-slate-900 text-xs">
+                <Info className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Consular Payment Policies &amp; Rules</span>
               </div>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-600 pl-6 list-disc">
-                <li><strong className="text-slate-800">Payment Modes:</strong> Credit/Debit Card (online), Net Banking, or Demand Draft/Cash at official visa application centers.</li>
-                <li><strong className="text-slate-800">Non-Refundable:</strong> Official consular processing fees are strictly non-refundable regardless of visa approval or refusal.</li>
-                <li><strong className="text-slate-800">Exchange Rates:</strong> Foreign currency fees (USD/EUR/GBP) fluctuate based on current consular exchange rates published by the embassy.</li>
-                <li><strong className="text-slate-800">Minors &amp; Children:</strong> Applicants under 6 years of age may be exempt from statutory fees or pay reduced consular tariffs.</li>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-600 pl-5 list-disc font-medium">
+                <li><strong className="text-slate-900">Payment Modes:</strong> Cards (Credit/Debit online), Net Banking, or Cash/DD at VAC.</li>
+                <li><strong className="text-slate-900">Non-Refundable:</strong> Consular fees are non-refundable once submitted regardless of outcome.</li>
+                <li><strong className="text-slate-900">Exchange Rates:</strong> Converted at official consular currency rate on appointment date.</li>
+                <li><strong className="text-slate-900">Minors &amp; Children:</strong> Under 6 years: Free. Ages 6–12: Half statutory fee.</li>
               </ul>
             </div>
           </div>

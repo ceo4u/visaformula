@@ -592,34 +592,80 @@ export function ConsultantDashboard() {
 
             <div className="flex flex-1 min-h-[calc(100vh-61px)]">
 
-                {/* Left Sidebar Navigation */}
+                {/* Left Sidebar Navigation (Nexus / Atlys Clean SaaS Style) */}
                 <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
-                    <div className="p-3 space-y-1">
-                        {allNavItems.map(item => {
-                            const isActive = activeTab === item.id;
-                            const IconComp = item.icon;
-                            return (
-                                <button
-                                    key={item.id}
-                                    onClick={() => setActiveTab(item.id)}
-                                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                        isActive
-                                            ? "bg-slate-900 text-white shadow-md"
-                                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                    }`}
-                                >
-                                    <div className="flex items-center gap-3 min-w-0">
-                                        <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} />
-                                        {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                    <div className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] no-scrollbar">
+                        {/* Clean Sidebar Header - No duplicate logo, perfectly aligned */}
+                        <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
+                            {!isSidebarCollapsed ? (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                                    Menu
+                                </span>
+                            ) : <div className="w-3" />}
+                            <button
+                                type="button"
+                                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                                title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                                className="p-1 rounded-lg border border-slate-200/80 hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
+                            >
+                                <ChevronLeft className={`w-3.5 h-3.5 transition-transform ${isSidebarCollapsed ? "rotate-180" : ""}`} />
+                            </button>
+                        </div>
+
+                        {/* Grouped Navigation Sections */}
+                        <nav className="space-y-4">
+                            {navSections.map((section, sIdx) => (
+                                <div key={sIdx} className="space-y-1">
+                                    {!isSidebarCollapsed && (
+                                        <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1">
+                                            {section.title}
+                                        </h5>
+                                    )}
+                                    <div className="space-y-0.5">
+                                        {section.items.map(item => {
+                                            const isActive = activeTab === item.id;
+                                            const IconComp = item.icon;
+                                            return (
+                                                <button
+                                                    key={item.id}
+                                                    onClick={() => setActiveTab(item.id)}
+                                                    title={item.label}
+                                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                                                        isActive
+                                                            ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
+                                                            : "text-slate-600 hover:text-slate-950 hover:bg-slate-50"
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center gap-2.5 min-w-0">
+                                                        <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-slate-950 stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
+                                                        {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                                    </div>
+                                                    {!isSidebarCollapsed && (
+                                                        item.count !== undefined ? (
+                                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 min-w-[20px] text-center">
+                                                                {item.count}
+                                                            </span>
+                                                        ) : item.badge ? (
+                                                            <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${item.badgeColor || 'bg-slate-100 text-slate-700'}`}>
+                                                                {item.badge}
+                                                            </span>
+                                                        ) : null
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
-                                </button>
-                            );
-                        })}
+                                </div>
+                            ))}
+                        </nav>
+                    </div>
+
+                    <div className="p-3 border-t border-slate-100 space-y-1">
                         <button
                             onClick={handleLogout}
-                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:bg-rose-50 transition-all mt-4"
+                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl font-semibold text-xs text-rose-600 hover:bg-rose-50 transition-all cursor-pointer"
                         >
-                            <LogOut className="w-4 h-4 shrink-0 text-rose-500" />
+                            <LogOut className="w-4 h-4 shrink-0" />
                             {!isSidebarCollapsed && <span>Logout</span>}
                         </button>
                     </div>

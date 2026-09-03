@@ -2781,25 +2781,18 @@ export function UserDashboard() {
                 {/* Desktop Collapsible Left Sidebar (Nexus / Atlys Clean SaaS Style) */}
                 <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                     <div className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] no-scrollbar">
-                        {/* Sidebar Top Header with Collapse Button */}
-                        <div className="flex items-center justify-between px-1 pb-1">
+                        {/* Clean Sidebar Header - No duplicate logo, perfectly aligned */}
+                        <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
                             {!isSidebarCollapsed ? (
-                                <div className="flex items-center gap-2">
-                                    <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-black text-sm">
-                                        T
-                                    </div>
-                                    <span className="text-sm font-black text-slate-900 tracking-tight">TravlTik</span>
-                                </div>
-                            ) : (
-                                <div className="mx-auto w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-black text-sm">
-                                    T
-                                </div>
-                            )}
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                                    Menu
+                                </span>
+                            ) : <div className="w-3" />}
                             <button
                                 type="button"
                                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                                 title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-                                className="p-1.5 rounded-lg border border-slate-200/80 hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                                className="p-1 rounded-lg border border-slate-200/80 hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
                             >
                                 <ChevronLeft className={`w-3.5 h-3.5 transition-transform ${isSidebarCollapsed ? "rotate-180" : ""}`} />
                             </button>

@@ -2852,6 +2852,7 @@ export function VisaCountryResultPortal({
   const [portalDocSearch, setPortalDocSearch] = useState('');
   const [portalDocFilter, setPortalDocFilter] = useState<'all' | 'mandatory' | 'recommended'>('all');
   const [inspectDocItem, setInspectDocItem] = useState<any | null>(null);
+  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
 
   // ── LIVE AI & CONSULAR REGISTRY DATA (Dynamic zero-dummy data) ──
   const [aiData, setAiData] = useState<any | null>(() => {
@@ -5046,22 +5047,33 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
             )}
 
-            {/* TAB: FAQ ON MOBILE */}
+            {/* TAB: FAQ ON MOBILE (MATCHING EXACT ACCORDION CARD media_1788472456972.png) */}
             {sidebarTab === 'faq' && (
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
-                <h3 className="text-sm font-extrabold text-slate-950">Frequently Asked Questions</h3>
-                <div className="space-y-2">
-                  {faqs.map((faq, i) => (
-                    <details key={i} className="group p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <summary className="text-xs font-bold text-slate-900 cursor-pointer list-none flex items-center justify-between">
-                        <span>{faq.question}</span>
-                        <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-open:rotate-180 transition-transform" />
-                      </summary>
-                      <p className="text-[11px] text-slate-600 font-medium leading-relaxed pt-2 border-t border-slate-200/60 mt-2">
-                        {faq.answer}
-                      </p>
-                    </details>
-                  ))}
+              <div className="space-y-3 text-left">
+                <h3 className="text-sm font-extrabold text-slate-950 px-1">Frequently Asked Questions</h3>
+                <div className="bg-white rounded-2xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
+                  {faqs.map((faq, idx) => {
+                    const isOpen = Boolean(openFaqs[idx]);
+                    return (
+                      <div key={idx} className="transition-colors">
+                        <button
+                          type="button"
+                          onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                          className="w-full px-4 py-3.5 flex items-center justify-between gap-3 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
+                        >
+                          <span className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                            {faq.question}
+                          </span>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
+                        </button>
+                        {isOpen && (
+                          <div className="px-4 pb-4 text-xs text-slate-600 font-normal leading-relaxed animate-fadeIn">
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -6251,17 +6263,33 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
             )}
 
-            {/* TAB: FAQ */}
+            {/* TAB: FAQ (MATCHING EXACT ACCORDION CARD media_1788472456972.png) */}
             {sidebarTab === 'faq' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-4 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950">Frequently Asked Questions</h2>
-                <div className="space-y-3">
-                  {faqs.map((faq, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
-                      <strong className="text-xs sm:text-sm font-black text-slate-950 block">{faq.question}</strong>
-                      <p className="text-xs text-slate-600 font-medium leading-relaxed">{faq.answer}</p>
-                    </div>
-                  ))}
+              <div className="space-y-4 text-left animate-fade-up">
+                <h2 className="text-xl font-black text-slate-950 px-1">Frequently Asked Questions</h2>
+                <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
+                  {faqs.map((faq, idx) => {
+                    const isOpen = Boolean(openFaqs[idx]);
+                    return (
+                      <div key={idx} className="transition-colors">
+                        <button
+                          type="button"
+                          onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                          className="w-full px-6 py-4.5 sm:px-8 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
+                        >
+                          <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                            {faq.question}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
+                        </button>
+                        {isOpen && (
+                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed animate-fadeIn">
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -6865,669 +6893,7 @@ All documents must be genuine, valid and meet official consular standards to avo
       {/* ══════════════════════════════════════════════════════════════════════════ */}
       {hasVisaAlready === 'no' && (
         <>
-          {/* ── 4-STEP PURPOSE-SPECIFIC INTERACTIVE QUESTIONNAIRE & VISA READINESS ── */}
-          <section id="section-visa-readiness" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-24 animate-fadeIn">
-            <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-8 shadow-sm text-left space-y-5 sm:space-y-6">
-              
-              {/* Header with Step indicator */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-slate-100">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] sm:text-sm font-extrabold text-slate-500 uppercase tracking-wider">
-                      Category: {activePurposeTab === 'study' ? 'STUDENT VISA' : activePurposeTab === 'work' ? 'WORK VISA' : 'TOURIST VISA'}
-                    </span>
-                  </div>
-                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-heading font-black text-slate-950 tracking-tight leading-tight">
-                    {activePurposeTab === 'study'
-                      ? `Apply for your Student Visa to ${countryName}`
-                      : activePurposeTab === 'work'
-                      ? `Apply for your Work Visa to ${countryName}`
-                      : `Apply for your Tourist Visa to ${countryName}`}
-                  </h3>
-                </div>
-
-                {/* Purpose Category Tag Badge (No unrelated tabs shown) */}
-                <div className="inline-flex items-center self-start sm:self-auto gap-2 px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-950 text-white text-xs sm:text-sm font-black shadow-xs">
-                  <span>
-                    {activePurposeTab === 'study'
-                      ? '🎓 Student / Study Visa'
-                      : activePurposeTab === 'work'
-                      ? '💼 Work / Employment Visa'
-                      : '🏖️ Visit / Tourist Visa'}
-                  </span>
-                </div>
-              </div>
-
-              {/* ── STEP 1: PASSPORT BIO-DATA (UPLOAD & REAL-TIME AI ANALYSIS) ── */}
-              <div className="pt-2 sm:pt-3">
-                <div className="bg-slate-50/60 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 space-y-4 text-left shadow-2xs">
-                  <div>
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-950 flex items-center gap-1.5 whitespace-nowrap">
-                        <span>📘 1. Passport Bio-Data (Upload &amp; Verification)</span>
-                      </span>
-                      {passportFile ? (
-                        <span className="text-[11px] sm:text-xs font-black uppercase text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
-                          ✓ ATTACHED &amp; ANALYZED
-                        </span>
-                      ) : (
-                        <span className="text-[11px] sm:text-xs font-black uppercase text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs shrink-0">
-                          UPLOAD REQUIRED
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed mt-2">
-                      Upload your passport bio-data page to automatically analyze expiry date, ICAO MRZ checksum, and verify consular compliance for {countryName}.
-                    </p>
-                  </div>
-
-                  {isScanningPassport ? (
-                    <div className="border border-indigo-200 bg-indigo-50/50 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[180px] sm:min-h-[220px] animate-pulse">
-                      <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md animate-bounce">
-                        <Sparkles className="w-6 h-6 text-white" />
-                      </div>
-                      <span className="text-sm sm:text-base font-black text-slate-900">
-                        Scanning ICAO 9303 MRZ Lines &amp; Document Security...
-                      </span>
-                      <p className="text-xs text-slate-500 font-semibold max-w-xs">
-                        Verifying passport validity, photo biometric specs &amp; 6-month consular compliance.
-                      </p>
-                    </div>
-                  ) : passportFile ? (
-                    <div className="p-4 sm:p-5 bg-white border border-emerald-300 rounded-2xl space-y-3 shadow-xs">
-                      <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-3">
-                        <div className="min-w-0">
-                          <span className="text-sm sm:text-base font-black text-slate-950 truncate block">
-                            {passportFile.fullName ? passportFile.fullName : passportFile.name}
-                          </span>
-                          <span className="text-[11px] sm:text-xs text-emerald-800 font-bold block mt-0.5">
-                            {passportFile.docType || 'Official Machine Readable Passport'}
-                            {passportFile.passportNumber ? ` • Passport No: ${passportFile.passportNumber}` : ''}
-                            {passportFile.nationality ? ` • ${passportFile.nationality}` : ''}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handlePassportUpload(null)}
-                          className="text-xs text-rose-600 hover:text-rose-800 font-black px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 cursor-pointer transition-colors shrink-0"
-                        >
-                          ✕ Remove
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs text-slate-700 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
-                        {passportFile.dateOfBirth && (
-                          <div>
-                            <span className="text-[10px] text-slate-400 font-bold block">Date of Birth</span>
-                            <span className="font-extrabold text-slate-900">{passportFile.dateOfBirth}</span>
-                          </div>
-                        )}
-                        {passportFile.issueDate && (
-                          <div>
-                            <span className="text-[10px] text-slate-400 font-bold block">Issue Date</span>
-                            <span className="font-extrabold text-slate-900">{passportFile.issueDate}</span>
-                          </div>
-                        )}
-                        {passportFile.expiryDate && (
-                          <div>
-                            <span className="text-[10px] text-slate-400 font-bold block">Expiry Date</span>
-                            <span className="font-extrabold text-slate-900">{passportFile.expiryDate}</span>
-                          </div>
-                        )}
-                        <div>
-                          <span className="text-[10px] text-slate-400 font-bold block">Validity</span>
-                          <span className="font-extrabold text-emerald-700">
-                            {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months` : 'Valid'}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-emerald-700 font-bold flex-wrap">
-                        <span>Size: {passportFile.size}</span>
-                        <span>•</span>
-                        <span>MRZ Checksum: Valid ✓</span>
-                        <span>•</span>
-                        <span>6-Month Rule: {passportFile.isExpiryCompliant ? 'Met ✓' : '⚠️ Less than 6 Months'}</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {passportScanError && (
-                        <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-800 leading-relaxed text-left flex items-start gap-2 animate-fadeIn">
-                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-                          <span>{passportScanError}</span>
-                        </div>
-                      )}
-                      <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-white hover:bg-indigo-50/30 rounded-2xl py-8 sm:py-12 px-4 sm:px-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all shadow-2xs hover:shadow-xs group min-h-[170px] sm:min-h-[200px]">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-50 group-hover:bg-indigo-100/90 group-hover:scale-110 flex items-center justify-center text-indigo-600 mb-2.5 sm:mb-3 transition-all shadow-xs">
-                          <Upload className="w-6 h-6 text-indigo-600 stroke-[2.5]" />
-                        </div>
-                        <span className="text-sm sm:text-base font-heading font-black text-slate-950 tracking-tight">
-                          Click or Drag to Upload Passport
-                        </span>
-                        <span className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-1">
-                          Only Passport Bio-Data Page (PDF, JPG, PNG)
-                        </span>
-                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-700 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-colors">
-                          <span>📁 Browse Passport File</span>
-                        </div>
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          className="hidden"
-                          onChange={(e) => handlePassportUpload(e.target.files?.[0] || null)}
-                        />
-                      </label>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* ── STEP 2: PURPOSE-SPECIFIC APPLICATION PROFILE (STUDY / TOURISM / WORK) ── */}
-              <div className="pt-6 border-t border-slate-100 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-black uppercase tracking-wider text-slate-900">
-                    Application Profile Details
-                  </span>
-                  <span className="text-xs text-slate-500 font-medium">
-                    Pre-fills visa petition &amp; consular dossier
-                  </span>
-                </div>
-
-                {/* STUDY QUESTIONNAIRE (7 PROFILE FIELDS) */}
-                {activePurposeTab === 'study' && (
-                  <div className="space-y-4 animate-fadeIn">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                      <PortalCustomSelect
-                        label="1. Highest Qualification"
-                        value={studyQual}
-                        onChange={setStudyQual}
-                        placeholder="Select qualification"
-                        options={[
-                          "12th Grade / High School",
-                          "Bachelor's Degree",
-                          "Master's Degree",
-                          "Diploma / Polytechnic"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label={`2. Target Degree in ${countryName}`}
-                        value={studyTarget}
-                        onChange={setStudyTarget}
-                        placeholder="Select target degree"
-                        options={[
-                          "Bachelor's (UG Degree)",
-                          "Master's (PG / MS)",
-                          "Post-Graduate Diploma",
-                          "PhD / Doctorate"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="3. Target Intake"
-                        value={studyIntake}
-                        onChange={setStudyIntake}
-                        placeholder="Select intake session"
-                        options={[
-                          "Fall 2026 (Aug - Sep)",
-                          "Spring 2027 (Jan - Feb)",
-                          "Summer 2027 (May - Jun)"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="4. Financial Proof / Funds"
-                        value={studyBudget}
-                        onChange={setStudyBudget}
-                        placeholder="Select funding source"
-                        options={[
-                          "Self-Funded Liquid Funds (₹25L+)",
-                          "Education Loan Required",
-                          "Full Scholarship / Sponsorship"
-                        ]}
-                      />
-                    </div>
-
-                    {/* Row 2: 3 Columns (Clean Symmetrical Grid) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
-                      <PortalCustomSelect
-                        label="5. Institutional Admission Status"
-                        value={studentAdmissionStatus}
-                        onChange={setStudentAdmissionStatus}
-                        placeholder="Select admission status"
-                        options={[
-                          "Confirmed Offer / CAS / I-20",
-                          "Conditional Offer Received",
-                          "Yet to Apply / Planning"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="6. English Language Proficiency"
-                        value={studentLanguageScore}
-                        onChange={setStudentLanguageScore}
-                        placeholder="Select language status"
-                        options={[
-                          "IELTS 6.5+ / PTE 60+ Cleared",
-                          "Exam Booked / Preparing",
-                          "Medium of Instruction (MOI) Waiver"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="7. Passport Validity Remaining"
-                        value={passportValidityRange}
-                        onChange={setPassportValidityRange}
-                        placeholder="Select passport validity"
-                        options={[
-                          "> 12 Months (Recommended)",
-                          "6 - 12 Months Valid",
-                          "< 6 Months (Renewal Required)"
-                        ]}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* VISIT / TOURISM QUESTIONNAIRE (8 PROFILE FIELDS WITH TRIP DURATION) */}
-                {activePurposeTab === 'tourism' && (
-                  <div className="space-y-4 animate-fadeIn">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                      {/* Q1: Trip Status */}
-                      <PortalCustomSelect
-                        label="1. Trip Planning Status"
-                        value={visitPlanStatus}
-                        onChange={setVisitPlanStatus}
-                        placeholder="Select trip status"
-                        options={[
-                          "Fixed Dates & Itinerary Ready",
-                          "Flexible / Exploring Dates",
-                          "Urgent Travel (Next 14 Days)"
-                        ]}
-                      />
-
-                      {/* Q2: Tentative Departure Date (Custom Sleek Calendar) */}
-                      <PortalCustomDatePicker
-                        label="2. Tentative Departure Date"
-                        value={visitTiming}
-                        min={todayStr}
-                        onChange={handleDepartureDateChange}
-                        placeholder="Select departure date"
-                      />
-
-                      {/* Q3: Tentative Return Date (Custom Sleek Calendar) */}
-                      <PortalCustomDatePicker
-                        label="3. Tentative Return Date"
-                        value={visitReturnDate}
-                        min={visitTiming ? new Date(new Date(visitTiming).getTime() + 86400000).toISOString().split('T')[0] : todayStr}
-                        max={visitTiming ? new Date(new Date(visitTiming).getTime() + 90 * 86400000).toISOString().split('T')[0] : undefined}
-                        onChange={handleReturnDateChange}
-                        placeholder="Select return date"
-                      />
-
-                      {/* Q4: Total Trip Duration (Calculated & Validated) */}
-                      <div className="space-y-1 text-left">
-                        <div className="flex items-center justify-between">
-                          <label className="block text-[11px] sm:text-xs font-bold text-slate-700">
-                            4. Total Trip Duration
-                          </label>
-                          {tripDurationDays > 0 && tripDurationDays <= 90 && (
-                            <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
-                              ✓ Within 90d Limit
-                            </span>
-                          )}
-                        </div>
-                        <div className="relative">
-                          <div className={`w-full h-11 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl border flex items-center justify-between transition-all shadow-2xs ${
-                            tripDurationDays > 0 && tripDurationDays <= 90
-                              ? 'border-emerald-300 bg-emerald-50/50 text-emerald-950'
-                              : tripDurationDays > 90
-                              ? 'border-rose-300 bg-rose-50/50 text-rose-950'
-                              : 'border-slate-200/90 bg-slate-50 text-slate-500'
-                          }`}>
-                            <div className="flex items-center gap-2">
-                              <Clock className="w-4 h-4 text-slate-600" />
-                              <span className="text-xs sm:text-[13px] font-black">
-                                {tripDurationDays > 0 
-                                  ? `${tripDurationDays} Days` 
-                                  : (!visitTiming || !visitReturnDate) 
-                                  ? 'Select Dates Above' 
-                                  : 'Invalid Dates'}
-                              </span>
-                            </div>
-                            <span className="text-[10px] font-bold text-slate-500">
-                              {tripDurationDays > 90 
-                                ? '⚠️ Max 90 Days Allowed' 
-                                : (!visitTiming || !visitReturnDate)
-                                ? 'Auto-calculated'
-                                : tripDurationDays === 0 
-                                ? '⚠️ Same-day not allowed' 
-                                : 'Tourist Stay'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Row 2: Consular Compliance & Profile Criteria */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-                      <PortalCustomSelect
-                        label="5. Accommodation Preference"
-                        value={visitStay}
-                        onChange={setVisitStay}
-                        placeholder="Select accommodation"
-                        options={[
-                          "Hotel / Resort Booked",
-                          "Staying with Host / Family",
-                          "Airbnb / Rental Apartment"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="6. 6-Month Stamped Bank Balance"
-                        value={touristBankStability}
-                        onChange={setTouristBankStability}
-                        placeholder="Select bank balance"
-                        options={[
-                          "₹4L+ Maintained (Strong Solvency)",
-                          "₹2L - ₹4L Balance",
-                          "Under ₹2L / Need Financial Advice"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="7. Home Country Ties & Employment"
-                        value={touristHomeTies}
-                        onChange={setTouristHomeTies}
-                        placeholder="Select employment / ties"
-                        options={[
-                          "Salaried (NOC & 3-Mo Payslips Ready)",
-                          "Business Owner / GST & 2-Yr ITR",
-                          "Self-Employed / Freelancer",
-                          "Student / Dependent"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="8. Passport Validity Remaining"
-                        value={passportValidityRange}
-                        onChange={setPassportValidityRange}
-                        placeholder="Select passport validity"
-                        options={[
-                          "> 12 Months (Recommended)",
-                          "6 - 12 Months Valid",
-                          "< 6 Months (Renewal Required)"
-                        ]}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* WORK QUESTIONNAIRE (5 PROFILE FIELDS) */}
-                {activePurposeTab === 'work' && (
-                  <div className="space-y-4 animate-fadeIn">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                      <PortalCustomSelect
-                        label="1. Total Work Experience"
-                        value={workExp}
-                        onChange={setWorkExp}
-                        placeholder="Select total experience"
-                        options={[
-                          "0 - 2 Years (Early Career)",
-                          "3 - 5 Years (Mid-Level)",
-                          "5 - 8 Years (Senior)",
-                          "8+ Years (Lead / Executive)"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label={`2. Job Offer in ${countryName}`}
-                        value={workOffer}
-                        onChange={setWorkOffer}
-                        placeholder="Select offer status"
-                        options={[
-                          "Confirmed Sponsored Job Offer (CoS/LMIA)",
-                          "Interviewing / Final Stages",
-                          "Job Seeker (Applying from India)"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="3. Industry / Job Role"
-                        value={workDomain}
-                        onChange={setWorkDomain}
-                        placeholder="Select domain"
-                        options={[
-                          "IT / Software & Tech",
-                          "Healthcare / Nursing / Medical",
-                          "Engineering & Construction",
-                          "Finance & Management",
-                          "Hospitality & Services"
-                        ]}
-                      />
-                      <PortalCustomSelect
-                        label="4. Skill Assessment Status"
-                        value={workAssess}
-                        onChange={setWorkAssess}
-                        placeholder="Select assessment status"
-                        options={[
-                          "Assessed (ACS / WES / Engineers Aus)",
-                          "Under Processing",
-                          "Not Initiated / Need Assistance"
-                        ]}
-                      />
-                    </div>
-
-                    {/* Row 2: 1 Column */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-                      <PortalCustomSelect
-                        label="5. Passport Validity Remaining"
-                        value={passportValidityRange}
-                        onChange={setPassportValidityRange}
-                        placeholder="Select passport validity"
-                        options={[
-                          "> 12 Months (Recommended)",
-                          "6 - 12 Months Valid",
-                          "< 6 Months (Renewal Required)"
-                        ]}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* ── STEP 3: YOUR VISA READINESS SCORE (POSITIONED BELOW THE FIELDS) ── */}
-              <div className="pt-6 border-t border-slate-200/80">
-                <div className="bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xs max-w-2xl mx-auto flex flex-col justify-between items-center text-center space-y-4">
-                  
-                  {/* Card Header */}
-                  <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-700 tracking-wider mb-0.5">
-                        <span>{readinessMetrics.category}</span>
-                        <span>•</span>
-                        <span>Consular Readiness</span>
-                      </div>
-                      <h4 className="text-base sm:text-xl font-heading font-black text-slate-950 tracking-tight">
-                        Your Visa Readiness Score
-                      </h4>
-                      <p className="text-[11px] sm:text-sm text-slate-500 font-semibold mt-0.5">
-                        {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                      </p>
-                    </div>
-
-                    <span className={`px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-black uppercase tracking-wider shrink-0 ${
-                      readinessMetrics.score >= 85
-                        ? 'bg-[#D97706] text-white shadow-xs'
-                        : readinessMetrics.score >= 70
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : readinessMetrics.score >= 50
-                        ? 'bg-blue-600 text-white shadow-xs'
-                        : readinessMetrics.score > 0
-                        ? 'bg-orange-500 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-500 border border-slate-200'
-                    }`}>
-                      {readinessMetrics.score >= 85
-                        ? 'EXCEPTIONAL'
-                        : readinessMetrics.score >= 70
-                        ? 'EXCELLENT'
-                        : readinessMetrics.score >= 50
-                        ? 'GOOD'
-                        : readinessMetrics.score > 0
-                        ? 'FAIR'
-                        : 'PENDING'}
-                    </span>
-                  </div>
-
-                  {/* Center: Circular Rainbow Gauge */}
-                  <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center my-2">
-                    <svg className="w-full h-full" viewBox="0 0 200 200">
-                      <defs>
-                        <linearGradient id="rainbowGauge" x1="0%" y1="100%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#F43F5E" />
-                          <stop offset="35%" stopColor="#FB923C" />
-                          <stop offset="65%" stopColor="#FACC15" />
-                          <stop offset="100%" stopColor="#22C55E" />
-                        </linearGradient>
-                      </defs>
-
-                      {/* Background Arc */}
-                      <path
-                        d="M 46 150 A 70 70 0 1 1 154 150"
-                        fill="none"
-                        stroke="#E2E8F0"
-                        strokeWidth="15"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Foreground Rainbow Score Arc */}
-                      <path
-                        d="M 46 150 A 70 70 0 1 1 154 150"
-                        fill="none"
-                        stroke="url(#rainbowGauge)"
-                        strokeWidth="15"
-                        strokeLinecap="round"
-                        strokeDasharray="318"
-                        strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
-                        className="transition-all duration-1000 ease-out"
-                      />
-                    </svg>
-
-                    {/* Center Number & Points (Clean Out of 10 Scale) */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
-                      <div className="flex items-baseline justify-center gap-1">
-                        <span className="text-4xl sm:text-6xl font-heading font-black text-slate-950 tracking-tight leading-none">
-                          {readinessMetrics.score > 0
-                            ? (readinessMetrics.score / 10).toFixed(1)
-                            : '0.0'}
-                        </span>
-                        <span className="text-sm sm:text-xl font-bold text-slate-400">/ 10</span>
-                      </div>
-                      <span className="text-[11px] sm:text-sm font-extrabold text-slate-800 mt-1 sm:mt-1.5">
-                        {docsReadyCount > 0 && docsTotalCount > 0 ? (
-                          <span className="text-emerald-600 font-black">
-                            {docsReadyCount === docsTotalCount 
-                              ? '🌟 All Docs Ready (+3.5 pts)' 
-                              : `+${((docsReadyCount / docsTotalCount) * 3.5).toFixed(1)} pts (${docsReadyCount}/${docsTotalCount} Docs)`}
-                          </span>
-                        ) : passportFile ? (
-                          <span className="text-emerald-600 font-black">
-                            {passportFile.remainingMonths !== undefined && passportFile.remainingMonths >= 12
-                              ? `+4.0 pts (${passportFile.remainingMonths} Mos Valid ✓)`
-                              : passportFile.remainingMonths !== undefined && passportFile.remainingMonths >= 6
-                              ? `+3.0 pts (${passportFile.remainingMonths} Mos Valid)`
-                              : '+2.0 pts (Passport Verified)'}
-                          </span>
-                        ) : readinessMetrics.filledCount > 0 ? (
-                          <span className="text-slate-700">+{((readinessMetrics.filledCount * 10) / 10).toFixed(1)} pts</span>
-                        ) : (
-                          <span className="text-slate-400">0.0 pts</span>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  {passportFile && (
-                    <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full shadow-2xs text-center">
-                      <span>✓ Passport Validity Analyzed: {passportFile.remainingMonths !== undefined ? `${passportFile.remainingMonths} Months Remaining` : 'Verified'} (Consular 6-Month Rule Passed)</span>
-                    </div>
-                  )}
-
-                  {/* Category Assessment Pillars Grid */}
-                  <div className="w-full pt-4 border-t border-slate-100 text-left">
-                    <div className="flex items-center justify-between pb-2.5">
-                      <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
-                        {readinessMetrics.category} Evaluation Pillars
-                      </span>
-                      <span className="text-[11px] font-bold text-slate-700 font-mono">
-                        {(readinessMetrics.score / 10).toFixed(1)} / 10.0 Pts
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
-                      {readinessMetrics.pillars.map((pillar, idx) => {
-                        const pct = Math.min(100, Math.round((pillar.score / pillar.max) * 100));
-                        return (
-                          <div
-                            key={idx}
-                            className="p-3 rounded-xl sm:rounded-2xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-50 transition-colors"
-                          >
-                            <div className="flex items-center justify-between text-xs font-bold text-slate-800">
-                              <span className="truncate pr-1">{pillar.name}</span>
-                              <span className="font-mono text-emerald-700 font-extrabold text-[11px] shrink-0">
-                                {(pillar.score / 10).toFixed(1)} / {(pillar.max / 10).toFixed(1)}
-                              </span>
-                            </div>
-                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1.5">
-                              <div
-                                className="bg-emerald-500 h-full rounded-full transition-all duration-500"
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                            <div className="text-[10px] text-slate-500 font-medium truncate mt-1">
-                              {pillar.value}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Consular Alerts / Red Flags */}
-                  {readinessMetrics.redFlags.length > 0 && (
-                    <div className="w-full space-y-1.5 text-left">
-                      {readinessMetrics.redFlags.slice(0, 2).map((rf, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-semibold leading-relaxed"
-                        >
-                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-                          <span>{rf}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Top Recommendations */}
-                  {readinessMetrics.recommendations.length > 0 && (
-                    <div className="w-full space-y-1.5 text-left">
-                      {readinessMetrics.recommendations.slice(0, 2).map((rec, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-emerald-950 text-xs font-semibold leading-relaxed"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{rec}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Card Footer */}
-                  <div className="w-full pt-3 border-t border-slate-100 space-y-1">
-                    <div className="text-xs sm:text-sm font-black text-slate-800">
-                      TravlTik Consular AI
-                    </div>
-                    <div className="text-xs text-slate-500 font-semibold">
-                      Score calculated using official {countryName} immigration benchmarks
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-          </section>
+          
 
           {/* ── SPECIALIZED STUDENT VISA APPLICATION ROADMAP & DUAL CHOICE WORKFLOW ── */}
           {hasVisaAlready === 'no' && activePurposeTab === 'study' && (

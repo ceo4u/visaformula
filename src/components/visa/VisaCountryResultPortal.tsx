@@ -4639,61 +4639,338 @@ All documents must be genuine, valid and meet official consular standards to avo
       {/* ── PREMIUM VISA DETAILS WORKSPACE (MATCHING EXACT SPECIFICATION media_1788458534453) ── */}
       <section className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-3 sm:pt-6 space-y-6 font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','Plus_Jakarta_Sans',sans-serif] antialiased subpixel-antialiased text-slate-900">
         
-        {/* TOP MOBILE APP HEADER (Visible on Mobile & Tablet, hidden on Desktop) */}
-        <div className="lg:hidden bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-xl font-black text-slate-950 tracking-tight flex items-center gap-1.5">
-              <span>TravlTik</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
-            </span>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <button className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors">
-              <Globe className="w-4 h-4" />
-            </button>
-            <button className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors relative">
-              <Bell className="w-4 h-4" />
-              <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5" />
-            </button>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
-              U
+{/* ── MOBILE VIEW: MATCHING EXACT SPECIFICATION media_1788466960444.png (Visible on Mobile, hidden on Desktop) ── */}
+        <div className="lg:hidden space-y-4 text-left">
+          
+          {/* 1. TOP COUNTRY HERO CARD */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3.5">
+            <div className="flex items-center gap-3.5">
+              {/* Landmark Image Thumbnail */}
+              <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-xs bg-slate-100 relative">
+                <img
+                  src={heroImage}
+                  alt={countryName}
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+
+              {/* Title & Badges */}
+              <div className="min-w-0 flex-1">
+                <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200 uppercase tracking-wider mb-1">
+                  {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'}
+                </span>
+                <h1 className="text-base font-extrabold text-slate-950 truncate tracking-tight leading-snug">
+                  {countryName} Tourist Visa
+                </h1>
+                <span className="text-xs text-slate-400 font-semibold block truncate">
+                  {aiData?.official_source_name || (isSchengen ? 'Schengen Area' : 'Official Consular Registry')}
+                </span>
+              </div>
+            </div>
+
+            {/* 3-Column Spec Strip */}
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-center">
+              <div className="space-y-0.5">
+                <div className="flex items-center justify-center gap-1 text-[11px] font-bold text-slate-900">
+                  <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span className="truncate">{processingDays ? `${processingDays}-${processingDays + 5} Days` : '15-20 Days'}</span>
+                </div>
+                <span className="text-[10px] font-semibold text-slate-400 block">Processing Time</span>
+              </div>
+
+              <div className="space-y-0.5 border-x border-slate-100 px-1">
+                <div className="flex items-center justify-center gap-1 text-[11px] font-bold text-slate-900">
+                  <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span className="truncate">{validity || 'Up to 90 Days'}</span>
+                </div>
+                <span className="text-[10px] font-semibold text-slate-400 block">Validity</span>
+              </div>
+
+              <div className="space-y-0.5">
+                <div className="flex items-center justify-center gap-1 text-[11px] font-bold text-slate-900">
+                  <RotateCw className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span className="truncate">Single / Multi</span>
+                </div>
+                <span className="text-[10px] font-semibold text-slate-400 block">Entry Type</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* HORIZONTAL SCROLLABLE TABS FOR MOBILE & TABLET */}
-        <div className="lg:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-          {[
-            { id: 'overview', label: 'Overview' },
-            { id: 'documents', label: 'Documents', badge: totalDocsCount.toString() },
-            { id: 'requirements', label: 'Conditions & Requirements' },
-            { id: 'steps', label: 'Steps to Follow' },
-            { id: 'fees', label: 'Fees & Payment' },
-            { id: 'processing', label: 'Processing Time' },
-            { id: 'faq', label: 'FAQ' }
-          ].map(tab => (
+          {/* 2. VISA READINESS CARD */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3.5">
+            <h3 className="text-xs font-bold text-slate-900 tracking-tight">Visa Readiness</h3>
+
+            <div className="flex items-center justify-between gap-4">
+              {/* Circular SVG Gauge */}
+              <div className="flex flex-col items-center justify-center shrink-0">
+                <div className="relative w-20 h-20 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-slate-100"
+                      strokeWidth="3.5"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path
+                      className="text-slate-900"
+                      strokeDasharray={`${readinessPercent}, 100`}
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span className="text-base font-extrabold text-slate-950">{readinessPercent}%</span>
+                  </div>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-900 mt-1">{readinessLabel}</span>
+              </div>
+
+              {/* 4 Status Rows */}
+              <div className="flex-1 space-y-1.5 text-xs font-semibold">
+                <div className="flex items-center justify-between text-slate-600">
+                  <span className="flex items-center gap-1.5 text-slate-900 font-bold">
+                    <Check className="w-3.5 h-3.5 stroke-[3] text-emerald-600" /> Completed
+                  </span>
+                  <strong className="text-slate-950 font-black">{completedDocsCount}</strong>
+                </div>
+                <div className="flex items-center justify-between text-slate-600">
+                  <span className="flex items-center gap-1.5 text-amber-600 font-bold">
+                    <Clock className="w-3.5 h-3.5" /> In Progress
+                  </span>
+                  <strong className="text-slate-950 font-black">{inProgressDocsCount}</strong>
+                </div>
+                <div className="flex items-center justify-between text-slate-600">
+                  <span className="flex items-center gap-1.5 text-rose-600 font-bold">
+                    <AlertCircle className="w-3.5 h-3.5" /> Pending
+                  </span>
+                  <strong className="text-slate-950 font-black">{pendingDocsCount}</strong>
+                </div>
+                <div className="flex items-center justify-between text-slate-600">
+                  <span className="flex items-center gap-1.5 text-slate-400 font-medium">
+                    <Plus className="w-3.5 h-3.5" /> Not Started
+                  </span>
+                  <strong className="text-slate-950 font-black">{notStartedDocsCount}</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Continue Checklist Action Button */}
             <button
-              key={tab.id}
               type="button"
-              onClick={() => setSidebarTab(tab.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
-                sidebarTab === tab.id
-                  ? 'bg-slate-900 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50'
-              }`}
+              onClick={() => {
+                setSidebarTab('documents');
+                const el = document.getElementById('mobile-workspace-content');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white text-xs font-extrabold transition-all shadow-sm cursor-pointer text-center"
             >
-              {tab.label}
-              {tab.badge && (
-                <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
-                  {tab.badge}
-                </span>
-              )}
+              Continue Checklist
             </button>
-          ))}
+          </div>
+
+          {/* 3. QUICK NAVIGATION (ROW OF 5 CIRCLE ICON BUTTONS) */}
+          <div className="flex items-center justify-between gap-1 py-1">
+            {[
+              { id: 'documents', label: 'Documents', icon: <FileText className="w-4 h-4 text-purple-600" />, bg: 'bg-purple-50 hover:bg-purple-100 border-purple-200/70' },
+              { id: 'steps', label: 'Steps', icon: <Compass className="w-4 h-4 text-sky-600" />, bg: 'bg-sky-50 hover:bg-sky-100 border-sky-200/70' },
+              { id: 'fees', label: 'Fees', icon: <CreditCard className="w-4 h-4 text-amber-600" />, bg: 'bg-amber-50 hover:bg-amber-100 border-amber-200/70' },
+              { id: 'requirements', label: 'Requirements', icon: <ShieldCheck className="w-4 h-4 text-indigo-600" />, bg: 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200/70' },
+              { id: 'faq', label: 'FAQ', icon: <HelpCircle className="w-4 h-4 text-teal-600" />, bg: 'bg-teal-50 hover:bg-teal-100 border-teal-200/70' }
+            ].map(nav => {
+              const isActive = sidebarTab === nav.id;
+              return (
+                <button
+                  key={nav.id}
+                  type="button"
+                  onClick={() => setSidebarTab(nav.id)}
+                  className="flex flex-col items-center gap-1.5 flex-1 cursor-pointer group transition-all"
+                >
+                  <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border transition-all ${
+                    isActive
+                      ? 'bg-slate-950 text-white border-slate-950 shadow-sm scale-105 ring-2 ring-slate-900/20'
+                      : `${nav.bg} text-slate-700 shadow-2xs`
+                  }`}>
+                    <span className={isActive ? 'text-white' : ''}>{nav.icon}</span>
+                  </div>
+                  <span className={`text-[11px] font-bold tracking-tight ${
+                    isActive ? 'text-slate-950' : 'text-slate-500 group-hover:text-slate-800'
+                  }`}>
+                    {nav.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 4. ACTIVE MOBILE TAB CONTENT */}
+          <div id="mobile-workspace-content" className="pt-1 space-y-4 scroll-mt-20">
+            {sidebarTab === 'documents' && (
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <h3 className="text-sm font-extrabold text-slate-950 tracking-tight">Documents Required</h3>
+                  <a
+                    href="#download"
+                    onClick={(e) => { e.preventDefault(); window.print(); }}
+                    className="text-[11px] font-bold text-teal-700 hover:text-teal-800 flex items-center gap-1"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download Checklist</span>
+                  </a>
+                </div>
+
+                {/* Mobile Document Cards List */}
+                <div className="space-y-2.5">
+                  {portalDocItems.map((doc) => {
+                    const uploaded = portalUploadedDocs[doc.key];
+                    const isDone = uploaded?.status === 'completed';
+
+                    return (
+                      <div key={doc.key} className="p-3 rounded-xl border border-slate-200/80 bg-slate-50/50 flex items-start gap-3 transition-all">
+                        <div className={`w-9 h-9 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
+                          {doc.icon}
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1">
+                            <strong className="text-xs font-bold text-slate-950 truncate block">
+                              {doc.name}
+                            </strong>
+                            {isDone ? (
+                              <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0">
+                                <Check className="w-3 h-3 stroke-[3]" /> Done
+                              </span>
+                            ) : (
+                              <label className="text-[10px] font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 px-2 py-0.5 rounded-md cursor-pointer shrink-0 shadow-2xs">
+                                Upload
+                                <input
+                                  type="file"
+                                  className="hidden"
+                                  onChange={(e) => handlePortalFileUpload(doc.key, e)}
+                                />
+                              </label>
+                            )}
+                          </div>
+
+                          <p className="text-[11px] text-slate-500 font-medium leading-tight mt-1 line-clamp-2">
+                            {doc.conditions?.[0] || 'Statutory consular requirement'}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* View All Documents Footer Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('consultants-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-teal-700 text-xs font-extrabold transition-all cursor-pointer text-center"
+                >
+                  View All Documents
+                </button>
+              </div>
+            )}
+
+            {/* TAB: REQUIREMENTS ON MOBILE */}
+            {sidebarTab === 'requirements' && (
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
+                <h3 className="text-sm font-extrabold text-slate-950">Conditions &amp; Requirements</h3>
+                <div className="space-y-2.5 text-xs text-slate-600">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <strong className="text-slate-900 block font-bold">1. Entry &amp; Stay Conditions</strong>
+                    <p className="text-[11px] text-slate-500">Valid passport (6 months minimum), maximum 180-day stay limit per entry, and strictly no unauthorized employment.</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <strong className="text-slate-900 block font-bold">2. Financial Solvency</strong>
+                    <p className="text-[11px] text-slate-500">Last 3-6 months official stamped bank statements and last 2-3 years Income Tax Returns (ITR).</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <strong className="text-slate-900 block font-bold">3. Home Ties (INA 214(b))</strong>
+                    <p className="text-[11px] text-slate-500">Employer leave letter (NOC) or business registration establishing permanent home roots.</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <strong className="text-slate-900 block font-bold">4. Biometrics &amp; Interview</strong>
+                    <p className="text-[11px] text-slate-500">VAC digital fingerprint enrollment and mandatory in-person consular interview.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: STEPS ON MOBILE */}
+            {sidebarTab === 'steps' && (
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
+                <h3 className="text-sm font-extrabold text-slate-950">Steps to Follow</h3>
+                <div className="space-y-2">
+                  {(aiData?.how_to_apply || [
+                    'Complete official application form online',
+                    'Pay consular MRV visa fees',
+                    'Schedule VAC biometrics & interview appointments',
+                    'Attend appointment and submit documents',
+                    'Collect your stamped visa'
+                  ]).map((st: string, idx: number) => (
+                    <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                      <span className="w-6 h-6 rounded-full bg-slate-950 text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                        {idx + 1}
+                      </span>
+                      <p className="text-xs font-semibold text-slate-800 leading-snug">{st.replace(/^[0-9]+[️⃣\.\)]\s*/, '')}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB: FEES ON MOBILE */}
+            {sidebarTab === 'fees' && (
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
+                <h3 className="text-sm font-extrabold text-slate-950">Official Visa Fees</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                    <span className="font-semibold text-slate-600">Visa Fee</span>
+                    <strong className="font-extrabold text-slate-950">{aiData?.costs?.visa_fee || '$185 USD'}</strong>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                    <span className="font-semibold text-slate-600">Service Fee</span>
+                    <strong className="font-extrabold text-slate-950">{aiData?.costs?.service_fee || '$0 (Included)'}</strong>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 text-white text-xs font-bold">
+                    <span>Total Official Cost</span>
+                    <span className="text-sm font-extrabold text-emerald-400">{aiData?.costs?.total_fee || '$185 USD'}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: FAQ ON MOBILE */}
+            {sidebarTab === 'faq' && (
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm space-y-3">
+                <h3 className="text-sm font-extrabold text-slate-950">Frequently Asked Questions</h3>
+                <div className="space-y-2">
+                  {faqs.map((faq, i) => (
+                    <details key={i} className="group p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                      <summary className="text-xs font-bold text-slate-900 cursor-pointer list-none flex items-center justify-between">
+                        <span>{faq.question}</span>
+                        <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-open:rotate-180 transition-transform" />
+                      </summary>
+                      <p className="text-[11px] text-slate-600 font-medium leading-relaxed pt-2 border-t border-slate-200/60 mt-2">
+                        {faq.answer}
+                      </p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* MAIN TWO-COLUMN CONTAINER */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* ── DESKTOP VIEW: TWO-COLUMN SIDEBAR & WORKSPACE (Visible on lg:screens, hidden on mobile) ── */}
+        <div className="hidden lg:grid grid-cols-12 gap-6 items-start">
           
           {/* ── LEFT SIDEBAR (Desktop lg:col-span-3) ── */}
           <aside className="hidden lg:block lg:col-span-3 space-y-4 sticky top-4">
@@ -8743,28 +9020,6 @@ All documents must be genuine, valid and meet official consular standards to avo
             </div>
 
           </section>
-
-          {/* ── MOBILE FLOATING STICKY ACTION BAR (ANDROID & IOS OPTIMIZED) ── */}
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-3 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] pb-[max(12px,env(safe-area-inset-bottom))]">
-            <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block truncate">
-                {countryName} Visa Assistance
-              </span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900 truncate block">
-                Talk to Verified Expert
-              </span>
-            </div>
-
-            <a
-              href={`https://wa.me/917661989366?text=${encodeURIComponent(`Hi TravlTik, I need expert visa assistance for ${countryName}`)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/25 active:scale-95 shrink-0 select-none cursor-pointer"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>WhatsApp Us</span>
-            </a>
-          </div>
         </>
       )}
 

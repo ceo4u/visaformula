@@ -59,7 +59,7 @@ const pageDesc = `Get your ${countryClean} visa online from your smartphone with
   </script>
   <div class="min-h-screen bg-white">
     <VisaCountryResultPortal 
-      client:load 
+      client:only="react" 
       countrySlug={country || 'uae'} 
       initialPassport={passport} 
       initialPurpose={purpose} 

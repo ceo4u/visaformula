@@ -5176,34 +5176,6 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // 1. Feature Access Protection: User must be signed in
-    const userEmail = (
-      body.userEmail ||
-      body.email ||
-      request.headers.get('x-user-email') ||
-      ''
-    ).trim().toLowerCase();
-
-    const clientIp = (
-      request.headers.get('cf-connecting-ip') ||
-      request.headers.get('x-forwarded-for')?.split(',')[0] ||
-      'anonymous'
-    ).trim();
-
-    const isLoggedIn = Boolean(userEmail || body.isLoggedIn || body.user || request.headers.get('x-user-id'));
-    if (!isLoggedIn) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          loginRequired: true,
-          error: 'login_required',
-          message: 'Sign in required to access official visa requirements and AI features.'
-        }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-
     const rawFrom = body.fromCountry || body.passportCountry || 'India';
     const rawTo = body.toCountry || body.destinationCountry || 'Greece';
     const purpose = body.purpose || 'Tourism / Vacation';

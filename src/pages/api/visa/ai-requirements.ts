@@ -4095,36 +4095,36 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       ],
       financial_proofs: [
         {
-          type: 'Bank Account Statements (Primary)',
-          minimum_balance_or_amount: '€50–€70 per day of stay (e.g., min. €700 for a 10-day trip)',
-          time_frame: 'Last 3 to 6 months (bank-stamped originals only)',
+          type: 'Bank Account Statements',
+          minimum_balance_or_amount: '€50–€70 / day (~ ₹5,000–₹7,000)',
+          time_frame: 'Last 3 to 6 months',
           notes: isGreece
-            ? 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy of Greece.'
-            : `Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory. Online/self-printed statements are NOT accepted by the Embassy / Consulates of ${dest}.`
+            ? 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory.'
+            : `Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory.`
         },
         {
           type: 'Income Tax Returns (ITR-V)',
-          minimum_balance_or_amount: null,
-          time_frame: 'Last 3 consecutive financial years',
-          notes: 'ITR-V e-filing acknowledgements. Salaried: ITR-1/ITR-2 + Form 16. Self-employed: ITR-3/ITR-4 (Business ITR). Students/Dependents: Sponsor\'s ITR.'
+          minimum_balance_or_amount: 'Last 2–3 Years',
+          time_frame: 'AY 2022-23 to 2024-25',
+          notes: 'ITR-V e-filing acknowledgements + Form 16 (or Business ITR-3/4).'
         },
         {
-          type: 'Salary Slips (Employed Applicants)',
-          minimum_balance_or_amount: null,
-          time_frame: 'Last 3 consecutive months',
-          notes: 'Original salary slips signed/stamped by employer HR. Must show gross salary, deductions, and net salary. Should match the bank statement credits.'
+          type: 'Salary Slips (Payslips)',
+          minimum_balance_or_amount: 'Last 3 Months',
+          time_frame: '3 Consecutive Months',
+          notes: 'HR-signed salary slips matching bank statement salary credits.'
         },
         {
-          type: 'Business Financial Proof (Self-Employed)',
-          minimum_balance_or_amount: null,
-          time_frame: 'Last 3 years ITR + Last 6 months company bank statements',
-          notes: 'Company Registration Certificate + GST Certificate + Audited business accounts or CA-certified balance sheet.'
+          type: 'Business Financial Proof',
+          minimum_balance_or_amount: 'GST & Registration',
+          time_frame: 'Last 6 Months Statements',
+          notes: 'Company registration/GST certificate + 6-month current account statement.'
         },
         {
-          type: 'Fixed Deposits / Investments (Supporting)',
-          minimum_balance_or_amount: null,
-          time_frame: 'Current FD receipts or investment portfolio statement',
-          notes: 'Supporting financial documents showing overall wealth and strong economic ties to India — reduces risk of overstay suspicion.'
+          type: 'Investments & Assets',
+          minimum_balance_or_amount: 'Optional Supporting',
+          time_frame: 'Current Holdings',
+          notes: 'Fixed deposits or mutual funds demonstrating strong home economic ties.'
         }
       ],
       other_requirements: [
@@ -4162,20 +4162,20 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: isGreece ? [
-        '1️⃣ Register on the GVCW E-VISA Portal (in-gr.gvcworld.eu) and fill in the Harmonised Schengen Visa Application Form online.',
-        '2️⃣ Pay the visa & VAC service fee (€90 Embassy fee + €30 GVCW VAC service charge = €120 total) in-person at the GVCW Visa Application Center (VAC) counter during your appointment.',
-        '3️⃣ Compile your complete document dossier: passport, photos, insurance, flight itinerary (with PNR), hotel bookings, day-by-day travel plan, bank statements (3-6 months, bank-stamped), ITR (3 years), employment/NOC letter.',
-        '4️⃣ Book your in-person appointment at the nearest GVCW VAC (available in 8 Indian cities).',
-        '5️⃣ Attend the appointment for biometric submission (fingerprints + photo) and hand over your document dossier.',
-        '6️⃣ Track your application via the GVCW tracking portal. Standard processing: 15 calendar days. Peak season (June–August): up to 45 days.',
-        '7️⃣ Collect your passport with the Schengen visa sticker from the VAC or via courier.'
+        'Register on the official GVCW E-VISA Portal (in-gr.gvcworld.eu) and complete the Harmonised Schengen Visa Application Form online.',
+        'Book your in-person appointment at the nearest GVCW Visa Application Center (available in 8 Indian cities).',
+        'Compile your verified document dossier: valid passport, photos, insurance, flight itinerary, hotel bookings, bank statements, and ITR.',
+        'Attend your appointment for biometric submission (fingerprints and digital photo) and submit your physical dossier.',
+        'Pay the visa & VAC service fee (€90 Embassy fee + €30 GVCW VAC service charge = €120 total) at the counter.',
+        'Track your application online via the GVCW tracking portal (standard processing: 15 calendar days).',
+        'Collect your passport with the Schengen visa sticker from the VAC or receive it securely via courier.'
       ] : [
         'Complete the Harmonised Schengen Visa Application Form from the official embassy/VFS portal.',
-        'Pay the visa fee (€90 embassy + VAC service fee) in-person at the Visa Application Center counter during submission.',
-        'Compile your document dossier: passport, photos, insurance, flights, hotel, bank statements, ITR, employment proof.',
         'Book an in-person appointment at the authorized VAC in India.',
+        'Compile your document dossier: passport, photos, insurance, flights, hotel, bank statements, ITR, employment proof.',
         'Attend appointment for biometrics and document submission.',
-        'Track your application and collect passport.'
+        'Pay the visa fee (€90 embassy + VAC service fee) at the counter during submission.',
+        'Track your application online and collect your passport upon consular decision.'
       ],
       costs: {
         visa_fee: '€90 (approx. ₹8,100 at current exchange rate)',

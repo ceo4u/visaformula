@@ -59,8 +59,17 @@ export function getAiDocIcon(title: string): string {
 }
 
 export function cleanStepText(step: string, idx: number): { stepNum: number; text: string } {
-  let text = (step || '').replace(/^[0-9]+[?.\-:\s]+/, '').replace(/^Step\s*[0-9]+[:\s-]*/i, '').trim();
-  text = text.replace(/^\?\?+\s*/, '').trim();
+  let text = (step || '').trim();
+  // Strip unicode keycap emojis like 1️⃣, 2️⃣, 3️⃣... 9️⃣, 🔟
+  text = text.replace(/^[0-9]\uFE0F?\u20E3\s*/, '');
+  text = text.replace(/^10\uFE0F?\u20E3\s*/, '');
+  text = text.replace(/^[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u27BF]+\s*/, '');
+  text = text.replace(/^[0-9]+[.)\-:\s]+/, '');
+  text = text.replace(/^Step\s*[0-9]+[:\s\-)–—]*/i, '');
+  text = text.replace(/^[0-9]\uFE0F?\u20E3\s*/, '');
+  text = text.replace(/^[0-9]+[.)\-:\s]+/, '');
+  text = text.replace(/^\?\?+\s*/, '');
+  text = text.trim();
   return { stepNum: idx + 1, text };
 }
 
@@ -642,6 +651,111 @@ function renderIosLuggageIcon(id: string) {
             {item.icon}
         </div>
     );
+}
+
+// Helper to manage Financial Proofs concisely in Apple iOS style
+function cleanShortFinancialProof(fin: any): {
+  shortTitle: string;
+  shortBenchmark: string | null;
+  shortTimeframe: string;
+  shortNote: string;
+  iconType: string;
+} {
+  const typeStr = (fin?.type || '').toLowerCase();
+  const rawBench = fin?.minimum_balance_or_amount || '';
+  const rawNotes = fin?.notes || '';
+  const rawTime = fin?.time_frame || '';
+
+  if (typeStr.includes('bank') || typeStr.includes('account') || typeStr.includes('statement')) {
+    return {
+      shortTitle: 'Bank Statements',
+      shortBenchmark: rawBench.includes('€') || rawBench.includes('EUR')
+        ? '€50–€70 / day'
+        : rawBench.includes('$') || rawBench.includes('USD')
+          ? '$50–$100 / day'
+          : rawBench.length > 25 ? 'Min. Required Funds' : rawBench || 'Daily Living Min.',
+      shortTimeframe: 'Last 3–6 Months',
+      shortNote: 'Bank-stamped originals with steady balance; no sudden large deposits.',
+      iconType: 'bank'
+    };
+  }
+
+  if (typeStr.includes('itr') || typeStr.includes('tax') || typeStr.includes('income tax')) {
+    return {
+      shortTitle: 'Income Tax Returns (ITR)',
+      shortBenchmark: 'Last 2–3 Years',
+      shortTimeframe: 'AY 2022–23 to 2024–25',
+      shortNote: 'ITR-V e-filing acknowledgements + Form 16 (or Business ITR-3/4).',
+      iconType: 'tax'
+    };
+  }
+
+  if (typeStr.includes('salary') || typeStr.includes('slip') || typeStr.includes('payslip') || typeStr.includes('employ')) {
+    return {
+      shortTitle: 'Salary Slips (Payslips)',
+      shortBenchmark: 'Last 3 Months',
+      shortTimeframe: '3 Consecutive Months',
+      shortNote: 'HR-signed payslips matching bank statement salary credits.',
+      iconType: 'salary'
+    };
+  }
+
+  if (typeStr.includes('business') || typeStr.includes('self-employed') || typeStr.includes('company')) {
+    return {
+      shortTitle: 'Business Financial Proof',
+      shortBenchmark: 'Active Entity',
+      shortTimeframe: 'Last 6 Months',
+      shortNote: 'GST/Incorporation certificate + 6-month current account statement.',
+      iconType: 'business'
+    };
+  }
+
+  if (typeStr.includes('deposit') || typeStr.includes('invest') || typeStr.includes('fd') || typeStr.includes('asset')) {
+    return {
+      shortTitle: 'Investments & Assets',
+      shortBenchmark: 'Optional Supporting',
+      shortTimeframe: 'Current Holdings',
+      shortNote: 'FD receipts or mutual funds demonstrating strong home economic ties.',
+      iconType: 'investment'
+    };
+  }
+
+  let shortBench = rawBench;
+  if (shortBench && shortBench.length > 25) {
+    const match = shortBench.match(/(?:€|\$|₹|£)\s*\d+(?:[–-]\s*(?:€|\$|₹|£)?\s*\d+)?(?:\\s*(?:EUR|USD|INR|GBP))?(?:\s*\/\s*day)?/i);
+    shortBench = match ? match[0].trim() : shortBench.slice(0, 22) + '...';
+  }
+
+  let shortNote = rawNotes.split(/(?<=[.!?])\s+/)[0] || rawNotes;
+  if (shortNote.length > 75) {
+    shortNote = shortNote.slice(0, 70).trim() + '...';
+  }
+
+  return {
+    shortTitle: fin?.type?.replace(/\s*\([^)]*\)/g, '').trim() || 'Financial Proof',
+    shortBenchmark: shortBench || null,
+    shortTimeframe: rawTime?.length > 30 ? rawTime.slice(0, 28) + '...' : rawTime,
+    shortNote: shortNote || 'Official consular solvency requirement.',
+    iconType: 'generic'
+  };
+}
+
+function renderFinancialIcon(type: string) {
+  const iconClass = "w-4 h-4 text-white stroke-[2.2]";
+  switch (type) {
+    case 'bank':
+      return <div className="w-7 h-7 rounded-xl bg-emerald-600 flex items-center justify-center shrink-0 shadow-2xs"><CreditCard className={iconClass} /></div>;
+    case 'tax':
+      return <div className="w-7 h-7 rounded-xl bg-blue-600 flex items-center justify-center shrink-0 shadow-2xs"><FileText className={iconClass} /></div>;
+    case 'salary':
+      return <div className="w-7 h-7 rounded-xl bg-violet-600 flex items-center justify-center shrink-0 shadow-2xs"><DollarSign className={iconClass} /></div>;
+    case 'business':
+      return <div className="w-7 h-7 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 shadow-2xs"><Building2 className={iconClass} /></div>;
+    case 'investment':
+      return <div className="w-7 h-7 rounded-xl bg-amber-600 flex items-center justify-center shrink-0 shadow-2xs"><Award className={iconClass} /></div>;
+    default:
+      return <div className="w-7 h-7 rounded-xl bg-slate-700 flex items-center justify-center shrink-0 shadow-2xs"><ShieldCheck className={iconClass} /></div>;
+  }
 }
 
 export function UserDashboard() {
@@ -5430,24 +5544,24 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 </div>
 
-                                {/* ── AI STEPS ROADMAP (HOW TO APPLY) ── */}
+                                {/* ── AI STEPS ROADMAP (HOW TO APPLY) - CRYSTAL CLEAR iOS CARDS ── */}
                                 {aiVisaData?.how_to_apply && aiVisaData.how_to_apply.length > 0 && (
-                                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
+                                    <div className="bg-white rounded-3xl border-2 border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-4 text-left">
                                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
-                                                    <Compass className="w-4 h-4 text-[#00A86B]" />
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                                                    <Compass className="w-4 h-4 text-white" />
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-sm font-black text-slate-900">
+                                                    <h3 className="text-sm font-black text-slate-950 tracking-tight">
                                                         Application Steps • {normalizedDest}
                                                     </h3>
-                                                    <span className="text-[10px] font-semibold text-slate-400">
+                                                    <span className="text-[11px] text-slate-500 font-medium">
                                                         Official Consular Application Roadmap
                                                     </span>
                                                 </div>
                                             </div>
-                                            <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80">
                                                 {aiVisaData.how_to_apply.length} Steps
                                             </span>
                                         </div>
@@ -5456,15 +5570,15 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             {aiVisaData.how_to_apply.map((stepStr: string, idx: number) => {
                                                 const { stepNum, text } = cleanStepText(stepStr, idx);
                                                 return (
-                                                    <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 flex items-start gap-3 hover:border-slate-300 transition-all">
-                                                        <span className="w-6 h-6 rounded-full bg-slate-900 text-white text-[11px] font-black flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                                                    <div key={idx} className="bg-white hover:bg-slate-50/80 border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs hover:shadow-xs transition-all">
+                                                        <span className="w-7 h-7 rounded-xl bg-slate-900 text-white text-xs font-black flex items-center justify-center shrink-0 shadow-2xs">
                                                             {stepNum}
                                                         </span>
-                                                        <div className="space-y-0.5 min-w-0">
-                                                            <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 block">
+                                                        <div className="space-y-1 min-w-0 flex-1">
+                                                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
                                                                 Step {stepNum}
                                                             </span>
-                                                            <p className="text-xs font-bold text-slate-800 leading-snug">
+                                                            <p className="text-xs sm:text-[13px] font-bold text-slate-900 leading-snug">
                                                                 {text}
                                                             </p>
                                                         </div>
@@ -5475,37 +5589,57 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 )}
 
-                                {/* ── AI FINANCIAL SOLVENCY BENCHMARK ── */}
+                                {/* ── AI FINANCIAL SOLVENCY BENCHMARK - SHORT & CLEAN (iOS STYLE) ── */}
                                 {aiVisaData?.financial_proofs && aiVisaData.financial_proofs.length > 0 && (
-                                    <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3">
-                                        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                                            <h4 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
-                                                <ShieldCheck className="w-4 h-4 text-[#00A86B]" />
-                                                Financial Proofs &amp; Solvency Benchmarks
-                                            </h4>
-                                            <span className="text-[10px] font-bold text-slate-500">
+                                    <div className="bg-white rounded-3xl border-2 border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-4 text-left">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                                                    <ShieldCheck className="w-4 h-4 text-white" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-black text-slate-950 tracking-tight">
+                                                        Financial Proofs &amp; Solvency Benchmarks
+                                                    </h4>
+                                                    <span className="text-[11px] text-slate-500 font-medium">
+                                                        Consular financial self-sufficiency &amp; liquid funds criteria
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80">
                                                 Consular Requirement
                                             </span>
                                         </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                                            {aiVisaData.financial_proofs.map((fin: any, fIdx: number) => (
-                                                <div key={fIdx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs space-y-1">
-                                                    <div className="flex items-center justify-between gap-1">
-                                                        <span className="font-black text-slate-900 truncate">{fin.type}</span>
-                                                        {fin.minimum_balance_or_amount && (
-                                                            <span className="text-[10px] font-black text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">
-                                                                {fin.minimum_balance_or_amount}
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                            {aiVisaData.financial_proofs.map((fin: any, fIdx: number) => {
+                                                const item = cleanShortFinancialProof(fin);
+                                                return (
+                                                    <div key={fIdx} className="bg-slate-50/70 hover:bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 space-y-2 transition-all">
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <div className="flex items-center gap-2 min-w-0">
+                                                                {renderFinancialIcon(item.iconType)}
+                                                                <strong className="text-xs font-black text-slate-950 truncate">
+                                                                    {item.shortTitle}
+                                                                </strong>
+                                                            </div>
+                                                            {item.shortBenchmark && (
+                                                                <span className="text-[10px] font-black text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-md shrink-0">
+                                                                    {item.shortBenchmark}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                                            {item.shortNote}
+                                                        </p>
+                                                        {item.shortTimeframe && (
+                                                            <span className="inline-block text-[10px] font-bold text-slate-500 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md">
+                                                                {item.shortTimeframe}
                                                             </span>
                                                         )}
                                                     </div>
-                                                    {fin.time_frame && (
-                                                        <p className="text-[10px] text-slate-500 font-semibold">{fin.time_frame}</p>
-                                                    )}
-                                                    {fin.notes && (
-                                                        <p className="text-[11px] text-slate-700 font-medium line-clamp-2">{fin.notes}</p>
-                                                    )}
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 )}

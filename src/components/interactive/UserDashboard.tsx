@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
     CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard,
-    Eye, EyeOff, Mail, KeyRound
+    Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane
 } from "lucide-react";
 
 export interface VaultDocItem {
@@ -509,6 +509,74 @@ export function getDestinationChecklist(dest: string, purp: string): VaultDocIte
   ];
 }
 
+function ReadinessSelect({
+    value,
+    onChange,
+    options,
+    label,
+    placeholder = "Select an option"
+}: {
+    value: string;
+    onChange: (val: string) => void;
+    options: string[];
+    label?: string;
+    placeholder?: string;
+}) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const hasValue = value && value.trim() !== "";
+
+    return (
+        <div className="relative space-y-1.5" ref={ref}>
+            {label && <label className="block text-xs font-bold text-slate-800 tracking-tight">{label}</label>}
+            <button
+                type="button"
+                onClick={() => setOpen(!open)}
+                className={`w-full h-10 px-3.5 rounded-xl border bg-white text-xs font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
+                    open ? "border-indigo-600 ring-2 ring-indigo-500/20" : "border-slate-200 hover:border-slate-300"
+                }`}
+            >
+                <span className={`truncate text-left ${hasValue ? "text-slate-900 font-bold" : "text-slate-400 font-normal"}`}>
+                    {hasValue ? value : placeholder}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180 text-indigo-600" : ""}`} />
+            </button>
+
+            {open && (
+                <div className="absolute z-50 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden py-1 max-h-56 overflow-y-auto">
+                    {options.map((opt, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            onClick={() => {
+                                onChange(opt);
+                                setOpen(false);
+                            }}
+                            className={`w-full text-left px-3.5 py-2 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                                value === opt ? "bg-indigo-50 text-indigo-900 font-bold" : "text-slate-700 hover:bg-slate-50 font-medium"
+                            }`}
+                        >
+                            <span className="truncate">{opt}</span>
+                            {value === opt && <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 shrink-0" />}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 0, R: 0, W: 0, S: 0 });
     const hasIeltsScore = ieltsScore.L > 0 || ieltsScore.R > 0 || ieltsScore.W > 0 || ieltsScore.S > 0;
@@ -568,6 +636,323 @@ export function UserDashboard() {
     const [isVaultSubmitting, setIsVaultSubmitting] = useState(false);
     const [showChangeVaultPasswordModal, setShowChangeVaultPasswordModal] = useState(false);
     const [showResetVaultPasswordModal, setShowResetVaultPasswordModal] = useState(false);
+
+    // ── VISA READINESS ENGINE REAL-TIME AUDIT STATES (MATCHING AI RESULT PORTAL) ──
+    const [readinessPurpose, setReadinessPurpose] = useState<'study' | 'tourism' | 'work'>('tourism');
+    const [readinessPassportValidity, setReadinessPassportValidity] = useState("> 12 Months (Recommended)");
+    const [visaRefusalHistory, setVisaRefusalHistory] = useState("No Prior Refusals (Clean Record)");
+
+    // Student specific states
+    const [studyQual, setStudyQual] = useState("Bachelor's Degree");
+    const [studyTarget, setStudyTarget] = useState("Master's / Postgraduate");
+    const [studyIntake, setStudyIntake] = useState("Fall 2026 (Aug - Sep)");
+    const [studyBudget, setStudyBudget] = useState("Self-Funded (₹25L+ Liquid)");
+    const [studentAdmissionStatus, setStudentAdmissionStatus] = useState("Confirmed Offer / CAS / I-20");
+    const [studentLanguageScore, setStudentLanguageScore] = useState("IELTS 6.5+ / PTE 60+ (Cleared)");
+
+    // Tourist specific states
+    const [visitPlanStatus, setVisitPlanStatus] = useState("Fixed Travel Dates");
+    const [visitTiming, setVisitTiming] = useState("Nov 2026");
+    const [visitReturnDate, setVisitReturnDate] = useState("Dec 2026");
+    const [tripDurationDays, setTripDurationDays] = useState(15);
+    const [visitStay, setVisitStay] = useState("Confirmed Hotel / Resort");
+    const [touristHomeTies, setTouristHomeTies] = useState("Salaried (Employer NOC & 3-Mo Payslips)");
+    const [touristBankStability, setTouristBankStability] = useState("₹4L+ Maintained Liquid Balance");
+
+    // Work specific states
+    const [workExp, setWorkExp] = useState("5 - 8 Years (Mid-Senior)");
+    const [workOffer, setWorkOffer] = useState("Confirmed Sponsored Job Offer (CoS/LMIA)");
+    const [workDomain, setWorkDomain] = useState("Technology & Software");
+    const [workAssess, setWorkAssess] = useState("Skills / ECA Assessed by Authority (WES/ACS)");
+
+    useEffect(() => {
+        const p = (selectedPurpose || '').toLowerCase();
+        if (p.includes('stud') || p.includes('higher') || p.includes('academic')) {
+            setReadinessPurpose('study');
+        } else if (p.includes('work') || p.includes('employ') || p.includes('job')) {
+            setReadinessPurpose('work');
+        } else {
+            setReadinessPurpose('tourism');
+        }
+    }, [selectedPurpose]);
+
+    // ── DYNAMIC CATEGORY-SPECIFIC VISA READINESS AUDIT ENGINE ──
+    const readinessMetrics = useMemo(() => {
+        let recommendations: string[] = [];
+        let redFlags: string[] = [];
+        let filledCount = 0;
+
+        const targetCountry = normalizeCountryName(selectedDestination);
+
+        // Check if user has uploaded a verified passport in documents or vault
+        const hasVerifiedPassport = documents?.some(d => (d.label || d.name || '').toLowerCase().includes('passport')) ||
+            Object.values(vaultChecklistState || {}).some(v => v.verified && (v.fileName || '').toLowerCase().includes('passport'));
+
+        // Pillar 1: Passport & Identity (25 pts max + 10 pts validity bonus)
+        let passportScore = 0;
+        let validityBonus = 0;
+
+        if (hasVerifiedPassport) {
+            filledCount += 2;
+            passportScore += 25;
+            validityBonus = 10;
+            recommendations.unshift(`🌟 Exceptional Passport Validity: Active passport verified in your vault. Flawlessly compliant with ${targetCountry} consular 6-month rule.`);
+        } else if (readinessPassportValidity.includes('> 12 Months')) {
+            filledCount++;
+            passportScore += 22;
+            validityBonus = 5;
+            recommendations.push(`Passport validity exceeds 12 months. Fully compliant with ${targetCountry} entry standards.`);
+        } else if (readinessPassportValidity.includes('6 - 12 Months')) {
+            filledCount++;
+            passportScore += 15;
+            recommendations.push(`Passport validity meets minimum 6-month threshold for ${targetCountry}.`);
+        } else {
+            redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${targetCountry} consular rules.`);
+        }
+
+        const categoryName = readinessPurpose === 'study'
+            ? 'Student Visa'
+            : readinessPurpose === 'work'
+            ? 'Work Visa'
+            : 'Tourist Visa';
+
+        let categoryPillars: Array<{ name: string; score: number; max: number; value: string }> = [];
+        let categoryScoreRaw = 0;
+
+        // 1. STUDENT VISA SCORING
+        if (readinessPurpose === 'study') {
+            let admissionScore = 0;
+            let fundingScore = 0;
+            let academicScore = 0;
+
+            if (studentAdmissionStatus) {
+                filledCount++;
+                if (studentAdmissionStatus.includes('Confirmed')) {
+                    admissionScore = 25;
+                    recommendations.push(`✓ Confirmed institutional offer / CAS / I-20 recorded for ${targetCountry}.`);
+                } else if (studentAdmissionStatus.includes('Conditional')) {
+                    admissionScore = 15;
+                    recommendations.push('Clear pending academic conditions to convert conditional offer into unconditional Form I-20 / CAS.');
+                } else {
+                    admissionScore = 6;
+                    redFlags.push('Formal university admission letter / CAS is mandatory before embassy interview.');
+                }
+            }
+
+            if (studyBudget) {
+                filledCount++;
+                if (studyBudget.includes('Self-Funded') || studyBudget.includes('Scholarship')) {
+                    fundingScore = 25;
+                    recommendations.push('Proof of liquid funds covers 1st-year tuition and cost of living.');
+                } else if (studyBudget.includes('Loan')) {
+                    fundingScore = 20;
+                    recommendations.push('Attach official bank loan sanction letter with collateral / co-borrower tax returns.');
+                } else {
+                    fundingScore = 10;
+                    redFlags.push('Insufficient verified liquid funds. Additional sponsor documentation may be required.');
+                }
+            }
+
+            if (studentLanguageScore) {
+                filledCount++;
+                if (studentLanguageScore.includes('Cleared')) {
+                    academicScore += 10;
+                    recommendations.push('✓ English language proficiency requirement satisfied (IELTS 6.5+ / PTE 60+).');
+                } else if (studentLanguageScore.includes('MOI')) {
+                    academicScore += 7;
+                    recommendations.push('Medium of Instruction waiver requires official institutional certificate.');
+                } else {
+                    academicScore += 4;
+                }
+            }
+
+            if (studyIntake) {
+                filledCount++;
+                academicScore += 5;
+            }
+
+            categoryScoreRaw = admissionScore + fundingScore + academicScore;
+
+            categoryPillars = [
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
+                { name: 'Institution Admission (I-20/CAS)', score: admissionScore, max: 25, value: studentAdmissionStatus },
+                { name: 'Tuition & Living Funds', score: fundingScore, max: 25, value: studyBudget },
+                { name: 'Language & Academic Intake', score: academicScore, max: 15, value: `${studentLanguageScore.slice(0, 16)}...` }
+            ];
+        }
+        // 2. WORK VISA SCORING
+        else if (readinessPurpose === 'work') {
+            let offerScore = 0;
+            let expScore = 0;
+            let assessScore = 0;
+
+            if (workOffer) {
+                filledCount++;
+                if (workOffer.includes('Confirmed') || workOffer.includes('Approved')) {
+                    offerScore = 30;
+                    recommendations.push(`✓ Official employer sponsorship petition (CoS/LMIA) attached for ${targetCountry}.`);
+                } else if (workOffer.includes('Interviewing')) {
+                    offerScore = 15;
+                    recommendations.push('Request formal sponsorship certificate once final employment interview is cleared.');
+                } else {
+                    offerScore = 6;
+                    redFlags.push(`Consular work visas require an approved employer sponsorship petition from ${targetCountry}.`);
+                }
+            }
+
+            if (workExp) {
+                filledCount++;
+                if (workExp.includes('8+')) expScore = 15;
+                else if (workExp.includes('5 - 8')) expScore = 13;
+                else if (workExp.includes('3 - 5')) expScore = 10;
+                else expScore = 6;
+            }
+
+            if (workAssess) {
+                filledCount++;
+                if (workAssess.includes('Assessed')) {
+                    assessScore = 15;
+                    recommendations.push('✓ Educational and occupational skills assessment verified (WES/ACS).');
+                } else if (workAssess.includes('Progress')) {
+                    assessScore = 8;
+                    recommendations.push('Expedite credential assessment report for consular filing.');
+                } else {
+                    assessScore = 3;
+                    recommendations.push('Obtain professional qualification equivalency evaluation before filing.');
+                }
+            }
+
+            categoryScoreRaw = offerScore + expScore + assessScore;
+
+            categoryPillars = [
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
+                { name: 'Employer Sponsorship (CoS/LMIA)', score: offerScore, max: 30, value: workOffer },
+                { name: 'Work Experience', score: expScore, max: 15, value: workExp },
+                { name: 'Skill Assessment (ECA)', score: assessScore, max: 15, value: workAssess }
+            ];
+        }
+        // 3. TOURIST / VISIT VISA SCORING
+        else {
+            let finScore = 0;
+            let tiesScore = 0;
+            let itinScore = 0;
+
+            if (touristBankStability) {
+                filledCount++;
+                if (touristBankStability.includes('₹4L+')) {
+                    finScore = 25;
+                    recommendations.push('✓ Strong financial solvency: ₹4L+ liquid balance demonstrates trip affordability.');
+                } else if (touristBankStability.includes('₹2L - ₹4L')) {
+                    finScore = 18;
+                    recommendations.push('Bank balance meets standard threshold; keep latest 6-month stamped statement ready.');
+                } else {
+                    finScore = 8;
+                    redFlags.push('Bank balance below recommended threshold. Provide additional co-sponsor or financial proof.');
+                }
+            }
+
+            if (touristHomeTies) {
+                filledCount++;
+                if (touristHomeTies.includes('Salaried')) {
+                    tiesScore = 20;
+                    recommendations.push('✓ Salaried status with Employer NOC & 3-month payslips strongly satisfies return intent.');
+                } else if (touristHomeTies.includes('Business')) {
+                    tiesScore = 18;
+                    recommendations.push('✓ Business ownership with GST & 2-year ITR establishes solid home ties.');
+                } else if (touristHomeTies.includes('Self-Employed')) {
+                    tiesScore = 12;
+                    recommendations.push('Attach client contracts and bank transaction statements to substantiate income.');
+                } else {
+                    tiesScore = 10;
+                }
+            }
+
+            if (tripDurationDays > 0 && tripDurationDays <= 90) {
+                itinScore += 10;
+                recommendations.push(`✓ Itinerary set: ${tripDurationDays}-day round-trip compliant with standard tourist limits.`);
+            }
+
+            if (visitPlanStatus.includes('Fixed')) {
+                itinScore += 5;
+            } else {
+                itinScore += 3;
+            }
+
+            categoryScoreRaw = finScore + tiesScore + itinScore;
+
+            categoryPillars = [
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
+                { name: 'Financial Solvency', score: finScore, max: 25, value: touristBankStability },
+                { name: 'Home Country Ties', score: tiesScore, max: 20, value: touristHomeTies },
+                { name: 'Trip Itinerary & Dates', score: itinScore, max: 15, value: `${tripDurationDays} Days (${visitTiming})` }
+            ];
+        }
+
+        // Checklist Documents Pillar (15 pts max)
+        const totalVaultCount = Object.keys(vaultChecklistState || {}).length || 6;
+        const verifiedVaultCount = Object.values(vaultChecklistState || {}).filter(v => v.verified).length;
+        const docsRatio = totalVaultCount > 0 ? (verifiedVaultCount / totalVaultCount) : 0;
+        const docsScore = Math.round(docsRatio * 15);
+
+        if (docsRatio === 1) {
+            recommendations.unshift(`🌟 100% of required ${targetCountry} embassy documents are verified and ready!`);
+        } else if (docsRatio >= 0.5) {
+            recommendations.push(`${verifiedVaultCount}/${totalVaultCount} checklist documents verified in your Document Vault.`);
+        }
+
+        categoryPillars.push({
+            name: 'Embassy Checklist',
+            score: docsScore,
+            max: 15,
+            value: `${verifiedVaultCount}/${totalVaultCount} Verified`
+        });
+
+        // Refusal penalty
+        let refusalPenalty = 0;
+        if (visaRefusalHistory.includes('Past Refusal')) {
+            refusalPenalty = 10;
+            redFlags.push('Prior visa refusal recorded. Dedicated consular explanation letter addressing previous refusal grounds is strongly recommended.');
+        }
+
+        const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
+        const minBase = hasVerifiedPassport ? 68 : 20;
+        const finalScore = Math.max(minBase, Math.min(98, rawTotal));
+
+        return {
+            score: finalScore,
+            category: categoryName,
+            statusText: finalScore >= 85
+                ? 'EXCEPTIONAL'
+                : finalScore >= 70
+                ? 'EXCELLENT'
+                : finalScore >= 50
+                ? 'GOOD'
+                : 'FAIR',
+            badgeBg: finalScore >= 85
+                ? 'bg-[#D97706] text-white'
+                : finalScore >= 70
+                ? 'bg-emerald-600 text-white'
+                : finalScore >= 50
+                ? 'bg-blue-600 text-white'
+                : 'bg-orange-500 text-white',
+            recommendations,
+            redFlags,
+            pillars: categoryPillars,
+            hasVerifiedPassport,
+            verifiedVaultCount,
+            totalVaultCount
+        };
+    }, [
+        readinessPurpose,
+        selectedDestination,
+        documents,
+        vaultChecklistState,
+        readinessPassportValidity,
+        visaRefusalHistory,
+        studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
+        visitPlanStatus, visitTiming, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
+        workExp, workOffer, workDomain, workAssess
+    ]);
 
     const checkVaultPasswordStatus = async () => {
         const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
@@ -1383,6 +1768,7 @@ export function UserDashboard() {
         }
     }, []);
 
+
     const [modalFirstName, setModalFirstName] = useState("");
     const [modalLastName, setModalLastName] = useState("");
     const [modalPhone, setModalPhone] = useState("");
@@ -1416,12 +1802,6 @@ export function UserDashboard() {
         localStorage.setItem("seeker_passportCountry", modalPassportCountry);
         localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
         localStorage.setItem("seeker_resident_of", modalResidentOf);
-        
-        localStorage.setItem("seeker_goals", JSON.stringify(goalsArr));
-        localStorage.setItem("seeker_destinations", JSON.stringify(destsArr));
-        localStorage.setItem("seeker_city", modalCity);
-        localStorage.setItem("seeker_state", modalState);
-        localStorage.setItem("seeker_zip", modalZip);
         localStorage.setItem("seeker_profilePhoto", modalPhoto);
 
         setIsProfileIncomplete(false);
@@ -1444,7 +1824,8 @@ export function UserDashboard() {
     }, [activeTab]);
 
     const handleLogout = () => {
-        localStorage.removeItem("travltik_user"); localStorage.removeItem("seeker_firstName");
+        localStorage.removeItem("travltik_user");
+        localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");
         localStorage.removeItem("seeker_email");
         localStorage.removeItem("seeker_phone");
@@ -1457,6 +1838,7 @@ export function UserDashboard() {
 
     const navItems = [
         { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
+        { id: "visa-readiness", label: "Visa Readiness Score", icon: ShieldCheck },
         { id: "cases", label: "Your Applications", icon: Briefcase },
         { id: "consultations", label: "Bookings & Sessions", icon: Calendar },
         { id: "scanned-documents", label: "Document Vault", icon: FileText },
@@ -1471,6 +1853,10 @@ export function UserDashboard() {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col text-slate-800 antialiased selection:bg-slate-900 selection:text-white">
+            
+        }
+    }, [activeTab]);
+
             
             {/* Top Fixed Navigation Header */}
             <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">
@@ -1647,7 +2033,24 @@ export function UserDashboard() {
                             </div>
 
                             {/* Stat Summary Cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                <div 
+                                    onClick={() => setActiveTab('visa-readiness')}
+                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
+                                >
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Visa Readiness</span>
+                                        <div className="flex items-baseline gap-1 mt-1">
+                                            <span className="text-2xl font-black text-slate-900 block">{(readinessMetrics.score / 10).toFixed(1)}</span>
+                                            <span className="text-xs font-bold text-slate-400">/ 10</span>
+                                        </div>
+                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block group-hover:underline">{readinessMetrics.statusText} • Audit →</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                        <ShieldCheck className="w-6 h-6" />
+                                    </div>
+                                </div>
+
                                 <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
                                     <div>
                                         <span className="text-xs font-bold text-slate-400 block">Document Vault</span>
@@ -1956,6 +2359,569 @@ export function UserDashboard() {
                             </div>
                         </>
                     )}
+                    {/* 1.5 TAB: VISA READINESS SCORE (MATCHING AI RESULT PORTAL) */}
+                    {activeTab === "visa-readiness" && (() => {
+                        const normalizedDest = normalizeCountryName(selectedDestination);
+                        const normalizedPass = normalizeCountryName(selectedPassport);
+                        const currentDestObj = dashboardDestinationOptions.find(d => 
+                            normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
+                        );
+                        const destFlag = currentDestObj?.flag || '🌍';
+                        const currentPassObj = dashboardPassportOptions.find(p => 
+                            normalizeCountryName(p.value) === normalizedPass || p.value.toLowerCase() === normalizedPass.toLowerCase() || p.label.toLowerCase().includes(normalizedPass.toLowerCase())
+                        );
+                        const passFlag = currentPassObj?.flag || '🇮🇳';
+
+                        return (
+                            <div className="space-y-6 animate-fade-up">
+                                {/* Header Section */}
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                                Visa Readiness Score &amp; Audit
+                                            </h2>
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black border border-emerald-200">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                                Consular AI Calibrated
+                                            </span>
+                                        </div>
+                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
+                                            Official AI readiness evaluation for {normalizedDest} ({readinessMetrics.category}). Calibrated against official embassy benchmarks.
+                                        </p>
+                                    </div>
+
+                                    {/* Simple Route Summary matching Image 2 */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/90 px-4 py-2 shadow-2xs flex items-center gap-3 text-xs self-start md:self-auto">
+                                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                                            <span>{passFlag}</span>
+                                            <span>{normalizedPass}</span>
+                                        </span>
+                                        <span className="text-slate-300 font-medium">→</span>
+                                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                                            <span>{destFlag}</span>
+                                            <span>{normalizedDest}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Category Selector Pill Buttons */}
+                                <div className="bg-slate-100/80 p-1.5 rounded-2xl flex items-center gap-1.5 overflow-x-auto max-w-xl">
+                                    <button
+                                        type="button"
+                                        onClick={() => setReadinessPurpose('study')}
+                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
+                                            readinessPurpose === 'study'
+                                                ? 'bg-slate-900 text-white font-black shadow-sm'
+                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
+                                        }`}
+                                    >
+                                        <GraduationCap className="w-4 h-4" />
+                                        <span>Student Visa</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setReadinessPurpose('tourism')}
+                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
+                                            readinessPurpose === 'tourism'
+                                                ? 'bg-slate-900 text-white font-black shadow-sm'
+                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
+                                        }`}
+                                    >
+                                        <Plane className="w-4 h-4" />
+                                        <span>Tourist Visa</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setReadinessPurpose('work')}
+                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
+                                            readinessPurpose === 'work'
+                                                ? 'bg-slate-900 text-white font-black shadow-sm'
+                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
+                                        }`}
+                                    >
+                                        <Briefcase className="w-4 h-4" />
+                                        <span>Work Visa</span>
+                                    </button>
+                                </div>
+
+                                {/* Main Two-Column Grid: Questionnaire + Scorecard */}
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                    
+                                    {/* Left Column (7 cols): Questionnaire Criteria */}
+                                    <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
+                                        <div>
+                                            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-600 tracking-wider">
+                                                <span>Step 1</span>
+                                                <span>•</span>
+                                                <span>Profile Criteria</span>
+                                            </div>
+                                            <h3 className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                                                {readinessMetrics.category} Assessment Criteria
+                                            </h3>
+                                            <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                                Adjust your parameters below to see your official consular readiness update live.
+                                            </p>
+                                        </div>
+
+                                        {/* STUDENT QUESTIONNAIRE */}
+                                        {readinessPurpose === 'study' && (
+                                            <div className="space-y-4 pt-1">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="1. Highest Academic Qualification"
+                                                        value={studyQual}
+                                                        onChange={setStudyQual}
+                                                        options={[
+                                                            "Bachelor's Degree",
+                                                            "High School / 12th Standard",
+                                                            "Master's Degree",
+                                                            "Diploma / Polytechnic"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="2. Target Degree Program"
+                                                        value={studyTarget}
+                                                        onChange={setStudyTarget}
+                                                        options={[
+                                                            "Master's / Postgraduate",
+                                                            "Bachelor's / Undergraduate",
+                                                            "Doctorate / PhD",
+                                                            "PG Diploma / Certification"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="3. Target Intake Timing"
+                                                        value={studyIntake}
+                                                        onChange={setStudyIntake}
+                                                        options={[
+                                                            "Fall 2026 (Aug - Sep)",
+                                                            "Spring 2026 (Jan - Feb)",
+                                                            "Summer 2026 (May - Jun)",
+                                                            "Winter 2027"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="4. Tuition & Funds Proof"
+                                                        value={studyBudget}
+                                                        onChange={setStudyBudget}
+                                                        options={[
+                                                            "Self-Funded (₹25L+ Liquid)",
+                                                            "Education Bank Loan Sanctioned",
+                                                            "Full Scholarship / Financial Aid",
+                                                            "Family / Co-Sponsor Proof"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="5. Institutional Admission Status"
+                                                        value={studentAdmissionStatus}
+                                                        onChange={setStudentAdmissionStatus}
+                                                        options={[
+                                                            "Confirmed Offer / CAS / I-20",
+                                                            "Conditional Offer Received",
+                                                            "Yet to Apply / Planning"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="6. English Proficiency / Exam"
+                                                        value={studentLanguageScore}
+                                                        onChange={setStudentLanguageScore}
+                                                        options={[
+                                                            "IELTS 6.5+ / PTE 60+ (Cleared)",
+                                                            "Medium of Instruction (MOI) Certificate",
+                                                            "Preparing / Test Booked",
+                                                            "Not Required / Waived"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="7. Passport Validity Remaining"
+                                                        value={readinessPassportValidity}
+                                                        onChange={setReadinessPassportValidity}
+                                                        options={[
+                                                            "> 12 Months (Recommended)",
+                                                            "6 - 12 Months Valid",
+                                                            "< 6 Months (Renewal Required)"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="8. Consular Refusal History"
+                                                        value={visaRefusalHistory}
+                                                        onChange={setVisaRefusalHistory}
+                                                        options={[
+                                                            "No Prior Refusals (Clean Record)",
+                                                            "Past Refusal (Requires Cover Letter)"
+                                                        ]}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* TOURIST QUESTIONNAIRE */}
+                                        {readinessPurpose === 'tourism' && (
+                                            <div className="space-y-4 pt-1">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="1. Trip Planning Status"
+                                                        value={visitPlanStatus}
+                                                        onChange={setVisitPlanStatus}
+                                                        options={[
+                                                            "Fixed Travel Dates",
+                                                            "Approximate Month",
+                                                            "Exploratory / Flexible"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="2. Tentative Travel Duration"
+                                                        value={`${tripDurationDays} Days Round-Trip`}
+                                                        onChange={(val) => {
+                                                            const d = parseInt(val.replace(/\D/g, ''), 10) || 15;
+                                                            setTripDurationDays(d);
+                                                        }}
+                                                        options={[
+                                                            "7 Days Round-Trip",
+                                                            "15 Days Round-Trip",
+                                                            "30 Days Round-Trip",
+                                                            "60 Days Round-Trip",
+                                                            "90 Days Round-Trip"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="3. Accommodation Arrangement"
+                                                        value={visitStay}
+                                                        onChange={setVisitStay}
+                                                        options={[
+                                                            "Confirmed Hotel / Resort",
+                                                            "Staying with Host / Family",
+                                                            "Airbnb / Rental",
+                                                            "Yet to Book"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="4. 6-Month Maintained Bank Balance"
+                                                        value={touristBankStability}
+                                                        onChange={setTouristBankStability}
+                                                        options={[
+                                                            "₹4L+ Maintained Liquid Balance",
+                                                            "₹2L - ₹4L Balance",
+                                                            "Under ₹2L / Low Balance"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="5. Home Country Ties & Return Proof"
+                                                        value={touristHomeTies}
+                                                        onChange={setTouristHomeTies}
+                                                        options={[
+                                                            "Salaried (Employer NOC & 3-Mo Payslips)",
+                                                            "Business Owner (GST & 2-Yr ITR)",
+                                                            "Self-Employed / Freelancer",
+                                                            "Student (Enrolment Certificate)"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="6. Passport Validity Remaining"
+                                                        value={readinessPassportValidity}
+                                                        onChange={setReadinessPassportValidity}
+                                                        options={[
+                                                            "> 12 Months (Recommended)",
+                                                            "6 - 12 Months Valid",
+                                                            "< 6 Months (Renewal Required)"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="7. Consular Refusal History"
+                                                        value={visaRefusalHistory}
+                                                        onChange={setVisaRefusalHistory}
+                                                        options={[
+                                                            "No Prior Refusals (Clean Record)",
+                                                            "Past Refusal (Requires Cover Letter)"
+                                                        ]}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* WORK QUESTIONNAIRE */}
+                                        {readinessPurpose === 'work' && (
+                                            <div className="space-y-4 pt-1">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="1. Total Relevant Experience"
+                                                        value={workExp}
+                                                        onChange={setWorkExp}
+                                                        options={[
+                                                            "8+ Years (Senior Level)",
+                                                            "5 - 8 Years (Mid-Senior)",
+                                                            "3 - 5 Years (Early Career)",
+                                                            "0 - 2 Years (Entry Level)"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="2. Employer Job Offer Status"
+                                                        value={workOffer}
+                                                        onChange={setWorkOffer}
+                                                        options={[
+                                                            "Confirmed Sponsored Job Offer (CoS/LMIA)",
+                                                            "Interviewing / Final Stages",
+                                                            "Job Seeker / Seeking Sponsorship"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="3. Professional Domain"
+                                                        value={workDomain}
+                                                        onChange={setWorkDomain}
+                                                        options={[
+                                                            "Technology & Software",
+                                                            "Healthcare & Medicine",
+                                                            "Engineering & Construction",
+                                                            "Finance & Business Management",
+                                                            "Hospitality & Culinary",
+                                                            "Other Specialized Field"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="4. Credential & Skills Assessment"
+                                                        value={workAssess}
+                                                        onChange={setWorkAssess}
+                                                        options={[
+                                                            "Skills / ECA Assessed by Authority (WES/ACS)",
+                                                            "Assessment In Progress",
+                                                            "Not Initiated / Need Assistance"
+                                                        ]}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                                    <ReadinessSelect
+                                                        label="5. Passport Validity Remaining"
+                                                        value={readinessPassportValidity}
+                                                        onChange={setReadinessPassportValidity}
+                                                        options={[
+                                                            "> 12 Months (Recommended)",
+                                                            "6 - 12 Months Valid",
+                                                            "< 6 Months (Renewal Required)"
+                                                        ]}
+                                                    />
+
+                                                    <ReadinessSelect
+                                                        label="6. Consular Refusal History"
+                                                        value={visaRefusalHistory}
+                                                        onChange={setVisaRefusalHistory}
+                                                        options={[
+                                                            "No Prior Refusals (Clean Record)",
+                                                            "Past Refusal (Requires Cover Letter)"
+                                                        ]}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Right Column (5 cols): Real-Time Readiness Scorecard (Matching AI Result Portal) */}
+                                    <div className="lg:col-span-5 bg-gradient-to-b from-slate-50/90 via-white to-slate-50/50 border border-slate-200/90 rounded-3xl p-5 sm:p-7 shadow-xs space-y-4 text-center">
+                                        
+                                        {/* Card Header */}
+                                        <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
+                                            <div>
+                                                <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-700 tracking-wider mb-0.5">
+                                                    <span>{readinessMetrics.category}</span>
+                                                    <span>•</span>
+                                                    <span>Consular Readiness</span>
+                                                </div>
+                                                <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
+                                                    Visa Readiness Score
+                                                </h4>
+                                                <p className="text-[11px] text-slate-500 font-semibold mt-0.5">
+                                                    {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                                </p>
+                                            </div>
+
+                                            <span className={`px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider shrink-0 ${readinessMetrics.badgeBg}`}>
+                                                {readinessMetrics.statusText}
+                                            </span>
+                                        </div>
+
+                                        {/* Center: Circular Rainbow Gauge */}
+                                        <div className="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto flex items-center justify-center my-1">
+                                            <svg className="w-full h-full" viewBox="0 0 200 200">
+                                                <defs>
+                                                    <linearGradient id="rainbowGaugeDash" x1="0%" y1="100%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stopColor="#F43F5E" />
+                                                        <stop offset="35%" stopColor="#FB923C" />
+                                                        <stop offset="65%" stopColor="#FACC15" />
+                                                        <stop offset="100%" stopColor="#22C55E" />
+                                                    </linearGradient>
+                                                </defs>
+
+                                                {/* Background Arc */}
+                                                <path
+                                                    d="M 46 150 A 70 70 0 1 1 154 150"
+                                                    fill="none"
+                                                    stroke="#E2E8F0"
+                                                    strokeWidth="15"
+                                                    strokeLinecap="round"
+                                                />
+
+                                                {/* Foreground Rainbow Score Arc */}
+                                                <path
+                                                    d="M 46 150 A 70 70 0 1 1 154 150"
+                                                    fill="none"
+                                                    stroke="url(#rainbowGaugeDash)"
+                                                    strokeWidth="15"
+                                                    strokeLinecap="round"
+                                                    strokeDasharray="318"
+                                                    strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
+                                                    className="transition-all duration-1000 ease-out"
+                                                />
+                                            </svg>
+
+                                            {/* Center Number (0 to 10 Scale) */}
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
+                                                <div className="flex items-baseline justify-center gap-1">
+                                                    <span className="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight leading-none font-heading">
+                                                        {(readinessMetrics.score / 10).toFixed(1)}
+                                                    </span>
+                                                    <span className="text-sm sm:text-lg font-bold text-slate-400">/ 10</span>
+                                                </div>
+                                                <span className="text-[11px] sm:text-xs font-black text-emerald-600 mt-1">
+                                                    {readinessMetrics.hasVerifiedPassport
+                                                        ? '+4.0 pts (Passport Verified ✓)'
+                                                        : `+${((readinessMetrics.score / 10) * 0.4).toFixed(1)} pts`}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Status Badges */}
+                                        <div className="space-y-1.5">
+                                            {readinessMetrics.hasVerifiedPassport && (
+                                                <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3 py-1.5 rounded-full shadow-2xs text-center">
+                                                    <span>✓ Passport Verified in Vault (Consular 6-Month Rule Passed)</span>
+                                                </div>
+                                            )}
+
+                                            {readinessMetrics.verifiedVaultCount > 0 && (
+                                                <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3 py-1.5 rounded-full shadow-2xs">
+                                                    <span>✓ {readinessMetrics.verifiedVaultCount} of {readinessMetrics.totalVaultCount} Documents Ready in Vault</span>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* 5 Evaluation Pillars Grid */}
+                                        <div className="w-full pt-3 border-t border-slate-100 text-left">
+                                            <div className="flex items-center justify-between pb-2">
+                                                <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
+                                                    {readinessMetrics.category} Evaluation Pillars
+                                                </span>
+                                                <span className="text-[11px] font-bold text-slate-700 font-mono">
+                                                    {(readinessMetrics.score / 10).toFixed(1)} / 10.0 Pts
+                                                </span>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                {readinessMetrics.pillars.map((pillar, idx) => {
+                                                    const pct = Math.min(100, Math.round((pillar.score / pillar.max) * 100));
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            className="p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-50 transition-colors"
+                                                        >
+                                                            <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+                                                                <span className="truncate pr-1">{pillar.name}</span>
+                                                                <span className="font-mono text-emerald-700 font-extrabold text-[11px] shrink-0">
+                                                                    {(pillar.score / 10).toFixed(1)} / {(pillar.max / 10).toFixed(1)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1.5">
+                                                                <div
+                                                                    className="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                                                                    style={{ width: `${pct}%` }}
+                                                                />
+                                                            </div>
+                                                            <div className="text-[10px] text-slate-500 font-medium truncate mt-1">
+                                                                {pillar.value}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+                                        {/* Consular Red Flags */}
+                                        {readinessMetrics.redFlags.length > 0 && (
+                                            <div className="w-full space-y-1.5 text-left">
+                                                {readinessMetrics.redFlags.slice(0, 2).map((rf, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="flex items-start gap-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-semibold leading-relaxed"
+                                                    >
+                                                        <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                                                        <span>{rf}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Consular Recommendations */}
+                                        {readinessMetrics.recommendations.length > 0 && (
+                                            <div className="w-full space-y-1.5 text-left">
+                                                {readinessMetrics.recommendations.slice(0, 2).map((rec, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="flex items-start gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-emerald-950 text-xs font-semibold leading-relaxed"
+                                                    >
+                                                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                                        <span>{rec}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Action Button */}
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveTab('scanned-documents')}
+                                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer mt-2"
+                                        >
+                                            <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                                            <span>Open Document Vault to Boost Score →</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })()}
+
 
                     {/* 2. TAB: PROFILE & SETTINGS */}
                     {activeTab === "profile" && (
@@ -2137,6 +3103,10 @@ export function UserDashboard() {
                             normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
                         );
                         const destFlag = currentDestObj?.flag || '🌍';
+                        const currentPassObj = dashboardPassportOptions.find(p => 
+                            normalizeCountryName(p.value) === normalizedPass || p.value.toLowerCase() === normalizedPass.toLowerCase() || p.label.toLowerCase().includes(normalizedPass.toLowerCase())
+                        );
+                        const passFlag = currentPassObj?.flag || '🇮🇳';
 
                         // Dynamic statutory checklist derived from AI search result or verified consular data
                         const destChecklist: VaultDocItem[] = (aiVisaData?.documents_required && aiVisaData.documents_required.length > 0)
@@ -2382,58 +3352,48 @@ export function UserDashboard() {
                                     </div>
                                 )}
 
-                                {/* 2. ACTIVE TRIP BANNER WITH READINESS PROGRESS GAUGE */}
-                                <div className="bg-slate-900 rounded-2xl p-5 text-white shadow-md border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-5">
-                                    <div className="space-y-1.5 flex-1">
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
-                                                <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                                                {selectedPurpose}
+                                {/* 2. SIMPLE & CLEAN ACTIVE TRIP ROUTE & PURPOSE CARD (MATCHING USER SPECIFICATION) */}
+                                <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-4 sm:px-6 sm:py-4.5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div className="flex items-center flex-wrap gap-y-3">
+                                        {/* FROM */}
+                                        <div className="space-y-0.5 min-w-[90px]">
+                                            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                                                FROM
                                             </span>
-                                            <span className="px-2 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold">
-                                                Passport: {normalizedPass}
-                                            </span>
-                                            {(aiVisaData?.processing_time || aiVisaData?.processing_and_timing?.decision_time) && (
-                                                <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-bold">
-                                                    ⏱️ {aiVisaData.processing_time || aiVisaData.processing_and_timing?.decision_time}
-                                                </span>
-                                            )}
-                                            {(aiVisaData?.costs?.total_fee || aiVisaData?.costs?.visa_fee) && (
-                                                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] font-bold">
-                                                    💳 {aiVisaData.costs?.total_fee || aiVisaData.costs?.visa_fee}
-                                                </span>
-                                            )}
-                                            {isLoadingAi && (
-                                                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold flex items-center gap-1">
-                                                    <div className="w-2 h-2 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
-                                                    Syncing...
-                                                </span>
-                                            )}
+                                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                                                <span className="text-base leading-none">{passFlag}</span>
+                                                <span>{normalizedPass || 'India'}</span>
+                                            </div>
                                         </div>
 
-                                        <h3 className="text-lg sm:text-xl font-black text-white">
-                                            {destFlag} Trip to {normalizedDest} • {aiVisaData?.visa_type || currentDestObj?.defaultVisa || 'Consular Visa Application'}
-                                        </h3>
+                                        {/* Subtle separator dot & arrow matching Image 2 */}
+                                        <div className="flex items-center text-slate-300 px-3 sm:px-5 select-none font-medium text-xs sm:text-sm">
+                                            <span>• →</span>
+                                        </div>
+
+                                        {/* TO */}
+                                        <div className="space-y-0.5 min-w-[110px]">
+                                            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                                                TO
+                                            </span>
+                                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                                                <span className="text-base leading-none">{destFlag}</span>
+                                                <span>{normalizedDest || 'United States'}</span>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {/* Readiness Score Progress Meter */}
-                                    <div className="bg-white/10 rounded-xl p-3.5 border border-white/10 min-w-[180px] text-center space-y-1 shrink-0">
-                                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-300 block">
-                                            Readiness Score
+                                    {/* Vertical divider matching Image 2 */}
+                                    <div className="hidden sm:block h-8 w-px bg-slate-200/80 mx-2 sm:mx-6" />
+
+                                    {/* PURPOSE OF TRAVEL */}
+                                    <div className="space-y-0.5 sm:flex-1">
+                                        <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                                            PURPOSE OF TRAVEL
                                         </span>
-                                        <div className="text-2xl font-black text-white flex items-center justify-center gap-1">
-                                            <span>{readinessScore}%</span>
-                                            <span className="text-xs text-emerald-400 font-extrabold">Ready</span>
+                                        <div className="text-xs sm:text-sm font-extrabold text-slate-900">
+                                            {selectedPurpose || 'Tourism / Vacation'}
                                         </div>
-                                        <div className="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
-                                            <div
-                                                className="bg-emerald-400 h-full rounded-full transition-all duration-500"
-                                                style={{ width: `${readinessScore}%` }}
-                                            />
-                                        </div>
-                                        <span className="text-[10px] text-slate-300 font-medium block">
-                                            {verifiedItemsCount} of {totalChecklistItems} verified
-                                        </span>
                                     </div>
                                 </div>
 

@@ -40,6 +40,46 @@ import {
 } from 'lucide-react';
 import type { StructuredVisaRequirements } from '../../pages/api/visa/ai-requirements';
 
+// Helper to ensure clean, crisp spacing in currency and fee strings
+function cleanFeeText(text: string | undefined): string {
+  if (!text) return '';
+  return text
+    .replace(/([0-9A-Z]+)\(/g, '$1 (')
+    .replace(/INR([a-zA-Z])/g, 'INR $1')
+    .replace(/EUR([a-zA-Z])/g, 'EUR $1')
+    .replace(/USD([a-zA-Z])/g, 'USD $1')
+    .replace(/EURTotal/gi, 'EUR Total')
+    .replace(/INRTotal/gi, 'INR Total')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Helper to get concise 1-line requirement with optional extra notes for clean Atlys UI
+function getCleanDocShortSummary(title: string, fullDesc: string): { summary: string; hasExtra: boolean; extraNotes: string } {
+  if (!fullDesc) return { summary: '', hasExtra: false, extraNotes: '' };
+  const cleaned = fullDesc.trim();
+  const sentences = cleaned.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map(s => s.trim()).filter(Boolean);
+  const primary = sentences[0] || cleaned;
+  const rest = sentences.slice(1).join(' ');
+  return {
+    summary: primary,
+    hasExtra: rest.length > 5,
+    extraNotes: rest
+  };
+}
+
+// Helper to convert paragraph text into clean, point-wise items
+function formatDetailsAsPoints(text: string): string[] {
+  if (!text) return [];
+  // Split on sentence boundaries, colons, or newlines
+  const rawParts = text
+    .split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+|(?<=:\s+)(?=[A-Z0-9])/)
+    .map(s => s.trim())
+    .filter(s => s.length > 5);
+
+  return rawParts.length > 0 ? rawParts : [text];
+}
+
 const getStepVisual = (stepText: string, index: number) => {
   const s = stepText.toLowerCase();
   
@@ -261,6 +301,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
   const [toastMessage, setToastMessage] = useState('');
   const [showMockQuestions, setShowMockQuestions] = useState(false);
   const [uploadingDocKey, setUploadingDocKey] = useState<string | null>(null);
+  const [expandedDocs, setExpandedDocs] = useState<Record<string, boolean>>({});
   const [uploadedDocDetails, setUploadedDocDetails] = useState<Record<string, {
     fileName: string;
     size: string;
@@ -979,10 +1020,34 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                               )}
                             </div>
 
-                            {/* Formatted Multi-line / Bullet Description */}
-                            <div className="text-[11px] sm:text-sm text-slate-600 font-medium sm:font-semibold space-y-1.5 break-words leading-relaxed whitespace-pre-line">
-                              {doc.description}
-                            </div>
+                            {/* Clean, Concise Atlys-style Description */}
+                            {(() => {
+                              const docInfo = getCleanDocShortSummary(doc.title, doc.description);
+                              const isDocExpanded = !!expandedDocs[docKey];
+                              return (
+                                <div className="space-y-1.5 text-left">
+                                  <p className="text-xs sm:text-[13px] text-slate-600 font-medium leading-relaxed">
+                                    {docInfo.summary}
+                                  </p>
+                                  {docInfo.hasExtra && (
+                                    <div>
+                                      <button
+                                        type="button"
+                                        onClick={() => setExpandedDocs(prev => ({ ...prev, [docKey]: !prev[docKey] }))}
+                                        className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-1 cursor-pointer"
+                                      >
+                                        <span>{isDocExpanded ? 'Hide embassy details ▴' : 'View full embassy guidelines ▾'}</span>
+                                      </button>
+                                      {isDocExpanded && (
+                                        <div className="mt-1.5 p-3 rounded-xl bg-slate-50 border border-slate-200/90 text-xs text-slate-600 leading-relaxed animate-fadeIn">
+                                          {docInfo.extraNotes}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })()}
 
                             {/* Interactive Upload & AI Scan Card */}
                             <div className="pt-2">
@@ -1179,19 +1244,33 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {data.other_requirements.map((mandate, mIdx) => {
                     const visual = getMandateVisual(mandate.category, mIdx);
+                    const points = formatDetailsAsPoints(mandate.details);
+
                     return (
-                      <div key={mIdx} className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-2 text-left shadow-2xs">
-                        <div className="flex items-center gap-2">
-                          <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${visual.badgeBg}`}>
-                            {mandate.category}
-                          </span>
+                      <div key={mIdx} className="bg-white border-2 border-slate-200/90 hover:border-indigo-400 rounded-2xl p-5 space-y-3.5 text-left shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+                            <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg ${visual.badgeBg}`}>
+                              {mandate.category}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                              Consular Mandate
+                            </span>
+                          </div>
+
+                          {/* Point-Wise Presentation (Clean, crystal clear Atlys UI) */}
+                          <ul className="space-y-2.5">
+                            {points.map((pt, pIdx) => (
+                              <li key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-2 shrink-0" />
+                                <span>{pt}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                          {mandate.details}
-                        </p>
                       </div>
                     );
                   })}
@@ -1228,7 +1307,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 <div>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 block">Total Statutory Cost</span>
                   <strong className="text-lg sm:text-xl font-black text-emerald-900 leading-none">
-                    {data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : (data.costs?.visa_fee || "Consular Tariff")}
+                    {cleanFeeText(data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, "").replace(/\s*Reference/gi, "").trim() : (data.costs?.visa_fee || "Consular Tariff"))}
                   </strong>
                 </div>
               </div>
@@ -1246,7 +1325,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     Visa Application / Filing Fee
                   </h4>
                   <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-                    {data.costs?.visa_fee || "Statutory Fee"}
+                    {cleanFeeText(data.costs?.visa_fee) || "Statutory Fee"}
                   </p>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
@@ -1264,7 +1343,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     VAC &amp; Biometric Enrollment Fee
                   </h4>
                   <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-                    {data.costs?.service_fee || "VFS / VAC Standard Fee"}
+                    {cleanFeeText(data.costs?.service_fee) || "VFS / VAC Standard Fee"}
                   </p>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
@@ -1282,7 +1361,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     Total Estimated Statutory Outlay
                   </h4>
                   <p className="text-xl sm:text-2xl font-black text-emerald-900 tracking-tight">
-                    {data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs?.visa_fee}
+                    {cleanFeeText(data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, "").replace(/\s*Reference/gi, "").trim() : data.costs?.visa_fee)}
                   </p>
                 </div>
                 <p className="text-[11px] text-emerald-800 font-semibold leading-relaxed">

@@ -8,6 +8,7 @@ import {
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
 
 export function ConsultantDashboard() {
+    const [consultantSearch, setConsultantSearch] = useState("");
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
@@ -476,23 +477,40 @@ export function ConsultantDashboard() {
         }
     };
 
-    // Navigation Menu Specification
-    const navItems = [
-        { id: "overview", label: "Dashboard", icon: LayoutDashboard },
-        { id: "profile", label: "Profile & Business", icon: User },
-        { id: "leads", label: "Leads", icon: Users },
-        { id: "enquiries", label: "Enquiries", icon: MessageSquare },
-        { id: "services", label: "My Services", icon: Briefcase },
-        { id: "classifieds", label: "Classifieds / Offers", icon: LayoutGrid },
-        { id: "reviews", label: "Reviews & Ratings", icon: Star },
-        { id: "promotions", label: "Promotions", icon: Sparkles },
-        { id: "analytics", label: "Analytics", icon: BarChart3 },
-        { id: "disputes", label: "Disputes", icon: ShieldCheck },
-        { id: "messages", label: "Messages", icon: Bell },
-        { id: "subscriptions", label: "Subscriptions", icon: DollarSign },
-        { id: "settings", label: "Settings", icon: Settings },
-        { id: "help", label: "Help & Support", icon: HelpCircle },
+    // Navigation Menu Specification - Grouped Nexus Style
+    const navSections = [
+        {
+            title: "GENERAL",
+            items: [
+                { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+                { id: "leads", label: "Leads", icon: Users, count: leadsList.length > 0 ? leadsList.length : undefined },
+                { id: "enquiries", label: "Enquiries", icon: MessageSquare, count: enquiriesList.length > 0 ? enquiriesList.length : undefined },
+                { id: "messages", label: "Messages", icon: Bell, badge: "LIVE", badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
+            ]
+        },
+        {
+            title: "TOOLS",
+            items: [
+                { id: "services", label: "My Services", icon: Briefcase },
+                { id: "classifieds", label: "Classifieds", icon: LayoutGrid },
+                { id: "analytics", label: "Analytics", icon: BarChart3 },
+                { id: "promotions", label: "Promotions", icon: Sparkles, badge: "BOOST", badgeColor: "bg-indigo-50 text-indigo-700 border border-indigo-200/60" },
+                { id: "reviews", label: "Reviews", icon: Star },
+                { id: "subscriptions", label: "Subscriptions", icon: DollarSign },
+            ]
+        },
+        {
+            title: "SUPPORT",
+            items: [
+                { id: "profile", label: "Profile & Business", icon: User },
+                { id: "settings", label: "Settings", icon: Settings },
+                { id: "disputes", label: "Disputes", icon: ShieldCheck },
+                { id: "help", label: "Help & Support", icon: HelpCircle },
+            ]
+        }
     ];
+
+    const allNavItems = navSections.flatMap(s => s.items);
 
     return (
         <div className="min-h-screen bg-[#f4f6f9] font-sans flex flex-col text-slate-900 selection:bg-slate-900 selection:text-white">
@@ -518,6 +536,23 @@ export function ConsultantDashboard() {
                     >
                         <Menu className="w-5 h-5" />
                     </button>
+                </div>
+
+                {/* Center Topbar Search (Image 2 Nexus Style) */}
+                <div className="relative flex-1 max-w-sm hidden md:block mx-4">
+                    <div className="relative flex items-center w-full">
+                        <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
+                        <input 
+                            type="text" 
+                            placeholder="Search"
+                            value={consultantSearch}
+                            onChange={(e) => setConsultantSearch(e.target.value)}
+                            className="w-full pl-9 pr-14 py-2 bg-slate-50/70 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-slate-400 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 transition-all outline-none"
+                        />
+                        <div className="absolute right-2.5 flex items-center pointer-events-none">
+                            <kbd className="text-[10px] font-mono text-slate-400 bg-white border border-slate-200/90 px-1.5 py-0.5 rounded shadow-2xs">⌘ + F</kbd>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
@@ -560,7 +595,7 @@ export function ConsultantDashboard() {
                 {/* Left Sidebar Navigation */}
                 <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                     <div className="p-3 space-y-1">
-                        {navItems.map(item => {
+                        {allNavItems.map(item => {
                             const isActive = activeTab === item.id;
                             const IconComp = item.icon;
                             return (
@@ -620,7 +655,7 @@ export function ConsultantDashboard() {
                                 </button>
                             </div>
                             <nav className="space-y-1">
-                                {navItems.map(item => {
+                                {allNavItems.map(item => {
                                     const isActive = activeTab === item.id;
                                     const IconComp = item.icon;
                                     return (

@@ -2827,7 +2827,32 @@ export function VisaCountryResultPortal({
         }));
         localStorage.setItem('seeker_documents', JSON.stringify(docArray));
 
-        // 4. Save Active Visa Case Record
+        // 4. Save Active Travel Profile for instant Dashboard sync
+        localStorage.setItem("active_travel_profile", JSON.stringify({
+          destination: countryName,
+          destinationFlag: flagEmoji,
+          passport: passportCountry,
+          purpose: isStudyPurpose ? 'Higher Studies' : isWorkPurpose ? 'Employment / Work' : 'Tourism / Vacation',
+          visaType: visaTypeName,
+          createdAt: submissionDate
+        }));
+
+        // 5. Save Document Vault Checklist State for this country
+        try {
+          const vaultKey = `vault_checklist_${countryName}`.replace(/\s+/g, '_').toLowerCase();
+          const existingVault = JSON.parse(localStorage.getItem(vaultKey) || '{}');
+          Object.keys(uploadedDocuments).forEach((k) => {
+            existingVault[k] = {
+              verified: true,
+              status: 'verified',
+              fileName: (uploadedDocuments as any)[k]?.fileName || `${k}.pdf`,
+              timestamp: new Date().toISOString()
+            };
+          });
+          localStorage.setItem(vaultKey, JSON.stringify(existingVault));
+        } catch(e) {}
+
+        // 6. Save Active Visa Case Record
         const activeCase = {
           id: `case-${Date.now()}`,
           trackingId: trackingId,

@@ -5,7 +5,7 @@ import {
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
     CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard,
-    Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw
+    Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2
 } from "lucide-react";
 
 export interface VaultDocItem {
@@ -621,6 +621,26 @@ export function UserDashboard() {
         summary?: string;
         uploadedAt: string;
     }>>({});
+
+    // ── APPLICATION NAMING & CREATION MODAL STATES ──
+    const [showNewAppModal, setShowNewAppModal] = useState(false);
+    const [newAppName, setNewAppName] = useState("");
+    const [newAppDest, setNewAppDest] = useState("");
+    const [newAppPass, setNewAppPass] = useState("India");
+    const [newAppPurpose, setNewAppPurpose] = useState("Tourism / Vacation");
+    const [editingAppId, setEditingAppId] = useState<string | null>(null);
+    const [editingAppName, setEditingAppName] = useState("");
+    const [copiedTrackingId, setCopiedTrackingId] = useState<string | null>(null);
+    const [dashboardToast, setDashboardToast] = useState<string | null>(null);
+
+    // ── PRE-DEPARTURE & LUGGAGE CHECKLIST STATES ──
+    const [luggageChecklist, setLuggageChecklist] = useState<Record<string, boolean>>({});
+    const [customLuggageItems, setCustomLuggageItems] = useState<Array<{ id: string; category: 'cabin' | 'checked' | 'predeparture'; title: string }>>([]);
+    const [isFetchingPreDepartureAi, setIsFetchingPreDepartureAi] = useState(false);
+    const [aiPreDepartureData, setAiPreDepartureData] = useState<any>(null);
+    const [newLuggageItemText, setNewLuggageItemText] = useState("");
+    const [newLuggageCategory, setNewLuggageCategory] = useState<'cabin' | 'checked' | 'predeparture'>('cabin');
+    const [luggageActiveSection, setLuggageActiveSection] = useState<'all' | 'cabin' | 'checked' | 'predeparture'>('all');
 
     // ── SECRET DOCUMENT VAULT ENCRYPTION & PASSWORD PROTECTION ──
     const [isVaultUnlocked, setIsVaultUnlocked] = useState(false);
@@ -1599,6 +1619,206 @@ export function UserDashboard() {
         });
     };
 
+    const showToastMsg = (msg: string) => {
+        setDashboardToast(msg);
+        setTimeout(() => setDashboardToast(null), 3500);
+    };
+
+    // ── APPLICATION ACTIONS (CUSTOM NAME, UNIQUE ID, CREATION & DELETION) ──
+    const handleCreateNewApplication = (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        const targetDest = normalizeCountryName(newAppDest || selectedDestination || "United States");
+        const targetPass = normalizeCountryName(newAppPass || selectedPassport || "India");
+        const targetPurp = newAppPurpose || selectedPurpose || "Tourism / Vacation";
+        const appName = (newAppName || "").trim() || `${targetDest} ${targetPurp.includes('Study') ? 'Student Visa' : targetPurp.includes('Work') ? 'Work Visa' : 'Tourist Visa'}`;
+        
+        const uniqueAppId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const destCode = targetDest.slice(0, 2).toUpperCase();
+        const uniqueTrackingId = `TT-${destCode}-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+        const flag = getFlagEmoji(targetDest);
+        const visaType = targetPurp.includes('Study') ? 'F-1 / Tier-4 Student Visa' : targetPurp.includes('Work') ? 'Skilled Worker Visa' : 'Tourist / Visitor Visa';
+
+        const newCase = {
+            id: uniqueAppId,
+            customName: appName,
+            trackingId: uniqueTrackingId,
+            destination: targetDest,
+            destinationFlag: flag,
+            visaType,
+            purpose: targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism',
+            passport: targetPass,
+            status: "Travel Profile & Document Checklist Active",
+            stage: "Document Vault Verification",
+            progress: 35,
+            documentsCount: 6,
+            addonsCount: 0,
+            submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            targetDate: "Consular Filing Ready",
+            createdAt: new Date().toISOString()
+        };
+
+        const existingCases = JSON.parse(localStorage.getItem("active_visa_cases") || "[]");
+        const updatedCases = [newCase, ...existingCases.filter((c: any) => c.id !== uniqueAppId)];
+        setVisasProcessingState(updatedCases);
+        try {
+            localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
+        } catch(e) {}
+
+        setShowNewAppModal(false);
+        setNewAppName("");
+        setNewAppDest("");
+        showToastMsg(`Application "${appName}" created with ID ${uniqueTrackingId}!`);
+    };
+
+    const handleRenameApplication = (appId: string, newName: string) => {
+        if (!newName.trim()) return;
+        const updated = visasProcessingState.map(c => c.id === appId ? { ...c, customName: newName.trim() } : c);
+        setVisasProcessingState(updated);
+        try {
+            localStorage.setItem("active_visa_cases", JSON.stringify(updated));
+        } catch(e) {}
+        setEditingAppId(null);
+        setEditingAppName("");
+        showToastMsg("Application name updated!");
+    };
+
+    const handleDeleteApplication = (appId: string) => {
+        if (confirm("Are you sure you want to remove this visa application from your dashboard?")) {
+            const updated = visasProcessingState.filter(c => c.id !== appId);
+            setVisasProcessingState(updated);
+            try {
+                localStorage.setItem("active_visa_cases", JSON.stringify(updated));
+            } catch(e) {}
+            showToastMsg("Application removed from dashboard.");
+        }
+    };
+
+    const handleCopyTrackingId = (trackingId: string) => {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(trackingId);
+            setCopiedTrackingId(trackingId);
+            showToastMsg(`Tracking ID ${trackingId} copied!`);
+            setTimeout(() => setCopiedTrackingId(null), 2500);
+        }
+    };
+
+    // ── PRE-DEPARTURE & LUGGAGE CHECKLIST HELPERS ──
+    const fetchPreDepartureAi = async (dest?: string) => {
+        const targetDest = normalizeCountryName(dest || selectedDestination);
+        setIsFetchingPreDepartureAi(true);
+        try {
+            const res = await fetch('/api/trip-readiness', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    destination: targetDest,
+                    passport_country: selectedPassport || 'India',
+                    purpose: selectedPurpose || 'tourism',
+                    departureDate: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0]
+                })
+            });
+            if (res.ok) {
+                const json = await res.json();
+                if (json.data) {
+                    setAiPreDepartureData(json.data);
+                    try {
+                        localStorage.setItem(`ai_predeparture_${targetDest.toLowerCase().replace(/[^a-z0-9]/g, '_')}`, JSON.stringify(json.data));
+                    } catch(e) {}
+                    showToastMsg(`Live pre-departure AI directives updated for ${targetDest}!`);
+                }
+            }
+        } catch(err) {
+            console.error('Error fetching pre-departure AI details:', err);
+        } finally {
+            setIsFetchingPreDepartureAi(false);
+        }
+    };
+
+    const toggleLuggageItem = (itemId: string) => {
+        const targetDest = normalizeCountryName(selectedDestination);
+        const storageKey = `luggage_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+        setLuggageChecklist(prev => {
+            const next = { ...prev, [itemId]: !prev[itemId] };
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(next));
+            } catch(e) {}
+            return next;
+        });
+    };
+
+    const handleAddCustomLuggageItem = (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        if (!newLuggageItemText.trim()) return;
+        const targetDest = normalizeCountryName(selectedDestination);
+        const customKey = `custom_luggage_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+        const newItem = {
+            id: `custom_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            category: newLuggageCategory,
+            title: newLuggageItemText.trim()
+        };
+        const updated = [...customLuggageItems, newItem];
+        setCustomLuggageItems(updated);
+        try {
+            localStorage.setItem(customKey, JSON.stringify(updated));
+        } catch(e) {}
+        setNewLuggageItemText("");
+        showToastMsg(`Added "${newItem.title}" to luggage checklist!`);
+    };
+
+    const handleDeleteCustomLuggageItem = (itemId: string) => {
+        const targetDest = normalizeCountryName(selectedDestination);
+        const customKey = `custom_luggage_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+        const updated = customLuggageItems.filter(i => i.id !== itemId);
+        setCustomLuggageItems(updated);
+        try {
+            localStorage.setItem(customKey, JSON.stringify(updated));
+        } catch(e) {}
+    };
+
+    const defaultLuggageItems = useMemo(() => {
+        const dest = normalizeCountryName(selectedDestination);
+        return {
+            cabin: [
+                { id: 'cabin_passport', title: 'Original Passport & Visa / eVisa Printout', hint: 'Must have min. 6 months validity from travel date', icon: '🛂' },
+                { id: 'cabin_tickets', title: 'Confirmed Flight Ticket & Boarding Pass', hint: 'Printed copy + offline PDF on smartphone', icon: '✈️' },
+                { id: 'cabin_hotel', title: 'Hotel Booking / Host Invitation Letter', hint: 'Keep address & phone number readily accessible', icon: '🏨' },
+                { id: 'cabin_meds', title: 'Prescription Medicines + Doctor\'s Prescription', hint: 'Keep in original packaging with doctor stamp', icon: '💊' },
+                { id: 'cabin_powerbank', title: 'Portable Power Bank (Hand Luggage ONLY)', hint: 'Airlines strictly prohibit power banks in checked baggage (max 100Wh)', icon: '🔋' },
+                { id: 'cabin_electronics', title: 'Laptop, Phone, Charger & Universal Adapter', hint: 'Check destination plug type before boarding', icon: '💻' },
+                { id: 'cabin_forex', title: 'Forex Travel Card & Emergency Local Cash', hint: 'Carry at least $200-$500 cash in local currency', icon: '💵' },
+                { id: 'cabin_pen', title: 'Ballpoint Pen for Arrival / Customs Card', hint: 'Airports often do not provide pens on arrival', icon: '🖊️' },
+            ],
+            checked: [
+                { id: 'checked_clothes', title: `Weather-Appropriate Clothing for ${dest}`, hint: 'Check 7-day temperature forecast before packing', icon: '👕' },
+                { id: 'checked_shoes', title: 'Comfortable Walking Shoes & Casual Footwear', hint: 'Break in new shoes before travel to prevent blisters', icon: '👟' },
+                { id: 'checked_toiletries', title: 'Toiletries & Liquids (>100ml packed securely)', hint: 'Pack liquids in sealed zip-lock bags to avoid leaks', icon: '🧴' },
+                { id: 'checked_docs_copy', title: 'Duplicate Physical Copies of All Travel Documents', hint: 'Store in waterproof sleeve inside checked suitcase', icon: '📂' },
+                { id: 'checked_lock', title: 'TSA-Approved Luggage Combination Lock', hint: 'Allows customs security inspection without damaging bag', icon: '🔒' },
+                { id: 'checked_tag', title: 'Luggage Name Tag with Contact Phone & Email', hint: 'Crucial for quick baggage recovery in case of delay', icon: '🏷️' },
+            ],
+            predeparture: [
+                { id: 'prep_webcheckin', title: 'Online Web Check-in & Seat Selection', hint: 'Opens 24 to 48 hours prior to scheduled departure', icon: '🎫' },
+                { id: 'prep_insurance', title: 'Travel Medical Insurance Policy Saved Offline', hint: `Must cover emergency hospitalization in ${dest}`, icon: '🛡️' },
+                { id: 'prep_esim', title: 'International Roaming or Destination eSIM Ready', hint: 'Setup Airalo/Holafly eSIM before departure for instant data', icon: '📱' },
+                { id: 'prep_bank', title: 'Bank International Card Usage Enabled in App', hint: 'Enable international ATM withdrawal & POS transactions', icon: '💳' },
+                { id: 'prep_embassy', title: 'Home Country Embassy / Consular Contact Saved', hint: `Save 24x7 emergency helpline for ${dest}`, icon: '🏛️' },
+            ]
+        };
+    }, [selectedDestination]);
+
+    const luggageProgress = useMemo(() => {
+        const allItems = [
+            ...defaultLuggageItems.cabin,
+            ...defaultLuggageItems.checked,
+            ...defaultLuggageItems.predeparture,
+            ...customLuggageItems
+        ];
+        const total = allItems.length;
+        const packed = allItems.filter(item => luggageChecklist[item.id]).length;
+        const percent = total > 0 ? Math.round((packed / total) * 100) : 0;
+        return { total, packed, percent };
+    }, [defaultLuggageItems, customLuggageItems, luggageChecklist]);
+
     const handleVaultDocScan = async (file: File, docKey: string, docTitle: string) => {
         if (!file) return;
 
@@ -2007,6 +2227,7 @@ export function UserDashboard() {
         { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
         { id: "visa-readiness", label: "Visa Readiness Score", icon: ShieldCheck },
         { id: "cases", label: "Your Applications", icon: Briefcase },
+        { id: "predeparture", label: "Pre-Departure & Luggage", icon: Luggage },
         { id: "consultations", label: "Bookings & Sessions", icon: Calendar },
         { id: "scanned-documents", label: "Document Vault", icon: FileText },
         { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
@@ -2196,7 +2417,7 @@ export function UserDashboard() {
                             </div>
 
                             {/* Stat Summary Cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                                 <div 
                                     onClick={() => setActiveTab('visa-readiness')}
                                     className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
@@ -2214,11 +2435,42 @@ export function UserDashboard() {
                                     </div>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
+                                <div 
+                                    onClick={() => setActiveTab('cases')}
+                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-blue-300 hover:shadow-xs transition-all group"
+                                >
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Your Applications</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{visasProcessingState.length}</span>
+                                        <span className="text-[11px] font-bold text-blue-600 mt-1 inline-block group-hover:underline">Active Cases →</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                                        <Briefcase className="w-6 h-6" />
+                                    </div>
+                                </div>
+
+                                <div 
+                                    onClick={() => setActiveTab('predeparture')}
+                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
+                                >
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Pre-Departure &amp; Luggage</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{luggageProgress.percent}%</span>
+                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block group-hover:underline">{luggageProgress.packed}/{luggageProgress.total} Items • Pack →</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                        <Luggage className="w-6 h-6" />
+                                    </div>
+                                </div>
+
+                                <div 
+                                    onClick={() => setActiveTab('scanned-documents')}
+                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-teal-300 hover:shadow-xs transition-all group"
+                                >
                                     <div>
                                         <span className="text-xs font-bold text-slate-400 block">Document Vault</span>
                                         <span className="text-2xl font-black text-slate-900 mt-1 block">{documents.length}</span>
-                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">Uploaded Documents</span>
+                                        <span className="text-[11px] font-bold text-teal-600 mt-1 inline-block group-hover:underline">Manage Files →</span>
                                     </div>
                                     <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center font-bold">
                                         <FileText className="w-6 h-6" />
@@ -2233,17 +2485,6 @@ export function UserDashboard() {
                                     </div>
                                     <div className="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center font-bold">
                                         <BookOpen className="w-6 h-6" />
-                                    </div>
-                                </div>
-
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Your Applications</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{visasProcessingState.length}</span>
-                                        <span className="text-[11px] font-bold text-slate-500 mt-1 inline-block">Under Review</span>
-                                    </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                                        <Briefcase className="w-6 h-6" />
                                     </div>
                                 </div>
 
@@ -3265,9 +3506,13 @@ export function UserDashboard() {
                                     <h2 className="text-xl font-black text-slate-900">Your Applications ({visasProcessingState.length})</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
                                 </div>
-                                <a href="/#need-visa-pathway-dashboard" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 self-start sm:self-auto">
-                                    <Plus className="w-3.5 h-3.5" /> Start New Application
-                                </a>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowNewAppModal(true)}
+                                    className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer transition-all"
+                                >
+                                    <Plus className="w-3.5 h-3.5 text-emerald-400" /> Start New Application
+                                </button>
                             </div>
 
                             {visasProcessingState.length === 0 ? (
@@ -3275,100 +3520,584 @@ export function UserDashboard() {
                                     <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-black text-slate-900">No Active Visa Applications Found</h3>
                                     <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                                        You haven't submitted any visa dossiers yet. Explore official visa requirements and start your fast-track application.
+                                        You haven't submitted any visa dossiers yet. Explore official visa requirements or create a new visa case.
                                     </p>
-                                    <a href="/visa/united-kingdom?passport=indian&purpose=tourism" className="inline-block bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
-                                        Explore UK Tourist Visa →
-                                    </a>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowNewAppModal(true)}
+                                        className="inline-block bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md cursor-pointer hover:bg-black transition-all"
+                                    >
+                                        + Create New Visa Application
+                                    </button>
                                 </div>
                             ) : (
                                 <div className="space-y-5">
-                                    {visasProcessingState.map((cItem, idx) => (
-                                        <div key={cItem.id || idx} className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5 hover:shadow-md transition-all">
-                                            {/* Case Header */}
-                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                                                <div className="flex items-center gap-3.5">
-                                                    <span className="text-3xl">{cItem.destinationFlag || '🇬🇧'}</span>
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <h3 className="text-lg font-black text-slate-950">
-                                                                {cItem.destination || 'Destination'} • {cItem.visaType || 'Standard Visa'}
-                                                            </h3>
-                                                            <span className="bg-emerald-50 text-[#00A86B] text-[10px] font-black px-2 py-0.5 rounded-md border border-emerald-200">
-                                                                {cItem.status || 'Active'}
-                                                            </span>
+                                    {visasProcessingState.map((cItem, idx) => {
+                                        const isEditingThis = editingAppId === cItem.id;
+                                        const appDisplayName = cItem.customName || `${cItem.destination || 'Destination'} • ${cItem.visaType || 'Standard Visa'}`;
+
+                                        return (
+                                            <div key={cItem.id || idx} className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5 hover:shadow-md transition-all">
+                                                {/* Case Header */}
+                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                                                    <div className="flex items-center gap-3.5">
+                                                        <span className="text-3xl">{cItem.destinationFlag || getFlagEmoji(cItem.destination) || '🌍'}</span>
+                                                        <div className="space-y-1">
+                                                            {isEditingThis ? (
+                                                                <div className="flex items-center gap-2">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editingAppName}
+                                                                        onChange={(e) => setEditingAppName(e.target.value)}
+                                                                        placeholder="e.g. Dubai Summer Trip"
+                                                                        className="px-3 py-1 text-sm font-black text-slate-900 bg-slate-50 border border-slate-300 rounded-lg outline-none focus:border-slate-900"
+                                                                        autoFocus
+                                                                    />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleRenameApplication(cItem.id, editingAppName)}
+                                                                        className="px-2.5 py-1 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-black cursor-pointer"
+                                                                    >
+                                                                        Save
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setEditingAppId(null)}
+                                                                        className="px-2 py-1 text-slate-500 hover:text-slate-800 text-xs font-bold cursor-pointer"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="flex items-center gap-2 flex-wrap">
+                                                                    <h3 className="text-lg font-black text-slate-950">
+                                                                        {appDisplayName}
+                                                                    </h3>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setEditingAppId(cItem.id);
+                                                                            setEditingAppName(appDisplayName);
+                                                                        }}
+                                                                        className="p-1 rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+                                                                        title="Rename Application"
+                                                                    >
+                                                                        <Edit2 className="w-3.5 h-3.5" />
+                                                                    </button>
+                                                                    <span className="bg-emerald-50 text-[#00A86B] text-[10px] font-black px-2 py-0.5 rounded-md border border-emerald-200">
+                                                                        {cItem.status || 'Active'}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-500">
+                                                                <span>Tracking ID: <strong className="text-slate-900 font-mono">{cItem.trackingId || 'TT-APP-2026-9824'}</strong></span>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleCopyTrackingId(cItem.trackingId || 'TT-APP-2026-9824')}
+                                                                    className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] transition-all cursor-pointer"
+                                                                    title="Copy Tracking ID"
+                                                                >
+                                                                    <Copy className="w-3 h-3 text-slate-500" />
+                                                                    <span>{copiedTrackingId === cItem.trackingId ? 'Copied ✓' : 'Copy'}</span>
+                                                                </button>
+                                                                <span>•</span>
+                                                                <span>Passport: <strong className="text-slate-700">{cItem.passport || 'Indian'}</strong></span>
+                                                                <span>•</span>
+                                                                <span className="font-mono text-[11px] text-slate-400">ID: #{String(cItem.id || idx).replace(/^app_/, '').slice(0, 8).toUpperCase()}</span>
+                                                            </div>
                                                         </div>
-                                                        <p className="text-xs text-slate-500 mt-0.5">
-                                                            Tracking ID: <strong className="text-slate-900 font-mono">{cItem.trackingId || 'TT-APP-2026-9824'}</strong> • Passport: <strong className="text-slate-700">{cItem.passport || 'Indian'}</strong>
-                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                                                        <a
+                                                            href={cItem.destination ? `/visa/${encodeURIComponent(cItem.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(cItem.purpose || 'tourism')}&passport=${encodeURIComponent(cItem.passport || 'India')}` : '/'}
+                                                            className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all inline-flex items-center gap-1 shadow-xs"
+                                                        >
+                                                            <span>Resume Workspace</span>
+                                                            <ArrowRight className="w-3.5 h-3.5" />
+                                                        </a>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteApplication(cItem.id)}
+                                                            className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all cursor-pointer border border-transparent hover:border-rose-100"
+                                                            title="Delete Application"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
                                                     </div>
                                                 </div>
 
-                                                <div className="flex items-center gap-2 self-start sm:self-auto">
-                                                    <a
-                                                        href={cItem.destination ? `/visa/${encodeURIComponent(cItem.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(cItem.purpose || 'tourism')}&passport=${encodeURIComponent(cItem.passport || 'India')}` : '/'}
-                                                        className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all"
-                                                    >
-                                                        Resume Workspace →
-                                                    </a>
+                                                {/* 5-Step Visual Timeline Progress */}
+                                                <div className="space-y-2">
+                                                    <div className="flex justify-between text-xs font-bold text-slate-700">
+                                                        <span>Application Pipeline Progress:</span>
+                                                        <span className="text-emerald-600 font-black">{cItem.stage || 'Document Vault Verification'} ({cItem.progress || 35}%)</span>
+                                                    </div>
+                                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                                        <div
+                                                            className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
+                                                            style={{ width: `${cItem.progress || 35}%` }}
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
+                                                        <div className="text-emerald-700 font-black flex items-center gap-1">
+                                                            <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /> 1. Dossier Ingested
+                                                        </div>
+                                                        <div className="text-emerald-700 font-black flex items-center gap-1">
+                                                            <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" /> 2. AI Quality Audit
+                                                        </div>
+                                                        <div className="text-slate-400 flex items-center gap-1">
+                                                            <Clock className="w-3 h-3 shrink-0" /> 3. Consular Form Filing
+                                                        </div>
+                                                        <div className="text-slate-400 flex items-center gap-1">
+                                                            <Clock className="w-3 h-3 shrink-0" /> 4. Biometrics Slot
+                                                        </div>
+                                                        <div className="text-slate-400 flex items-center gap-1">
+                                                            <Shield className="w-3 h-3 shrink-0" /> 5. Visa Stamped
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            {/* 5-Step Visual Timeline Progress */}
-                                            <div className="space-y-2">
-                                                <div className="flex justify-between text-xs font-bold text-slate-700">
-                                                    <span>Application Pipeline Progress:</span>
-                                                    <span className="text-emerald-600 font-black">{cItem.stage || 'Under AI Concierge Review'} (35%)</span>
-                                                </div>
-                                                <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full w-[35%]" />
-                                                </div>
-                                                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
-                                                    <div className="text-emerald-700 font-black flex items-center gap-1">
-                                                        <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /> 1. Dossier Ingested
+                                                {/* Key Case Specs */}
+                                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Vault Documents</span>
+                                                        <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount || documents.length || 6} Files OCR Verified</strong>
                                                     </div>
-                                                    <div className="text-emerald-700 font-black flex items-center gap-1">
-                                                        <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" /> 2. AI Quality Audit
+                                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Active Add-Ons</span>
+                                                        <strong className="text-xs font-black text-emerald-600 mt-0.5 block">{cItem.addonsCount || 0} Protections Active</strong>
                                                     </div>
-                                                    <div className="text-slate-400 flex items-center gap-1">
-                                                        <Clock className="w-3 h-3 shrink-0" /> 3. Consular Form Filing
+                                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Submitted On</span>
+                                                        <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.submittedAt || 'Active'}</strong>
                                                     </div>
-                                                    <div className="text-slate-400 flex items-center gap-1">
-                                                        <Clock className="w-3 h-3 shrink-0" /> 4. Biometrics Slot
-                                                    </div>
-                                                    <div className="text-slate-400 flex items-center gap-1">
-                                                        <Shield className="w-3 h-3 shrink-0" /> 5. Visa Stamped
+                                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Target Decision</span>
+                                                        <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.targetDate || 'Consular Filing Ready'}</strong>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            {/* Key Case Specs */}
-                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Vault Documents</span>
-                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount || documents.length || 0} Files OCR Verified</strong>
-                                                </div>
-                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Active Add-Ons</span>
-                                                    <strong className="text-xs font-black text-emerald-600 mt-0.5 block">{cItem.addonsCount || 0} Protections Active</strong>
-                                                </div>
-                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Submitted On</span>
-                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.submittedAt || 'Today'}</strong>
-                                                </div>
-                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Target Decision</span>
-                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.targetDate || '15 Working Days'}</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
                     )}
 
-                    {/* 4. TAB: DOCUMENT VAULT & TRAVEL READINESS CHECKLIST */}
+                    {/* 4. TAB: PRE-DEPARTURE & LUGGAGE CHECKLIST */}
+                    {activeTab === "predeparture" && (
+                        <div className="space-y-6 animate-fade-up">
+                            {/* Header & Destination Control */}
+                            <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-xs space-y-4">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md">
+                                                TRAVEL READINESS • PACKING & CUSTOMS
+                                            </span>
+                                            <span className="text-xs text-slate-400 font-medium">•</span>
+                                            <span className="text-xs font-bold text-slate-600">
+                                                AI-Verified Departure Rules
+                                            </span>
+                                        </div>
+                                        <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-1">
+                                            Pre-Departure &amp; Luggage Checklist
+                                        </h2>
+                                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                            Smart cabin baggage rules, customs prohibitions, and 48-hour flight preparation for {selectedDestination}.
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                                        <button
+                                            type="button"
+                                            disabled={isFetchingPreDepartureAi}
+                                            onClick={() => fetchPreDepartureAi()}
+                                            className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer border border-slate-200"
+                                        >
+                                            <RefreshCw className={`w-3.5 h-3.5 text-indigo-600 ${isFetchingPreDepartureAi ? 'animate-spin' : ''}`} />
+                                            <span>{isFetchingPreDepartureAi ? 'Fetching AI Rules...' : 'Sync AI Directives'}</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Destination & Packing Progress Bar */}
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center pt-1">
+                                    <div className="sm:col-span-2 space-y-2">
+                                        <div className="flex items-center justify-between text-xs font-bold">
+                                            <span className="text-slate-700 flex items-center gap-1.5">
+                                                <Luggage className="w-4 h-4 text-emerald-600" />
+                                                <span>Packing &amp; Readiness Completion:</span>
+                                            </span>
+                                            <span className="text-emerald-700 font-black">
+                                                {luggageProgress.packed} of {luggageProgress.total} Items Checked ({luggageProgress.percent}%)
+                                            </span>
+                                        </div>
+                                        <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5">
+                                            <div
+                                                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
+                                                style={{ width: `${luggageProgress.percent}%` }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-400 uppercase block">Active Trip</span>
+                                            <strong className="text-xs font-black text-slate-900 line-clamp-1">
+                                                {getFlagEmoji(selectedDestination)} {selectedDestination}
+                                            </strong>
+                                        </div>
+                                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
+                                            {selectedPurpose}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Section Filter Pills */}
+                                <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-100">
+                                    {[
+                                        { id: 'all', label: 'All Essentials' },
+                                        { id: 'cabin', label: '🎒 Hand / Cabin Bag' },
+                                        { id: 'checked', label: '🧳 Checked Luggage' },
+                                        { id: 'predeparture', label: '📋 48-Hour Pre-Flight' },
+                                    ].map(sec => (
+                                        <button
+                                            key={sec.id}
+                                            type="button"
+                                            onClick={() => setLuggageActiveSection(sec.id as any)}
+                                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                                                luggageActiveSection === sec.id
+                                                    ? 'bg-slate-900 text-white shadow-2xs'
+                                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
+                                        >
+                                            {sec.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* AI Verified Customs & Prohibitions Alert Card */}
+                            <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 border border-amber-200/80 rounded-3xl p-5 sm:p-6 space-y-3 text-left">
+                                <div className="flex items-center gap-2">
+                                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+                                    <h4 className="text-sm font-black text-slate-950 uppercase tracking-wide">
+                                        Consular Airport Customs &amp; Prohibitions Warning for {selectedDestination}
+                                    </h4>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
+                                        <strong className="text-slate-900 font-bold block">💵 Currency Declaration Rule</strong>
+                                        <p className="text-slate-600 leading-relaxed">
+                                            Foreign currency in cash exceeding $10,000 USD (or equivalent) must be officially declared upon arrival.
+                                        </p>
+                                    </div>
+                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
+                                        <strong className="text-slate-900 font-bold block">💊 Restricted Medications</strong>
+                                        <p className="text-slate-600 leading-relaxed">
+                                            Carrying painkillers or narcotics without stamped doctor prescription is strictly forbidden by consular authorities.
+                                        </p>
+                                    </div>
+                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
+                                        <strong className="text-slate-900 font-bold block">🔋 Lithium Battery Aviation Rule</strong>
+                                        <p className="text-slate-600 leading-relaxed">
+                                            Power banks and spare lithium batteries are strictly prohibited in checked baggage. Must be in hand carry.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Checklist Categories */}
+                            <div className="space-y-6">
+                                {/* 1. Cabin Luggage */}
+                                {(luggageActiveSection === 'all' || luggageActiveSection === 'cabin') && (
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4 text-left">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <span className="text-2xl">🎒</span>
+                                                <div>
+                                                    <h3 className="text-base font-black text-slate-950">
+                                                        Hand Luggage / Cabin Baggage (Must-Carry Onboard)
+                                                    </h3>
+                                                    <p className="text-xs text-slate-500 font-medium">
+                                                        Critical travel documents, prescription medications, valuables and aviation-compliant electronics
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                                Max 7-10 kg
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            {defaultLuggageItems.cabin.map(item => {
+                                                const isPacked = !!luggageChecklist[item.id];
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => toggleLuggageItem(item.id)}
+                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                            isPacked
+                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
+                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-start gap-2.5">
+                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
+                                                            <div className="space-y-0.5">
+                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                                    {item.title}
+                                                                </h4>
+                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                    {item.hint}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
+                                                            isPacked
+                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
+                                                                : 'bg-white border-slate-300'
+                                                        }`}>
+                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+
+                                            {customLuggageItems.filter(i => i.category === 'cabin').map(item => {
+                                                const isPacked = !!luggageChecklist[item.id];
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
+                                                            isPacked
+                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
+                                                                : 'bg-slate-50/70 border-slate-200/80'
+                                                        }`}
+                                                    >
+                                                        <div onClick={() => toggleLuggageItem(item.id)} className="flex items-start gap-2.5 flex-1 cursor-pointer">
+                                                            <span className="text-xl shrink-0 mt-0.5">🏷️</span>
+                                                            <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                                {item.title}
+                                                            </h4>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 shrink-0">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDeleteCustomLuggageItem(item.id)}
+                                                                className="text-slate-400 hover:text-rose-600 transition-colors p-1"
+                                                            >
+                                                                <Trash2 className="w-3.5 h-3.5" />
+                                                            </button>
+                                                            <div
+                                                                onClick={() => toggleLuggageItem(item.id)}
+                                                                className={`w-5 h-5 rounded-lg border flex items-center justify-center cursor-pointer transition-all ${
+                                                                    isPacked ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300'
+                                                                }`}
+                                                            >
+                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* 2. Checked Baggage */}
+                                {(luggageActiveSection === 'all' || luggageActiveSection === 'checked') && (
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4 text-left">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <span className="text-2xl">🧳</span>
+                                                <div>
+                                                    <h3 className="text-base font-black text-slate-950">
+                                                        Checked Luggage (Clothing, Footwear &amp; Toiletries)
+                                                    </h3>
+                                                    <p className="text-xs text-slate-500 font-medium">
+                                                        Main luggage checked in at airline counter. Liquids over 100ml must go here.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-800 border border-indigo-200">
+                                                Standard 20-30 kg
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            {defaultLuggageItems.checked.map(item => {
+                                                const isPacked = !!luggageChecklist[item.id];
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => toggleLuggageItem(item.id)}
+                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                            isPacked
+                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
+                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-start gap-2.5">
+                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
+                                                            <div className="space-y-0.5">
+                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                                    {item.title}
+                                                                </h4>
+                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                    {item.hint}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
+                                                            isPacked
+                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
+                                                                : 'bg-white border-slate-300'
+                                                        }`}>
+                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+
+                                            {customLuggageItems.filter(i => i.category === 'checked').map(item => {
+                                                const isPacked = !!luggageChecklist[item.id];
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
+                                                            isPacked
+                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
+                                                                : 'bg-slate-50/70 border-slate-200/80'
+                                                        }`}
+                                                    >
+                                                        <div onClick={() => toggleLuggageItem(item.id)} className="flex items-start gap-2.5 flex-1 cursor-pointer">
+                                                            <span className="text-xl shrink-0 mt-0.5">🏷️</span>
+                                                            <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                                {item.title}
+                                                            </h4>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 shrink-0">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDeleteCustomLuggageItem(item.id)}
+                                                                className="text-slate-400 hover:text-rose-600 transition-colors p-1"
+                                                            >
+                                                                <Trash2 className="w-3.5 h-3.5" />
+                                                            </button>
+                                                            <div
+                                                                onClick={() => toggleLuggageItem(item.id)}
+                                                                className={`w-5 h-5 rounded-lg border flex items-center justify-center cursor-pointer transition-all ${
+                                                                    isPacked ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300'
+                                                                }`}
+                                                            >
+                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* 3. 48-Hour Pre-Flight Essentials */}
+                                {(luggageActiveSection === 'all' || luggageActiveSection === 'predeparture') && (
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4 text-left">
+                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <span className="text-2xl">📋</span>
+                                                <div>
+                                                    <h3 className="text-base font-black text-slate-950">
+                                                        48-Hour Pre-Departure Essentials
+                                                    </h3>
+                                                    <p className="text-xs text-slate-500 font-medium">
+                                                        Crucial digital, banking, and insurance tasks to complete before heading to airport
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 border border-amber-200">
+                                                Pre-Flight Gate
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            {defaultLuggageItems.predeparture.map(item => {
+                                                const isPacked = !!luggageChecklist[item.id];
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => toggleLuggageItem(item.id)}
+                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                            isPacked
+                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
+                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-start gap-2.5">
+                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
+                                                            <div className="space-y-0.5">
+                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                                    {item.title}
+                                                                </h4>
+                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                    {item.hint}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
+                                                            isPacked
+                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
+                                                                : 'bg-white border-slate-300'
+                                                        }`}>
+                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Add Custom Luggage Item Bar */}
+                                <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-xs text-left">
+                                    <h4 className="text-sm font-black text-slate-950 mb-3 flex items-center gap-2">
+                                        <Plus className="w-4 h-4 text-emerald-600" />
+                                        <span>Add Custom Item to Packing List</span>
+                                    </h4>
+                                    <form onSubmit={handleAddCustomLuggageItem} className="flex flex-col sm:flex-row gap-3">
+                                        <select
+                                            value={newLuggageCategory}
+                                            onChange={(e) => setNewLuggageCategory(e.target.value as any)}
+                                            className="px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-slate-50 outline-none focus:border-slate-900 shrink-0 cursor-pointer"
+                                        >
+                                            <option value="cabin">🎒 Hand / Cabin Baggage</option>
+                                            <option value="checked">🧳 Checked Suitcase</option>
+                                            <option value="predeparture">📋 Pre-Flight Task</option>
+                                        </select>
+                                        <input
+                                            type="text"
+                                            value={newLuggageItemText}
+                                            onChange={(e) => setNewLuggageItemText(e.target.value)}
+                                            placeholder="e.g. Travel neck pillow, Noise cancelling headphones, Extra prescription glasses..."
+                                            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-900 bg-slate-50"
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all shrink-0 cursor-pointer shadow-xs"
+                                        >
+                                            Add Item
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 5. TAB: DOCUMENT VAULT & TRAVEL READINESS CHECKLIST */}
                     {activeTab === "scanned-documents" && (() => {
                         const normalizedDest = normalizeCountryName(selectedDestination);
                         const normalizedPass = normalizeCountryName(selectedPassport);
@@ -4492,6 +5221,127 @@ export function UserDashboard() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ── MODAL: START NEW VISA APPLICATION WITH UNIQUE ID & CUSTOM NAME ── */}
+            {showNewAppModal && (
+                <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center shadow-xs text-lg font-black">
+                                    ✈️
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-black text-slate-950">Start New Visa Application</h3>
+                                    <p className="text-xs text-slate-500 font-medium">Create a new dossier with unique tracking ID &amp; custom name</p>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowNewAppModal(false)}
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleCreateNewApplication} className="space-y-4 pt-4 text-left">
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">
+                                    Application Name / Custom Nickname
+                                </label>
+                                <input
+                                    type="text"
+                                    value={newAppName}
+                                    onChange={(e) => setNewAppName(e.target.value)}
+                                    placeholder="e.g. Dubai Summer Vacation, Greece Tour 2026, UK Masters..."
+                                    className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50"
+                                />
+                                <span className="text-[11px] text-slate-400 font-medium block">
+                                    Give your application a memorable name so you can track multiple visas easily.
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700 block">Destination Country</label>
+                                    <select
+                                        value={newAppDest || selectedDestination}
+                                        onChange={(e) => setNewAppDest(e.target.value)}
+                                        className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
+                                    >
+                                        {dashboardDestinationOptions.map(d => (
+                                            <option key={d.value} value={d.value}>{d.flag} {d.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700 block">Passport Country</label>
+                                    <select
+                                        value={newAppPass || selectedPassport}
+                                        onChange={(e) => setNewAppPass(e.target.value)}
+                                        className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
+                                    >
+                                        {dashboardPassportOptions.map(p => (
+                                            <option key={p.value} value={p.value}>{p.flag} {p.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 block">Visa Purpose / Category</label>
+                                <select
+                                    value={newAppPurpose || selectedPurpose}
+                                    onChange={(e) => setNewAppPurpose(e.target.value)}
+                                    className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
+                                >
+                                    {dashboardPurposeOptions.map(pr => (
+                                        <option key={pr.value} value={pr.value}>{pr.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200/80 text-xs text-emerald-900 space-y-1">
+                                <strong className="font-black flex items-center gap-1 text-emerald-800">
+                                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                    Consular Guarantee &amp; Multi-Application Workspace
+                                </strong>
+                                <p className="text-[11px] leading-relaxed text-emerald-700">
+                                    A unique official Tracking ID and Document Vault checklist will be assigned to this application without overwriting your other active visa cases.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowNewAppModal(false)}
+                                    className="flex-1 py-2.5 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-2.5 bg-slate-950 hover:bg-black text-white rounded-xl font-black text-xs shadow-md cursor-pointer transition-all"
+                                >
+                                    Create &amp; Save Application
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ── TOAST NOTIFICATION BANNER ── */}
+            {dashboardToast && (
+                <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-5 duration-200">
+                    <div className="bg-slate-950 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-800 flex items-center gap-3">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span className="text-xs font-bold">{dashboardToast}</span>
                     </div>
                 </div>
             )}

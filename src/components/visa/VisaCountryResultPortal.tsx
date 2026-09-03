@@ -2848,7 +2848,7 @@ export function VisaCountryResultPortal({
   const [skillAssessed, setSkillAssessed] = useState(false);
 
     // ── DESKTOP SIDEBAR & WORKSPACE STATES (media_1788458534453) ──
-  const [sidebarTab, setSidebarTab] = useState<string>('documents');
+  const [sidebarTab, setSidebarTab] = useState<string>('overview');
   const [portalDocSearch, setPortalDocSearch] = useState('');
   const [portalDocFilter, setPortalDocFilter] = useState<'all' | 'mandatory' | 'recommended'>('all');
   const [inspectDocItem, setInspectDocItem] = useState<any | null>(null);
@@ -4715,8 +4715,8 @@ All documents must be genuine, valid and meet official consular standards to avo
     let wScore = 0;
     if (workExp) wScore += 12;
     if (workOffer) wScore += 15;
-    if (workSponsor) wScore += 13;
-    if (workSalary) wScore += 10;
+    if (workDomain) wScore += 12;
+    if (workAssess) wScore += 11;
     profileScore = wScore;
   }
 
@@ -4759,7 +4759,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'}
                 </span>
                 <h1 className="text-base font-extrabold text-slate-950 truncate tracking-tight leading-snug">
-                  {countryName} Tourist Visa
+                  {countryName} {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'}
                 </h1>
                 <span className="text-xs text-slate-400 font-semibold block truncate">
                   {aiData?.official_source_name || (isSchengen ? 'Schengen Area' : 'Official Consular Registry')}
@@ -5554,7 +5554,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Employment Visa' : 'Tourist Visa'}
                       </span>
                       <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight leading-tight">
-                        {countryName} Tourist Visa
+                        {`${countryName} ${activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : activePurposeTab === 'business' ? 'Business Visa' : 'Tourist Visa'}`}
                       </h2>
                       <span className="text-xs sm:text-sm font-bold text-slate-400 block mt-0.5">
                         {isSchengen ? 'Schengen Area' : 'Official Consular Registry'}

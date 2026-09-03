@@ -861,33 +861,33 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           {/* ── KEY VISA TIMING & VALIDITY OVERVIEW (4-CARD GRID MATCHING PHOTO EXACTLY) ── */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {/* Card 1: Processing Time */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs text-left space-y-3">
-              <Clock className="w-6 h-6 text-slate-800 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
+              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
               <div>
-                <span className="text-xs sm:text-sm font-medium text-slate-800 block">Processing Time</span>
-                <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
+                <span className="text-xs font-semibold text-slate-500 block">Processing Time</span>
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-1 leading-snug">
                   {data.processing_time || data.processing_and_timing?.decision_time || '3–5 Days'}
                 </h4>
               </div>
             </div>
 
             {/* Card 2: Validity */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs text-left space-y-3">
-              <Clock className="w-6 h-6 text-slate-800 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
+              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
               <div>
-                <span className="text-xs sm:text-sm font-medium text-slate-800 block">Validity</span>
-                <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5">
+                <span className="text-xs font-semibold text-slate-500 block">Validity</span>
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-1 leading-snug">
                   {data.validity || data.validity_and_stay?.visa_validity || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? '60 Days' : cleanTo.toLowerCase().includes('jordan') ? '30 Days' : '90 days')}
                 </h4>
               </div>
             </div>
 
             {/* Card 3: Length of stay */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs text-left space-y-3">
-              <Clock className="w-6 h-6 text-slate-800 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
+              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
               <div>
-                <span className="text-xs sm:text-sm font-medium text-slate-800 block">Length of stay</span>
-                <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
+                <span className="text-xs font-semibold text-slate-500 block">Length of stay</span>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-snug">
                   {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (
                     cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai')
                       ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)'
@@ -906,14 +906,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
             </div>
 
             {/* Card 4: Entry */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs text-left space-y-3">
-              <ShieldCheck className="w-6 h-6 text-slate-800 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
+              <ShieldCheck className="w-5 h-5 text-slate-700 stroke-[1.75]" />
               <div>
-                <span className="text-xs sm:text-sm font-medium text-slate-800 block">Entry</span>
-                <h4 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 tracking-tight mt-0.5 leading-snug">
+                <span className="text-xs font-semibold text-slate-500 block">Entry</span>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-snug">
                   Single or Multiple Entry (both options available)
                 </h4>
-                <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-1">
+                <p className="text-[11px] text-slate-500 font-medium leading-tight mt-1">
                   (Approval depends on sole discretion of embassy and filed application purpose)
                 </p>
               </div>

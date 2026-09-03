@@ -5294,25 +5294,144 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
             )}
 
-            {/* TAB: CONDITIONS & REQUIREMENTS (OFFICIAL CARD) */}
+            {/* TAB: CONDITIONS & REQUIREMENTS (CLEAN APPLE-GRADE STATUTORY DIRECTIVES) */}
             {sidebarTab === 'requirements' && (
-              <div className="space-y-4 animate-fade-up">
-                <OfficialRequirementsCard 
-                  countryName={countryName} 
-                  passportCountry={passportCountry} 
-                  purpose={
-                    (activePurposeTab === 'pr' || initialPurpose === 'pr') ? 'Permanent Residency (PR) / Immigration' :
-                    (activePurposeTab === 'study' || initialPurpose === 'study') ? 'Higher Studies' :
-                    (activePurposeTab === 'work' || initialPurpose === 'work') ? 'Employment / Work' :
-                    (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
-                    (activePurposeTab === 'family' || initialPurpose === 'family') ? 'Family / Friends Visit' :
-                    'Tourism / Vacation'
-                  }
-                  onDocsReadyChange={(ready, total) => {
-                    setDocsReadyCount(ready);
-                    setDocsTotalCount(total);
-                  }}
-                />
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Conditions &amp; Requirements</h2>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                    Official statutory entry rules, financial benchmarks, and compliance mandates for {countryName}.
+                  </p>
+                </div>
+
+                {/* 4 Clean Pillar Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Pillar 1: Entry & Stay Rules */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Entry &amp; Stay Conditions</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Stay Duration:</strong> {aiData?.processing_and_timing?.max_extension || 'Maximum authorized stay determined at port of entry (typically up to 180 days per visit).'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Pillar 2: Financial Proofs & Solvency */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <CreditCard className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Financial Solvency Benchmarks</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      {aiData?.financial_proofs && aiData.financial_proofs.length > 0 ? (
+                        aiData.financial_proofs.slice(0, 3).map((fp: any, i: number) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Pillar 3: Home Ties & Return Intent */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <Briefcase className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Home Ties &amp; Return Intent</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Non-Immigrant Intent:</strong> Applicant must demonstrate strong economic and residential roots to overcome Section 214(b) presumption.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Pillar 4: Biometrics & Security Protocols */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Biometrics &amp; Security Mandates</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      {aiData?.other_requirements && aiData.other_requirements.length > 0 ? (
+                        aiData.other_requirements.slice(0, 3).map((orq: any, i: number) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>{orq.category}:</strong> {orq.details}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Statutory Compliance Footer Banner */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3 text-xs text-slate-600 font-medium">
+                  <Lock className="w-4 h-4 text-slate-700 shrink-0" />
+                  <span>
+                    Adjudication is subject to the sole discretion of the consular visa officer. Ensuring every condition is met minimizes administrative processing delays.
+                  </span>
+                </div>
               </div>
             )}
 

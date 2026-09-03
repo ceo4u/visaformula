@@ -611,6 +611,39 @@ export function getFlagEmoji(countryName: string): string {
     return '🌍';
 }
 
+// Apple iOS squircle icon renderer for luggage items
+function renderIosLuggageIcon(id: string) {
+    const iconClass = "w-4.5 h-4.5 text-white stroke-[2.2]";
+    const map: Record<string, { bg: string; icon: React.ReactNode }> = {
+        cabin_passport: { bg: 'bg-blue-500', icon: <FileText className={iconClass} /> },
+        cabin_tickets: { bg: 'bg-sky-500', icon: <Plane className={iconClass} /> },
+        cabin_hotel: { bg: 'bg-purple-500', icon: <Building2 className={iconClass} /> },
+        cabin_meds: { bg: 'bg-rose-500', icon: <ShieldAlert className={iconClass} /> },
+        cabin_powerbank: { bg: 'bg-amber-500', icon: <Zap className={iconClass} /> },
+        cabin_electronics: { bg: 'bg-indigo-600', icon: <Laptop className={iconClass} /> },
+        cabin_forex: { bg: 'bg-emerald-500', icon: <DollarSign className={iconClass} /> },
+        cabin_pen: { bg: 'bg-slate-700', icon: <FileEdit className={iconClass} /> },
+        checked_clothes: { bg: 'bg-teal-500', icon: <Layers className={iconClass} /> },
+        checked_shoes: { bg: 'bg-orange-500', icon: <Compass className={iconClass} /> },
+        checked_toiletries: { bg: 'bg-cyan-500', icon: <Sparkles className={iconClass} /> },
+        checked_docs_copy: { bg: 'bg-blue-600', icon: <FileText className={iconClass} /> },
+        checked_lock: { bg: 'bg-zinc-700', icon: <Lock className={iconClass} /> },
+        checked_tag: { bg: 'bg-amber-600', icon: <Bookmark className={iconClass} /> },
+        prep_webcheckin: { bg: 'bg-violet-500', icon: <CalendarCheck className={iconClass} /> },
+        prep_insurance: { bg: 'bg-emerald-600', icon: <ShieldCheck className={iconClass} /> },
+        prep_esim: { bg: 'bg-pink-500', icon: <Globe className={iconClass} /> },
+        prep_bank: { bg: 'bg-emerald-500', icon: <CreditCard className={iconClass} /> },
+        prep_embassy: { bg: 'bg-slate-800', icon: <Building2 className={iconClass} /> },
+    };
+
+    const item = map[id] || { bg: 'bg-slate-700', icon: <Luggage className={iconClass} /> };
+    return (
+        <div className={`w-9 h-9 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-2xs`}>
+            {item.icon}
+        </div>
+    );
+}
+
 export function UserDashboard() {
     const [dashboardSearch, setDashboardSearch] = useState("");
     const [ieltsScore, setIeltsScore] = useState({ L: 0, R: 0, W: 0, S: 0 });
@@ -4815,31 +4848,61 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </div>
                             </div>
 
-                            {/* AI Verified Customs & Prohibitions Alert Card */}
-                            <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 border border-amber-200/80 rounded-3xl p-5 sm:p-6 space-y-3 text-left">
-                                <div className="flex items-center gap-2">
-                                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
-                                    <h4 className="text-sm font-black text-slate-950 uppercase tracking-wide">
-                                        Consular Airport Customs &amp; Prohibitions Warning for {selectedDestination}
-                                    </h4>
+                            {/* AI Verified Customs & Prohibitions Alert Card - Clean Apple iOS Style (No Yellow Theme) */}
+                            <div className="bg-white border-2 border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 text-left shadow-2xs">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                                            <ShieldAlert className="w-4 h-4 text-white" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-black text-slate-950 tracking-tight">
+                                                Consular Airport Customs &amp; Prohibitions • {selectedDestination}
+                                            </h4>
+                                            <span className="text-[11px] text-slate-500 font-medium">
+                                                Statutory civil aviation &amp; international border baggage directives
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80">
+                                        Official Rules
+                                    </span>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
-                                        <strong className="text-slate-900 font-bold block">💵 Currency Declaration Rule</strong>
-                                        <p className="text-slate-600 leading-relaxed">
-                                            Foreign currency in cash exceeding $10,000 USD (or equivalent) must be officially declared upon arrival.
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+                                    <div className="p-4 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 transition-all">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                                                <DollarSign className="w-3.5 h-3.5 stroke-[2.5]" />
+                                            </div>
+                                            <strong className="text-slate-950 font-black text-xs">Currency Declaration</strong>
+                                        </div>
+                                        <p className="text-slate-600 text-xs font-medium leading-relaxed">
+                                            Cash exceeding $10,000 USD (or equivalent) must be officially declared upon arrival.
                                         </p>
                                     </div>
-                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
-                                        <strong className="text-slate-900 font-bold block">💊 Restricted Medications</strong>
-                                        <p className="text-slate-600 leading-relaxed">
-                                            Carrying painkillers or narcotics without stamped doctor prescription is strictly forbidden by consular authorities.
+
+                                    <div className="p-4 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 transition-all">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-6 h-6 rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0">
+                                                <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
+                                            </div>
+                                            <strong className="text-slate-950 font-black text-xs">Restricted Medications</strong>
+                                        </div>
+                                        <p className="text-slate-600 text-xs font-medium leading-relaxed">
+                                            Carrying painkillers/narcotics without a stamped doctor prescription is strictly forbidden.
                                         </p>
                                     </div>
-                                    <div className="p-3 bg-white/80 backdrop-blur-xs rounded-2xl border border-amber-100 space-y-1">
-                                        <strong className="text-slate-900 font-bold block">🔋 Lithium Battery Aviation Rule</strong>
-                                        <p className="text-slate-600 leading-relaxed">
-                                            Power banks and spare lithium batteries are strictly prohibited in checked baggage. Must be in hand carry.
+
+                                    <div className="p-4 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 transition-all">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0">
+                                                <Zap className="w-3.5 h-3.5 stroke-[2.5]" />
+                                            </div>
+                                            <strong className="text-slate-950 font-black text-xs">Lithium Batteries</strong>
+                                        </div>
+                                        <p className="text-slate-600 text-xs font-medium leading-relaxed">
+                                            Power banks and spare lithium batteries strictly prohibited in checked luggage. Must carry in cabin bag.
                                         </p>
                                     </div>
                                 </div>
@@ -4867,73 +4930,38 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </span>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                             {defaultLuggageItems.cabin.map(item => {
                                                 const isPacked = !!luggageChecklist[item.id];
                                                 return (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => toggleLuggageItem(item.id)}
-                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3.5 shadow-2xs hover:shadow-xs active:scale-[0.99] ${
                                                             isPacked
-                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
-                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                                ? 'bg-slate-50/70 border-slate-200'
+                                                                : 'bg-white border-slate-200/90 hover:border-slate-300'
                                                         }`}
                                                     >
-                                                        <div className="flex items-start gap-2.5">
-                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                                                            <div className="space-y-0.5">
-                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                        <div className="flex items-center gap-3.5 min-w-0">
+                                                            {renderIosLuggageIcon(item.id)}
+                                                            <div className="space-y-0.5 min-w-0">
+                                                                <h4 className={`text-xs sm:text-sm font-black tracking-tight leading-snug truncate ${isPacked ? 'line-through text-slate-400 font-semibold' : 'text-slate-950'}`}>
                                                                     {item.title}
                                                                 </h4>
-                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed truncate">
                                                                     {item.hint}
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
-                                                            isPacked
-                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
-                                                                : 'bg-white border-slate-300'
-                                                        }`}>
-                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
 
-                                            {customLuggageItems.filter(i => i.category === 'cabin').map(item => {
-                                                const isPacked = !!luggageChecklist[item.id];
-                                                return (
-                                                    <div
-                                                        key={item.id}
-                                                        className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
-                                                            isPacked
-                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
-                                                                : 'bg-slate-50/70 border-slate-200/80'
-                                                        }`}
-                                                    >
-                                                        <div onClick={() => toggleLuggageItem(item.id)} className="flex items-start gap-2.5 flex-1 cursor-pointer">
-                                                            <span className="text-xl shrink-0 mt-0.5">🏷️</span>
-                                                            <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
-                                                                {item.title}
-                                                            </h4>
-                                                        </div>
-                                                        <div className="flex items-center gap-2 shrink-0">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleDeleteCustomLuggageItem(item.id)}
-                                                                className="text-slate-400 hover:text-rose-600 transition-colors p-1"
-                                                            >
-                                                                <Trash2 className="w-3.5 h-3.5" />
-                                                            </button>
-                                                            <div
-                                                                onClick={() => toggleLuggageItem(item.id)}
-                                                                className={`w-5 h-5 rounded-lg border flex items-center justify-center cursor-pointer transition-all ${
-                                                                    isPacked ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300'
-                                                                }`}
-                                                            >
-                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                        <div className="shrink-0 pl-2">
+                                                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                                                isPacked 
+                                                                    ? 'bg-slate-950 border-slate-950 text-white shadow-2xs' 
+                                                                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                                                            }`}>
+                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -4963,73 +4991,38 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </span>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                             {defaultLuggageItems.checked.map(item => {
                                                 const isPacked = !!luggageChecklist[item.id];
                                                 return (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => toggleLuggageItem(item.id)}
-                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3.5 shadow-2xs hover:shadow-xs active:scale-[0.99] ${
                                                             isPacked
-                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
-                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                                ? 'bg-slate-50/70 border-slate-200'
+                                                                : 'bg-white border-slate-200/90 hover:border-slate-300'
                                                         }`}
                                                     >
-                                                        <div className="flex items-start gap-2.5">
-                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                                                            <div className="space-y-0.5">
-                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                        <div className="flex items-center gap-3.5 min-w-0">
+                                                            {renderIosLuggageIcon(item.id)}
+                                                            <div className="space-y-0.5 min-w-0">
+                                                                <h4 className={`text-xs sm:text-sm font-black tracking-tight leading-snug truncate ${isPacked ? 'line-through text-slate-400 font-semibold' : 'text-slate-950'}`}>
                                                                     {item.title}
                                                                 </h4>
-                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed truncate">
                                                                     {item.hint}
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
-                                                            isPacked
-                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
-                                                                : 'bg-white border-slate-300'
-                                                        }`}>
-                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
 
-                                            {customLuggageItems.filter(i => i.category === 'checked').map(item => {
-                                                const isPacked = !!luggageChecklist[item.id];
-                                                return (
-                                                    <div
-                                                        key={item.id}
-                                                        className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
-                                                            isPacked
-                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
-                                                                : 'bg-slate-50/70 border-slate-200/80'
-                                                        }`}
-                                                    >
-                                                        <div onClick={() => toggleLuggageItem(item.id)} className="flex items-start gap-2.5 flex-1 cursor-pointer">
-                                                            <span className="text-xl shrink-0 mt-0.5">🏷️</span>
-                                                            <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
-                                                                {item.title}
-                                                            </h4>
-                                                        </div>
-                                                        <div className="flex items-center gap-2 shrink-0">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleDeleteCustomLuggageItem(item.id)}
-                                                                className="text-slate-400 hover:text-rose-600 transition-colors p-1"
-                                                            >
-                                                                <Trash2 className="w-3.5 h-3.5" />
-                                                            </button>
-                                                            <div
-                                                                onClick={() => toggleLuggageItem(item.id)}
-                                                                className={`w-5 h-5 rounded-lg border flex items-center justify-center cursor-pointer transition-all ${
-                                                                    isPacked ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300'
-                                                                }`}
-                                                            >
-                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                                                        <div className="shrink-0 pl-2">
+                                                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                                                isPacked 
+                                                                    ? 'bg-slate-950 border-slate-950 text-white shadow-2xs' 
+                                                                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                                                            }`}>
+                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -5059,36 +5052,39 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </span>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                             {defaultLuggageItems.predeparture.map(item => {
                                                 const isPacked = !!luggageChecklist[item.id];
                                                 return (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => toggleLuggageItem(item.id)}
-                                                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                                                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3.5 shadow-2xs hover:shadow-xs active:scale-[0.99] ${
                                                             isPacked
-                                                                ? 'bg-emerald-50/70 border-emerald-300 shadow-2xs'
-                                                                : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300'
+                                                                ? 'bg-slate-50/70 border-slate-200'
+                                                                : 'bg-white border-slate-200/90 hover:border-slate-300'
                                                         }`}
                                                     >
-                                                        <div className="flex items-start gap-2.5">
-                                                            <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                                                            <div className="space-y-0.5">
-                                                                <h4 className={`text-xs font-bold leading-snug ${isPacked ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                                        <div className="flex items-center gap-3.5 min-w-0">
+                                                            {renderIosLuggageIcon(item.id)}
+                                                            <div className="space-y-0.5 min-w-0">
+                                                                <h4 className={`text-xs sm:text-sm font-black tracking-tight leading-snug truncate ${isPacked ? 'line-through text-slate-400 font-semibold' : 'text-slate-950'}`}>
                                                                     {item.title}
                                                                 </h4>
-                                                                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                                                                <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed truncate">
                                                                     {item.hint}
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all ${
-                                                            isPacked
-                                                                ? 'bg-emerald-600 border-emerald-600 text-white'
-                                                                : 'bg-white border-slate-300'
-                                                        }`}>
-                                                            {isPacked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+
+                                                        <div className="shrink-0 pl-2">
+                                                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                                                isPacked 
+                                                                    ? 'bg-slate-950 border-slate-950 text-white shadow-2xs' 
+                                                                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                                                            }`}>
+                                                                {isPacked && <Check className="w-3.5 h-3.5 stroke-[3] text-white" />}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 );

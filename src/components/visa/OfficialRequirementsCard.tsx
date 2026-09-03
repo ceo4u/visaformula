@@ -80,6 +80,20 @@ function parseCleanFee(feeStr: string | undefined): { primary: string; approx: s
   return { primary, approx, note };
 }
 
+// Helper to get concise 1-line requirement with optional extra notes for clean Atlys UI
+function getCleanDocShortSummary(title: string, fullDesc: string): { summary: string; hasExtra: boolean; extraNotes: string } {
+  if (!fullDesc) return { summary: '', hasExtra: false, extraNotes: '' };
+  const cleaned = fullDesc.trim();
+  const sentences = cleaned.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map(s => s.trim()).filter(Boolean);
+  const primary = sentences[0] || cleaned;
+  const rest = sentences.slice(1).join(' ');
+  return {
+    summary: primary,
+    hasExtra: rest.length > 5,
+    extraNotes: rest
+  };
+}
+
 // Helper to convert paragraph text into clean, point-wise items
 function formatDetailsAsPoints(text: string): string[] {
   if (!text) return [];

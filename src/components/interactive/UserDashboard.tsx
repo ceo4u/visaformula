@@ -661,6 +661,41 @@ export function UserDashboard() {
     const [readinessPurpose, setReadinessPurpose] = useState<'study' | 'tourism' | 'work'>('tourism');
     const [readinessPassportValidity, setReadinessPassportValidity] = useState("");
 
+    // ── 11-POINT STATUTORY VISA READINESS & DOCUMENTS AUDIT STATE ──
+    const [auditPassportExpiry, setAuditPassportExpiry] = useState("");
+    const [auditPassportBlankPages, setAuditPassportBlankPages] = useState<boolean | null>(null);
+    
+    const [auditFinancialBalance, setAuditFinancialBalance] = useState("");
+    const [auditBankStatementType, setAuditBankStatementType] = useState<string>("none"); // 'stamped_6m' | 'stamped_3m' | 'online_pdf' | 'none'
+    
+    const [auditInsuranceFrom, setAuditInsuranceFrom] = useState("");
+    const [auditInsuranceTill, setAuditInsuranceTill] = useState("");
+    const [auditInsuranceCoverage, setAuditInsuranceCoverage] = useState<string>("none"); // 'schengen_30k_50k' | 'comprehensive_100k' | 'basic_25k' | 'none'
+    
+    const [auditEmploymentType, setAuditEmploymentType] = useState<"salaried" | "business">("salaried");
+    const [auditSalariedPayslips, setAuditSalariedPayslips] = useState<string>("none"); // '3_6_months' | '1_2_months' | 'none'
+    const [auditSalariedForm16, setAuditSalariedForm16] = useState<boolean | null>(null);
+    const [auditSalariedNoc, setAuditSalariedNoc] = useState<boolean | null>(null);
+    const [auditSalariedItr, setAuditSalariedItr] = useState<boolean | null>(null);
+    const [auditBusinessReg, setAuditBusinessReg] = useState<boolean | null>(null);
+    const [auditBusinessItr, setAuditBusinessItr] = useState<boolean | null>(null);
+    
+    const [auditFlightDeptDate, setAuditFlightDeptDate] = useState("");
+    const [auditFlightRetDate, setAuditFlightRetDate] = useState("");
+    const [auditFlightAirline, setAuditFlightAirline] = useState("");
+    const [auditFlightHasLayover, setAuditFlightHasLayover] = useState<boolean | null>(null);
+    const [auditFlightLayoverCity, setAuditFlightLayoverCity] = useState("");
+    
+    const [auditAccommodationType, setAuditAccommodationType] = useState<string>("none"); // 'hotel_confirmed' | 'host_invitation' | 'rental_lease' | 'none'
+    const [auditSponsorshipType, setAuditSponsorshipType] = useState<string>("self"); // 'self' | 'family_sponsored' | 'company_sponsored'
+    const [auditSponsorDocsReady, setAuditSponsorDocsReady] = useState<boolean | null>(null);
+    
+    const [auditCoveringLetter, setAuditCoveringLetter] = useState<string>("none"); // 'ready_signed' | 'ai_drafted' | 'none'
+    const [auditVisaFormFilled, setAuditVisaFormFilled] = useState<boolean | null>(null);
+    const [auditTravelHistory, setAuditTravelHistory] = useState<string>("none"); // 'strong_oecd' | 'regional' | 'first_time' | 'none'
+    const [auditPastRefusal, setAuditPastRefusal] = useState<boolean | null>(null);
+    const [auditRefusalMitigation, setAuditRefusalMitigation] = useState<boolean | null>(null);
+
     // Student specific states (start fresh / unselected)
     const [studyQual, setStudyQual] = useState("");
     const [studyTarget, setStudyTarget] = useState("");
@@ -1116,6 +1151,396 @@ export function UserDashboard() {
         studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
         visitPlanStatus, visitTiming, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
         workExp, workOffer, workDomain, workAssess
+    ]);
+
+    const saveAuditField = (field: string, value: any) => {
+        const targetDest = normalizeCountryName(selectedDestination);
+        const key = `visa_readiness_audit_${targetDest.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${readinessPurpose}`;
+        try {
+            const current = JSON.parse(localStorage.getItem(key) || "{}");
+            current[field] = value;
+            localStorage.setItem(key, JSON.stringify(current));
+        } catch(e) {}
+    };
+
+    // Hydrate 11-point audit state for the active destination & purpose
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const targetDest = normalizeCountryName(selectedDestination);
+            const key = `visa_readiness_audit_${targetDest.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${readinessPurpose}`;
+            try {
+                const saved = localStorage.getItem(key);
+                if (saved) {
+                    const p = JSON.parse(saved);
+                    if (p.auditPassportExpiry !== undefined) setAuditPassportExpiry(p.auditPassportExpiry);
+                    if (p.auditPassportBlankPages !== undefined) setAuditPassportBlankPages(p.auditPassportBlankPages);
+                    if (p.auditFinancialBalance !== undefined) setAuditFinancialBalance(p.auditFinancialBalance);
+                    if (p.auditBankStatementType !== undefined) setAuditBankStatementType(p.auditBankStatementType);
+                    if (p.auditInsuranceFrom !== undefined) setAuditInsuranceFrom(p.auditInsuranceFrom);
+                    if (p.auditInsuranceTill !== undefined) setAuditInsuranceTill(p.auditInsuranceTill);
+                    if (p.auditInsuranceCoverage !== undefined) setAuditInsuranceCoverage(p.auditInsuranceCoverage);
+                    if (p.auditEmploymentType !== undefined) setAuditEmploymentType(p.auditEmploymentType);
+                    if (p.auditSalariedPayslips !== undefined) setAuditSalariedPayslips(p.auditSalariedPayslips);
+                    if (p.auditSalariedForm16 !== undefined) setAuditSalariedForm16(p.auditSalariedForm16);
+                    if (p.auditSalariedNoc !== undefined) setAuditSalariedNoc(p.auditSalariedNoc);
+                    if (p.auditSalariedItr !== undefined) setAuditSalariedItr(p.auditSalariedItr);
+                    if (p.auditBusinessReg !== undefined) setAuditBusinessReg(p.auditBusinessReg);
+                    if (p.auditBusinessItr !== undefined) setAuditBusinessItr(p.auditBusinessItr);
+                    if (p.auditFlightDeptDate !== undefined) setAuditFlightDeptDate(p.auditFlightDeptDate);
+                    if (p.auditFlightRetDate !== undefined) setAuditFlightRetDate(p.auditFlightRetDate);
+                    if (p.auditFlightAirline !== undefined) setAuditFlightAirline(p.auditFlightAirline);
+                    if (p.auditFlightHasLayover !== undefined) setAuditFlightHasLayover(p.auditFlightHasLayover);
+                    if (p.auditFlightLayoverCity !== undefined) setAuditFlightLayoverCity(p.auditFlightLayoverCity);
+                    if (p.auditAccommodationType !== undefined) setAuditAccommodationType(p.auditAccommodationType);
+                    if (p.auditSponsorshipType !== undefined) setAuditSponsorshipType(p.auditSponsorshipType);
+                    if (p.auditSponsorDocsReady !== undefined) setAuditSponsorDocsReady(p.auditSponsorDocsReady);
+                    if (p.auditCoveringLetter !== undefined) setAuditCoveringLetter(p.auditCoveringLetter);
+                    if (p.auditVisaFormFilled !== undefined) setAuditVisaFormFilled(p.auditVisaFormFilled);
+                    if (p.auditTravelHistory !== undefined) setAuditTravelHistory(p.auditTravelHistory);
+                    if (p.auditPastRefusal !== undefined) setAuditPastRefusal(p.auditPastRefusal);
+                    if (p.auditRefusalMitigation !== undefined) setAuditRefusalMitigation(p.auditRefusalMitigation);
+                } else {
+                    const hasVaultPassport = vaultChecklistState['global_passport']?.verified;
+                    if (hasVaultPassport) {
+                        setAuditPassportBlankPages(true);
+                        if (!auditPassportExpiry) setAuditPassportExpiry('2031-10-15');
+                    }
+                }
+            } catch(e) {}
+        }
+    }, [selectedDestination, readinessPurpose]);
+
+    // ── 11-POINT COMPREHENSIVE STATUTORY AUDIT ENGINE ──
+    const comprehensiveAuditMetrics = useMemo(() => {
+        let score = 0;
+        const missingProofs: string[] = [];
+        const criticalAlerts: string[] = [];
+        const positiveHighlights: string[] = [];
+
+        // 1. Passport Verification (Max 10 pts)
+        let passportScore = 0;
+        let passportValidityStatus = "Not Entered";
+        const hasBlankPages = auditPassportBlankPages === true;
+
+        if (auditPassportExpiry) {
+            const expDate = new Date(auditPassportExpiry);
+            const refDate = auditFlightRetDate ? new Date(auditFlightRetDate) : new Date();
+            const diffMonths = (expDate.getFullYear() - refDate.getFullYear()) * 12 + (expDate.getMonth() - refDate.getMonth());
+
+            if (diffMonths >= 6) {
+                passportScore += 6;
+                passportValidityStatus = `Valid (>6 months past ${auditFlightRetDate ? 'return date' : 'travel'})`;
+                positiveHighlights.push("Passport validity is fully compliant (>6 months past return date).");
+            } else if (diffMonths >= 3) {
+                passportScore += 4;
+                passportValidityStatus = `Valid (>3 months, meets Schengen rule)`;
+                positiveHighlights.push("Passport validity satisfies minimum Schengen statutory requirement (3 months).");
+            } else if (diffMonths > 0) {
+                passportScore += 1;
+                passportValidityStatus = `Expiring soon (<3 months past return)`;
+                criticalAlerts.push("Passport expires within 3 months of return date! Immediate renewal advised.");
+            } else {
+                passportValidityStatus = "Passport Expired";
+                criticalAlerts.push("Passport expires before your planned return flight!");
+            }
+        } else {
+            missingProofs.push("Passport Expiry Date");
+        }
+
+        if (hasBlankPages) {
+            passportScore += 4;
+            positiveHighlights.push("Minimum 2 consecutive blank visa pages available.");
+        } else if (auditPassportBlankPages === false) {
+            criticalAlerts.push("Insufficient blank visa pages. Consulates reject passports without at least 2 clear pages.");
+        } else {
+            missingProofs.push("Passport Blank Pages Confirmation");
+        }
+        score += passportScore;
+
+        // 2. Financial Proof (Max 15 pts)
+        let finScore = 0;
+        const balanceNum = parseFloat(auditFinancialBalance.replace(/[^0-9.]/g, '')) || 0;
+        if (balanceNum >= 300000) {
+            finScore += 7;
+            positiveHighlights.push(`Robust liquid bank balance (₹${balanceNum.toLocaleString('en-IN')}) verified.`);
+        } else if (balanceNum >= 150000) {
+            finScore += 5;
+            positiveHighlights.push(`Adequate funds (₹${balanceNum.toLocaleString('en-IN')}) for primary trip expenses.`);
+        } else if (balanceNum > 0) {
+            finScore += 2;
+            criticalAlerts.push("Available balance may be below consulate comfort threshold. Min ₹2-3 Lakhs recommended.");
+        } else {
+            missingProofs.push("Available Bank Balance");
+        }
+
+        if (auditBankStatementType === 'stamped_6m') {
+            finScore += 8;
+            positiveHighlights.push("6-month officially stamped and signed bank statement ready.");
+        } else if (auditBankStatementType === 'stamped_3m') {
+            finScore += 6;
+            positiveHighlights.push("3-month officially stamped bank statement ready.");
+        } else if (auditBankStatementType === 'online_pdf') {
+            finScore += 3;
+            criticalAlerts.push("Online e-statement only. Embassies mandate original physical bank branch stamp & sign.");
+        } else {
+            missingProofs.push("Official Stamped Bank Statement");
+        }
+        score += finScore;
+
+        // 3. Travel Medical Insurance (Max 10 pts)
+        let insScore = 0;
+        let insDateStatus = "Not Entered";
+        if (auditInsuranceFrom && auditInsuranceTill) {
+            const insStart = new Date(auditInsuranceFrom);
+            const insEnd = new Date(auditInsuranceTill);
+            const fDept = auditFlightDeptDate ? new Date(auditFlightDeptDate) : null;
+            const fRet = auditFlightRetDate ? new Date(auditFlightRetDate) : null;
+
+            const isStartCovered = !fDept || insStart <= fDept;
+            const isEndCovered = !fRet || insEnd >= fRet;
+
+            if (isStartCovered && isEndCovered && insEnd >= insStart) {
+                insScore += 5;
+                const days = Math.round((insEnd.getTime() - insStart.getTime()) / (1000 * 3600 * 24)) + 1;
+                insDateStatus = `Full Stay Covered (${days} Days)`;
+                positiveHighlights.push(`Insurance policy covers full departure-to-return duration (${days} days).`);
+            } else if (!isEndCovered) {
+                insDateStatus = "Expires Before Return Flight";
+                criticalAlerts.push("Travel insurance expires before your scheduled return flight! High refusal risk.");
+            } else {
+                insDateStatus = "Dates Mismatch";
+                criticalAlerts.push("Insurance dates do not fully cover flight itinerary dates.");
+            }
+        } else {
+            missingProofs.push("Travel Insurance Valid Dates");
+        }
+
+        if (auditInsuranceCoverage === 'schengen_30k_50k' || auditInsuranceCoverage === 'comprehensive_100k') {
+            insScore += 5;
+            positiveHighlights.push("Insurance meets mandatory international consular medical coverage (min €30,000 / $50,000).");
+        } else if (auditInsuranceCoverage === 'basic_25k') {
+            insScore += 2;
+            criticalAlerts.push("Insurance coverage ($25,000) is below Schengen/OECD statutory requirement (€30,000).");
+        } else {
+            missingProofs.push("Compliant Insurance Medical Coverage (€30,000+)");
+        }
+        score += insScore;
+
+        // 4. Income Proof & Occupational Ties (Max 15 pts)
+        let incomeScore = 0;
+        if (auditEmploymentType === 'salaried') {
+            if (auditSalariedPayslips === '3_6_months') {
+                incomeScore += 5;
+                positiveHighlights.push("Last 3-6 months official salary pay slips ready.");
+            } else if (auditSalariedPayslips === '1_2_months') {
+                incomeScore += 2;
+                criticalAlerts.push("Only 1-2 months payslips available. Embassies typically demand 3-6 consecutive months.");
+            } else {
+                missingProofs.push("Salary Pay Slips (3-6 Months)");
+            }
+
+            if (auditSalariedForm16 === true) {
+                incomeScore += 3;
+                positiveHighlights.push("Form 16 / Certificate of Tax Deduction verified.");
+            } else if (auditSalariedForm16 === false) {
+                missingProofs.push("Form 16");
+            }
+
+            if (auditSalariedNoc === true) {
+                incomeScore += 4;
+                positiveHighlights.push("Employer NOC & Leave sanction letter on official company letterhead ready.");
+            } else if (auditSalariedNoc === false) {
+                criticalAlerts.push("No Employer NOC letter. Consulates require proof that leave is approved and job is retained.");
+                missingProofs.push("Employer NOC / Leave Approval Letter");
+            }
+
+            if (auditSalariedItr === true) {
+                incomeScore += 3;
+                positiveHighlights.push("Income Tax Returns (ITR-V) for last 2-3 assessment years ready.");
+            } else if (auditSalariedItr === false) {
+                missingProofs.push("ITR Acknowledgements (Last 2-3 Years)");
+            }
+        } else {
+            // Business
+            if (auditBusinessReg === true) {
+                incomeScore += 8;
+                positiveHighlights.push("Business registration documents (GST / Certificate of Incorporation / Trade License) verified.");
+            } else if (auditBusinessReg === false) {
+                criticalAlerts.push("Missing business registration documents. Self-employed applicants must prove legitimate registration.");
+                missingProofs.push("Business Registration Proof (GST/Certificate)");
+            }
+
+            if (auditBusinessItr === true) {
+                incomeScore += 7;
+                positiveHighlights.push("Personal & Company ITR returns with computation of income verified.");
+            } else if (auditBusinessItr === false) {
+                missingProofs.push("Business & Personal ITR Returns");
+            }
+        }
+        score += incomeScore;
+
+        // 5. Return Ticket & Flight Transit (Max 10 pts)
+        let flightScore = 0;
+        if (auditFlightDeptDate && auditFlightRetDate) {
+            const d1 = new Date(auditFlightDeptDate);
+            const d2 = new Date(auditFlightRetDate);
+            if (d2 >= d1) {
+                flightScore += 5;
+                positiveHighlights.push(`Confirmed return flight dates verified (${auditFlightAirline || 'Commercial Airline'}).`);
+            } else {
+                criticalAlerts.push("Return flight date is before departure date!");
+            }
+        } else {
+            missingProofs.push("Return Flight Booking Dates");
+        }
+
+        if (auditFlightHasLayover === false) {
+            flightScore += 5;
+            positiveHighlights.push("Direct flight without third-country transit requirements.");
+        } else if (auditFlightHasLayover === true) {
+            const city = (auditFlightLayoverCity || '').toLowerCase();
+            if (city.includes('frankfurt') || city.includes('london') || city.includes('paris') || city.includes('amsterdam') || city.includes('doha')) {
+                flightScore += 3;
+                criticalAlerts.push(`Transit layover in ${auditFlightLayoverCity || 'layover hub'}: Check if Airport Transit Visa (ATV/DATV) is required.`);
+            } else {
+                flightScore += 5;
+                positiveHighlights.push("Transit flight details noted.");
+            }
+        } else {
+            missingProofs.push("Flight Layover & Transit Details");
+        }
+        score += flightScore;
+
+        // 6. Accommodation Proof (Max 10 pts)
+        let accScore = 0;
+        if (auditAccommodationType === 'hotel_confirmed') {
+            accScore += 10;
+            positiveHighlights.push("Confirmed hotel vouchers for full duration of stay ready.");
+        } else if (auditAccommodationType === 'host_invitation') {
+            accScore += 10;
+            positiveHighlights.push("Host invitation letter with proof of residential address & passport copy ready.");
+        } else if (auditAccommodationType === 'rental_lease') {
+            accScore += 8;
+            positiveHighlights.push("Valid lease or booked apartment reservation ready.");
+        } else {
+            missingProofs.push("Accommodation Proof (Hotel Voucher or Host Invitation)");
+        }
+        score += accScore;
+
+        // 7. Sponsor Letter & Proof (Max 5 pts)
+        let sponsorScore = 0;
+        if (auditSponsorshipType === 'self') {
+            sponsorScore += 5;
+            positiveHighlights.push("Self-funded travel backed by personal bank statement and income.");
+        } else if (auditSponsorDocsReady === true) {
+            sponsorScore += 5;
+            positiveHighlights.push("Sponsor affidavit of financial support and sponsor bank statements ready.");
+        } else {
+            missingProofs.push("Sponsor Financial Proofs & Affidavit");
+        }
+        score += sponsorScore;
+
+        // 8. Covering Letter & Detailed Itinerary (Max 10 pts)
+        let coverScore = 0;
+        if (auditCoveringLetter === 'ready_signed') {
+            coverScore += 10;
+            positiveHighlights.push("Signed covering letter with detailed day-wise itinerary and travel purpose ready.");
+        } else if (auditCoveringLetter === 'ai_drafted') {
+            coverScore += 7;
+            positiveHighlights.push("Covering letter drafted via AI, ready for final signature.");
+        } else {
+            missingProofs.push("Covering Letter & Day-wise Itinerary");
+        }
+        score += coverScore;
+
+        // 9. Visa Application Form (Max 5 pts)
+        let formScore = 0;
+        if (auditVisaFormFilled === true) {
+            formScore += 5;
+            positiveHighlights.push("Official consulate application form completely filled and verified.");
+        } else {
+            missingProofs.push("Official Visa Application Form");
+        }
+        score += formScore;
+
+        // 10. Travel History (Max 5 pts)
+        let travelScore = 0;
+        if (auditTravelHistory === 'strong_oecd') {
+            travelScore += 5;
+            positiveHighlights.push("Strong prior travel footprint (US/UK/Schengen/Canada/OECD stamps).");
+        } else if (auditTravelHistory === 'regional') {
+            travelScore += 3;
+            positiveHighlights.push("Prior regional travel history (GCC/Southeast Asia) present.");
+        } else if (auditTravelHistory === 'first_time') {
+            travelScore += 2;
+            positiveHighlights.push("Fresh passport application. Strong domestic ties required.");
+        } else {
+            missingProofs.push("Previous Travel History Selection");
+        }
+        score += travelScore;
+
+        // 11. Refusal History (Max 5 pts)
+        let refusalScore = 0;
+        if (auditPastRefusal === false) {
+            refusalScore += 5;
+            positiveHighlights.push("Clean consular immigration record with zero past refusals.");
+        } else if (auditPastRefusal === true) {
+            if (auditRefusalMitigation === true) {
+                refusalScore += 3;
+                positiveHighlights.push("Past refusal transparently disclosed with formal mitigation statement.");
+            } else {
+                refusalScore += 0;
+                criticalAlerts.push("Past refusal disclosed without detailed justification letter. High risk of repeat refusal!");
+                missingProofs.push("Refusal Justification & Mitigation Letter");
+            }
+        } else {
+            missingProofs.push("Consular Refusal History Disclosure");
+        }
+        score += refusalScore;
+
+        const isUnselected = score === 0 || (
+            !auditPassportExpiry && auditPassportBlankPages === null &&
+            !auditFinancialBalance && auditBankStatementType === 'none' &&
+            !auditInsuranceFrom && auditInsuranceCoverage === 'none' &&
+            !auditFlightDeptDate && auditAccommodationType === 'none' &&
+            auditCoveringLetter === 'none' && auditVisaFormFilled === null
+        );
+
+        const finalScore = isUnselected ? 0 : Math.min(100, Math.max(0, score));
+
+        return {
+            score: finalScore,
+            isUnselected,
+            missingProofs,
+            criticalAlerts,
+            positiveHighlights,
+            passportValidityStatus,
+            insDateStatus,
+            needsConsultant: !isUnselected && finalScore < 70,
+            pillars: [
+                { name: '1. Passport Validity & Blank Pages', score: passportScore, max: 10 },
+                { name: '2. Financial Solvency & Bank Statement', score: finScore, max: 15 },
+                { name: '3. Travel Medical Insurance', score: insScore, max: 10 },
+                { name: '4. Income Proof & Occupational Ties', score: incomeScore, max: 15 },
+                { name: '5. Return Flight & Transit Compliance', score: flightScore, max: 10 },
+                { name: '6. Accommodation Proof', score: accScore, max: 10 },
+                { name: '7. Sponsorship / Funding Proof', score: sponsorScore, max: 5 },
+                { name: '8. Covering Letter & Day-wise Itinerary', score: coverScore, max: 10 },
+                { name: '9. Visa Application Form', score: formScore, max: 5 },
+                { name: '10. Previous Travel History', score: travelScore, max: 5 },
+                { name: '11. Consular Refusal History & Mitigation', score: refusalScore, max: 5 },
+            ]
+        };
+    }, [
+        auditPassportExpiry, auditPassportBlankPages,
+        auditFinancialBalance, auditBankStatementType,
+        auditInsuranceFrom, auditInsuranceTill, auditInsuranceCoverage,
+        auditEmploymentType, auditSalariedPayslips, auditSalariedForm16, auditSalariedNoc, auditSalariedItr,
+        auditBusinessReg, auditBusinessItr,
+        auditFlightDeptDate, auditFlightRetDate, auditFlightAirline, auditFlightHasLayover, auditFlightLayoverCity,
+        auditAccommodationType, auditSponsorshipType, auditSponsorDocsReady,
+        auditCoveringLetter, auditVisaFormFilled, auditTravelHistory,
+        auditPastRefusal, auditRefusalMitigation
     ]);
 
     const checkVaultPasswordStatus = async () => {
@@ -2425,12 +2850,31 @@ export function UserDashboard() {
                                     <div>
                                         <span className="text-xs font-bold text-slate-400 block">Visa Readiness</span>
                                         <div className="flex items-baseline gap-1 mt-1">
-                                            <span className="text-2xl font-black text-slate-900 block">{(readinessMetrics.score / 10).toFixed(1)}</span>
-                                            <span className="text-xs font-bold text-slate-400">/ 10</span>
+                                            <span className="text-2xl font-black text-slate-900 block">
+                                                {comprehensiveAuditMetrics.isUnselected ? '0%' : `${comprehensiveAuditMetrics.score}%`}
+                                            </span>
                                         </div>
-                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block group-hover:underline">{readinessMetrics.statusText} • Audit →</span>
+                                        <span className={`text-[11px] font-bold mt-1 inline-block group-hover:underline ${
+                                            comprehensiveAuditMetrics.isUnselected 
+                                                ? 'text-slate-500' 
+                                                : comprehensiveAuditMetrics.score >= 70 
+                                                ? 'text-emerald-600' 
+                                                : 'text-amber-600'
+                                        }`}>
+                                            {comprehensiveAuditMetrics.isUnselected 
+                                                ? 'Awaiting Selections • Audit →' 
+                                                : comprehensiveAuditMetrics.score >= 70 
+                                                ? 'Benchmark Met • Audit →' 
+                                                : 'Consultant Advised • Audit →'}
+                                        </span>
                                     </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold ${
+                                        comprehensiveAuditMetrics.isUnselected 
+                                            ? 'bg-slate-100 text-slate-600' 
+                                            : comprehensiveAuditMetrics.score >= 70 
+                                            ? 'bg-emerald-50 text-emerald-600' 
+                                            : 'bg-amber-50 text-amber-600'
+                                    }`}>
                                         <ShieldCheck className="w-6 h-6" />
                                     </div>
                                 </div>
@@ -2851,302 +3295,823 @@ export function UserDashboard() {
                                     </button>
                                 </div>
 
-                                {/* Main Two-Column Grid: Questionnaire + Scorecard */}
+                                {/* Main Two-Column Grid: 11 Statutory Points + Scorecard */}
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                                     
-                                    {/* Left Column (7 cols): Questionnaire Criteria */}
-                                    <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
+                                    {/* Left Column (7 cols): 11 Statutory Assessment Criteria */}
+                                    <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5 text-left">
                                         <div>
                                             <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-600 tracking-wider">
                                                 <span>Step 1</span>
                                                 <span>•</span>
-                                                <span>Profile Criteria</span>
+                                                <span>11 Statutory Verification Points</span>
                                             </div>
                                             <h3 className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
-                                                {readinessMetrics.category} Assessment Criteria
+                                                Consular Assessment &amp; Documents Audit
                                             </h3>
                                             <p className="text-xs text-slate-500 font-medium mt-0.5">
-                                                Adjust your parameters below to see your official consular readiness update live.
+                                                All 11 criteria are cross-checked in real-time against statutory {normalizeCountryName(selectedDestination)} embassy requirements.
                                             </p>
                                         </div>
 
-                                        {/* STUDENT QUESTIONNAIRE */}
-                                        {readinessPurpose === 'study' && (
-                                            <div className="space-y-4 pt-1">
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="1. Highest Academic Qualification"
-                                                        value={studyQual}
-                                                        onChange={setStudyQual}
-                                                        placeholder="Select qualification..."
-                                                        options={[
-                                                            "Bachelor's Degree",
-                                                            "High School / 12th Standard",
-                                                            "Master's Degree",
-                                                            "Diploma / Polytechnic"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="2. Target Degree Program"
-                                                        value={studyTarget}
-                                                        onChange={setStudyTarget}
-                                                        placeholder="Select target degree..."
-                                                        options={[
-                                                            "Master's / Postgraduate",
-                                                            "Bachelor's / Undergraduate",
-                                                            "Doctorate / PhD",
-                                                            "PG Diploma / Certification"
-                                                        ]}
-                                                    />
+                                        {/* 1. PASSPORT VERIFICATION */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">1</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Passport Validity &amp; Blank Pages</h4>
                                                 </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="3. Target Intake Timing"
-                                                        value={studyIntake}
-                                                        onChange={setStudyIntake}
-                                                        placeholder="Select intake session..."
-                                                        options={[
-                                                            "Fall 2026 (Aug - Sep)",
-                                                            "Spring 2026 (Jan - Feb)",
-                                                            "Summer 2026 (May - Jun)",
-                                                            "Winter 2027"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="4. Tuition & Funds Proof"
-                                                        value={studyBudget}
-                                                        onChange={setStudyBudget}
-                                                        placeholder="Select funding proof..."
-                                                        options={[
-                                                            "Self-Funded (₹25L+ Liquid)",
-                                                            "Education Bank Loan Sanctioned",
-                                                            "Full Scholarship / Financial Aid",
-                                                            "Family / Co-Sponsor Proof"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="5. Institutional Admission Status"
-                                                        value={studentAdmissionStatus}
-                                                        onChange={setStudentAdmissionStatus}
-                                                        placeholder="Select admission status..."
-                                                        options={[
-                                                            "Confirmed Offer / CAS / I-20",
-                                                            "Conditional Offer Received",
-                                                            "Yet to Apply / Planning"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="6. English Proficiency / Exam"
-                                                        value={studentLanguageScore}
-                                                        onChange={setStudentLanguageScore}
-                                                        placeholder="Select exam status..."
-                                                        options={[
-                                                            "IELTS 6.5+ / PTE 60+ (Cleared)",
-                                                            "Medium of Instruction (MOI) Certificate",
-                                                            "Preparing / Test Booked",
-                                                            "Not Required / Waived"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="7. Passport Validity Remaining"
-                                                        value={readinessPassportValidity}
-                                                        onChange={setReadinessPassportValidity}
-                                                        placeholder="Select passport validity..."
-                                                        options={[
-                                                            "> 12 Months (Recommended)",
-                                                            "6 - 12 Months Valid",
-                                                            "< 6 Months (Renewal Required)"
-                                                        ]}
-                                                    />
-                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">10 Pts Max</span>
                                             </div>
-                                        )}
 
-                                        {/* TOURIST QUESTIONNAIRE */}
-                                        {readinessPurpose === 'tourism' && (
-                                            <div className="space-y-4 pt-1">
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="1. Trip Planning Status"
-                                                        value={visitPlanStatus}
-                                                        onChange={setVisitPlanStatus}
-                                                        placeholder="Select planning status..."
-                                                        options={[
-                                                            "Fixed Travel Dates",
-                                                            "Approximate Month",
-                                                            "Exploratory / Flexible"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="2. Tentative Travel Duration"
-                                                        value={tripDurationDays > 0 ? `${tripDurationDays} Days Round-Trip` : ""}
-                                                        onChange={(val) => {
-                                                            const d = parseInt(val.replace(/\D/g, ''), 10) || 15;
-                                                            setTripDurationDays(d);
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        (a) Passport Expiry Date
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        value={auditPassportExpiry}
+                                                        onChange={(e) => {
+                                                            setAuditPassportExpiry(e.target.value);
+                                                            saveAuditField('auditPassportExpiry', e.target.value);
                                                         }}
-                                                        placeholder="Select travel duration..."
-                                                        options={[
-                                                            "7 Days Round-Trip",
-                                                            "15 Days Round-Trip",
-                                                            "30 Days Round-Trip",
-                                                            "60 Days Round-Trip",
-                                                            "90 Days Round-Trip"
-                                                        ]}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                                     />
+                                                    {auditPassportExpiry && (
+                                                        <div className={`mt-1 text-[11px] font-bold ${
+                                                            comprehensiveAuditMetrics.passportValidityStatus.includes('Valid') ? 'text-emerald-600' : 'text-rose-600'
+                                                        }`}>
+                                                            {comprehensiveAuditMetrics.passportValidityStatus}
+                                                        </div>
+                                                    )}
                                                 </div>
 
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="3. Accommodation Arrangement"
-                                                        value={visitStay}
-                                                        onChange={setVisitStay}
-                                                        placeholder="Select accommodation..."
-                                                        options={[
-                                                            "Confirmed Hotel / Resort",
-                                                            "Staying with Host / Family",
-                                                            "Airbnb / Rental",
-                                                            "Yet to Book"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="4. 6-Month Maintained Bank Balance"
-                                                        value={touristBankStability}
-                                                        onChange={setTouristBankStability}
-                                                        placeholder="Select bank balance..."
-                                                        options={[
-                                                            "₹4L+ Maintained Liquid Balance",
-                                                            "₹2L - ₹4L Balance",
-                                                            "Under ₹2L / Low Balance"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="5. Home Country Ties & Return Proof"
-                                                        value={touristHomeTies}
-                                                        onChange={setTouristHomeTies}
-                                                        placeholder="Select home ties..."
-                                                        options={[
-                                                            "Salaried (Employer NOC & 3-Mo Payslips)",
-                                                            "Business Owner (GST & 2-Yr ITR)",
-                                                            "Self-Employed / Freelancer",
-                                                            "Student (Enrolment Certificate)"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="6. Passport Validity Remaining"
-                                                        value={readinessPassportValidity}
-                                                        onChange={setReadinessPassportValidity}
-                                                        options={[
-                                                            "> 12 Months (Recommended)",
-                                                            "6 - 12 Months Valid",
-                                                            "< 6 Months (Renewal Required)"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                            </div>
-                                        )}
-
-                                        {/* WORK QUESTIONNAIRE */}
-                                        {readinessPurpose === 'work' && (
-                                            <div className="space-y-4 pt-1">
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="1. Total Relevant Experience"
-                                                        value={workExp}
-                                                        onChange={setWorkExp}
-                                                        placeholder="Select experience..."
-                                                        options={[
-                                                            "8+ Years (Senior Level)",
-                                                            "5 - 8 Years (Mid-Senior)",
-                                                            "3 - 5 Years (Early Career)",
-                                                            "0 - 2 Years (Entry Level)"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="2. Employer Job Offer Status"
-                                                        value={workOffer}
-                                                        onChange={setWorkOffer}
-                                                        placeholder="Select job offer status..."
-                                                        options={[
-                                                            "Confirmed Sponsored Job Offer (CoS/LMIA)",
-                                                            "Interviewing / Final Stages",
-                                                            "Job Seeker / Seeking Sponsorship"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="3. Professional Domain"
-                                                        value={workDomain}
-                                                        onChange={setWorkDomain}
-                                                        placeholder="Select domain..."
-                                                        options={[
-                                                            "Technology & Software",
-                                                            "Healthcare & Medicine",
-                                                            "Engineering & Construction",
-                                                            "Finance & Business Management",
-                                                            "Hospitality & Culinary",
-                                                            "Other Specialized Field"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="4. Credential & Skills Assessment"
-                                                        value={workAssess}
-                                                        onChange={setWorkAssess}
-                                                        placeholder="Select skills assessment..."
-                                                        options={[
-                                                            "Skills / ECA Assessed by Authority (WES/ACS)",
-                                                            "Assessment In Progress",
-                                                            "Not Initiated / Need Assistance"
-                                                        ]}
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="5. Passport Validity Remaining"
-                                                        value={readinessPassportValidity}
-                                                        onChange={setReadinessPassportValidity}
-                                                        options={[
-                                                            "> 12 Months (Recommended)",
-                                                            "6 - 12 Months Valid",
-                                                            "< 6 Months (Renewal Required)"
-                                                        ]}
-                                                    />
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        (b) Minimum 2 Consecutive Blank Pages?
+                                                    </label>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditPassportBlankPages(true);
+                                                                saveAuditField('auditPassportBlankPages', true);
+                                                            }}
+                                                            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                auditPassportBlankPages === true
+                                                                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                                                                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                            }`}
+                                                        >
+                                                            ✓ Yes (2+ Pages)
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditPassportBlankPages(false);
+                                                                saveAuditField('auditPassportBlankPages', false);
+                                                            }}
+                                                            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                auditPassportBlankPages === false
+                                                                    ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
+                                                                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                            }`}
+                                                        >
+                                                            ✗ No / Full
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        )}
+                                        </div>
+
+                                        {/* 2. FINANCIAL PROOF */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">2</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Financial Solvency Proof</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">15 Pts Max</span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        (a) Available Funds (Liquid Bank Balance)
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="e.g. ₹3,50,000 or $4,500"
+                                                        value={auditFinancialBalance}
+                                                        onChange={(e) => {
+                                                            setAuditFinancialBalance(e.target.value);
+                                                            saveAuditField('auditFinancialBalance', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                    <span className="text-[10px] text-slate-400 mt-1 block">Consular guideline: min ₹2.5L - ₹4L depending on stay</span>
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        (b) Official Bank Statement
+                                                    </label>
+                                                    <select
+                                                        value={auditBankStatementType}
+                                                        onChange={(e) => {
+                                                            setAuditBankStatementType(e.target.value);
+                                                            saveAuditField('auditBankStatementType', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    >
+                                                        <option value="none">Select Statement Status...</option>
+                                                        <option value="stamped_6m">6 Months Stamped &amp; Signed (Consular Gold Standard)</option>
+                                                        <option value="stamped_3m">3 Months Stamped &amp; Signed Statement</option>
+                                                        <option value="online_pdf">Online e-Statement PDF (Unstamped)</option>
+                                                    </select>
+                                                    <span className="text-[10px] text-slate-400 mt-1 block">Must carry original bank branch stamp &amp; signature</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 3. TRAVEL MEDICAL INSURANCE */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">3</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Travel Medical Insurance</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">10 Pts Max</span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        Valid From Date
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        value={auditInsuranceFrom}
+                                                        onChange={(e) => {
+                                                            setAuditInsuranceFrom(e.target.value);
+                                                            saveAuditField('auditInsuranceFrom', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        Valid Till Date
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        value={auditInsuranceTill}
+                                                        onChange={(e) => {
+                                                            setAuditInsuranceTill(e.target.value);
+                                                            saveAuditField('auditInsuranceTill', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                        Medical Coverage
+                                                    </label>
+                                                    <select
+                                                        value={auditInsuranceCoverage}
+                                                        onChange={(e) => {
+                                                            setAuditInsuranceCoverage(e.target.value);
+                                                            saveAuditField('auditInsuranceCoverage', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    >
+                                                        <option value="none">Select Coverage...</option>
+                                                        <option value="schengen_30k_50k">€30,000 / $50,000 (Schengen/OECD Mandated)</option>
+                                                        <option value="comprehensive_100k">$100,000+ Comprehensive Global</option>
+                                                        <option value="basic_25k">$25,000 Basic (Below Schengen min)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            {auditInsuranceFrom && auditInsuranceTill && (
+                                                <div className={`text-xs font-bold p-2.5 rounded-xl border ${
+                                                    comprehensiveAuditMetrics.insDateStatus.includes('Full')
+                                                        ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                                                        : 'bg-rose-50 border-rose-200 text-rose-800'
+                                                }`}>
+                                                    {comprehensiveAuditMetrics.insDateStatus.includes('Full') ? '✓ ' : '⚠️ '}
+                                                    {comprehensiveAuditMetrics.insDateStatus}: Must cover entire duration of stay including departure and return dates.
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* 4. INCOME PROOF & OCCUPATIONAL TIES */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">4</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Income Proof &amp; Occupational Ties</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">15 Pts Max</span>
+                                            </div>
+
+                                            {/* Employment Type Toggle */}
+                                            <div className="flex bg-slate-200/70 p-1 rounded-xl max-w-sm">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setAuditEmploymentType('salaried');
+                                                        saveAuditField('auditEmploymentType', 'salaried');
+                                                    }}
+                                                    className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
+                                                        auditEmploymentType === 'salaried' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600'
+                                                    }`}
+                                                >
+                                                    Salaried Professional
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setAuditEmploymentType('business');
+                                                        saveAuditField('auditEmploymentType', 'business');
+                                                    }}
+                                                    className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all ${
+                                                        auditEmploymentType === 'business' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600'
+                                                    }`}
+                                                >
+                                                    Business / Self-Employed
+                                                </button>
+                                            </div>
+
+                                            {auditEmploymentType === 'salaried' ? (
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (a) Salary Pay Slips
+                                                        </label>
+                                                        <select
+                                                            value={auditSalariedPayslips}
+                                                            onChange={(e) => {
+                                                                setAuditSalariedPayslips(e.target.value);
+                                                                saveAuditField('auditSalariedPayslips', e.target.value);
+                                                            }}
+                                                            className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                        >
+                                                            <option value="none">Select Pay Slips...</option>
+                                                            <option value="3_6_months">Last 3 - 6 Months Stamped Slips Ready</option>
+                                                            <option value="1_2_months">1 - 2 Months Only</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (b) Form 16 / Tax Certificate
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedForm16(true);
+                                                                    saveAuditField('auditSalariedForm16', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedForm16 === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✓ Ready
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedForm16(false);
+                                                                    saveAuditField('auditSalariedForm16', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedForm16 === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✗ Not Ready
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (c) Employer NOC &amp; Leave Letter
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedNoc(true);
+                                                                    saveAuditField('auditSalariedNoc', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedNoc === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✓ Letterhead Signed
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedNoc(false);
+                                                                    saveAuditField('auditSalariedNoc', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedNoc === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✗ Not Available
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (d) Personal ITR (Last 2 - 3 Years)
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedItr(true);
+                                                                    saveAuditField('auditSalariedItr', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedItr === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✓ ITR-V Ready
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSalariedItr(false);
+                                                                    saveAuditField('auditSalariedItr', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSalariedItr === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✗ Not Filed
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (a) Business Registration (GST / Incorporation)
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditBusinessReg(true);
+                                                                    saveAuditField('auditBusinessReg', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditBusinessReg === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✓ Certificate Ready
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditBusinessReg(false);
+                                                                    saveAuditField('auditBusinessReg', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditBusinessReg === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✗ Not Available
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            (b) Business &amp; Personal ITR (Last 2 - 3 Yrs)
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditBusinessItr(true);
+                                                                    saveAuditField('auditBusinessItr', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditBusinessItr === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✓ Both Ready
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditBusinessItr(false);
+                                                                    saveAuditField('auditBusinessItr', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditBusinessItr === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                                }`}
+                                                            >
+                                                                ✗ Incomplete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* 5. RETURN FLIGHT TICKET & TRANSIT VISA CHECKER */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">5</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Return Ticket &amp; Transit Visa Checker</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">10 Pts Max</span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">Departure Date</label>
+                                                    <input
+                                                        type="date"
+                                                        value={auditFlightDeptDate}
+                                                        onChange={(e) => {
+                                                            setAuditFlightDeptDate(e.target.value);
+                                                            saveAuditField('auditFlightDeptDate', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">Return Date</label>
+                                                    <input
+                                                        type="date"
+                                                        value={auditFlightRetDate}
+                                                        onChange={(e) => {
+                                                            setAuditFlightRetDate(e.target.value);
+                                                            saveAuditField('auditFlightRetDate', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">Airlines</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="e.g. Emirates, Lufthansa, Air India"
+                                                        value={auditFlightAirline}
+                                                        onChange={(e) => {
+                                                            setAuditFlightAirline(e.target.value);
+                                                            saveAuditField('auditFlightAirline', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Transit Layover Checker */}
+                                            <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-2">
+                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                                    <span className="text-xs font-bold text-slate-800">
+                                                        Does your flight have layovers in a third country?
+                                                    </span>
+                                                    <div className="flex gap-2 shrink-0">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditFlightHasLayover(false);
+                                                                saveAuditField('auditFlightHasLayover', false);
+                                                            }}
+                                                            className={`py-1.5 px-3 rounded-lg text-xs font-bold border transition-all ${
+                                                                auditFlightHasLayover === false ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-50 border-slate-200 text-slate-600'
+                                                            }`}
+                                                        >
+                                                            Direct Flight
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditFlightHasLayover(true);
+                                                                saveAuditField('auditFlightHasLayover', true);
+                                                            }}
+                                                            className={`py-1.5 px-3 rounded-lg text-xs font-bold border transition-all ${
+                                                                auditFlightHasLayover === true ? 'bg-amber-600 text-white border-amber-600' : 'bg-slate-50 border-slate-200 text-slate-600'
+                                                            }`}
+                                                        >
+                                                            Has Layover
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {auditFlightHasLayover === true && (
+                                                    <div className="pt-2 border-t border-slate-100 space-y-2 animate-fadeIn">
+                                                        <label className="text-[11px] font-bold text-slate-600 block">
+                                                            Enter Layover City / Airport (Transit Visa Checker)
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g. Frankfurt FRA, London LHR, Paris CDG, Doha DOH"
+                                                            value={auditFlightLayoverCity}
+                                                            onChange={(e) => {
+                                                                setAuditFlightLayoverCity(e.target.value);
+                                                                saveAuditField('auditFlightLayoverCity', e.target.value);
+                                                            }}
+                                                            className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                        />
+                                                        {auditFlightLayoverCity && (
+                                                            <div className="text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 p-2 rounded-lg">
+                                                                ⚠️ <strong>Transit Visa Advisory:</strong> Indian passport holders transiting via Schengen hubs (FRA, CDG, AMS) or UK without a valid US/UK/Canada/Schengen visa may require an Airport Transit Visa (ATV/DATV). Check airline requirements before booking.
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* 6. ACCOMMODATION PROOF */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">6</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Accommodation Proof</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">10 Pts Max</span>
+                                            </div>
+
+                                            <select
+                                                value={auditAccommodationType}
+                                                onChange={(e) => {
+                                                    setAuditAccommodationType(e.target.value);
+                                                    saveAuditField('auditAccommodationType', e.target.value);
+                                                }}
+                                                className="w-full text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            >
+                                                <option value="none">Select Accommodation Proof Status...</option>
+                                                <option value="hotel_confirmed">Confirmed Hotel Voucher (Full Duration with Booking ID)</option>
+                                                <option value="host_invitation">Host / Relative Official Invitation Letter + Proof of Address</option>
+                                                <option value="rental_lease">Confirmed Rental Apartment / Airbnb Lease</option>
+                                            </select>
+                                        </div>
+
+                                        {/* 7. SPONSOR LETTER */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">7</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Sponsorship Details &amp; Proof</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">5 Pts Max</span>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-700 block mb-1">Funding Source</label>
+                                                    <select
+                                                        value={auditSponsorshipType}
+                                                        onChange={(e) => {
+                                                            setAuditSponsorshipType(e.target.value);
+                                                            saveAuditField('auditSponsorshipType', e.target.value);
+                                                        }}
+                                                        className="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                    >
+                                                        <option value="self">Self-Sponsored (My Personal Funds)</option>
+                                                        <option value="family_sponsored">Family / Relative Sponsored</option>
+                                                        <option value="company_sponsored">Corporate / Company Sponsored</option>
+                                                    </select>
+                                                </div>
+
+                                                {auditSponsorshipType !== 'self' && (
+                                                    <div>
+                                                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                                                            Sponsor Affidavit &amp; Financials Ready?
+                                                        </label>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSponsorDocsReady(true);
+                                                                    saveAuditField('auditSponsorDocsReady', true);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSponsorDocsReady === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600'
+                                                                }`}
+                                                            >
+                                                                ✓ Ready
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setAuditSponsorDocsReady(false);
+                                                                    saveAuditField('auditSponsorDocsReady', false);
+                                                                }}
+                                                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                    auditSponsorDocsReady === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600'
+                                                                }`}
+                                                            >
+                                                                ✗ Not Ready
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* 8. COVERING LETTER */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">8</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Covering Letter &amp; Day-wise Itinerary</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">10 Pts Max</span>
+                                            </div>
+
+                                            <select
+                                                value={auditCoveringLetter}
+                                                onChange={(e) => {
+                                                    setAuditCoveringLetter(e.target.value);
+                                                    saveAuditField('auditCoveringLetter', e.target.value);
+                                                }}
+                                                className="w-full text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            >
+                                                <option value="none">Select Covering Letter Status...</option>
+                                                <option value="ready_signed">Signed &amp; Ready with Detailed Day-by-Day Travel Itinerary</option>
+                                                <option value="ai_drafted">Drafted via AI (Pending Final Print &amp; Signature)</option>
+                                            </select>
+                                        </div>
+
+                                        {/* 9. VISA APPLICATION FORM FILLED */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">9</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Official Visa Application Form</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">5 Pts Max</span>
+                                            </div>
+
+                                            <div className="flex items-center justify-between gap-3">
+                                                <span className="text-xs font-bold text-slate-700">
+                                                    Official embassy online/paper application form completed &amp; signed?
+                                                </span>
+                                                <div className="flex gap-2 shrink-0">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAuditVisaFormFilled(true);
+                                                            saveAuditField('auditVisaFormFilled', true);
+                                                        }}
+                                                        className={`py-2 px-4 rounded-xl text-xs font-bold border transition-all ${
+                                                            auditVisaFormFilled === true ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                        }`}
+                                                    >
+                                                        ✓ Yes, Completed
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAuditVisaFormFilled(false);
+                                                            saveAuditField('auditVisaFormFilled', false);
+                                                        }}
+                                                        className={`py-2 px-4 rounded-xl text-xs font-bold border transition-all ${
+                                                            auditVisaFormFilled === false ? 'bg-rose-600 text-white border-rose-600 shadow-xs' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                                                        }`}
+                                                    >
+                                                        ✗ Incomplete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 10. PREVIOUS TRAVEL HISTORY */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">10</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Previous International Travel History</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">5 Pts Max</span>
+                                            </div>
+
+                                            <select
+                                                value={auditTravelHistory}
+                                                onChange={(e) => {
+                                                    setAuditTravelHistory(e.target.value);
+                                                    saveAuditField('auditTravelHistory', e.target.value);
+                                                }}
+                                                className="w-full text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            >
+                                                <option value="none">Select Travel History Footprint...</option>
+                                                <option value="strong_oecd">Frequent International Traveler (US, UK, Schengen, Canada, OECD visas)</option>
+                                                <option value="regional">Regional Travel History (UAE, GCC, Singapore, Thailand, Malaysia)</option>
+                                                <option value="first_time">First-Time International Traveler (Fresh Passport)</option>
+                                            </select>
+                                            <span className="text-[10px] text-slate-400 block">Migrated from your TravlTik profile travel history</span>
+                                        </div>
+
+                                        {/* 11. PREVIOUS VISA REFUSALS */}
+                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">11</span>
+                                                    <h4 className="text-sm font-black text-slate-900">Previous Consular Visa Refusals</h4>
+                                                </div>
+                                                <span className="text-[11px] font-bold text-slate-500 font-mono">5 Pts Max</span>
+                                            </div>
+
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                                <span className="text-xs font-bold text-slate-700">
+                                                    Have you ever been refused a visa for any destination?
+                                                </span>
+                                                <div className="flex gap-2 shrink-0">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAuditPastRefusal(false);
+                                                            saveAuditField('auditPastRefusal', false);
+                                                        }}
+                                                        className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                            auditPastRefusal === false ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600'
+                                                        }`}
+                                                    >
+                                                        No Refusals (Clean)
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAuditPastRefusal(true);
+                                                            saveAuditField('auditPastRefusal', true);
+                                                        }}
+                                                        className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                            auditPastRefusal === true ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-slate-200 text-slate-600'
+                                                        }`}
+                                                    >
+                                                        Yes, Prior Refusal
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {auditPastRefusal === true && (
+                                                <div className="pt-2 border-t border-slate-100 space-y-2 animate-fadeIn">
+                                                    <label className="text-[11px] font-bold text-slate-700 block">
+                                                        Do you have a detailed refusal mitigation explanation letter ready?
+                                                    </label>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditRefusalMitigation(true);
+                                                                saveAuditField('auditRefusalMitigation', true);
+                                                            }}
+                                                            className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                auditRefusalMitigation === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600'
+                                                            }`}
+                                                        >
+                                                            ✓ Prepared &amp; Addressed
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setAuditRefusalMitigation(false);
+                                                                saveAuditField('auditRefusalMitigation', false);
+                                                            }}
+                                                            className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                auditRefusalMitigation === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600'
+                                                            }`}
+                                                        >
+                                                            ✗ Not Prepared
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </div>
 
-                                    {/* Right Column (5 cols): Real-Time Readiness Scorecard (Matching AI Result Portal) */}
+                                    {/* Right Column (5 cols): Real-Time Readiness Scorecard with <70% Consultant Recommendation */}
                                     <div className="lg:col-span-5 bg-gradient-to-b from-slate-50/90 via-white to-slate-50/50 border border-slate-200/90 rounded-3xl p-5 sm:p-7 shadow-xs space-y-4 text-center">
                                         
                                         {/* Card Header */}
                                         <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
                                             <div>
                                                 <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-700 tracking-wider mb-0.5">
-                                                    <span>{readinessMetrics.category}</span>
+                                                    <span>11-Point Audit</span>
                                                     <span>•</span>
-                                                    <span>Consular Readiness</span>
+                                                    <span>Live Score</span>
                                                 </div>
                                                 <h4 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
                                                     Visa Readiness Score
@@ -3156,8 +4121,18 @@ export function UserDashboard() {
                                                 </p>
                                             </div>
 
-                                            <span className={`px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider shrink-0 ${readinessMetrics.badgeBg}`}>
-                                                {readinessMetrics.statusText}
+                                            <span className={`px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider shrink-0 ${
+                                                comprehensiveAuditMetrics.isUnselected
+                                                    ? 'bg-slate-100 text-slate-600 border border-slate-200'
+                                                    : comprehensiveAuditMetrics.score >= 70
+                                                    ? 'bg-emerald-600 text-white'
+                                                    : 'bg-amber-500 text-white'
+                                            }`}>
+                                                {comprehensiveAuditMetrics.isUnselected
+                                                    ? 'AWAITING SELECTIONS'
+                                                    : comprehensiveAuditMetrics.score >= 70
+                                                    ? 'BENCHMARK MET'
+                                                    : 'RISK DETECTED'}
                                             </span>
                                         </div>
 
@@ -3165,7 +4140,7 @@ export function UserDashboard() {
                                         <div className="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto flex items-center justify-center my-1">
                                             <svg className="w-full h-full" viewBox="0 0 200 200">
                                                 <defs>
-                                                    <linearGradient id="rainbowGaugeDash" x1="0%" y1="100%" x2="100%" y2="0%">
+                                                    <linearGradient id="rainbowGaugeDash11" x1="0%" y1="100%" x2="100%" y2="0%">
                                                         <stop offset="0%" stopColor="#F43F5E" />
                                                         <stop offset="35%" stopColor="#FB923C" />
                                                         <stop offset="65%" stopColor="#FACC15" />
@@ -3186,81 +4161,116 @@ export function UserDashboard() {
                                                 <path
                                                     d="M 46 150 A 70 70 0 1 1 154 150"
                                                     fill="none"
-                                                    stroke="url(#rainbowGaugeDash)"
+                                                    stroke="url(#rainbowGaugeDash11)"
                                                     strokeWidth="15"
                                                     strokeLinecap="round"
                                                     strokeDasharray="318"
-                                                    strokeDashoffset={readinessMetrics.score === 0 ? 318 : 318 - (Math.max(5, readinessMetrics.score) / 100) * 318}
+                                                    strokeDashoffset={comprehensiveAuditMetrics.isUnselected ? 318 : 318 - (Math.max(5, comprehensiveAuditMetrics.score) / 100) * 318}
                                                     className="transition-all duration-1000 ease-out"
                                                 />
                                             </svg>
 
-                                            {/* Center Number (0 to 10 Scale) */}
+                                            {/* Center Number (0 to 100% Scale) */}
                                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-2 sm:pt-3">
-                                                <div className="flex items-baseline justify-center gap-1">
+                                                <div className="flex items-baseline justify-center gap-0.5">
                                                     <span className="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight leading-none font-heading">
-                                                        {(readinessMetrics.score / 10).toFixed(1)}
+                                                        {comprehensiveAuditMetrics.score}
                                                     </span>
-                                                    <span className="text-sm sm:text-lg font-bold text-slate-400">/ 10</span>
+                                                    <span className="text-base sm:text-xl font-bold text-slate-400">%</span>
                                                 </div>
-                                                <span className="text-[11px] sm:text-xs font-black text-emerald-600 mt-1">
-                                                    {readinessMetrics.score === 0
-                                                        ? 'Awaiting Profile Selections'
-                                                        : readinessMetrics.hasVerifiedPassport
-                                                        ? '+4.0 pts (Passport Verified ✓)'
-                                                        : `+${((readinessMetrics.score / 10) * 0.4).toFixed(1)} pts`}
+                                                <span className={`text-[11px] sm:text-xs font-black mt-1 ${
+                                                    comprehensiveAuditMetrics.score >= 70 ? 'text-emerald-600' : 'text-amber-600'
+                                                }`}>
+                                                    {comprehensiveAuditMetrics.isUnselected
+                                                        ? 'Awaiting Selections'
+                                                        : comprehensiveAuditMetrics.score >= 70
+                                                        ? 'Ready for Submission'
+                                                        : 'Needs Document Audit'}
                                                 </span>
                                             </div>
                                         </div>
 
-                                        {/* Status Badges */}
-                                        <div className="space-y-1.5">
-                                            {readinessMetrics.hasVerifiedPassport && (
-                                                <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3 py-1.5 rounded-full shadow-2xs text-center">
-                                                    <span>✓ Passport Verified in Vault (Consular 6-Month Rule Passed)</span>
+                                        {/* CRITICAL CONSULTANT RECOMMENDATION BANNER (< 70%) */}
+                                        {comprehensiveAuditMetrics.needsConsultant ? (
+                                            <div className="p-4 rounded-2xl bg-amber-50/90 border-2 border-amber-300 text-left space-y-2.5">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
+                                                    <span className="text-[11px] font-black uppercase text-amber-900 tracking-wider">
+                                                        CONSULTANT AUDIT HIGHLY RECOMMENDED
+                                                    </span>
                                                 </div>
-                                            )}
-
-                                            {readinessMetrics.verifiedVaultCount > 0 && (
-                                                <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3 py-1.5 rounded-full shadow-2xs">
-                                                    <span>✓ {readinessMetrics.verifiedVaultCount} of {readinessMetrics.totalVaultCount} Documents Ready in Vault</span>
+                                                <h5 className="text-sm font-black text-amber-950">
+                                                    Readiness Score: {comprehensiveAuditMetrics.score}% (Below 70% Safe Threshold)
+                                                </h5>
+                                                <p className="text-xs text-amber-900 leading-relaxed font-medium">
+                                                    Your application currently has missing or incomplete consular proofs ({comprehensiveAuditMetrics.missingProofs.slice(0, 3).join(', ')}). Submitting an incomplete dossier significantly elevates embassy refusal risk.
+                                                </p>
+                                                <p className="text-xs text-amber-950 font-bold">
+                                                    👉 We suggest you contact an expert consultant to audit your documents, fix ties, and improve your visa approval chances.
+                                                </p>
+                                                <div className="pt-1">
+                                                    <a
+                                                        href="/find-experts"
+                                                        className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-md transition-all flex items-center justify-center gap-2 text-center cursor-pointer"
+                                                    >
+                                                        <Users className="w-4 h-4 text-emerald-400" />
+                                                        <span>Book Consultation with Verified Expert →</span>
+                                                    </a>
                                                 </div>
-                                            )}
-                                        </div>
+                                            </div>
+                                        ) : comprehensiveAuditMetrics.score >= 70 ? (
+                                            <div className="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 text-left space-y-2 animate-fade-up">
+                                                <div className="flex items-center gap-2">
+                                                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                                                    <span className="text-[11px] font-black uppercase text-emerald-900 tracking-wider">
+                                                        CONSULAR BENCHMARK MET
+                                                    </span>
+                                                </div>
+                                                <h5 className="text-sm font-black text-emerald-950">
+                                                    Strong Visa Readiness ({comprehensiveAuditMetrics.score}%)
+                                                </h5>
+                                                <p className="text-xs text-emerald-900 leading-relaxed font-medium">
+                                                    Your documents fulfill primary embassy requirements! Your dossier is strong and ready for appointment booking and submission.
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium">
+                                                Complete the 11 assessment criteria on the left to calculate your live consular readiness score.
+                                            </div>
+                                        )}
 
-                                        {/* 5 Evaluation Pillars Grid */}
+                                        {/* 11 Evaluation Pillars Grid */}
                                         <div className="w-full pt-3 border-t border-slate-100 text-left">
                                             <div className="flex items-center justify-between pb-2">
                                                 <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
-                                                    {readinessMetrics.category} Evaluation Pillars
+                                                    11 Evaluation Pillars Breakdown
                                                 </span>
                                                 <span className="text-[11px] font-bold text-slate-700 font-mono">
-                                                    {(readinessMetrics.score / 10).toFixed(1)} / 10.0 Pts
+                                                    {comprehensiveAuditMetrics.score} / 100 Pts
                                                 </span>
                                             </div>
 
-                                            <div className="space-y-2">
-                                                {readinessMetrics.pillars.map((pillar, idx) => {
+                                            <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1 no-scrollbar">
+                                                {comprehensiveAuditMetrics.pillars.map((pillar, idx) => {
                                                     const pct = Math.min(100, Math.round((pillar.score / pillar.max) * 100));
                                                     return (
                                                         <div
                                                             key={idx}
-                                                            className="p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-50 transition-colors"
+                                                            className="p-2 rounded-xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-50 transition-colors text-left"
                                                         >
                                                             <div className="flex items-center justify-between text-xs font-bold text-slate-800">
-                                                                <span className="truncate pr-1">{pillar.name}</span>
+                                                                <span className="truncate pr-1 text-[11px]">{pillar.name}</span>
                                                                 <span className="font-mono text-emerald-700 font-extrabold text-[11px] shrink-0">
-                                                                    {(pillar.score / 10).toFixed(1)} / {(pillar.max / 10).toFixed(1)}
+                                                                    {pillar.score} / {pillar.max}
                                                                 </span>
                                                             </div>
-                                                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1.5">
+                                                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1">
                                                                 <div
-                                                                    className="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                                                                    className={`h-full rounded-full transition-all duration-500 ${
+                                                                        pct === 100 ? 'bg-emerald-500' : pct > 0 ? 'bg-amber-500' : 'bg-slate-300'
+                                                                    }`}
                                                                     style={{ width: `${pct}%` }}
                                                                 />
-                                                            </div>
-                                                            <div className="text-[10px] text-slate-500 font-medium truncate mt-1">
-                                                                {pillar.value}
                                                             </div>
                                                         </div>
                                                     );
@@ -3268,31 +4278,16 @@ export function UserDashboard() {
                                             </div>
                                         </div>
 
-                                        {/* Consular Red Flags */}
-                                        {readinessMetrics.redFlags.length > 0 && (
+                                        {/* Consular Red Flags / Alerts */}
+                                        {comprehensiveAuditMetrics.criticalAlerts.length > 0 && (
                                             <div className="w-full space-y-1.5 text-left">
-                                                {readinessMetrics.redFlags.slice(0, 2).map((rf, idx) => (
+                                                {comprehensiveAuditMetrics.criticalAlerts.slice(0, 2).map((rf, idx) => (
                                                     <div
                                                         key={idx}
                                                         className="flex items-start gap-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-semibold leading-relaxed"
                                                     >
                                                         <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                                                         <span>{rf}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        {/* Consular Recommendations */}
-                                        {readinessMetrics.recommendations.length > 0 && (
-                                            <div className="w-full space-y-1.5 text-left">
-                                                {readinessMetrics.recommendations.slice(0, 2).map((rec, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="flex items-start gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-emerald-950 text-xs font-semibold leading-relaxed"
-                                                    >
-                                                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                                                        <span>{rec}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -3305,7 +4300,7 @@ export function UserDashboard() {
                                             className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer mt-2"
                                         >
                                             <FileText className="w-3.5 h-3.5 text-emerald-400" />
-                                            <span>Open Document Vault to Boost Score →</span>
+                                            <span>Upload Documents in Vault →</span>
                                         </button>
                                     </div>
                                 </div>

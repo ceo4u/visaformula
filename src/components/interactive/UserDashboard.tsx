@@ -6,7 +6,7 @@ import {
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
     CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard, MoreVertical, Download, Building2, Info,
     Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2,
-    ShieldAlert, DollarSign, Laptop, CalendarCheck, Zap
+    ShieldAlert, DollarSign, Laptop, CalendarCheck, Zap, FileEdit, Layers
 } from "lucide-react";
 
 export interface VaultDocItem {
@@ -886,8 +886,20 @@ export function UserDashboard() {
     const [countryOfCitizenship, setCountryOfCitizenship] = useState("");
     const [residentOf, setResidentOf] = useState("");
     const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
-    const [selectedDests, setSelectedDests] = useState<string[]>([]);
-    const [activeTab, setActiveTab] = useState("dashboard");
+    const [activeTab, setActiveTab] = useState<string>(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get("tab");
+            if (tab) {
+                if (tab === "pre-departure" || tab === "predeparture" || tab === "luggage" || tab === "packing") return "predeparture";
+                if (tab === "vault" || tab === "documents" || tab === "scanned-documents") return "scanned-documents";
+                if (tab === "readiness" || tab === "visa-readiness") return "visa-readiness";
+                if (tab === "cases" || tab === "applications") return "cases";
+                return tab;
+            }
+        }
+        return "dashboard";
+    });
     const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
     const [profilePhoto, setProfilePhoto] = useState("");
 
@@ -4990,7 +5002,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     )}
 
                     {/* 4. TAB: PRE-DEPARTURE & LUGGAGE CHECKLIST */}
-                    {activeTab === "predeparture" && (
+                    {(activeTab === "predeparture" || activeTab === "pre-departure") && (
                         <div className="space-y-6 animate-fade-up">
                             {/* Header & Destination Control */}
                             <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-xs space-y-4">
@@ -6391,7 +6403,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     )}
 
                     {/* 7. OTHER TABS */}
-                    {activeTab !== "dashboard" && activeTab !== "profile" && activeTab !== "cases" && activeTab !== "scanned-documents" && activeTab !== "consultations" && activeTab !== "escrow-milestones" && (
+                    {activeTab !== "dashboard" && activeTab !== "profile" && activeTab !== "cases" && activeTab !== "scanned-documents" && activeTab !== "consultations" && activeTab !== "escrow-milestones" && activeTab !== "predeparture" && activeTab !== "pre-departure" && activeTab !== "visa-readiness" && (
                         <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4 animate-fade-up">
                             <Briefcase className="w-12 h-12 text-[#00a896] mx-auto" />
                             <h3 className="text-lg font-black text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>

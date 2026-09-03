@@ -17,12 +17,20 @@ function LoginPortalContent() {
 
     const getRedirectDestination = (userType?: string): string => {
         if (typeof window === "undefined") return "/dashboard";
+        if (userType === "expert") return "/consultant/dashboard";
         const params = new URLSearchParams(window.location.search);
         const redirectParam = params.get("redirect");
-        if (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")) {
+        if (
+            redirectParam && 
+            redirectParam.startsWith("/") && 
+            !redirectParam.startsWith("//") && 
+            redirectParam !== "/" && 
+            redirectParam !== "/login" &&
+            !redirectParam.startsWith("/login?")
+        ) {
             return redirectParam;
         }
-        return userType === "expert" ? "/consultant/dashboard" : "/dashboard";
+        return "/dashboard";
     };
 
     // Fast check: If already logged in, redirect immediately without waiting or buffering

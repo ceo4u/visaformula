@@ -45,7 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const googlePhoto = fbUser.photoURL || '';
                     const googleUid = fbUser.uid || '';
                     const role = (sessionStorage.getItem("google_auth_role") || 'seeker') as 'seeker' | 'expert';
-                    const returnPath = sessionStorage.getItem("google_auth_return") || "/dashboard";
+                    const rawReturn = sessionStorage.getItem("google_auth_return");
+                    const returnPath = (rawReturn && rawReturn.startsWith("/") && rawReturn !== "/" && rawReturn !== "/login" && !rawReturn.startsWith("/login?")) ? rawReturn : "/dashboard";
                     sessionStorage.removeItem("google_auth_return");
                     sessionStorage.removeItem("google_auth_role");
 

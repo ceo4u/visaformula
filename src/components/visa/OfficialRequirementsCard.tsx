@@ -35,7 +35,8 @@ import {
   CheckCheck,
   Plane,
   FileSpreadsheet,
-  Upload
+  Upload,
+  Info
 } from 'lucide-react';
 import type { StructuredVisaRequirements } from '../../pages/api/visa/ai-requirements';
 
@@ -869,13 +870,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </div>
               </div>
 
-              {/* Integrated Fee Pill */}
-              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 px-4 py-2 rounded-2xl shrink-0">
+              {/* Jump to Fee Section Link */}
+              <a href="#section-visa-fees" className="flex items-center gap-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/90 px-3.5 py-2 rounded-2xl shrink-0 transition-all group">
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Fees:</span>
-                <span className="text-base sm:text-lg font-black text-[#009e86]">
+                <span className="text-sm sm:text-base font-black text-[#009e86]">
                   {data.costs.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs.visa_fee}
                 </span>
-              </div>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:translate-y-0.5 transition-transform" />
+              </a>
             </div>
 
             {/* Vector Line Icon Step List (One by One Single-Column Stack) */}
@@ -906,13 +908,6 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   </div>
                 );
               })}
-            </div>
-
-            {/* Fee Notes Breakdown */}
-            <div className="pt-4 border-t border-slate-100 flex items-center gap-4 flex-wrap text-xs text-slate-500 font-medium">
-              <span><strong>Visa Fee:</strong> {data.costs.visa_fee}</span>
-              <span>•</span>
-              <span><strong>VAC / Logistics Fee:</strong> {data.costs.service_fee}</span>
             </div>
           </div>
 
@@ -1203,6 +1198,112 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                 </div>
               </div>
             )}
+          </div>
+
+          {/* ── 3. OFFICIAL VISA FEES & EMBASSY CHARGES (DEDICATED SECTION BELOW DOCUMENTS CHECKLIST) ── */}
+          <div id="section-visa-fees" className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24 w-full">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+              <div className="flex items-center gap-3.5">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <DollarSign className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                      Official Consular Tariff
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight">
+                      Official Visa Fees &amp; Government Charges
+                    </h3>
+                  </div>
+                  <span className="text-xs text-slate-500 font-semibold block mt-0.5">
+                    Statutory consular application fees, biometric charges &amp; mandatory embassy costs for {cleanTo}
+                  </span>
+                </div>
+              </div>
+
+              {/* Total Summary Badge */}
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/90 px-4 py-2.5 rounded-2xl shrink-0 flex items-center gap-3 shadow-2xs">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 block">Total Statutory Cost</span>
+                  <strong className="text-lg sm:text-xl font-black text-emerald-900 leading-none">
+                    {data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : (data.costs?.visa_fee || "Consular Tariff")}
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+            {/* 3-Pillar Cost Breakdown Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Card 1: Consular Visa Fee */}
+              <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
+                    Government Fee
+                  </span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">
+                    Visa Application / Filing Fee
+                  </h4>
+                  <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
+                    {data.costs?.visa_fee || "Statutory Fee"}
+                  </p>
+                </div>
+                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                  Official embassy or consular processing fee payable directly upon application submission.
+                </p>
+              </div>
+
+              {/* Card 2: Biometrics / VAC Fee */}
+              <div className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md inline-block">
+                    Logistics &amp; Biometrics
+                  </span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">
+                    VAC &amp; Biometric Enrollment Fee
+                  </h4>
+                  <p className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
+                    {data.costs?.service_fee || "VFS / VAC Standard Fee"}
+                  </p>
+                </div>
+                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                  Mandatory fingerprinting, digital photo capture, and visa application center logistics charge.
+                </p>
+              </div>
+
+              {/* Card 3: Total Payable */}
+              <div className="bg-emerald-50/70 border-2 border-emerald-200/90 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-2xs">
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-md inline-block">
+                    Estimated Total
+                  </span>
+                  <h4 className="text-xs sm:text-sm font-bold text-emerald-950">
+                    Total Estimated Statutory Outlay
+                  </h4>
+                  <p className="text-xl sm:text-2xl font-black text-emerald-900 tracking-tight">
+                    {data.costs?.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs?.visa_fee}
+                  </p>
+                </div>
+                <p className="text-[11px] text-emerald-800 font-semibold leading-relaxed">
+                  Total statutory fees required per adult applicant for official {cleanTo} visa adjudication.
+                </p>
+              </div>
+            </div>
+
+            {/* Essential Payment Rules & Information Banner */}
+            <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 text-xs text-slate-600 space-y-2.5">
+              <div className="flex items-center gap-2 font-bold text-slate-900">
+                <Info className="w-4 h-4 text-[#00A86B] shrink-0" />
+                <span>Important Consular Payment Guidelines &amp; Policies</span>
+              </div>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-600 pl-6 list-disc">
+                <li><strong className="text-slate-800">Payment Modes:</strong> Credit/Debit Card (online), Net Banking, or Demand Draft/Cash at official visa application centers.</li>
+                <li><strong className="text-slate-800">Non-Refundable:</strong> Official consular processing fees are strictly non-refundable regardless of visa approval or refusal.</li>
+                <li><strong className="text-slate-800">Exchange Rates:</strong> Foreign currency fees (USD/EUR/GBP) fluctuate based on current consular exchange rates published by the embassy.</li>
+                <li><strong className="text-slate-800">Minors &amp; Children:</strong> Applicants under 6 years of age may be exempt from statutory fees or pay reduced consular tariffs.</li>
+              </ul>
+            </div>
           </div>
         </div>
       ) : null}

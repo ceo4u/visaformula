@@ -856,6 +856,50 @@ export function UserDashboard() {
         readinessPassportValidity
     ]);
 
+    // Helper to keep document requirements short, clean, and accurate (Atlys / iOS style)
+function cleanShortDocRequirement(title: string, description: string): string {
+    const t = (title || '').toLowerCase();
+    if (t.includes('passport') && !t.includes('photo')) {
+        return 'Min. 6 months validity from travel date & 2 blank visa pages.';
+    }
+    if (t.includes('application form') || t.includes('schengen visa application')) {
+        return 'Completed & signed official visa form (GVCW / Embassy portal).';
+    }
+    if (t.includes('photo') || t.includes('photograph')) {
+        return '2 recent color photos (35×45mm, white background, taken within 6 months).';
+    }
+    if (t.includes('insurance')) {
+        return 'Min. €30,000 medical coverage across all Schengen countries & dates.';
+    }
+    if (t.includes('flight') || t.includes('ticket') || t.includes('pnr')) {
+        return 'Confirmed round-trip flight booking with verifiable airline PNR.';
+    }
+    if (t.includes('accommodation') || t.includes('hotel')) {
+        return 'Confirmed hotel vouchers or official host invitation covering full stay.';
+    }
+    if (t.includes('itinerary') || t.includes('cover letter')) {
+        return 'Covering letter with day-by-day travel plan and cities to visit.';
+    }
+    if (t.includes('employment') || t.includes('occupation') || t.includes('noc')) {
+        return 'Salary slips (last 3 mos) + Employer NOC letter (or Business registration).';
+    }
+    if (t.includes('bank') || t.includes('statement')) {
+        return 'Original 3 to 6 months bank statements stamped & signed by branch.';
+    }
+    if (t.includes('itr') || t.includes('tax') || t.includes('income tax')) {
+        return 'Last 2 financial years ITR-V acknowledgements.';
+    }
+
+    if (description) {
+        const firstSentence = description.split(/(?<=[.!?])\s+|\n+/)[0] || '';
+        if (firstSentence.length > 85) {
+            return firstSentence.slice(0, 80).trim() + '...';
+        }
+        return firstSentence.trim();
+    }
+    return 'Mandatory consular compliance document.';
+}
+
     // ── READINESS EMBASSY DOCUMENTS CHECKLIST (FOR REAL-TIME CRITERIA + DOCS AUDIT) ──
     const readinessDocChecklist = useMemo<VaultDocItem[]>(() => {
         const targetDest = normalizeCountryName(selectedDestination);
@@ -3048,141 +3092,6 @@ export function UserDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section: My Journey & Application Dashboard Widget */}
-                            {journeyData && (() => {
-                                const rawPurp = String(journeyData.purpose || selectedPurpose || 'tourism').toLowerCase();
-                                const isStudy = rawPurp.includes('study') || rawPurp.includes('student');
-                                const isWork = rawPurp.includes('work') || rawPurp.includes('employ') || rawPurp.includes('job');
-                                const isTourism = !isStudy && !isWork;
-
-                                const currentDest = journeyData.destination || selectedDestination || 'Destination';
-                                const currentPass = journeyData.passport_country || journeyData.passportCountry || selectedPassport || 'India';
-                                
-                                const displayVisaTitle = isStudy
-                                    ? (journeyData.matched_university || journeyData.visa_type || `${currentDest} Student Visa Pathway`)
-                                    : isWork
-                                        ? (journeyData.visa_type || `${currentDest} Work Permit & Employment Visa`)
-                                        : (journeyData.visa_type || `${currentDest} Tourist & Visitor Visa`);
-
-                                const displayBadge = journeyData.has_visa
-                                    ? 'Active Visa • Departure Safeguard Roadmap'
-                                    : isStudy
-                                        ? '🎓 Study Abroad Pathway (In Progress)'
-                                        : isWork
-                                            ? '💼 Work & Relocation Pathway (In Progress)'
-                                            : '✈️ Tourist Visa Application (In Progress)';
-
-                                const displayPurposeLabel = isStudy
-                                    ? 'Higher Studies'
-                                    : isWork
-                                        ? 'Employment / Work'
-                                        : 'Tourism / Vacation';
-
-                                return (
-                                    <div className="space-y-4 animate-fade-up">
-                                        {/* CARD 1: OVERSEAS VISA / TOURIST / STUDY APPLICATION */}
-                                        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
-                                            <div className="space-y-2 z-10 flex-1">
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
-                                                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                                                        {displayBadge}
-                                                    </span>
-                                                    {journeyData.readiness_score && (
-                                                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black">
-                                                            Readiness: {journeyData.readiness_score}%
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                                                    {journeyData.destination_flag ? `${journeyData.destination_flag} ` : ''}{currentDest} • {displayVisaTitle}
-                                                </h3>
-
-                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
-                                                    <span>Passport: <strong className="text-white">{currentPass}</strong></span>
-                                                    <span>• Purpose: <strong className="text-emerald-400 font-bold">{displayPurposeLabel}</strong></span>
-                                                    {isStudy && journeyData.selected_course_major && (
-                                                        <span>• Major: <strong className="text-emerald-400 font-bold">{journeyData.selected_course_major}</strong></span>
-                                                    )}
-                                                    {journeyData.visa_type && (
-                                                        <span>• Visa: <strong className="text-white">{journeyData.visa_type}</strong></span>
-                                                    )}
-                                                    {journeyData.stay_duration && (
-                                                        <span>• Duration: <strong className="text-slate-300">{journeyData.stay_duration}</strong></span>
-                                                    )}
-                                                    {isStudy && journeyData.target_degree && (
-                                                        <span>• Target Degree: <strong className="text-emerald-400 uppercase">{journeyData.target_degree}</strong></span>
-                                                    )}
-                                                </div>
-
-                                                {/* Status Highlights */}
-                                                <div className="pt-2 flex flex-wrap items-center gap-2">
-                                                    {isStudy && journeyData.cas_i20_number && (
-                                                        <span className="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
-                                                            CAS / I-20: {journeyData.cas_i20_number} ✓
-                                                        </span>
-                                                    )}
-                                                    {journeyData.uploaded_documents && Object.keys(journeyData.uploaded_documents).length > 0 && (
-                                                        <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
-                                                            📄 {Object.keys(journeyData.uploaded_documents).length} Documents Uploaded &amp; Verified
-                                                        </span>
-                                                    )}
-                                                    {journeyData.final_dossier_submitted && (
-                                                        <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs">
-                                                            Dossier Filed to Concierge Vault ✓
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className="z-10 shrink-0 flex items-center gap-3">
-                                                <a
-                                                    href={currentDest ? `/visa/${encodeURIComponent(currentDest.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(rawPurp || 'tourism')}&passport=${encodeURIComponent(currentPass || 'India')}` : '/#need-visa-pathway-dashboard'}
-                                                    className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95 text-center"
-                                                >
-                                                    <span>Resume Pathway →</span>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                    {/* CARD 2: DOMESTIC TRIP BOOKING (IF CONFIGURED) */}
-                                    {(journeyData.domestic_destination || journeyData.domestic_country) && (
-                                        <div className="bg-white border border-emerald-200/90 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                            <div className="flex items-center gap-3.5">
-                                                <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center text-xl shadow-xs shrink-0">
-                                                    🏠
-                                                </div>
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
-                                                            {journeyData.domestic_country || 'India'} Domestic Holiday
-                                                        </span>
-                                                        <span className="text-xs text-slate-500">
-                                                            {journeyData.domestic_members || 1} {(journeyData.domestic_members || 1) === 1 ? 'Traveler' : 'Travelers'}
-                                                        </span>
-                                                    </div>
-                                                    <h4 className="text-base font-black text-slate-900 mt-1">
-                                                        {journeyData.domestic_destination || 'Selected Holiday Tour'}
-                                                    </h4>
-                                                    <p className="text-xs text-slate-500 mt-0.5">
-                                                        Origin: {journeyData.domestic_city || journeyData.domestic_state || 'Local Region'}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <a
-                                                href={`/services/tours?country=${encodeURIComponent(journeyData.domestic_country || 'India')}`}
-                                                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shrink-0 self-start sm:self-auto"
-                                            >
-                                                View Tour Packages →
-                                            </a>
-                                        </div>
-                                    )}
-                                </div>
-                                );
-                            })()}
-
                             {/* Section: IELTS Score Breakdown & Document Vault */}
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                 
@@ -4516,7 +4425,7 @@ export function UserDashboard() {
                                                             </span>
                                                         </div>
                                                         <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                                                            {doc.description || doc.hint}
+                                                            {cleanShortDocRequirement(doc.title, doc.description || doc.hint)}
                                                         </p>
                                                     </div>
 
@@ -4754,33 +4663,33 @@ export function UserDashboard() {
                                                     </div>
                                                 </div>
 
-                                                {/* 5-Step Visual Timeline Progress */}
+                                                {/* 5-Step Visual Timeline Progress - Clean Dark Slate Bar */}
                                                 <div className="space-y-2">
-                                                    <div className="flex justify-between text-xs font-bold text-slate-700">
+                                                    <div className="flex justify-between text-xs font-bold text-slate-800">
                                                         <span>Application Pipeline Progress:</span>
-                                                        <span className="text-emerald-600 font-black">{cItem.stage || 'Document Vault Verification'} ({cItem.progress || 35}%)</span>
+                                                        <span className="text-slate-900 font-black">{cItem.stage || 'Document Vault Verification'} ({cItem.progress || 35}%)</span>
                                                     </div>
-                                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                                                         <div
-                                                            className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
+                                                            className="h-full bg-slate-900 rounded-full transition-all duration-500 shadow-2xs"
                                                             style={{ width: `${cItem.progress || 35}%` }}
                                                         />
                                                     </div>
                                                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
-                                                        <div className="text-emerald-700 font-black flex items-center gap-1">
-                                                            <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /> 1. Dossier Ingested
+                                                        <div className="text-slate-950 font-black flex items-center gap-1">
+                                                            <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> 1. Dossier Ingested
                                                         </div>
-                                                        <div className="text-emerald-700 font-black flex items-center gap-1">
-                                                            <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" /> 2. AI Quality Audit
-                                                        </div>
-                                                        <div className="text-slate-400 flex items-center gap-1">
-                                                            <Clock className="w-3 h-3 shrink-0" /> 3. Consular Form Filing
+                                                        <div className="text-slate-950 font-black flex items-center gap-1">
+                                                            <Sparkles className="w-3.5 h-3.5 text-slate-900 shrink-0" /> 2. AI Quality Audit
                                                         </div>
                                                         <div className="text-slate-400 flex items-center gap-1">
-                                                            <Clock className="w-3 h-3 shrink-0" /> 4. Biometrics Slot
+                                                            <Clock className="w-3.5 h-3.5 shrink-0" /> 3. Consular Form Filing
                                                         </div>
                                                         <div className="text-slate-400 flex items-center gap-1">
-                                                            <Shield className="w-3 h-3 shrink-0" /> 5. Visa Stamped
+                                                            <Clock className="w-3.5 h-3.5 shrink-0" /> 4. Biometrics Slot
+                                                        </div>
+                                                        <div className="text-slate-400 flex items-center gap-1">
+                                                            <Shield className="w-3.5 h-3.5 shrink-0" /> 5. Visa Stamped
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4854,16 +4763,16 @@ export function UserDashboard() {
                                     <div className="sm:col-span-2 space-y-2">
                                         <div className="flex items-center justify-between text-xs font-bold">
                                             <span className="text-slate-700 flex items-center gap-1.5">
-                                                <Luggage className="w-4 h-4 text-emerald-600" />
+                                                <Luggage className="w-4 h-4 text-slate-800" />
                                                 <span>Packing &amp; Readiness Completion:</span>
                                             </span>
-                                            <span className="text-emerald-700 font-black">
+                                            <span className="text-slate-950 font-black">
                                                 {luggageProgress.packed} of {luggageProgress.total} Items Checked ({luggageProgress.percent}%)
                                             </span>
                                         </div>
-                                        <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5">
+                                        <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
+                                                className="h-full bg-slate-900 rounded-full transition-all duration-500"
                                                 style={{ width: `${luggageProgress.percent}%` }}
                                             />
                                         </div>

@@ -2677,6 +2677,7 @@ export function VisaCountryResultPortal({
   const entryType = 'Single / Multiple (Depending on application)';
   const visaType = baseData.visaType || 'Official E-Visa';
   const processingDays = baseData.processingDays || 4;
+  const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
 
   const variants = baseData.variants || [
     { id: 'standard', label: `Standard Tourist Entry`, stay: 'Depending on application', govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },

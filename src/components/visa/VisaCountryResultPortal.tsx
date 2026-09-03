@@ -3131,6 +3131,87 @@ export function VisaCountryResultPortal({
   const [workDomain, setWorkDomain] = useState('');
   const [workAssess, setWorkAssess] = useState('');
 
+  // ── HYDRATE SAVED READINESS CRITERIA ON MOUNT ──
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('visa_readiness_assessment');
+      if (saved) {
+        const a = JSON.parse(saved);
+        if (a.studyQual) setStudyQual(a.studyQual);
+        if (a.studyTarget) setStudyTarget(a.studyTarget);
+        if (a.studyIntake) setStudyIntake(a.studyIntake);
+        if (a.studyBudget) setStudyBudget(a.studyBudget);
+        if (a.studentAdmissionStatus) setStudentAdmissionStatus(a.studentAdmissionStatus);
+        if (a.studentLanguageScore) setStudentLanguageScore(a.studentLanguageScore);
+
+        if (a.visitPlanStatus) setVisitPlanStatus(a.visitPlanStatus);
+        if (a.visitTiming) setVisitTiming(a.visitTiming);
+        if (a.visitReturnDate) setVisitReturnDate(a.visitReturnDate);
+        if (a.visitStay) setVisitStay(a.visitStay);
+        if (a.touristHomeTies) setTouristHomeTies(a.touristHomeTies);
+        if (a.touristBankStability) setTouristBankStability(a.touristBankStability);
+
+        if (a.workExp) setWorkExp(a.workExp);
+        if (a.workOffer) setWorkOffer(a.workOffer);
+        if (a.workDomain) setWorkDomain(a.workDomain);
+        if (a.workAssess) setWorkAssess(a.workAssess);
+
+        if (a.passportValidityRange) setPassportValidityRange(a.passportValidityRange);
+        if (a.visaRefusalHistory) setVisaRefusalHistory(a.visaRefusalHistory);
+      }
+    } catch(e) {}
+  }, []);
+
+  // ── PERSIST READINESS CRITERIA TO LOCALSTORAGE FOR USER DASHBOARD SYNC ──
+  useEffect(() => {
+    const hasData = Boolean(
+      studyQual || studyTarget || studyIntake || studyBudget || studentAdmissionStatus || studentLanguageScore ||
+      visitPlanStatus || visitTiming || visitReturnDate || visitStay || touristHomeTies || touristBankStability ||
+      workExp || workOffer || workDomain || workAssess || passportValidityRange || visaRefusalHistory
+    );
+    if (!hasData) return;
+
+    try {
+      const payload = {
+        purpose: activePurposeTab,
+        destination: countryName,
+        passport: passportCountry,
+        studyQual,
+        studyTarget,
+        studyIntake,
+        studyBudget,
+        studentAdmissionStatus,
+        studentLanguageScore,
+        visitPlanStatus,
+        visitTiming,
+        visitReturnDate,
+        tripDurationDays,
+        visitStay,
+        touristHomeTies,
+        touristBankStability,
+        workExp,
+        workOffer,
+        workDomain,
+        workAssess,
+        passportValidityRange,
+        visaRefusalHistory,
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem('visa_readiness_assessment', JSON.stringify(payload));
+      localStorage.setItem('active_travel_profile', JSON.stringify({
+        destination: countryName,
+        passport: passportCountry,
+        purpose: activePurposeTab === 'study' ? 'Higher Studies' : activePurposeTab === 'work' ? 'Employment / Work' : 'Tourism / Vacation'
+      }));
+    } catch (e) {}
+  }, [
+    activePurposeTab, countryName, passportCountry,
+    studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
+    visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
+    workExp, workOffer, workDomain, workAssess,
+    passportValidityRange, visaRefusalHistory
+  ]);
+
   // ── PASSPORT COLLECTION WITH REAL-TIME AI SCANNING & 6-MONTH RULE VALIDATION ──
   interface PassportScanState {
     name: string;

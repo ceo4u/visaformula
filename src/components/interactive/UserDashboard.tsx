@@ -637,33 +637,33 @@ export function UserDashboard() {
     const [showChangeVaultPasswordModal, setShowChangeVaultPasswordModal] = useState(false);
     const [showResetVaultPasswordModal, setShowResetVaultPasswordModal] = useState(false);
 
-    // ── VISA READINESS ENGINE REAL-TIME AUDIT STATES (MATCHING AI RESULT PORTAL) ──
+    // ── VISA READINESS ENGINE REAL-TIME AUDIT STATES (FRESH INITIAL STATE, NO DUMMY VALUES) ──
     const [readinessPurpose, setReadinessPurpose] = useState<'study' | 'tourism' | 'work'>('tourism');
-    const [readinessPassportValidity, setReadinessPassportValidity] = useState("> 12 Months (Recommended)");
-    const [visaRefusalHistory, setVisaRefusalHistory] = useState("No Prior Refusals (Clean Record)");
+    const [readinessPassportValidity, setReadinessPassportValidity] = useState("");
+    const [visaRefusalHistory, setVisaRefusalHistory] = useState("");
 
-    // Student specific states
-    const [studyQual, setStudyQual] = useState("Bachelor's Degree");
-    const [studyTarget, setStudyTarget] = useState("Master's / Postgraduate");
-    const [studyIntake, setStudyIntake] = useState("Fall 2026 (Aug - Sep)");
-    const [studyBudget, setStudyBudget] = useState("Self-Funded (₹25L+ Liquid)");
-    const [studentAdmissionStatus, setStudentAdmissionStatus] = useState("Confirmed Offer / CAS / I-20");
-    const [studentLanguageScore, setStudentLanguageScore] = useState("IELTS 6.5+ / PTE 60+ (Cleared)");
+    // Student specific states (start fresh / unselected)
+    const [studyQual, setStudyQual] = useState("");
+    const [studyTarget, setStudyTarget] = useState("");
+    const [studyIntake, setStudyIntake] = useState("");
+    const [studyBudget, setStudyBudget] = useState("");
+    const [studentAdmissionStatus, setStudentAdmissionStatus] = useState("");
+    const [studentLanguageScore, setStudentLanguageScore] = useState("");
 
-    // Tourist specific states
-    const [visitPlanStatus, setVisitPlanStatus] = useState("Fixed Travel Dates");
-    const [visitTiming, setVisitTiming] = useState("Nov 2026");
-    const [visitReturnDate, setVisitReturnDate] = useState("Dec 2026");
-    const [tripDurationDays, setTripDurationDays] = useState(15);
-    const [visitStay, setVisitStay] = useState("Confirmed Hotel / Resort");
-    const [touristHomeTies, setTouristHomeTies] = useState("Salaried (Employer NOC & 3-Mo Payslips)");
-    const [touristBankStability, setTouristBankStability] = useState("₹4L+ Maintained Liquid Balance");
+    // Tourist specific states (start fresh / unselected)
+    const [visitPlanStatus, setVisitPlanStatus] = useState("");
+    const [visitTiming, setVisitTiming] = useState("");
+    const [visitReturnDate, setVisitReturnDate] = useState("");
+    const [tripDurationDays, setTripDurationDays] = useState(0);
+    const [visitStay, setVisitStay] = useState("");
+    const [touristHomeTies, setTouristHomeTies] = useState("");
+    const [touristBankStability, setTouristBankStability] = useState("");
 
-    // Work specific states
-    const [workExp, setWorkExp] = useState("5 - 8 Years (Mid-Senior)");
-    const [workOffer, setWorkOffer] = useState("Confirmed Sponsored Job Offer (CoS/LMIA)");
-    const [workDomain, setWorkDomain] = useState("Technology & Software");
-    const [workAssess, setWorkAssess] = useState("Skills / ECA Assessed by Authority (WES/ACS)");
+    // Work specific states (start fresh / unselected)
+    const [workExp, setWorkExp] = useState("");
+    const [workOffer, setWorkOffer] = useState("");
+    const [workDomain, setWorkDomain] = useState("");
+    const [workAssess, setWorkAssess] = useState("");
 
     useEffect(() => {
         const p = (selectedPurpose || '').toLowerCase();
@@ -675,6 +675,99 @@ export function UserDashboard() {
             setReadinessPurpose('tourism');
         }
     }, [selectedPurpose]);
+
+    // ── HYDRATE READINESS ASSESSMENT FROM AI RESULT PORTAL / STORAGE ──
+    useEffect(() => {
+        try {
+            const savedRaw = localStorage.getItem('visa_readiness_assessment');
+            const journeyRaw = localStorage.getItem('travltik_user_journey');
+            let savedData: any = null;
+            if (savedRaw) {
+                savedData = JSON.parse(savedRaw);
+            } else if (journeyRaw) {
+                const j = JSON.parse(journeyRaw);
+                if (j?.readiness_assessment) savedData = j.readiness_assessment;
+            }
+
+            if (savedData) {
+                if (savedData.purpose) {
+                    const p = String(savedData.purpose).toLowerCase();
+                    if (p.includes('study') || p.includes('student')) setReadinessPurpose('study');
+                    else if (p.includes('work') || p.includes('job')) setReadinessPurpose('work');
+                    else setReadinessPurpose('tourism');
+                }
+                if (savedData.studyQual) setStudyQual(savedData.studyQual);
+                if (savedData.studyTarget) setStudyTarget(savedData.studyTarget);
+                if (savedData.studyIntake) setStudyIntake(savedData.studyIntake);
+                if (savedData.studyBudget) setStudyBudget(savedData.studyBudget);
+                if (savedData.studentAdmissionStatus) setStudentAdmissionStatus(savedData.studentAdmissionStatus);
+                if (savedData.studentLanguageScore) setStudentLanguageScore(savedData.studentLanguageScore);
+
+                if (savedData.visitPlanStatus) setVisitPlanStatus(savedData.visitPlanStatus);
+                if (savedData.visitTiming) setVisitTiming(savedData.visitTiming);
+                if (savedData.visitReturnDate) setVisitReturnDate(savedData.visitReturnDate);
+                if (typeof savedData.tripDurationDays === 'number') setTripDurationDays(savedData.tripDurationDays);
+                if (savedData.visitStay) setVisitStay(savedData.visitStay);
+                if (savedData.touristHomeTies) setTouristHomeTies(savedData.touristHomeTies);
+                if (savedData.touristBankStability) setTouristBankStability(savedData.touristBankStability);
+
+                if (savedData.workExp) setWorkExp(savedData.workExp);
+                if (savedData.workOffer) setWorkOffer(savedData.workOffer);
+                if (savedData.workDomain) setWorkDomain(savedData.workDomain);
+                if (savedData.workAssess) setWorkAssess(savedData.workAssess);
+
+                if (savedData.passportValidityRange || savedData.readinessPassportValidity) {
+                    setReadinessPassportValidity(savedData.passportValidityRange || savedData.readinessPassportValidity);
+                }
+                if (savedData.visaRefusalHistory) setVisaRefusalHistory(savedData.visaRefusalHistory);
+            }
+        } catch (e) {}
+    }, []);
+
+    // ── SYNC DASHBOARD EDITS BACK TO LOCALSTORAGE ──
+    useEffect(() => {
+        const hasData = Boolean(
+            studyQual || studyTarget || studyIntake || studyBudget || studentAdmissionStatus || studentLanguageScore ||
+            visitPlanStatus || visitTiming || visitReturnDate || visitStay || touristHomeTies || touristBankStability ||
+            workExp || workOffer || workDomain || workAssess || readinessPassportValidity || visaRefusalHistory
+        );
+        if (!hasData) return;
+
+        try {
+            const payload = {
+                purpose: readinessPurpose,
+                destination: selectedDestination,
+                passport: selectedPassport,
+                studyQual,
+                studyTarget,
+                studyIntake,
+                studyBudget,
+                studentAdmissionStatus,
+                studentLanguageScore,
+                visitPlanStatus,
+                visitTiming,
+                visitReturnDate,
+                tripDurationDays,
+                visitStay,
+                touristHomeTies,
+                touristBankStability,
+                workExp,
+                workOffer,
+                workDomain,
+                workAssess,
+                readinessPassportValidity,
+                visaRefusalHistory,
+                updatedAt: new Date().toISOString()
+            };
+            localStorage.setItem('visa_readiness_assessment', JSON.stringify(payload));
+        } catch (e) {}
+    }, [
+        readinessPurpose, selectedDestination, selectedPassport,
+        studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
+        visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
+        workExp, workOffer, workDomain, workAssess,
+        readinessPassportValidity, visaRefusalHistory
+    ]);
 
     // ── DYNAMIC CATEGORY-SPECIFIC VISA READINESS AUDIT ENGINE ──
     const readinessMetrics = useMemo(() => {
@@ -705,8 +798,10 @@ export function UserDashboard() {
         } else if (readinessPassportValidity.includes('6 - 12 Months')) {
             filledCount++;
             passportScore += 15;
+            validityBonus = 5;
             recommendations.push(`Passport validity meets minimum 6-month threshold for ${targetCountry}.`);
-        } else {
+        } else if (readinessPassportValidity.includes('< 6 Months')) {
+            filledCount++;
             redFlags.push(`Passport expires in under 6 months. Minimum 6-month validity required by ${targetCountry} consular rules.`);
         }
 
@@ -771,13 +866,16 @@ export function UserDashboard() {
                 academicScore += 5;
             }
 
+            if (studyQual) filledCount++;
+            if (studyTarget) filledCount++;
+
             categoryScoreRaw = admissionScore + fundingScore + academicScore;
 
             categoryPillars = [
-                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
-                { name: 'Institution Admission (I-20/CAS)', score: admissionScore, max: 25, value: studentAdmissionStatus },
-                { name: 'Tuition & Living Funds', score: fundingScore, max: 25, value: studyBudget },
-                { name: 'Language & Academic Intake', score: academicScore, max: 15, value: `${studentLanguageScore.slice(0, 16)}...` }
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : (readinessPassportValidity || 'Not Selected') },
+                { name: 'Institution Admission (I-20/CAS)', score: admissionScore, max: 25, value: studentAdmissionStatus || 'Not Selected' },
+                { name: 'Tuition & Living Funds', score: fundingScore, max: 25, value: studyBudget || 'Not Selected' },
+                { name: 'Language & Academic Intake', score: academicScore, max: 15, value: studentLanguageScore ? `${studentLanguageScore.slice(0, 16)}...` : 'Not Selected' }
             ];
         }
         // 2. WORK VISA SCORING
@@ -822,13 +920,15 @@ export function UserDashboard() {
                 }
             }
 
+            if (workDomain) filledCount++;
+
             categoryScoreRaw = offerScore + expScore + assessScore;
 
             categoryPillars = [
-                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
-                { name: 'Employer Sponsorship (CoS/LMIA)', score: offerScore, max: 30, value: workOffer },
-                { name: 'Work Experience', score: expScore, max: 15, value: workExp },
-                { name: 'Skill Assessment (ECA)', score: assessScore, max: 15, value: workAssess }
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : (readinessPassportValidity || 'Not Selected') },
+                { name: 'Employer Sponsorship (CoS/LMIA)', score: offerScore, max: 30, value: workOffer || 'Not Selected' },
+                { name: 'Work Experience', score: expScore, max: 15, value: workExp || 'Not Selected' },
+                { name: 'Skill Assessment (ECA)', score: assessScore, max: 15, value: workAssess || 'Not Selected' }
             ];
         }
         // 3. TOURIST / VISIT VISA SCORING
@@ -868,28 +968,34 @@ export function UserDashboard() {
             }
 
             if (tripDurationDays > 0 && tripDurationDays <= 90) {
+                filledCount++;
                 itinScore += 10;
                 recommendations.push(`✓ Itinerary set: ${tripDurationDays}-day round-trip compliant with standard tourist limits.`);
             }
 
-            if (visitPlanStatus.includes('Fixed')) {
-                itinScore += 5;
-            } else {
-                itinScore += 3;
+            if (visitPlanStatus) {
+                filledCount++;
+                if (visitPlanStatus.includes('Fixed')) {
+                    itinScore += 5;
+                } else {
+                    itinScore += 3;
+                }
             }
+
+            if (visitStay) filledCount++;
 
             categoryScoreRaw = finScore + tiesScore + itinScore;
 
             categoryPillars = [
-                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : readinessPassportValidity },
-                { name: 'Financial Solvency', score: finScore, max: 25, value: touristBankStability },
-                { name: 'Home Country Ties', score: tiesScore, max: 20, value: touristHomeTies },
-                { name: 'Trip Itinerary & Dates', score: itinScore, max: 15, value: `${tripDurationDays} Days (${visitTiming})` }
+                { name: 'Passport & Identity', score: passportScore, max: 25, value: hasVerifiedPassport ? 'Verified in Vault' : (readinessPassportValidity || 'Not Selected') },
+                { name: 'Financial Solvency', score: finScore, max: 25, value: touristBankStability || 'Not Selected' },
+                { name: 'Home Country Ties', score: tiesScore, max: 20, value: touristHomeTies || 'Not Selected' },
+                { name: 'Trip Itinerary & Dates', score: itinScore, max: 15, value: visitTiming ? `${tripDurationDays} Days (${visitTiming})` : 'Not Selected' }
             ];
         }
 
         // Checklist Documents Pillar (15 pts max)
-        const totalVaultCount = Object.keys(vaultChecklistState || {}).length || 6;
+        const totalVaultCount = Math.max(6, (aiVisaData?.checklist?.length || 6));
         const verifiedVaultCount = Object.values(vaultChecklistState || {}).filter(v => v.verified).length;
         const docsRatio = totalVaultCount > 0 ? (verifiedVaultCount / totalVaultCount) : 0;
         const docsScore = Math.round(docsRatio * 15);
@@ -904,7 +1010,7 @@ export function UserDashboard() {
             name: 'Embassy Checklist',
             score: docsScore,
             max: 15,
-            value: `${verifiedVaultCount}/${totalVaultCount} Verified`
+            value: verifiedVaultCount > 0 ? `${verifiedVaultCount}/${totalVaultCount} Verified` : 'No Documents in Vault'
         });
 
         // Refusal penalty
@@ -914,10 +1020,26 @@ export function UserDashboard() {
             redFlags.push('Prior visa refusal recorded. Dedicated consular explanation letter addressing previous refusal grounds is strongly recommended.');
         }
 
-        const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
-        const minBase = hasVerifiedPassport ? 68 : 20;
-        const finalScore = Math.max(minBase, Math.min(98, rawTotal));
+        // Check if user has not yet made any selections
+        if (filledCount === 0 && !hasVerifiedPassport && verifiedVaultCount === 0) {
+            return {
+                score: 0,
+                category: categoryName,
+                statusText: 'AWAITING SELECTIONS',
+                badgeBg: 'bg-slate-100 text-slate-600 border border-slate-200',
+                recommendations: [`Select your ${categoryName} criteria or upload required embassy documents to calculate your official readiness score.`],
+                redFlags: [],
+                pillars: categoryPillars.map(p => ({ ...p, score: 0, value: p.value || 'Not Selected' })),
+                hasVerifiedPassport: false,
+                verifiedVaultCount: 0,
+                totalVaultCount
+            };
+        }
 
+        const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
+        const minBase = hasVerifiedPassport ? 65 : (filledCount > 0 ? 20 : 0);
+        const finalScore = Math.max(minBase, Math.min(98, rawTotal));
+
         return {
             score: finalScore,
             category: categoryName,
@@ -2470,6 +2592,7 @@ export function UserDashboard() {
                                                         label="1. Highest Academic Qualification"
                                                         value={studyQual}
                                                         onChange={setStudyQual}
+                                                        placeholder="Select qualification..."
                                                         options={[
                                                             "Bachelor's Degree",
                                                             "High School / 12th Standard",
@@ -2482,6 +2605,7 @@ export function UserDashboard() {
                                                         label="2. Target Degree Program"
                                                         value={studyTarget}
                                                         onChange={setStudyTarget}
+                                                        placeholder="Select target degree..."
                                                         options={[
                                                             "Master's / Postgraduate",
                                                             "Bachelor's / Undergraduate",
@@ -2496,6 +2620,7 @@ export function UserDashboard() {
                                                         label="3. Target Intake Timing"
                                                         value={studyIntake}
                                                         onChange={setStudyIntake}
+                                                        placeholder="Select intake session..."
                                                         options={[
                                                             "Fall 2026 (Aug - Sep)",
                                                             "Spring 2026 (Jan - Feb)",
@@ -2508,6 +2633,7 @@ export function UserDashboard() {
                                                         label="4. Tuition & Funds Proof"
                                                         value={studyBudget}
                                                         onChange={setStudyBudget}
+                                                        placeholder="Select funding proof..."
                                                         options={[
                                                             "Self-Funded (₹25L+ Liquid)",
                                                             "Education Bank Loan Sanctioned",
@@ -2522,6 +2648,7 @@ export function UserDashboard() {
                                                         label="5. Institutional Admission Status"
                                                         value={studentAdmissionStatus}
                                                         onChange={setStudentAdmissionStatus}
+                                                        placeholder="Select admission status..."
                                                         options={[
                                                             "Confirmed Offer / CAS / I-20",
                                                             "Conditional Offer Received",
@@ -2533,6 +2660,7 @@ export function UserDashboard() {
                                                         label="6. English Proficiency / Exam"
                                                         value={studentLanguageScore}
                                                         onChange={setStudentLanguageScore}
+                                                        placeholder="Select exam status..."
                                                         options={[
                                                             "IELTS 6.5+ / PTE 60+ (Cleared)",
                                                             "Medium of Instruction (MOI) Certificate",
@@ -2547,6 +2675,7 @@ export function UserDashboard() {
                                                         label="7. Passport Validity Remaining"
                                                         value={readinessPassportValidity}
                                                         onChange={setReadinessPassportValidity}
+                                                        placeholder="Select passport validity..."
                                                         options={[
                                                             "> 12 Months (Recommended)",
                                                             "6 - 12 Months Valid",
@@ -2558,6 +2687,7 @@ export function UserDashboard() {
                                                         label="8. Consular Refusal History"
                                                         value={visaRefusalHistory}
                                                         onChange={setVisaRefusalHistory}
+                                                        placeholder="Select refusal history..."
                                                         options={[
                                                             "No Prior Refusals (Clean Record)",
                                                             "Past Refusal (Requires Cover Letter)"
@@ -2575,6 +2705,7 @@ export function UserDashboard() {
                                                         label="1. Trip Planning Status"
                                                         value={visitPlanStatus}
                                                         onChange={setVisitPlanStatus}
+                                                        placeholder="Select planning status..."
                                                         options={[
                                                             "Fixed Travel Dates",
                                                             "Approximate Month",
@@ -2584,11 +2715,12 @@ export function UserDashboard() {
 
                                                     <ReadinessSelect
                                                         label="2. Tentative Travel Duration"
-                                                        value={`${tripDurationDays} Days Round-Trip`}
+                                                        value={tripDurationDays > 0 ? `${tripDurationDays} Days Round-Trip` : ""}
                                                         onChange={(val) => {
                                                             const d = parseInt(val.replace(/\D/g, ''), 10) || 15;
                                                             setTripDurationDays(d);
                                                         }}
+                                                        placeholder="Select travel duration..."
                                                         options={[
                                                             "7 Days Round-Trip",
                                                             "15 Days Round-Trip",
@@ -2604,6 +2736,7 @@ export function UserDashboard() {
                                                         label="3. Accommodation Arrangement"
                                                         value={visitStay}
                                                         onChange={setVisitStay}
+                                                        placeholder="Select accommodation..."
                                                         options={[
                                                             "Confirmed Hotel / Resort",
                                                             "Staying with Host / Family",
@@ -2616,6 +2749,7 @@ export function UserDashboard() {
                                                         label="4. 6-Month Maintained Bank Balance"
                                                         value={touristBankStability}
                                                         onChange={setTouristBankStability}
+                                                        placeholder="Select bank balance..."
                                                         options={[
                                                             "₹4L+ Maintained Liquid Balance",
                                                             "₹2L - ₹4L Balance",
@@ -2629,6 +2763,7 @@ export function UserDashboard() {
                                                         label="5. Home Country Ties & Return Proof"
                                                         value={touristHomeTies}
                                                         onChange={setTouristHomeTies}
+                                                        placeholder="Select home ties..."
                                                         options={[
                                                             "Salaried (Employer NOC & 3-Mo Payslips)",
                                                             "Business Owner (GST & 2-Yr ITR)",
@@ -2671,6 +2806,7 @@ export function UserDashboard() {
                                                         label="1. Total Relevant Experience"
                                                         value={workExp}
                                                         onChange={setWorkExp}
+                                                        placeholder="Select experience..."
                                                         options={[
                                                             "8+ Years (Senior Level)",
                                                             "5 - 8 Years (Mid-Senior)",
@@ -2683,6 +2819,7 @@ export function UserDashboard() {
                                                         label="2. Employer Job Offer Status"
                                                         value={workOffer}
                                                         onChange={setWorkOffer}
+                                                        placeholder="Select job offer status..."
                                                         options={[
                                                             "Confirmed Sponsored Job Offer (CoS/LMIA)",
                                                             "Interviewing / Final Stages",
@@ -2696,6 +2833,7 @@ export function UserDashboard() {
                                                         label="3. Professional Domain"
                                                         value={workDomain}
                                                         onChange={setWorkDomain}
+                                                        placeholder="Select domain..."
                                                         options={[
                                                             "Technology & Software",
                                                             "Healthcare & Medicine",
@@ -2710,6 +2848,7 @@ export function UserDashboard() {
                                                         label="4. Credential & Skills Assessment"
                                                         value={workAssess}
                                                         onChange={setWorkAssess}
+                                                        placeholder="Select skills assessment..."
                                                         options={[
                                                             "Skills / ECA Assessed by Authority (WES/ACS)",
                                                             "Assessment In Progress",
@@ -2797,7 +2936,7 @@ export function UserDashboard() {
                                                     strokeWidth="15"
                                                     strokeLinecap="round"
                                                     strokeDasharray="318"
-                                                    strokeDashoffset={318 - (Math.max(readinessMetrics.score > 0 ? 5 : 0, readinessMetrics.score) / 100) * 318}
+                                                    strokeDashoffset={readinessMetrics.score === 0 ? 318 : 318 - (Math.max(5, readinessMetrics.score) / 100) * 318}
                                                     className="transition-all duration-1000 ease-out"
                                                 />
                                             </svg>
@@ -2811,7 +2950,9 @@ export function UserDashboard() {
                                                     <span className="text-sm sm:text-lg font-bold text-slate-400">/ 10</span>
                                                 </div>
                                                 <span className="text-[11px] sm:text-xs font-black text-emerald-600 mt-1">
-                                                    {readinessMetrics.hasVerifiedPassport
+                                                    {readinessMetrics.score === 0
+                                                        ? 'Awaiting Profile Selections'
+                                                        : readinessMetrics.hasVerifiedPassport
                                                         ? '+4.0 pts (Passport Verified ✓)'
                                                         : `+${((readinessMetrics.score / 10) * 0.4).toFixed(1)} pts`}
                                                 </span>

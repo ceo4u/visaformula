@@ -3062,7 +3062,6 @@ export function VisaCountryResultPortal({
 
   // ── BRANCH 2: QUESTIONNAIRE & DETAILED READINESS PROFILE STATES (START UNSELECTED / EMPTY) ──
   const [passportValidityRange, setPassportValidityRange] = useState('');
-  const [visaRefusalHistory, setVisaRefusalHistory] = useState('');
 
   // Study Visa Specifics
   const [studyQual, setStudyQual] = useState('');
@@ -3157,7 +3156,6 @@ export function VisaCountryResultPortal({
         if (a.workAssess) setWorkAssess(a.workAssess);
 
         if (a.passportValidityRange) setPassportValidityRange(a.passportValidityRange);
-        if (a.visaRefusalHistory) setVisaRefusalHistory(a.visaRefusalHistory);
       }
     } catch(e) {}
   }, []);
@@ -3167,7 +3165,7 @@ export function VisaCountryResultPortal({
     const hasData = Boolean(
       studyQual || studyTarget || studyIntake || studyBudget || studentAdmissionStatus || studentLanguageScore ||
       visitPlanStatus || visitTiming || visitReturnDate || visitStay || touristHomeTies || touristBankStability ||
-      workExp || workOffer || workDomain || workAssess || passportValidityRange || visaRefusalHistory
+      workExp || workOffer || workDomain || workAssess || passportValidityRange
     );
     if (!hasData) return;
 
@@ -3194,7 +3192,6 @@ export function VisaCountryResultPortal({
         workDomain,
         workAssess,
         passportValidityRange,
-        visaRefusalHistory,
         updatedAt: new Date().toISOString()
       };
       localStorage.setItem('visa_readiness_assessment', JSON.stringify(payload));
@@ -3209,7 +3206,7 @@ export function VisaCountryResultPortal({
     studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
     visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
     workExp, workOffer, workDomain, workAssess,
-    passportValidityRange, visaRefusalHistory
+    passportValidityRange
   ]);
 
   // ── PASSPORT COLLECTION WITH REAL-TIME AI SCANNING & 6-MONTH RULE VALIDATION ──
@@ -3752,24 +3749,24 @@ export function VisaCountryResultPortal({
       value: docsTotalCount > 0 ? `${docsReadyCount}/${docsTotalCount} Ready` : 'Checklist Active'
     });
 
-    // Past Refusal Impact
-    let refusalPenalty = 0;
-    if (visaRefusalHistory) {
-      filledCount++;
-      if (visaRefusalHistory.includes('Past Refusal')) {
-        refusalPenalty = 10;
-        redFlags.push('Prior visa refusal recorded. Attach a dedicated consular explanation letter addressing previous grounds.');
-      }
-    }
+    // Check if category fields are completely unselected
+    const isCategoryEmpty = activePurposeTab === 'study'
+      ? (!studentAdmissionStatus && !studyBudget && !studentLanguageScore && !studyIntake && !studyQual && !studyTarget)
+      : activePurposeTab === 'work'
+      ? (!workOffer && !workExp && !workAssess && !workDomain)
+      : (!touristBankStability && !touristHomeTies && !visitTiming && !visitReturnDate && !visitPlanStatus && !visitStay);
+
+    const hasAnyPassportInput = Boolean(passportFile || passportValidityRange);
 
     // Final Score Calculation (Strict 0 to 100 scale, out of 10.0)
     let finalScore = 0;
-    if (filledCount === 0 && docsReadyCount === 0 && !passportFile) {
+    if (isCategoryEmpty && docsReadyCount === 0 && !hasAnyPassportInput) {
       finalScore = 0;
-      recommendations = [`Select your ${categoryName} details or upload passport to calculate your official consular approval readiness.`];
+      filledCount = 0;
+      recommendations = [`Select your ${categoryName} criteria or upload required embassy documents to calculate your official readiness score.`];
     } else {
-      const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
-      const minBase = (passportFile && remainingMonths >= 12) ? 68 : (passportFile && remainingMonths >= 6) ? 55 : 15;
+      const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore;
+      const minBase = (passportFile && remainingMonths >= 12) ? 68 : (passportFile && remainingMonths >= 6) ? 55 : (filledCount > 0 ? 15 : 0);
       finalScore = Math.max(minBase, Math.min(98, rawTotal));
     }
 
@@ -3778,21 +3775,21 @@ export function VisaCountryResultPortal({
       filledCount,
       docsScore,
       category: categoryName,
-      statusText: filledCount === 0 
+      statusText: finalScore === 0 
         ? 'Awaiting Profile Selections' 
         : finalScore >= 85 
         ? 'High Approval Readiness' 
         : finalScore >= 65 
         ? 'Moderate Readiness' 
         : 'Action Required / Critical Gaps',
-      badgeColor: filledCount === 0
+      badgeColor: finalScore === 0
         ? 'text-slate-700 bg-slate-100 border-slate-200'
         : finalScore >= 85 
         ? 'text-emerald-700 bg-emerald-100/80 border-emerald-200' 
         : finalScore >= 65 
         ? 'text-amber-800 bg-amber-100/80 border-amber-200' 
         : 'text-rose-800 bg-rose-100/80 border-rose-200',
-      barColor: filledCount === 0
+      barColor: finalScore === 0
         ? 'bg-slate-300'
         : finalScore >= 85 
         ? 'bg-emerald-500' 
@@ -3801,13 +3798,14 @@ export function VisaCountryResultPortal({
         : 'bg-rose-500',
       recommendations,
       redFlags,
-      pillars: categoryPillars
+      pillars: finalScore === 0
+        ? categoryPillars.map(p => ({ ...p, score: 0, value: p.value.startsWith('Select') || p.value === 'Checklist Active' ? p.value : 'Not Selected' }))
+        : categoryPillars
     };
   }, [
     activePurposeTab,
     passportFile,
     passportValidityRange,
-    visaRefusalHistory,
     studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
     visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
     workExp, workOffer, workDomain, workAssess,

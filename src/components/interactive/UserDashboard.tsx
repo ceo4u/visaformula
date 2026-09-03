@@ -640,7 +640,6 @@ export function UserDashboard() {
     // ── VISA READINESS ENGINE REAL-TIME AUDIT STATES (FRESH INITIAL STATE, NO DUMMY VALUES) ──
     const [readinessPurpose, setReadinessPurpose] = useState<'study' | 'tourism' | 'work'>('tourism');
     const [readinessPassportValidity, setReadinessPassportValidity] = useState("");
-    const [visaRefusalHistory, setVisaRefusalHistory] = useState("");
 
     // Student specific states (start fresh / unselected)
     const [studyQual, setStudyQual] = useState("");
@@ -719,7 +718,6 @@ export function UserDashboard() {
                 if (savedData.passportValidityRange || savedData.readinessPassportValidity) {
                     setReadinessPassportValidity(savedData.passportValidityRange || savedData.readinessPassportValidity);
                 }
-                if (savedData.visaRefusalHistory) setVisaRefusalHistory(savedData.visaRefusalHistory);
             }
         } catch (e) {}
     }, []);
@@ -729,7 +727,7 @@ export function UserDashboard() {
         const hasData = Boolean(
             studyQual || studyTarget || studyIntake || studyBudget || studentAdmissionStatus || studentLanguageScore ||
             visitPlanStatus || visitTiming || visitReturnDate || visitStay || touristHomeTies || touristBankStability ||
-            workExp || workOffer || workDomain || workAssess || readinessPassportValidity || visaRefusalHistory
+            workExp || workOffer || workDomain || workAssess || readinessPassportValidity
         );
         if (!hasData) return;
 
@@ -756,7 +754,6 @@ export function UserDashboard() {
                 workDomain,
                 workAssess,
                 readinessPassportValidity,
-                visaRefusalHistory,
                 updatedAt: new Date().toISOString()
             };
             localStorage.setItem('visa_readiness_assessment', JSON.stringify(payload));
@@ -766,8 +763,32 @@ export function UserDashboard() {
         studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
         visitPlanStatus, visitTiming, visitReturnDate, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
         workExp, workOffer, workDomain, workAssess,
-        readinessPassportValidity, visaRefusalHistory
+        readinessPassportValidity
     ]);
+
+    // ── READINESS EMBASSY DOCUMENTS CHECKLIST (FOR REAL-TIME CRITERIA + DOCS AUDIT) ──
+    const readinessDocChecklist = useMemo<VaultDocItem[]>(() => {
+        const targetDest = normalizeCountryName(selectedDestination);
+        const destChecklist = (aiVisaData?.documents_required && aiVisaData.documents_required.length > 0)
+            ? aiVisaData.documents_required.map((doc: any, idx: number) => ({
+                key: `doc_req_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                title: doc.title,
+                description: doc.description || '',
+                icon: getAiDocIcon(doc.title),
+                mandatory: doc.is_mandatory !== false,
+                hint: doc.is_mandatory !== false ? 'Mandatory Statutory Requirement' : 'Supporting / Optional'
+            }))
+            : getDestinationChecklist(targetDest, readinessPurpose);
+
+        return destChecklist && destChecklist.length > 0 ? destChecklist : [
+            { key: 'passport', title: 'Valid Passport (Bio-data Front & Back)', hint: 'Min. 6 months validity & blank pages', icon: '📘', mandatory: true, description: 'Clear color scan of passport bio-data page.' },
+            { key: 'financials', title: 'Financial Solvency Proof & Bank Statements', hint: '6 months stamped bank statements or loan sanction', icon: '💰', mandatory: true, description: 'Official bank statements showing adequate liquid funds.' },
+            { key: 'purpose_doc', title: readinessPurpose === 'study' ? 'Institutional Offer Letter / CAS / I-20' : readinessPurpose === 'work' ? 'Employer Job Offer & Sponsorship (CoS/LMIA)' : 'Return Flight Ticket & Hotel Reservation', hint: 'Official travel or acceptance proof', icon: '📄', mandatory: true, description: 'Key institutional or travel confirmation document.' },
+            { key: 'identity_proof', title: 'National Identity Proof / Aadhaar / Voter ID', hint: 'Government issued identity proof', icon: '🪪', mandatory: true, description: 'National identity card or government document.' },
+            { key: 'tax_employment', title: readinessPurpose === 'study' ? 'Academic Marksheets & Language Scorecard' : readinessPurpose === 'work' ? 'Professional Experience & Skill Assessment' : 'Employer Leave NOC & 2-Year ITR', hint: 'Income / Academic qualification record', icon: '📑', mandatory: false, description: 'Supporting tax, employment, or academic paperwork.' },
+            { key: 'travel_insurance', title: 'Travel Medical Insurance Policy', hint: 'Medical emergency coverage compliant with embassy specs', icon: '🛡️', mandatory: false, description: 'Comprehensive overseas travel and health insurance.' }
+        ];
+    }, [aiVisaData, selectedDestination, readinessPurpose]);
 
     // ── DYNAMIC CATEGORY-SPECIFIC VISA READINESS AUDIT ENGINE ──
     const readinessMetrics = useMemo(() => {
@@ -994,40 +1015,41 @@ export function UserDashboard() {
             ];
         }
 
-        // Checklist Documents Pillar (15 pts max)
-        const totalVaultCount = Math.max(6, (aiVisaData?.checklist?.length || 6));
-        const verifiedVaultCount = Object.values(vaultChecklistState || {}).filter(v => v.verified).length;
+        // Checklist Documents Pillar (35 pts max)
+        const totalVaultCount = readinessDocChecklist.length;
+        const verifiedVaultCount = readinessDocChecklist.filter(item => vaultChecklistState[item.key]?.verified).length;
         const docsRatio = totalVaultCount > 0 ? (verifiedVaultCount / totalVaultCount) : 0;
-        const docsScore = Math.round(docsRatio * 15);
+        const docsScore = Math.round(docsRatio * 35);
 
         if (docsRatio === 1) {
             recommendations.unshift(`🌟 100% of required ${targetCountry} embassy documents are verified and ready!`);
         } else if (docsRatio >= 0.5) {
-            recommendations.push(`${verifiedVaultCount}/${totalVaultCount} checklist documents verified in your Document Vault.`);
+            recommendations.push(`${verifiedVaultCount}/${totalVaultCount} checklist documents ready. Complete remaining to maximize score.`);
         }
 
         categoryPillars.push({
-            name: 'Embassy Checklist',
+            name: 'Embassy Documents Checklist',
             score: docsScore,
-            max: 15,
-            value: verifiedVaultCount > 0 ? `${verifiedVaultCount}/${totalVaultCount} Verified` : 'No Documents in Vault'
+            max: 35,
+            value: verifiedVaultCount > 0 ? `${verifiedVaultCount} of ${totalVaultCount} Documents Ready` : 'No Documents Checked'
         });
 
-        // Refusal penalty
-        let refusalPenalty = 0;
-        if (visaRefusalHistory.includes('Past Refusal')) {
-            refusalPenalty = 10;
-            redFlags.push('Prior visa refusal recorded. Dedicated consular explanation letter addressing previous refusal grounds is strongly recommended.');
-        }
-
         // Check if user has not yet made any selections
-        if (filledCount === 0 && !hasVerifiedPassport && verifiedVaultCount === 0) {
+        const isCategoryEmpty = readinessPurpose === 'study'
+            ? (!studentAdmissionStatus && !studyBudget && !studentLanguageScore && !studyIntake && !studyQual && !studyTarget)
+            : readinessPurpose === 'work'
+            ? (!workOffer && !workExp && !workAssess && !workDomain)
+            : (!touristBankStability && !touristHomeTies && !tripDurationDays && !visitPlanStatus && !visitStay);
+
+        const hasAnyPassportInput = Boolean(hasVerifiedPassport || (readinessPassportValidity && readinessPassportValidity.trim() !== ''));
+
+        if (isCategoryEmpty && !hasAnyPassportInput && verifiedVaultCount === 0) {
             return {
                 score: 0,
                 category: categoryName,
                 statusText: 'AWAITING SELECTIONS',
                 badgeBg: 'bg-slate-100 text-slate-600 border border-slate-200',
-                recommendations: [`Select your ${categoryName} criteria or upload required embassy documents to calculate your official readiness score.`],
+                recommendations: [`Select your ${categoryName} criteria or check off required embassy documents below to calculate your official readiness score.`],
                 redFlags: [],
                 pillars: categoryPillars.map(p => ({ ...p, score: 0, value: p.value || 'Not Selected' })),
                 hasVerifiedPassport: false,
@@ -1036,10 +1058,10 @@ export function UserDashboard() {
             };
         }
 
-        const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore - refusalPenalty;
-        const minBase = hasVerifiedPassport ? 65 : (filledCount > 0 ? 20 : 0);
-        const finalScore = Math.max(minBase, Math.min(98, rawTotal));
-
+        const rawTotal = passportScore + validityBonus + categoryScoreRaw + docsScore;
+        const minBase = hasVerifiedPassport ? 65 : (filledCount > 0 || verifiedVaultCount > 0 ? 15 : 0);
+        const finalScore = Math.max(minBase, Math.min(98, rawTotal));
+
         return {
             score: finalScore,
             category: categoryName,
@@ -1070,7 +1092,7 @@ export function UserDashboard() {
         documents,
         vaultChecklistState,
         readinessPassportValidity,
-        visaRefusalHistory,
+        readinessDocChecklist,
         studyQual, studyTarget, studyIntake, studyBudget, studentAdmissionStatus, studentLanguageScore,
         visitPlanStatus, visitTiming, tripDurationDays, visitStay, touristHomeTies, touristBankStability,
         workExp, workOffer, workDomain, workAssess
@@ -1552,6 +1574,29 @@ export function UserDashboard() {
 
         setProfileUpdatedToast(true);
         setTimeout(() => setProfileUpdatedToast(false), 3500);
+    };
+
+    const toggleReadinessDoc = (docKey: string, docTitle: string) => {
+        const targetDest = normalizeCountryName(selectedDestination);
+        const storageKey = `vault_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+        setVaultChecklistState(prev => {
+            const isCurrentlyVerified = !!prev[docKey]?.verified;
+            const next = {
+                ...prev,
+                [docKey]: isCurrentlyVerified
+                    ? { ...prev[docKey], verified: false }
+                    : {
+                        ...prev[docKey],
+                        fileName: prev[docKey]?.fileName || `${docTitle}.pdf`,
+                        verified: true,
+                        uploadedAt: prev[docKey]?.uploadedAt || new Date().toLocaleDateString('en-GB')
+                    }
+            };
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(next));
+            } catch(e) {}
+            return next;
+        });
     };
 
     const handleVaultDocScan = async (file: File, docKey: string, docTitle: string) => {
@@ -2682,17 +2727,6 @@ export function UserDashboard() {
                                                             "< 6 Months (Renewal Required)"
                                                         ]}
                                                     />
-
-                                                    <ReadinessSelect
-                                                        label="8. Consular Refusal History"
-                                                        value={visaRefusalHistory}
-                                                        onChange={setVisaRefusalHistory}
-                                                        placeholder="Select refusal history..."
-                                                        options={[
-                                                            "No Prior Refusals (Clean Record)",
-                                                            "Past Refusal (Requires Cover Letter)"
-                                                        ]}
-                                                    />
                                                 </div>
                                             </div>
                                         )}
@@ -2784,17 +2818,6 @@ export function UserDashboard() {
                                                     />
                                                 </div>
 
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                                    <ReadinessSelect
-                                                        label="7. Consular Refusal History"
-                                                        value={visaRefusalHistory}
-                                                        onChange={setVisaRefusalHistory}
-                                                        options={[
-                                                            "No Prior Refusals (Clean Record)",
-                                                            "Past Refusal (Requires Cover Letter)"
-                                                        ]}
-                                                    />
-                                                </div>
                                             </div>
                                         )}
 
@@ -2866,16 +2889,6 @@ export function UserDashboard() {
                                                             "> 12 Months (Recommended)",
                                                             "6 - 12 Months Valid",
                                                             "< 6 Months (Renewal Required)"
-                                                        ]}
-                                                    />
-
-                                                    <ReadinessSelect
-                                                        label="6. Consular Refusal History"
-                                                        value={visaRefusalHistory}
-                                                        onChange={setVisaRefusalHistory}
-                                                        options={[
-                                                            "No Prior Refusals (Clean Record)",
-                                                            "Past Refusal (Requires Cover Letter)"
                                                         ]}
                                                     />
                                                 </div>
@@ -3053,6 +3066,129 @@ export function UserDashboard() {
                                             <FileText className="w-3.5 h-3.5 text-emerald-400" />
                                             <span>Open Document Vault to Boost Score →</span>
                                         </button>
+                                    </div>
+                                </div>
+
+                                {/* STEP 2: MANDATORY EMBASSY DOCUMENTS CHECKLIST (Directly powers readiness score) */}
+                                <div className="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 text-left animate-fadeIn mt-4">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                                                    STEP 2 • DOCUMENTS CHECKLIST
+                                                </span>
+                                                <span className="text-xs text-slate-400 font-medium">•</span>
+                                                <span className="text-xs font-bold text-slate-600">
+                                                    Boosts Readiness Score by up to +3.5 Pts
+                                                </span>
+                                            </div>
+                                            <h3 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight mt-1">
+                                                Mandatory Embassy Documents Checklist for {normalizeCountryName(selectedDestination)}
+                                            </h3>
+                                            <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                                Mark documents as ready or upload them to calculate your comprehensive consular approval readiness score.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            <span className={`text-xs font-black px-3.5 py-1.5 rounded-xl border transition-all ${
+                                                readinessMetrics.verifiedVaultCount === readinessMetrics.totalVaultCount && readinessMetrics.totalVaultCount > 0
+                                                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                                    : readinessMetrics.verifiedVaultCount > 0
+                                                    ? 'bg-indigo-50 text-indigo-900 border-indigo-200'
+                                                    : 'bg-slate-100 text-slate-600 border-slate-200'
+                                            }`}>
+                                                {readinessMetrics.verifiedVaultCount} of {readinessMetrics.totalVaultCount} Documents Ready
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Document Checklist Cards Grid */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                                        {readinessDocChecklist.map((doc, idx) => {
+                                            const itemData = vaultChecklistState[doc.key];
+                                            const isReady = !!itemData?.verified;
+                                            const fileInputId = `readiness-file-${doc.key}`;
+
+                                            return (
+                                                <div
+                                                    key={doc.key || idx}
+                                                    className={`p-4 rounded-2xl border transition-all flex flex-col justify-between text-left space-y-3 ${
+                                                        isReady
+                                                            ? 'bg-emerald-50/50 border-emerald-300 shadow-2xs'
+                                                            : 'bg-slate-50/60 border-slate-200/90 hover:border-slate-300'
+                                                    }`}
+                                                >
+                                                    <input
+                                                        id={fileInputId}
+                                                        type="file"
+                                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) handleVaultDocScan(file, doc.key, doc.title);
+                                                        }}
+                                                    />
+
+                                                    <div className="space-y-1.5">
+                                                        <div className="flex items-start justify-between gap-2">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-lg shrink-0">{doc.icon || '📄'}</span>
+                                                                <span className="text-xs font-bold text-slate-900 line-clamp-1 leading-snug">
+                                                                    {doc.title}
+                                                                </span>
+                                                            </div>
+                                                            <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md shrink-0 ${
+                                                                isReady
+                                                                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                                                    : doc.mandatory !== false
+                                                                    ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                                                                    : 'bg-slate-200 text-slate-700'
+                                                            }`}>
+                                                                {isReady ? 'Ready ✓' : doc.mandatory !== false ? 'Required' : 'Optional'}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                                                            {doc.description || doc.hint}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="pt-2 border-t border-slate-200/70 flex items-center justify-between gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => toggleReadinessDoc(doc.key, doc.title)}
+                                                            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                                                                isReady
+                                                                    ? 'bg-emerald-600 text-white shadow-2xs hover:bg-emerald-700'
+                                                                    : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'
+                                                            }`}
+                                                        >
+                                                            <Check className={`w-3.5 h-3.5 stroke-[3] ${isReady ? 'text-white' : 'text-slate-400'}`} />
+                                                            <span>{isReady ? 'Document Ready' : 'Mark as Ready'}</span>
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            disabled={scanningDocKey === doc.key}
+                                                            onClick={() => document.getElementById(fileInputId)?.click()}
+                                                            className="text-[11px] font-bold text-slate-600 hover:text-slate-950 flex items-center gap-1 cursor-pointer transition-colors"
+                                                        >
+                                                            {scanningDocKey === doc.key ? (
+                                                                <>
+                                                                    <RotateCw className="w-3 h-3 animate-spin text-emerald-600" />
+                                                                    <span>Scanning...</span>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Upload className="w-3 h-3 text-slate-400" />
+                                                                    <span>{isReady ? 'Replace' : 'Upload'}</span>
+                                                                </>
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>

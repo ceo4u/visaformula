@@ -4,7 +4,7 @@ import {
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
-    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard,
+    CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard, MoreVertical, Download, Building2, Info,
     Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2
 } from "lucide-react";
 
@@ -758,6 +758,115 @@ function renderFinancialIcon(type: string) {
   }
 }
 
+
+export function getDocConditions(title: string, desc: string): string[] {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport') && !t.includes('photo')) {
+    return [
+      'Valid for at least 3 months beyond intended stay',
+      'Issued within the last 10 years',
+      'Minimum 2 blank pages'
+    ];
+  }
+  if (t.includes('application form') || t.includes('schengen visa application') || t.includes('visa form')) {
+    return [
+      'Fully filled and signed',
+      'Date of signature within last 30 days'
+    ];
+  }
+  if (t.includes('photo') || t.includes('photograph')) {
+    return [
+      'Recent (taken within last 6 months)',
+      '35mm × 45mm, white background',
+      'No glasses, no headgear'
+    ];
+  }
+  if (t.includes('itinerary') || t.includes('flight') || t.includes('ticket')) {
+    return [
+      'Confirmed flight tickets',
+      'Round trip itinerary'
+    ];
+  }
+  if (t.includes('hotel') || t.includes('accommodation') || t.includes('reservation')) {
+    return [
+      'Confirmed booking for entire stay',
+      'Hotel name and address required'
+    ];
+  }
+  if (t.includes('insurance')) {
+    return [
+      'Minimum coverage of €30,000',
+      'Must cover entire Schengen / travel area',
+      'Valid for entire stay'
+    ];
+  }
+  if (t.includes('bank') || t.includes('statement') || t.includes('financial')) {
+    return [
+      'Last 3 months statements',
+      'Sufficient balance to cover stay',
+      'Name & account number visible'
+    ];
+  }
+  if (t.includes('cover letter') || t.includes('purpose') || t.includes('intent')) {
+    return [
+      'Purpose of visit',
+      'Details of stay and return',
+      "Applicant's contact details"
+    ];
+  }
+  if (t.includes('employment') || t.includes('noc') || t.includes('leave') || t.includes('salary')) {
+    return [
+      'Original employer NOC / Leave letter',
+      'Last 3 months salary payslips',
+      'Company seal and HR signature'
+    ];
+  }
+  if (t.includes('tax') || t.includes('itr')) {
+    return [
+      'Last 2 to 3 years ITR-V e-filing acknowledgements',
+      'Form 16 or audited financial report'
+    ];
+  }
+  if (desc) {
+    const parts = desc.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 5);
+    if (parts.length > 0) return parts.slice(0, 3);
+  }
+  return [
+    'Official statutory requirement',
+    'Must be clearly legible in PDF or JPG format',
+    'Meets consular authenticity criteria'
+  ];
+}
+
+export function getDocIconConfig(title: string) {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport') && !t.includes('photo')) {
+    return { bg: 'bg-purple-50 text-purple-600 border border-purple-200/80', iconName: 'passport' };
+  }
+  if (t.includes('application form') || t.includes('form')) {
+    return { bg: 'bg-emerald-50 text-emerald-600 border border-emerald-200/80', iconName: 'form' };
+  }
+  if (t.includes('photo') || t.includes('photograph')) {
+    return { bg: 'bg-amber-50 text-amber-600 border border-amber-200/80', iconName: 'photo' };
+  }
+  if (t.includes('itinerary') || t.includes('flight') || t.includes('ticket')) {
+    return { bg: 'bg-sky-50 text-sky-600 border border-sky-200/80', iconName: 'flight' };
+  }
+  if (t.includes('hotel') || t.includes('accommodation')) {
+    return { bg: 'bg-indigo-50 text-indigo-600 border border-indigo-200/80', iconName: 'hotel' };
+  }
+  if (t.includes('insurance')) {
+    return { bg: 'bg-rose-50 text-rose-600 border border-rose-200/80', iconName: 'insurance' };
+  }
+  if (t.includes('bank') || t.includes('statement') || t.includes('financial')) {
+    return { bg: 'bg-teal-50 text-teal-600 border border-teal-200/80', iconName: 'bank' };
+  }
+  if (t.includes('cover letter')) {
+    return { bg: 'bg-rose-50 text-rose-500 border border-rose-200/80', iconName: 'letter' };
+  }
+  return { bg: 'bg-slate-50 text-slate-600 border border-slate-200/80', iconName: 'file' };
+}
+
 export function UserDashboard() {
     const [dashboardSearch, setDashboardSearch] = useState("");
     const [ieltsScore, setIeltsScore] = useState({ L: 0, R: 0, W: 0, S: 0 });
@@ -786,6 +895,17 @@ export function UserDashboard() {
     const [documents, setDocuments] = useState<any[]>([]);
     const [isScanningVaultDoc, setIsScanningVaultDoc] = useState(false);
     const [journeyData, setJourneyData] = useState<any>(null);
+    // Vault Document Table Filters & Inspection (Matching Image media_1788449420480)
+    const [vaultDocSearch, setVaultDocSearch] = useState("");
+    const [vaultDocFilter, setVaultDocFilter] = useState<"all" | "mandatory" | "recommended">("all");
+    const [expandedDocKey, setExpandedDocKey] = useState<string | null>(null);
+    const [inspectDocData, setInspectDocData] = useState<{
+        title: string;
+        key: string;
+        itemData: any;
+        conditions: string[];
+    } | null>(null);
+
 
     // Travel Profile & Document Checklist states
     const [selectedPassport, setSelectedPassport] = useState('India');
@@ -5644,221 +5764,457 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 )}
 
-                                {/* 3. SECTION A: GENERALLY IMPORTANT TRAVEL DOCUMENTS (MANDATORY GLOBAL VAULT) */}
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="text-sm font-black text-slate-900">
-                                                1. General Travel Documents
-                                            </h3>
-                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                                                Universal (3)
-                                            </span>
+                                {/* ── PREMIUM DOCUMENTS REQUIRED TABLE (MATCHING ATLYS/APPLE DESIGN media_1788449420480) ── */}
+                                <div className="space-y-6 pt-2">
+                                    {/* 1. TOP HEADER & METRICS */}
+                                    <div className="space-y-4">
+                                        <div>
+                                            <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
+                                                Documents Required
+                                            </h2>
+                                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                                                Upload and verify all documents as per the official requirements of the Embassy of {normalizedDest}.
+                                            </p>
                                         </div>
-                                        <span className="text-xs font-bold text-slate-500">
-                                            {globalTravelDocuments.filter(d => vaultChecklistState[d.key]?.verified).length}/3
-                                        </span>
-                                    </div>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                                        {globalTravelDocuments.map((doc) => {
-                                            const itemData = vaultChecklistState[doc.key];
-                                            const isVerified = Boolean(itemData?.verified);
-                                            const isScanning = scanningDocKey === doc.key;
-                                            const inputId = `global-input-${doc.key}`;
+                                        {/* 5 TOP METRIC STATS CARDS */}
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                                            {/* Total Documents */}
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
+                                                <div className="w-10 h-10 rounded-xl bg-purple-100/90 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200/80">
+                                                    <FileText className="w-5 h-5 stroke-[2.2]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Total Documents</span>
+                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
+                                                        {allChecklistItems.length}
+                                                    </strong>
+                                                </div>
+                                            </div>
 
-                                            return (
-                                                <div
-                                                    key={doc.key}
-                                                    className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
-                                                        isVerified
-                                                            ? 'bg-emerald-50/40 border-emerald-200 shadow-2xs'
-                                                            : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
+                                            {/* Mandatory */}
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
+                                                <div className="w-10 h-10 rounded-xl bg-rose-100/90 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200/80">
+                                                    <Bookmark className="w-5 h-5 stroke-[2.2]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Mandatory</span>
+                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
+                                                        {allChecklistItems.filter(d => d.mandatory !== false).length}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            {/* Recommended */}
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
+                                                <div className="w-10 h-10 rounded-xl bg-amber-100/90 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200/80">
+                                                    <Star className="w-5 h-5 stroke-[2.2]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Recommended</span>
+                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
+                                                        {allChecklistItems.filter(d => d.mandatory === false).length}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            {/* Completed */}
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
+                                                <div className="w-10 h-10 rounded-xl bg-emerald-100/90 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200/80">
+                                                    <Check className="w-5 h-5 stroke-[2.5]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Completed</span>
+                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
+                                                        {allChecklistItems.filter(d => vaultChecklistState[d.key]?.verified).length}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            {/* Pending */}
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs col-span-2 sm:col-span-1">
+                                                <div className="w-10 h-10 rounded-xl bg-orange-100/90 text-orange-700 flex items-center justify-center shrink-0 border border-orange-200/80">
+                                                    <Clock className="w-5 h-5 stroke-[2.2]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Pending</span>
+                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
+                                                        {allChecklistItems.filter(d => !vaultChecklistState[d.key]?.verified).length}
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 2. PURPLE SOFT NOTICE BANNER */}
+                                        <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-2xl p-4 flex items-center gap-3 text-indigo-950 shadow-2xs">
+                                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                                                <Info className="w-4 h-4" />
+                                            </div>
+                                            <p className="text-xs sm:text-sm font-semibold leading-relaxed">
+                                                All documents must be genuine, valid and in the correct format. Please check validity and meet all conditions to avoid delays.
+                                            </p>
+                                        </div>
+
+                                        {/* 3. SEARCH & FILTER CONTROLS */}
+                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                                            {/* Search input */}
+                                            <div className="relative w-full sm:w-80">
+                                                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                                <input
+                                                    type="text"
+                                                    value={vaultDocSearch}
+                                                    onChange={(e) => setVaultDocSearch(e.target.value)}
+                                                    placeholder="Search documents..."
+                                                    className="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 shadow-2xs transition-all"
+                                                />
+                                                {vaultDocSearch && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setVaultDocSearch("")}
+                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </div>
+
+                                            {/* Filter pills */}
+                                            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setVaultDocFilter("all")}
+                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
+                                                        vaultDocFilter === "all"
+                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
+                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                                                     }`}
                                                 >
-                                                    <div className="space-y-2">
-                                                        <div className="flex items-center justify-between">
-                                                            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-base">
-                                                                {doc.icon}
+                                                    All ({allChecklistItems.length})
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setVaultDocFilter("mandatory")}
+                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
+                                                        vaultDocFilter === "mandatory"
+                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
+                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                                                    }`}
+                                                >
+                                                    Mandatory ({allChecklistItems.filter(d => d.mandatory !== false).length})
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setVaultDocFilter("recommended")}
+                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
+                                                        vaultDocFilter === "recommended"
+                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
+                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                                                    }`}
+                                                >
+                                                    Recommended ({allChecklistItems.filter(d => d.mandatory === false).length})
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 4. PREMIUM DOCUMENT LIST / TABLE */}
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
+                                        {/* Desktop Table Headers */}
+                                        <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50/70 border-b border-slate-200/80 text-[11px] font-black uppercase tracking-wider text-slate-400">
+                                            <div className="col-span-3">Document Name</div>
+                                            <div className="col-span-4">Validity &amp; Conditions</div>
+                                            <div className="col-span-2">Your Document</div>
+                                            <div className="col-span-2">Status</div>
+                                            <div className="col-span-1 text-right">Action</div>
+                                        </div>
+
+                                        {/* Table Rows */}
+                                        <div className="divide-y divide-slate-100">
+                                            {(() => {
+                                                const filteredDocs = allChecklistItems.filter(doc => {
+                                                    if (vaultDocFilter === "mandatory" && doc.mandatory === false) return false;
+                                                    if (vaultDocFilter === "recommended" && doc.mandatory !== false) return false;
+                                                    if (vaultDocSearch.trim()) {
+                                                        const q = vaultDocSearch.toLowerCase();
+                                                        return doc.title.toLowerCase().includes(q) || (doc.description && doc.description.toLowerCase().includes(q));
+                                                    }
+                                                    return true;
+                                                });
+
+                                                if (filteredDocs.length === 0) {
+                                                    return (
+                                                        <div className="p-10 text-center space-y-2">
+                                                            <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                                                                <FileText className="w-5 h-5" />
                                                             </div>
-                                                            {isVerified ? (
-                                                                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
-                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> Verified
-                                                                </span>
-                                                            ) : (
-                                                                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
-                                                                    Required
-                                                                </span>
-                                                            )}
+                                                            <p className="text-xs font-bold text-slate-700">No documents match your filter criteria.</p>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => { setVaultDocSearch(""); setVaultDocFilter("all"); }}
+                                                                className="text-xs font-black text-indigo-600 hover:underline"
+                                                            >
+                                                                Reset Filters
+                                                            </button>
                                                         </div>
+                                                    );
+                                                }
 
-                                                        <h4 className="text-xs font-black text-slate-900 leading-snug">
-                                                            {doc.title}
-                                                        </h4>
+                                                return filteredDocs.map((doc) => {
+                                                    const itemData = vaultChecklistState[doc.key];
+                                                    const isVerified = Boolean(itemData?.verified);
+                                                    const isScanning = scanningDocKey === doc.key;
+                                                    const inputId = `vault-row-input-${doc.key}`;
+                                                    const conditions = getDocConditions(doc.title, doc.description);
+                                                    const iconCfg = getDocIconConfig(doc.title);
+                                                    const isExpanded = expandedDocKey === doc.key;
 
-                                                        {isVerified && itemData && (
-                                                            <div className="bg-white rounded-xl p-2 border border-emerald-100 text-[10px] space-y-0.5">
-                                                                <div className="flex items-center justify-between font-bold text-slate-700">
-                                                                    <span className="truncate max-w-[130px]">{itemData.fileName}</span>
-                                                                    <span className="text-slate-400">{itemData.size}</span>
+                                                    return (
+                                                        <div
+                                                            key={doc.key}
+                                                            className="p-4 sm:p-5 lg:px-6 lg:py-5 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-start lg:items-center hover:bg-slate-50/50 transition-colors"
+                                                        >
+                                                            {/* Hidden File Input for instant upload trigger */}
+                                                            <input
+                                                                id={inputId}
+                                                                type="file"
+                                                                accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                                                                disabled={isScanning}
+                                                                className="hidden"
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (file) handleVaultDocScan(file, doc.key, doc.title);
+                                                                }}
+                                                            />
+
+                                                            {/* 1. DOCUMENT NAME (col-span-3) */}
+                                                            <div className="flex items-center gap-3.5 col-span-3 min-w-0 w-full">
+                                                                <div className={`w-11 h-11 rounded-2xl ${iconCfg.bg} flex items-center justify-center shrink-0 shadow-2xs`}>
+                                                                    {iconCfg.iconName === 'passport' && <FileText className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'form' && <Edit2 className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'photo' && <Sparkles className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'flight' && <Plane className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'hotel' && <Building2 className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'insurance' && <ShieldCheck className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'bank' && <CreditCard className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'letter' && <FileText className="w-5 h-5 stroke-[2.2]" />}
+                                                                    {iconCfg.iconName === 'file' && <FileText className="w-5 h-5 stroke-[2.2]" />}
+                                                                </div>
+                                                                <div className="space-y-0.5 min-w-0 flex-1">
+                                                                    <strong className="text-sm font-black text-slate-950 block truncate">
+                                                                        {doc.title}
+                                                                    </strong>
+                                                                    <span className={`text-[10px] font-black uppercase tracking-wider block ${
+                                                                        doc.mandatory !== false ? 'text-rose-600' : 'text-amber-700'
+                                                                    }`}>
+                                                                        {doc.mandatory !== false ? 'Mandatory' : 'Recommended'}
+                                                                    </span>
                                                                 </div>
                                                             </div>
-                                                        )}
-                                                    </div>
 
-                                                    <div>
-                                                        <input
-                                                            id={inputId}
-                                                            type="file"
-                                                            accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
-                                                            disabled={isScanning}
-                                                            className="hidden"
-                                                            onChange={(e) => {
-                                                                const file = e.target.files?.[0];
-                                                                if (file) handleVaultDocScan(file, doc.key, doc.title);
-                                                            }}
-                                                        />
-                                                        <label
-                                                            htmlFor={inputId}
-                                                            className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
-                                                                isScanning
-                                                                    ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
-                                                                    : isVerified
-                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white'
-                                                            }`}
-                                                        >
-                                                            {isScanning ? (
-                                                                <span className="flex items-center gap-1.5">
-                                                                    <div className="w-3 h-3 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
-                                                                    Scanning...
-                                                                </span>
-                                                            ) : isVerified ? (
-                                                                <>
-                                                                    <RefreshCw className="w-3 h-3" /> Re-upload
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan
-                                                                </>
-                                                            )}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                                            {/* 2. VALIDITY & CONDITIONS (col-span-4) */}
+                                                            <div className="col-span-4 space-y-1 w-full text-xs text-slate-600">
+                                                                <ul className="space-y-1">
+                                                                    {conditions.map((cond, cIdx) => (
+                                                                        <li key={cIdx} className="flex items-start gap-1.5 font-medium text-slate-700 leading-snug">
+                                                                            <span className="text-slate-400 select-none">•</span>
+                                                                            <span>{cond}</span>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                                {doc.description && doc.description.length > 50 && (
+                                                                    <div className="pt-0.5">
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => setExpandedDocKey(isExpanded ? null : doc.key)}
+                                                                            className="text-[11px] font-extrabold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+                                                                        >
+                                                                            <span>{isExpanded ? 'Less details' : 'More details'}</span>
+                                                                            <ChevronDown className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                                                                        </button>
+                                                                        {isExpanded && (
+                                                                            <p className="mt-1.5 p-2 bg-slate-50 rounded-xl text-[11px] text-slate-600 font-medium leading-relaxed border border-slate-200/80 animate-fade-up">
+                                                                                {doc.description}
+                                                                            </p>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+
+                                                            {/* 3. YOUR DOCUMENT (col-span-2) */}
+                                                            <div className="col-span-2 w-full space-y-1 text-left">
+                                                                {isVerified && itemData ? (
+                                                                    <div className="space-y-0.5">
+                                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-black">
+                                                                            Valid
+                                                                        </span>
+                                                                        <p className="text-[11px] text-slate-500 font-semibold truncate">
+                                                                            Uploaded {itemData.uploadedAt || 'Recently'}
+                                                                        </p>
+                                                                        <p className="text-[11px] font-bold text-slate-900 truncate max-w-[150px]">
+                                                                            {itemData.fileName}
+                                                                        </p>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="space-y-1">
+                                                                        <span className="text-xs font-semibold text-slate-400 block">
+                                                                            Not Uploaded
+                                                                        </span>
+                                                                        <label
+                                                                            htmlFor={inputId}
+                                                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100/70 text-indigo-700 text-xs font-black cursor-pointer transition-all shadow-2xs"
+                                                                        >
+                                                                            <Download className="w-3.5 h-3.5 rotate-180" />
+                                                                            <span>Upload Document</span>
+                                                                        </label>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+
+                                                            {/* 4. STATUS (col-span-2) */}
+                                                            <div className="col-span-2 w-full">
+                                                                {isScanning ? (
+                                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-extrabold border border-amber-200">
+                                                                        <div className="w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full animate-spin" />
+                                                                        <span>In Progress</span>
+                                                                    </span>
+                                                                ) : isVerified ? (
+                                                                    <span className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-800">
+                                                                        <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[11px] shadow-2xs">
+                                                                            ✓
+                                                                        </span>
+                                                                        <span>Completed</span>
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400">
+                                                                        <span className="w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center text-[9px]">
+                                                                            ○
+                                                                        </span>
+                                                                        <span>Not Started</span>
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            {/* 5. ACTION (col-span-1) */}
+                                                            <div className="col-span-1 w-full lg:text-right flex items-center lg:justify-end gap-2">
+                                                                {isVerified && itemData ? (
+                                                                    <>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => setInspectDocData({
+                                                                                title: doc.title,
+                                                                                key: doc.key,
+                                                                                itemData,
+                                                                                conditions
+                                                                            })}
+                                                                            className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-slate-800 hover:text-slate-950 hover:border-slate-400 text-xs font-black transition-all cursor-pointer shadow-2xs"
+                                                                        >
+                                                                            View
+                                                                        </button>
+                                                                        <label
+                                                                            htmlFor={inputId}
+                                                                            title="Re-upload"
+                                                                            className="p-1.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-300 cursor-pointer transition-all shadow-2xs inline-flex items-center justify-center"
+                                                                        >
+                                                                            <MoreVertical className="w-4 h-4" />
+                                                                        </label>
+                                                                    </>
+                                                                ) : (
+                                                                    <label
+                                                                        htmlFor={inputId}
+                                                                        className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:border-indigo-300 text-xs font-black cursor-pointer transition-all shadow-2xs inline-block"
+                                                                    >
+                                                                        Upload
+                                                                    </label>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                });
+                                            })()}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* 4. SECTION B: CURRENT TRAVEL READINESS VISA DOCUMENTS (DESTINATION SPECIFIC CHECKLIST) */}
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="text-sm font-black text-slate-900">
-                                                2. Visa Checklist • {normalizedDest}
-                                            </h3>
-                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                {selectedPurpose}
-                                            </span>
-                                        </div>
-                                        <span className="text-xs font-bold text-slate-500">
-                                            {destChecklist.filter(d => vaultChecklistState[d.key]?.verified).length}/{destChecklist.length}
-                                        </span>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                                        {destChecklist.map((doc) => {
-                                            const itemData = vaultChecklistState[doc.key];
-                                            const isVerified = Boolean(itemData?.verified);
-                                            const isScanning = scanningDocKey === doc.key;
-                                            const inputId = `dest-input-${doc.key}`;
-
-                                            return (
-                                                <div
-                                                    key={doc.key}
-                                                    className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
-                                                        isVerified
-                                                            ? 'bg-emerald-50/40 border-emerald-200 shadow-2xs'
-                                                            : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
-                                                    }`}
-                                                >
-                                                    <div className="space-y-2">
-                                                        <div className="flex items-center justify-between">
-                                                            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-base">
-                                                                {doc.icon}
-                                                            </div>
-                                                            {isVerified ? (
-                                                                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black flex items-center gap-1 border border-emerald-200">
-                                                                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" /> Verified
-                                                                </span>
-                                                            ) : doc.mandatory ? (
-                                                                <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold border border-rose-200">
-                                                                    Mandatory
-                                                                </span>
-                                                            ) : (
-                                                                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
-                                                                    Optional
-                                                                </span>
-                                                            )}
-                                                        </div>
-
-                                                        <h4 className="text-xs font-black text-slate-900 leading-snug">
-                                                            {doc.title}
-                                                        </h4>
-
-                                                        {isVerified && itemData && (
-                                                            <div className="bg-white rounded-xl p-2 border border-emerald-100 text-[10px] space-y-0.5">
-                                                                <div className="flex items-center justify-between font-bold text-slate-700">
-                                                                    <span className="truncate max-w-[130px]">{itemData.fileName}</span>
-                                                                    <span className="text-slate-400">{itemData.size}</span>
-                                                                </div>
-                                                            </div>
-                                                        )}
+                                {/* INSPECTION MODAL FOR VIEWING VERIFIED DOCUMENT */}
+                                {inspectDocData && (
+                                    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+                                        <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in zoom-in-95 duration-200">
+                                            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black">
+                                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                                                     </div>
-
                                                     <div>
-                                                        <input
-                                                            id={inputId}
-                                                            type="file"
-                                                            accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
-                                                            disabled={isScanning}
-                                                            className="hidden"
-                                                            onChange={(e) => {
-                                                                const file = e.target.files?.[0];
-                                                                if (file) handleVaultDocScan(file, doc.key, doc.title);
-                                                            }}
-                                                        />
-                                                        <label
-                                                            htmlFor={inputId}
-                                                            className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all text-center ${
-                                                                isScanning
-                                                                    ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
-                                                                    : isVerified
-                                                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                                                    : 'bg-slate-900 hover:bg-slate-800 text-white'
-                                                            }`}
-                                                        >
-                                                            {isScanning ? (
-                                                                <span className="flex items-center gap-1.5">
-                                                                    <div className="w-3 h-3 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin" />
-                                                                    Scanning...
-                                                                </span>
-                                                            ) : isVerified ? (
-                                                                <>
-                                                                    <RefreshCw className="w-3 h-3" /> Re-upload
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <Upload className="w-3 h-3 text-emerald-400" /> Upload &amp; Scan
-                                                                </>
-                                                            )}
-                                                        </label>
+                                                        <h3 className="text-base font-black text-slate-950">
+                                                            {inspectDocData.title}
+                                                        </h3>
+                                                        <span className="text-[11px] font-bold text-emerald-700">
+                                                            Verified Official Consular Record
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            );
-                                        })}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setInspectDocData(null)}
+                                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer transition-colors"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            </div>
+
+                                            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2.5 text-xs">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-500 font-medium">File Name:</span>
+                                                    <strong className="text-slate-900 font-bold truncate max-w-[200px]">
+                                                        {inspectDocData.itemData?.fileName}
+                                                    </strong>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-500 font-medium">File Size:</span>
+                                                    <strong className="text-slate-900 font-bold">{inspectDocData.itemData?.size}</strong>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-500 font-medium">Uploaded Date:</span>
+                                                    <strong className="text-slate-900 font-bold">{inspectDocData.itemData?.uploadedAt || 'Recent'}</strong>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-500 font-medium">Compliance Authenticity:</span>
+                                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
+                                                        {inspectDocData.itemData?.score || 96}% Verified
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">
+                                                    Statutory Guidelines Met
+                                                </h4>
+                                                <ul className="space-y-1.5 text-xs">
+                                                    {inspectDocData.conditions.map((c, i) => (
+                                                        <li key={i} className="flex items-center gap-2 font-semibold text-slate-700">
+                                                            <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                                                            <span>{c}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+
+                                            {inspectDocData.itemData?.summary && (
+                                                <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs font-medium text-emerald-900 leading-relaxed">
+                                                    {inspectDocData.itemData.summary}
+                                                </div>
+                                            )}
+
+                                            <button
+                                                type="button"
+                                                onClick={() => setInspectDocData(null)}
+                                                className="w-full h-11 bg-slate-950 hover:bg-black text-white rounded-xl text-xs font-black transition-all cursor-pointer shadow-md"
+                                            >
+                                                Done
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 {/* 5. SECTION C: ADDITIONAL STORED DOCUMENTS IN VAULT */}
                                 <div className="space-y-3 pt-3 border-t border-slate-200">

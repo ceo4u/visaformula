@@ -3150,7 +3150,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             items: [
                 { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
                 { id: "visa-readiness", label: "Visa Readiness", icon: ShieldCheck, badge: "11-PT", badgeColor: "bg-indigo-50 text-indigo-700 border border-indigo-200/60" },
-                { id: "cases", label: "Applications", icon: Briefcase, count: visasProcessingState.length > 0 ? visasProcessingState.length : undefined },
+                { id: "cases", label: "Visa Applications", icon: Briefcase, count: visasProcessingState.length > 0 ? visasProcessingState.length : undefined },
                 { id: "predeparture", label: "Pre-Departure", icon: Luggage, badge: "AI", badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
             ]
         },
@@ -3435,13 +3435,13 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 </div>
 
-                                {/* 2. Your Applications */}
+                                {/* 2. Visa Applications */}
                                 <div
                                     onClick={() => setActiveTab('cases')}
                                     className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
                                     <div className="space-y-1">
-                                        <span className="text-xs font-medium text-slate-500 block">Your Applications</span>
+                                        <span className="text-xs font-medium text-slate-500 block">Visa Applications</span>
                                         <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
                                             {visasProcessingState.length}
                                         </span>
@@ -4830,7 +4830,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         <div className="space-y-6 animate-fade-up">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-900">Your Applications ({visasProcessingState.length})</h2>
+                                    <h2 className="text-xl font-black text-slate-900">Visa Applications ({visasProcessingState.length})</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
                                 </div>
                                 <button

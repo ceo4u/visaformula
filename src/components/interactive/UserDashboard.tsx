@@ -4222,82 +4222,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <span className="text-[10px] text-slate-400 block">Migrated from your TravlTik profile travel history</span>
                                         </div>
 
-                                        {/* 11. PREVIOUS VISA REFUSALS */}
-                                        <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3.5">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black flex items-center justify-center">11</span>
-                                                    <h4 className="text-sm font-black text-slate-900">Previous Consular Visa Refusals</h4>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                                <span className="text-xs font-bold text-slate-700">
-                                                    Have you ever been refused a visa for any destination?
-                                                </span>
-                                                <div className="flex gap-2 shrink-0">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setAuditPastRefusal(false);
-                                                            saveAuditField('auditPastRefusal', false);
-                                                        }}
-                                                        className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
-                                                            auditPastRefusal === false ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600'
-                                                        }`}
-                                                    >
-                                                        No Refusals (Clean)
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setAuditPastRefusal(true);
-                                                            saveAuditField('auditPastRefusal', true);
-                                                        }}
-                                                        className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
-                                                            auditPastRefusal === true ? 'bg-amber-600 text-white border-amber-600' : 'bg-white border-slate-200 text-slate-600'
-                                                        }`}
-                                                    >
-                                                        Yes, Prior Refusal
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            {auditPastRefusal === true && (
-                                                <div className="pt-2 border-t border-slate-100 space-y-2 animate-fadeIn">
-                                                    <label className="text-[11px] font-bold text-slate-700 block">
-                                                        Do you have a detailed refusal mitigation explanation letter ready?
-                                                    </label>
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setAuditRefusalMitigation(true);
-                                                                saveAuditField('auditRefusalMitigation', true);
-                                                            }}
-                                                            className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold border transition-all ${
-                                                                auditRefusalMitigation === true ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-600'
-                                                            }`}
-                                                        >
-                                                            ✓ Prepared &amp; Addressed
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setAuditRefusalMitigation(false);
-                                                                saveAuditField('auditRefusalMitigation', false);
-                                                            }}
-                                                            className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold border transition-all ${
-                                                                auditRefusalMitigation === false ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-200 text-slate-600'
-                                                            }`}
-                                                        >
-                                                            ✗ Not Prepared
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
 
                                     </div>
 
@@ -4308,7 +4232,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         <div className="w-full flex items-center justify-between gap-2 pb-1 text-left">
                                             <div>
                                                 <div className="flex items-center gap-1.5 text-[11px] font-black uppercase text-indigo-700 tracking-wider mb-0.5">
-                                                    <span>11-Point Audit</span>
+                                                    <span>10-Point Audit</span>
                                                     <span>•</span>
                                                     <span>Live Score</span>
                                                 </div>

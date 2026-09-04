@@ -5565,6 +5565,72 @@ Return ONLY a valid JSON object matching this exact schema:
             }
           }
 
+          const fromLower = (parsed.passport_country || fromCountry || '').toLowerCase();
+          const purposeLower = (purpose || '').toLowerCase();
+          const isIndian = fromLower.includes('india') || fromLower.includes('in');
+          const isTourism = !purposeLower.includes('work') && !purposeLower.includes('study') && !purposeLower.includes('pr');
+
+          // Strict Statutory Sanity Overrides for Direct-Entry / Visa-Free Nations
+          if (toLower.includes('mauritius') && isIndian && isTourism) {
+            parsed.visa_type = 'Visa-Free Entry (Granted on Arrival)';
+            parsed.processing_time = 'Instant on Arrival (0 Days)';
+            parsed.stay_duration = 'Up to 60 Days (Extendable to 90 Days)';
+            parsed.validity = '60–90 Days on Arrival';
+            if (parsed.validity_and_stay) {
+              parsed.validity_and_stay.visa_validity = '60–90 Days on Arrival';
+              parsed.validity_and_stay.max_stay_per_entry = 'Up to 60 Days (Extendable)';
+              parsed.validity_and_stay.entry_type = 'Single / Multiple Entry';
+            }
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at SSR International Airport (Mauritius).';
+              parsed.processing_and_timing.apply_window = 'No prior visa application needed. Complete Mauritius All-in-One Digital Form online before flight.';
+            }
+            parsed.costs = {
+              visa_fee: '₹0 (Free / No Consular Fee)',
+              service_fee: '₹0 (No Appointment Needed)',
+              total_fee: '₹0 (Free on Arrival)',
+              notes: 'Indian citizens traveling for tourism are granted a free tourist visa on arrival for up to 60 days.'
+            };
+          } else if (toLower.includes('maldives') && isIndian && isTourism) {
+            parsed.visa_type = 'Free Visa on Arrival (30 Days)';
+            parsed.processing_time = 'Instant on Arrival (0 Days)';
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at Velana International Airport (MLE).';
+              parsed.processing_and_timing.apply_window = 'Complete IMUGA Traveler Declaration online within 96 hours before arrival.';
+            }
+            parsed.costs = {
+              visa_fee: '₹0 (Free / No Consular Fee)',
+              service_fee: '₹0 (No Advance Application)',
+              total_fee: '₹0 (Free on Arrival)',
+              notes: 'Indian citizens traveling to Maldives for tourism receive a free 30-day Visa on Arrival.'
+            };
+          } else if (toLower.includes('seychelles') && isIndian && isTourism) {
+            parsed.visa_type = "Visa-Free / Visitor's Permit on Arrival";
+            parsed.processing_time = 'Instant on Arrival (0 Days)';
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at Seychelles International Airport (SEZ).';
+              parsed.processing_and_timing.apply_window = 'Submit Seychelles Electronic Border System (SEBS) travel authorization online prior to departure.';
+            }
+            parsed.costs = {
+              visa_fee: '₹0 (Free / No Consular Fee)',
+              service_fee: '₹0 (Free Visitor Permit)',
+              total_fee: '₹0 (Free on Arrival)',
+              notes: 'Seychelles is a visa-free country. A Visitor’s Permit is granted free of charge upon arrival for up to 3 months.'
+            };
+          } else if ((toLower.includes('nepal') || toLower.includes('bhutan')) && isIndian) {
+            parsed.visa_type = 'Freedom of Movement / Entry Permit on Arrival';
+            parsed.processing_time = 'Instant on Arrival (0 Days)';
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.decision_time = 'Instant entry clearance on arrival (Voter ID or Passport).';
+            }
+            parsed.costs = {
+              visa_fee: '₹0 (No Visa Required)',
+              service_fee: '₹0',
+              total_fee: '₹0 (Free)',
+              notes: 'Indian citizens do not require a visa to enter Nepal or Bhutan under bilateral treaties.'
+            };
+          }
+
           return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(parsed), source: 'gemini-ai' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }

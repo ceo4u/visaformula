@@ -95,11 +95,13 @@ export function isGccDestination(input: string): boolean {
 export function sanitizeCurrencyCodes(obj: any): any {
   if (typeof obj === 'string') {
     return obj
-      .replace(/\$(\d+(?:[.,]\d+)?)\s*(?:USD)?/gi, '$1 USD')
-      .replace(/€(\d+(?:[.,]\d+)?)\s*(?:EUR)?/gi, '$1 EUR')
-      .replace(/£(\d+(?:[.,]\d+)?)\s*(?:GBP)?/gi, '$1 GBP')
-      .replace(/₹(\d+(?:[.,]\d+)?)\s*(?:INR)?/gi, '₹$1 INR')
-      .replace(/\$/g, ' USD ');
+      .replace(/\$(\d+(?:[.,]\d+)?)\s*(?:USD)?/gi, '$1 USD ')
+      .replace(/€(\d+(?:[.,]\d+)?)\s*(?:EUR)?/gi, '€$1 EUR ')
+      .replace(/£(\d+(?:[.,]\d+)?)\s*(?:GBP)?/gi, '£$1 GBP ')
+      .replace(/₹(\d+(?:[.,]\d+)?)\s*(?:INR)?/gi, '₹$1 ')
+      .replace(/\$/g, ' USD ')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
   }
   if (Array.isArray(obj)) {
     return obj.map(sanitizeCurrencyCodes);

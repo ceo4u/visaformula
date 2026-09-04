@@ -3043,9 +3043,27 @@ export function VisaCountryResultPortal({
   const [aiData, setAiData] = useState<any | null>(() => {
     if (typeof window !== 'undefined') {
       try {
-        const cacheKey = `travltik_ai_res_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+        // Purge legacy unversioned/stale caches from previous sessions
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('travltik_ai_res_') && !k.startsWith('travltik_ai_res_v3_')) {
+            localStorage.removeItem(k);
+          }
+        }
+        const cacheKey = `travltik_ai_res_v3_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
         const cached = localStorage.getItem(cacheKey);
-        if (cached) return JSON.parse(cached);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          const cLow = (countryName || '').toLowerCase();
+          if (cLow.includes('mauritius')) {
+            const pt = String(parsed.processing_time || '');
+            if (/15\s*[-–—to]+\s*20/i.test(pt)) {
+              localStorage.removeItem(cacheKey);
+              return null;
+            }
+          }
+          return parsed;
+        }
       } catch (e) {}
     }
     return null;
@@ -3289,16 +3307,40 @@ export function VisaCountryResultPortal({
   const stepsNotStarted = dynamicSteps.filter(s => s.status === 'not_started').length;
 
   const getResolvedProcessingTime = () => {
-    const cLow = countryName.toLowerCase();
+    const cLow = (countryName || '').toLowerCase().trim();
+    const pLow = (passportCountry || '').toLowerCase().trim();
+    const isIndian = pLow.includes('india') || pLow.includes('in');
     const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
+
+    // Instant / VoA / Direct Visa-Free destinations
+    if (cLow.includes('mauritius')) return 'Instant on Arrival (0 Days)';
+    if (cLow.includes('maldives') || cLow.includes('seychelles')) return 'Instant on Arrival (0 Days)';
+    if (isIndian && (cLow.includes('nepal') || cLow.includes('bhutan'))) return 'Instant (Freedom of Movement)';
+    if (isIndian && (cLow.includes('thailand') || cLow.includes('malaysia'))) {
+      if (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general') {
+        return 'Instant on Arrival (0 Days)';
+      }
+    }
+    if (typeof baseData?.processingDays === 'number' && baseData.processingDays === 0) {
+      return 'Instant on Arrival (0 Days)';
+    }
+
     if (isSchengenCountry) return '15 – 20 Days';
     if (cLow.includes('china')) return '4 – 7 Days';
     if (cLow.includes('united states') || cLow.includes('usa')) return '3 – 5 Days';
     if (cLow.includes('united kingdom') || cLow.includes('uk')) return '15 Working Days';
-    if (cLow.includes('uae') || cLow.includes('dubai') || cLow.includes('thailand') || cLow.includes('malaysia') || cLow.includes('singapore')) return '3 – 5 Days';
-    if (aiData?.processing_time && !aiData.processing_time.includes('15 – 20')) return aiData.processing_time;
-    if (aiData?.processing_and_timing?.decision_time && !aiData.processing_and_timing.decision_time.includes('15 – 20')) return aiData.processing_and_timing.decision_time;
-    return '5 – 10 Days';
+    if (cLow.includes('uae') || cLow.includes('dubai') || cLow.includes('singapore')) return '3 – 5 Days';
+
+    // Disallow ANY 15-20 variation for non-Schengen destinations
+    const is15to20 = (val?: string) => !val || /15\s*[-–—to]+\s*20/i.test(val);
+
+    if (aiData?.processing_time && !is15to20(aiData.processing_time)) {
+      return aiData.processing_time;
+    }
+    if (aiData?.processing_and_timing?.decision_time && !is15to20(aiData.processing_and_timing.decision_time)) {
+      return aiData.processing_and_timing.decision_time;
+    }
+    return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : '5 – 10 Days';
   };
 
   useEffect(() => {
@@ -3336,7 +3378,7 @@ export function VisaCountryResultPortal({
         if (json.success && json.data && mounted) {
           setAiData(json.data);
           try {
-            const cacheKey = `travltik_ai_res_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+            const cacheKey = `travltik_ai_res_v3_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
             localStorage.setItem(cacheKey, JSON.stringify(json.data));
           } catch(e) {}
         }
@@ -6475,13 +6517,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
                     <span className="text-slate-600">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-slate-950 text-sm">
-                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
+                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (No Appointment Needed)' : countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
                     <span className="font-black text-slate-950 text-sm">Total Official Fee</span>
                     <strong className="text-xl font-black text-teal-700">
-                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
+                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (Free on Arrival)' : countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
                     </strong>
                   </div>
                 </div>
@@ -6506,19 +6548,19 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || '15 - 20 Working Days'}
+                      {aiData?.processing_and_timing?.decision_time || (countryName.toLowerCase().includes('mauritius') ? 'Instant on Arrival (0 Days)' : isSchengen ? '15 – 20 Days' : '5 – 10 Days')}
                     </h3>
                     <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || 'Calculated from the date biometric submission is completed at the consular center.'}
+                      {aiData?.processing_and_timing?.center_notes || (countryName.toLowerCase().includes('mauritius') ? 'Granted directly upon landing at SSR International Airport (Mauritius).' : 'Calculated from the date biometric submission is completed at the consular center.')}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Recommended Filing Window</span>
                     <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
-                      {aiData?.processing_and_timing?.apply_window || '15 Days to 3 Months Before'}
+                      {aiData?.processing_and_timing?.apply_window || (countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
                     </h3>
                     <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.max_extension || 'Plan in advance to avoid consular peak season appointment delays.'}
+                      {aiData?.processing_and_timing?.max_extension || (countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
                     </p>
                   </div>
                 </div>

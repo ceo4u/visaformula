@@ -1011,7 +1011,6 @@ export function UserDashboard() {
     const [editingAppId, setEditingAppId] = useState<string | null>(null);
     const [editingAppName, setEditingAppName] = useState("");
     const [copiedTrackingId, setCopiedTrackingId] = useState<string | null>(null);
-    const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
     const [dashboardToast, setDashboardToast] = useState<string | null>(null);
 
     // ── PRE-DEPARTURE & LUGGAGE CHECKLIST STATES ──

@@ -5000,6 +5000,15 @@ All documents must be genuine, valid and meet official consular standards to avo
 
   const stayPeriod = lengthOfStay;
 
+  const cleanStatValue = (val: string | undefined | null) => {
+    if (!val) return '';
+    return val
+      .replace(/\s*\([^)]*\)/g, '')
+      .replace(/\s*\[[^\]]*\]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
@@ -5053,7 +5062,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="min-w-0">
                     <span className="text-[10px] font-bold text-slate-400 block truncate">Processing Time</span>
                     <strong className="text-xs font-black text-slate-900 truncate block">
-                      {aiData?.processing_time || aiData?.processing_and_timing?.decision_time || (isSchengen ? '15 - 20 Working Days' : `${processingDays}-${processingDays + 5} Working Days`)}
+                      {cleanStatValue(aiData?.processing_time || aiData?.processing_and_timing?.decision_time) || (isSchengen ? '15 - 20 Working Days' : `${processingDays}-${processingDays + 5} Working Days`)}
                     </strong>
                   </div>
                 </div>
@@ -5065,7 +5074,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="min-w-0">
                     <span className="text-[10px] font-bold text-slate-400 block truncate">Validity</span>
                     <strong className="text-xs font-black text-slate-900 truncate block">
-                      {aiData?.validity || validity || 'Up to 90 Days'}
+                      {cleanStatValue(aiData?.validity || validity) || 'Up to 90 Days'}
                     </strong>
                   </div>
                 </div>
@@ -5077,7 +5086,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="min-w-0">
                     <span className="text-[10px] font-bold text-slate-400 block truncate">Stay Period</span>
                     <strong className="text-xs font-black text-slate-900 truncate block">
-                      {aiData?.stay_duration || stayPeriod || 'Up to 90 Days'}
+                      {cleanStatValue(aiData?.stay_duration || stayPeriod) || 'Up to 90 Days'}
                     </strong>
                   </div>
                 </div>
@@ -5089,7 +5098,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="min-w-0">
                     <span className="text-[10px] font-bold text-slate-400 block truncate">Entry Type</span>
                     <strong className="text-xs font-black text-slate-900 truncate block">
-                      {aiData?.entry_type || entryType || 'Short Stay'}
+                      {cleanStatValue(aiData?.entry_type || entryType) || 'Short Stay'}
                     </strong>
                   </div>
                 </div>
@@ -5121,7 +5130,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     const el = document.getElementById('documents-section');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-6 py-2.5 rounded-xl bg-[#00a878] hover:bg-[#008f66] text-white font-bold text-xs sm:text-sm shadow-sm flex items-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md flex items-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                 >
                   <span>Apply Now</span>
                 </button>
@@ -5794,55 +5803,60 @@ All documents must be genuine, valid and meet official consular standards to avo
                 </div>
 
                 {/* Top Milestone Card */}
-                <div className="bg-slate-50/60 rounded-2xl border border-slate-200/80 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Completed</span>
-                      </div>
+                <div className="bg-slate-50/60 rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/70 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">Estimated Total Time:</span>
+                      <strong className="text-xs sm:text-sm font-black text-slate-950">
+                        {cleanStatValue(aiData?.processing_time || aiData?.processing_and_timing?.decision_time) || (isSchengen ? '15 – 20 Days' : `${processingDays} – ${processingDays + 5} Days`)}
+                      </strong>
                     </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
-                        <RotateCw className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">In Progress</span>
-                      </div>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-                        <Star className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsPending}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Pending</span>
-                      </div>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0">
-                        <Circle className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Not Started</span>
-                      </div>
-                    </div>
+                    <span className="text-[11px] font-extrabold text-slate-700 bg-white border border-slate-200/80 px-3 py-0.5 rounded-full shadow-2xs self-start sm:self-auto">
+                      {dynamicSteps.length} Total Steps
+                    </span>
                   </div>
 
-                  <div className="text-right shrink-0 border-t md:border-t-0 md:border-l border-slate-200/80 pt-2 md:pt-0 md:pl-6 w-full md:w-auto flex md:flex-col justify-between md:justify-center items-center md:items-end">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Total Time</span>
-                    <strong className="text-sm sm:text-base font-black text-slate-950 block mt-0.5">
-                      {aiData?.processing_time || aiData?.processing_and_timing?.decision_time || (isSchengen ? '15 – 20 Days' : `${processingDays} – ${processingDays + 5} Days`)}
-                    </strong>
-                    <span className="text-[10px] font-bold text-slate-400 block mt-0.5">{dynamicSteps.length} Total Steps</span>
+                  {/* 4 Status Boxes Arranged Horizontally in a Single Row */}
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5">
+                    <div className="px-2 sm:px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </div>
+                      <div className="min-w-0">
+                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
+                        <span className="text-[9px] sm:text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Completed</span>
+                      </div>
+                    </div>
+
+                    <div className="px-2 sm:px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                        <RotateCw className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
+                        <span className="text-[9px] sm:text-[10px] font-semibold text-slate-500 block truncate mt-0.5">In Progress</span>
+                      </div>
+                    </div>
+
+                    <div className="px-2 sm:px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <Star className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsPending}</strong>
+                        <span className="text-[9px] sm:text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Pending</span>
+                      </div>
+                    </div>
+
+                    <div className="px-2 sm:px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0">
+                        <Circle className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
+                        <span className="text-[9px] sm:text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Not Started</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -6105,7 +6119,7 @@ All documents must be genuine, valid and meet official consular standards to avo
               <button
                 type="button"
                 onClick={() => setSidebarTab('documents')}
-                className="w-full py-2.5 rounded-xl border border-[#00A86B] text-[#00A86B] hover:bg-emerald-50 text-xs font-bold transition-all cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-sm hover:shadow-md text-xs font-bold transition-all active:scale-[0.98] cursor-pointer"
               >
                 Continue Checklist
               </button>
@@ -6166,7 +6180,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   if (defaultCons) setBookingModalConsultant(defaultCons);
                   else window.location.href = `/find-experts?country=${encodeURIComponent(countryName)}&category=${encodeURIComponent(purposeLabel)}`;
                 }}
-                className="w-full py-2.5 rounded-xl bg-[#00a878] hover:bg-[#008f66] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
               >
                 <Users className="w-4 h-4" />
                 <span>Consult an Expert</span>

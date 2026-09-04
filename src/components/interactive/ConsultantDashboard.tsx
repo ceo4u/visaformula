@@ -24,8 +24,8 @@ export function ConsultantDashboard() {
         city: "Location Not Specified",
         experience: 5,
         bio: "Licensed immigration & visa consultant helping clients with study, work, and migration visas.",
-        specializations: "Canada, UK, USA, Australia",
-        countries: "Worldwide",
+        specializations: "",
+        countries: "",
         image: ""
     });
 
@@ -134,7 +134,19 @@ export function ConsultantDashboard() {
                 return "";
             })() || "Student Visas, Work Permits, PR Applications";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, Australia, USA";
+            // Load real Expert Countries Covered (Strip out legacy pre-added hardcoded defaults)
+            let rawStoredCountries = (localStorage.getItem("expert_countriesExpertise") || "").trim();
+            if (rawStoredCountries === "Canada, UK, Australia, USA" || rawStoredCountries === "Worldwide") {
+                rawStoredCountries = "";
+                localStorage.removeItem("expert_countriesExpertise");
+            } else if (rawStoredCountries.includes("Canada, UK, Australia, USA")) {
+                rawStoredCountries = rawStoredCountries
+                    .replace(/Canada,\s*UK,\s*Australia,\s*USA,?\s*/gi, "")
+                    .replace(/^,\s*|,\s*$/g, "")
+                    .trim();
+                localStorage.setItem("expert_countriesExpertise", rawStoredCountries);
+            }
+            const loadedCountries = rawStoredCountries;
 
             const activeProfile = {
                 name: finalName,
@@ -177,9 +189,9 @@ export function ConsultantDashboard() {
             const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
             const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
             const hasPhone = Boolean(localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone"));
-            const hasCountries = Boolean(localStorage.getItem("expert_countriesExpertise"));
+            const hasCountries = Boolean(loadedCountries);
 
-            const isIncomplete = !hasBizName || !hasOfficeAddress || !hasPhone || !hasCountries;
+            const isIncomplete = !hasBizName || !hasOfficeAddress || !hasPhone;
             setIsProfileIncomplete(isIncomplete);
             if (isIncomplete) {
                 setIsEditingProfile(true);
@@ -1809,7 +1821,18 @@ export function ConsultantDashboard() {
 
                             {/* Countries Covered */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Countries Covered *</label>
+                                <div className="flex items-center justify-between mb-1">
+                                    <label className="text-xs font-bold text-slate-700 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Countries Covered *</label>
+                                    {formCountries && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormCountries("")}
+                                            className="text-[11px] font-semibold text-rose-600 hover:text-rose-800 underline cursor-pointer"
+                                        >
+                                            Clear All
+                                        </button>
+                                    )}
+                                </div>
                                 <select
                                     onChange={(e) => {
                                         const val = e.target.value;
@@ -1834,11 +1857,38 @@ export function ConsultantDashboard() {
                                     <option value="Schengen Countries">Schengen Countries</option>
                                     <option value="Worldwide">Worldwide / All Countries</option>
                                 </select>
+
+                                {/* Removable Selected Country Badges */}
+                                {formCountries && (
+                                    <div className="flex flex-wrap gap-1.5 mb-2">
+                                        {formCountries.split(",").map(c => c.trim()).filter(Boolean).map((ctry, idx) => (
+                                            <span 
+                                                key={idx} 
+                                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-teal-50 text-[#00a896] text-xs font-bold border border-teal-200"
+                                            >
+                                                <span>{ctry}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const list = formCountries.split(",").map(c => c.trim()).filter(Boolean);
+                                                        const updated = list.filter((_, i) => i !== idx);
+                                                        setFormCountries(updated.join(", "));
+                                                    }}
+                                                    className="w-4 h-4 rounded-full flex items-center justify-center text-teal-700 hover:text-white hover:bg-rose-500 transition-colors font-black text-xs cursor-pointer"
+                                                    title={`Remove ${ctry}`}
+                                                >
+                                                    ×
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+
                                 <input 
                                     type="text" 
                                     value={formCountries} 
                                     onChange={(e) => setFormCountries(e.target.value)} 
-                                    placeholder="e.g. Canada, UK, USA, Australia"
+                                    placeholder="Select from dropdown above or type e.g. Canada, Germany..."
                                     className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
                                 />
                             </div>

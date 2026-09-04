@@ -48,7 +48,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     reviews: 1,
                     price: 1800,
                     city: localStorage.getItem("expert_officeAddress") || "Remote",
-                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada").split(",").map((c: string) => c.trim()),
+                    countries: (localStorage.getItem("expert_countriesExpertise") || "").split(",").map((c: string) => c.trim()).filter(Boolean),
                     experience: 12,
                     isRemote: true,
                     isAvailableToday: true,

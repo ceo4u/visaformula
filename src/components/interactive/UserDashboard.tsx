@@ -943,30 +943,7 @@ export function UserDashboard() {
     const [profilePhoto, setProfilePhoto] = useState("");
 
     const [favouriteExperts, setFavouriteExperts] = useState<any[]>([]);
-    const [visasProcessingState, setVisasProcessingState] = useState<any[]>([
-        {
-            id: 'case-france-1',
-            trackingId: 'VISA-2024-000789',
-            destination: 'France',
-            destinationFlag: '🇫🇷',
-            visaType: 'Short-Stay Schengen Visa',
-            purpose: 'Tourism / Vacation',
-            passport: 'India',
-            status: 'Active',
-            stage: 'VAC Appointment Booked',
-            progress: 72,
-            documentsCount: 6,
-            addonsCount: 0,
-            submittedAt: '10 May 2024',
-            targetDate: '18 May 2024',
-            travelDate: '15 Jun 2024',
-            returnDate: '30 Jun 2024 (15 Days)',
-            entries: 'Single Entry',
-            feePaid: '€80 (INR 7,200)',
-            processingTime: '15 - 20 Working Days',
-            appointmentDate: '18 May 2024, 10:30 AM'
-        }
-    ]);
+    const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
     const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
     const [documents, setDocuments] = useState<any[]>([]);
     const [isScanningVaultDoc, setIsScanningVaultDoc] = useState(false);
@@ -2476,6 +2453,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
     // ── APPLICATION ACTIONS (CUSTOM NAME, UNIQUE ID, CREATION & DELETION) ──
     const handleCreateNewApplication = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
+        if (visasProcessingState.length >= 3) {
+            showToastMsg("⚠️ Limit reached: Maximum 3 active visa applications allowed. Please delete or complete an existing application first.");
+            setShowNewAppModal(false);
+            return;
+        }
         const targetDest = normalizeCountryName(newAppDest || selectedDestination || "United States");
         const targetPass = normalizeCountryName(newAppPass || selectedPassport || "India");
         const targetPurp = newAppPurpose || selectedPurpose || "Tourism / Vacation";
@@ -2507,7 +2489,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
         };
 
         const existingCases = JSON.parse(localStorage.getItem("active_visa_cases") || "[]");
-        const updatedCases = [newCase, ...existingCases.filter((c: any) => c.id !== uniqueAppId)];
+        const updatedCases = [newCase, ...existingCases.filter((c: any) => c.id !== uniqueAppId)].slice(0, 3);
         setVisasProcessingState(updatedCases);
         try {
             localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
@@ -4866,23 +4848,46 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         selectedApplicationId ? (
                             <VisaApplicationDetailsView
                                 application={visasProcessingState.find(c => c.id === selectedApplicationId) || visasProcessingState[0] || {}}
-                                applicantName={fullName || 'Lallwyn Prashanth Edwin'}
+                                applicantName={fullName || userDisplayName || 'Applicant'}
                                 onBack={() => setSelectedApplicationId(null)}
                                 onOpenChat={() => setActiveTab('consultations')}
+                                readinessScore={comprehensiveAuditMetrics.score}
+                                vaultDocuments={documents}
                             />
                         ) : (
                         <div className="space-y-6 animate-fade-up">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-900">Visa Applications ({visasProcessingState.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
+                                    <div className="flex items-center gap-2">
+                                        <h2 className="text-xl font-black text-slate-900">Visa Applications ({visasProcessingState.length}/3)</h2>
+                                        {visasProcessingState.length >= 3 && (
+                                            <span className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold">
+                                                Limit Reached (3/3)
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">
+                                        Real-time status, timeline milestones, and embassy filing tracker {visasProcessingState.length >= 3 ? "• Maximum 3 active applications allowed" : "(Max 3 active applications)"}
+                                    </p>
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => setShowNewAppModal(true)}
-                                    className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer transition-all"
+                                    onClick={() => {
+                                        if (visasProcessingState.length >= 3) {
+                                            showToastMsg("⚠️ Limit reached: Maximum 3 active visa applications allowed at a time. Please remove an existing application to add a new one.");
+                                        } else {
+                                            setShowNewAppModal(true);
+                                        }
+                                    }}
+                                    className={`px-4 py-2 rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 self-start sm:self-auto transition-all ${
+                                        visasProcessingState.length >= 3
+                                            ? "bg-slate-150 text-slate-400 border border-slate-200 cursor-not-allowed"
+                                            : "bg-slate-900 hover:bg-black text-white cursor-pointer"
+                                    }`}
+                                    title={visasProcessingState.length >= 3 ? "Maximum 3 applications limit reached" : "Start New Application"}
                                 >
-                                    <Plus className="w-3.5 h-3.5 text-emerald-400" /> Start New Application
+                                    <Plus className={`w-3.5 h-3.5 ${visasProcessingState.length >= 3 ? "text-slate-400" : "text-emerald-400"}`} />
+                                    <span>Start New Application ({visasProcessingState.length}/3)</span>
                                 </button>
                             </div>
 
@@ -6871,6 +6876,13 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </p>
                             </div>
 
+                            {visasProcessingState.length >= 3 && (
+                                <div className="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-800 font-bold flex items-center gap-2">
+                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                    <span>Maximum limit of 3 active visa applications reached. Please remove or complete an application before creating a new one.</span>
+                                </div>
+                            )}
+
                             <div className="flex gap-3 pt-2">
                                 <button
                                     type="button"
@@ -6881,9 +6893,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2.5 bg-slate-950 hover:bg-black text-white rounded-xl font-black text-xs shadow-md cursor-pointer transition-all"
+                                    disabled={visasProcessingState.length >= 3}
+                                    className={`flex-1 py-2.5 rounded-xl font-black text-xs shadow-md transition-all ${
+                                        visasProcessingState.length >= 3
+                                            ? "bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed"
+                                            : "bg-slate-950 hover:bg-black text-white cursor-pointer"
+                                    }`}
                                 >
-                                    Create &amp; Save Application
+                                    {visasProcessingState.length >= 3 ? "Application Limit Reached (3/3)" : `Create & Save Application (${visasProcessingState.length}/3)`}
                                 </button>
                             </div>
                         </form>

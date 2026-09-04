@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ArrowLeft, Copy, CheckCircle2, CheckCircle, Clock, Calendar, 
+  ArrowLeft, ArrowRight, Copy, CheckCircle2, CheckCircle, Clock, Calendar, 
   CreditCard, ShieldCheck, AlertCircle, ExternalLink, MessageSquare, 
   Phone, ChevronDown, ChevronUp, Check, FileText, Plus, Info, 
   Sparkles, CheckSquare, XCircle, Shield, RefreshCw
@@ -11,6 +11,7 @@ export interface VisaApplicationDetailsProps {
   applicantName: string;
   onBack: () => void;
   onOpenChat?: () => void;
+  onOpenVault?: () => void;
   readinessScore?: number;
   vaultDocuments?: any[];
 }
@@ -259,30 +260,43 @@ export function VisaApplicationDetailsView({
           }
         ];
 
+  const [userCheckedDocs, setUserCheckedDocs] = useState<Record<string, boolean>>({});
+
   const checklistDocuments = rawDocs.map((docItem) => {
     const t = docItem.title.toLowerCase();
-    const hasUploaded = (vaultDocuments || []).some((v: any) => {
-      const vName = (v.name || v.title || '').toLowerCase();
+    
+    // Check if matching document exists in user's actual vault
+    const matchedVaultDoc = (vaultDocuments || []).find((v: any) => {
+      const vName = (v.name || v.title || v.label || v.fileName || '').toLowerCase();
       if (t.includes('passport') && vName.includes('passport')) return true;
       if ((t.includes('photo') || t.includes('picture')) && (vName.includes('photo') || vName.includes('picture'))) return true;
       if ((t.includes('flight') || t.includes('ticket') || t.includes('air')) && (vName.includes('flight') || vName.includes('ticket'))) return true;
       if ((t.includes('hotel') || t.includes('accommodation') || t.includes('stay')) && (vName.includes('hotel') || vName.includes('stay') || vName.includes('accommodation'))) return true;
       if ((t.includes('insurance') || t.includes('medical')) && (vName.includes('insurance') || vName.includes('medical'))) return true;
       if ((t.includes('bank') || t.includes('financial') || t.includes('solvency')) && (vName.includes('bank') || vName.includes('statement'))) return true;
+      if ((t.includes('aadhaar') || t.includes('pan') || t.includes('id') || t.includes('identity')) && (vName.includes('aadhaar') || vName.includes('pan') || vName.includes('id'))) return true;
       return false;
     });
+
+    const isUploaded = Boolean(matchedVaultDoc);
+    const isVerified = Boolean(matchedVaultDoc && (matchedVaultDoc.verified || matchedVaultDoc.status === 'verified'));
+    const isManuallyChecked = Boolean(userCheckedDocs[docItem.title]);
+    const isReady = isVerified || (isUploaded && isManuallyChecked) || isManuallyChecked;
 
     return {
       name: docItem.title,
       req: docItem.description,
       mandatory: docItem.is_mandatory !== false,
-      available: hasUploaded || docItem.is_mandatory,
-      ready: hasUploaded || (docItem.is_mandatory && currentStep >= 2)
+      isUploaded,
+      isVerified,
+      isManuallyChecked,
+      isReady,
+      matchedFileName: matchedVaultDoc?.name || matchedVaultDoc?.label || matchedVaultDoc?.fileName || null
     };
   });
 
   // Calculate live dynamic readiness score
-  const readyDocsCount = checklistDocuments.filter(d => d.ready).length;
+  const readyDocsCount = checklistDocuments.filter(d => d.isReady).length;
   const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0.6;
   const calculatedReadinessScore = typeof readinessScore === 'number' && readinessScore > 0
     ? readinessScore
@@ -652,9 +666,16 @@ export function VisaApplicationDetailsView({
                           <FileText className="w-4 h-4 text-slate-400 shrink-0" />
                           <div>
                             <span className="font-bold text-slate-900 block">{doc.name}</span>
-                            {doc.mandatory && (
-                              <span className="text-[10px] font-extrabold text-amber-600 block">Mandatory</span>
-                            )}
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              {doc.mandatory && (
+                                <span className="text-[10px] font-extrabold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Mandatory</span>
+                              )}
+                              {doc.matchedFileName && (
+                                <span className="text-[10px] font-medium text-slate-400 truncate max-w-[140px]" title={doc.matchedFileName}>
+                                  📁 {doc.matchedFileName}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -662,26 +683,50 @@ export function VisaApplicationDetailsView({
                         {doc.req}
                       </td>
                       <td className="py-3 px-3 text-center">
-                        {doc.available ? (
-                          <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
-                            <Check className="w-3 h-3 stroke-[3]" />
-                          </div>
+                        {doc.isVerified ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-200 shadow-2xs">
+                            <Check className="w-3 h-3 stroke-[3]" /> Verified
+                          </span>
+                        ) : doc.isUploaded ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-bold text-[11px] border border-blue-200">
+                            In Vault
+                          </span>
+                        ) : doc.isManuallyChecked ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px] border border-slate-200">
+                            Prepared
+                          </span>
                         ) : (
-                          <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-100 text-slate-400">
-                            <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-                          </div>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
+                            Pending Upload
+                          </span>
                         )}
                       </td>
                       <td className="py-3 px-3 text-center">
-                        {doc.ready ? (
-                          <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
-                            <Check className="w-3 h-3 stroke-[3]" />
-                          </div>
-                        ) : (
-                          <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                          </div>
-                        )}
+                        <div className="flex items-center justify-center gap-2">
+                          <label className="flex items-center gap-1 cursor-pointer" title="Toggle physical document readiness">
+                            <input
+                              type="checkbox"
+                              checked={doc.isReady}
+                              onChange={(e) => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: e.target.checked }))}
+                              className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 border-slate-300 cursor-pointer"
+                            />
+                            {doc.isReady ? (
+                              <span className="text-[11px] font-extrabold text-emerald-700">Ready</span>
+                            ) : (
+                              <span className="text-[11px] font-bold text-slate-400">Not Ready</span>
+                            )}
+                          </label>
+                          {!doc.isUploaded && onOpenVault && (
+                            <button
+                              type="button"
+                              onClick={onOpenVault}
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[10px] transition-colors cursor-pointer border border-indigo-100"
+                            >
+                              <span>Upload</span>
+                              <ArrowRight className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -692,16 +737,22 @@ export function VisaApplicationDetailsView({
             {/* Checklist Legend */}
             <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-slate-500">
               <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
-                  <Check className="w-2.5 h-2.5 stroke-[3]" />
-                </div>
-                <span>Verified &amp; Ready</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
+                  <Check className="w-2.5 h-2.5 stroke-[3]" /> Verified
+                </span>
+                <span>Scanned &amp; Validated in Vault</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                </div>
-                <span>Pending Final Review</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold">
+                  In Vault
+                </span>
+                <span>File Uploaded</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold">
+                  Pending Upload
+                </span>
+                <span>Action Required</span>
               </div>
             </div>
 

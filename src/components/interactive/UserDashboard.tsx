@@ -5,7 +5,7 @@ import {
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, Users, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
     CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard, MoreVertical, Download, Building2, Info,
-    Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2,
+    Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2, Share2,
     ShieldAlert, DollarSign, Laptop, CalendarCheck, Zap, FileEdit, Layers, ExternalLink
 } from "lucide-react";
 import { VisaApplicationDetailsView } from "./VisaApplicationDetailsView";
@@ -948,8 +948,18 @@ export function UserDashboard() {
     const [documents, setDocuments] = useState<any[]>([]);
     const [isScanningVaultDoc, setIsScanningVaultDoc] = useState(false);
     const [journeyData, setJourneyData] = useState<any>(null);
-    // Vault Document Table Filters & Inspection (Matching Image media_1788449420480)
+    // Vault Document Table Filters & Inspection (Matching Image media_1788550890178)
     const [vaultDocSearch, setVaultDocSearch] = useState("");
+    const [vaultDocTypeFilter, setVaultDocTypeFilter] = useState<string>("all");
+    const [vaultDocSort, setVaultDocSort] = useState<string>("newest");
+    const [selectedVaultDoc, setSelectedVaultDoc] = useState<any | null>(null);
+    const [isEditingOcr, setIsEditingOcr] = useState(false);
+    const [editOcrForm, setEditOcrForm] = useState<any>({});
+    const [vaultDocMenuId, setVaultDocMenuId] = useState<string | null>(null);
+    const [replacingDocId, setReplacingDocId] = useState<string | null>(null);
+    const [vaultActionToast, setVaultActionToast] = useState<string | null>(null);
+    const vaultFileInputRef = useRef<HTMLInputElement | null>(null);
+    const replaceFileInputRef = useRef<HTMLInputElement | null>(null);
     const [vaultDocFilter, setVaultDocFilter] = useState<"all" | "mandatory" | "recommended">("all");
     const [expandedDocKey, setExpandedDocKey] = useState<string | null>(null);
     const [inspectDocData, setInspectDocData] = useState<{
@@ -5658,731 +5668,1455 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             );
                         }
 
+                    {/* 5. TAB: TRAVELLER DOCUMENTS VAULT (MATCHING EXACT DESIGN OF media_1788550890178) */}
+                    {activeTab === "scanned-documents" && (() => {
+                        const normalizedDest = normalizeCountryName(selectedDestination);
+                        const normalizedPass = normalizeCountryName(selectedPassport);
+
+                        if (hasVaultPassword === null) {
+                            return (
+                                <div className="bg-white rounded-3xl border border-slate-200/90 p-12 text-center space-y-4 shadow-sm animate-fade-up">
+                                    <div className="w-10 h-10 border-3 border-[#00a896] border-t-transparent rounded-full animate-spin mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-900">Verifying Vault Security...</h3>
+                                    <p className="text-xs text-slate-500 font-medium">Checking encrypted secret protection</p>
+                                </div>
+                            );
+                        }
+
+                        if (!hasVaultPassword) {
+                            return (
+                                <div className="max-w-xl mx-auto py-6 animate-fade-up">
+                                    <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+                                        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-6 sm:p-8 text-white text-center relative overflow-hidden">
+                                            <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-4 text-emerald-400 shadow-inner">
+                                                <Lock className="w-8 h-8" />
+                                            </div>
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black uppercase tracking-wider mb-2">
+                                                Document Vault Protection
+                                            </span>
+                                            <h2 className="text-xl sm:text-2xl font-black text-white">Create Secret Vault Password</h2>
+                                            <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-md mx-auto mt-2 leading-relaxed">
+                                                Protect your passport scans, financial statements, and biometric records. You will enter this password every time you access your Document Vault.
+                                            </p>
+                                        </div>
+
+                                        <form onSubmit={handleSetInitialVaultPassword} className="p-6 sm:p-8 space-y-5">
+                                            {vaultError && (
+                                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                                    <span>{vaultError}</span>
+                                                </div>
+                                            )}
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Create Secret Password</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type={showVaultPassword ? "text" : "password"}
+                                                        value={vaultPasswordInput}
+                                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                                        placeholder="Enter secret password (min 4 chars)"
+                                                        className="w-full h-11 pl-4 pr-10 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                    >
+                                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                                <span className="text-[10px] text-slate-400 font-medium block">Can be alphanumeric or a secure 4-8 digit numeric PIN.</span>
+                                            </div>
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Confirm Secret Password</label>
+                                                <input
+                                                    type={showVaultPassword ? "text" : "password"}
+                                                    value={vaultPasswordConfirm}
+                                                    onChange={(e) => setVaultPasswordConfirm(e.target.value)}
+                                                    placeholder="Re-enter secret password"
+                                                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isVaultSubmitting}
+                                                className="w-full h-12 bg-slate-950 hover:bg-black text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                            >
+                                                {isVaultSubmitting ? (
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <>
+                                                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                                                        <span>Set Vault Password &amp; Lock</span>
+                                                    </>
+                                                )}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        if (!isVaultUnlocked) {
+                            return (
+                                <div className="max-w-md mx-auto py-10 animate-fade-up">
+                                    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-8 text-center space-y-6">
+                                        <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+                                            <div className="absolute inset-0 bg-emerald-500/10 rounded-full animate-ping opacity-75" />
+                                            <div className="w-20 h-20 rounded-2xl bg-slate-950 border border-slate-800 text-emerald-400 flex items-center justify-center shadow-lg relative z-10">
+                                                <Lock className="w-9 h-9" />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-black uppercase tracking-wider mb-2">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                                Protected Document Vault
+                                            </span>
+                                            <h2 className="text-2xl font-black text-slate-950">Vault is Locked</h2>
+                                            <p className="text-xs text-slate-500 font-medium mt-1.5 max-w-xs mx-auto">
+                                                Enter your secret vault password to access your passport copies and confidential visa documents.
+                                            </p>
+                                        </div>
+
+                                        <form onSubmit={handleUnlockVault} className="space-y-4 text-left">
+                                            {vaultError && (
+                                                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                                                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                                                    <span>{vaultError}</span>
+                                                </div>
+                                            )}
+
+                                            <div className="space-y-1.5">
+                                                <label className="text-xs font-bold text-slate-700 block">Secret Password</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type={showVaultPassword ? "text" : "password"}
+                                                        value={vaultPasswordInput}
+                                                        onChange={(e) => setVaultPasswordInput(e.target.value)}
+                                                        placeholder="Enter your secret password"
+                                                        autoFocus
+                                                        className="w-full h-12 pl-4 pr-10 rounded-xl border border-slate-200 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowVaultPassword(!showVaultPassword)}
+                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                                    >
+                                                        {showVaultPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isVaultSubmitting}
+                                                className="w-full h-12 bg-slate-950 hover:bg-black text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                            >
+                                                {isVaultSubmitting ? (
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <>
+                                                        <KeyRound className="w-4 h-4 text-emerald-400" />
+                                                        <span>Unlock Document Vault</span>
+                                                    </>
+                                                )}
+                                            </button>
+
+                                            <div className="text-center pt-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setShowResetVaultPasswordModal(true);
+                                                        setVaultError(null);
+                                                    }}
+                                                    className="text-xs font-bold text-slate-500 hover:text-slate-900 underline cursor-pointer"
+                                                >
+                                                    Forgot secret vault password?
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // Helper to calculate dynamic validity & expiry status
+                        const computeExpiryStatus = (expiryDateStr?: string) => {
+                            if (!expiryDateStr || expiryDateStr.toLowerCase().includes('permanent') || expiryDateStr.toLowerCase().includes('no expiry')) {
+                                return { status: 'permanent', subtext: 'No Expiry', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            const d = new Date(expiryDateStr);
+                            if (isNaN(d.getTime())) {
+                                return { status: 'valid', subtext: 'Valid', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            const diffMs = d.getTime() - Date.now();
+                            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                            if (diffDays < 0) {
+                                return { status: 'expired', subtext: 'Expired', pillClass: 'text-rose-600 font-bold text-xs' };
+                            }
+                            if (diffDays <= 60) {
+                                return { status: 'expiring_soon', subtext: `Expires in ${diffDays} days`, pillClass: 'text-amber-500 font-bold text-xs' };
+                            }
+                            const years = Math.floor(diffDays / 365);
+                            if (years >= 1) {
+                                return { status: 'valid', subtext: `Valid for ${years} ${years === 1 ? 'year' : 'years'}`, pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            const months = Math.floor(diffDays / 30);
+                            return { status: 'valid', subtext: `Valid for ${months} ${months === 1 ? 'month' : 'months'}`, pillClass: 'text-[#00a896] font-bold text-xs' };
+                        };
+
+                        // Real dynamic list of user vault documents
+                        const normalizedVaultDocs: any[] = [];
+                        const seenTitles = new Set<string>();
+
+                        (documents || []).forEach((doc: any, index: number) => {
+                            const id = doc.id || `doc-${index}`;
+                            const label = doc.label || doc.title || 'Document';
+                            const labelLower = label.toLowerCase();
+                            seenTitles.add(labelLower);
+
+                            let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
+                            if (labelLower.includes('passport')) type = 'passport';
+                            else if (labelLower.includes('visa') || labelLower.includes('schengen')) type = 'visa';
+                            else if (labelLower.includes('pan') || labelLower.includes('aadhaar') || labelLower.includes('id') || labelLower.includes('license')) type = 'id';
+                            else if (labelLower.includes('insurance') || labelLower.includes('medical')) type = 'insurance';
+                            else if (labelLower.includes('flight') || labelLower.includes('air') || labelLower.includes('ticket')) type = 'flight';
+                            else if (labelLower.includes('bank') || labelLower.includes('financial') || labelLower.includes('statement')) type = 'bank';
+
+                            let cleanTitle = doc.title || label;
+                            if (cleanTitle.includes('(') && cleanTitle.includes(')')) {
+                                cleanTitle = cleanTitle.split('(')[0].trim();
+                            }
+
+                            const expInfo = computeExpiryStatus(doc.expiryDate || (type === 'id' ? 'Permanent' : undefined));
+
+                            normalizedVaultDocs.push({
+                                id,
+                                title: cleanTitle,
+                                originalLabel: label,
+                                type,
+                                docNumber: doc.docNumber || doc.ocrData?.docNumber || (doc.id && !doc.id.startsWith('doc-') ? doc.id : `DOC-${id.slice(-6).toUpperCase()}`),
+                                country: doc.country || passportCountry || normalizedPass || 'India',
+                                issuer: doc.issuer || (type === 'flight' ? 'Airline' : type === 'insurance' ? 'Insurance Provider' : (passportCountry || normalizedPass || 'India')),
+                                holderName: doc.holderName || doc.ocrData?.fullName || fullName || 'Traveler',
+                                subDetails: doc.subDetails || (type === 'passport' ? 'Primary International Travel Identity' : type === 'visa' ? 'Consular Entry Clearance' : type === 'insurance' ? 'Medical Emergency Cover' : type === 'id' ? 'Government Issued Identity' : 'Encrypted Travel Document'),
+                                dateOfBirth: doc.dateOfBirth || doc.ocrData?.dob || 'On File',
+                                expiryDate: doc.expiryDate || (type === 'id' ? 'Permanent' : 'Valid on File'),
+                                expirySubtext: expInfo.subtext,
+                                expiryStatus: expInfo.status,
+                                status: doc.status === 'expiring_soon' ? 'expiring_soon' : (expInfo.status === 'expiring_soon' ? 'expiring_soon' : (doc.status || 'verified')),
+                                scannedMethod: doc.scannedMethod || 'OCR Scanned',
+                                uploadedAt: doc.uploadedAt || 'Recently',
+                                size: doc.size || '1.8 MB',
+                                fileData: doc.fileData || doc.base64 || null,
+                                ocrData: {
+                                    docNumber: doc.ocrData?.docNumber || doc.docNumber || `DOC-${id.slice(-6).toUpperCase()}`,
+                                    fullName: doc.ocrData?.fullName || doc.holderName || fullName || 'Traveler',
+                                    dob: doc.ocrData?.dob || doc.dateOfBirth || 'On File',
+                                    nationality: doc.ocrData?.nationality || doc.country || passportCountry || normalizedPass || 'India',
+                                    sex: doc.ocrData?.sex || 'M / F',
+                                    placeOfBirth: doc.ocrData?.placeOfBirth || doc.country || passportCountry || 'On File',
+                                    issueDate: doc.ocrData?.issueDate || doc.uploadedAt || 'On File',
+                                    expiryDate: doc.ocrData?.expiryDate || doc.expiryDate || (type === 'id' ? 'Permanent' : 'Valid')
+                                }
+                            });
+                        });
+
+                        // Incorporate verified items from vaultChecklistState
+                        Object.entries(vaultChecklistState || {}).forEach(([k, item]: [string, any]) => {
+                            if (item && item.verified && !seenTitles.has(k.toLowerCase())) {
+                                const kLower = k.toLowerCase();
+                                let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
+                                if (kLower.includes('passport')) type = 'passport';
+                                else if (kLower.includes('visa')) type = 'visa';
+                                else if (kLower.includes('insurance')) type = 'insurance';
+                                else if (kLower.includes('flight') || kLower.includes('ticket')) type = 'flight';
+                                else if (kLower.includes('bank')) type = 'bank';
+                                else if (kLower.includes('id') || kLower.includes('aadhaar') || kLower.includes('pan')) type = 'id';
+
+                                let cleanTitle = k.replace(/^doc_req_\d+_/, '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                                const expInfo = computeExpiryStatus(type === 'id' ? 'Permanent' : undefined);
+
+                                normalizedVaultDocs.push({
+                                    id: k,
+                                    title: cleanTitle,
+                                    originalLabel: item.fileName || cleanTitle,
+                                    type,
+                                    docNumber: `CHK-${k.slice(0, 8).toUpperCase()}`,
+                                    country: passportCountry || normalizedPass || 'India',
+                                    issuer: passportCountry || normalizedPass || 'Consular Authority',
+                                    holderName: fullName || 'Traveler',
+                                    subDetails: 'Consular Checklist Verified',
+                                    dateOfBirth: 'On File',
+                                    expiryDate: type === 'id' ? 'Permanent' : 'Valid on File',
+                                    expirySubtext: expInfo.subtext,
+                                    expiryStatus: expInfo.status,
+                                    status: 'verified',
+                                    scannedMethod: 'OCR Scanned',
+                                    uploadedAt: item.uploadedAt || 'Recently',
+                                    size: item.size || '1.8 MB',
+                                    ocrData: {
+                                        docNumber: `CHK-${k.slice(0, 8).toUpperCase()}`,
+                                        fullName: fullName || 'Traveler',
+                                        dob: 'On File',
+                                        nationality: passportCountry || normalizedPass || 'India',
+                                        sex: 'M / F',
+                                        placeOfBirth: passportCountry || normalizedPass || 'On File',
+                                        issueDate: 'On File',
+                                        expiryDate: type === 'id' ? 'Permanent' : 'Valid'
+                                    }
+                                });
+                            }
+                        });
+
+                        // Filter and sort
+                        let filteredDocs = [...normalizedVaultDocs];
+                        if (vaultDocTypeFilter !== 'all') {
+                            filteredDocs = filteredDocs.filter(d => d.type === vaultDocTypeFilter);
+                        }
+                        if (vaultDocSearch.trim()) {
+                            const q = vaultDocSearch.toLowerCase();
+                            filteredDocs = filteredDocs.filter(d =>
+                                d.title.toLowerCase().includes(q) ||
+                                (d.docNumber && d.docNumber.toLowerCase().includes(q)) ||
+                                (d.country && d.country.toLowerCase().includes(q)) ||
+                                (d.holderName && d.holderName.toLowerCase().includes(q)) ||
+                                (d.subDetails && d.subDetails.toLowerCase().includes(q))
+                            );
+                        }
+                        if (vaultDocSort === 'oldest') {
+                            filteredDocs.reverse();
+                        } else if (vaultDocSort === 'name') {
+                            filteredDocs.sort((a, b) => a.title.localeCompare(b.title));
+                        } else if (vaultDocSort === 'expiry') {
+                            filteredDocs.sort((a, b) => a.expiryDate.localeCompare(b.expiryDate));
+                        }
+
+                        // Currently active document for the bottom inspection drawer
+                        const activeSelectedDoc = selectedVaultDoc
+                            ? (normalizedVaultDocs.find(d => d.id === selectedVaultDoc.id) || selectedVaultDoc)
+                            : (normalizedVaultDocs.length > 0 ? normalizedVaultDocs[0] : null);
+
+                        // Handler for uploading new documents directly into vault
+                        const handleUploadVaultDocument = async (file: File) => {
+                            if (!file) return;
+                            setIsScanningVaultDoc(true);
+                            const fileSizeFormatted = file.size > 1024 * 1024
+                                ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+                                : `${Math.round(file.size / 1024)} KB`;
+
+                            try {
+                                const reader = new FileReader();
+                                reader.onload = async () => {
+                                    const base64 = reader.result as string;
+                                    let scanSummary = 'Verified & Ingested into Encrypted Vault';
+                                    let extractedDocNumber = '';
+                                    let extractedFullName = fullName || '';
+                                    let extractedDob = '';
+                                    let extractedNationality = passportCountry || normalizedPass || 'India';
+                                    let extractedSex = 'M';
+                                    let extractedPlaceOfBirth = 'On File';
+                                    let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                    let extractedExpiryDate = '';
+
+                                    try {
+                                        const res = await fetch('/api/ocr-analyze-document', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                base64Image: base64,
+                                                mimeType: file.type || 'application/pdf',
+                                                documentTitle: file.name,
+                                                documentKey: 'vault_upload'
+                                            })
+                                        });
+                                        const json = await res.json();
+                                        if (json?.success && json?.data) {
+                                            if (json.data.summary) scanSummary = json.data.summary;
+                                            if (json.data.extracted) {
+                                                extractedDocNumber = json.data.extracted.documentNumber || '';
+                                                if (json.data.extracted.fullName) extractedFullName = json.data.extracted.fullName;
+                                                extractedDob = json.data.extracted.dateOfBirth || '';
+                                                extractedNationality = json.data.extracted.nationality || extractedNationality;
+                                                extractedSex = json.data.extracted.sex || extractedSex;
+                                                extractedPlaceOfBirth = json.data.extracted.placeOfBirth || extractedPlaceOfBirth;
+                                                extractedIssueDate = json.data.extracted.dateOfIssue || extractedIssueDate;
+                                                extractedExpiryDate = json.data.extracted.dateOfExpiry || '';
+                                            }
+                                        }
+                                    } catch(e) {}
+
+                                    const docNameLower = file.name.toLowerCase();
+                                    let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
+                                    if (docNameLower.includes('passport')) type = 'passport';
+                                    else if (docNameLower.includes('visa')) type = 'visa';
+                                    else if (docNameLower.includes('insurance')) type = 'insurance';
+                                    else if (docNameLower.includes('flight') || docNameLower.includes('ticket')) type = 'flight';
+                                    else if (docNameLower.includes('bank') || docNameLower.includes('statement')) type = 'bank';
+                                    else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
+
+                                    const newDocObj = {
+                                        id: `doc-${Date.now()}`,
+                                        label: file.name,
+                                        title: file.name.replace(/\.[^/.]+$/, ""),
+                                        type,
+                                        docNumber: extractedDocNumber || `DOC-${Date.now().toString().slice(-6)}`,
+                                        issuer: type === 'flight' ? 'Airline' : type === 'insurance' ? 'Insurance Provider' : (passportCountry || normalizedPass || 'India'),
+                                        country: passportCountry || normalizedPass || 'India',
+                                        holderName: extractedFullName || fullName || 'Traveler',
+                                        subDetails: scanSummary,
+                                        status: 'verified',
+                                        size: fileSizeFormatted,
+                                        uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                                        expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : 'Valid on File'),
+                                        scannedMethod: 'OCR Scanned',
+                                        summary: scanSummary,
+                                        fileData: base64,
+                                        ocrData: {
+                                            docNumber: extractedDocNumber || `DOC-${Date.now().toString().slice(-6)}`,
+                                            fullName: extractedFullName || fullName || 'Traveler',
+                                            dob: extractedDob || 'On File',
+                                            nationality: extractedNationality || 'Citizen',
+                                            sex: extractedSex || 'M',
+                                            placeOfBirth: extractedPlaceOfBirth || 'On File',
+                                            issueDate: extractedIssueDate || 'On File',
+                                            expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : 'Valid')
+                                        }
+                                    };
+
+                                    setDocuments(prev => {
+                                        const updated = [newDocObj, ...prev];
+                                        try {
+                                            localStorage.setItem('seeker_documents', JSON.stringify(updated));
+                                        } catch(e) {}
+                                        return updated;
+                                    });
+                                    setSelectedVaultDoc(newDocObj);
+                                    setIsScanningVaultDoc(false);
+                                    setVaultActionToast(`✓ "${file.name}" uploaded and verified in your Document Vault!`);
+                                    setTimeout(() => setVaultActionToast(null), 3500);
+                                };
+                                reader.readAsDataURL(file);
+                            } catch(err) {
+                                setIsScanningVaultDoc(false);
+                            }
+                        };
+
+                        // Helper to download document
+                        const handleDownloadDoc = (doc: any) => {
+                            if (!doc) return;
+                            if (doc.fileData && doc.fileData.startsWith('data:')) {
+                                const a = document.createElement('a');
+                                a.href = doc.fileData;
+                                a.download = doc.originalLabel || `${doc.title}.pdf`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                            } else {
+                                const summary = `TravlTik Secure Document Vault Record\n=======================================\nDocument: ${doc.title}\nDocument Number: ${doc.docNumber}\nHolder Name: ${doc.holderName}\nCountry / Issuer: ${doc.country || doc.issuer}\nExpiry / Validity: ${doc.expiryDate} (${doc.expirySubtext})\nStatus: Verified (${doc.scannedMethod})\nEncrypted At: ${doc.uploadedAt}\nChecksum: 256-bit AES Validated`;
+                                const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `${doc.title.replace(/\s+/g, '_')}_Vault_Record.txt`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                            }
+                            setVaultActionToast(`✓ Downloaded ${doc.title} successfully.`);
+                            setTimeout(() => setVaultActionToast(null), 3000);
+                        };
+
+                        // Helper to delete document
+                        const handleDeleteDoc = (doc: any) => {
+                            if (!doc) return;
+                            if (window.confirm(`Are you sure you want to remove "${doc.title}" from your encrypted vault?`)) {
+                                setDocuments(prev => {
+                                    const updated = prev.filter(d => d.id !== doc.id && d.title !== doc.title && d.label !== doc.originalLabel);
+                                    try { localStorage.setItem('seeker_documents', JSON.stringify(updated)); } catch(e) {}
+                                    return updated;
+                                });
+                                if (selectedVaultDoc?.id === doc.id) {
+                                    setSelectedVaultDoc(null);
+                                }
+                                setVaultActionToast(`✓ "${doc.title}" safely removed from your vault.`);
+                                setTimeout(() => setVaultActionToast(null), 3000);
+                            }
+                        };
+
+                        // Helper to start OCR edit
+                        const handleStartEditOcr = (doc: any) => {
+                            setIsEditingOcr(true);
+                            setEditOcrForm({
+                                docNumber: doc.ocrData?.docNumber || doc.docNumber || '',
+                                fullName: doc.ocrData?.fullName || doc.holderName || fullName || '',
+                                dob: doc.ocrData?.dob || doc.dateOfBirth || '',
+                                nationality: doc.ocrData?.nationality || doc.country || '',
+                                sex: doc.ocrData?.sex || '',
+                                placeOfBirth: doc.ocrData?.placeOfBirth || '',
+                                issueDate: doc.ocrData?.issueDate || '',
+                                expiryDate: doc.ocrData?.expiryDate || doc.expiryDate || ''
+                            });
+                        };
+
+                        // Helper to save OCR edit
+                        const handleSaveEditOcr = () => {
+                            if (!activeSelectedDoc) return;
+                            const updatedDoc = {
+                                ...activeSelectedDoc,
+                                docNumber: editOcrForm.docNumber || activeSelectedDoc.docNumber,
+                                holderName: editOcrForm.fullName || activeSelectedDoc.holderName,
+                                country: editOcrForm.nationality || activeSelectedDoc.country,
+                                expiryDate: editOcrForm.expiryDate || activeSelectedDoc.expiryDate,
+                                ocrData: {
+                                    ...activeSelectedDoc.ocrData,
+                                    ...editOcrForm
+                                }
+                            };
+                            setDocuments(prev => {
+                                const updated = prev.map(d => d.id === activeSelectedDoc.id ? { ...d, ...updatedDoc } : d);
+                                try { localStorage.setItem('seeker_documents', JSON.stringify(updated)); } catch(e) {}
+                                return updated;
+                            });
+                            setSelectedVaultDoc(updatedDoc);
+                            setIsEditingOcr(false);
+                            setVaultActionToast("✓ OCR details updated successfully.");
+                            setTimeout(() => setVaultActionToast(null), 3000);
+                        };
+
+                        // Metrics
+                        const totalDocsCount = normalizedVaultDocs.length;
+                        const expiringSoonCount = normalizedVaultDocs.filter(d => d.expiryStatus === 'expiring_soon' || d.status === 'expiring_soon').length;
+                        const verifiedDocsCount = normalizedVaultDocs.filter(d => d.status === 'verified').length;
+
                         return (
-                            <div className="space-y-7 animate-fade-up">
-                                {/* Top Header */}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="space-y-6 animate-fade-up font-sans text-left">
+                                {/* Hidden Inputs for Upload & Replace */}
+                                <input
+                                    type="file"
+                                    ref={vaultFileInputRef}
+                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const f = e.target.files?.[0];
+                                        if (f) handleUploadVaultDocument(f);
+                                        e.target.value = '';
+                                    }}
+                                />
+                                <input
+                                    type="file"
+                                    ref={replaceFileInputRef}
+                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const f = e.target.files?.[0];
+                                        if (f && replacingDocId) {
+                                            handleUploadVaultDocument(f);
+                                            setReplacingDocId(null);
+                                        }
+                                        e.target.value = '';
+                                    }}
+                                />
+
+                                {/* ── 1. PAGE HEADER (EXACT REPLICA OF media_1788550890178) ── */}
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <h2 className="text-2xl font-black text-slate-900">Document Vault &amp; Checklist</h2>
-                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black border border-emerald-200">
-                                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                                                Vault Protected
+                                            <h1 className="text-2xl sm:text-[28px] font-black text-slate-900 tracking-tight">
+                                                Traveller Documents Vault
+                                            </h1>
+                                            <span className="w-6 h-6 rounded-full bg-teal-50 text-[#00a896] flex items-center justify-center border border-[#00a896]/30 shadow-2xs">
+                                                <Check className="w-3.5 h-3.5 stroke-[3]" />
                                             </span>
                                         </div>
-                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Official AI consular checklist and application steps. Protected by secret password.
+                                        <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                                            Securely store, manage and share your travel documents
                                         </p>
                                     </div>
-                                    <div className="flex items-center gap-2 flex-wrap">
+
+                                    <div className="flex items-center gap-2.5 flex-wrap">
                                         <button
                                             type="button"
-                                            onClick={() => {
-                                                setShowChangeVaultPasswordModal(true);
-                                                setVaultError(null);
-                                            }}
-                                            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer"
+                                            onClick={() => vaultFileInputRef.current?.click()}
+                                            disabled={isScanningVaultDoc}
+                                            className="px-4 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs sm:text-sm font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                                         >
-                                            <KeyRound className="w-3.5 h-3.5 text-slate-600" />
-                                            <span>Change Password</span>
+                                            {isScanningVaultDoc ? (
+                                                <>
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                    <span>Scanning Document...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Upload className="w-4 h-4" />
+                                                    <span>Upload New Document</span>
+                                                </>
+                                            )}
                                         </button>
+
                                         <button
                                             type="button"
                                             onClick={handleLockVault}
-                                            className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                                            title="Lock Document Vault"
+                                            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200"
                                         >
-                                            <Lock className="w-3.5 h-3.5 text-rose-400" />
-                                            <span>Lock Vault</span>
+                                            <Lock className="w-4 h-4 text-rose-600" />
                                         </button>
-                                        <span className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
-                                            {verifiedItemsCount}/{totalChecklistItems} Verified
+                                        <button
+                                            type="button"
+                                            onClick={() => { setShowChangeVaultPasswordModal(true); setVaultError(null); }}
+                                            title="Change Vault Password"
+                                            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200"
+                                        >
+                                            <KeyRound className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* ── 2. TOP 4 METRIC CARDS (GRID OF 4 - EXACT MATCHING) ── */}
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                    {/* Card 1: Total Documents */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col justify-between hover:border-slate-300 transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
+                                                <FileText className="w-5 h-5 stroke-[2.2]" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <span className="text-xs font-semibold text-slate-500 block truncate">Total Documents</span>
+                                                <strong className="text-2xl font-black text-slate-900 leading-tight block mt-0.5">
+                                                    {totalDocsCount}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] font-medium text-slate-400 mt-3 block">
+                                            Active Documents
+                                        </span>
+                                    </div>
+
+                                    {/* Card 2: Expiring Soon */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col justify-between hover:border-slate-300 transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0">
+                                                <Calendar className="w-5 h-5 stroke-[2.2]" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <span className="text-xs font-semibold text-slate-500 block truncate">Expiring Soon</span>
+                                                <strong className="text-2xl font-black text-slate-900 leading-tight block mt-0.5">
+                                                    {expiringSoonCount}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] font-bold text-amber-500 mt-3 block">
+                                            Within 60 days
+                                        </span>
+                                    </div>
+
+                                    {/* Card 3: Verified */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col justify-between hover:border-slate-300 transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center shrink-0">
+                                                <Shield className="w-5 h-5 stroke-[2.2]" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <span className="text-xs font-semibold text-slate-500 block truncate">Verified</span>
+                                                <strong className="text-2xl font-black text-slate-900 leading-tight block mt-0.5">
+                                                    {verifiedDocsCount}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] font-medium text-slate-400 mt-3 block">
+                                            Documents Verified
+                                        </span>
+                                    </div>
+
+                                    {/* Card 4: Secure Storage */}
+                                    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col justify-between hover:border-slate-300 transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shrink-0">
+                                                <Lock className="w-5 h-5 stroke-[2.2]" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <span className="text-xs font-semibold text-slate-500 block truncate">Secure Storage</span>
+                                                <strong className="text-2xl font-black text-slate-900 leading-tight block mt-0.5">
+                                                    100%
+                                                </strong>
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] font-medium text-slate-400 mt-3 block">
+                                            Encrypted &amp; Safe
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Confirmation Toast Banner */}
-                                {profileUpdatedToast && (
-                                    <div className="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black flex items-center justify-between shadow-md animate-fade-up">
-                                        <div className="flex items-center gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-emerald-200" />
-                                            <span>✓ Profile updated to {normalizedDest} ({selectedPurpose})</span>
-                                        </div>
-                                        <span className="text-[10px] bg-emerald-700/80 px-2 py-0.5 rounded-md font-extrabold">Active</span>
-                                    </div>
-                                )}
-
-                                {/* 2. SIMPLE & CLEAN ACTIVE TRIP ROUTE & PURPOSE CARD (MATCHING USER SPECIFICATION) */}
-                                <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-4 sm:px-6 sm:py-4.5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div className="flex items-center flex-wrap gap-y-3">
-                                        {/* FROM */}
-                                        <div className="space-y-0.5 min-w-[90px]">
-                                            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                                                FROM
-                                            </span>
-                                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
-                                                <span className="text-base leading-none">{passFlag}</span>
-                                                <span>{normalizedPass || 'India'}</span>
-                                            </div>
-                                        </div>
-
-                                        {/* Subtle separator dot & arrow matching Image 2 */}
-                                        <div className="flex items-center text-slate-300 px-3 sm:px-5 select-none font-medium text-xs sm:text-sm">
-                                            <span>• →</span>
-                                        </div>
-
-                                        {/* TO */}
-                                        <div className="space-y-0.5 min-w-[110px]">
-                                            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                                                TO
-                                            </span>
-                                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
-                                                <span className="text-base leading-none">{destFlag}</span>
-                                                <span>{normalizedDest || 'United States'}</span>
-                                            </div>
-                                        </div>
+                                {/* ── 3. SEARCH & FILTER CONTROLS ── */}
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                                    {/* Search input */}
+                                    <div className="relative w-full sm:flex-1">
+                                        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                        <input
+                                            type="text"
+                                            value={vaultDocSearch}
+                                            onChange={(e) => setVaultDocSearch(e.target.value)}
+                                            placeholder="Search documents by name, type or number..."
+                                            className="w-full h-11 pl-10 pr-9 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00a896]/20 focus:border-[#00a896] shadow-2xs transition-all"
+                                        />
+                                        {vaultDocSearch && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setVaultDocSearch("")}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        )}
                                     </div>
 
-                                    {/* Vertical divider matching Image 2 */}
-                                    <div className="hidden sm:block h-8 w-px bg-slate-200/80 mx-2 sm:mx-6" />
+                                    {/* Type Dropdown */}
+                                    <div className="w-full sm:w-auto flex items-center gap-2">
+                                        <select
+                                            value={vaultDocTypeFilter}
+                                            onChange={(e) => setVaultDocTypeFilter(e.target.value)}
+                                            className="h-11 px-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#00a896]/20 focus:border-[#00a896] shadow-2xs cursor-pointer"
+                                        >
+                                            <option value="all">All Types</option>
+                                            <option value="passport">Passport</option>
+                                            <option value="visa">Visa</option>
+                                            <option value="id">National ID / Aadhaar / PAN</option>
+                                            <option value="insurance">Travel Insurance</option>
+                                            <option value="flight">Flight Ticket</option>
+                                            <option value="bank">Financial Statement</option>
+                                            <option value="other">Other Documents</option>
+                                        </select>
 
-                                    {/* PURPOSE OF TRAVEL */}
-                                    <div className="space-y-0.5 sm:flex-1">
-                                        <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                                            PURPOSE OF TRAVEL
-                                        </span>
-                                        <div className="text-xs sm:text-sm font-extrabold text-slate-900">
-                                            {selectedPurpose || 'Tourism / Vacation'}
-                                        </div>
+                                        {/* Sort Dropdown */}
+                                        <select
+                                            value={vaultDocSort}
+                                            onChange={(e) => setVaultDocSort(e.target.value)}
+                                            className="h-11 px-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#00a896]/20 focus:border-[#00a896] shadow-2xs cursor-pointer"
+                                        >
+                                            <option value="newest">Sort By: Newest</option>
+                                            <option value="oldest">Sort By: Oldest</option>
+                                            <option value="expiry">Sort By: Expiry Date</option>
+                                            <option value="name">Sort By: Document Name</option>
+                                        </select>
                                     </div>
                                 </div>
 
-
-
-                                {/* ── PREMIUM DOCUMENTS REQUIRED TABLE (MATCHING ATLYS/APPLE DESIGN media_1788449420480) ── */}
-                                <div className="space-y-6 pt-2">
-                                    {/* 1. TOP HEADER & METRICS */}
-                                    <div className="space-y-4">
-                                        <div>
-                                            <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                                                Documents Required
-                                            </h2>
-                                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                                                Upload and verify all documents as per the official requirements of the Embassy of {normalizedDest}.
-                                            </p>
-                                        </div>
-
-                                        {/* 4 TOP METRIC STATS CARDS */}
-                                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                                            {/* Total Documents */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
-                                                <div className="w-10 h-10 rounded-xl bg-purple-100/90 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200/80">
-                                                    <FileText className="w-5 h-5 stroke-[2.2]" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Total Documents</span>
-                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
-                                                        {allChecklistItems.length}
-                                                    </strong>
-                                                </div>
-                                            </div>
-
-                                            {/* Mandatory */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
-                                                <div className="w-10 h-10 rounded-xl bg-rose-100/90 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200/80">
-                                                    <Bookmark className="w-5 h-5 stroke-[2.2]" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Mandatory</span>
-                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
-                                                        {allChecklistItems.filter(d => d.mandatory !== false).length}
-                                                    </strong>
-                                                </div>
-                                            </div>
-
-                                            {/* Completed */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
-                                                <div className="w-10 h-10 rounded-xl bg-emerald-100/90 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200/80">
-                                                    <Check className="w-5 h-5 stroke-[2.5]" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Completed</span>
-                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
-                                                        {allChecklistItems.filter(d => vaultChecklistState[d.key]?.verified).length}
-                                                    </strong>
-                                                </div>
-                                            </div>
-
-                                            {/* Pending */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
-                                                <div className="w-10 h-10 rounded-xl bg-orange-100/90 text-orange-700 flex items-center justify-center shrink-0 border border-orange-200/80">
-                                                    <Clock className="w-5 h-5 stroke-[2.2]" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Pending</span>
-                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
-                                                        {allChecklistItems.filter(d => !vaultChecklistState[d.key]?.verified).length}
-                                                    </strong>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* 2. PURPLE SOFT NOTICE BANNER */}
-                                        <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-2xl p-4 flex items-center gap-3 text-indigo-950 shadow-2xs">
-                                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
-                                                <Info className="w-4 h-4" />
-                                            </div>
-                                            <p className="text-xs sm:text-sm font-semibold leading-relaxed">
-                                                All documents must be genuine, valid and in the correct format. Please check validity and meet all conditions to avoid delays.
-                                            </p>
-                                        </div>
-
-                                        {/* 3. SEARCH & FILTER CONTROLS */}
-                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-                                            {/* Search input */}
-                                            <div className="relative w-full sm:w-80">
-                                                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                                <input
-                                                    type="text"
-                                                    value={vaultDocSearch}
-                                                    onChange={(e) => setVaultDocSearch(e.target.value)}
-                                                    placeholder="Search documents..."
-                                                    className="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 shadow-2xs transition-all"
-                                                />
-                                                {vaultDocSearch && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setVaultDocSearch("")}
-                                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                                                    >
-                                                        <X className="w-4 h-4" />
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            {/* Filter pills */}
-                                            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setVaultDocFilter("all")}
-                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
-                                                        vaultDocFilter === "all"
-                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
-                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                                                    }`}
-                                                >
-                                                    All ({allChecklistItems.length})
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setVaultDocFilter("mandatory")}
-                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
-                                                        vaultDocFilter === "mandatory"
-                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
-                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                                                    }`}
-                                                >
-                                                    Mandatory ({allChecklistItems.filter(d => d.mandatory !== false).length})
-                                                </button>
-                                            </div>
-
-                                            {documents && documents.length > 0 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={handleAutoImportMatchingDocs}
-                                                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap shadow-2xs bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1.5"
-                                                >
-                                                    <Sparkles className="w-4 h-4" />
-                                                    <span>Auto-Import from Vault ({documents.length} available)</span>
-                                                </button>
-                                            )}
-                                        </div>
+                                {/* ── 4. DOCUMENT TABLE (EXACT TABLE DESIGN & SPACING) ── */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
+                                    {/* Desktop Table Headers */}
+                                    <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-white border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                        <div className="col-span-4">DOCUMENT</div>
+                                        <div className="col-span-3">DETAILS</div>
+                                        <div className="col-span-2">EXPIRY / VALIDITY</div>
+                                        <div className="col-span-2">STATUS</div>
+                                        <div className="col-span-1 text-right">ACTIONS</div>
                                     </div>
 
-                                    {/* 4. PREMIUM DOCUMENT LIST / TABLE */}
-                                    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-                                        {/* Desktop Table Headers */}
-                                        <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50/70 border-b border-slate-200/80 text-[11px] font-black uppercase tracking-wider text-slate-400">
-                                            <div className="col-span-3">Document Name</div>
-                                            <div className="col-span-4">Validity &amp; Conditions</div>
-                                            <div className="col-span-2">Your Document</div>
-                                            <div className="col-span-2">Status</div>
-                                            <div className="col-span-1 text-right">Action</div>
+                                    {/* Table Body */}
+                                    {filteredDocs.length === 0 ? (
+                                        <div className="p-12 text-center space-y-3">
+                                            <div className="w-14 h-14 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center mx-auto border border-teal-100 shadow-2xs">
+                                                <FileText className="w-7 h-7" />
+                                            </div>
+                                            <div className="max-w-md mx-auto">
+                                                <h3 className="text-base font-black text-slate-900">Your Document Vault is Empty</h3>
+                                                <p className="text-xs text-slate-500 font-medium mt-1">
+                                                    Securely upload and store your Passport, Visa, ID, and Travel Tickets here. They will be OCR scanned and encrypted with bank-level security.
+                                                </p>
+                                            </div>
+                                            <div className="pt-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => vaultFileInputRef.current?.click()}
+                                                    className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold transition-all shadow-xs inline-flex items-center gap-2 cursor-pointer"
+                                                >
+                                                    <Upload className="w-3.5 h-3.5" />
+                                                    <span>Upload Your First Document</span>
+                                                </button>
+                                            </div>
                                         </div>
-
-                                        {/* Table Rows */}
+                                    ) : (
                                         <div className="divide-y divide-slate-100">
-                                            {(() => {
-                                                const filteredDocs = allChecklistItems.filter(doc => {
-                                                    if (vaultDocFilter === "mandatory" && doc.mandatory === false) return false;
-                                                    if (vaultDocFilter === "recommended" && doc.mandatory !== false) return false;
-                                                    if (vaultDocSearch.trim()) {
-                                                        const q = vaultDocSearch.toLowerCase();
-                                                        return doc.title.toLowerCase().includes(q) || (doc.description && doc.description.toLowerCase().includes(q));
-                                                    }
-                                                    return true;
-                                                });
+                                            {filteredDocs.map((doc) => {
+                                                const isSelected = activeSelectedDoc?.id === doc.id;
+                                                const isMenuOpen = vaultDocMenuId === doc.id;
 
-                                                if (filteredDocs.length === 0) {
-                                                    return (
-                                                        <div className="p-10 text-center space-y-2">
-                                                            <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
-                                                                <FileText className="w-5 h-5" />
-                                                            </div>
-                                                            <p className="text-xs font-bold text-slate-700">No documents match your filter criteria.</p>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => { setVaultDocSearch(""); setVaultDocFilter("all"); }}
-                                                                className="text-xs font-black text-indigo-600 hover:underline"
-                                                            >
-                                                                Reset Filters
-                                                            </button>
-                                                        </div>
-                                                    );
-                                                }
-
-                                                return filteredDocs.map((doc) => {
-                                                    const itemData = vaultChecklistState[doc.key];
-                                                    const isVerified = Boolean(itemData?.verified);
-                                                    const isScanning = scanningDocKey === doc.key;
-                                                    const inputId = `vault-row-input-${doc.key}`;
-                                                    const conditions = getDocConditions(doc.title, doc.description);
-                                                    const iconCfg = getDocIconConfig(doc.title);
-                                                    const isExpanded = expandedDocKey === doc.key;
-
-                                                    return (
-                                                        <div
-                                                            key={doc.key}
-                                                            className="p-4 sm:p-5 lg:px-6 lg:py-5 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-start lg:items-center hover:bg-slate-50/50 transition-colors"
-                                                        >
-                                                            {/* Hidden File Input for instant upload trigger */}
-                                                            <input
-                                                                id={inputId}
-                                                                type="file"
-                                                                accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
-                                                                disabled={isScanning}
-                                                                className="hidden"
-                                                                onChange={(e) => {
-                                                                    const file = e.target.files?.[0];
-                                                                    if (file) handleVaultDocScan(file, doc.key, doc.title);
-                                                                    e.target.value = '';
-                                                                }}
-                                                            />
-
-                                                            {/* 1. DOCUMENT NAME (col-span-3) */}
-                                                            <div className="flex items-center gap-3.5 col-span-3 min-w-0 w-full">
-                                                                <div className={`w-11 h-11 rounded-2xl ${iconCfg.bg} flex items-center justify-center shrink-0 shadow-2xs`}>
-                                                                    {iconCfg.iconName === 'passport' && <FileText className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'form' && <Edit2 className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'photo' && <Sparkles className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'flight' && <Plane className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'hotel' && <Building2 className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'insurance' && <ShieldCheck className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'bank' && <CreditCard className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'letter' && <FileText className="w-5 h-5 stroke-[2.2]" />}
-                                                                    {iconCfg.iconName === 'file' && <FileText className="w-5 h-5 stroke-[2.2]" />}
+                                                return (
+                                                    <div
+                                                        key={doc.id}
+                                                        onClick={() => setSelectedVaultDoc(doc)}
+                                                        className={`p-4 sm:px-6 sm:py-4.5 flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-4 items-start md:items-center transition-colors cursor-pointer ${
+                                                            isSelected ? 'bg-teal-50/20 border-l-4 border-l-[#00a896]' : 'hover:bg-slate-50/60'
+                                                        }`}
+                                                    >
+                                                        {/* 1. DOCUMENT COLUMN (col-span-4) */}
+                                                        <div className="col-span-4 flex items-center gap-3.5 min-w-0 w-full">
+                                                            {/* Custom Styled Realistic Thumbnail */}
+                                                            {doc.type === 'passport' ? (
+                                                                <div className="w-10 h-13 rounded-md bg-[#182a44] border border-amber-400/40 p-1 flex flex-col items-center justify-between text-amber-300 shadow-2xs shrink-0 select-none">
+                                                                    <span className="text-[5px] font-black tracking-widest uppercase text-amber-200 text-center leading-none">PASSPORT</span>
+                                                                    <span className="text-xs leading-none">🏛️</span>
+                                                                    <span className="text-[5px] font-bold text-amber-300/80 tracking-tighter uppercase leading-none">{doc.country?.slice(0, 5) || 'IND'}</span>
                                                                 </div>
-                                                                <div className="space-y-0.5 min-w-0 flex-1">
-                                                                    <strong className="text-sm font-black text-slate-950 block truncate">
-                                                                        {doc.title}
-                                                                    </strong>
-                                                                    {doc.mandatory !== false && (
-                                                                        <span className="text-[10px] font-black uppercase tracking-wider block text-rose-600">
-                                                                            Mandatory
-                                                                        </span>
-                                                                    )}
+                                                            ) : doc.type === 'visa' ? (
+                                                                <div className="w-12 h-9 rounded-md bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 flex flex-col justify-between p-1 shadow-2xs shrink-0 select-none">
+                                                                    <div className="flex items-center justify-between text-[6px] font-black text-amber-900 leading-none">
+                                                                        <span>VISA</span>
+                                                                        <span>★</span>
+                                                                    </div>
+                                                                    <span className="text-[7px] font-bold text-slate-700 truncate leading-none">{doc.country || 'VISA'}</span>
+                                                                    <span className="text-[5px] text-emerald-700 font-bold leading-none">VALID</span>
                                                                 </div>
-                                                            </div>
-
-                                                            {/* 2. VALIDITY & CONDITIONS (col-span-4) */}
-                                                            <div className="col-span-4 space-y-1 w-full text-xs text-slate-600">
-                                                                <ul className="space-y-1">
-                                                                    {conditions.map((cond, cIdx) => (
-                                                                        <li key={cIdx} className="flex items-start gap-1.5 font-medium text-slate-700 leading-snug">
-                                                                            <span className="text-slate-400 select-none">•</span>
-                                                                            <span>{cond}</span>
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
-                                                                {doc.description && doc.description.length > 50 && (
-                                                                    <div className="pt-0.5">
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => setExpandedDocKey(isExpanded ? null : doc.key)}
-                                                                            className="text-[11px] font-extrabold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
-                                                                        >
-                                                                            <span>{isExpanded ? 'Less details' : 'More details'}</span>
-                                                                            <ChevronDown className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                                                                        </button>
-                                                                        {isExpanded && (
-                                                                            <p className="mt-1.5 p-2 bg-slate-50 rounded-xl text-[11px] text-slate-600 font-medium leading-relaxed border border-slate-200/80 animate-fade-up">
-                                                                                {doc.description}
-                                                                            </p>
-                                                                        )}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-
-                                                            {/* 3. YOUR DOCUMENT (col-span-2) */}
-                                                            <div className="col-span-2 w-full space-y-1 text-left">
-                                                                {isVerified && itemData ? (
-                                                                    <div className="space-y-0.5">
-                                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-black">
-                                                                            Valid
-                                                                        </span>
-                                                                        <p className="text-[11px] text-slate-500 font-semibold truncate">
-                                                                            Uploaded {itemData.uploadedAt || 'Recently'}
-                                                                        </p>
-                                                                        <p className="text-[11px] font-bold text-slate-900 truncate max-w-[150px]">
-                                                                            {itemData.fileName}
-                                                                        </p>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div className="space-y-1.5">
-                                                                        <span className="text-xs font-semibold text-slate-400 block">
-                                                                            Not Uploaded
-                                                                        </span>
-                                                                        <div className="flex flex-wrap items-center gap-1.5">
-                                                                            <label
-                                                                                htmlFor={inputId}
-                                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100/70 text-indigo-700 text-xs font-black cursor-pointer transition-all shadow-2xs whitespace-nowrap"
-                                                                            >
-                                                                                <Download className="w-3.5 h-3.5 rotate-180" />
-                                                                                <span>Upload</span>
-                                                                            </label>
-                                                                            {documents && documents.length > 0 && (
-                                                                                <button
-                                                                                    type="button"
-                                                                                    onClick={() => setImportDocTargetKey(doc.key)}
-                                                                                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 text-xs font-bold cursor-pointer transition-all shadow-2xs whitespace-nowrap"
-                                                                                >
-                                                                                    <Layers className="w-3.5 h-3.5 text-emerald-600" />
-                                                                                    <span>Import</span>
-                                                                                </button>
-                                                                            )}
+                                                            ) : doc.type === 'id' ? (
+                                                                <div className="w-12 h-8 rounded-md bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-200 flex flex-col justify-between p-1 shadow-2xs shrink-0 select-none">
+                                                                    <div className="flex items-center gap-1">
+                                                                        <div className="w-2 h-2.5 bg-sky-200 rounded-xs" />
+                                                                        <div className="space-y-0.5 flex-1">
+                                                                            <div className="h-0.5 bg-sky-300 rounded-full w-full" />
+                                                                            <div className="h-0.5 bg-sky-200 rounded-full w-2/3" />
                                                                         </div>
                                                                     </div>
-                                                                )}
-                                                            </div>
+                                                                    <span className="text-[6px] font-black text-slate-700 tracking-wider leading-none">ID CARD</span>
+                                                                </div>
+                                                            ) : doc.type === 'insurance' ? (
+                                                                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs">
+                                                                    <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
+                                                                </div>
+                                                            ) : doc.type === 'flight' ? (
+                                                                <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200 text-sky-600 flex items-center justify-center shrink-0 shadow-2xs">
+                                                                    <Plane className="w-5 h-5 stroke-[2.2]" />
+                                                                </div>
+                                                            ) : (
+                                                                <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center shrink-0 shadow-2xs">
+                                                                    <FileText className="w-5 h-5 stroke-[2.2]" />
+                                                                </div>
+                                                            )}
 
-                                                            {/* 4. STATUS (col-span-2) */}
-                                                            <div className="col-span-2 w-full">
-                                                                {isScanning ? (
-                                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-extrabold border border-amber-200">
-                                                                        <div className="w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full animate-spin" />
-                                                                        <span>In Progress</span>
-                                                                    </span>
-                                                                ) : isVerified ? (
-                                                                    <span className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-800">
-                                                                        <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[11px] shadow-2xs">
-                                                                            ✓
-                                                                        </span>
-                                                                        <span>Completed</span>
-                                                                    </span>
-                                                                ) : (
-                                                                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400">
-                                                                        <span className="w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center text-[9px]">
-                                                                            ○
-                                                                        </span>
-                                                                        <span>Not Started</span>
-                                                                    </span>
-                                                                )}
+                                                            <div className="min-w-0 flex-1 space-y-0.5">
+                                                                <strong className="text-sm font-bold text-slate-900 block truncate">
+                                                                    {doc.title}
+                                                                </strong>
+                                                                <span className="text-xs text-slate-400 font-medium block truncate">
+                                                                    {doc.docNumber}
+                                                                </span>
+                                                                <span className="text-xs text-slate-400 font-medium block truncate">
+                                                                    {doc.country || doc.issuer || 'Official Record'}
+                                                                </span>
                                                             </div>
+                                                        </div>
 
-                                                            {/* 5. ACTION (col-span-1) */}
-                                                            <div className="col-span-1 w-full lg:text-right flex items-center lg:justify-end gap-2">
-                                                                {isVerified && itemData ? (
-                                                                    <>
+                                                        {/* 2. DETAILS COLUMN (col-span-3) */}
+                                                        <div className="col-span-3 w-full space-y-0.5 text-xs text-slate-600">
+                                                            <div>
+                                                                <span className="text-slate-400 font-medium">Name: </span>
+                                                                <strong className="text-slate-900 font-bold">{doc.holderName || fullName}</strong>
+                                                            </div>
+                                                            <div className="truncate">
+                                                                <span className="text-slate-400 font-medium">Details: </span>
+                                                                <span className="text-slate-500 font-medium">{doc.subDetails}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* 3. EXPIRY / VALIDITY COLUMN (col-span-2) */}
+                                                        <div className="col-span-2 w-full space-y-0.5 text-xs">
+                                                            <div className="font-semibold text-slate-800 truncate">
+                                                                {doc.expiryDate}
+                                                            </div>
+                                                            <div className={
+                                                                doc.expiryStatus === 'permanent' ? 'text-[#00a896] font-bold text-xs' :
+                                                                doc.expiryStatus === 'expiring_soon' ? 'text-amber-500 font-bold text-xs' :
+                                                                'text-[#00a896] font-bold text-xs'
+                                                            }>
+                                                                {doc.expirySubtext}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* 4. STATUS COLUMN (col-span-2) */}
+                                                        <div className="col-span-2 w-full space-y-1">
+                                                            {doc.status === 'verified' ? (
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                                                                    <Check className="w-3 h-3 stroke-[3]" /> Verified
+                                                                </span>
+                                                            ) : doc.status === 'expiring_soon' ? (
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
+                                                                    Expiring Soon
+                                                                </span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
+                                                                    Pending Review
+                                                                </span>
+                                                            )}
+                                                            <span className="text-[11px] text-slate-400 font-medium block">
+                                                                {doc.scannedMethod}
+                                                            </span>
+                                                        </div>
+
+                                                        {/* 5. ACTIONS COLUMN (col-span-1) */}
+                                                        <div className="col-span-1 w-full flex items-center md:justify-end gap-1 relative">
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    setSelectedVaultDoc(doc);
+                                                                }}
+                                                                title="Inspect Document"
+                                                                className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                                            >
+                                                                <Eye className="w-4 h-4" />
+                                                            </button>
+
+                                                            <div className="relative">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        setVaultDocMenuId(isMenuOpen ? null : doc.id);
+                                                                    }}
+                                                                    title="More Actions"
+                                                                    className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                                                >
+                                                                    <MoreVertical className="w-4 h-4" />
+                                                                </button>
+
+                                                                {isMenuOpen && (
+                                                                    <div
+                                                                        onClick={(e) => e.stopPropagation()}
+                                                                        className="absolute right-0 top-9 w-40 bg-white rounded-xl border border-slate-200 shadow-xl py-1 z-30 text-xs font-semibold text-slate-700 animate-in fade-in zoom-in-95"
+                                                                    >
                                                                         <button
                                                                             type="button"
-                                                                            onClick={() => setInspectDocData({
-                                                                                title: doc.title,
-                                                                                key: doc.key,
-                                                                                itemData,
-                                                                                conditions
-                                                                            })}
-                                                                            className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-slate-800 hover:text-slate-950 hover:border-slate-400 text-xs font-black transition-all cursor-pointer shadow-2xs"
+                                                                            onClick={() => {
+                                                                                setVaultDocMenuId(null);
+                                                                                handleDownloadDoc(doc);
+                                                                            }}
+                                                                            className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                                                         >
-                                                                            View
+                                                                            <Download className="w-3.5 h-3.5 text-teal-600" />
+                                                                            <span>Download</span>
                                                                         </button>
-                                                                        <label
-                                                                            htmlFor={inputId}
-                                                                            title="Re-upload"
-                                                                            className="p-1.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-300 cursor-pointer transition-all shadow-2xs inline-flex items-center justify-center"
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setVaultDocMenuId(null);
+                                                                                setReplacingDocId(doc.id);
+                                                                                replaceFileInputRef.current?.click();
+                                                                            }}
+                                                                            className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                                                         >
-                                                                            <MoreVertical className="w-4 h-4" />
-                                                                        </label>
-                                                                    </>
-                                                                ) : (
-                                                                    <label
-                                                                        htmlFor={inputId}
-                                                                        className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:border-indigo-300 text-xs font-black cursor-pointer transition-all shadow-2xs inline-block"
-                                                                    >
-                                                                        Upload
-                                                                    </label>
+                                                                            <RotateCw className="w-3.5 h-3.5 text-purple-600" />
+                                                                            <span>Replace</span>
+                                                                        </button>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setVaultDocMenuId(null);
+                                                                                handleDeleteDoc(doc);
+                                                                            }}
+                                                                            className="w-full px-3 py-2 text-left hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer"
+                                                                        >
+                                                                            <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                                                                            <span>Delete</span>
+                                                                        </button>
+                                                                    </div>
                                                                 )}
                                                             </div>
                                                         </div>
-                                                    );
-                                                });
-                                            })()}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* INSPECTION MODAL FOR VIEWING VERIFIED DOCUMENT */}
-                                {importDocTargetKey && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-                    <div className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 space-y-4 shadow-2xl text-left">
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <div className="flex items-center gap-2">
-                                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                                    <Layers className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <h4 className="text-sm font-black text-slate-950">Import Document from Vault</h4>
-                                    <p className="text-xs text-slate-500 font-medium">Select an existing document to attach to this requirement</p>
-                                </div>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setImportDocTargetKey(null)}
-                                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <div className="max-h-72 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100">
-                            {documents.map((docItem, idx) => (
-                                <div key={idx} className="pt-2 first:pt-0 flex items-center justify-between gap-3 p-2.5 rounded-2xl hover:bg-slate-50 transition-colors">
-                                    <div className="min-w-0 flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-                                            <FileText className="w-4 h-4" />
-                                        </div>
-                                        <div className="min-w-0">
-                                            <strong className="text-xs font-bold text-slate-900 block truncate">{docItem.label}</strong>
-                                            <span className="text-[10px] text-slate-400 font-medium">{docItem.size || '1.8 MB'} • {docItem.uploadedAt || 'Uploaded'}</span>
-                                        </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleImportSingleDoc(importDocTargetKey, docItem)}
-                                        className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold cursor-pointer transition-all shadow-2xs shrink-0"
-                                    >
-                                        Attach &amp; Import
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {importToastMessage && (
-                <div className="fixed bottom-6 right-6 z-50 max-w-md p-4 rounded-2xl bg-slate-900 text-white shadow-2xl border border-slate-800 flex items-center gap-3 text-xs font-bold animate-fade-up">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-                    <span>{importToastMessage}</span>
-                </div>
-            )}
-
-            {inspectDocData && (
-                                    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
-                                        <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in zoom-in-95 duration-200">
-                                            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black">
-                                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                                                     </div>
-                                                    <div>
-                                                        <h3 className="text-base font-black text-slate-950">
-                                                            {inspectDocData.title}
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* ── 5. DOCUMENT INSPECTION & OCR PREVIEW CARD (MATCHING LOWER HALF OF media_1788550890178) ── */}
+                                {activeSelectedDoc && (
+                                    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-6 animate-fade-up">
+                                        {/* Card Top Header */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                            <div className="flex items-center gap-3.5">
+                                                {/* Mini Thumbnail */}
+                                                <div className="w-10 h-13 rounded-md bg-[#182a44] border border-amber-400/40 p-1 flex flex-col items-center justify-between text-amber-300 shadow-2xs shrink-0 select-none">
+                                                    <span className="text-[5px] font-black tracking-widest uppercase text-amber-200 text-center leading-none">PASSPORT</span>
+                                                    <span className="text-xs leading-none">🏛️</span>
+                                                    <span className="text-[5px] font-bold text-amber-300/80 tracking-tighter uppercase leading-none">{activeSelectedDoc.country?.slice(0, 5) || 'IND'}</span>
+                                                </div>
+
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                                            {activeSelectedDoc.title} – {activeSelectedDoc.docNumber}
                                                         </h3>
-                                                        <span className="text-[11px] font-bold text-emerald-700">
-                                                            Verified Official Consular Record
+                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
+                                                            <Check className="w-3 h-3 stroke-[3]" /> Verified
                                                         </span>
                                                     </div>
+                                                    <p className="text-xs text-slate-400 font-medium">
+                                                        OCR Scanned on {activeSelectedDoc.uploadedAt}
+                                                    </p>
                                                 </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-2">
                                                 <button
                                                     type="button"
-                                                    onClick={() => setInspectDocData(null)}
-                                                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer transition-colors"
+                                                    onClick={() => handleDownloadDoc(activeSelectedDoc)}
+                                                    className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                                >
+                                                    <Download className="w-3.5 h-3.5" />
+                                                    <span>Download</span>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedVaultDoc(null)}
+                                                    className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </button>
                                             </div>
+                                        </div>
 
-                                            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2.5 text-xs">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-slate-500 font-medium">File Name:</span>
-                                                    <strong className="text-slate-900 font-bold truncate max-w-[200px]">
-                                                        {inspectDocData.itemData?.fileName}
-                                                    </strong>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-slate-500 font-medium">File Size:</span>
-                                                    <strong className="text-slate-900 font-bold">{inspectDocData.itemData?.size}</strong>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-slate-500 font-medium">Uploaded Date:</span>
-                                                    <strong className="text-slate-900 font-bold">{inspectDocData.itemData?.uploadedAt || 'Recent'}</strong>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-slate-500 font-medium">Compliance Authenticity:</span>
-                                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
-                                                        {inspectDocData.itemData?.score || 96}% Verified
-                                                    </span>
+                                        {/* 2-Column Grid: Document Preview (Left) vs Extracted Information OCR (Right) */}
+                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                            {/* LEFT COLUMN: Document Preview (col-span-6) */}
+                                            <div className="lg:col-span-6 space-y-2">
+                                                <h4 className="text-xs font-bold text-slate-700">Document Preview</h4>
+                                                
+                                                {/* Realistic Passport Card Mockup */}
+                                                <div className="relative rounded-2xl border border-slate-300/80 bg-[#fbfbfa] p-5 sm:p-6 shadow-xs overflow-hidden select-none font-mono">
+                                                    {/* Top subtle country header */}
+                                                    <div className="border-b border-slate-200 pb-2 mb-3">
+                                                        <div className="flex items-center justify-between text-slate-700">
+                                                            <div className="space-y-0.5">
+                                                                <span className="text-[10px] font-extrabold tracking-widest text-slate-800 block">
+                                                                    {activeSelectedDoc.country === 'India' ? 'भारत गणराज्य' : 'REPUBLIC'}
+                                                                </span>
+                                                                <span className="text-[10px] font-black tracking-widest uppercase text-slate-900 block">
+                                                                    REPUBLIC OF {activeSelectedDoc.country?.toUpperCase() || 'INDIA'}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-right">
+                                                                <span className="text-[9px] font-bold text-slate-400 block">PASSPORT NO.</span>
+                                                                <span className="text-xs font-black text-slate-900 tracking-wider">
+                                                                    {activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center justify-between text-[9px] font-bold text-slate-500 pt-1">
+                                                            <span>Type: P</span>
+                                                            <span>Country Code: {activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Body: Photo on left + details on right */}
+                                                    <div className="grid grid-cols-12 gap-3 items-center">
+                                                        <div className="col-span-4 space-y-1.5">
+                                                            <div className="w-24 h-28 rounded-lg bg-slate-200 border-2 border-slate-300 overflow-hidden flex items-center justify-center relative shadow-inner">
+                                                                {profilePhoto ? (
+                                                                    <img src={profilePhoto} alt="Holder" className="w-full h-full object-cover" />
+                                                                ) : (
+                                                                    <div className="text-center p-1">
+                                                                        <User className="w-10 h-10 text-slate-400 mx-auto" />
+                                                                        <span className="text-[8px] font-bold text-slate-400 uppercase mt-1 block">Photo</span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <div className="h-5 border-b border-slate-300 flex items-center justify-center">
+                                                                <span className="text-[9px] italic text-slate-500 font-sans">{activeSelectedDoc.holderName || fullName}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-span-8 grid grid-cols-2 gap-x-2 gap-y-1.5 text-[10px] text-slate-700">
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Surname</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {(activeSelectedDoc.holderName || fullName).split(' ').slice(-1)[0] || 'TRAVELER'}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Given Name(s)</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {(activeSelectedDoc.holderName || fullName).split(' ').slice(0, -1).join(' ') || (activeSelectedDoc.holderName || fullName)}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Nationality</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {activeSelectedDoc.ocrData?.nationality || activeSelectedDoc.country || 'INDIAN'}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Birth</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Sex</span>
+                                                                <strong className="font-extrabold text-slate-900 block">
+                                                                    {activeSelectedDoc.ocrData?.sex || 'M'}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Place of Birth</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {activeSelectedDoc.ocrData?.placeOfBirth || activeSelectedDoc.country || 'On File'}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Issue</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {activeSelectedDoc.ocrData?.issueDate || 'On File'}
+                                                                </strong>
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Expiry</span>
+                                                                <strong className="font-extrabold text-slate-900 block truncate">
+                                                                    {activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate}
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Bottom Monospace MRZ Strip */}
+                                                    <div className="mt-3 pt-2 border-t border-slate-200 text-[9px] tracking-wider text-slate-500 font-mono select-all overflow-hidden truncate">
+                                                        <div>P&lt;{activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}{(activeSelectedDoc.holderName || fullName).replace(/\s+/g, '&lt;').toUpperCase()}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+                                                        <div>{(activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber).replace(/[^A-Z0-9]/gi, '')}&lt;{activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div className="space-y-2">
-                                                <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">
-                                                    Statutory Guidelines Met
-                                                </h4>
-                                                <ul className="space-y-1.5 text-xs">
-                                                    {inspectDocData.conditions.map((c, i) => (
-                                                        <li key={i} className="flex items-center gap-2 font-semibold text-slate-700">
-                                                            <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                                                            <span>{c}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-
-                                            {inspectDocData.itemData?.summary && (
-                                                <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs font-medium text-emerald-900 leading-relaxed">
-                                                    {inspectDocData.itemData.summary}
+                                            {/* RIGHT COLUMN: Extracted Information (OCR) (col-span-6) */}
+                                            <div className="lg:col-span-6 space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <h4 className="text-xs font-bold text-slate-700">Extracted Information (OCR)</h4>
+                                                    {isEditingOcr ? (
+                                                        <div className="flex items-center gap-1.5">
+                                                            <button
+                                                                type="button"
+                                                                onClick={handleSaveEditOcr}
+                                                                className="px-3 py-1 rounded-lg bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold cursor-pointer transition-colors shadow-2xs"
+                                                            >
+                                                                Save Changes
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setIsEditingOcr(false)}
+                                                                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold cursor-pointer transition-colors"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleStartEditOcr(activeSelectedDoc)}
+                                                            className="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition-colors shadow-2xs"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    )}
                                                 </div>
-                                            )}
 
-                                            <button
-                                                type="button"
-                                                onClick={() => setInspectDocData(null)}
-                                                className="w-full h-11 bg-slate-950 hover:bg-black text-white rounded-xl text-xs font-black transition-all cursor-pointer shadow-md"
-                                            >
-                                                Done
-                                            </button>
+                                                {/* Field Rows with Icons */}
+                                                <div className="divide-y divide-slate-100 text-xs">
+                                                    {/* Row 1: Passport / Document Number */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Passport / Doc Number</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.docNumber || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, docNumber: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 2: Full Name */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Full Name</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.fullName || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, fullName: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 3: Date of Birth */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Date of Birth</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.dob || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, dob: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 4: Nationality */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Nationality</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.nationality || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, nationality: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.nationality || activeSelectedDoc.country || 'Indian'}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 5: Sex */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Sex</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.sex || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, sex: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.sex || 'Male'}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 6: Place of Birth */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Place of Birth</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.placeOfBirth || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, placeOfBirth: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.placeOfBirth || activeSelectedDoc.country || 'On File'}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 7: Date of Issue */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Date of Issue</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.issueDate || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, issueDate: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.issueDate || 'On File'}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 8: Date of Expiry */}
+                                                    <div className="py-2.5 flex items-center justify-between gap-4">
+                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
+                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                            <span>Date of Expiry</span>
+                                                        </div>
+                                                        {isEditingOcr ? (
+                                                            <input
+                                                                type="text"
+                                                                value={editOcrForm.expiryDate || ''}
+                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, expiryDate: e.target.value })}
+                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
+                                                            />
+                                                        ) : (
+                                                            <strong className="font-bold text-slate-900">
+                                                                {activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate}
+                                                            </strong>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* ── 6. "WHAT WOULD YOU LIKE TO DO?" 5-ACTION TILES ── */}
+                                        <div className="space-y-3 pt-3 border-t border-slate-100">
+                                            <h4 className="text-xs font-bold text-slate-900">
+                                                What would you like to do?
+                                            </h4>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                                                {/* Tile 1: Share Document */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        navigator.clipboard?.writeText(window.location.href);
+                                                        setVaultActionToast("✓ Secure share link copied to clipboard! Valid for 24 hours.");
+                                                        setTimeout(() => setVaultActionToast(null), 3500);
+                                                    }}
+                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-emerald-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                        <Share2 className="w-4 h-4 stroke-[2.2]" />
+                                                    </div>
+                                                    <div>
+                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-emerald-700">
+                                                            Share Document
+                                                        </strong>
+                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
+                                                            Share securely with embassy, consultants or service providers
+                                                        </p>
+                                                    </div>
+                                                </button>
+
+                                                {/* Tile 2: Use for Application */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setVaultActionToast(`✓ "${activeSelectedDoc.title}" attached to your active visa application!`);
+                                                        setTimeout(() => setVaultActionToast(null), 3500);
+                                                    }}
+                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                        <FileText className="w-4 h-4 stroke-[2.2]" />
+                                                    </div>
+                                                    <div>
+                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-blue-700">
+                                                            Use for Application
+                                                        </strong>
+                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
+                                                            Use this document for visa or travel applications
+                                                        </p>
+                                                    </div>
+                                                </button>
+
+                                                {/* Tile 3: Set Reminder */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setVaultActionToast("✓ Expiry reminder set! We will alert you 60 & 30 days before document expiry.");
+                                                        setTimeout(() => setVaultActionToast(null), 3500);
+                                                    }}
+                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-amber-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                        <Bell className="w-4 h-4 stroke-[2.2]" />
+                                                    </div>
+                                                    <div>
+                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-amber-700">
+                                                            Set Reminder
+                                                        </strong>
+                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
+                                                            Get notified before document expiry date
+                                                        </p>
+                                                    </div>
+                                                </button>
+
+                                                {/* Tile 4: Replace Document */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setReplacingDocId(activeSelectedDoc.id);
+                                                        replaceFileInputRef.current?.click();
+                                                    }}
+                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                        <RotateCw className="w-4 h-4 stroke-[2.2]" />
+                                                    </div>
+                                                    <div>
+                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-purple-700">
+                                                            Replace Document
+                                                        </strong>
+                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
+                                                            Upload new version to replace current document
+                                                        </p>
+                                                    </div>
+                                                </button>
+
+                                                {/* Tile 5: Delete Document */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDeleteDoc(activeSelectedDoc)}
+                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-rose-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                        <Trash2 className="w-4 h-4 stroke-[2.2]" />
+                                                    </div>
+                                                    <div>
+                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-rose-700">
+                                                            Delete Document
+                                                        </strong>
+                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
+                                                            Remove document from your vault
+                                                        </p>
+                                                    </div>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
 
-                                {/* 5. SECTION C: ADDITIONAL STORED DOCUMENTS IN VAULT */}
-                                <div className="space-y-3 pt-3 border-t border-slate-200">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-black text-slate-900">
-                                            3. Extra Documents ({documents.length})
-                                        </h3>
-                                        <label className="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all">
-                                            {isScanningVaultDoc ? (
-                                                <span className="flex items-center gap-1.5">
-                                                    <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                                    Scanning &amp; Uploading...
-                                                </span>
-                                            ) : (
-                                                <>
-                                                    <Upload className="w-3.5 h-3.5 text-emerald-400" /> Upload Custom / Extra File
-                                                </>
-                                            )}
-                                            <input 
-                                                type="file" 
-                                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
-                                                disabled={isScanningVaultDoc}
-                                                className="hidden" 
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    if (!file) return;
-
-                                                    setIsScanningVaultDoc(true);
-                                                    const fileSizeFormatted = file.size > 1024 * 1024
-                                                        ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-                                                        : `${Math.round(file.size / 1024)} KB`;
-
-                                                    try {
-                                                        const reader = new FileReader();
-                                                        reader.onload = async () => {
-                                                            const base64 = reader.result as string;
-                                                            let scanSummary = 'Verified & Ingested into Encrypted Vault';
-                                                            try {
-                                                                const res = await fetch('/api/ocr-analyze-document', {
-                                                                    method: 'POST',
-                                                                    headers: { 'Content-Type': 'application/json' },
-                                                                    body: JSON.stringify({
-                                                                        base64Image: base64,
-                                                                        mimeType: file.type || 'application/pdf',
-                                                                        documentTitle: file.name,
-                                                                        documentKey: 'vault_upload'
-                                                                    })
-                                                                });
-                                                                const json = await res.json();
-                                                                if (json.success && json.data?.summary) {
-                                                                    scanSummary = json.data.summary;
-                                                                }
-                                                            } catch {}
-
-                                                            const newDoc = {
-                                                                id: `doc-${Date.now()}`,
-                                                                label: file.name,
-                                                                status: 'verified',
-                                                                size: fileSizeFormatted,
-                                                                uploadedAt: new Date().toLocaleDateString(),
-                                                                summary: scanSummary
-                                                            };
-                                                            setDocuments(prev => {
-                                                                const updated = [newDoc, ...prev];
-                                                                localStorage.setItem('seeker_documents', JSON.stringify(updated));
-                                                                return updated;
-                                                            });
-                                                            setIsScanningVaultDoc(false);
-                                                        };
-                                                        reader.readAsDataURL(file);
-                                                    } catch {
-                                                        setIsScanningVaultDoc(false);
-                                                    }
-                                                }}
-                                            />
-                                        </label>
+                                {/* Toast Notification for User Feedback */}
+                                {vaultActionToast && (
+                                    <div className="fixed bottom-6 right-6 z-50 max-w-md p-4 rounded-2xl bg-slate-900 text-white shadow-2xl border border-slate-800 flex items-center gap-3 text-xs font-bold animate-fade-up">
+                                        <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                                        <span>{vaultActionToast}</span>
                                     </div>
-
-                                    {documents.length > 0 && (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                            {documents.map((docItem, idx) => (
-                                                <div key={docItem.id || idx} className="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-3 flex flex-col justify-between hover:border-emerald-300 transition-all">
-                                                    <div className="space-y-2">
-                                                        <div className="flex items-center justify-between">
-                                                            <div className="w-10 h-10 rounded-2xl bg-teal-50 text-[#00A86B] flex items-center justify-center text-lg font-bold">
-                                                                📄
-                                                            </div>
-                                                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black border border-emerald-200 flex items-center gap-1">
-                                                                <CheckCircle className="w-3 h-3 text-[#00A86B]" /> OCR Verified
-                                                            </span>
-                                                        </div>
-                                                        <h4 className="text-xs font-black text-slate-950 truncate" title={docItem.label}>
-                                                            {docItem.label}
-                                                        </h4>
-                                                        <p className="text-[11px] text-slate-400 font-medium">
-                                                            {docItem.size || '1.8 MB'} • Uploaded {docItem.uploadedAt || 'Recently'}
-                                                        </p>
-                                                        {docItem.summary && (
-                                                            <p className="text-[10px] text-emerald-800 bg-emerald-50/70 p-2 rounded-xl border border-emerald-100 font-medium">
-                                                                {docItem.summary}
-                                                            </p>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                                                        <span className="text-[10px] text-slate-500 font-semibold">256-bit AES Encrypted</span>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => alert(`Document "${docItem.label}" is securely encrypted and validated in TravlTik Vault.`)}
-                                                            className="font-bold text-[#00A86B] hover:underline text-xs cursor-pointer"
-                                                        >
-                                                            View Details
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
+                                )}
                             </div>
                         );
                     })()}

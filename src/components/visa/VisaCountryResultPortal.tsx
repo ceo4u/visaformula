@@ -4986,6 +4986,20 @@ All documents must be genuine, valid and meet official consular standards to avo
     ? 'In Progress' 
     : 'Ready to Start';
 
+  const purposeLabel = activePurposeTab === 'study'
+    ? 'Student'
+    : activePurposeTab === 'work'
+    ? 'Work'
+    : activePurposeTab === 'business'
+    ? 'Business'
+    : activePurposeTab === 'family'
+    ? 'Family Visit'
+    : activePurposeTab === 'pr'
+    ? 'PR / Settlement'
+    : 'Tourist';
+
+  const stayPeriod = lengthOfStay;
+
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       

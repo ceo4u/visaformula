@@ -3134,134 +3134,19 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     )}
 
                     {/* 1. TAB: OVERVIEW */}
-                    {activeTab === "dashboard" && (() => {
-                        const normalizedDest = normalizeCountryName(selectedDestination);
-
-                        // 8 Standard & AI documents matching user reference photo
-                        const defaultOverviewDocs = [
-                            { title: 'Passport', desc: 'Valid for at least 3 months beyond intended stay', icon: '🛂', bg: 'bg-purple-50 text-purple-600 border-purple-100' },
-                            { title: 'Visa Application Form', desc: 'Duly filled and signed application form', icon: '📝', bg: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-                            { title: 'Photographs', desc: 'Recent passport-sized photographs', icon: '📷', bg: 'bg-amber-50 text-amber-600 border-amber-100' },
-                            { title: 'Travel Itinerary', desc: 'Confirmed flight booking', icon: '✈️', bg: 'bg-teal-50 text-teal-600 border-teal-100' },
-                            { title: 'Accommodation Proof', desc: 'Hotel booking or invitation letter', icon: '🏨', bg: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
-                            { title: 'Travel Insurance', desc: 'Minimum cover of €30,000 / Adequate emergency cover', icon: '🛡️', bg: 'bg-sky-50 text-sky-600 border-sky-100' },
-                            { title: 'Financial Proof', desc: 'Bank statements / payslips / tax returns', icon: '💳', bg: 'bg-rose-50 text-rose-600 border-rose-100' },
-                            { title: 'Cover Letter', desc: 'Purpose of visit and travel details', icon: '📄', bg: 'bg-red-50 text-red-600 border-red-100' },
-                        ];
-
-                        const aiDocs = (aiVisaData?.documents_required && Array.isArray(aiVisaData.documents_required) && aiVisaData.documents_required.length > 0)
-                            ? aiVisaData.documents_required.slice(0, 8).map((d: any, idx: number) => ({
-                                title: d.title || d.name || defaultOverviewDocs[idx % defaultOverviewDocs.length].title,
-                                desc: d.description || d.hint || defaultOverviewDocs[idx % defaultOverviewDocs.length].desc,
-                                icon: d.icon || defaultOverviewDocs[idx % defaultOverviewDocs.length].icon,
-                                bg: defaultOverviewDocs[idx % defaultOverviewDocs.length].bg
-                            }))
-                            : defaultOverviewDocs;
-
-                        // 6 Steps matching user reference photo
-                        const defaultOverviewSteps = [
-                            { title: 'Check Eligibility', desc: 'Ensure you meet all the requirements' },
-                            { title: 'Gather Documents', desc: 'Collect and verify all required documents' },
-                            { title: 'Fill Application', desc: 'Complete the application form accurately' },
-                            { title: 'Book Appointment', desc: 'Schedule an appointment at the visa center' },
-                            { title: 'Attend and Submit', desc: 'Attend the appointment and submit documents' },
-                            { title: 'Track Application', desc: 'Track your application status online' },
-                        ];
-
-                        const howToApply: any[] = aiVisaData?.how_to_apply || [];
-                        const displaySteps = (howToApply.length >= 4)
-                            ? howToApply.slice(0, 6).map((step: any, idx: number) => {
-                                const title = typeof step === 'string'
-                                    ? step.split(':')[0].replace(/^\[?step\s*\d+\]?\s*/i, '').trim()
-                                    : (step.title || step.step || defaultOverviewSteps[idx % 6].title);
-                                const desc = typeof step === 'string'
-                                    ? (step.split(':').slice(1).join(':').trim() || defaultOverviewSteps[idx % 6].desc)
-                                    : (step.description || step.detail || defaultOverviewSteps[idx % 6].desc);
-                                return { title, desc };
-                            })
-                            : defaultOverviewSteps;
-
-                        const handleDownloadChecklist = () => {
-                            const listText = aiDocs.map((d: any, i: number) => `${i + 1}. ${d.title}\n   ${d.desc}`).join('\n\n');
-                            const blob = new Blob([`VISA APPLICATION DOCUMENT CHECKLIST\nDestination: ${normalizedDest}\nGenerated: ${new Date().toLocaleDateString()}\n\n${listText}\n\nTravlTik Visa Portal`], { type: 'text/plain' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `${normalizedDest.toLowerCase().replace(/\s+/g, '-')}-visa-checklist.txt`;
-                            a.click();
-                            URL.revokeObjectURL(url);
-                        };
-
-                        return (
+                    {activeTab === "dashboard" && (
                         <div className="space-y-6 animate-fade-up">
 
-                            {/* ── DOCUMENTS REQUIRED ── */}
-                            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-7 space-y-5">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                    <div>
-                                        <h3 className="text-lg font-bold text-slate-950 tracking-tight">Documents Required</h3>
-                                        <p className="text-xs text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={handleDownloadChecklist}
-                                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer self-start sm:self-auto"
-                                    >
-                                        <Download className="w-3.5 h-3.5" />
-                                        <span>Download Checklist</span>
-                                    </button>
-                                </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                                    {aiDocs.map((doc: any, idx: number) => (
-                                        <div
-                                            key={idx}
-                                            className="flex items-start gap-3.5 p-4 rounded-2xl bg-white border border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80 hover:shadow-sm transition-all"
-                                        >
-                                            <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-bold text-sm shadow-2xs`}>
-                                                {doc.icon}
-                                            </div>
-                                            <div className="min-w-0">
-                                                <h4 className="text-xs font-bold text-slate-950 leading-snug truncate">{doc.title}</h4>
-                                                <p className="text-[11px] font-normal text-slate-500 mt-0.5 leading-relaxed line-clamp-2">{doc.desc}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="flex justify-center pt-1">
-                                    <button
-                                        type="button"
-                                        onClick={() => setActiveTab('visa-readiness')}
-                                        className="px-6 py-2.5 rounded-xl border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50/50 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
-                                    >
-                                        View Full Document Checklist
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* ── STEPS TO FOLLOW ── */}
-                            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-7 space-y-6">
+                            {/* Welcome Header */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <h3 className="text-lg font-bold text-slate-950 tracking-tight">Steps to Follow</h3>
-                                    <p className="text-xs text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
+                                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome back, {userDisplayName}! 👋</h1>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Track your visa applications, consultations, and document readiness</p>
                                 </div>
-
-                                <div className="relative pt-3 pb-2">
-                                    {/* Connecting line behind circles on desktop */}
-                                    <div className="hidden lg:block absolute top-[28px] left-[7%] right-[7%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
-
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-4 relative z-10">
-                                        {displaySteps.map((step: any, idx: number) => (
-                                            <div key={idx} className="flex flex-col items-center text-center px-1">
-                                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-bold shadow-xs ring-4 ring-white z-10 shrink-0">
-                                                    {idx + 1}
-                                                </div>
-                                                <h4 className="text-xs font-bold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
-                                                <p className="text-[11px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2">{step.desc}</p>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className="flex items-center gap-3">
+                                    <a href="/find-experts" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 transition-all">
+                                        <Search className="w-3.5 h-3.5" /> Find Expert
+                                    </a>
                                 </div>
                             </div>
 
@@ -3440,8 +3325,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             </div>
 
                         </div>
-                        );
-                    })()}
+                    )}
+
 
                     {/* 1.5 TAB: VISA READINESS SCORE (MATCHING AI RESULT PORTAL) */}
                     {activeTab === "visa-readiness" && (() => {

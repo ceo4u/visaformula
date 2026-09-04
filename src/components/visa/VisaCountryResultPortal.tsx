@@ -7878,11 +7878,11 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                 
 
-                {/* ── STEP 2: SELECT TRAVEL STYLE (CHIPS) ── */}
+                {/* ── STEP 1: SELECT TRAVEL STYLE (CHIPS) ── */}
                 <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
                   <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
                     <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
-                      2
+                      1
                     </div>
                     <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
                       Select Travel Style &amp; Itinerary Type
@@ -7917,11 +7917,11 @@ All documents must be genuine, valid and meet official consular standards to avo
                   </div>
                 </div>
 
-                {/* ── STEP 3: FLIGHT & HOTEL PROOF CLEARANCE ── */}
+                {/* ── STEP 2: FLIGHT & HOTEL PROOF CLEARANCE ── */}
                 <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
                   <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
                     <div className="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
-                      3
+                      2
                     </div>
                     <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
                       Verifiable Flight Itinerary &amp; Hotel Lodging Clearance

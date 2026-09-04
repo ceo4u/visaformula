@@ -3134,23 +3134,140 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     )}
 
                     {/* 1. TAB: OVERVIEW */}
-                    {activeTab === "dashboard" && (
-                        <>
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div>
-                                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome back, {userDisplayName}! 👋</h1>
-                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Track your visa applications, consultations, and document readiness</p>
+                    {activeTab === "dashboard" && (() => {
+                        const normalizedDest = normalizeCountryName(selectedDestination);
+
+                        // 8 Standard & AI documents matching user reference photo
+                        const defaultOverviewDocs = [
+                            { title: 'Passport', desc: 'Valid for at least 3 months beyond intended stay', icon: '🛂', bg: 'bg-purple-50 text-purple-600 border-purple-100' },
+                            { title: 'Visa Application Form', desc: 'Duly filled and signed application form', icon: '📝', bg: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+                            { title: 'Photographs', desc: 'Recent passport-sized photographs', icon: '📷', bg: 'bg-amber-50 text-amber-600 border-amber-100' },
+                            { title: 'Travel Itinerary', desc: 'Confirmed flight booking', icon: '✈️', bg: 'bg-teal-50 text-teal-600 border-teal-100' },
+                            { title: 'Accommodation Proof', desc: 'Hotel booking or invitation letter', icon: '🏨', bg: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
+                            { title: 'Travel Insurance', desc: 'Minimum cover of €30,000 / Adequate emergency cover', icon: '🛡️', bg: 'bg-sky-50 text-sky-600 border-sky-100' },
+                            { title: 'Financial Proof', desc: 'Bank statements / payslips / tax returns', icon: '💳', bg: 'bg-rose-50 text-rose-600 border-rose-100' },
+                            { title: 'Cover Letter', desc: 'Purpose of visit and travel details', icon: '📄', bg: 'bg-red-50 text-red-600 border-red-100' },
+                        ];
+
+                        const aiDocs = (aiVisaData?.documents_required && Array.isArray(aiVisaData.documents_required) && aiVisaData.documents_required.length > 0)
+                            ? aiVisaData.documents_required.slice(0, 8).map((d: any, idx: number) => ({
+                                title: d.title || d.name || defaultOverviewDocs[idx % defaultOverviewDocs.length].title,
+                                desc: d.description || d.hint || defaultOverviewDocs[idx % defaultOverviewDocs.length].desc,
+                                icon: d.icon || defaultOverviewDocs[idx % defaultOverviewDocs.length].icon,
+                                bg: defaultOverviewDocs[idx % defaultOverviewDocs.length].bg
+                            }))
+                            : defaultOverviewDocs;
+
+                        // 6 Steps matching user reference photo
+                        const defaultOverviewSteps = [
+                            { title: 'Check Eligibility', desc: 'Ensure you meet all the requirements' },
+                            { title: 'Gather Documents', desc: 'Collect and verify all required documents' },
+                            { title: 'Fill Application', desc: 'Complete the application form accurately' },
+                            { title: 'Book Appointment', desc: 'Schedule an appointment at the visa center' },
+                            { title: 'Attend and Submit', desc: 'Attend the appointment and submit documents' },
+                            { title: 'Track Application', desc: 'Track your application status online' },
+                        ];
+
+                        const howToApply: any[] = aiVisaData?.how_to_apply || [];
+                        const displaySteps = (howToApply.length >= 4)
+                            ? howToApply.slice(0, 6).map((step: any, idx: number) => {
+                                const title = typeof step === 'string'
+                                    ? step.split(':')[0].replace(/^\[?step\s*\d+\]?\s*/i, '').trim()
+                                    : (step.title || step.step || defaultOverviewSteps[idx % 6].title);
+                                const desc = typeof step === 'string'
+                                    ? (step.split(':').slice(1).join(':').trim() || defaultOverviewSteps[idx % 6].desc)
+                                    : (step.description || step.detail || defaultOverviewSteps[idx % 6].desc);
+                                return { title, desc };
+                            })
+                            : defaultOverviewSteps;
+
+                        const handleDownloadChecklist = () => {
+                            const listText = aiDocs.map((d: any, i: number) => `${i + 1}. ${d.title}\n   ${d.desc}`).join('\n\n');
+                            const blob = new Blob([`VISA APPLICATION DOCUMENT CHECKLIST\nDestination: ${normalizedDest}\nGenerated: ${new Date().toLocaleDateString()}\n\n${listText}\n\nTravlTik Visa Portal`], { type: 'text/plain' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${normalizedDest.toLowerCase().replace(/\s+/g, '-')}-visa-checklist.txt`;
+                            a.click();
+                            URL.revokeObjectURL(url);
+                        };
+
+                        return (
+                        <div className="space-y-6 animate-fade-up">
+
+                            {/* ── DOCUMENTS REQUIRED ── */}
+                            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-7 space-y-5">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <h3 className="text-lg font-bold text-slate-950 tracking-tight">Documents Required</h3>
+                                        <p className="text-xs text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleDownloadChecklist}
+                                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer self-start sm:self-auto"
+                                    >
+                                        <Download className="w-3.5 h-3.5" />
+                                        <span>Download Checklist</span>
+                                    </button>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <a href="/find-experts" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5">
-                                        <Search className="w-3.5 h-3.5" /> Find Expert
-                                    </a>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                                    {aiDocs.map((doc: any, idx: number) => (
+                                        <div
+                                            key={idx}
+                                            className="flex items-start gap-3.5 p-4 rounded-2xl bg-white border border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80 hover:shadow-sm transition-all"
+                                        >
+                                            <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-bold text-sm shadow-2xs`}>
+                                                {doc.icon}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h4 className="text-xs font-bold text-slate-950 leading-snug truncate">{doc.title}</h4>
+                                                <p className="text-[11px] font-normal text-slate-500 mt-0.5 leading-relaxed line-clamp-2">{doc.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex justify-center pt-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab('visa-readiness')}
+                                        className="px-6 py-2.5 rounded-xl border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50/50 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                                    >
+                                        View Full Document Checklist
+                                    </button>
                                 </div>
                             </div>
 
-                            {/* Stat Summary Cards */}
+                            {/* ── STEPS TO FOLLOW ── */}
+                            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-7 space-y-6">
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-950 tracking-tight">Steps to Follow</h3>
+                                    <p className="text-xs text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
+                                </div>
+
+                                <div className="relative pt-3 pb-2">
+                                    {/* Connecting line behind circles on desktop */}
+                                    <div className="hidden lg:block absolute top-[28px] left-[7%] right-[7%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
+
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-4 relative z-10">
+                                        {displaySteps.map((step: any, idx: number) => (
+                                            <div key={idx} className="flex flex-col items-center text-center px-1">
+                                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-bold shadow-xs ring-4 ring-white z-10 shrink-0">
+                                                    {idx + 1}
+                                                </div>
+                                                <h4 className="text-xs font-bold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
+                                                <p className="text-[11px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2">{step.desc}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* ── STAT CARDS ── */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                                <div 
+                                <div
                                     onClick={() => setActiveTab('visa-readiness')}
                                     className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
                                 >
@@ -3162,31 +3279,31 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </span>
                                         </div>
                                         <span className={`text-[11px] font-bold mt-1 inline-block group-hover:underline ${
-                                            comprehensiveAuditMetrics.isUnselected 
-                                                ? 'text-slate-500' 
-                                                : comprehensiveAuditMetrics.score >= 70 
-                                                ? 'text-emerald-600' 
+                                            comprehensiveAuditMetrics.isUnselected
+                                                ? 'text-slate-500'
+                                                : comprehensiveAuditMetrics.score >= 70
+                                                ? 'text-emerald-600'
                                                 : 'text-amber-600'
                                         }`}>
-                                            {comprehensiveAuditMetrics.isUnselected 
-                                                ? 'Awaiting Selections • Audit →' 
-                                                : comprehensiveAuditMetrics.score >= 70 
-                                                ? 'Benchmark Met • Audit →' 
+                                            {comprehensiveAuditMetrics.isUnselected
+                                                ? 'Awaiting Selections • Audit →'
+                                                : comprehensiveAuditMetrics.score >= 70
+                                                ? 'Benchmark Met • Audit →'
                                                 : 'Consultant Advised • Audit →'}
                                         </span>
                                     </div>
                                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold ${
-                                        comprehensiveAuditMetrics.isUnselected 
-                                            ? 'bg-slate-100 text-slate-600' 
-                                            : comprehensiveAuditMetrics.score >= 70 
-                                            ? 'bg-emerald-50 text-emerald-600' 
+                                        comprehensiveAuditMetrics.isUnselected
+                                            ? 'bg-slate-100 text-slate-600'
+                                            : comprehensiveAuditMetrics.score >= 70
+                                            ? 'bg-emerald-50 text-emerald-600'
                                             : 'bg-amber-50 text-amber-600'
                                     }`}>
                                         <ShieldCheck className="w-6 h-6" />
                                     </div>
                                 </div>
 
-                                <div 
+                                <div
                                     onClick={() => setActiveTab('cases')}
                                     className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-blue-300 hover:shadow-xs transition-all group"
                                 >
@@ -3200,7 +3317,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 </div>
 
-                                <div 
+                                <div
                                     onClick={() => setActiveTab('predeparture')}
                                     className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
                                 >
@@ -3214,7 +3331,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 </div>
 
-                                <div 
+                                <div
                                     onClick={() => setActiveTab('scanned-documents')}
                                     className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-teal-300 hover:shadow-xs transition-all group"
                                 >
@@ -3251,10 +3368,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </div>
                             </div>
 
-                            {/* Section: IELTS Score Breakdown & Document Vault */}
+                            {/* ── DOCUMENT VAULT + IELTS ── */}
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                
-                                {/* Left 2 Cols: Document Vault Checklist */}
                                 <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -3272,10 +3387,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </div>
                                             <h4 className="text-sm font-black text-slate-900">Document Vault Protected</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Your immigration files are encrypted and locked. Enter your secret password in the Document Vault to view or upload documents.</p>
-                                            <button
-                                                onClick={() => setActiveTab("scanned-documents")}
-                                                className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
-                                            >
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
                                                 <KeyRound className="w-3.5 h-3.5 text-emerald-400" /> Unlock Vault
                                             </button>
                                         </div>
@@ -3284,7 +3396,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <FileText className="w-10 h-10 text-slate-400 mx-auto" />
                                             <h4 className="text-sm font-extrabold text-slate-900">No Documents Uploaded Yet</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Upload your Passport copy, IELTS scorecard, or SOP to share with verified consultants.</p>
-
                                             <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all inline-flex items-center gap-1.5">
                                                 <Upload className="w-3.5 h-3.5" /> Upload Document
                                             </button>
@@ -3292,93 +3403,46 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     ) : (
                                         <div className="space-y-2.5">
                                             {documents.map(doc => (
-                                                <div 
-                                                    key={doc.id}
-                                                    className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 transition-all"
-                                                >
+                                                <div key={doc.id} className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 transition-all">
                                                     <div className="flex items-center gap-3">
                                                         <span className="text-lg">📄</span>
                                                         <span className="text-xs font-extrabold text-slate-900">{doc.label}</span>
                                                     </div>
-                                                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">
-                                                        Uploaded
-                                                    </span>
+                                                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">Uploaded</span>
                                                 </div>
                                             ))}
                                         </div>
                                     )}
                                 </div>
 
-                                {/* Right Col: IELTS Score Band Card */}
                                 <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-base font-extrabold text-slate-900">IELTS Scorecard</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-slate-700">
-                                            Overall: {overallBand}
-                                        </span>
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-slate-700">Overall: {overallBand}</span>
                                     </div>
-
                                     <div className="grid grid-cols-2 gap-3 pt-2">
-                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
-                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Listening</span>
-                                            <input 
-                                                type="number" 
-                                                step="0.5" 
-                                                min="0" 
-                                                max="9" 
-                                                value={ieltsScore.L}
-                                                onChange={e => handleUpdateIelts({...ieltsScore, L: parseFloat(e.target.value) || 0})}
-                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
-                                            />
-                                        </div>
-
-                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
-                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Reading</span>
-                                            <input 
-                                                type="number" 
-                                                step="0.5" 
-                                                min="0" 
-                                                max="9" 
-                                                value={ieltsScore.R}
-                                                onChange={e => handleUpdateIelts({...ieltsScore, R: parseFloat(e.target.value) || 0})}
-                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
-                                            />
-                                        </div>
-
-                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
-                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Writing</span>
-                                            <input 
-                                                type="number" 
-                                                step="0.5" 
-                                                min="0" 
-                                                max="9" 
-                                                value={ieltsScore.W}
-                                                onChange={e => handleUpdateIelts({...ieltsScore, W: parseFloat(e.target.value) || 0})}
-                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
-                                            />
-                                        </div>
-
-                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
-                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Speaking</span>
-                                            <input 
-                                                type="number" 
-                                                step="0.5" 
-                                                min="0" 
-                                                max="9" 
-                                                value={ieltsScore.S}
-                                                onChange={e => handleUpdateIelts({...ieltsScore, S: parseFloat(e.target.value) || 0})}
-                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
-                                            />
-                                        </div>
+                                        {(['L','R','W','S'] as const).map((k, i) => (
+                                            <div key={k} className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
+                                                <span className="text-[10px] font-bold text-slate-400 block uppercase">{['Listening','Reading','Writing','Speaking'][i]}</span>
+                                                <input
+                                                    type="number" step="0.5" min="0" max="9"
+                                                    value={(ieltsScore as any)[k]}
+                                                    onChange={e => handleUpdateIelts({...ieltsScore, [k]: parseFloat(e.target.value) || 0})}
+                                                    className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-
                                     <a href="/training/ielts" className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-xl text-xs font-bold text-center block shadow-sm">
                                         Practice IELTS Tests →
                                     </a>
                                 </div>
                             </div>
-                        </>
-                    )}
+
+                        </div>
+                        );
+                    })()}
+
                     {/* 1.5 TAB: VISA READINESS SCORE (MATCHING AI RESULT PORTAL) */}
                     {activeTab === "visa-readiness" && (() => {
                         const normalizedDest = normalizeCountryName(selectedDestination);
@@ -4512,11 +4576,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         </p>
                                                     </div>
 
-                                                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2.5">
+                                                    <div className="pt-3 border-t border-slate-100">
                                                         <button
                                                             type="button"
                                                             onClick={() => toggleReadinessDoc(doc.key, doc.title)}
-                                                            className={`px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer ${
+                                                            className={`w-full px-3.5 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                                                                 isReady
                                                                     ? 'bg-emerald-600 text-white shadow-xs hover:bg-emerald-700'
                                                                     : 'bg-white border-2 border-slate-200 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
@@ -4524,25 +4588,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         >
                                                             <Check className={`w-3.5 h-3.5 stroke-[3] ${isReady ? 'text-white' : 'text-slate-400'}`} />
                                                             <span>{isReady ? 'Document Ready' : 'Mark as Ready'}</span>
-                                                        </button>
-
-                                                        <button
-                                                            type="button"
-                                                            disabled={scanningDocKey === doc.key}
-                                                            onClick={() => document.getElementById(fileInputId)?.click()}
-                                                            className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 hover:bg-indigo-100 border border-indigo-200 px-3 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
-                                                        >
-                                                            {scanningDocKey === doc.key ? (
-                                                                <>
-                                                                    <RotateCw className="w-3.5 h-3.5 animate-spin text-indigo-600" />
-                                                                    <span>Scanning...</span>
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <Upload className="w-3.5 h-3.5 text-indigo-500" />
-                                                                    <span>{isReady ? 'Replace' : 'Upload'}</span>
-                                                                </>
-                                                            )}
                                                         </button>
                                                     </div>
                                                 </div>

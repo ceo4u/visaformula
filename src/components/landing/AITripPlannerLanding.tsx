@@ -3702,58 +3702,58 @@ return (
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
-            {/* Categories Tabs */}
-            <div className="flex items-center gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pt-1 pb-4 sm:pb-5 mb-6 sm:mb-7 border-b border-slate-100">
+            {/* Categories Tabs - Perfectly Arranged Across Full Card */}
+            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 pt-1 pb-4 sm:pb-5 mb-6 sm:mb-7 border-b border-slate-100">
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('universities')}
-                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
+                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
                   activeSearchTab === 'universities'
                     ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <GraduationCap className="w-4.5 h-4.5 stroke-[2.2]" />
-                <span>Explore Universities</span>
+                <GraduationCap className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
+                <span className="truncate">Explore Universities</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('consultants')}
-                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
+                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
                   activeSearchTab === 'consultants'
                     ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <UserCheck className="w-4.5 h-4.5 stroke-[2.2]" />
-                <span>Find Consultants</span>
+                <UserCheck className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
+                <span className="truncate">Find Consultants</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('jobs')}
-                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
+                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
                   activeSearchTab === 'jobs'
                     ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <Briefcase className="w-4.5 h-4.5 stroke-[2.2]" />
-                <span>Job Abroad</span>
+                <Briefcase className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
+                <span className="truncate">Job Abroad</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('lawyers')}
-                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
+                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
                   activeSearchTab === 'lawyers'
                     ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
-                <span>Visa Appeal</span>
+                <Scale className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
+                <span className="truncate">Visa Appeal</span>
               </button>
             </div>
 

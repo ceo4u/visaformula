@@ -6,8 +6,9 @@ import {
     Video, User, Users, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2, Upload,
     CheckCircle2, ShieldCheck, AlertCircle, RefreshCw, Compass, CreditCard, MoreVertical, Download, Building2, Info,
     Eye, EyeOff, Mail, KeyRound, GraduationCap, Plane, Check, RotateCw, Luggage, Copy, Trash2,
-    ShieldAlert, DollarSign, Laptop, CalendarCheck, Zap, FileEdit, Layers
+    ShieldAlert, DollarSign, Laptop, CalendarCheck, Zap, FileEdit, Layers, ExternalLink
 } from "lucide-react";
+import { VisaApplicationDetailsView } from "./VisaApplicationDetailsView";
 
 export interface VaultDocItem {
   key: string;
@@ -942,7 +943,31 @@ export function UserDashboard() {
     const [profilePhoto, setProfilePhoto] = useState("");
 
     const [favouriteExperts, setFavouriteExperts] = useState<any[]>([]);
-    const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
+    const [visasProcessingState, setVisasProcessingState] = useState<any[]>([
+        {
+            id: 'case-france-1',
+            trackingId: 'VISA-2024-000789',
+            destination: 'France',
+            destinationFlag: '🇫🇷',
+            visaType: 'Short-Stay Schengen Visa',
+            purpose: 'Tourism / Vacation',
+            passport: 'India',
+            status: 'Active',
+            stage: 'VAC Appointment Booked',
+            progress: 72,
+            documentsCount: 6,
+            addonsCount: 0,
+            submittedAt: '10 May 2024',
+            targetDate: '18 May 2024',
+            travelDate: '15 Jun 2024',
+            returnDate: '30 Jun 2024 (15 Days)',
+            entries: 'Single Entry',
+            feePaid: '€80 (INR 7,200)',
+            processingTime: '15 - 20 Working Days',
+            appointmentDate: '18 May 2024, 10:30 AM'
+        }
+    ]);
+    const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
     const [documents, setDocuments] = useState<any[]>([]);
     const [isScanningVaultDoc, setIsScanningVaultDoc] = useState(false);
     const [journeyData, setJourneyData] = useState<any>(null);
@@ -986,6 +1011,7 @@ export function UserDashboard() {
     const [editingAppId, setEditingAppId] = useState<string | null>(null);
     const [editingAppName, setEditingAppName] = useState("");
     const [copiedTrackingId, setCopiedTrackingId] = useState<string | null>(null);
+    const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
     const [dashboardToast, setDashboardToast] = useState<string | null>(null);
 
     // ── PRE-DEPARTURE & LUGGAGE CHECKLIST STATES ──
@@ -2859,7 +2885,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             if (activeCasesStr) {
                 try {
                     const parsedCases = JSON.parse(activeCasesStr);
-                    if (Array.isArray(parsedCases)) {
+                    if (Array.isArray(parsedCases) && parsedCases.length > 0) {
                         setVisasProcessingState(parsedCases);
                     }
                 } catch(e) {}
@@ -3277,7 +3303,12 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             return (
                                                 <button
                                                     key={item.id}
-                                                    onClick={() => setActiveTab(item.id)}
+                                                    onClick={() => {
+                                                        setActiveTab(item.id);
+                                                        if (item.id === "cases") {
+                                                            setSelectedApplicationId(null);
+                                                        }
+                                                    }}
                                                     title={item.label}
                                                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                                                         isActive
@@ -3340,6 +3371,9 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             key={item.id}
                                             onClick={() => {
                                                 setActiveTab(item.id);
+                                                if (item.id === "cases") {
+                                                    setSelectedApplicationId(null);
+                                                }
                                                 setIsMobileSidebarOpen(false);
                                             }}
                                             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
@@ -3437,7 +3471,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                                 {/* 2. Visa Applications */}
                                 <div
-                                    onClick={() => setActiveTab('cases')}
+                                    onClick={() => {
+                                        setActiveTab('cases');
+                                        setSelectedApplicationId(null);
+                                    }}
                                     className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
                                     <div className="space-y-1">
@@ -4827,6 +4864,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                     {/* 3. TAB: ACTIVE VISA CASES */}
                     {activeTab === "cases" && (
+                        selectedApplicationId ? (
+                            <VisaApplicationDetailsView
+                                application={visasProcessingState.find(c => c.id === selectedApplicationId) || visasProcessingState[0] || {}}
+                                applicantName={fullName || 'Lallwyn Prashanth Edwin'}
+                                onBack={() => setSelectedApplicationId(null)}
+                                onOpenChat={() => setActiveTab('consultations')}
+                            />
+                        ) : (
                         <div className="space-y-6 animate-fade-up">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
@@ -4864,14 +4909,18 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         const appDisplayName = cItem.customName || `${cItem.destination || 'Destination'} • ${cItem.visaType || 'Standard Visa'}`;
 
                                         return (
-                                            <div key={cItem.id || idx} className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5 hover:shadow-md transition-all">
+                                            <div 
+                                                key={cItem.id || idx} 
+                                                onClick={() => setSelectedApplicationId(cItem.id)}
+                                                className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5 hover:shadow-md hover:border-slate-300 transition-all cursor-pointer group"
+                                            >
                                                 {/* Case Header */}
                                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                                                     <div className="flex items-center gap-3.5">
                                                         <span className="text-3xl">{cItem.destinationFlag || getFlagEmoji(cItem.destination) || '🌍'}</span>
                                                         <div className="space-y-1">
                                                             {isEditingThis ? (
-                                                                <div className="flex items-center gap-2">
+                                                                <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                                                                     <input
                                                                         type="text"
                                                                         value={editingAppName}
@@ -4897,12 +4946,13 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                                    <h3 className="text-lg font-black text-slate-950">
+                                                                    <h3 className="text-lg font-black text-slate-950 group-hover:text-indigo-600 transition-colors">
                                                                         {appDisplayName}
                                                                     </h3>
                                                                     <button
                                                                         type="button"
-                                                                        onClick={() => {
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
                                                                             setEditingAppId(cItem.id);
                                                                             setEditingAppName(appDisplayName);
                                                                         }}
@@ -4921,7 +4971,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                 <span>Tracking ID: <strong className="text-slate-900 font-mono">{cItem.trackingId || 'TT-APP-2026-9824'}</strong></span>
                                                                 <button
                                                                     type="button"
-                                                                    onClick={() => handleCopyTrackingId(cItem.trackingId || 'TT-APP-2026-9824')}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleCopyTrackingId(cItem.trackingId || 'TT-APP-2026-9824');
+                                                                    }}
                                                                     className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] transition-all cursor-pointer"
                                                                     title="Copy Tracking ID"
                                                                 >
@@ -4936,13 +4989,22 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         </div>
                                                     </div>
 
-                                                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                                                    <div className="flex items-center gap-2 self-start sm:self-auto" onClick={(e) => e.stopPropagation()}>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setSelectedApplicationId(cItem.id)}
+                                                            className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                                                        >
+                                                            <span>View Details</span>
+                                                            <ArrowRight className="w-3.5 h-3.5" />
+                                                        </button>
                                                         <a
                                                             href={cItem.destination ? `/visa/${encodeURIComponent(cItem.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(cItem.purpose || 'tourism')}&passport=${encodeURIComponent(cItem.passport || 'India')}` : '/'}
-                                                            className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all inline-flex items-center gap-1 shadow-xs"
+                                                            className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all inline-flex items-center gap-1"
+                                                            title="Resume Workspace"
                                                         >
-                                                            <span>Resume Workspace</span>
-                                                            <ArrowRight className="w-3.5 h-3.5" />
+                                                            <span>Workspace</span>
+                                                            <ExternalLink className="w-3.5 h-3.5" />
                                                         </a>
                                                         <button
                                                             type="button"
@@ -5011,6 +5073,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </div>
                             )}
                         </div>
+                        )
                     )}
 
                     {/* 4. TAB: PRE-DEPARTURE & LUGGAGE CHECKLIST */}

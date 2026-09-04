@@ -5816,26 +5816,13 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 >
                                                     Mandatory ({allChecklistItems.filter(d => d.mandatory !== false).length})
                                                 </button>
-                                                {allChecklistItems.filter(d => d.mandatory === false).length > 0 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setVaultDocFilter("recommended")}
-                                                        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
-                                                            vaultDocFilter === "recommended"
-                                                                ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
-                                                                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                                                        }`}
-                                                    >
-                                                        Recommended ({allChecklistItems.filter(d => d.mandatory === false).length})
-                                                    </button>
-                                                )}
                                             </div>
 
                                             {documents && documents.length > 0 && (
                                                 <button
                                                     type="button"
                                                     onClick={handleAutoImportMatchingDocs}
-                                                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap shadow-2xs bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5"
+                                                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap shadow-2xs bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1.5"
                                                 >
                                                     <Sparkles className="w-4 h-4" />
                                                     <span>Auto-Import from Vault ({documents.length} available)</span>
@@ -5931,11 +5918,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                     <strong className="text-sm font-black text-slate-950 block truncate">
                                                                         {doc.title}
                                                                     </strong>
-                                                                    <span className={`text-[10px] font-black uppercase tracking-wider block ${
-                                                                        doc.mandatory !== false ? 'text-rose-600' : 'text-amber-700'
-                                                                    }`}>
-                                                                        {doc.mandatory !== false ? 'Mandatory' : 'Recommended'}
-                                                                    </span>
+                                                                    {doc.mandatory !== false && (
+                                                                        <span className="text-[10px] font-black uppercase tracking-wider block text-rose-600">
+                                                                            Mandatory
+                                                                        </span>
+                                                                    )}
                                                                 </div>
                                                             </div>
 

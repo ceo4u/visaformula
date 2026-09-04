@@ -44,20 +44,7 @@ const pageDesc = `Get your ${countryClean} visa online from your smartphone with
   keywords={`${countryClean} visa, ${countryClean} tourist visa, apply ${countryClean} visa online, ${countryClean} visa fees, ${countryClean} visa for ${passport}`}
   hideWidgets={true}
 >
-  <script is:inline>
-    (function() {
-      try {
-        var user = localStorage.getItem('travltik_user');
-        var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
-        var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
-        if (!user && !seeker && !expert) {
-          var targetUrl = window.location.pathname + window.location.search;
-          window.location.replace('/login?redirect=' + encodeURIComponent(targetUrl));
-        }
-      } catch(e) {}
-    })();
-  </script>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-[#F8FAFC]">
     <VisaCountryResultPortal 
       client:only="react" 
       countrySlug={country || 'uae'} 

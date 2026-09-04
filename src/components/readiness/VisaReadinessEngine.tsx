@@ -552,7 +552,7 @@ export default function VisaReadinessEngine() {
               AI Travel Readiness Engine
             </h2>
             <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sans">
-              Get your AI-powered visa approval assessment in minutes
+              Get Your travel readiness in minutes
             </p>
           </div>
 

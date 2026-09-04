@@ -3720,6 +3720,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         visa_type: `${dest} National Student Visa (Type D Long-Stay)`,
         source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
         official_source_name: `Consular Affairs & Ministry of Foreign Affairs of ${dest}`,
+        processing_time: '30 to 60 Calendar Days (National D Visa)',
+        validity: '1 Year (Renewable upon arrival)',
+        stay_duration: 'Duration of Academic Program',
+        entry_type: 'National Long-Stay (Type D)',
         documents_required: [
           {
             title: 'Valid Passport',
@@ -3800,6 +3804,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         visa_type: `${dest} National Employment Visa (Type D)`,
         source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
         official_source_name: `Ministry of Labour & Consular Affairs of ${dest}`,
+        processing_time: '45 to 90 Calendar Days (Post Work Permit)',
+        validity: '1 to 2 Years (Renewable)',
+        stay_duration: 'Employment Contract Duration',
+        entry_type: 'National Employment (Type D)',
         documents_required: [
           {
             title: 'Valid Passport',
@@ -3875,6 +3883,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         visa_type: 'Schengen Business Visa (Type C)',
         source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
         official_source_name: `${dest} Consular Affairs & VFS/GVCW Portals`,
+        processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
+        validity: 'Up to 90 Days',
+        stay_duration: 'Up to 90 Days within 180 Days',
+        entry_type: 'Short Stay Business (Type C)',
         documents_required: [
           {
             title: 'Valid Passport',
@@ -3956,6 +3968,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         visa_type: 'Schengen Visitor Visa (Private Visit)',
         source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
         official_source_name: `${dest} Consular Affairs & Diplomatic Missions`,
+        processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
+        validity: 'Up to 90 Days',
+        stay_duration: 'Up to 90 Days within 180 Days',
+        entry_type: 'Short Stay Private Visit (Type C)',
         documents_required: [
           {
             title: 'Valid Passport',
@@ -4033,6 +4049,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       official_source_name: isGreece
         ? 'Embassy of Greece, New Delhi — GVC World (GVCW) Official Portal'
         : `${dest} Embassy — VFS Global Official Portal`,
+      processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
+      validity: 'Up to 90 Days',
+      stay_duration: 'Up to 90 Days within 180 Days',
+      entry_type: 'Short Stay (Single / Multiple Entry)',
       documents_required: [
         {
           title: 'Valid Passport',

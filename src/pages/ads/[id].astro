@@ -1,12 +1,12 @@
 ---
+export const prerender = false;
 import Layout from '../../layouts/Layout.astro';
 import { 
   Sparkles, ShieldCheck, CheckCircle2, Star, ArrowRight, ArrowLeft, 
   MessageSquare, Phone, Mail, Award, Clock, Users, Globe, BookOpen, Check
 } from 'lucide-react';
 
-export async function getStaticPaths() {
-  const ads = [
+const ads = [
     {
       id: 'ielts-made-easy',
       title: 'IELTS Made Easy — Achieve Your Target Band Score (7.5+ Guaranteed Strategy)',
@@ -87,13 +87,8 @@ export async function getStaticPaths() {
     }
   ];
 
-  return ads.map(ad => ({
-    params: { id: ad.id },
-    props: { ad }
-  }));
-}
-
-const { ad } = Astro.props;
+const { id } = Astro.params;
+const ad = Astro.props?.ad || ads.find(a => a.id === id) || ads[0];
 ---
 
 <Layout title={`${ad.title} | TravlTik Sponsored Ads`}>

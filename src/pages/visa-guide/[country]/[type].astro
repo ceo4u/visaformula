@@ -1,91 +1,139 @@
 ---
 // src/pages/visa-guide/[country]/[type].astro
+export const prerender = false;
 import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Globe, FileText, Clock, DollarSign, CheckCircle, ArrowRight, Users, Sparkles } from 'lucide-react';
 
-export async function getStaticPaths() {
-  // 1. Static fallback data
-  const staticVisas = [
-    {
-      country: "canada",
-      type: "express-entry",
-      title: "Canada Express Entry",
-      flag: "🇨🇦",
-      visaType: "Permanent Residence",
-      processing: "6-8 months",
-      cost: "CAD 1,365",
-      requirements: ["Valid passport", "Language test (IELTS/CELPIP)", "Educational Credential Assessment (ECA)", "Police clearance certificate", "Medical examination", "Proof of funds (CAD 13,757+ for single)"],
-      documents: ["Passport copies", "IELTS/CELPIP score report", "ECA certificate", "Employment reference letters", "Bank statements (6 months)", "Police clearance"],
-      timeline: [{ step: "Create Express Entry profile", time: "1-2 weeks" }, { step: "Receive ITA (Invitation to Apply)", time: "Varies (CRS-dependent)" }, { step: "Submit full application", time: "60 days after ITA" }, { step: "Biometrics", time: "30 days after request" }, { step: "Decision", time: "6-8 months from submission" }]
-    },
-    {
-      country: "usa",
-      type: "f1",
-      title: "USA F-1 Student Visa",
-      flag: "🇺🇸",
-      visaType: "Student Visa",
-      processing: "3-5 weeks",
-      cost: "USD 185 + SEVIS $350",
-      requirements: ["I-20 from SEVP-certified school", "Valid passport", "Proof of financial support", "Ties to home country", "English proficiency", "Academic records"],
-      documents: ["I-20 form", "DS-160 confirmation", "Passport", "Financial documents", "Academic transcripts", "TOEFL/IELTS scores"],
-      timeline: [{ step: "Get I-20 from university", time: "2-4 weeks" }, { step: "Pay SEVIS fee", time: "1 day" }, { step: "Complete DS-160", time: "1 day" }, { step: "Schedule visa interview", time: "1-3 weeks" }, { step: "Attend interview", time: "1 day" }]
-    }
-  ];
+// Static fallback data
+const staticVisas = [
+  {
+    country: "canada",
+    type: "express-entry",
+    title: "Canada Express Entry",
+    flag: "🇨🇦",
+    visaType: "Permanent Residence",
+    processing: "6-8 months",
+    cost: "CAD 1,365",
+    requirements: ["Valid passport", "Language test (IELTS/CELPIP)", "Educational Credential Assessment (ECA)", "Police clearance certificate", "Medical examination", "Proof of funds (CAD 13,757+ for single)"],
+    documents: ["Passport copies", "IELTS/CELPIP score report", "ECA certificate", "Employment reference letters", "Bank statements (6 months)", "Police clearance"],
+    timeline: [{ step: "Create Express Entry profile", time: "1-2 weeks" }, { step: "Receive ITA (Invitation to Apply)", time: "Varies (CRS-dependent)" }, { step: "Submit full application", time: "60 days after ITA" }, { step: "Biometrics", time: "30 days after request" }, { step: "Decision", time: "6-8 months from submission" }]
+  },
+  {
+    country: "usa",
+    type: "f1",
+    title: "USA F-1 Student Visa",
+    flag: "🇺🇸",
+    visaType: "Student Visa",
+    processing: "3-5 weeks",
+    cost: "USD 185 + SEVIS $350",
+    requirements: ["I-20 from SEVP-certified school", "Valid passport", "Proof of financial support", "Ties to home country", "English proficiency", "Academic records"],
+    documents: ["I-20 form", "DS-160 confirmation", "Passport", "Financial documents", "Academic transcripts", "TOEFL/IELTS scores"],
+    timeline: [{ step: "Get I-20 from university", time: "2-4 weeks" }, { step: "Pay SEVIS fee", time: "1 day" }, { step: "Complete DS-160", time: "1 day" }, { step: "Schedule visa interview", time: "1-3 weeks" }, { step: "Attend interview", time: "1 day" }]
+  }
+];
 
-  const paths = staticVisas.map(visa => ({
-    params: { country: visa.country, type: visa.type },
-    props: { visa, entry: null }
-  }));
+const { country: rawCountry = 'canada', type: rawType = 'tourist' } = Astro.params;
+const countryParam = (rawCountry || 'canada').toLowerCase();
+const typeParam = (rawType || 'tourist').toLowerCase();
 
-  // 2. Load Content Collections
-  try {
-    const guides = await getCollection('visa-guides');
-    guides.forEach(entry => {
-      const countryParam = entry.data.country.toLowerCase();
-      const typeParam = entry.data.visaType.toLowerCase();
-      
-      // Map frontmatter schema to visual guide structures
-      const mappedVisa = {
-        country: countryParam,
-        type: typeParam,
-        title: entry.data.title,
-        flag: countryParam === "canada" ? "🇨🇦" : countryParam === "usa" ? "🇺🇸" : "🌎",
-        visaType: entry.data.visaType,
-        processing: entry.data.processingTime,
-        cost: entry.data.fee,
-        requirements: entry.data.requirements,
-        documents: [
-          "Passport bio-data scan",
-          "Digital passport size photo",
-          "Completed visa application forms",
-          ...entry.data.requirements.slice(0, 3)
-        ],
-        timeline: [
-          { step: "Submit Online Application Form", time: "1-2 days" },
-          { step: "Document Verification & Filing", time: "3-5 days" },
-          { step: "Embassy Processing Window", time: entry.data.processingTime }
-        ]
-      };
+let visa = Astro.props?.visa;
+let entry = Astro.props?.entry;
 
-      // Add to paths (avoiding duplicates)
-      const exists = paths.some(p => p.params.country === countryParam && p.params.type === typeParam);
-      if (!exists) {
-        paths.push({
-          params: { country: countryParam, type: typeParam },
-          props: { visa: mappedVisa, entry }
-        });
+if (!visa) {
+  // 1. Try staticVisas
+  const found = staticVisas.find(v => v.country.toLowerCase() === countryParam && v.type.toLowerCase() === typeParam);
+  if (found) {
+    visa = found;
+  } else {
+    // 2. Try content collection
+    try {
+      const guides = await getCollection('visa-guides');
+      const gEntry = guides?.find(g => g.data.country.toLowerCase() === countryParam && g.data.visaType.toLowerCase() === typeParam);
+      if (gEntry) {
+        entry = gEntry;
+        visa = {
+          country: countryParam,
+          type: typeParam,
+          title: gEntry.data.title,
+          flag: countryParam === "canada" ? "🇨🇦" : countryParam === "usa" ? "🇺🇸" : "🌎",
+          visaType: gEntry.data.visaType,
+          processing: gEntry.data.processingTime,
+          cost: gEntry.data.fee,
+          requirements: gEntry.data.requirements,
+          documents: [
+            "Passport bio-data scan",
+            "Digital passport size photo",
+            "Completed visa application forms",
+            ...(gEntry.data.requirements?.slice(0, 3) || [])
+          ],
+          timeline: [
+            { step: "Submit Online Application Form", time: "1-2 days" },
+            { step: "Document Verification & Filing", time: "3-5 days" },
+            { step: "Embassy Processing Window", time: gEntry.data.processingTime }
+          ]
+        };
       }
-    });
-  } catch (e) {
-    console.error("Error reading visa-guides collection:", e);
+    } catch (e) {
+      // ignore collection lookup errors
+    }
   }
 
-  return paths;
-}
+  // 3. Dynamic consular fallback for any country & type
+  if (!visa) {
+    const formattedCountry = countryParam.charAt(0).toUpperCase() + countryParam.slice(1);
+    const formattedType = typeParam.charAt(0).toUpperCase() + typeParam.slice(1);
+    const countryFlags: Record<string, string> = {
+      china: '🇨🇳',
+      greece: '🇬🇷',
+      france: '🇫🇷',
+      germany: '🇩🇪',
+      italy: '🇮🇹',
+      spain: '🇪🇸',
+      uk: '🇬🇧',
+      'united kingdom': '🇬🇧',
+      usa: '🇺🇸',
+      'united states': '🇺🇸',
+      canada: '🇨🇦',
+      australia: '🇦🇺',
+      japan: '🇯🇵',
+      uae: '🇦🇪',
+      dubai: '🇦🇪',
+      singapore: '🇸🇬',
+      thailand: '🇹🇭'
+    };
 
-const { country, type } = Astro.params;
-const { visa, entry } = Astro.props;
+    visa = {
+      country: countryParam,
+      type: typeParam,
+      title: `${formattedCountry} ${formattedType} Visa`,
+      flag: countryFlags[countryParam] || '✈️',
+      visaType: `${formattedType} Visa`,
+      processing: countryParam === 'china' ? '4–7 Days' : ['greece', 'france', 'germany', 'italy', 'spain'].includes(countryParam) ? '15–20 Days' : '10–15 Days',
+      cost: countryParam === 'china' ? '₹7,930 Total' : ['greece', 'france', 'germany', 'italy', 'spain'].includes(countryParam) ? '€120 (~₹10,800)' : 'Official Consular Fee',
+      requirements: [
+        "Original Passport with at least 6 months validity beyond intended stay",
+        "Recent compliant biometric passport-sized photographs",
+        "Proof of financial solvency (bank statements / proof of income)",
+        "Confirmed round-trip flight reservation and accommodation proof",
+        "Clear travel itinerary with purpose-specific supporting documentation"
+      ],
+      documents: [
+        "Original Passport & bio-data photocopies",
+        "Official signed Visa Application Form",
+        "Bank statements for last 3 to 6 months",
+        "Confirmed flight itinerary & hotel accommodation vouchers",
+        "Employment leave clearance letter (NOC) or business proof"
+      ],
+      timeline: [
+        { step: "Check Eligibility & Gather Mandatory Documents", time: "1-2 days" },
+        { step: "Complete Official Visa Application Form", time: "1 day" },
+        { step: "Schedule & Attend Appointment for Biometrics", time: "3-5 days" },
+        { step: "Consular Adjudication & Stamped Passport Dispatch", time: countryParam === 'china' ? '4-7 days' : '15-20 days' }
+      ]
+    };
+  }
+}
 
 // Compile Content Collection entry if present
 const Content = entry ? (await entry.render()).Content : null;

@@ -145,12 +145,7 @@ const allClassifieds = [
   }
 ];
 
-export async function getStaticPaths() {
-  return allClassifieds.map(c => ({
-    params: { id: c.id },
-    props: { classified: c }
-  }));
-}
+export const prerender = false;
 
 const { id } = Astro.params;
 const legacySlugMap: Record<string, string> = {
@@ -162,7 +157,7 @@ if (id && legacySlugMap[id]) {
   return Astro.redirect(`/classifieds/${legacySlugMap[id]}`, 301);
 }
 
-const classified = Astro.props.classified || allClassifieds.find(c => c.id === id) || allClassifieds[0];
+const classified = Astro.props?.classified || allClassifieds.find(c => c.id === id) || allClassifieds[0];
 ---
 
 <Layout title={`${classified.title} | TravlTik Classifieds`}>

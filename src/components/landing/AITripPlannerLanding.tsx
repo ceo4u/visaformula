@@ -1448,6 +1448,73 @@ export function AITripPlannerLanding() {
     window.location.href = `/find-experts?${params.toString()}`;
   };
 
+  // Job Abroad Search State
+  const [homeJobRole, setHomeJobRole] = useState('');
+  const [homeJobCountry, setHomeJobCountry] = useState('Select Country');
+  const [homeJobCategory, setHomeJobCategory] = useState('Select Sector / Field');
+  const [homeJobCountryOpen, setHomeJobCountryOpen] = useState(false);
+  const [homeJobCategoryOpen, setHomeJobCategoryOpen] = useState(false);
+
+  // Visa Appeal Lawyers Search State
+  const [homeLawyerQuery, setHomeLawyerQuery] = useState('');
+  const [homeLawyerCountry, setHomeLawyerCountry] = useState('Select Refusal Country');
+  const [homeLawyerCaseType, setHomeLawyerCaseType] = useState('Select Case / Refusal Type');
+  const [homeLawyerLocation, setHomeLawyerLocation] = useState('');
+  const [homeLawyerCountryOpen, setHomeLawyerCountryOpen] = useState(false);
+  const [homeLawyerCaseTypeOpen, setHomeLawyerCaseTypeOpen] = useState(false);
+
+  const homeJobCategoriesList = [
+    'All Sectors',
+    'IT & Tech',
+    'Healthcare & Nursing',
+    'Engineering & Construction',
+    'Hospitality & Tourism',
+    'Education & Teaching',
+    'Business & Finance',
+    'Supply Chain & Logistics'
+  ];
+
+  const homeLawyerCaseTypesList = [
+    'All Refusals & Appeals',
+    'Student Visa Refusal',
+    'Work Permit / LMIA Refusal',
+    'Visitor / Tourist Visa Refusal',
+    'PR / Express Entry Refusal',
+    'Judicial Review / Federal Court',
+    'AAT / Administrative Appeals'
+  ];
+
+  const handleHomeJobSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    if (homeJobRole.trim()) params.set('q', homeJobRole.trim());
+    if (homeJobCountry && homeJobCountry !== 'Select Country') params.set('country', homeJobCountry);
+    if (homeJobCategory && homeJobCategory !== 'Select Sector / Field' && homeJobCategory !== 'All Sectors') {
+      params.set('category', homeJobCategory);
+    }
+    window.location.href = `/jobs?${params.toString()}`;
+  };
+
+  const handleHomeLawyerSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    params.set('category', 'Visa Appeals');
+    if (homeLawyerQuery.trim()) {
+      params.set('q', homeLawyerQuery.trim());
+    }
+    if (homeLawyerCaseType && homeLawyerCaseType !== 'Select Case / Refusal Type' && homeLawyerCaseType !== 'All Refusals & Appeals') {
+      const qExisting = params.get('q') || '';
+      params.set('q', qExisting ? `${qExisting} ${homeLawyerCaseType}` : homeLawyerCaseType);
+    }
+    if (homeLawyerCountry && homeLawyerCountry !== 'Select Refusal Country' && homeLawyerCountry !== 'Select Country') {
+      params.set('country', homeLawyerCountry);
+    }
+    if (homeLawyerLocation.trim()) {
+      params.set('city', homeLawyerLocation.trim());
+    }
+    window.location.href = `/find-experts?${params.toString()}`;
+  };
+
   // Multi-Tab Search Specific Filter States
   const [consultantPassport, setConsultantPassport] = useState('');
   const [consultantDestination, setConsultantDestination] = useState('');
@@ -3639,21 +3706,27 @@ return (
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
               <div>
                 <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  Find Universities &amp; Study Abroad Consultants
+                  {activeSearchTab === 'universities' && 'Find Universities & Study Abroad Consultants'}
+                  {activeSearchTab === 'consultants' && 'Find Study Abroad & Visa Consultants'}
+                  {activeSearchTab === 'jobs' && 'Search Overseas Jobs & Work Sponsorships'}
+                  {activeSearchTab === 'lawyers' && 'Find Visa Appeal Lawyers & Refusal Advocates'}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  Search accredited global universities or connect with certified visa and admission experts.
+                  {activeSearchTab === 'universities' && 'Search accredited global universities or connect with certified visa and admission experts.'}
+                  {activeSearchTab === 'consultants' && 'Connect with verified immigration consultants, education advisors, and visa agents.'}
+                  {activeSearchTab === 'jobs' && 'Find international jobs with LMIA, EU Blue Card, and employer visa sponsorships.'}
+                  {activeSearchTab === 'lawyers' && 'Connect with licensed immigration attorneys for visa refusals, tribunal appeals & judicial reviews.'}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
                 <button
                   type="button"
                   onClick={() => setActiveSearchTab('universities')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeSearchTab === 'universities'
                       ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
                   }`}
                 >
                   <GraduationCap className="w-4 h-4 stroke-[2.2]" />
@@ -3663,14 +3736,40 @@ return (
                 <button
                   type="button"
                   onClick={() => setActiveSearchTab('consultants')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeSearchTab === 'consultants'
                       ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
                   }`}
                 >
                   <UserCheck className="w-4 h-4 stroke-[2.2]" />
                   <span>Find Consultants</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveSearchTab('jobs')}
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                    activeSearchTab === 'jobs'
+                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
+                  }`}
+                >
+                  <Briefcase className="w-4 h-4 stroke-[2.2]" />
+                  <span>Job Abroad</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveSearchTab('lawyers')}
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                    activeSearchTab === 'lawyers'
+                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
+                  }`}
+                >
+                  <Scale className="w-4 h-4 stroke-[2.2]" />
+                  <span>Visa Appeal Lawyers</span>
                 </button>
               </div>
             </div>
@@ -3871,6 +3970,208 @@ return (
                   >
                     <Search className="w-4 h-4" />
                     <span>Search Verified Consultants</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: Jobs Abroad Search */}
+            {activeSearchTab === 'jobs' && (
+              <div className="space-y-5 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Job Role / Title Keyword */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Job Role or Keyword
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeJobRole}
+                        onChange={(e) => setHomeJobRole(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeJobSearch(); }}
+                        placeholder="e.g. Software Engineer, Nurse, Chef, Construction"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Destination Country */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Destination Country
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeJobCountryOpen(!homeJobCountryOpen); setHomeJobCategoryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <Globe className="w-4.5 h-4.5 text-slate-600 shrink-0" />
+                        <span className={`text-xs font-semibold truncate ${homeJobCountry !== 'Select Country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {homeJobCountry}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeJobCountryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeJobCountryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {['All Countries', ...homeCountriesList].map((c) => (
+                          <button key={c} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeJobCountry(c); setHomeJobCountryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeJobCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Sector / Category */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Industry / Sector
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeJobCategoryOpen(!homeJobCategoryOpen); setHomeJobCountryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                        <span className={`text-xs font-semibold truncate ${homeJobCategory !== 'Select Sector / Field' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {homeJobCategory}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeJobCategoryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeJobCategoryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeJobCategoriesList.map((cat) => (
+                          <button key={cat} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeJobCategory(cat); setHomeJobCategoryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeJobCategory === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{cat}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Jobs Action Button */}
+                <div className="pt-2 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleHomeJobSearch}
+                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    <span>Search Jobs Abroad</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: Visa Appeal Lawyers Search */}
+            {activeSearchTab === 'lawyers' && (
+              <div className="space-y-5 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {/* Lawyer Name / Case Query */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Search Lawyer / Keyword
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeLawyerQuery}
+                        onChange={(e) => setHomeLawyerQuery(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeLawyerSearch(); }}
+                        placeholder="e.g. Judicial Review, 214(b), AAT Appeal"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Refusal / Case Type */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Refusal / Case Type
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeLawyerCaseTypeOpen(!homeLawyerCaseTypeOpen); setHomeLawyerCountryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <span className={`text-xs font-semibold truncate ${homeLawyerCaseType !== 'Select Case / Refusal Type' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                        {homeLawyerCaseType}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeLawyerCaseTypeOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeLawyerCaseTypeOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeLawyerCaseTypesList.map((cType) => (
+                          <button key={cType} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeLawyerCaseType(cType); setHomeLawyerCaseTypeOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeLawyerCaseType === cType ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{cType}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Refusal Country */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Visa Refusal Country
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeLawyerCountryOpen(!homeLawyerCountryOpen); setHomeLawyerCaseTypeOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <span className={`text-xs font-semibold truncate ${homeLawyerCountry !== 'Select Refusal Country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                        {homeLawyerCountry !== 'Select Refusal Country' ? homeLawyerCountry : 'Select Country'}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeLawyerCountryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeLawyerCountryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {['All Countries', ...homeCountriesList].map((c) => (
+                          <button key={c} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeLawyerCountry(c); setHomeLawyerCountryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeLawyerCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* City / Location */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      City / Location <span className="text-slate-400 font-normal">(Optional)</span>
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeLawyerLocation}
+                        onChange={(e) => setHomeLawyerLocation(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeLawyerSearch(); }}
+                        placeholder="e.g. London, Toronto, Delhi, Remote"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lawyers Action Button */}
+                <div className="pt-2 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleHomeLawyerSearch}
+                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                  >
+                    <Scale className="w-4 h-4" />
+                    <span>Find Appeal Lawyers</span>
                   </button>
                 </div>
               </div>

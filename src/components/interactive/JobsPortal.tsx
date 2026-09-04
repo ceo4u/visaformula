@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Briefcase, MapPin, Clock, Search, Filter, CheckCircle, Globe,
   ArrowRight, Shield, Plane, Star, BadgeCheck, DollarSign,
@@ -157,7 +157,7 @@ const countryCards = [
 ];
 
 const categoriesList = ["All Categories", "IT & Tech", "Healthcare", "Engineering", "Hospitality", "Education"];
-const countriesList   = ["All Countries", "Canada", "UAE", "UK", "Australia", "Germany", "New Zealand"];
+const countriesList   = ["All Countries", "Canada", "UAE", "UK", "Australia", "Germany", "New Zealand", "Greece", "USA", "Ireland", "Singapore"];
 
 export function JobsPortal() {
   const [jobs, setJobs]                   = useState(initialJobs);
@@ -177,6 +177,80 @@ export function JobsPortal() {
     setTimeout(() => setToastOn(false), 2500);
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const qParam = params.get("q") || params.get("query") || params.get("role") || "";
+    const countryParam = params.get("country") || "";
+    const categoryParam = params.get("category") || "";
+
+    let qVal = qParam;
+    let countryVal = "All Countries";
+    let categoryVal = "All Categories";
+
+    if (countryParam && countryParam !== "All Countries" && countryParam !== "Select Country") {
+      const cLower = countryParam.toLowerCase();
+      const match = countriesList.find(c => {
+        const cl = c.toLowerCase();
+        return cl === cLower ||
+          (cLower.includes("uk") && cl === "UK") ||
+          (cLower.includes("united kingdom") && cl === "UK") ||
+          (cLower.includes("uae") && cl === "UAE") ||
+          (cLower.includes("dubai") && cl === "UAE") ||
+          (cLower.includes("united states") && cl === "USA") ||
+          (cLower.includes("usa") && cl === "USA") ||
+          (cLower.includes("canada") && cl === "Canada") ||
+          (cLower.includes("germany") && cl === "Germany") ||
+          (cLower.includes("australia") && cl === "Australia") ||
+          (cLower.includes("new zealand") && cl === "New Zealand") ||
+          (cLower.includes("greece") && cl === "Greece");
+      });
+      countryVal = match || countryParam;
+    }
+
+    if (categoryParam && categoryParam !== "All Categories" && categoryParam !== "Select Category" && categoryParam !== "Select Sector / Field") {
+      const catLower = categoryParam.toLowerCase();
+      const match = categoriesList.find(c => {
+        const cl = c.toLowerCase();
+        return cl === catLower ||
+          (cl.includes("tech") && catLower.includes("tech")) ||
+          (cl.includes("health") && catLower.includes("health")) ||
+          (cl.includes("engineering") && catLower.includes("engineering")) ||
+          (cl.includes("hospitality") && catLower.includes("hospitality")) ||
+          (cl.includes("education") && catLower.includes("education"));
+      });
+      categoryVal = match || categoryParam;
+    }
+
+    if (qVal) setSearchQuery(qVal);
+    if (countryVal !== "All Countries") setSelectedCountry(countryVal);
+    if (categoryVal !== "All Categories") setSelectedCategory(categoryVal);
+
+    // Filter jobs immediately
+    let f = initialJobs;
+    if (qVal) {
+      const qLower = qVal.toLowerCase();
+      f = f.filter(j =>
+        j.title.toLowerCase().includes(qLower) ||
+        j.company.toLowerCase().includes(qLower) ||
+        j.location.toLowerCase().includes(qLower) ||
+        (j.tags && j.tags.some(t => t.toLowerCase().includes(qLower)))
+      );
+    }
+    if (countryVal !== "All Countries") {
+      const cLower = countryVal.toLowerCase();
+      f = f.filter(j => j.country.toLowerCase().includes(cLower) || j.location.toLowerCase().includes(cLower));
+    }
+    if (categoryVal !== "All Categories") {
+      const catLower = categoryVal.toLowerCase();
+      f = f.filter(j => j.category.toLowerCase().includes(catLower));
+    }
+    setJobs(f);
+    if (qVal || countryVal !== "All Countries" || categoryVal !== "All Categories") {
+      showToast(`${f.length} jobs found`);
+    }
+  }, []);
+
   const toggleSave = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setSaved(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
@@ -187,10 +261,18 @@ export function JobsPortal() {
     let f = initialJobs;
     if (searchQuery) f = f.filter(j =>
       j.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      j.company.toLowerCase().includes(searchQuery.toLowerCase())
+      j.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      j.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (j.tags && j.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())))
     );
-    if (selectedCountry !== "All Countries") f = f.filter(j => j.country === selectedCountry);
-    if (selectedCategory !== "All Categories") f = f.filter(j => j.category === selectedCategory);
+    if (selectedCountry !== "All Countries") {
+      const cLower = selectedCountry.toLowerCase();
+      f = f.filter(j => j.country.toLowerCase().includes(cLower) || j.location.toLowerCase().includes(cLower));
+    }
+    if (selectedCategory !== "All Categories") {
+      const catLower = selectedCategory.toLowerCase();
+      f = f.filter(j => j.category.toLowerCase().includes(catLower));
+    }
     if (sponsorOnly) f = f.filter(j => j.sponsorship);
     if (relocationOnly) f = f.filter(j => j.relocation);
     setJobs(f);

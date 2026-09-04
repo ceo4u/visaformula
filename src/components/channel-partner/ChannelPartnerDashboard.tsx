@@ -650,14 +650,8 @@ export default function ChannelPartnerDashboard() {
                   CHANNEL PARTNER
                 </div>
               </div>
-              <button 
-                type="button"
-                onClick={() => setMobileOpen(false)} 
-                title="Close Menu"
-                aria-label="Close Menu"
-                className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
-              >
-                <ChevronLeft className="w-4 h-4 text-slate-600" />
+              <button onClick={() => setMobileOpen(false)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 cursor-pointer">
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -838,26 +832,17 @@ export default function ChannelPartnerDashboard() {
 
         {/* Top Header Bar (Spacious & Prominent) */}
         <header className="bg-white/95 backdrop-blur-2xl border-b border-slate-200/90 min-h-[76px] sm:min-h-[86px] flex items-center justify-between px-5 sm:px-8 shrink-0 shadow-[0_2px_12px_rgba(0,0,0,0.02)] z-20 transition-all">
-          <div className="flex items-center gap-3.5">
-            {/* Mobile Showcase Menu Button */}
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              title="Showcase Menu"
-              aria-label="Showcase Menu"
-              className="lg:hidden w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer shrink-0"
+              aria-label="Open Navigation Menu"
+              className="lg:hidden p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center cursor-pointer transition-colors shrink-0"
             >
-              <ChevronLeft className="w-4 h-4 text-slate-600" />
+              <Menu className="w-6 h-6 stroke-[2]" />
             </button>
             <div className="lg:hidden flex items-center gap-2">
-              <img src="/logo.png" alt="TravlTik" className="h-8 w-auto object-contain" />
-            </div>
-
-            <div className="hidden sm:flex flex-col gap-1.5">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">{sectionTitle[active] || active}</h1>
-              <div className="flex items-center gap-1">
-                <HierarchyBadge />
-              </div>
+              <img src="/logo.png?v=3" alt="TravlTik" className="h-8 sm:h-9 w-auto object-contain" />
             </div>
           </div>
 

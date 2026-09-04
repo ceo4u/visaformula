@@ -525,15 +525,14 @@ export function ConsultantDashboard() {
 
             {/* Top Fixed Header Navbar */}
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 sm:gap-3">
                     <button 
                         type="button"
                         onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} 
-                        className="lg:hidden w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer shrink-0"
-                        title="Showcase Menu"
-                        aria-label="Showcase Menu"
+                        aria-label="Open Navigation Menu"
+                        className="lg:hidden p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
                     >
-                        <ChevronLeft className="w-4 h-4 text-slate-600" />
+                        <Menu className="w-6 h-6 stroke-[2]" />
                     </button>
                     <a href="/" className="flex items-center">
                         <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[44px] w-auto object-contain transition-all hover:scale-105" />
@@ -698,14 +697,8 @@ export function ConsultantDashboard() {
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                                 <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
-                                <button 
-                                    type="button"
-                                    onClick={() => setIsMobileSidebarOpen(false)} 
-                                    className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
-                                    title="Close Menu"
-                                    aria-label="Close Menu"
-                                >
-                                    <ChevronLeft className="w-4 h-4 text-slate-600" />
+                                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
                             <nav className="space-y-1">

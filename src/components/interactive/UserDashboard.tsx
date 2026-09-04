@@ -3101,9 +3101,17 @@ function cleanShortDocRequirement(title: string, description: string): string {
             
             {/* Top Fixed Navigation Header */}
             <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                    <button 
+                        type="button"
+                        onClick={() => setIsMobileSidebarOpen(true)}
+                        aria-label="Open Navigation Menu"
+                        className="lg:hidden p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+                    >
+                        <Menu className="w-6 h-6 stroke-[2]" />
+                    </button>
                     <a href="/" className="flex items-center gap-2">
-                        <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-10 sm:h-12 max-h-[50px] w-auto object-contain" />
+                        <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-11 max-h-[46px] w-auto object-contain" />
                     </a>
                 </div>
 
@@ -3149,27 +3157,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     </div>
                 </div>
             </header>
-
-            {/* Mobile Sub-Header Menu Bar (Matching media_1788505608720.png - Placed below header) */}
-            <div className="lg:hidden bg-white border-b border-slate-200/80 px-4 py-2 flex items-center justify-between sticky top-16 z-30 shadow-2xs">
-                <div className="flex items-center gap-2.5">
-                    <button
-                        type="button"
-                        onClick={() => setIsMobileSidebarOpen(true)}
-                        className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 shadow-2xs flex items-center justify-center text-slate-500 hover:text-slate-900 transition-all cursor-pointer active:scale-95"
-                        title="Showcase Menu"
-                    >
-                        <ChevronLeft className="w-4 h-4 text-slate-600" />
-                    </button>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
-                        Menu
-                    </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="capitalize">{activeTab === 'dashboard' ? 'Overview' : activeTab.replace('-', ' ')}</span>
-                </div>
-            </div>
 
             <div className="flex-1 flex min-h-[calc(100vh-4rem)]">
                 
@@ -3259,13 +3246,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                                 <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
-                                <button 
-                                    type="button"
-                                    onClick={() => setIsMobileSidebarOpen(false)} 
-                                    className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 shadow-2xs flex items-center justify-center text-slate-500 hover:text-slate-900 transition-all cursor-pointer active:scale-95"
-                                    title="Close Menu"
-                                >
-                                    <ChevronLeft className="w-4 h-4 text-slate-600" />
+                                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
                             <nav className="space-y-1">

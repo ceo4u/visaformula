@@ -6023,6 +6023,124 @@ All documents must be genuine, valid and meet official consular standards to avo
                   </div>
                 </div>
 
+                {/* ── DOCUMENTS REQUIRED & STEPS TO FOLLOW (MATCHING EXACT PHOTO media_1788502529847.png) ── */}
+                {(() => {
+                  const defaultPortalOverviewDocs = [
+                    { title: 'Passport', desc: 'Valid for at least 3 months beyond intended stay', icon: '🛂', bg: 'bg-purple-50 text-purple-600 border-purple-100' },
+                    { title: 'Visa Application Form', desc: 'Duly filled and signed application form', icon: '📝', bg: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+                    { title: 'Photographs', desc: 'Recent passport-sized photographs', icon: '📷', bg: 'bg-amber-50 text-amber-600 border-amber-100' },
+                    { title: 'Travel Itinerary', desc: 'Confirmed flight booking', icon: '✈️', bg: 'bg-teal-50 text-teal-600 border-teal-100' },
+                    { title: 'Accommodation Proof', desc: 'Hotel booking or invitation letter', icon: '🏨', bg: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
+                    { title: 'Travel Insurance', desc: 'Minimum cover of €30,000 / Adequate medical cover', icon: '🛡️', bg: 'bg-sky-50 text-sky-600 border-sky-100' },
+                    { title: 'Financial Proof', desc: 'Bank statements / payslips / tax returns', icon: '💳', bg: 'bg-rose-50 text-rose-600 border-rose-100' },
+                    { title: 'Cover Letter', desc: 'Purpose of visit and travel details', icon: '📄', bg: 'bg-red-50 text-red-600 border-red-100' },
+                  ];
+
+                  const overviewDocsList = (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
+                    ? aiData.documents_required.slice(0, 8).map((d: any, idx: number) => ({
+                        title: d.title || d.name || defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].title,
+                        desc: d.description || d.hint || defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].desc,
+                        icon: d.icon || defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].icon,
+                        bg: defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].bg
+                      }))
+                    : defaultPortalOverviewDocs;
+
+                  const defaultPortalOverviewSteps = [
+                    { title: 'Check Eligibility', desc: 'Ensure you meet all the requirements' },
+                    { title: 'Gather Documents', desc: 'Collect and verify all required documents' },
+                    { title: 'Fill Application', desc: 'Complete the application form accurately' },
+                    { title: 'Book Appointment', desc: 'Schedule an appointment at the visa center' },
+                    { title: 'Attend and Submit', desc: 'Attend the appointment and submit documents' },
+                    { title: 'Track Application', desc: 'Track your application status online' },
+                  ];
+
+                  const overviewStepsList = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4)
+                    ? aiData.how_to_apply.slice(0, 6).map((step: any, idx: number) => {
+                        const title = typeof step === 'string'
+                          ? step.split(':')[0].replace(/^\[?step\s*\d+\]?\s*/i, '').trim()
+                          : (step.title || step.step || defaultPortalOverviewSteps[idx % 6].title);
+                        const desc = typeof step === 'string'
+                          ? (step.split(':').slice(1).join(':').trim() || defaultPortalOverviewSteps[idx % 6].desc)
+                          : (step.description || step.detail || defaultPortalOverviewSteps[idx % 6].desc);
+                        return { title, desc };
+                      })
+                    : defaultPortalOverviewSteps;
+
+                  return (
+                    <div className="space-y-6">
+                      {/* Documents Required */}
+                      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs p-6 sm:p-7 space-y-5 text-left">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div>
+                            <h3 className="text-lg font-bold text-slate-950 tracking-tight">Documents Required</h3>
+                            <p className="text-xs text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleDownloadChecklist}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer self-start sm:self-auto"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>Download Checklist</span>
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                          {overviewDocsList.map((doc: any, idx: number) => (
+                            <div
+                              key={idx}
+                              className="flex items-start gap-3.5 p-4 rounded-2xl bg-white border border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80 hover:shadow-sm transition-all"
+                            >
+                              <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-bold text-sm shadow-2xs`}>
+                                {doc.icon}
+                              </div>
+                              <div className="min-w-0">
+                                <h4 className="text-xs font-bold text-slate-950 leading-snug truncate">{doc.title}</h4>
+                                <p className="text-[11px] font-normal text-slate-500 mt-0.5 leading-relaxed line-clamp-2">{doc.desc}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="flex justify-center pt-1">
+                          <button
+                            type="button"
+                            onClick={() => setSidebarTab('documents')}
+                            className="px-6 py-2.5 rounded-xl border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50/50 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                          >
+                            View Full Document Checklist
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Steps to Follow */}
+                      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs p-6 sm:p-7 space-y-6 text-left">
+                        <div>
+                          <h3 className="text-lg font-bold text-slate-950 tracking-tight">Steps to Follow</h3>
+                          <p className="text-xs text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
+                        </div>
+
+                        <div className="relative pt-3 pb-2">
+                          {/* Connecting line behind circles on desktop */}
+                          <div className="hidden lg:block absolute top-[28px] left-[7%] right-[7%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
+
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-4 relative z-10">
+                            {overviewStepsList.map((step: any, idx: number) => (
+                              <div key={idx} className="flex flex-col items-center text-center px-1">
+                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-bold shadow-xs ring-4 ring-white z-10 shrink-0">
+                                  {idx + 1}
+                                </div>
+                                <h4 className="text-xs font-bold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
+                                <p className="text-[11px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2">{step.desc}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
                 <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-2xs space-y-4 text-left">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-100 pb-3">

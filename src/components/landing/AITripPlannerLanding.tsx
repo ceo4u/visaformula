@@ -3702,76 +3702,59 @@ return (
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
-            {/* Header & Tabs */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  {activeSearchTab === 'universities' && 'Find Universities & Study Abroad Consultants'}
-                  {activeSearchTab === 'consultants' && 'Find Study Abroad & Visa Consultants'}
-                  {activeSearchTab === 'jobs' && 'Search Overseas Jobs & Work Sponsorships'}
-                  {activeSearchTab === 'lawyers' && 'Find Visa Appeal Lawyers & Refusal Advocates'}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  {activeSearchTab === 'universities' && 'Search accredited global universities or connect with certified visa and admission experts.'}
-                  {activeSearchTab === 'consultants' && 'Connect with verified immigration consultants, education advisors, and visa agents.'}
-                  {activeSearchTab === 'jobs' && 'Find international jobs with LMIA, EU Blue Card, and employer visa sponsorships.'}
-                  {activeSearchTab === 'lawyers' && 'Connect with licensed immigration attorneys for visa refusals, tribunal appeals & judicial reviews.'}
-                </p>
-              </div>
+            {/* Categories Tabs */}
+            <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar pb-3 mb-6 border-b border-slate-100">
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('universities')}
+                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  activeSearchTab === 'universities'
+                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                }`}
+              >
+                <GraduationCap className="w-4 h-4 stroke-[2.2]" />
+                <span>Explore Universities</span>
+              </button>
 
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-                <button
-                  type="button"
-                  onClick={() => setActiveSearchTab('universities')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
-                    activeSearchTab === 'universities'
-                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
-                  }`}
-                >
-                  <GraduationCap className="w-4 h-4 stroke-[2.2]" />
-                  <span>Explore Universities</span>
-                </button>
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('consultants')}
+                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  activeSearchTab === 'consultants'
+                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                }`}
+              >
+                <UserCheck className="w-4 h-4 stroke-[2.2]" />
+                <span>Find Consultants</span>
+              </button>
 
-                <button
-                  type="button"
-                  onClick={() => setActiveSearchTab('consultants')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
-                    activeSearchTab === 'consultants'
-                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
-                  }`}
-                >
-                  <UserCheck className="w-4 h-4 stroke-[2.2]" />
-                  <span>Find Consultants</span>
-                </button>
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('jobs')}
+                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  activeSearchTab === 'jobs'
+                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                }`}
+              >
+                <Briefcase className="w-4 h-4 stroke-[2.2]" />
+                <span>Job Abroad</span>
+              </button>
 
-                <button
-                  type="button"
-                  onClick={() => setActiveSearchTab('jobs')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
-                    activeSearchTab === 'jobs'
-                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
-                  }`}
-                >
-                  <Briefcase className="w-4 h-4 stroke-[2.2]" />
-                  <span>Job Abroad</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveSearchTab('lawyers')}
-                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
-                    activeSearchTab === 'lawyers'
-                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent hover:bg-slate-50'
-                  }`}
-                >
-                  <Scale className="w-4 h-4 stroke-[2.2]" />
-                  <span>Visa Appeal Lawyers</span>
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('lawyers')}
+                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                  activeSearchTab === 'lawyers'
+                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                }`}
+              >
+                <Scale className="w-4 h-4 stroke-[2.2]" />
+                <span>Visa Appeal</span>
+              </button>
             </div>
 
             {/* TAB 1: Universities Search */}

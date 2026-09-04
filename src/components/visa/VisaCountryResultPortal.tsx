@@ -5173,17 +5173,19 @@ All documents must be genuine, valid and meet official consular standards to avo
                   >
                     Mandatory ({mandatoryDocsCount})
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setMobileDocFilter('recommended')}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                      mobileDocFilter === 'recommended'
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs'
-                        : 'bg-slate-50 text-slate-600 border border-slate-200/80'
-                    }`}
-                  >
-                    Recommended ({recommendedDocsCount})
-                  </button>
+                  {recommendedDocsCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setMobileDocFilter('recommended')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                        mobileDocFilter === 'recommended'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs'
+                          : 'bg-slate-50 text-slate-600 border border-slate-200/80'
+                      }`}
+                    >
+                      Recommended ({recommendedDocsCount})
+                    </button>
+                  )}
                 </div>
 
                 {/* Document Items List (Matching EXACT Row Layout from media_1788487973583.png) */}
@@ -5648,8 +5650,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                   </p>
                 </div>
 
-                {/* 5 Metric Stat Cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-left">
+                {/* 4 Metric Stat Cards */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
                   {/* Total Documents */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 border border-purple-200/70 flex items-center justify-center shrink-0">
@@ -5669,17 +5671,6 @@ All documents must be genuine, valid and meet official consular standards to avo
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block">Mandatory</span>
                       <strong className="text-lg font-black text-slate-950">{mandatoryDocsCount}</strong>
-                    </div>
-                  </div>
-
-                  {/* Recommended */}
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 border border-amber-200/70 flex items-center justify-center shrink-0">
-                      <Star className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Recommended</span>
-                      <strong className="text-lg font-black text-slate-950">{recommendedDocsCount}</strong>
                     </div>
                   </div>
 
@@ -5731,7 +5722,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {[
                       { id: 'all', label: `All (${totalDocsCount})` },
                       { id: 'mandatory', label: `Mandatory (${mandatoryDocsCount})` },
-                      { id: 'recommended', label: `Recommended (${recommendedDocsCount})` }
+                      ...(recommendedDocsCount > 0 ? [{ id: 'recommended', label: `Recommended (${recommendedDocsCount})` }] : [])
                     ].map(flt => (
                       <button
                         key={flt.id}

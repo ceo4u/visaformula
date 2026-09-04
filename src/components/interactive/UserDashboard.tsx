@@ -5704,8 +5704,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </p>
                                         </div>
 
-                                        {/* 5 TOP METRIC STATS CARDS */}
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                                        {/* 4 TOP METRIC STATS CARDS */}
+                                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                                             {/* Total Documents */}
                                             <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
                                                 <div className="w-10 h-10 rounded-xl bg-purple-100/90 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200/80">
@@ -5732,19 +5732,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 </div>
                                             </div>
 
-                                            {/* Recommended */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
-                                                <div className="w-10 h-10 rounded-xl bg-amber-100/90 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200/80">
-                                                    <Star className="w-5 h-5 stroke-[2.2]" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="text-[11px] font-bold text-slate-400 block truncate">Recommended</span>
-                                                    <strong className="text-lg sm:text-xl font-black text-slate-950 leading-none">
-                                                        {allChecklistItems.filter(d => d.mandatory === false).length}
-                                                    </strong>
-                                                </div>
-                                            </div>
-
                                             {/* Completed */}
                                             <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
                                                 <div className="w-10 h-10 rounded-xl bg-emerald-100/90 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200/80">
@@ -5759,7 +5746,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </div>
 
                                             {/* Pending */}
-                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs col-span-2 sm:col-span-1">
+                                            <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
                                                 <div className="w-10 h-10 rounded-xl bg-orange-100/90 text-orange-700 flex items-center justify-center shrink-0 border border-orange-200/80">
                                                     <Clock className="w-5 h-5 stroke-[2.2]" />
                                                 </div>
@@ -5829,17 +5816,19 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 >
                                                     Mandatory ({allChecklistItems.filter(d => d.mandatory !== false).length})
                                                 </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setVaultDocFilter("recommended")}
-                                                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
-                                                        vaultDocFilter === "recommended"
-                                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
-                                                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                                                    }`}
-                                                >
-                                                    Recommended ({allChecklistItems.filter(d => d.mandatory === false).length})
-                                                </button>
+                                                {allChecklistItems.filter(d => d.mandatory === false).length > 0 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setVaultDocFilter("recommended")}
+                                                        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
+                                                            vaultDocFilter === "recommended"
+                                                                ? "bg-emerald-50 text-emerald-800 border border-emerald-300 font-black ring-2 ring-emerald-500/10"
+                                                                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                                                        }`}
+                                                    >
+                                                        Recommended ({allChecklistItems.filter(d => d.mandatory === false).length})
+                                                    </button>
+                                                )}
                                             </div>
 
                                             {documents && documents.length > 0 && (

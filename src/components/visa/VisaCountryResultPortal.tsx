@@ -3076,78 +3076,102 @@ export function VisaCountryResultPortal({
     });
   };
 
-  // ── DYNAMIC CONSULAR STEPS (MATCHING EXACT SPECIFICATION media_1788533504535.png) ──
-  const baseStepsDefinition = useMemo(() => [
-    {
-      step: 1,
-      title: 'Check Eligibility',
-      desc: `Make sure you meet all the eligibility criteria for a ${countryName} ${purposeLabel} Visa.`,
-      initialStatus: 'completed',
-      icon: <Users className="w-4 h-4 text-emerald-600" />,
-      iconBg: 'bg-emerald-50 text-emerald-600'
-    },
-    {
-      step: 2,
-      title: 'Gather Required Documents',
-      desc: 'Prepare all mandatory documents as per the official checklist.',
-      initialStatus: 'completed',
-      icon: <FileText className="w-4 h-4 text-emerald-600" />,
-      iconBg: 'bg-emerald-50 text-emerald-600'
-    },
-    {
-      step: 3,
-      title: 'Fill Application Form',
-      desc: `Fill out the ${countryName} visa application form with accurate details.`,
-      initialStatus: 'in_progress',
-      icon: <FileText className="w-4 h-4 text-indigo-600" />,
-      iconBg: 'bg-indigo-50 text-indigo-600'
-    },
-    {
-      step: 4,
-      title: 'Book Appointment',
-      desc: 'Schedule an appointment at the nearest Visa Application Center.',
-      initialStatus: 'in_progress',
-      icon: <Calendar className="w-4 h-4 text-indigo-600" />,
-      iconBg: 'bg-indigo-50 text-indigo-600'
-    },
-    {
-      step: 5,
-      title: 'Pay Visa Fees',
-      desc: 'Pay the applicable visa fee online or at the Visa Center.',
-      initialStatus: 'pending',
-      icon: <CreditCard className="w-4 h-4 text-amber-600" />,
-      iconBg: 'bg-amber-50 text-amber-600'
-    },
-    {
-      step: 6,
-      title: 'Submit Application',
-      desc: 'Submit your completed application along with required biometric data.',
-      initialStatus: 'not_started',
-      icon: <UploadCloud className="w-4 h-4 text-slate-600" />,
-      iconBg: 'bg-slate-100 text-slate-600'
-    },
-    {
-      step: 7,
-      title: 'Track Application Status',
-      desc: 'Track your application status online via the official embassy tracking portal.',
-      initialStatus: 'not_started',
-      icon: <RotateCw className="w-4 h-4 text-slate-600" />,
-      iconBg: 'bg-slate-100 text-slate-600'
-    },
-    {
-      step: 8,
-      title: 'Receive Passport & Visa',
-      desc: 'Collect your stamped passport or receive it by secure courier.',
-      initialStatus: 'not_started',
-      icon: <Award className="w-4 h-4 text-slate-600" />,
-      iconBg: 'bg-slate-100 text-slate-600'
-    }
-  ], [countryName, purposeLabel]);
-
+  // ── DYNAMIC CONSULAR STEPS (POPULATED DIRECTLY FROM LIVE AI aiData.how_to_apply) ──
   const dynamicSteps = useMemo(() => {
-    return baseStepsDefinition.map((s) => {
-      const isUserDone = userCheckedSteps[s.step];
-      const status = isUserDone !== undefined ? (isUserDone ? 'completed' : 'not_started') : s.initialStatus;
+    let rawSteps: Array<{ title: string; desc: string }> = [];
+
+    if (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length > 0) {
+      rawSteps = aiData.how_to_apply.map((item: any, idx: number) => {
+        let title = '';
+        let desc = '';
+        if (typeof item === 'string') {
+          const clean = item
+            .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
+            .replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '')
+            .trim();
+          if (clean.includes(':')) {
+            const parts = clean.split(':');
+            title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
+            desc = parts.slice(1).join(':').trim();
+          } else {
+            const lower = clean.toLowerCase();
+            if (lower.includes('eligib') || lower.includes('qualif')) title = 'Check Eligibility';
+            else if (lower.includes('register') || lower.includes('portal') || lower.includes('create account')) title = 'Register on Official Portal';
+            else if (lower.includes('form') || lower.includes('fill') || lower.includes('apply online') || lower.includes('complete the')) title = 'Fill Application Form';
+            else if (lower.includes('document') || lower.includes('dossier') || lower.includes('gather') || lower.includes('compile') || lower.includes('prepare')) title = 'Gather Required Documents';
+            else if (lower.includes('appointment') || lower.includes('schedule') || lower.includes('book')) title = 'Book Appointment';
+            else if (lower.includes('fee') || lower.includes('pay') || lower.includes('payment') || lower.includes('charge')) title = 'Pay Visa Fees';
+            else if (lower.includes('biometric') || lower.includes('fingerprint') || lower.includes('attend')) title = 'Submit Biometrics & Dossier';
+            else if (lower.includes('submit') || lower.includes('lodge')) title = 'Submit Application';
+            else if (lower.includes('track') || lower.includes('status') || lower.includes('wait')) title = 'Track Application Status';
+            else if (lower.includes('passport') || lower.includes('collect') || lower.includes('receive') || lower.includes('stamp') || lower.includes('courier')) title = 'Receive Passport & Visa';
+            else {
+              const words = clean.split(' ');
+              title = words.slice(0, 4).join(' ');
+            }
+            desc = clean;
+          }
+        } else if (typeof item === 'object' && item !== null) {
+          title = item.title || item.step || `Step ${idx + 1}`;
+          desc = item.desc || item.description || item.details || '';
+        }
+
+        title = (title || `Step ${idx + 1}`).replace(/\s*\([^)]*\)/g, '').trim();
+        desc = (desc || '').replace(/\s*\([^)]*\)/g, '').trim();
+        return { title, desc };
+      });
+    }
+
+    if (rawSteps.length === 0) {
+      rawSteps = [
+        {
+          title: 'Check Eligibility',
+          desc: `Make sure you meet all the eligibility criteria for a ${countryName} ${purposeLabel} Visa.`
+        },
+        {
+          title: 'Gather Required Documents',
+          desc: 'Prepare all mandatory documents as per the official checklist.'
+        },
+        {
+          title: 'Fill Application Form',
+          desc: `Fill out the ${countryName} visa application form with accurate details.`
+        },
+        {
+          title: 'Book Appointment',
+          desc: 'Schedule an appointment at the nearest Visa Application Center.'
+        },
+        {
+          title: 'Pay Visa Fees',
+          desc: 'Pay the applicable visa fee online or at the Visa Center.'
+        },
+        {
+          title: 'Submit Application',
+          desc: 'Submit your completed application along with required biometric data.'
+        },
+        {
+          title: 'Track Application Status',
+          desc: 'Track your application status online via the official embassy tracking portal.'
+        },
+        {
+          title: 'Receive Passport & Visa',
+          desc: 'Collect your stamped passport or receive it by secure courier.'
+        }
+      ];
+    }
+
+    return rawSteps.map((s, idx) => {
+      const stepNum = idx + 1;
+      const defaultStatus =
+        stepNum <= 2
+          ? 'completed'
+          : stepNum <= 4
+          ? 'in_progress'
+          : stepNum === 5
+          ? 'pending'
+          : 'not_started';
+
+      const isUserDone = userCheckedSteps[stepNum];
+      const status = isUserDone !== undefined ? (isUserDone ? 'completed' : 'not_started') : defaultStatus;
       const isCompleted = status === 'completed';
       const isInProgress = status === 'in_progress';
       const isPending = status === 'pending';
@@ -3176,16 +3200,36 @@ export function VisaCountryResultPortal({
         ? 'bg-amber-50 text-amber-600'
         : 'bg-slate-100 text-slate-600';
 
+      const tLow = `${s.title} ${s.desc}`.toLowerCase();
+      let icon = <FileText className="w-4 h-4 text-indigo-600" />;
+      if (tLow.includes('eligib') || tLow.includes('check') || tLow.includes('qualif')) {
+        icon = <Users className="w-4 h-4 text-emerald-600" />;
+      } else if (tLow.includes('doc') || tLow.includes('gather') || tLow.includes('collect') || tLow.includes('checklist')) {
+        icon = <FileText className="w-4 h-4 text-emerald-600" />;
+      } else if (tLow.includes('appoint') || tLow.includes('schedule') || tLow.includes('book') || tLow.includes('slot')) {
+        icon = <Calendar className="w-4 h-4 text-indigo-600" />;
+      } else if (tLow.includes('fee') || tLow.includes('pay') || tLow.includes('cost') || tLow.includes('charge')) {
+        icon = <CreditCard className="w-4 h-4 text-amber-600" />;
+      } else if (tLow.includes('submit') || tLow.includes('biometric') || tLow.includes('fingerprint') || tLow.includes('vfs') || tLow.includes('gvcw') || tLow.includes('attend') || tLow.includes('handover')) {
+        icon = <UploadCloud className="w-4 h-4 text-slate-600" />;
+      } else if (tLow.includes('track') || tLow.includes('status') || tLow.includes('portal') || tLow.includes('wait') || tLow.includes('adjudicat')) {
+        icon = <RotateCw className="w-4 h-4 text-slate-600" />;
+      } else if (tLow.includes('passport') || tLow.includes('receive') || tLow.includes('collect') || tLow.includes('stamp') || tLow.includes('courier')) {
+        icon = <Award className="w-4 h-4 text-slate-600" />;
+      }
+
       return {
-        ...s,
+        step: stepNum,
+        title: s.title,
+        desc: s.desc,
         status,
         statusLabel,
         numBg,
         iconBg,
-        icon: isCompleted ? <Check className="w-4 h-4 text-emerald-600 stroke-[3]" /> : s.icon
+        icon: isCompleted ? <Check className="w-4 h-4 text-emerald-600 stroke-[3]" /> : icon
       };
     });
-  }, [baseStepsDefinition, userCheckedSteps]);
+  }, [aiData, countryName, purposeLabel, userCheckedSteps]);
 
   const stepsCompleted = dynamicSteps.filter(s => s.status === 'completed').length;
   const stepsInProgress = dynamicSteps.filter(s => s.status === 'in_progress').length;
@@ -6254,7 +6298,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                     <span>Est. Total Time:</span>
                     <strong className="text-slate-950 font-black">{getResolvedProcessingTime()}</strong>
                     <span className="text-slate-300">•</span>
-                    <span>8 Total Steps</span>
+                    <span>{dynamicSteps.length} Total Steps</span>
                   </div>
                 </div>
 

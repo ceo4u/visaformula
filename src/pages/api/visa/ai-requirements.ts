@@ -4182,20 +4182,23 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: isGreece ? [
-        'Register on the official GVCW E-VISA Portal (in-gr.gvcworld.eu) and complete the Harmonised Schengen Visa Application Form online.',
-        'Book your in-person appointment at the nearest GVCW Visa Application Center (available in 8 Indian cities).',
-        'Compile your verified document dossier: valid passport, photos, insurance, flight itinerary, hotel bookings, bank statements, and ITR.',
-        'Attend your appointment for biometric submission (fingerprints and digital photo) and submit your physical dossier.',
-        'Pay the visa & VAC service fee (€90 Embassy fee + €30 GVCW VAC service charge = €120 total) at the counter.',
-        'Track your application online via the GVCW tracking portal (standard processing: 15 calendar days).',
-        'Collect your passport with the Schengen visa sticker from the VAC or receive it securely via courier.'
+        'Check Eligibility: Make sure you meet all the eligibility criteria for a Greece Tourist Visa.',
+        'Gather Required Documents: Prepare all mandatory documents as per the official checklist.',
+        'Fill Application Form: Complete the Harmonised Schengen Visa Application Form on the official GVCW portal.',
+        'Book Appointment: Schedule your in-person appointment at the nearest GVCW Visa Application Center.',
+        'Pay Visa Fees: Pay the applicable visa fee online or at the Visa Center counter.',
+        'Submit Application: Attend appointment to submit physical dossier and record biometric data.',
+        'Track Application Status: Track your application status online via the official embassy tracking portal.',
+        'Receive Passport & Visa: Collect your stamped passport or receive it by secure courier.'
       ] : [
-        'Complete the Harmonised Schengen Visa Application Form from the official embassy/VFS portal.',
-        'Book an in-person appointment at the authorized VAC in India.',
-        'Compile your document dossier: passport, photos, insurance, flights, hotel, bank statements, ITR, employment proof.',
-        'Attend appointment for biometrics and document submission.',
-        'Pay the visa fee (€90 embassy + VAC service fee) at the counter during submission.',
-        'Track your application online and collect your passport upon consular decision.'
+        'Check Eligibility: Verify you meet all Schengen entry and stay conditions.',
+        'Gather Required Documents: Assemble all mandatory documents according to the official checklist.',
+        'Fill Application Form: Complete the official Harmonised Schengen Visa Application Form accurately.',
+        'Book Appointment: Schedule an appointment at the nearest authorized Visa Application Center.',
+        'Pay Visa Fees: Pay the statutory consular visa fee and VAC service charges.',
+        'Submit Application: Submit your complete document dossier along with mandatory biometrics.',
+        'Track Application Status: Monitor your application status online on the official tracking portal.',
+        'Receive Passport & Visa: Collect your passport with the approved visa sticker or receive via courier.'
       ],
       costs: {
         visa_fee: '€90 (approx. ₹8,100 at current exchange rate)',
@@ -5363,11 +5366,14 @@ Return ONLY a valid JSON object matching this exact schema:
     }
   ],
   "how_to_apply": [
-    "Step 1...",
-    "Step 2...",
-    "Step 3...",
-    "Step 4...",
-    "Step 5..."
+    "Check Eligibility: Ensure you meet all specific statutory eligibility rules for ${toCountry} ${purpose} visa.",
+    "Gather Required Documents: Collect original passport, photographs, financial proofs, travel bookings and checklist items.",
+    "Fill Application Form: Complete the official ${toCountry} visa application form accurately online.",
+    "Book Appointment: Schedule mandatory biometric appointment at the nearest designated VAC / Consulate.",
+    "Pay Visa Fees: Pay official consular fee and VAC logistics charge securely.",
+    "Submit Application & Biometrics: Attend appointment to submit physical dossier and record fingerprints.",
+    "Track Application Status: Monitor your visa dossier progress via the official tracking portal.",
+    "Receive Passport & Visa: Collect stamped passport or receive via secure courier dispatch."
   ],
   "costs": {
     "visa_fee": "Fee with currency",

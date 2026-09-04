@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { 
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
-    Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
+    Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronLeft, ChevronDown, Bell, Search, Lock, 
     FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck
 } from "lucide-react";
 import { ProviderVerificationModal } from "./ProviderVerificationModal";

@@ -1749,15 +1749,6 @@ export function AITripPlannerLanding() {
   }, []);
 
   const handleGlobalSearch = () => {
-    if (typeof window !== 'undefined') {
-      const userStr = localStorage.getItem('travltik_user');
-      const seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
-      const expert = localStorage.getItem('expert_isLoggedIn') === 'true';
-      if (!userStr && !seeker && !expert) {
-        window.location.href = '/login?redirect=/find-experts';
-        return;
-      }
-    }
     const params = new URLSearchParams();
 
     if (activeSearchTab === 'universities') {
@@ -1953,7 +1944,6 @@ export function AITripPlannerLanding() {
     const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
     const targetUrl = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(targetPurpose)}`;
 
-    if (!requireAuthOrRedirect(targetUrl)) return;
     window.location.href = targetUrl;
   };
 
@@ -1974,7 +1964,6 @@ export function AITripPlannerLanding() {
   };
 
   const handleGenerateDomesticItinerary = () => {
-    if (!requireAuthOrRedirect()) return;
     setIsGeneratingDomestic(true);
     autoSaveJourney({
       domestic_country: domesticCountry || 'India',
@@ -2011,11 +2000,6 @@ export function AITripPlannerLanding() {
 
     const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
     const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
-
-    // Direct Login Required: If not logged in, immediately redirect to login page!
-    if (!requireAuthOrRedirect(destinationUrl)) {
-      return;
-    }
 
     setIsGenerating(true);
 
@@ -2384,7 +2368,6 @@ return (
                 <button
                   type="button"
                   onClick={() => {
-                    if (!requireAuthOrRedirect()) return;
                     setTravelScopeTab('international');
                   }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
@@ -2403,7 +2386,6 @@ return (
                 <button
                   type="button"
                   onClick={() => {
-                    if (!requireAuthOrRedirect()) return;
                     setTravelScopeTab('domestic');
                   }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
@@ -2421,17 +2403,6 @@ return (
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}
               <div 
-                onClickCapture={(e) => {
-                  if (!isUserLoggedIn()) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const targetCountry = (journeyDestination || 'Jordan').trim();
-                    const passport = (passportCountry || 'India').trim();
-                    const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
-                    const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent((travelPurpose || 'tourism').toLowerCase())}`;
-                    requireAuthOrRedirect(destinationUrl);
-                  }
-                }}
                 className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20"
               >
                 

@@ -32,7 +32,7 @@ function PortalCustomSelect({
   const hasValue = value && value.trim() !== '';
 
   return (
-    <div className="relative space-y-1.5" ref={dropdownRef}>
+    <div className={`relative space-y-1.5 ${open ? 'z-[60]' : 'z-10'}`} ref={dropdownRef}>
       {label && <label className="block text-xs sm:text-[13px] font-bold text-slate-800 tracking-tight leading-snug">{label}</label>}
       <button
         type="button"
@@ -48,7 +48,7 @@ function PortalCustomSelect({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-2xl border border-slate-200/90 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 origin-top">
+        <div className="absolute top-full left-0 mt-1.5 min-w-[280px] w-full bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-1.5 z-[70] animate-in fade-in zoom-in-95 origin-top">
           <div className="max-h-56 overflow-y-auto space-y-0.5">
             {options.map((opt) => {
               const isSelected = opt === value;
@@ -2962,39 +2962,80 @@ export function VisaCountryResultPortal({
   });
   const [isAiLoading, setIsAiLoading] = useState(false);
 
-  // ── DYNAMIC CONSULAR STEPS FROM REAL AI / OFFICIAL REGISTRY (ZERO DUMMY DATA) ──
+  const [userCheckedSteps, setUserCheckedSteps] = useState<Record<number, boolean>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const key = `checked_steps_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+        const saved = localStorage.getItem(key);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  const toggleStepChecked = (stepNum: number) => {
+    setUserCheckedSteps(prev => {
+      const updated = { ...prev, [stepNum]: !prev[stepNum] };
+      if (typeof window !== 'undefined') {
+        try {
+          const key = `checked_steps_${countryName}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+          localStorage.setItem(key, JSON.stringify(updated));
+        } catch (e) {}
+      }
+      return updated;
+    });
+  };
+
+  // ── DYNAMIC CONSULAR STEPS FROM REAL AI / OFFICIAL REGISTRY (ZERO DUMMY DATA - USER TICKABLE) ──
   const dynamicSteps = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length > 0)
     ? aiData.how_to_apply.map((rawStep: string, idx: number) => {
-        const clean = rawStep
+        // Clean leading emoji keycaps and any leading "Step X:" label cleanly so 'S' is NEVER deleted!
+        let clean = rawStep
           .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
-          .replace(/^[?step\s*\d+]?\s*/i, '')
+          .replace(/^step\s*\d+[\s:\.\)-]*/i, '')
           .trim();
         const parts = clean.split(':');
         const title = (parts.length > 1 && parts[0].trim().length < 60) ? parts[0].trim() : clean;
         const desc = (parts.length > 1 && parts[0].trim().length < 60) ? parts.slice(1).join(':').trim() : clean;
-        const status = idx === 0 ? 'completed' : idx === 1 ? 'completed' : idx === 2 || idx === 3 ? 'in_progress' : idx === 4 ? 'pending' : 'not_started';
-        const statusLabel = status === 'completed' ? 'Completed' : status === 'in_progress' ? 'In Progress' : status === 'pending' ? 'Pending' : 'Not Started';
-        const dateOrEst = status === 'completed' ? 'Verified Online' : status === 'in_progress' ? 'Ready to File' : 'Official Consular Step';
-        const numBg = status === 'completed' ? 'bg-emerald-600 text-white' : status === 'in_progress' ? 'bg-indigo-900 text-white' : status === 'pending' ? 'bg-amber-500 text-white' : 'bg-slate-500 text-white';
-        const iconBg = status === 'completed' ? 'bg-emerald-50 text-emerald-600' : status === 'in_progress' ? 'bg-indigo-50 text-indigo-600' : status === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-slate-100 text-slate-600';
+        
+        const stepNum = idx + 1;
+        const isDone = Boolean(userCheckedSteps[stepNum]);
+        const status = isDone ? 'completed' : 'not_started';
+        const statusLabel = isDone ? 'Completed' : 'Click to Complete';
+        const dateOrEst = isDone ? 'Verified Completed' : 'Action Required';
+        const numBg = isDone ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white';
+        const iconBg = isDone ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600';
         
         return {
-          step: idx + 1,
-          title,
+          step: stepNum,
+          title: `Step ${stepNum}: ${title}`,
+          rawTitle: title,
           desc,
           status,
           statusLabel,
           dateOrEst,
           numBg,
-          icon: idx === 0 ? <Users className="w-4 h-4 text-emerald-600" /> : idx === 1 ? <FileText className="w-4 h-4 text-emerald-600" /> : idx === 2 ? <FileText className="w-4 h-4 text-indigo-600" /> : idx === 3 ? <Calendar className="w-4 h-4 text-indigo-600" /> : idx === 4 ? <CreditCard className="w-4 h-4 text-amber-600" /> : <UploadCloud className="w-4 h-4 text-slate-600" />,
+          icon: isDone ? <Check className="w-4 h-4 text-emerald-600 stroke-[3]" /> : idx === 0 ? <Users className="w-4 h-4 text-slate-700" /> : idx === 1 ? <FileText className="w-4 h-4 text-slate-700" /> : idx === 2 ? <FileText className="w-4 h-4 text-slate-700" /> : idx === 3 ? <Calendar className="w-4 h-4 text-slate-700" /> : idx === 4 ? <CreditCard className="w-4 h-4 text-slate-700" /> : <UploadCloud className="w-4 h-4 text-slate-700" />,
           iconBg
         };
       })
-    : applicationStepsData;
+    : applicationStepsData.map((s, idx) => {
+        const stepNum = idx + 1;
+        const isDone = Boolean(userCheckedSteps[stepNum]);
+        return {
+          ...s,
+          step: stepNum,
+          title: `Step ${stepNum}: ${s.title.replace(/^step\s*\d+[\s:\.\)-]*/i, '')}`,
+          status: isDone ? 'completed' : 'not_started',
+          statusLabel: isDone ? 'Completed' : 'Click to Complete',
+          numBg: isDone ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white',
+          iconBg: isDone ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'
+        };
+      });
 
   const stepsCompleted = dynamicSteps.filter(s => s.status === 'completed').length;
-  const stepsInProgress = dynamicSteps.filter(s => s.status === 'in_progress').length;
-  const stepsPending = dynamicSteps.filter(s => s.status === 'pending').length;
+  const stepsInProgress = 0;
+  const stepsPending = 0;
   const stepsNotStarted = dynamicSteps.filter(s => s.status === 'not_started').length;
 
   useEffect(() => {
@@ -3154,17 +3195,21 @@ All documents must be genuine, valid and meet official consular standards to avo
 
   // Self-Apply Concierge Document Vault & Addon States
   const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, { fileName: string; size: string; status: 'uploaded' | 'verified'; timestamp: string }>>({});
+  const [readyDocKeys, setReadyDocKeys] = useState<Record<string, boolean>>({});
+  const toggleDocReady = (key: string) => {
+    setReadyDocKeys(prev => ({ ...prev, [key]: !prev[key] }));
+  };
   const [selectedConciergeAddons, setSelectedConciergeAddons] = useState<string[]>([]);
   const [conciergeSubmittedModal, setConciergeSubmittedModal] = useState(false);
   const [isUploadingDocKey, setIsUploadingDocKey] = useState<string | null>(null);
   const [uploadValidationWarning, setUploadValidationWarning] = useState<string | null>(null);
 
   const handleConciergeSubmit = (requiredDocKeys: string[], vaultElementId?: string) => {
-    const uploadedCount = Object.keys(uploadedDocuments).length;
-    const missingDocs = requiredDocKeys.filter(k => !uploadedDocuments[k]);
+    const readyCount = requiredDocKeys.filter(k => readyDocKeys[k] || uploadedDocuments[k]).length;
+    const missingDocs = requiredDocKeys.filter(k => !readyDocKeys[k] && !uploadedDocuments[k]);
 
-    if (uploadedCount === 0 || missingDocs.length > 0) {
-      const msg = `⚠️ Action Required: Please upload your mandatory documents (${uploadedCount} of ${requiredDocKeys.length} uploaded) before submitting your dossier.`;
+    if (readyCount === 0) {
+      const msg = `⚠️ Action Required: Please mark your mandatory documents as ready (${readyCount} of ${requiredDocKeys.length} marked) before submitting your dossier.`;
       setUploadValidationWarning(msg);
       if (vaultElementId && typeof document !== 'undefined') {
         const el = document.getElementById(vaultElementId);
@@ -5283,34 +5328,20 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                 {/* Top Milestone Card */}
                 <div className="bg-white rounded-2xl border border-slate-100 p-3.5 shadow-2xs space-y-3">
-                  <div className="grid grid-cols-4 gap-1.5 text-center">
-                    <div className="px-1.5 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <div className="flex items-center justify-center gap-1 text-emerald-700">
-                        <Check className="w-3 h-3 stroke-[3]" />
-                        <span className="text-xs font-black">4</span>
+                  <div className="grid grid-cols-2 gap-2 text-center">
+                    <div className="px-2 py-2 rounded-xl bg-emerald-50 border border-emerald-100">
+                      <div className="flex items-center justify-center gap-1.5 text-emerald-800">
+                        <Check className="w-4 h-4 stroke-[3]" />
+                        <span className="text-sm font-black">{stepsCompleted}</span>
                       </div>
-                      <span className="text-[9px] font-bold text-slate-400 block mt-0.5">Completed</span>
+                      <span className="text-[10px] font-bold text-emerald-700 block mt-0.5">Completed</span>
                     </div>
-                    <div className="px-1.5 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <div className="flex items-center justify-center gap-1 text-indigo-700">
-                        <RotateCw className="w-3 h-3" />
-                        <span className="text-xs font-black">2</span>
+                    <div className="px-2 py-2 rounded-xl bg-slate-50 border border-slate-100">
+                      <div className="flex items-center justify-center gap-1.5 text-slate-700">
+                        <Circle className="w-4 h-4" />
+                        <span className="text-sm font-black">{stepsNotStarted}</span>
                       </div>
-                      <span className="text-[9px] font-bold text-slate-400 block mt-0.5">In Progress</span>
-                    </div>
-                    <div className="px-1.5 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <div className="flex items-center justify-center gap-1 text-amber-700">
-                        <Star className="w-3 h-3" />
-                        <span className="text-xs font-black">1</span>
-                      </div>
-                      <span className="text-[9px] font-bold text-slate-400 block mt-0.5">Pending</span>
-                    </div>
-                    <div className="px-1.5 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
-                      <div className="flex items-center justify-center gap-1 text-slate-600">
-                        <Circle className="w-3 h-3" />
-                        <span className="text-xs font-black">1</span>
-                      </div>
-                      <span className="text-[9px] font-bold text-slate-400 block mt-0.5">Not Started</span>
+                      <span className="text-[10px] font-bold text-slate-500 block mt-0.5">Pending / To Do</span>
                     </div>
                   </div>
 
@@ -5321,16 +5352,20 @@ All documents must be genuine, valid and meet official consular standards to avo
                   </div>
                 </div>
 
-                {/* Vertical Timeline of 8 Steps */}
+                {/* Vertical Timeline of Steps */}
                 <div className="relative pl-6 space-y-3 pt-1">
                   {/* Vertical Connecting Line */}
                   <div className="absolute left-[11px] top-4 bottom-4 w-0.5 bg-slate-200" />
 
                   {dynamicSteps.map((s) => (
-                    <div key={s.step} className="relative bg-white rounded-2xl border border-slate-100 p-3.5 shadow-2xs flex items-start gap-3 transition-all">
+                    <div
+                      key={s.step}
+                      onClick={() => toggleStepChecked(s.step)}
+                      className="relative bg-white rounded-2xl border border-slate-100 p-3.5 shadow-2xs flex items-start gap-3 transition-all cursor-pointer hover:border-slate-300 active:scale-[0.99]"
+                    >
                       {/* Left Numbered Circle on Timeline */}
                       <span className={`absolute -left-6 top-3.5 w-5 h-5 rounded-full ${s.numBg} text-[10px] font-black flex items-center justify-center shadow-xs ring-4 ring-white z-10`}>
-                        {s.step}
+                        {s.status === 'completed' ? '✓' : s.step}
                       </span>
 
                       {/* Squircle Icon */}
@@ -5346,14 +5381,10 @@ All documents must be genuine, valid and meet official consular standards to avo
                           </strong>
                           <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md border shrink-0 ${
                             s.status === 'completed'
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60'
-                              : s.status === 'in_progress'
-                              ? 'bg-indigo-50 text-indigo-700 border-indigo-200/60'
-                              : s.status === 'pending'
-                              ? 'bg-amber-50 text-amber-700 border-amber-200/60'
-                              : 'bg-slate-50 text-slate-600 border-slate-200/60'
+                              ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                              : 'bg-slate-100 text-slate-600 border-slate-200'
                           }`}>
-                            {s.statusLabel}
+                            {s.status === 'completed' ? '✓ Done' : 'Tap to tick'}
                           </span>
                         </div>
 
@@ -6148,7 +6179,414 @@ All documents must be genuine, valid and meet official consular standards to avo
                   );
                 })()}
 
-                {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
+                              </div>
+            )}
+
+            {/* TAB: CONDITIONS & REQUIREMENTS (CLEAN APPLE-GRADE STATUTORY DIRECTIVES) */}
+            {sidebarTab === 'requirements' && (
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Conditions &amp; Requirements</h2>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                    Official statutory entry rules, financial benchmarks, and compliance mandates for {countryName}.
+                  </p>
+                </div>
+
+                {/* 4 Clean Pillar Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Pillar 1: Entry & Stay Rules */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Entry &amp; Stay Conditions</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Stay Duration:</strong> {aiData?.processing_and_timing?.max_extension || 'Maximum authorized stay determined at port of entry (typically up to 180 days per visit).'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Pillar 2: Financial Proofs & Solvency */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <CreditCard className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Financial Solvency Benchmarks</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      {aiData?.financial_proofs && aiData.financial_proofs.length > 0 ? (
+                        aiData.financial_proofs.slice(0, 3).map((fp: any, i: number) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Pillar 3: Home Ties & Return Intent */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <Briefcase className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Home Ties &amp; Return Intent</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Non-Immigrant Intent:</strong> Applicant must demonstrate strong economic and residential roots to overcome Section 214(b) presumption.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-slate-900 font-black">•</span>
+                        <span><strong>Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Pillar 4: Biometrics & Security Protocols */}
+                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-950">Biometrics &amp; Security Mandates</h3>
+                    </div>
+                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                      {aiData?.other_requirements && aiData.other_requirements.length > 0 ? (
+                        aiData.other_requirements.slice(0, 3).map((orq: any, i: number) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>{orq.category}:</strong> {orq.details}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-slate-900 font-black">•</span>
+                            <span><strong>Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Statutory Compliance Footer Banner */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3 text-xs text-slate-600 font-medium">
+                  <Lock className="w-4 h-4 text-slate-700 shrink-0" />
+                  <span>
+                    Adjudication is subject to the sole discretion of the consular visa officer. Ensuring every condition is met minimizes administrative processing delays.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: STEPS TO FOLLOW (MATCHING EXACT PHOTO media_1788488551302.png) */}
+            {sidebarTab === 'steps' && (
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+                {/* Header with Track Progress button */}
+                <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Steps to Follow</h2>
+                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                      Follow these simple steps to complete your {countryName} {activePurposeTab === 'study' ? 'Student' : activePurposeTab === 'work' ? 'Work' : 'Tourist'} Visa application successfully.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSidebarTab('track')}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50/60 text-emerald-800 text-xs font-bold hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Track Progress</span>
+                  </button>
+                </div>
+
+                {/* Top Milestone Card */}
+                <div className="bg-slate-50/60 rounded-2xl border border-slate-200/80 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </div>
+                      <div className="text-left">
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
+                        <span className="text-[10px] font-semibold text-slate-400">Completed</span>
+                      </div>
+                    </div>
+
+                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                        <RotateCw className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="text-left">
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
+                        <span className="text-[10px] font-semibold text-slate-400">In Progress</span>
+                      </div>
+                    </div>
+
+                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <Star className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="text-left">
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsPending}</strong>
+                        <span className="text-[10px] font-semibold text-slate-400">Pending</span>
+                      </div>
+                    </div>
+
+                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0">
+                        <Circle className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="text-left">
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
+                        <span className="text-[10px] font-semibold text-slate-400">Not Started</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-right shrink-0 border-t md:border-t-0 md:border-l border-slate-200/80 pt-2 md:pt-0 md:pl-6 w-full md:w-auto flex md:flex-col justify-between md:justify-center items-center md:items-end">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Total Time</span>
+                    <strong className="text-sm sm:text-base font-black text-slate-950 block mt-0.5">
+                      {processingDays ? `${processingDays} – ${processingDays + 5} Days` : '15 – 20 Days'}
+                    </strong>
+                    <span className="text-[10px] font-bold text-slate-400 block mt-0.5">{dynamicSteps.length} Total Steps</span>
+                  </div>
+                </div>
+
+                {/* Vertical Timeline of 8 Steps (Connecting vertical line on left) */}
+                <div className="relative pl-8 space-y-3 pt-2">
+                  <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-slate-200" />
+
+                  {dynamicSteps.map((s) => (
+                    <div key={s.step} onClick={() => toggleStepChecked(s.step)} className="relative bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs flex items-center justify-between gap-4 hover:border-slate-300 transition-all cursor-pointer active:scale-[0.99]">
+                      {/* Left Numbered Circle on Timeline */}
+                      <span className={`absolute -left-8 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full ${s.numBg} text-xs font-black flex items-center justify-center shadow-xs ring-4 ring-white z-10`}>
+                        {s.status === 'completed' ? '✓' : s.step}
+                      </span>
+
+                      {/* Squircle Icon */}
+                      <div className={`w-11 h-11 rounded-xl ${s.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
+                        {s.icon}
+                      </div>
+
+                      {/* Step Details */}
+                      <div className="flex-1 min-w-0 text-left">
+                        <strong className="text-sm font-bold text-slate-950 block">
+                          {s.title}
+                        </strong>
+                        <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
+                          {s.desc}
+                        </p>
+                      </div>
+
+                      {/* Right Badge & Date/Est */}
+                      <div className="text-right shrink-0">
+                        <span className={`inline-block text-xs font-extrabold px-3 py-0.5 rounded-md border ${
+                          s.status === 'completed'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60'
+                            : s.status === 'in_progress'
+                            ? 'bg-indigo-50 text-indigo-700 border-indigo-200/60'
+                            : s.status === 'pending'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200/60'
+                            : 'bg-slate-50 text-slate-600 border-slate-200/60'
+                        }`}>
+                          {s.statusLabel}
+                        </span>
+                        <span className="text-[11px] text-slate-400 font-medium block mt-1">
+                          {s.dateOrEst}
+                        </span>
+                      </div>
+
+                      <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Important Tip Banner at Bottom */}
+                <div className="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-4 flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-emerald-700" />
+                  </div>
+                  <div className="space-y-0.5 text-left">
+                    <strong className="text-xs sm:text-sm font-black text-slate-900 block">Important Tip</strong>
+                    <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                      Complete each step carefully and on time to avoid delays or rejection of your application.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: FEES & PAYMENT (LIVE AI / CONSULAR VERIFIED) */}
+            {sidebarTab === 'fees' && (
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+                <div>
+                  <h2 className="text-xl font-black text-slate-950">Fees &amp; Payment Details</h2>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">
+                    Official statutory fees verified from {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
+                  </p>
+                </div>
+
+                <div className="max-w-xl space-y-3">
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
+                    <span className="text-slate-600">Consular Visa Fee</span>
+                    <strong className="text-slate-950 text-sm">
+                      {aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
+                    </strong>
+                  </div>
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
+                    <span className="text-slate-600">VAC Biometrics &amp; Service Fee</span>
+                    <strong className="text-slate-950 text-sm">
+                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
+                    </strong>
+                  </div>
+                  <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
+                    <span className="font-black text-slate-950 text-sm">Total Official Fee</span>
+                    <strong className="text-xl font-black text-teal-700">
+                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
+                    </strong>
+                  </div>
+                </div>
+                {aiData?.costs?.notes && (
+                  <p className="text-xs text-slate-600 font-medium p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                    ℹ️ {aiData.costs.notes}
+                  </p>
+                )}
+                <p className="text-[11px] text-slate-400 font-semibold">
+                  Fees are non-refundable and subject to official consular exchange rates.
+                </p>
+              </div>
+            )}
+
+            {/* TAB: PROCESSING TIME (LIVE AI / CONSULAR VERIFIED) */}
+            {sidebarTab === 'processing' && (
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
+                <h2 className="text-xl font-black text-slate-950">Processing Time &amp; Turnaround</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Official Decision Time</span>
+                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                      {aiData?.processing_and_timing?.decision_time || '15 - 20 Working Days'}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
+                      {aiData?.processing_and_timing?.center_notes || 'Calculated from the date biometric submission is completed at the consular center.'}
+                    </p>
+                  </div>
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Recommended Filing Window</span>
+                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                      {aiData?.processing_and_timing?.apply_window || '15 Days to 3 Months Before'}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
+                      {aiData?.processing_and_timing?.max_extension || 'Plan in advance to avoid consular peak season appointment delays.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: TRACK APPLICATION */}
+            {sidebarTab === 'track' && (
+              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
+                <h2 className="text-xl font-black text-slate-950">Track Your Application</h2>
+                <p className="text-xs text-slate-500 font-medium">
+                  Enter your TravlTik tracking reference or consular passport number to view live status.
+                </p>
+                <div className="flex gap-2 max-w-md">
+                  <input
+                    type="text"
+                    placeholder="e.g. TRK-US-89241"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-slate-900"
+                  />
+                  <button className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs cursor-pointer">
+                    Track
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: FAQ (MATCHING EXACT ACCORDION CARD media_1788472456972.png) */}
+            {sidebarTab === 'faq' && (
+              <div className="space-y-4 text-left animate-fade-up">
+                <h2 className="text-xl font-black text-slate-950 px-1">Frequently Asked Questions</h2>
+                <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
+                  {faqs.map((faq, idx) => {
+                    const isOpen = Boolean(openFaqs[idx]);
+                    return (
+                      <div key={idx} className="transition-colors">
+                        <button
+                          type="button"
+                          onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                          className="w-full px-6 py-4.5 sm:px-8 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
+                        >
+                          <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                            {faq.question}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
+                        </button>
+                        {isOpen && (
+                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed animate-fadeIn">
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+          </main>
+        </div>
+
+        {/* ── APPLICATION PROFILE DETAILS (CENTERED ON PAGE - MATCHING EXACT PHOTO media_1788470844697.png) ── */}
+        {sidebarTab === 'overview' && (
+          <div className="max-w-5xl mx-auto mt-6 mb-8 text-left animate-fadeIn">
+            {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
                 <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-2xs space-y-4 text-left">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-100 pb-3">
                     <div className="flex items-center gap-2">
@@ -6451,409 +6889,9 @@ All documents must be genuine, valid and meet official consular standards to avo
                     </div>
                   )}
                 </div>
-              </div>
-            )}
+          </div>
+        )}
 
-            {/* TAB: CONDITIONS & REQUIREMENTS (CLEAN APPLE-GRADE STATUTORY DIRECTIVES) */}
-            {sidebarTab === 'requirements' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Conditions &amp; Requirements</h2>
-                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                    Official statutory entry rules, financial benchmarks, and compliance mandates for {countryName}.
-                  </p>
-                </div>
-
-                {/* 4 Clean Pillar Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Pillar 1: Entry & Stay Rules */}
-                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                        <Clock className="w-4 h-4" />
-                      </div>
-                      <h3 className="text-sm font-bold text-slate-950">Entry &amp; Stay Conditions</h3>
-                    </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Stay Duration:</strong> {aiData?.processing_and_timing?.max_extension || 'Maximum authorized stay determined at port of entry (typically up to 180 days per visit).'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Pillar 2: Financial Proofs & Solvency */}
-                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                        <CreditCard className="w-4 h-4" />
-                      </div>
-                      <h3 className="text-sm font-bold text-slate-950">Financial Solvency Benchmarks</h3>
-                    </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      {aiData?.financial_proofs && aiData.financial_proofs.length > 0 ? (
-                        aiData.financial_proofs.slice(0, 3).map((fp: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
-                          </li>
-                        ))
-                      ) : (
-                        <>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
-                          </li>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-
-                  {/* Pillar 3: Home Ties & Return Intent */}
-                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                        <Briefcase className="w-4 h-4" />
-                      </div>
-                      <h3 className="text-sm font-bold text-slate-950">Home Ties &amp; Return Intent</h3>
-                    </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Non-Immigrant Intent:</strong> Applicant must demonstrate strong economic and residential roots to overcome Section 214(b) presumption.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Pillar 4: Biometrics & Security Protocols */}
-                  <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                        <ShieldCheck className="w-4 h-4" />
-                      </div>
-                      <h3 className="text-sm font-bold text-slate-950">Biometrics &amp; Security Mandates</h3>
-                    </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      {aiData?.other_requirements && aiData.other_requirements.length > 0 ? (
-                        aiData.other_requirements.slice(0, 3).map((orq: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>{orq.category}:</strong> {orq.details}</span>
-                          </li>
-                        ))
-                      ) : (
-                        <>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
-                          </li>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Statutory Compliance Footer Banner */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3 text-xs text-slate-600 font-medium">
-                  <Lock className="w-4 h-4 text-slate-700 shrink-0" />
-                  <span>
-                    Adjudication is subject to the sole discretion of the consular visa officer. Ensuring every condition is met minimizes administrative processing delays.
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: STEPS TO FOLLOW (MATCHING EXACT PHOTO media_1788488551302.png) */}
-            {sidebarTab === 'steps' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
-                {/* Header with Track Progress button */}
-                <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100">
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Steps to Follow</h2>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                      Follow these simple steps to complete your {countryName} {activePurposeTab === 'study' ? 'Student' : activePurposeTab === 'work' ? 'Work' : 'Tourist'} Visa application successfully.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSidebarTab('track')}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50/60 text-emerald-800 text-xs font-bold hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Track Progress</span>
-                  </button>
-                </div>
-
-                {/* Top Milestone Card */}
-                <div className="bg-slate-50/60 rounded-2xl border border-slate-200/80 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Completed</span>
-                      </div>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
-                        <RotateCw className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">In Progress</span>
-                      </div>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-                        <Star className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsPending}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Pending</span>
-                      </div>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0">
-                        <Circle className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-400">Not Started</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="text-right shrink-0 border-t md:border-t-0 md:border-l border-slate-200/80 pt-2 md:pt-0 md:pl-6 w-full md:w-auto flex md:flex-col justify-between md:justify-center items-center md:items-end">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Total Time</span>
-                    <strong className="text-sm sm:text-base font-black text-slate-950 block mt-0.5">
-                      {processingDays ? `${processingDays} – ${processingDays + 5} Days` : '15 – 20 Days'}
-                    </strong>
-                    <span className="text-[10px] font-bold text-slate-400 block mt-0.5">{dynamicSteps.length} Total Steps</span>
-                  </div>
-                </div>
-
-                {/* Vertical Timeline of 8 Steps (Connecting vertical line on left) */}
-                <div className="relative pl-8 space-y-3 pt-2">
-                  <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-slate-200" />
-
-                  {dynamicSteps.map((s) => (
-                    <div key={s.step} className="relative bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs flex items-center justify-between gap-4 hover:border-slate-300 transition-all">
-                      {/* Left Numbered Circle on Timeline */}
-                      <span className={`absolute -left-8 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full ${s.numBg} text-xs font-black flex items-center justify-center shadow-xs ring-4 ring-white z-10`}>
-                        {s.step}
-                      </span>
-
-                      {/* Squircle Icon */}
-                      <div className={`w-11 h-11 rounded-xl ${s.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
-                        {s.icon}
-                      </div>
-
-                      {/* Step Details */}
-                      <div className="flex-1 min-w-0 text-left">
-                        <strong className="text-sm font-bold text-slate-950 block">
-                          {s.title}
-                        </strong>
-                        <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
-                          {s.desc}
-                        </p>
-                      </div>
-
-                      {/* Right Badge & Date/Est */}
-                      <div className="text-right shrink-0">
-                        <span className={`inline-block text-xs font-extrabold px-3 py-0.5 rounded-md border ${
-                          s.status === 'completed'
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60'
-                            : s.status === 'in_progress'
-                            ? 'bg-indigo-50 text-indigo-700 border-indigo-200/60'
-                            : s.status === 'pending'
-                            ? 'bg-amber-50 text-amber-700 border-amber-200/60'
-                            : 'bg-slate-50 text-slate-600 border-slate-200/60'
-                        }`}>
-                          {s.statusLabel}
-                        </span>
-                        <span className="text-[11px] text-slate-400 font-medium block mt-1">
-                          {s.dateOrEst}
-                        </span>
-                      </div>
-
-                      <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Important Tip Banner at Bottom */}
-                <div className="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-4 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-emerald-700" />
-                  </div>
-                  <div className="space-y-0.5 text-left">
-                    <strong className="text-xs sm:text-sm font-black text-slate-900 block">Important Tip</strong>
-                    <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                      Complete each step carefully and on time to avoid delays or rejection of your application.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: FEES & PAYMENT (LIVE AI / CONSULAR VERIFIED) */}
-            {sidebarTab === 'fees' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
-                <div>
-                  <h2 className="text-xl font-black text-slate-950">Fees &amp; Payment Details</h2>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    Official statutory fees verified from {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
-                  </p>
-                </div>
-
-                <div className="max-w-xl space-y-3">
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">Consular Visa Fee</span>
-                    <strong className="text-slate-950 text-sm">
-                      {aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
-                    </strong>
-                  </div>
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">VAC Biometrics &amp; Service Fee</span>
-                    <strong className="text-slate-950 text-sm">
-                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
-                    </strong>
-                  </div>
-                  <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
-                    <span className="font-black text-slate-950 text-sm">Total Official Fee</span>
-                    <strong className="text-xl font-black text-teal-700">
-                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
-                    </strong>
-                  </div>
-                </div>
-                {aiData?.costs?.notes && (
-                  <p className="text-xs text-slate-600 font-medium p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                    ℹ️ {aiData.costs.notes}
-                  </p>
-                )}
-                <p className="text-[11px] text-slate-400 font-semibold">
-                  Fees are non-refundable and subject to official consular exchange rates.
-                </p>
-              </div>
-            )}
-
-            {/* TAB: PROCESSING TIME (LIVE AI / CONSULAR VERIFIED) */}
-            {sidebarTab === 'processing' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950">Processing Time &amp; Turnaround</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Official Decision Time</span>
-                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || '15 - 20 Working Days'}
-                    </h3>
-                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || 'Calculated from the date biometric submission is completed at the consular center.'}
-                    </p>
-                  </div>
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Recommended Filing Window</span>
-                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
-                      {aiData?.processing_and_timing?.apply_window || '15 Days to 3 Months Before'}
-                    </h3>
-                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.max_extension || 'Plan in advance to avoid consular peak season appointment delays.'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: TRACK APPLICATION */}
-            {sidebarTab === 'track' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950">Track Your Application</h2>
-                <p className="text-xs text-slate-500 font-medium">
-                  Enter your TravlTik tracking reference or consular passport number to view live status.
-                </p>
-                <div className="flex gap-2 max-w-md">
-                  <input
-                    type="text"
-                    placeholder="e.g. TRK-US-89241"
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-slate-900"
-                  />
-                  <button className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs cursor-pointer">
-                    Track
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: FAQ (MATCHING EXACT ACCORDION CARD media_1788472456972.png) */}
-            {sidebarTab === 'faq' && (
-              <div className="space-y-4 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950 px-1">Frequently Asked Questions</h2>
-                <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
-                  {faqs.map((faq, idx) => {
-                    const isOpen = Boolean(openFaqs[idx]);
-                    return (
-                      <div key={idx} className="transition-colors">
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
-                          className="w-full px-6 py-4.5 sm:px-8 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
-                        >
-                          <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
-                            {faq.question}
-                          </span>
-                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
-                        </button>
-                        {isOpen && (
-                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed animate-fadeIn">
-                            {faq.answer}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-          </main>
-        </div>
 
         {/* DOCUMENT INSPECTION MODAL */}
         {inspectDocItem && (
@@ -6937,7 +6975,7 @@ All documents must be genuine, valid and meet official consular standards to avo
       </section>
 
       {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") POSITIONED DIRECTLY AFTER SECTION 2 ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-10 flex items-center justify-center">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-10 flex items-center justify-center relative z-0">
         <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2 sm:py-3.5 px-4 sm:px-10 shadow-xs sm:shadow-md hover:shadow-lg flex items-center justify-between sm:justify-center gap-2.5 sm:gap-8 transition-all duration-300">
           
           <span className="text-xs sm:text-base md:text-lg font-heading font-black text-slate-950 tracking-tight whitespace-nowrap flex items-center gap-1.5 sm:gap-2">
@@ -7790,116 +7828,108 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
                     
                     {/* 5 Core Document Upload Items */}
+                                        {/* Document Vault Checklist: Click if Ready */}
                     <div className="space-y-3" id="student-doc-vault">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                           <span>1. Mandatory Document Vault Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
-                          Object.keys(uploadedDocuments).length >= 5
+                          ["passport","transcripts","financials","sop_cv","english_test"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 5
                             ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                            : Object.keys(uploadedDocuments).length > 0
+                            : ["passport","transcripts","financials","sop_cv","english_test"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length > 0
                             ? 'bg-blue-50 text-blue-800 border-blue-200'
-                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
                         }`}>
-                          {Object.keys(uploadedDocuments).length} of 5 Uploaded
+                          {`${["passport","transcripts","financials","sop_cv","english_test"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length} of 5 Ready`}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {[
-                          { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & blank pages' },
-                          { key: 'transcripts', title: 'Academic Transcripts & Degree', hint: '10th, 12th & Degree marksheets' },
-                          { key: 'financials', title: 'Financial / Loan Proof', hint: '28-day maintenance funds or loan letter' },
-                          { key: 'sop_cv', title: 'Statement of Purpose (SOP) & CV', hint: 'Academic intent & professional resume' },
-                          { key: 'english_test', title: 'English Test Scorecard', hint: 'IELTS / PTE / TOEFL score certificate' }
-                        ].map((doc) => {
-                          const uploaded = uploadedDocuments[doc.key];
-                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
-                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
-                          const fileInputId = `doc-file-input-${doc.key}`;
+                        {([
+  {
+    "key": "passport",
+    "title": "Passport Scan (Front & Back)",
+    "hint": "Min. 6 months validity & blank pages"
+  },
+  {
+    "key": "transcripts",
+    "title": "Academic Transcripts & Degree",
+    "hint": "10th, 12th & Degree marksheets"
+  },
+  {
+    "key": "financials",
+    "title": "Financial / Loan Proof",
+    "hint": "28-day maintenance funds or loan letter"
+  },
+  {
+    "key": "sop_cv",
+    "title": "Statement of Purpose (SOP) & CV",
+    "hint": "Academic intent & professional resume"
+  },
+  {
+    "key": "english_test",
+    "title": "English Test Scorecard",
+    "hint": "IELTS / PTE / TOEFL score certificate"
+  }
+]).map((doc) => {
+                          const isReady = Boolean(readyDocKeys[doc.key] || uploadedDocuments[doc.key]);
 
                           return (
                             <div
                               key={doc.key}
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
-                                uploaded
-                                  ? 'bg-emerald-50/40 border-emerald-300'
-                                  : isMissingAfterAttempt
-                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
+                                isReady
+                                  ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-200/60 shadow-2xs'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
-                              {/* Hidden real file input */}
-                              <input
-                                id={fileInputId}
-                                type="file"
-                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                className="hidden"
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    uploadAndScanDocument(file, doc.key, doc.title);
-                                  }
-                                }}
-                              />
-
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between">
                                   <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
-                                  {uploaded ? (
-                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  {isReady ? (
+                                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                      <Check className="w-3 h-3 stroke-[3]" /> Ready
+                                    </span>
                                   ) : (
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                      isMissingAfterAttempt
-                                        ? 'bg-amber-200 text-amber-950 font-black'
-                                        : 'bg-amber-100 text-amber-800'
-                                    }`}>
-                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                                      Required
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
                               </div>
 
-                              {uploaded ? (
-                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
-                                  <div className="min-w-0 flex-1">
-                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
-                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
-                                  </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => document.getElementById(fileInputId)?.click()}
-                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
-                                  >
-                                    Replace
-                                  </button>
-                                </div>
-                              ) : (
-                                <button
-                                  type="button"
-                                  disabled={isCurrentlyUploading}
-                                  onClick={() => document.getElementById(fileInputId)?.click()}
-                                  className="w-full py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-800 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50 touch-manipulation"
-                                >
-                                  {isCurrentlyUploading ? (
-                                    <>
-                                      <RotateCw className="w-3.5 h-3.5 animate-spin text-[#00A86B]" />
-                                      <span>Uploading &amp; Scanning...</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Upload className="w-3.5 h-3.5 text-slate-600" />
-                                      <span>Upload &amp; Store</span>
-                                    </>
-                                  )}
-                                </button>
-                              )}
+                              <button
+                                type="button"
+                                onClick={() => toggleDocReady(doc.key)}
+                                className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95 touch-manipulation ${
+                                  isReady
+                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600 shadow-sm'
+                                    : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+                                }`}
+                              >
+                                {isReady ? (
+                                  <>
+                                    <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                                    <span>✓ Ready (I Have This)</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                                    <span>Click if Ready</span>
+                                  </>
+                                )}
+                              </button>
                             </div>
                           );
                         })}
                       </div>
+
+                      <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
+                        <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                      </p>
                     </div>
 
                     {/* One-Click Concierge Add-On Services */}
@@ -8246,110 +8276,106 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>1. Mandatory Document Vault Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
-                          Object.keys(uploadedDocuments).length >= 6
+                          ["passport","flights_hotel","bank_statements","leave_noc","insurance","itinerary"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 6
                             ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                            : Object.keys(uploadedDocuments).length > 0
+                            : ["passport","flights_hotel","bank_statements","leave_noc","insurance","itinerary"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length > 0
                             ? 'bg-blue-50 text-blue-800 border-blue-200'
-                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
                         }`}>
-                          {Object.keys(uploadedDocuments).length} of 6 Uploaded
+                          {`${["passport","flights_hotel","bank_statements","leave_noc","insurance","itinerary"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length} of 6 Ready`}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {[
-                          { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & blank pages' },
-                          { key: 'flights_hotel', title: 'Flight Itinerary & Hotel Proof', hint: 'Confirmed return PNR & hotel vouchers' },
-                          { key: 'bank_statements', title: 'Bank Statements (6 Months)', hint: 'Official bank stamp & liquid funds' },
-                          { key: 'leave_noc', title: 'Employer Leave NOC / ITR', hint: 'Approved leave letter & tax returns' },
-                          { key: 'insurance', title: 'Travel Medical Insurance', hint: '€30,000+ emergency medical cover' },
-                          { key: 'itinerary', title: 'Day-by-Day Travel Itinerary', hint: 'Trip activity plan & cover letter' }
-                        ].map((doc) => {
-                          const uploaded = uploadedDocuments[doc.key];
-                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
-                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
-                          const fileInputId = `tour-doc-file-input-${doc.key}`;
+                        {([
+  {
+    "key": "passport",
+    "title": "Passport Scan (Front & Back)",
+    "hint": "Min. 6 months validity & blank pages"
+  },
+  {
+    "key": "flights_hotel",
+    "title": "Flight Itinerary & Hotel Proof",
+    "hint": "Confirmed return PNR & hotel vouchers"
+  },
+  {
+    "key": "bank_statements",
+    "title": "Bank Statements (6 Months)",
+    "hint": "Official bank stamp & liquid funds"
+  },
+  {
+    "key": "leave_noc",
+    "title": "Employer Leave NOC / ITR",
+    "hint": "Approved leave letter & tax returns"
+  },
+  {
+    "key": "insurance",
+    "title": "Travel Medical Insurance",
+    "hint": "€30,000+ emergency medical cover"
+  },
+  {
+    "key": "itinerary",
+    "title": "Day-by-Day Travel Itinerary",
+    "hint": "Trip activity plan & cover letter"
+  }
+]).map((doc) => {
+                          const isReady = Boolean(readyDocKeys[doc.key] || uploadedDocuments[doc.key]);
 
                           return (
                             <div
                               key={doc.key}
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
-                                uploaded
-                                  ? 'bg-emerald-50/40 border-emerald-300'
-                                  : isMissingAfterAttempt
-                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
+                                isReady
+                                  ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-200/60 shadow-2xs'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
-                              <input
-                                id={fileInputId}
-                                type="file"
-                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                className="hidden"
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    uploadAndScanDocument(file, doc.key, doc.title);
-                                  }
-                                }}
-                              />
-
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between">
                                   <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
-                                  {uploaded ? (
-                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  {isReady ? (
+                                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                      <Check className="w-3 h-3 stroke-[3]" /> Ready
+                                    </span>
                                   ) : (
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                      isMissingAfterAttempt
-                                        ? 'bg-amber-200 text-amber-950 font-black'
-                                        : 'bg-amber-100 text-amber-800'
-                                    }`}>
-                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                                      Required
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
                               </div>
 
-                              {uploaded ? (
-                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
-                                  <div className="min-w-0 flex-1">
-                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
-                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
-                                  </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => document.getElementById(fileInputId)?.click()}
-                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
-                                  >
-                                    Replace
-                                  </button>
-                                </div>
-                              ) : (
-                                <button
-                                  type="button"
-                                  disabled={isCurrentlyUploading}
-                                  onClick={() => document.getElementById(fileInputId)?.click()}
-                                  className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95"
-                                >
-                                  {isCurrentlyUploading ? (
-                                    <>
-                                      <span className="w-3.5 h-3.5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                                      <span>Verifying via OCR...</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
-                                      <span>Upload &amp; Store</span>
-                                    </>
-                                  )}
-                                </button>
-                              )}
+                              <button
+                                type="button"
+                                onClick={() => toggleDocReady(doc.key)}
+                                className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95 touch-manipulation ${
+                                  isReady
+                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600 shadow-sm'
+                                    : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+                                }`}
+                              >
+                                {isReady ? (
+                                  <>
+                                    <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                                    <span>✓ Ready (I Have This)</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                                    <span>Click if Ready</span>
+                                  </>
+                                )}
+                              </button>
                             </div>
                           );
                         })}
                       </div>
+
+                      <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
+                        <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                      </p>
                     </div>
 
                     {/* Concierge Addons */}
@@ -8793,110 +8819,106 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>1. Mandatory Document Vault Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
-                          Object.keys(uploadedDocuments).length >= 6
+                          ["passport","cos_contract","transcripts","english_test","tb_screening","pcc"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 6
                             ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                            : Object.keys(uploadedDocuments).length > 0
+                            : ["passport","cos_contract","transcripts","english_test","tb_screening","pcc"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length > 0
                             ? 'bg-blue-50 text-blue-800 border-blue-200'
-                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
                         }`}>
-                          {Object.keys(uploadedDocuments).length} of 6 Uploaded
+                          {`${["passport","cos_contract","transcripts","english_test","tb_screening","pcc"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length} of 6 Ready`}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {[
-                          { key: 'passport', title: 'Passport Scan (Full Validity)', hint: 'Valid for full employment contract' },
-                          { key: 'cos_contract', title: 'Certificate of Sponsorship (CoS)', hint: 'Official electronic reference & job contract' },
-                          { key: 'transcripts', title: 'Degree & Academic Transcripts', hint: 'Apostilled degrees & credential evaluation' },
-                          { key: 'english_test', title: 'English Proficiency (SELT B1+)', hint: 'IELTS for UKVI / PTE Academic scorecard' },
-                          { key: 'tb_screening', title: 'TB Clearance & Medical Certificate', hint: 'UKVI / Embassy approved medical clinic' },
-                          { key: 'pcc', title: 'Police Clearance Certificate (PCC)', hint: 'Clean criminal record from RPO / Passport office' }
-                        ].map((doc) => {
-                          const uploaded = uploadedDocuments[doc.key];
-                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
-                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
-                          const fileInputId = `work-doc-file-input-${doc.key}`;
+                        {([
+  {
+    "key": "passport",
+    "title": "Passport Scan (Full Validity)",
+    "hint": "Valid for full employment contract"
+  },
+  {
+    "key": "cos_contract",
+    "title": "Certificate of Sponsorship (CoS)",
+    "hint": "Official electronic reference & job contract"
+  },
+  {
+    "key": "transcripts",
+    "title": "Degree & Academic Transcripts",
+    "hint": "Apostilled degrees & credential evaluation"
+  },
+  {
+    "key": "english_test",
+    "title": "English Proficiency (SELT B1+)",
+    "hint": "IELTS for UKVI / PTE Academic scorecard"
+  },
+  {
+    "key": "tb_screening",
+    "title": "TB Clearance & Medical Certificate",
+    "hint": "UKVI / Embassy approved medical clinic"
+  },
+  {
+    "key": "pcc",
+    "title": "Police Clearance Certificate (PCC)",
+    "hint": "Clean criminal record from RPO / Passport office"
+  }
+]).map((doc) => {
+                          const isReady = Boolean(readyDocKeys[doc.key] || uploadedDocuments[doc.key]);
 
                           return (
                             <div
                               key={doc.key}
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
-                                uploaded
-                                  ? 'bg-emerald-50/40 border-emerald-300'
-                                  : isMissingAfterAttempt
-                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
+                                isReady
+                                  ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-200/60 shadow-2xs'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
-                              <input
-                                id={fileInputId}
-                                type="file"
-                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                className="hidden"
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    uploadAndScanDocument(file, doc.key, doc.title);
-                                  }
-                                }}
-                              />
-
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between">
                                   <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
-                                  {uploaded ? (
-                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  {isReady ? (
+                                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                      <Check className="w-3 h-3 stroke-[3]" /> Ready
+                                    </span>
                                   ) : (
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                      isMissingAfterAttempt
-                                        ? 'bg-amber-200 text-amber-950 font-black'
-                                        : 'bg-amber-100 text-amber-800'
-                                    }`}>
-                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                                      Required
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
                               </div>
 
-                              {uploaded ? (
-                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
-                                  <div className="min-w-0 flex-1">
-                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
-                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
-                                  </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => document.getElementById(fileInputId)?.click()}
-                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
-                                  >
-                                    Replace
-                                  </button>
-                                </div>
-                              ) : (
-                                <button
-                                  type="button"
-                                  disabled={isCurrentlyUploading}
-                                  onClick={() => document.getElementById(fileInputId)?.click()}
-                                  className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95"
-                                >
-                                  {isCurrentlyUploading ? (
-                                    <>
-                                      <span className="w-3.5 h-3.5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                                      <span>Verifying via OCR...</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
-                                      <span>Upload &amp; Store</span>
-                                    </>
-                                  )}
-                                </button>
-                              )}
+                              <button
+                                type="button"
+                                onClick={() => toggleDocReady(doc.key)}
+                                className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95 touch-manipulation ${
+                                  isReady
+                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600 shadow-sm'
+                                    : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+                                }`}
+                              >
+                                {isReady ? (
+                                  <>
+                                    <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                                    <span>✓ Ready (I Have This)</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                                    <span>Click if Ready</span>
+                                  </>
+                                )}
+                              </button>
                             </div>
                           );
                         })}
                       </div>
+
+                      <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
+                        <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                      </p>
                     </div>
 
                     {/* Concierge Addons */}

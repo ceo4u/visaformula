@@ -2781,7 +2781,7 @@ export function VisaCountryResultPortal({
   const validity = baseData.validity || '90 Days';
   const entryType = 'Single / Multiple (Depending on application)';
   const visaType = baseData.visaType || 'Official E-Visa';
-  const processingDays = baseData.processingDays || 4;
+  const processingDays = typeof baseData.processingDays === 'number' ? baseData.processingDays : 4;
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
   const flagCode4k = useMemo(() => get4kCountryFlag(countryName, slugClean), [countryName, slugClean]);
 
@@ -2965,10 +2965,13 @@ export function VisaCountryResultPortal({
   // ── DYNAMIC CONSULAR STEPS FROM REAL AI / OFFICIAL REGISTRY (ZERO DUMMY DATA) ──
   const dynamicSteps = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length > 0)
     ? aiData.how_to_apply.map((rawStep: string, idx: number) => {
-        const clean = rawStep.replace(/^[0-9]+[️⃣\.\)]\s*/, '').trim();
+        const clean = rawStep
+          .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
+          .replace(/^[?step\s*\d+]?\s*/i, '')
+          .trim();
         const parts = clean.split(':');
-        const title = parts.length > 1 ? parts[0].trim() : clean.length > 45 ? clean.slice(0, 40) + '...' : clean;
-        const desc = parts.length > 1 ? parts.slice(1).join(':').trim() : clean;
+        const title = (parts.length > 1 && parts[0].trim().length < 60) ? parts[0].trim() : clean;
+        const desc = (parts.length > 1 && parts[0].trim().length < 60) ? parts.slice(1).join(':').trim() : clean;
         const status = idx === 0 ? 'completed' : idx === 1 ? 'completed' : idx === 2 || idx === 3 ? 'in_progress' : idx === 4 ? 'pending' : 'not_started';
         const statusLabel = status === 'completed' ? 'Completed' : status === 'in_progress' ? 'In Progress' : status === 'pending' ? 'Pending' : 'Not Started';
         const dateOrEst = status === 'completed' ? 'Verified Online' : status === 'in_progress' ? 'Ready to File' : 'Official Consular Step';
@@ -2988,6 +2991,11 @@ export function VisaCountryResultPortal({
         };
       })
     : applicationStepsData;
+
+  const stepsCompleted = dynamicSteps.filter(s => s.status === 'completed').length;
+  const stepsInProgress = dynamicSteps.filter(s => s.status === 'in_progress').length;
+  const stepsPending = dynamicSteps.filter(s => s.status === 'pending').length;
+  const stepsNotStarted = dynamicSteps.filter(s => s.status === 'not_started').length;
 
   useEffect(() => {
     let mounted = true;
@@ -5898,13 +5906,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="flex-1 space-y-4 min-w-0 w-full">
                     <div>
                       <span className="inline-block px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-black border border-emerald-200 uppercase tracking-wider mb-2">
-                        {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Employment Visa' : 'Tourist Visa'}
+                        {aiData?.visa_type || (processingDays === 0 || baseData.visaType?.includes('Free') ? 'Visa-Free Entry' : activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Employment Visa' : 'Tourist Visa')}
                       </span>
                       <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight leading-tight">
-                        {`${countryName} ${activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : activePurposeTab === 'business' ? 'Business Visa' : 'Tourist Visa'}`}
+                        {aiData?.visa_type ? `${countryName} ${aiData.visa_type}` : `${countryName} ${activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : activePurposeTab === 'business' ? 'Business Visa' : 'Tourist Visa'}`}
                       </h2>
                       <span className="text-xs sm:text-sm font-bold text-slate-400 block mt-0.5">
-                        {isSchengen ? 'Schengen Area' : 'Official Consular Registry'}
+                        {aiData?.official_source_name || (isSchengen ? 'Schengen Area' : 'Official Consular Registry')}
                       </span>
                     </div>
 
@@ -5915,7 +5923,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>Processing Time</span>
                         </div>
                         <strong className="text-xs font-black text-slate-950 block">
-                          {processingDays ? `${processingDays}–${processingDays + 5} Days` : '15 Calendar Days'}
+                          {aiData?.processing_time || (processingDays === 0 ? 'Instant (On Arrival)' : `${processingDays}–${processingDays + 5} Days`)}
                         </strong>
                       </div>
 
@@ -5925,7 +5933,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>Validity</span>
                         </div>
                         <strong className="text-xs font-black text-slate-950 block">
-                          {isSchengen ? 'Up to 90 Days' : validity ? validity.split('(')[0].trim() : 'Up to 90 Days'}
+                          {aiData?.validity || (isSchengen ? 'Up to 90 Days' : validity ? validity.split('(')[0].trim() : 'Up to 90 Days')}
                         </strong>
                       </div>
 
@@ -5935,7 +5943,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>Stay Period</span>
                         </div>
                         <strong className="text-xs font-black text-slate-950 block">
-                          {isSchengen ? '90 Days in 180 Days' : 'Up to 90 Days'}
+                          {aiData?.stay_duration || aiData?.validity_and_stay?.max_stay_per_entry || (isSchengen ? '90 Days in 180 Days' : baseData.lengthOfStay || 'Up to 90 Days')}
                         </strong>
                       </div>
 
@@ -5945,13 +5953,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <span>Entry Type</span>
                         </div>
                         <strong className="text-xs font-black text-slate-950 block">
-                          {isSchengen ? 'Schengen Short-Stay (C)' : 'Single / Multiple Entry'}
+                          {aiData?.entry_type || (isSchengen ? 'Schengen Short-Stay (C)' : baseData.entryType || 'Single / Multiple Entry')}
                         </strong>
                       </div>
                     </div>
 
                     <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                      Travel to {countryName} for tourism, leisure, visiting family or friends, or attending short term events.
+                      {aiData?.purpose_of_visit ? `Official travel regulations for ${countryName} (${aiData.purpose_of_visit}).` : `Travel to ${countryName} for tourism, leisure, visiting family or friends, or attending short term events.`}
                     </p>
 
                     <div className="flex items-center gap-3 pt-1">
@@ -6056,13 +6064,13 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                   const overviewStepsList = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4)
                     ? aiData.how_to_apply.slice(0, 6).map((step: any, idx: number) => {
-                        const title = typeof step === 'string'
-                          ? step.split(':')[0].replace(/^\[?step\s*\d+\]?\s*/i, '').trim()
-                          : (step.title || step.step || defaultPortalOverviewSteps[idx % 6].title);
-                        const desc = typeof step === 'string'
-                          ? (step.split(':').slice(1).join(':').trim() || defaultPortalOverviewSteps[idx % 6].desc)
-                          : (step.description || step.detail || defaultPortalOverviewSteps[idx % 6].desc);
-                        return { title, desc };
+                        const raw = typeof step === 'string' ? step : (step.title || step.step || defaultPortalOverviewSteps[idx % 6].title);
+                        const clean = raw
+                          .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
+                          .replace(/^\[?step\s*\d+\]?\s*/i, '')
+                          .trim();
+                        const title = clean.split(':')[0].trim() || clean;
+                        return { title };
                       })
                     : defaultPortalOverviewSteps;
 
@@ -6131,7 +6139,6 @@ All documents must be genuine, valid and meet official consular standards to avo
                                   {idx + 1}
                                 </div>
                                 <h4 className="text-xs font-bold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
-                                <p className="text-[11px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2">{step.desc}</p>
                               </div>
                             ))}
                           </div>
@@ -6617,7 +6624,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </div>
                       <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">4</strong>
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
                         <span className="text-[10px] font-semibold text-slate-400">Completed</span>
                       </div>
                     </div>
@@ -6627,7 +6634,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <RotateCw className="w-3.5 h-3.5" />
                       </div>
                       <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">2</strong>
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
                         <span className="text-[10px] font-semibold text-slate-400">In Progress</span>
                       </div>
                     </div>
@@ -6637,7 +6644,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Star className="w-3.5 h-3.5" />
                       </div>
                       <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">1</strong>
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsPending}</strong>
                         <span className="text-[10px] font-semibold text-slate-400">Pending</span>
                       </div>
                     </div>
@@ -6647,7 +6654,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Circle className="w-3.5 h-3.5" />
                       </div>
                       <div className="text-left">
-                        <strong className="text-xs font-black text-slate-900 block leading-none">1</strong>
+                        <strong className="text-xs font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
                         <span className="text-[10px] font-semibold text-slate-400">Not Started</span>
                       </div>
                     </div>

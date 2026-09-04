@@ -1475,11 +1475,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ (Recommended Strategy): Purchase your Jordan Pass online at jordanpass.jo (starts at 70 JOD) at least 3 days before travel to waive the 40 JOD entry visa fee and cover Petra entrance tickets.',
-        '2️⃣ Ensure your passport is valid for at least 6 months with confirmed round-trip flights to Amman (AMM) and hotel reservations.',
-        '3️⃣ (Option A - Visa on Arrival): Fly directly to Queen Alia International Airport (AMM). Proceed to the Visa on Arrival immigration desk, present your passport and Jordan Pass QR code to have the 40 JOD fee 100% waived (or pay 40 JOD by card/cash if without Jordan Pass).',
-        '4️⃣ (Option B - Online MOI E-Service): Alternatively, submit your travel details in advance on the official Jordan MOI portal (eservices.moi.gov.jo) and receive your electronic entry permit.',
-        '5️⃣ Receive your entry stamp granting an initial stay of 30 days. If staying longer, visit any local Jordan police station before day 30 for an extension of up to 3 months for free.'
+        '(Recommended Strategy): Purchase your Jordan Pass online at jordanpass.jo (starts at 70 JOD) at least 3 days before travel to waive the 40 JOD entry visa fee and cover Petra entrance tickets.',
+        'Ensure your passport is valid for at least 6 months with confirmed round-trip flights to Amman (AMM) and hotel reservations.',
+        '(Option A - Visa on Arrival): Fly directly to Queen Alia International Airport (AMM). Proceed to the Visa on Arrival immigration desk, present your passport and Jordan Pass QR code to have the 40 JOD fee 100% waived (or pay 40 JOD by card/cash if without Jordan Pass).',
+        '(Option B - Online MOI E-Service): Alternatively, submit your travel details in advance on the official Jordan MOI portal (eservices.moi.gov.jo) and receive your electronic entry permit.',
+        'Receive your entry stamp granting an initial stay of 30 days. If staying longer, visit any local Jordan police station before day 30 for an extension of up to 3 months for free.'
       ],
       costs: {
         visa_fee: '40 JOD (approx. ₹4,700 INR) on Arrival — OR 0 JOD (100% Waived with Jordan Pass)',
@@ -1557,10 +1557,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Check eligibility: If you hold a valid US, UK, Schengen, or Ireland visa, go directly to the official portal: evisa.gov.tr.',
-        '2️⃣ (If eligible for eVisa): Fill in your passport details, enter your supporting visa number, and pay the $43 USD fee online. Your electronic visa is issued instantly.',
-        '3️⃣ (If not eligible for eVisa): Prepare document dossier (passport, photos, 6-month bank statements, ITR, employment NOC) and submit via Gateway Globe VAC.',
-        '4️⃣ Print your approved e-Visa or collect your passport with the stamped sticker visa before departure.'
+        'Check eligibility: If you hold a valid US, UK, Schengen, or Ireland visa, go directly to the official portal: evisa.gov.tr.',
+        '(If eligible for eVisa): Fill in your passport details, enter your supporting visa number, and pay the $43 USD fee online. Your electronic visa is issued instantly.',
+        '(If not eligible for eVisa): Prepare document dossier (passport, photos, 6-month bank statements, ITR, employment NOC) and submit via Gateway Globe VAC.',
+        'Print your approved e-Visa or collect your passport with the stamped sticker visa before departure.'
       ],
       costs: {
         visa_fee: '$43 USD (approx. ₹3,650 INR) for Online eVisa — OR approx. $60 USD for Consular Sticker Visa',
@@ -1635,10 +1635,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Ensure you carry your original Indian Passport OR your original Election Commission Voter ID Card.',
-        '2️⃣ Book your flight to Tribhuvan International Airport, Kathmandu (KTM) or travel via designated open land border checkpoints (Raxaul/Birgunj, Sonauli, etc.).',
-        '3️⃣ At Kathmandu airport immigration, simply show your Indian photo ID for instant entry stamping.',
-        '4️⃣ No visa fee, no VFS appointment, and no biometric registration required.'
+        'Ensure you carry your original Indian Passport OR your original Election Commission Voter ID Card.',
+        'Book your flight to Tribhuvan International Airport, Kathmandu (KTM) or travel via designated open land border checkpoints (Raxaul/Birgunj, Sonauli, etc.).',
+        'At Kathmandu airport immigration, simply show your Indian photo ID for instant entry stamping.',
+        'No visa fee, no VFS appointment, and no biometric registration required.'
       ],
       costs: {
         visa_fee: '₹0 (100% Free / Visa Exempt for Indian Citizens)',
@@ -1718,10 +1718,10 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Ensure your passport has 6+ months validity or carry your original Voter ID Card.',
-        '2️⃣ Book accommodation in a Department of Tourism certified hotel in Bhutan.',
-        '3️⃣ Pay the statutory Sustainable Development Fee (SDF) of ₹1,200 per night online or via your hotel/operator.',
-        '4️⃣ Arrive at Paro International Airport (PBH) or land border gates (Phuentsholing, Gelephu, Samdrup Jongkhar) to receive your entry permit stamp.'
+        'Ensure your passport has 6+ months validity or carry your original Voter ID Card.',
+        'Book accommodation in a Department of Tourism certified hotel in Bhutan.',
+        'Pay the statutory Sustainable Development Fee (SDF) of ₹1,200 per night online or via your hotel/operator.',
+        'Arrive at Paro International Airport (PBH) or land border gates (Phuentsholing, Gelephu, Samdrup Jongkhar) to receive your entry permit stamp.'
       ],
       costs: {
         visa_fee: '₹0 (No Visa Fee for Indian Citizens)',
@@ -1804,12 +1804,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Visit the official government eVisa portal: https://www.evisa.gov.kh.',
-        '2️⃣ Complete the simple application form and upload passport bio-page scan and photograph.',
-        '3️⃣ Pay the official visa fee of $36 USD ($30 visa + $6 processing) securely online via credit card.',
-        '4️⃣ Receive your official electronic visa approval certificate via email within 3 business days.',
-        '5️⃣ (Alternative): Obtain Visa on Arrival (VoA) for $30 USD cash directly at Phnom Penh or Siem Reap airport.',
-        '6️⃣ Complete the Cambodia e-Arrival Card online at arrival.gov.kh within 7 days before flight.'
+        'Visit the official government eVisa portal: https://www.evisa.gov.kh.',
+        'Complete the simple application form and upload passport bio-page scan and photograph.',
+        'Pay the official visa fee of $36 USD ($30 visa + $6 processing) securely online via credit card.',
+        'Receive your official electronic visa approval certificate via email within 3 business days.',
+        '(Alternative): Obtain Visa on Arrival (VoA) for $30 USD cash directly at Phnom Penh or Siem Reap airport.',
+        'Complete the Cambodia e-Arrival Card online at arrival.gov.kh within 7 days before flight.'
       ],
       costs: {
         visa_fee: '$30 USD (approx. ₹2,550 INR) on Arrival / $36 USD (approx. ₹3,050 INR) for Online eVisa',
@@ -2873,14 +2873,14 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           }
         ],
         how_to_apply: [
-          '1️⃣ Secure unconditional offer and official 14-digit CAS statement from UK Higher Education Provider (HEP).',
-          '2️⃣ Obtain Tuberculosis (TB) clearance certificate from a UKVI-approved clinic in India.',
-          '3️⃣ Maintain required tuition + living maintenance funds (£1,483/mo London or £1,136/mo Non-London) in bank for 28 consecutive days.',
-          '4️⃣ Complete the UKVI Student Visa online application form on gov.uk.',
-          '5️⃣ Pay the £490 visa application fee + £776/year Immigration Health Surcharge (IHS).',
-          '6️⃣ Upload CAS, TB certificate, academic credentials, and 28-day financial statements to VFS Global portal.',
-          '7️⃣ Book and attend VFS Global biometric appointment for fingerprinting and passport submission.',
-          '8️⃣ Receive UKVI decision letter within 15 working days and passport with 90-day entry vignette, then travel to UK.'
+          'Secure unconditional offer and official 14-digit CAS statement from UK Higher Education Provider (HEP).',
+          'Obtain Tuberculosis (TB) clearance certificate from a UKVI-approved clinic in India.',
+          'Maintain required tuition + living maintenance funds (£1,483/mo London or £1,136/mo Non-London) in bank for 28 consecutive days.',
+          'Complete the UKVI Student Visa online application form on gov.uk.',
+          'Pay the £490 visa application fee + £776/year Immigration Health Surcharge (IHS).',
+          'Upload CAS, TB certificate, academic credentials, and 28-day financial statements to VFS Global portal.',
+          'Book and attend VFS Global biometric appointment for fingerprinting and passport submission.',
+          'Receive UKVI decision letter within 15 working days and passport with 90-day entry vignette, then travel to UK.'
         ],
         costs: {
           visa_fee: '£490 (approx. ₹52,400 out-of-country student fee)',
@@ -3303,13 +3303,13 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           }
         ],
         how_to_apply: [
-          '1️⃣ Secure unconditional admission at an accredited Danish higher education institution.',
-          '2️⃣ Danish educational institution completes Part 1 of the online ST1 application form on nyidanmark.dk and sends the reference ID / password to the student.',
-          '3️⃣ Create a Case Order ID on nyidanmark.dk and pay the official SIRI processing fee (2,115 – 2,600 DKK) online.',
-          '4️⃣ Complete Part 2 of the ST1 application form on nyidanmark.dk, uploading passport, admission letter, and living funds proof.',
-          '5️⃣ Register and pay the Danish Embassy application fee (1,710 DKK) on the official ApplyVisa portal (applyvisa.um.dk).',
-          '6️⃣ Book an appointment and record biometrics at VFS Global Denmark within 14 calendar days of online ST1 submission.',
-          '7️⃣ Track application status on SIRI. Upon approval, receive entry visa sticker or travel to Denmark to collect your physical Biometric Residence Card (Opholdskort).'
+          'Secure unconditional admission at an accredited Danish higher education institution.',
+          'Danish educational institution completes Part 1 of the online ST1 application form on nyidanmark.dk and sends the reference ID / password to the student.',
+          'Create a Case Order ID on nyidanmark.dk and pay the official SIRI processing fee (2,115 – 2,600 DKK) online.',
+          'Complete Part 2 of the ST1 application form on nyidanmark.dk, uploading passport, admission letter, and living funds proof.',
+          'Register and pay the Danish Embassy application fee (1,710 DKK) on the official ApplyVisa portal (applyvisa.um.dk).',
+          'Book an appointment and record biometrics at VFS Global Denmark within 14 calendar days of online ST1 submission.',
+          'Track application status on SIRI. Upon approval, receive entry visa sticker or travel to Denmark to collect your physical Biometric Residence Card (Opholdskort).'
         ],
         costs: {
           visa_fee: '2,115 – 2,600 DKK (SIRI Fee) + 1,710 DKK (Embassy ApplyVisa Fee)',
@@ -3364,11 +3364,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: '14-Day Biometric Enrollment', details: 'Biometrics recorded at VFS within 14 calendar days of online AR1 submission.' }
         ],
         how_to_apply: [
-          '1️⃣ Secure qualifying job offer meeting Danish salary or Positive List thresholds.',
-          '2️⃣ Employer creates Case Order ID, pays SIRI fee, and submits Part 1 on nyidanmark.dk.',
-          '3️⃣ Employee completes Part 2 with passport details and employment contract.',
-          '4️⃣ Pay Danish Embassy fee on applyvisa.um.dk and book VFS biometrics within 14 days.',
-          '5️⃣ Attend VFS for biometrics, receive approval, and obtain Biometric Residence Card in Denmark.'
+          'Secure qualifying job offer meeting Danish salary or Positive List thresholds.',
+          'Employer creates Case Order ID, pays SIRI fee, and submits Part 1 on nyidanmark.dk.',
+          'Employee completes Part 2 with passport details and employment contract.',
+          'Pay Danish Embassy fee on applyvisa.um.dk and book VFS biometrics within 14 days.',
+          'Attend VFS for biometrics, receive approval, and obtain Biometric Residence Card in Denmark.'
         ],
         costs: {
           visa_fee: '4,800 – 5,200 DKK (SIRI) + 1,710 DKK (Embassy ApplyVisa)',
@@ -3417,12 +3417,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Active Employment at Decision Time', details: 'Must be actively employed in Denmark at the time SIRI/DIS issues the permanent residence decision.' }
         ],
         how_to_apply: [
-          '1️⃣ Complete required 8 years (or 4 accelerated years) of continuous legal residence.',
-          '2️⃣ Pass Danish language exam (Prøve i Dansk 2/3) and compile SKAT tax records.',
-          '3️⃣ Create Case Order ID on nyidanmark.dk and pay official permanent residence fee (approx. 4,800 DKK).',
-          '4️⃣ Submit online application (TU1 or TU4 form) on nyidanmark.dk.',
-          '5️⃣ Record biometrics at Citizen Service (Borgerservice) or SIRI office in Denmark.',
-          '6️⃣ Receive official Permanent Residence Permit letter and updated card.'
+          'Complete required 8 years (or 4 accelerated years) of continuous legal residence.',
+          'Pass Danish language exam (Prøve i Dansk 2/3) and compile SKAT tax records.',
+          'Create Case Order ID on nyidanmark.dk and pay official permanent residence fee (approx. 4,800 DKK).',
+          'Submit online application (TU1 or TU4 form) on nyidanmark.dk.',
+          'Record biometrics at Citizen Service (Borgerservice) or SIRI office in Denmark.',
+          'Receive official Permanent Residence Permit letter and updated card.'
         ],
         costs: {
           visa_fee: '4,800 – 5,200 DKK (SIRI / DIS Application Fee)',
@@ -3517,12 +3517,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Register on the official ApplyVisa portal (applyvisa.um.dk) and complete the visa application form online.',
-        '2️⃣ Pay the visa fee (€90) securely online on applyvisa.um.dk and print the signed Cover Letter.',
-        '3️⃣ Compile your document dossier: passport, photos, €30k insurance, flight reservation, hotel booking, bank statements (3-6 months), ITR, and employer NOC.',
-        '4️⃣ Book an appointment at your nearest VFS Global Denmark application center in India.',
-        '5️⃣ Attend the VFS appointment for biometric submission and hand over your document dossier.',
-        '6️⃣ Track your application online and collect your passport with the Schengen visa sticker.'
+        'Register on the official ApplyVisa portal (applyvisa.um.dk) and complete the visa application form online.',
+        'Pay the visa fee (€90) securely online on applyvisa.um.dk and print the signed Cover Letter.',
+        'Compile your document dossier: passport, photos, €30k insurance, flight reservation, hotel booking, bank statements (3-6 months), ITR, and employer NOC.',
+        'Book an appointment at your nearest VFS Global Denmark application center in India.',
+        'Attend the VFS appointment for biometric submission and hand over your document dossier.',
+        'Track your application online and collect your passport with the Schengen visa sticker.'
       ],
       costs: {
         visa_fee: '€90 (approx. 675 DKK / ₹8,100)',
@@ -3627,12 +3627,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Sponsoring company in Yemen submits an application to the Ministry of Interior (PISA) in Aden/Sana\'a to obtain the official Visa Approval / No Objection Clearance.',
-        '2️⃣ Ensure the MOI / PISA approval number and official cable are telexed/transmitted directly to the Embassy of the Republic of Yemen in New Delhi.',
-        '3️⃣ Complete the official Yemen Visa Application Form and attach 2 recent color passport photographs.',
-        '4️⃣ Compile complete dossier: original passport (strictly NO Israeli stamps), MOI approval copy, Chamber-certified Yemeni invitation, Indian employer deputation letter with MEA advisory undertaking, medical clearance certificate (HIV/Hep/TB), and return flight itinerary.',
-        '5️⃣ Submit the physical application dossier directly to the Consular Section, Embassy of the Republic of Yemen, New Delhi and pay the consular fee ($100–$150 USD) via bank draft / consular counter.',
-        '6️⃣ Track consular processing (10–20 business days) and collect your stamped passport directly from the Embassy.'
+        'Sponsoring company in Yemen submits an application to the Ministry of Interior (PISA) in Aden/Sana\'a to obtain the official Visa Approval / No Objection Clearance.',
+        'Ensure the MOI / PISA approval number and official cable are telexed/transmitted directly to the Embassy of the Republic of Yemen in New Delhi.',
+        'Complete the official Yemen Visa Application Form and attach 2 recent color passport photographs.',
+        'Compile complete dossier: original passport (strictly NO Israeli stamps), MOI approval copy, Chamber-certified Yemeni invitation, Indian employer deputation letter with MEA advisory undertaking, medical clearance certificate (HIV/Hep/TB), and return flight itinerary.',
+        'Submit the physical application dossier directly to the Consular Section, Embassy of the Republic of Yemen, New Delhi and pay the consular fee ($100–$150 USD) via bank draft / consular counter.',
+        'Track consular processing (10–20 business days) and collect your stamped passport directly from the Embassy.'
       ],
       costs: {
         visa_fee: '100 – 150 USD (approx. ₹8,500 – ₹12,500 INR)',
@@ -3692,11 +3692,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Biometrics at Immigration Office', details: 'Initial National D visa issued by Embassy; biometric residence card collected at local immigration office upon arrival.' }
         ],
         how_to_apply: [
-          '1️⃣ Secure qualifying legal basis (EU Blue Card, Golden Visa investment, or Family Reunification approval).',
-          '2️⃣ Obtain MEA Apostille on PCC and civil documents.',
-          '3️⃣ Lodge National Long-Stay (Type D) visa application at the Embassy or authorized VAC.',
-          '4️⃣ Submit biometrics and attend consular interview.',
-          '5️⃣ Travel to destination country and register biometrics with immigration authority for physical EU Residence Card.'
+          'Secure qualifying legal basis (EU Blue Card, Golden Visa investment, or Family Reunification approval).',
+          'Obtain MEA Apostille on PCC and civil documents.',
+          'Lodge National Long-Stay (Type D) visa application at the Embassy or authorized VAC.',
+          'Submit biometrics and attend consular interview.',
+          'Travel to destination country and register biometrics with immigration authority for physical EU Residence Card.'
         ],
         costs: {
           visa_fee: '€180 (Embassy Long-Stay Type D Fee)',
@@ -4242,12 +4242,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Panel Physician Medical Exam', details: 'Mandatory panel physician medical screening and vaccination dossier must be completed within 6 months of consular interview.' }
         ],
         how_to_apply: [
-          '1️⃣ Sponsoring employer or qualifying family relative files Immigrant Petition (Form I-130 / I-140) with USCIS and receives approval.',
-          '2️⃣ Case transferred to National Visa Center (NVC); pay DS-260 immigrant fee (345 USD for employment / 325 USD for family) and I-864 review fee (120 USD).',
-          '3️⃣ Complete online Form DS-260 and upload civil documents, PCC, and I-864 Affidavit of Support with IRS tax returns.',
-          '4️⃣ Complete medical exam at CDC-authorized panel physician clinic in India.',
-          '5️⃣ Attend Biometrics appointment at VAC, followed by Immigrant Visa Interview at the US Embassy/Consulate with original civil dossier.',
-          '6️⃣ Upon approval, receive 6-month immigrant entry visa foil in passport; pay 235 USD USCIS Immigrant Fee online and travel to the US to receive physical 10-Year Green Card.'
+          'Sponsoring employer or qualifying family relative files Immigrant Petition (Form I-130 / I-140) with USCIS and receives approval.',
+          'Case transferred to National Visa Center (NVC); pay DS-260 immigrant fee (345 USD for employment / 325 USD for family) and I-864 review fee (120 USD).',
+          'Complete online Form DS-260 and upload civil documents, PCC, and I-864 Affidavit of Support with IRS tax returns.',
+          'Complete medical exam at CDC-authorized panel physician clinic in India.',
+          'Attend Biometrics appointment at VAC, followed by Immigrant Visa Interview at the US Embassy/Consulate with original civil dossier.',
+          'Upon approval, receive 6-month immigrant entry visa foil in passport; pay 235 USD USCIS Immigrant Fee online and travel to the US to receive physical 10-Year Green Card.'
         ],
         costs: {
           visa_fee: '345 USD (Employment-Based DS-260) / 325 USD (Family-Based DS-260)',
@@ -4298,12 +4298,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Length of Stay Determined by CBP', details: 'The consular visa foil allows travel to a US port of entry. The U.S. Customs and Border Protection (CBP) officer determines authorized stay duration upon arrival (recorded on electronic Form I-94, typically up to 180 days).' }
         ],
         how_to_apply: [
-          '1️⃣ Complete the official Form DS-160 online (ceac.state.gov) selecting B-1 (Business/Conference) and print your confirmation barcode.',
-          '2️⃣ Create a profile on usvisascheduling.com and pay the 185 USD MRV visa fee (via UPI, NEFT, or card).',
-          '3️⃣ Schedule your two appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
-          '4️⃣ Attend VAC appointment with passport and DS-160 confirmation for photo and fingerprint registration.',
-          '5️⃣ Attend Consular Interview at US Embassy/Consulate with your Official U.S. Business Invitation Letter and Indian Employer Deputation Letter.',
-          '6️⃣ Upon visa approval, collect your 10-year multiple-entry visa stamped passport from selected VAC or premium courier.'
+          'Complete the official Form DS-160 online (ceac.state.gov) selecting B-1 (Business/Conference) and print your confirmation barcode.',
+          'Create a profile on usvisascheduling.com and pay the 185 USD MRV visa fee (via UPI, NEFT, or card).',
+          'Schedule your two appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
+          'Attend VAC appointment with passport and DS-160 confirmation for photo and fingerprint registration.',
+          'Attend Consular Interview at US Embassy/Consulate with your Official U.S. Business Invitation Letter and Indian Employer Deputation Letter.',
+          'Upon visa approval, collect your 10-year multiple-entry visa stamped passport from selected VAC or premium courier.'
         ],
         costs: {
           visa_fee: '185 USD (approx. ₹15,540 MRV fee)',
@@ -4354,13 +4354,13 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Student Health & Medical Insurance', details: 'Universities mandate comprehensive student health insurance (or waiver-eligible international coverage) prior to campus enrollment.' }
         ],
         how_to_apply: [
-          '1️⃣ Receive signed Form I-20 from your SEVP-approved US university.',
-          '2️⃣ Pay the mandatory 350 USD I-901 SEVIS fee online at fmjfee.com.',
-          '3️⃣ Complete Form DS-160 online (ceac.state.gov) and save your 10-digit confirmation barcode.',
-          '4️⃣ Create profile on usvisascheduling.com, pay 185 USD MRV visa fee, and schedule VAC Biometrics + Consular Interview appointments.',
-          '5️⃣ Attend VAC appointment for digital biometrics and facial photograph.',
-          '6️⃣ Attend Consular Interview at US Embassy/Consulate with original I-20, financial proofs, and academic records.',
-          '7️⃣ Upon visa approval, collect passport with stamped F-1 visa foil from chosen VAC or premium courier.'
+          'Receive signed Form I-20 from your SEVP-approved US university.',
+          'Pay the mandatory 350 USD I-901 SEVIS fee online at fmjfee.com.',
+          'Complete Form DS-160 online (ceac.state.gov) and save your 10-digit confirmation barcode.',
+          'Create profile on usvisascheduling.com, pay 185 USD MRV visa fee, and schedule VAC Biometrics + Consular Interview appointments.',
+          'Attend VAC appointment for digital biometrics and facial photograph.',
+          'Attend Consular Interview at US Embassy/Consulate with original I-20, financial proofs, and academic records.',
+          'Upon visa approval, collect passport with stamped F-1 visa foil from chosen VAC or premium courier.'
         ],
         costs: { visa_fee: '185 USD (approx. ₹15,540 MRV fee)', service_fee: '350 USD (I-901 SEVIS Fee)', total_fee: '535 USD Total Reference', notes: 'Paid online via official US visa scheduling portal (UPI / NEFT / Credit Card) and fmjfee.com.' },
         processing_and_timing: { apply_window: 'Apply up to 365 days before course start date on I-20.', decision_time: 'Decision: Verbal decision given immediately at the interview window.', max_extension: 'Can enter USA up to 30 days before program start date stated on Form I-20.' }
@@ -4403,12 +4403,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Client Letter & End-Client Verification', details: 'Third-party placement workers must present current, signed client letters specifying work location and job duties.' }
         ],
         how_to_apply: [
-          '1️⃣ Employer petitions USCIS and receives approved Form I-797 Notice of Action (or prepares Form I-129S for L-1 Blanket).',
-          '2️⃣ Complete Form DS-160 online (ceac.state.gov) and save confirmation barcode.',
-          '3️⃣ Create account on usvisascheduling.com, pay 205 USD MRV visa fee, and book VAC + Consular interview dates.',
-          '4️⃣ Attend VAC for digital biometrics and facial photograph.',
-          '5️⃣ Attend Consular Interview at US Embassy/Consulate with I-797, LCA, and employment documents (pay 500 USD fee at cashier if applying under L-1 Blanket).',
-          '6️⃣ Receive passport with stamped H-1B/L-1 visa foil via premium delivery or VAC collection.'
+          'Employer petitions USCIS and receives approved Form I-797 Notice of Action (or prepares Form I-129S for L-1 Blanket).',
+          'Complete Form DS-160 online (ceac.state.gov) and save confirmation barcode.',
+          'Create account on usvisascheduling.com, pay 205 USD MRV visa fee, and book VAC + Consular interview dates.',
+          'Attend VAC for digital biometrics and facial photograph.',
+          'Attend Consular Interview at US Embassy/Consulate with I-797, LCA, and employment documents (pay 500 USD fee at cashier if applying under L-1 Blanket).',
+          'Receive passport with stamped H-1B/L-1 visa foil via premium delivery or VAC collection.'
         ],
         costs: {
           visa_fee: '205 USD (approx. ₹17,220 MRV Application Fee)',
@@ -4459,12 +4459,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         { category: 'Travel Health & Medical Insurance', details: 'Consular authorities strongly advise international travel medical insurance with minimum 50,000 USD emergency medical and evacuation coverage.' }
       ],
       how_to_apply: [
-        '1️⃣ Complete the official Form DS-160 online (ceac.state.gov) and print your confirmation barcode.',
-        '2️⃣ Create a profile on usvisascheduling.com and pay the 185 USD MRV visa fee (via UPI, NEFT, or card).',
-        '3️⃣ Schedule your two appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
-        '4️⃣ Attend VAC appointment with passport and DS-160 confirmation for photo and fingerprint registration.',
-        '5️⃣ Attend in-person Consular Interview at the US Embassy/Consulate with your financial and tie-back proofs.',
-        '6️⃣ Upon visa approval, collect your 10-year multiple-entry visa stamped passport from selected VAC or premium courier.'
+        'Complete Form DS-160: Fill out the official non-immigrant visa application online at ceac.state.gov and print your confirmation barcode.',
+        'Profile & MRV Fee: Create a profile on usvisascheduling.com and pay the 185 USD MRV visa fee (via UPI, NEFT, or card).',
+        'Schedule Appointments: Book your two required appointments: (1) VAC Biometrics appointment, and (2) Consular Interview.',
+        'Attend VAC Biometrics: Visit the Visa Application Center with your passport and DS-160 confirmation page for photo and fingerprint registration.',
+        'Consular Interview: Attend the in-person interview at the US Embassy/Consulate with your financial documents and home country ties proofs.',
+        'Passport Delivery: Upon visa approval, collect your 10-year multiple-entry stamped passport from your chosen VAC center or premium courier.'
       ],
       costs: {
         visa_fee: '185 USD (approx. ₹15,540 MRV fee)',
@@ -4521,12 +4521,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Right of Permanent Residence Fee (RPRF)', details: 'Mandatory 575 CAD RPRF fee must be paid before Confirmation of Permanent Residence (COPR) issuance (refundable if refused).' }
         ],
         how_to_apply: [
-          '1️⃣ Complete Educational Credential Assessment (WES) and language test (IELTS General / PTE Core).',
-          '2️⃣ Create and submit Express Entry profile on IRCC portal.',
-          '3️⃣ Receive Invitation to Apply (ITA) in Express Entry or Provincial Nominee draw.',
-          '4️⃣ Submit electronic Application for Permanent Residence (e-APR) within 60 days with complete medical, PCC, and financial dossier.',
-          '5️⃣ Pay 950 CAD processing fee + 575 CAD RPRF fee + 85 CAD biometrics fee.',
-          '6️⃣ Receive Confirmation of Permanent Residence (COPR) and submit passport to VFS for PR visa foil stamping.'
+          'Complete Educational Credential Assessment (WES) and language test (IELTS General / PTE Core).',
+          'Create and submit Express Entry profile on IRCC portal.',
+          'Receive Invitation to Apply (ITA) in Express Entry or Provincial Nominee draw.',
+          'Submit electronic Application for Permanent Residence (e-APR) within 60 days with complete medical, PCC, and financial dossier.',
+          'Pay 950 CAD processing fee + 575 CAD RPRF fee + 85 CAD biometrics fee.',
+          'Receive Confirmation of Permanent Residence (COPR) and submit passport to VFS for PR visa foil stamping.'
         ],
         costs: {
           visa_fee: '950 CAD (Principal Applicant Processing Fee)',
@@ -4563,12 +4563,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         { category: 'Passport Submission (PPR)', details: 'Upon online approval, submit original passport to VFS for counterfoil visa stamping.' }
       ],
       how_to_apply: [
-        '1️⃣ Create an official IRCC Portal account on canada.ca and complete the online application.',
-        '2️⃣ Upload scanned documents: passport, bank statements, itinerary, employment letter, and SOP.',
-        '3️⃣ Pay the 100 CAD visa application fee + 85 CAD biometrics fee online using credit/debit card.',
-        '4️⃣ Receive your Biometrics Instruction Letter (BIL) within 24-48 hours.',
-        '5️⃣ Book and attend an appointment at your nearest VFS Global Canada VAC to submit biometrics.',
-        '6️⃣ Track your application on IRCC portal; upon approval, submit passport to VFS for visa counterfoil stamping.'
+        'Create an official IRCC Portal account on canada.ca and complete the online application.',
+        'Upload scanned documents: passport, bank statements, itinerary, employment letter, and SOP.',
+        'Pay the 100 CAD visa application fee + 85 CAD biometrics fee online using credit/debit card.',
+        'Receive your Biometrics Instruction Letter (BIL) within 24-48 hours.',
+        'Book and attend an appointment at your nearest VFS Global Canada VAC to submit biometrics.',
+        'Track your application on IRCC portal; upon approval, submit passport to VFS for visa counterfoil stamping.'
       ],
       costs: {
         visa_fee: '100 CAD (approx. ₹6,200)',
@@ -4623,13 +4623,13 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: '100% Digital e-Visa (VEVO)', details: 'Permanent Residency is granted electronically via ImmiAccount; verified online via VEVO.' }
         ],
         how_to_apply: [
-          '1️⃣ Complete Skills Assessment with designated Australian assessing authority (ACS, EA, VETASSESS).',
-          '2️⃣ Appear for English language exam (PTE / IELTS).',
-          '3️⃣ Submit Expression of Interest (EOI) in SkillSelect.',
-          '4️⃣ Receive Invitation to Apply (ITA) in federal or state nomination round.',
-          '5️⃣ Lodge online visa application on ImmiAccount within 60 days of invitation.',
-          '6️⃣ Complete biometric collection at VFS Global ABCC and health examinations.',
-          '7️⃣ Receive official Australian Permanent Residency (Subclass 189/190) Visa Grant Notification.'
+          'Complete Skills Assessment with designated Australian assessing authority (ACS, EA, VETASSESS).',
+          'Appear for English language exam (PTE / IELTS).',
+          'Submit Expression of Interest (EOI) in SkillSelect.',
+          'Receive Invitation to Apply (ITA) in federal or state nomination round.',
+          'Lodge online visa application on ImmiAccount within 60 days of invitation.',
+          'Complete biometric collection at VFS Global ABCC and health examinations.',
+          'Receive official Australian Permanent Residency (Subclass 189/190) Visa Grant Notification.'
         ],
         costs: {
           visa_fee: '4,765 AUD (Base Application Charge for Primary Applicant)',
@@ -4666,12 +4666,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         { category: 'Biometrics Collection', details: 'Applicants in India must provide biometrics at Australian Biometric Collection Centre (VFS Global) upon request.' }
       ],
       how_to_apply: [
-        '1️⃣ Create an official ImmiAccount on online.immi.gov.au.',
-        '2️⃣ Complete the online Subclass 600 Visitor Visa application form.',
-        '3️⃣ Upload high-quality color scans of passport, financial proofs, travel itinerary, and employment documents.',
-        '4️⃣ Pay the 195 AUD official visa fee securely online via ImmiAccount.',
-        '5️⃣ Receive the Biometrics Requirement Letter and complete fingerprint/photo capture at VFS Global ABCC.',
-        '6️⃣ Receive your official Australian Electronic Visa Grant Notification via email.'
+        'Create an official ImmiAccount on online.immi.gov.au.',
+        'Complete the online Subclass 600 Visitor Visa application form.',
+        'Upload high-quality color scans of passport, financial proofs, travel itinerary, and employment documents.',
+        'Pay the 195 AUD official visa fee securely online via ImmiAccount.',
+        'Receive the Biometrics Requirement Letter and complete fingerprint/photo capture at VFS Global ABCC.',
+        'Receive your official Australian Electronic Visa Grant Notification via email.'
       ],
       costs: {
         visa_fee: '195 AUD (approx. ₹10,800)',
@@ -4726,11 +4726,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Accredited Employer Requirement', details: 'Job offer must be for full-time work (minimum 30 hrs/week) with an INZ Accredited Employer.' }
         ],
         how_to_apply: [
-          '1️⃣ Phase 1 (Pre-Requisites): Complete NZQA International Qualifications Assessment (IQA) and pass IELTS General (6.5+) / PTE (58+).',
-          '2️⃣ Phase 2 (Expression of Interest): Submit online SMC Expression of Interest (EOI) claiming 6 points on Immigration New Zealand portal.',
-          '3️⃣ Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) from INZ upon verification of point claims.',
-          '4️⃣ Phase 4 (Full PR Lodgement): Submit complete resident visa application within 4 months with eMedical (INZ 1007), apostilled PCC, and employer job confirmation.',
-          '5️⃣ Phase 5 (Resident Visa Grant): Receive electronic Skilled Migrant Category Resident Visa Grant Notice.'
+          'Phase 1 (Pre-Requisites): Complete NZQA International Qualifications Assessment (IQA) and pass IELTS General (6.5+) / PTE (58+).',
+          'Phase 2 (Expression of Interest): Submit online SMC Expression of Interest (EOI) claiming 6 points on Immigration New Zealand portal.',
+          'Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) from INZ upon verification of point claims.',
+          'Phase 4 (Full PR Lodgement): Submit complete resident visa application within 4 months with eMedical (INZ 1007), apostilled PCC, and employer job confirmation.',
+          'Phase 5 (Resident Visa Grant): Receive electronic Skilled Migrant Category Resident Visa Grant Notice.'
         ],
         costs: {
           visa_fee: '4,890 NZD (Immigration New Zealand SMC Application & Immigration Levy)',
@@ -4786,11 +4786,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Mandatory Health Insurance', details: 'Statutory (GKV - TK/AOK) or comprehensive private health insurance coverage.' }
         ],
         how_to_apply: [
-          '1️⃣ Phase 1 (Pre-Requisites): Obtain ZAB foreign degree comparability and secure employment offer meeting EU Blue Card salary thresholds.',
-          '2️⃣ Phase 2 (Consular Entry Visa): Apply for National Type D employment visa at German Embassy/VFS in India.',
-          '3️⃣ Phase 3 (Arrival & Blue Card): Register residence (Anmeldung) at Bürgeramt and receive electronic EU Blue Card (Aufenthaltstitel) at Ausländerbehörde.',
-          '4️⃣ Phase 4 (Pension Contributions): Complete 21 months of employment with B1 German (or 27 months with A1 German) and pay compulsory pension contributions.',
-          '5️⃣ Phase 5 (Permanent Settlement): Apply for Niederlassungserlaubnis at the local immigration office and receive indefinite Permanent Settlement Permit.'
+          'Phase 1 (Pre-Requisites): Obtain ZAB foreign degree comparability and secure employment offer meeting EU Blue Card salary thresholds.',
+          'Phase 2 (Consular Entry Visa): Apply for National Type D employment visa at German Embassy/VFS in India.',
+          'Phase 3 (Arrival & Blue Card): Register residence (Anmeldung) at Bürgeramt and receive electronic EU Blue Card (Aufenthaltstitel) at Ausländerbehörde.',
+          'Phase 4 (Pension Contributions): Complete 21 months of employment with B1 German (or 27 months with A1 German) and pay compulsory pension contributions.',
+          'Phase 5 (Permanent Settlement): Apply for Niederlassungserlaubnis at the local immigration office and receive indefinite Permanent Settlement Permit.'
         ],
         costs: {
           visa_fee: '75 EUR (National Visa Type D) + 113 EUR (Niederlassungserlaubnis Settlement Application Fee)',
@@ -4845,11 +4845,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           { category: 'Unlimited Family & Domestic Sponsorship', details: 'Sponsor spouse, children of any age, and unlimited domestic helpers with complete security.' }
         ],
         how_to_apply: [
-          '1️⃣ Phase 1 (Eligibility & Attestation): Attest university degree with UAE MOE or secure DLD title deed.',
-          '2️⃣ Phase 2 (Nomination / Initial Approval): Apply for Golden Visa nomination via ICP portal or GDRFA Dubai.',
-          '3️⃣ Phase 3 (6-Month Entry Visa): Obtain 6-month multiple-entry visa to finalize procedures in the UAE.',
-          '4️⃣ Phase 4 (Medical & Biometrics): Complete VIP medical fitness screening and Emirates ID biometric enrollment.',
-          '5️⃣ Phase 5 (10-Year Golden Visa Issuance): Receive official 10-Year Golden Visa digital residency and physical Emirates ID.'
+          'Phase 1 (Eligibility & Attestation): Attest university degree with UAE MOE or secure DLD title deed.',
+          'Phase 2 (Nomination / Initial Approval): Apply for Golden Visa nomination via ICP portal or GDRFA Dubai.',
+          'Phase 3 (6-Month Entry Visa): Obtain 6-month multiple-entry visa to finalize procedures in the UAE.',
+          'Phase 4 (Medical & Biometrics): Complete VIP medical fitness screening and Emirates ID biometric enrollment.',
+          'Phase 5 (10-Year Golden Visa Issuance): Receive official 10-Year Golden Visa digital residency and physical Emirates ID.'
         ],
         costs: {
           visa_fee: '2,800 AED – 3,800 AED (approx. 760 USD – 1,030 USD)',
@@ -4995,12 +4995,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        '1️⃣ Visit the official Ethiopian Government portal: https://www.evisa.gov.et.',
-        '2️⃣ Select "Tourist Visa" and choose your desired validity (30-Day Single Entry or 90-Day Single/Multiple Entry).',
-        '3️⃣ Fill in personal, passport, and travel details and upload digital scans of your passport bio-page and photo.',
-        '4️⃣ Pay the official visa fee (82 USD for 30-Day or 102 USD for 90-Day) securely online using credit/debit card.',
-        '5️⃣ Receive official electronic visa approval PDF via email within 24 to 72 hours.',
-        '6️⃣ Print the eVisa confirmation letter and present it alongside your passport and Yellow Fever Certificate at Addis Ababa Bole Airport immigration.'
+        'Visit the official Ethiopian Government portal: https://www.evisa.gov.et.',
+        'Select "Tourist Visa" and choose your desired validity (30-Day Single Entry or 90-Day Single/Multiple Entry).',
+        'Fill in personal, passport, and travel details and upload digital scans of your passport bio-page and photo.',
+        'Pay the official visa fee (82 USD for 30-Day or 102 USD for 90-Day) securely online using credit/debit card.',
+        'Receive official electronic visa approval PDF via email within 24 to 72 hours.',
+        'Print the eVisa confirmation letter and present it alongside your passport and Yellow Fever Certificate at Addis Ababa Bole Airport immigration.'
       ],
       costs: {
         visa_fee: '82 USD (30-Day Single Entry) / 102 USD (90-Day Single Entry) / 152 USD (90-Day Multiple Entry)',
@@ -5054,11 +5054,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         { category: 'Two-Stage Biometrics & Health Clearance', details: 'Biometrics recorded at VAC; physical biometric residency card issued by domestic immigration bureau.' }
       ],
       how_to_apply: [
-        '1️⃣ Phase 1 (Pre-Requisites): Complete credential evaluation (ECA) and standardized language proficiency exam.',
-        '2️⃣ Phase 2 (Expression of Interest): Submit online Expression of Interest (EOI) or economic profile in national talent pool.',
-        '3️⃣ Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) or provincial/state nomination approval.',
-        '4️⃣ Phase 4 (Full PR Lodgement): Submit complete immigration dossier with apostilled PCC, medical clearance, and settlement funds proof.',
-        '5️⃣ Phase 5 (Permanent Residence Grant): Receive Confirmation of Permanent Residence (COPR) / Resident Visa Grant Letter.'
+        'Phase 1 (Pre-Requisites): Complete credential evaluation (ECA) and standardized language proficiency exam.',
+        'Phase 2 (Expression of Interest): Submit online Expression of Interest (EOI) or economic profile in national talent pool.',
+        'Phase 3 (Invitation to Apply): Receive formal Invitation to Apply (ITA) or provincial/state nomination approval.',
+        'Phase 4 (Full PR Lodgement): Submit complete immigration dossier with apostilled PCC, medical clearance, and settlement funds proof.',
+        'Phase 5 (Permanent Residence Grant): Receive Confirmation of Permanent Residence (COPR) / Resident Visa Grant Letter.'
       ],
       costs: {
         visa_fee: '1,200 – 3,500 USD equivalent in local currency',
@@ -5139,11 +5139,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       }
     ],
     how_to_apply: [
-      `1️⃣ Verify entry method: Check if ${to} offers an official electronic visa (eVisa), Visa on Arrival (VoA), or requires advance consular filing.`,
-      `2️⃣ Ensure your passport has at least 6 months validity from intended travel date with blank pages.`,
-      `3️⃣ Assemble supporting documents: round-trip flights, hotel vouchers, photographs, and proof of funds.`,
-      `4️⃣ Complete the official application and pay the statutory government visa fees.`,
-      `5️⃣ Receive your approved visa approval / electronic permit before flying or clear immigration upon arrival.`
+      `Verify entry method: Check if ${to} offers an official electronic visa (eVisa), Visa on Arrival (VoA), or requires advance consular filing.`,
+      `Ensure your passport has at least 6 months validity from intended travel date with blank pages.`,
+      `Assemble supporting documents: round-trip flights, hotel vouchers, photographs, and proof of funds.`,
+      `Complete the official application and pay the statutory government visa fees.`,
+      `Receive your approved visa approval / electronic permit before flying or clear immigration upon arrival.`
     ],
     costs: {
       visa_fee: 'Official Statutory Government Fee (varies by tier and bilateral reciprocity)',

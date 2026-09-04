@@ -747,6 +747,165 @@ function getDocIconConfig(title: string) {
   return { bg: 'bg-slate-50 text-slate-600 border border-slate-200/80', iconName: 'file' };
 }
 
+interface ModernDropdownOption {
+  value: string;
+  label: string;
+  flag?: string;
+  emoji?: string;
+  defaultVisa?: string;
+}
+
+function ModernDashboardSelect({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder = "Select an option",
+  allowCustom = false,
+  customPlaceholder = "Enter other country name..."
+}: {
+  label?: string;
+  value: string;
+  onChange: (val: string) => void;
+  options: ModernDropdownOption[];
+  placeholder?: string;
+  allowCustom?: boolean;
+  customPlaceholder?: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [customInput, setCustomInput] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(
+    o => o.value.toLowerCase() === (value || "").toLowerCase()
+  );
+
+  const displayTitle = selectedOption
+    ? `${selectedOption.flag || selectedOption.emoji ? (selectedOption.flag || selectedOption.emoji) + " " : ""}${selectedOption.label}`
+    : value || placeholder;
+
+  const filteredOptions = options.filter(o =>
+    o.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    o.value.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-1.5 relative text-left" ref={dropdownRef}>
+      {label && <label className="text-xs font-bold text-slate-700 block">{label}</label>}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full h-11 px-3.5 rounded-xl border bg-slate-50 hover:bg-white text-xs font-bold flex items-center justify-between transition-all cursor-pointer shadow-2xs ${
+          isOpen ? 'border-slate-900 ring-2 ring-slate-900/10 bg-white' : 'border-slate-200 hover:border-slate-300'
+        }`}
+      >
+        <span className={`truncate text-left ${value ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'}`}>
+          {displayTitle}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-2xl border border-slate-200 shadow-2xl p-2 z-[9999] animate-in fade-in zoom-in-95 origin-top">
+          {/* Search bar */}
+          <div className="relative mb-2">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search..."
+              autoFocus
+              className="w-full h-8 pl-8 pr-3 text-xs font-semibold bg-slate-50 rounded-lg border border-slate-200 outline-none focus:border-slate-900 focus:bg-white transition-all"
+            />
+          </div>
+
+          <div className="max-h-52 overflow-y-auto space-y-0.5 custom-scrollbar">
+            {filteredOptions.length === 0 && !allowCustom && (
+              <div className="p-3 text-center text-xs text-slate-400 font-medium">No matches found</div>
+            )}
+
+            {filteredOptions.map((opt) => {
+              const isSelected = (value || "").toLowerCase() === opt.value.toLowerCase();
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                    setSearchQuery("");
+                  }}
+                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-slate-900 text-white font-bold shadow-xs'
+                      : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 truncate">
+                    {(opt.flag || opt.emoji) && <span className="text-sm shrink-0">{opt.flag || opt.emoji}</span>}
+                    <span className="truncate">{opt.label}</span>
+                  </div>
+                  {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-2 text-white" />}
+                </button>
+              );
+            })}
+
+            {allowCustom && (
+              <div className="pt-2 border-t border-slate-100 mt-1.5">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-1.5">
+                  Other / Custom Country
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={customInput}
+                    onChange={e => setCustomInput(e.target.value)}
+                    placeholder={customPlaceholder}
+                    className="flex-1 h-8 px-2.5 text-xs font-semibold bg-slate-50 rounded-lg border border-slate-200 outline-none focus:border-slate-900"
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && customInput.trim()) {
+                        e.preventDefault();
+                        onChange(customInput.trim());
+                        setIsOpen(false);
+                        setCustomInput("");
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (customInput.trim()) {
+                        onChange(customInput.trim());
+                        setIsOpen(false);
+                        setCustomInput("");
+                      }
+                    }}
+                    className="h-8 px-3 rounded-lg bg-slate-900 hover:bg-black text-white text-[11px] font-bold cursor-pointer"
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function UserDashboard() {
     const [dashboardSearch, setDashboardSearch] = useState("");
     const [ieltsScore, setIeltsScore] = useState({ L: 0, R: 0, W: 0, S: 0 });
@@ -2327,10 +2486,28 @@ function cleanShortDocRequirement(title: string, description: string): string {
             localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
         } catch(e) {}
 
+        // Synchronize active destination, passport, and purpose with dashboard
+        setSelectedDestination(targetDest);
+        setSelectedPassport(targetPass);
+        setSelectedPurpose(targetPurp);
+
+        try {
+            localStorage.setItem("user_journey_destination", targetDest);
+            localStorage.setItem("user_journey_passport", targetPass);
+            localStorage.setItem("user_journey_purpose", targetPurp);
+            localStorage.setItem("seeker_target_destination", targetDest);
+            localStorage.setItem("seeker_nationality", targetPass);
+        } catch(e) {}
+
         setShowNewAppModal(false);
         setNewAppName("");
         setNewAppDest("");
-        showToastMsg(`Application "${appName}" created with ID ${uniqueTrackingId}!`);
+        setNewAppPass("");
+        setNewAppPurpose("");
+
+        // Switch to "cases" tab so the user sees the application added immediately!
+        setActiveTab("cases");
+        showToastMsg(`✓ Application "${appName}" added to your dashboard! (Tracking ID: ${uniqueTrackingId})`);
     };
 
     const handleRenameApplication = (appId: string, newName: string) => {
@@ -3111,24 +3288,24 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                     {/* Incomplete Profile Alert Banner */}
                     {isProfileIncomplete && (
-                        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs w-full animate-fade-up">
-                            <div className="flex items-start gap-3.5">
-                                <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0 font-black text-lg border border-slate-200">
-                                    👤
+                        <div className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] w-full animate-fade-up">
+                            <div className="flex items-center gap-3.5">
+                                <div className="w-11 h-11 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-bold text-lg border border-purple-100">
+                                    <User className="w-5 h-5 stroke-[2]" />
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">Complete your traveller profile details</h4>
-                                    <p className="text-xs font-medium text-slate-500 mt-1 leading-relaxed">
+                                    <h4 className="text-sm font-bold text-slate-950 leading-tight">Complete your traveller profile details</h4>
+                                    <p className="text-xs font-normal text-slate-500 mt-0.5 leading-relaxed">
                                         Please add your phone number, citizenship country, and target visa goals to receive personalized consultant matches.
                                     </p>
                                 </div>
                             </div>
                             <button 
                                 onClick={() => setShowProfileModal(true)}
-                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                                className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
                                 <span>Complete Profile</span>
-                                <ChevronRight className="w-4 h-4" />
+                                <ChevronRight className="w-3.5 h-3.5" />
                             </button>
                         </div>
                     )}
@@ -3140,36 +3317,29 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             {/* Welcome Header */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome back, {userDisplayName}! 👋</h1>
-                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Track your visa applications, consultations, and document readiness</p>
+                                    <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">Welcome back, {userDisplayName}! 👋</h1>
+                                    <p className="text-xs font-normal text-slate-500 mt-1">Track your visa applications, consultations, and document readiness</p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <a href="/find-experts" className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 transition-all">
+                                    <a href="/find-experts" className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-2 transition-all">
                                         <Search className="w-3.5 h-3.5" /> Find Expert
                                     </a>
                                 </div>
                             </div>
 
-                            {/* ── STAT CARDS ── */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                            {/* ── STAT CARDS (3x2 GRID MATCHING EXACT PHOTO media_1788503338294.png) ── */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                {/* 1. Visa Readiness */}
                                 <div
                                     onClick={() => setActiveTab('visa-readiness')}
-                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
+                                    className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Visa Readiness</span>
-                                        <div className="flex items-baseline gap-1 mt-1">
-                                            <span className="text-2xl font-black text-slate-900 block">
-                                                {comprehensiveAuditMetrics.isUnselected ? '0%' : `${comprehensiveAuditMetrics.score}%`}
-                                            </span>
-                                        </div>
-                                        <span className={`text-[11px] font-bold mt-1 inline-block group-hover:underline ${
-                                            comprehensiveAuditMetrics.isUnselected
-                                                ? 'text-slate-500'
-                                                : comprehensiveAuditMetrics.score >= 70
-                                                ? 'text-emerald-600'
-                                                : 'text-amber-600'
-                                        }`}>
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">Visa Readiness</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            {comprehensiveAuditMetrics.isUnselected ? '0%' : `${comprehensiveAuditMetrics.score}%`}
+                                        </span>
+                                        <span className="text-xs font-semibold text-slate-500 mt-2 block group-hover:underline">
                                             {comprehensiveAuditMetrics.isUnselected
                                                 ? 'Awaiting Selections • Audit →'
                                                 : comprehensiveAuditMetrics.score >= 70
@@ -3177,148 +3347,174 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 : 'Consultant Advised • Audit →'}
                                         </span>
                                     </div>
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold ${
-                                        comprehensiveAuditMetrics.isUnselected
-                                            ? 'bg-slate-100 text-slate-600'
-                                            : comprehensiveAuditMetrics.score >= 70
-                                            ? 'bg-emerald-50 text-emerald-600'
-                                            : 'bg-amber-50 text-amber-600'
-                                    }`}>
-                                        <ShieldCheck className="w-6 h-6" />
+                                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold shrink-0">
+                                        <ShieldCheck className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                 </div>
 
+                                {/* 2. Your Applications */}
                                 <div
                                     onClick={() => setActiveTab('cases')}
-                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-blue-300 hover:shadow-xs transition-all group"
+                                    className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Your Applications</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{visasProcessingState.length}</span>
-                                        <span className="text-[11px] font-bold text-blue-600 mt-1 inline-block group-hover:underline">Active Cases →</span>
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">Your Applications</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            {visasProcessingState.length}
+                                        </span>
+                                        <span className="text-xs font-semibold text-emerald-600 mt-2 block group-hover:underline">
+                                            Active Cases →
+                                        </span>
                                     </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                                        <Briefcase className="w-6 h-6" />
+                                    <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold shrink-0">
+                                        <Briefcase className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                 </div>
 
+                                {/* 3. Pre-Departure & Luggage */}
                                 <div
                                     onClick={() => setActiveTab('predeparture')}
-                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-xs transition-all group"
+                                    className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Pre-Departure &amp; Luggage</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{luggageProgress.percent}%</span>
-                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block group-hover:underline">{luggageProgress.packed}/{luggageProgress.total} Items • Pack →</span>
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">Pre-Departure &amp; Luggage</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            {luggageProgress.percent}%
+                                        </span>
+                                        <span className="text-xs font-semibold text-emerald-600 mt-2 block group-hover:underline">
+                                            {luggageProgress.packed}/{luggageProgress.total} Items • Pack →
+                                        </span>
                                     </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                                        <Luggage className="w-6 h-6" />
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+                                        <Luggage className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                 </div>
 
+                                {/* 4. Document Vault */}
                                 <div
                                     onClick={() => setActiveTab('scanned-documents')}
-                                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between cursor-pointer hover:border-teal-300 hover:shadow-xs transition-all group"
+                                    className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between cursor-pointer hover:border-slate-300 hover:shadow-sm transition-all group"
                                 >
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Document Vault</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{documents.length}</span>
-                                        <span className="text-[11px] font-bold text-teal-600 mt-1 inline-block group-hover:underline">Manage Files →</span>
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">Document Vault</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            {documents.length}
+                                        </span>
+                                        <span className="text-xs font-semibold text-emerald-600 mt-2 block group-hover:underline">
+                                            Manage Files →
+                                        </span>
                                     </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center font-bold">
-                                        <FileText className="w-6 h-6" />
-                                    </div>
-                                </div>
-
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">IELTS Band Score</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{overallBand}</span>
-                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">{hasIeltsScore ? "Overall Score" : "Not Added"}</span>
-                                    </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center font-bold">
-                                        <BookOpen className="w-6 h-6" />
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+                                        <FileText className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 block">Escrow Protection</span>
-                                        <span className="text-2xl font-black text-slate-900 mt-1 block">Active</span>
-                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">100% Protected</span>
+                                {/* 5. IELTS Band Score */}
+                                <div className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between">
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">IELTS Band Score</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            {hasIeltsScore ? overallBand : "N/A"}
+                                        </span>
+                                        <span className="text-xs font-normal text-slate-400 mt-2 block">
+                                            {hasIeltsScore ? "Overall Score" : "Not Added"}
+                                        </span>
                                     </div>
-                                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                                        <Lock className="w-6 h-6" />
+                                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold shrink-0">
+                                        <BookOpen className="w-6 h-6 stroke-[1.8]" />
+                                    </div>
+                                </div>
+
+                                {/* 6. Escrow Protection */}
+                                <div className="bg-white p-6 rounded-3xl border border-slate-150 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-start justify-between">
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-medium text-slate-500 block">Escrow Protection</span>
+                                        <span className="text-3xl font-extrabold text-slate-950 block tracking-tight">
+                                            Active
+                                        </span>
+                                        <span className="text-xs font-semibold text-emerald-600 mt-2 block">
+                                            100% Protected
+                                        </span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0">
+                                        <Lock className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* ── DOCUMENT VAULT + IELTS ── */}
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                            {/* ── DOCUMENT READINESS VAULT + IELTS SCORECARD (MATCHING EXACT PHOTO media_1788503338294.png) ── */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                                {/* Left: Document Readiness Vault */}
+                                <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-150 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4 text-left">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h3 className="text-base font-extrabold text-slate-900">Document Readiness Vault</h3>
-                                            <p className="text-xs text-slate-500 font-medium mt-0.5">Manage your passport scans, scorecards, and visa applications</p>
+                                            <h3 className="text-base font-bold text-slate-950">Document Readiness Vault</h3>
+                                            <p className="text-xs text-slate-500 font-normal mt-0.5">Manage your passport scans, scorecards, and visa applications</p>
                                         </div>
-                                        <button onClick={() => setActiveTab("scanned-documents")} className="text-xs font-bold text-slate-900 hover:underline flex items-center gap-1">
+                                        <button onClick={() => setActiveTab("scanned-documents")} className="text-xs font-bold text-slate-900 hover:underline flex items-center gap-1 cursor-pointer">
                                             View Vault <ChevronRight className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
+
                                     {hasVaultPassword && !isVaultUnlocked ? (
-                                        <div className="p-7 text-center bg-slate-50/80 rounded-2xl border border-slate-200 space-y-3">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
+                                        <div className="p-7 text-center bg-slate-50/70 rounded-2xl border border-slate-100 space-y-3">
+                                            <div className="w-10 h-10 rounded-xl bg-slate-950 text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
                                                 <Lock className="w-5 h-5" />
                                             </div>
-                                            <h4 className="text-sm font-black text-slate-900">Document Vault Protected</h4>
+                                            <h4 className="text-sm font-bold text-slate-950">Document Vault Protected</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Your immigration files are encrypted and locked. Enter your secret password in the Document Vault to view or upload documents.</p>
-                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
                                                 <KeyRound className="w-3.5 h-3.5 text-emerald-400" /> Unlock Vault
                                             </button>
                                         </div>
                                     ) : documents.length === 0 ? (
-                                        <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-3">
+                                        <div className="p-8 text-center bg-slate-50/70 rounded-2xl border border-dashed border-slate-200 space-y-3">
                                             <FileText className="w-10 h-10 text-slate-400 mx-auto" />
-                                            <h4 className="text-sm font-extrabold text-slate-900">No Documents Uploaded Yet</h4>
+                                            <h4 className="text-sm font-bold text-slate-950">No Documents Uploaded Yet</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Upload your Passport copy, IELTS scorecard, or SOP to share with verified consultants.</p>
-                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all inline-flex items-center gap-1.5">
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
                                                 <Upload className="w-3.5 h-3.5" /> Upload Document
                                             </button>
                                         </div>
                                     ) : (
-                                        <div className="space-y-2.5">
+                                        <div className="space-y-3">
                                             {documents.map(doc => (
-                                                <div key={doc.id} className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 transition-all">
-                                                    <div className="flex items-center gap-3">
-                                                        <span className="text-lg">📄</span>
-                                                        <span className="text-xs font-extrabold text-slate-900">{doc.label}</span>
+                                                <div key={doc.id} className="flex items-center justify-between p-3.5 bg-slate-50/70 hover:bg-slate-100/70 rounded-2xl border border-slate-100 transition-all">
+                                                    <div className="flex items-center gap-3 min-w-0">
+                                                        <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                                            <FileText className="w-4 h-4 stroke-[2]" />
+                                                        </div>
+                                                        <span className="text-xs font-bold text-slate-900 truncate">{doc.label}</span>
                                                     </div>
-                                                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">Uploaded</span>
+                                                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">Uploaded</span>
                                                 </div>
                                             ))}
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                                {/* Right: IELTS Scorecard */}
+                                <div className="bg-white rounded-3xl border border-slate-150 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4 text-left">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-base font-extrabold text-slate-900">IELTS Scorecard</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-slate-700">Overall: {overallBand}</span>
+                                        <h3 className="text-base font-bold text-slate-950">IELTS Scorecard</h3>
+                                        <span className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-200">
+                                            Overall: {hasIeltsScore ? overallBand : 'N/A'}
+                                        </span>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 pt-2">
+                                    <div className="grid grid-cols-2 gap-3 pt-1">
                                         {(['L','R','W','S'] as const).map((k, i) => (
-                                            <div key={k} className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
-                                                <span className="text-[10px] font-bold text-slate-400 block uppercase">{['Listening','Reading','Writing','Speaking'][i]}</span>
+                                            <div key={k} className="p-3.5 bg-slate-50/70 rounded-2xl border border-slate-100 text-center">
+                                                <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wider">{['Listening','Reading','Writing','Speaking'][i]}</span>
                                                 <input
                                                     type="number" step="0.5" min="0" max="9"
-                                                    value={(ieltsScore as any)[k]}
+                                                    value={(ieltsScore as any)[k] || 0}
                                                     onChange={e => handleUpdateIelts({...ieltsScore, [k]: parseFloat(e.target.value) || 0})}
-                                                    className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                                    className="w-full text-center text-2xl font-black text-slate-950 bg-transparent outline-none mt-1"
                                                 />
                                             </div>
                                         ))}
                                     </div>
-                                    <a href="/training/ielts" className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-xl text-xs font-bold text-center block shadow-sm">
+                                    <a href="/training/ielts" className="w-full bg-slate-950 hover:bg-slate-900 text-white py-3.5 rounded-2xl text-xs font-bold text-center block shadow-sm transition-all mt-4">
                                         Practice IELTS Tests →
                                     </a>
                                 </div>
@@ -6435,45 +6631,35 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-700 block">Destination Country</label>
-                                    <select
-                                        value={newAppDest || selectedDestination}
-                                        onChange={(e) => setNewAppDest(e.target.value)}
-                                        className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
-                                    >
-                                        {dashboardDestinationOptions.map(d => (
-                                            <option key={d.value} value={d.value}>{d.flag} {d.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <ModernDashboardSelect
+                                    label="Destination Country"
+                                    value={newAppDest || selectedDestination}
+                                    onChange={(val) => setNewAppDest(val)}
+                                    options={dashboardDestinationOptions}
+                                    placeholder="Select Destination"
+                                    allowCustom={true}
+                                    customPlaceholder="e.g. Mauritius, Italy, Singapore..."
+                                />
 
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-700 block">Passport Country</label>
-                                    <select
-                                        value={newAppPass || selectedPassport}
-                                        onChange={(e) => setNewAppPass(e.target.value)}
-                                        className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
-                                    >
-                                        {dashboardPassportOptions.map(p => (
-                                            <option key={p.value} value={p.value}>{p.flag} {p.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <ModernDashboardSelect
+                                    label="Passport / Citizenship"
+                                    value={newAppPass || selectedPassport}
+                                    onChange={(val) => setNewAppPass(val)}
+                                    options={dashboardPassportOptions}
+                                    placeholder="Select Passport"
+                                    allowCustom={true}
+                                    customPlaceholder="e.g. India, Nepal, Canada..."
+                                />
                             </div>
 
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-bold text-slate-700 block">Visa Purpose / Category</label>
-                                <select
-                                    value={newAppPurpose || selectedPurpose}
-                                    onChange={(e) => setNewAppPurpose(e.target.value)}
-                                    className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50 cursor-pointer"
-                                >
-                                    {dashboardPurposeOptions.map(pr => (
-                                        <option key={pr.value} value={pr.value}>{pr.label}</option>
-                                    ))}
-                                </select>
-                            </div>
+                            <ModernDashboardSelect
+                                label="Visa Purpose / Category"
+                                value={newAppPurpose || selectedPurpose}
+                                onChange={(val) => setNewAppPurpose(val)}
+                                options={dashboardPurposeOptions}
+                                placeholder="Select Visa Category"
+                                allowCustom={false}
+                            />
 
                             <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200/80 text-xs text-emerald-900 space-y-1">
                                 <strong className="font-black flex items-center gap-1 text-emerald-800">

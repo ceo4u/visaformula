@@ -3101,12 +3101,15 @@ function cleanShortDocRequirement(title: string, description: string): string {
             
             {/* Top Fixed Navigation Header */}
             <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                     <button 
+                        type="button"
                         onClick={() => setIsMobileSidebarOpen(true)}
-                        className="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+                        title="Showcase Menu"
+                        aria-label="Showcase Menu"
+                        className="lg:hidden w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer shrink-0"
                     >
-                        <Menu className="w-5 h-5" />
+                        <ChevronLeft className="w-4 h-4 text-slate-600" />
                     </button>
                     <a href="/" className="flex items-center gap-2">
                         <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-10 sm:h-12 max-h-[50px] w-auto object-contain" />
@@ -3244,8 +3247,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                                 <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
-                                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
-                                    <X className="w-5 h-5" />
+                                <button 
+                                    type="button"
+                                    onClick={() => setIsMobileSidebarOpen(false)} 
+                                    className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+                                    title="Close Menu"
+                                    aria-label="Close Menu"
+                                >
+                                    <ChevronLeft className="w-4 h-4 text-slate-600" />
                                 </button>
                             </div>
                             <nav className="space-y-1">

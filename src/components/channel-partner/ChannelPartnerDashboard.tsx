@@ -650,8 +650,14 @@ export default function ChannelPartnerDashboard() {
                   CHANNEL PARTNER
                 </div>
               </div>
-              <button onClick={() => setMobileOpen(false)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 cursor-pointer">
-                <X className="w-4 h-4" />
+              <button 
+                type="button"
+                onClick={() => setMobileOpen(false)} 
+                title="Close Menu"
+                aria-label="Close Menu"
+                className="w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4 text-slate-600" />
               </button>
             </div>
 
@@ -833,12 +839,15 @@ export default function ChannelPartnerDashboard() {
         {/* Top Header Bar (Spacious & Prominent) */}
         <header className="bg-white/95 backdrop-blur-2xl border-b border-slate-200/90 min-h-[76px] sm:min-h-[86px] flex items-center justify-between px-5 sm:px-8 shrink-0 shadow-[0_2px_12px_rgba(0,0,0,0.02)] z-20 transition-all">
           <div className="flex items-center gap-3.5">
-            {/* Mobile Hamburger & Logo */}
+            {/* Mobile Showcase Menu Button */}
             <button
+              type="button"
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden w-11 h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors text-slate-800 shadow-2xs"
+              title="Showcase Menu"
+              aria-label="Showcase Menu"
+              className="lg:hidden w-8 h-8 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 hover:text-slate-900 flex items-center justify-center shadow-2xs transition-all cursor-pointer shrink-0"
             >
-              <Menu className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4 text-slate-600" />
             </button>
             <div className="lg:hidden flex items-center gap-2">
               <img src="/logo.png" alt="TravlTik" className="h-8 w-auto object-contain" />

@@ -5419,6 +5419,10 @@ Return ONLY a valid JSON object matching this exact schema:
 
           // Post-generation sanity guard for Schengen destinations:
           if (isToSchengen) {
+            parsed.processing_time = '15 – 20 Days';
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.decision_time = '15 – 20 Days';
+            }
             if (Array.isArray(parsed.documents_required)) {
               parsed.documents_required = parsed.documents_required.map((doc: any) => {
                 if (doc.title?.toLowerCase().includes('ds-160') || doc.description?.toLowerCase().includes('ds-160')) {

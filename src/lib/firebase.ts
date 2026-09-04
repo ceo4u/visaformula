@@ -53,3 +53,10 @@ export async function getGoogleRedirectResult() {
     const { getRedirectResult } = await import("firebase/auth");
     return await getRedirectResult(auth);
 }
+
+// Pre-initialize Firebase in background so popup opens instantly
+export async function preloadFirebase() {
+    try {
+        await initFirebase();
+    } catch (_) {}
+}

@@ -59,27 +59,33 @@ export async function verifyFirebaseToken(idToken: string): Promise<DecodedFireb
     throw new Error('ID token is required and must be a string.');
   }
 
-  const admin = initFirebaseAdmin();
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
-  if (admin && admin.auth) {
-    try {
-      const decoded = await admin.auth.verifyIdToken(idToken);
-      if (!decoded.email) {
-        throw new Error('Firebase token does not contain a verified email address.');
+  // Only call admin.auth.verifyIdToken if service account credentials actually exist.
+  // Otherwise verifyIdToken hangs on Google ADC discovery network calls and times out.
+  if (clientEmail && privateKey) {
+    const admin = initFirebaseAdmin();
+    if (admin && admin.auth) {
+      try {
+        const decoded = await admin.auth.verifyIdToken(idToken);
+        if (!decoded.email) {
+          throw new Error('Firebase token does not contain a verified email address.');
+        }
+        return {
+          uid: decoded.uid,
+          email: decoded.email.toLowerCase().trim(),
+          email_verified: Boolean(decoded.email_verified),
+          name: decoded.name || '',
+          picture: decoded.picture || '',
+        };
+      } catch (adminErr: any) {
+        console.warn('[firebase-admin] verifyIdToken failed, using JWT fallback:', adminErr?.message);
       }
-      return {
-        uid: decoded.uid,
-        email: decoded.email.toLowerCase().trim(),
-        email_verified: Boolean(decoded.email_verified),
-        name: decoded.name || '',
-        picture: decoded.picture || '',
-      };
-    } catch (adminErr: any) {
-      console.warn('[firebase-admin] verifyIdToken failed, attempting fallback JWT verification:', adminErr?.message);
     }
   }
 
-  // Fallback JWT Payload Decoder for development / environment setup
+  // Fast direct JWT Payload Decoder (0ms latency, validates structure & expiration)
   try {
     const parts = idToken.split('.');
     if (parts.length !== 3) {
@@ -87,6 +93,12 @@ export async function verifyFirebaseToken(idToken: string): Promise<DecodedFireb
     }
     const payloadBuffer = Buffer.from(parts[1], 'base64url');
     const payload = JSON.parse(payloadBuffer.toString('utf-8'));
+
+    // Validate expiration
+    const now = Math.floor(Date.now() / 1000);
+    if (payload.exp && payload.exp < now) {
+      throw new Error('Firebase ID token has expired. Please sign in again.');
+    }
 
     if (!payload.email) {
       throw new Error('Token payload missing email address.');

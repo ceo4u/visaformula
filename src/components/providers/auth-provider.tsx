@@ -112,6 +112,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 }
             }
             setLoading(false);
+
+            // Pre-warm Firebase in the background so "Continue with Google" popup opens with 0ms latency
+            setTimeout(() => {
+                import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {});
+            }, 300);
         };
         init();
     }, []);

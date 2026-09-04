@@ -18,7 +18,7 @@ export interface VaultDocItem {
   hint: string;
 }
 
-export function normalizeCountryName(val: string): string {
+function normalizeCountryName(val: string): string {
   const s = (val || '').toLowerCase().trim();
   if (!s) return 'United States';
   if ((s.includes('unit') && s.includes('state')) || s === 'us' || s === 'usa' || s.includes('america') || s === 'american') return 'United States';
@@ -43,7 +43,7 @@ export function normalizeCountryName(val: string): string {
   return val;
 }
 
-export function getAiDocIcon(title: string): string {
+function getAiDocIcon(title: string): string {
   const t = (title || '').toLowerCase();
   if (t.includes('passport')) return '🛂';
   if (t.includes('photo') || t.includes('picture')) return '📸';
@@ -59,22 +59,7 @@ export function getAiDocIcon(title: string): string {
   return '📄';
 }
 
-export function cleanStepText(step: string, idx: number): { stepNum: number; text: string } {
-  let text = (step || '').trim();
-  // Strip unicode keycap emojis like 1️⃣, 2️⃣, 3️⃣... 9️⃣, 🔟
-  text = text.replace(/^[0-9]\uFE0F?\u20E3\s*/, '');
-  text = text.replace(/^10\uFE0F?\u20E3\s*/, '');
-  text = text.replace(/^[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u27BF]+\s*/, '');
-  text = text.replace(/^[0-9]+[.)\-:\s]+/, '');
-  text = text.replace(/^Step\s*[0-9]+[:\s\-)–—]*/i, '');
-  text = text.replace(/^[0-9]\uFE0F?\u20E3\s*/, '');
-  text = text.replace(/^[0-9]+[.)\-:\s]+/, '');
-  text = text.replace(/^\?\?+\s*/, '');
-  text = text.trim();
-  return { stepNum: idx + 1, text };
-}
-
-export const dashboardPassportOptions = [
+const dashboardPassportOptions = [
   { value: 'India', label: 'India (Indian)', flag: '🇮🇳' },
   { value: 'United States', label: 'United States (American)', flag: '🇺🇸' },
   { value: 'United Arab Emirates', label: 'United Arab Emirates (Emirati)', flag: '🇦🇪' },
@@ -91,7 +76,7 @@ export const dashboardPassportOptions = [
   { value: 'Other', label: 'Other Country', flag: '🌍' }
 ];
 
-export const dashboardDestinationOptions = [
+const dashboardDestinationOptions = [
   { value: 'United States', label: 'United States (USA)', flag: '🇺🇸', defaultVisa: 'B1/B2 Visitor Visa' },
   { value: 'United Arab Emirates', label: 'United Arab Emirates (UAE / Dubai)', flag: '🇦🇪', defaultVisa: '30/60 Days Tourist Visa' },
   { value: 'Canada', label: 'Canada', flag: '🇨🇦', defaultVisa: 'Visitor Visa / Study Permit' },
@@ -106,7 +91,7 @@ export const dashboardDestinationOptions = [
   { value: 'Japan', label: 'Japan', flag: '🇯🇵', defaultVisa: 'Single/Multiple Entry Tourist Visa' }
 ];
 
-export const dashboardPurposeOptions = [
+const dashboardPurposeOptions = [
   { value: 'Tourism / Vacation', label: 'Tourism / Vacation', emoji: '🏝️' },
   { value: 'Higher Studies', label: 'Higher Studies', emoji: '🎓' },
   { value: 'Employment / Work', label: 'Employment / Work', emoji: '💼' },
@@ -114,7 +99,7 @@ export const dashboardPurposeOptions = [
   { value: 'Family / Friends Visit', label: 'Family / Friends Visit', emoji: '👨‍👩‍👦' }
 ];
 
-export const globalTravelDocuments: VaultDocItem[] = [
+const globalTravelDocuments: VaultDocItem[] = [
   {
     key: 'global_passport',
     title: 'Original Passport (Bio-data Page Front & Back)',
@@ -141,7 +126,7 @@ export const globalTravelDocuments: VaultDocItem[] = [
   }
 ];
 
-export function getDestinationChecklist(dest: string, purp: string): VaultDocItem[] {
+function getDestinationChecklist(dest: string, purp: string): VaultDocItem[] {
   const d = (dest || '').toLowerCase();
   const p = (purp || '').toLowerCase();
 
@@ -587,7 +572,7 @@ function ReadinessSelect({
     );
 }
 
-export function getFlagEmoji(countryName: string): string {
+function getFlagEmoji(countryName: string): string {
     if (!countryName) return '🌍';
     const clean = countryName.toLowerCase().trim();
     const dest = dashboardDestinationOptions.find(d => 
@@ -654,113 +639,7 @@ function renderIosLuggageIcon(id: string) {
     );
 }
 
-// Helper to manage Financial Proofs concisely in Apple iOS style
-function cleanShortFinancialProof(fin: any): {
-  shortTitle: string;
-  shortBenchmark: string | null;
-  shortTimeframe: string;
-  shortNote: string;
-  iconType: string;
-} {
-  const typeStr = (fin?.type || '').toLowerCase();
-  const rawBench = fin?.minimum_balance_or_amount || '';
-  const rawNotes = fin?.notes || '';
-  const rawTime = fin?.time_frame || '';
-
-  if (typeStr.includes('bank') || typeStr.includes('account') || typeStr.includes('statement')) {
-    return {
-      shortTitle: 'Bank Statements',
-      shortBenchmark: rawBench.includes('€') || rawBench.includes('EUR')
-        ? '€50–€70 / day'
-        : rawBench.includes('$') || rawBench.includes('USD')
-          ? '$50–$100 / day'
-          : rawBench.length > 25 ? 'Min. Required Funds' : rawBench || 'Daily Living Min.',
-      shortTimeframe: 'Last 3–6 Months',
-      shortNote: 'Bank-stamped originals with steady balance; no sudden large deposits.',
-      iconType: 'bank'
-    };
-  }
-
-  if (typeStr.includes('itr') || typeStr.includes('tax') || typeStr.includes('income tax')) {
-    return {
-      shortTitle: 'Income Tax Returns (ITR)',
-      shortBenchmark: 'Last 2–3 Years',
-      shortTimeframe: 'AY 2022–23 to 2024–25',
-      shortNote: 'ITR-V e-filing acknowledgements + Form 16 (or Business ITR-3/4).',
-      iconType: 'tax'
-    };
-  }
-
-  if (typeStr.includes('salary') || typeStr.includes('slip') || typeStr.includes('payslip') || typeStr.includes('employ')) {
-    return {
-      shortTitle: 'Salary Slips (Payslips)',
-      shortBenchmark: 'Last 3 Months',
-      shortTimeframe: '3 Consecutive Months',
-      shortNote: 'HR-signed payslips matching bank statement salary credits.',
-      iconType: 'salary'
-    };
-  }
-
-  if (typeStr.includes('business') || typeStr.includes('self-employed') || typeStr.includes('company')) {
-    return {
-      shortTitle: 'Business Financial Proof',
-      shortBenchmark: 'Active Entity',
-      shortTimeframe: 'Last 6 Months',
-      shortNote: 'GST/Incorporation certificate + 6-month current account statement.',
-      iconType: 'business'
-    };
-  }
-
-  if (typeStr.includes('deposit') || typeStr.includes('invest') || typeStr.includes('fd') || typeStr.includes('asset')) {
-    return {
-      shortTitle: 'Investments & Assets',
-      shortBenchmark: 'Optional Supporting',
-      shortTimeframe: 'Current Holdings',
-      shortNote: 'FD receipts or mutual funds demonstrating strong home economic ties.',
-      iconType: 'investment'
-    };
-  }
-
-  let shortBench = rawBench;
-  if (shortBench && shortBench.length > 25) {
-    const match = shortBench.match(/(?:€|\$|₹|£)\s*\d+(?:[–-]\s*(?:€|\$|₹|£)?\s*\d+)?(?:\\s*(?:EUR|USD|INR|GBP))?(?:\s*\/\s*day)?/i);
-    shortBench = match ? match[0].trim() : shortBench.slice(0, 22) + '...';
-  }
-
-  let shortNote = rawNotes.split(/(?<=[.!?])\s+/)[0] || rawNotes;
-  if (shortNote.length > 75) {
-    shortNote = shortNote.slice(0, 70).trim() + '...';
-  }
-
-  return {
-    shortTitle: fin?.type?.replace(/\s*\([^)]*\)/g, '').trim() || 'Financial Proof',
-    shortBenchmark: shortBench || null,
-    shortTimeframe: rawTime?.length > 30 ? rawTime.slice(0, 28) + '...' : rawTime,
-    shortNote: shortNote || 'Official consular solvency requirement.',
-    iconType: 'generic'
-  };
-}
-
-function renderFinancialIcon(type: string) {
-  const iconClass = "w-4 h-4 text-white stroke-[2.2]";
-  switch (type) {
-    case 'bank':
-      return <div className="w-7 h-7 rounded-xl bg-emerald-600 flex items-center justify-center shrink-0 shadow-2xs"><CreditCard className={iconClass} /></div>;
-    case 'tax':
-      return <div className="w-7 h-7 rounded-xl bg-blue-600 flex items-center justify-center shrink-0 shadow-2xs"><FileText className={iconClass} /></div>;
-    case 'salary':
-      return <div className="w-7 h-7 rounded-xl bg-violet-600 flex items-center justify-center shrink-0 shadow-2xs"><DollarSign className={iconClass} /></div>;
-    case 'business':
-      return <div className="w-7 h-7 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 shadow-2xs"><Building2 className={iconClass} /></div>;
-    case 'investment':
-      return <div className="w-7 h-7 rounded-xl bg-amber-600 flex items-center justify-center shrink-0 shadow-2xs"><Award className={iconClass} /></div>;
-    default:
-      return <div className="w-7 h-7 rounded-xl bg-slate-700 flex items-center justify-center shrink-0 shadow-2xs"><ShieldCheck className={iconClass} /></div>;
-  }
-}
-
-
-export function getDocConditions(title: string, desc: string): string[] {
+function getDocConditions(title: string, desc: string): string[] {
   const t = (title || '').toLowerCase();
   if (t.includes('passport') && !t.includes('photo')) {
     return [
@@ -839,7 +718,7 @@ export function getDocConditions(title: string, desc: string): string[] {
   ];
 }
 
-export function getDocIconConfig(title: string) {
+function getDocIconConfig(title: string) {
   const t = (title || '').toLowerCase();
   if (t.includes('passport') && !t.includes('photo')) {
     return { bg: 'bg-purple-50 text-purple-600 border border-purple-200/80', iconName: 'passport' };

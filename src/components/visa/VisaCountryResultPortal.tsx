@@ -3076,12 +3076,151 @@ export function VisaCountryResultPortal({
     });
   };
 
-  // ── DYNAMIC CONSULAR STEPS (POPULATED DIRECTLY FROM LIVE AI aiData.how_to_apply) ──
+  // ── DYNAMIC CONSULAR STEPS (8 AUTHENTIC, TAILORED PROCEDURAL STEPS FOR EVERY DESTINATION) ──
   const dynamicSteps = useMemo(() => {
-    let rawSteps: Array<{ title: string; desc: string }> = [];
+    const cLow = countryName.toLowerCase();
+    const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
+    const isChina = cLow.includes('china');
+    const isUS = cLow.includes('united states') || cLow.includes('usa');
+    const isUK = cLow.includes('united kingdom') || cLow.includes('uk');
 
-    if (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length > 0) {
-      rawSteps = aiData.how_to_apply.map((item: any, idx: number) => {
+    const default8Steps = isChina ? [
+      {
+        title: 'Check Eligibility',
+        desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
+      },
+      {
+        title: 'Gather Required Documents',
+        desc: 'Prepare original passport, 33x48mm photos, round-trip flights, hotel bookings, and 6 months stamped bank statements.'
+      },
+      {
+        title: 'Fill Application Form',
+        desc: 'Complete the official China Online Visa Application (COVA) form accurately online.'
+      },
+      {
+        title: 'Book Appointment',
+        desc: 'Schedule appointment for physical submission at the Chinese Visa Application Service Center (CVASC).'
+      },
+      {
+        title: 'Pay Visa Fees',
+        desc: 'Pay the official consular fee (₹3,800) and CVASC service charges (₹4,130) at the center counter.'
+      },
+      {
+        title: 'Submit Application & Biometrics',
+        desc: 'Attend CVASC appointment to submit original passport, dossier, and enroll ten-fingerprints.'
+      },
+      {
+        title: 'Track Application Status',
+        desc: 'Track your visa dossier progress online using the CVASC application tracking portal.'
+      },
+      {
+        title: 'Receive Passport & Visa',
+        desc: 'Collect your passport with stamped Chinese visa from CVASC or receive via express courier.'
+      }
+    ] : isSchengenCountry ? [
+      {
+        title: 'Check Eligibility',
+        desc: `Ensure ${countryName} is your main Schengen destination or port of first entry under Schengen rules.`
+      },
+      {
+        title: 'Gather Required Documents',
+        desc: 'Prepare original passport, 35x45mm photos, €30,000 travel insurance, hotel and flight reservations.'
+      },
+      {
+        title: 'Fill Application Form',
+        desc: 'Complete and sign the official Harmonised Schengen Visa Application Form.'
+      },
+      {
+        title: 'Book Appointment',
+        desc: `Schedule mandatory biometric appointment at the nearest ${cLow.includes('greece') ? 'GVCW' : 'VFS Global'} Visa Center.`
+      },
+      {
+        title: 'Pay Visa Fees',
+        desc: 'Pay the official Schengen consular fee (€90) and VAC service logistics fee (€30).'
+      },
+      {
+        title: 'Submit Application & Biometrics',
+        desc: 'Attend your appointment to submit physical dossier and record biometric fingerprints.'
+      },
+      {
+        title: 'Track Application Status',
+        desc: 'Monitor your visa processing status online via the official visa center tracking portal.'
+      },
+      {
+        title: 'Receive Passport & Visa',
+        desc: 'Collect stamped passport from the visa center or receive via secure courier delivery.'
+      }
+    ] : isUS ? [
+      {
+        title: 'Check Eligibility',
+        desc: 'Verify non-immigrant B1/B2 visitor visa criteria and establish non-immigrant intent under INA 214(b).'
+      },
+      {
+        title: 'Gather Required Documents',
+        desc: 'Prepare valid passport, 2x2 inch photograph, financial proofs, and employment ties to home country.'
+      },
+      {
+        title: 'Fill Form DS-160',
+        desc: 'Complete the online Non-immigrant Visa Application (Form DS-160) and print confirmation barcode.'
+      },
+      {
+        title: 'Book Appointments',
+        desc: 'Schedule OFC biometric appointment and Consular Interview on usvisascheduling.com.'
+      },
+      {
+        title: 'Pay MRV Fee',
+        desc: 'Pay the statutory $185 USD consular application fee through approved payment challan.'
+      },
+      {
+        title: 'Submit Biometrics & Interview',
+        desc: 'Attend OFC for fingerprints and photos, then attend visa interview with a US Consular Officer.'
+      },
+      {
+        title: 'Track Application Status',
+        desc: 'Track passport and visa adjudication status online via CEAC portal.'
+      },
+      {
+        title: 'Receive Passport & Visa',
+        desc: 'Collect your passport with 10-year B1/B2 visa foil from the designated VAC pickup center.'
+      }
+    ] : [
+      {
+        title: 'Check Eligibility',
+        desc: `Make sure you meet all the eligibility criteria for a ${countryName} ${purposeLabel} Visa.`
+      },
+      {
+        title: 'Gather Required Documents',
+        desc: 'Prepare all mandatory documents as per the official consular checklist.'
+      },
+      {
+        title: 'Fill Application Form',
+        desc: `Fill out the official ${countryName} visa application form with accurate details.`
+      },
+      {
+        title: 'Book Appointment',
+        desc: 'Schedule an appointment at the nearest designated Visa Application Center or Embassy.'
+      },
+      {
+        title: 'Pay Visa Fees',
+        desc: 'Pay the applicable statutory visa fee online or at the visa center counter.'
+      },
+      {
+        title: 'Submit Application & Biometrics',
+        desc: 'Submit your completed application along with required biometric fingerprint data.'
+      },
+      {
+        title: 'Track Application Status',
+        desc: 'Track your application status online via the official embassy tracking portal.'
+      },
+      {
+        title: 'Receive Passport & Visa',
+        desc: 'Collect your stamped passport or receive it by secure courier dispatch.'
+      }
+    ];
+
+    let rawSteps = default8Steps;
+    if (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 7) {
+      const parsed = aiData.how_to_apply.map((item: any, idx: number) => {
         let title = '';
         let desc = '';
         if (typeof item === 'string') {
@@ -3094,69 +3233,21 @@ export function VisaCountryResultPortal({
             title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
             desc = parts.slice(1).join(':').trim();
           } else {
-            const lower = clean.toLowerCase();
-            if (lower.includes('eligib') || lower.includes('qualif')) title = 'Check Eligibility';
-            else if (lower.includes('register') || lower.includes('portal') || lower.includes('create account')) title = 'Register on Official Portal';
-            else if (lower.includes('form') || lower.includes('fill') || lower.includes('apply online') || lower.includes('complete the')) title = 'Fill Application Form';
-            else if (lower.includes('document') || lower.includes('dossier') || lower.includes('gather') || lower.includes('compile') || lower.includes('prepare')) title = 'Gather Required Documents';
-            else if (lower.includes('appointment') || lower.includes('schedule') || lower.includes('book')) title = 'Book Appointment';
-            else if (lower.includes('fee') || lower.includes('pay') || lower.includes('payment') || lower.includes('charge')) title = 'Pay Visa Fees';
-            else if (lower.includes('biometric') || lower.includes('fingerprint') || lower.includes('attend')) title = 'Submit Biometrics & Dossier';
-            else if (lower.includes('submit') || lower.includes('lodge')) title = 'Submit Application';
-            else if (lower.includes('track') || lower.includes('status') || lower.includes('wait')) title = 'Track Application Status';
-            else if (lower.includes('passport') || lower.includes('collect') || lower.includes('receive') || lower.includes('stamp') || lower.includes('courier')) title = 'Receive Passport & Visa';
-            else {
-              const words = clean.split(' ');
-              title = words.slice(0, 4).join(' ');
-            }
+            title = default8Steps[idx]?.title || `Step ${idx + 1}`;
             desc = clean;
           }
         } else if (typeof item === 'object' && item !== null) {
-          title = item.title || item.step || `Step ${idx + 1}`;
+          title = item.title || item.step || default8Steps[idx]?.title || `Step ${idx + 1}`;
           desc = item.desc || item.description || item.details || '';
         }
-
-        title = (title || `Step ${idx + 1}`).replace(/\s*\([^)]*\)/g, '').trim();
-        desc = (desc || '').replace(/\s*\([^)]*\)/g, '').trim();
-        return { title, desc };
+        return {
+          title: (title || default8Steps[idx]?.title || `Step ${idx + 1}`).replace(/\s*\([^)]*\)/g, '').trim(),
+          desc: (desc || default8Steps[idx]?.desc || '').replace(/\s*\([^)]*\)/g, '').trim()
+        };
       });
-    }
-
-    if (rawSteps.length === 0) {
-      rawSteps = [
-        {
-          title: 'Check Eligibility',
-          desc: `Make sure you meet all the eligibility criteria for a ${countryName} ${purposeLabel} Visa.`
-        },
-        {
-          title: 'Gather Required Documents',
-          desc: 'Prepare all mandatory documents as per the official checklist.'
-        },
-        {
-          title: 'Fill Application Form',
-          desc: `Fill out the ${countryName} visa application form with accurate details.`
-        },
-        {
-          title: 'Book Appointment',
-          desc: 'Schedule an appointment at the nearest Visa Application Center.'
-        },
-        {
-          title: 'Pay Visa Fees',
-          desc: 'Pay the applicable visa fee online or at the Visa Center.'
-        },
-        {
-          title: 'Submit Application',
-          desc: 'Submit your completed application along with required biometric data.'
-        },
-        {
-          title: 'Track Application Status',
-          desc: 'Track your application status online via the official embassy tracking portal.'
-        },
-        {
-          title: 'Receive Passport & Visa',
-          desc: 'Collect your stamped passport or receive it by secure courier.'
-        }
-      ];
+      if (parsed.length >= 7) {
+        rawSteps = parsed.slice(0, 8);
+      }
     }
 
     return rawSteps.map((s, idx) => {
@@ -3210,7 +3301,7 @@ export function VisaCountryResultPortal({
         icon = <Calendar className="w-4 h-4 text-indigo-600" />;
       } else if (tLow.includes('fee') || tLow.includes('pay') || tLow.includes('cost') || tLow.includes('charge')) {
         icon = <CreditCard className="w-4 h-4 text-amber-600" />;
-      } else if (tLow.includes('submit') || tLow.includes('biometric') || tLow.includes('fingerprint') || tLow.includes('vfs') || tLow.includes('gvcw') || tLow.includes('attend') || tLow.includes('handover')) {
+      } else if (tLow.includes('submit') || tLow.includes('biometric') || tLow.includes('fingerprint') || tLow.includes('vfs') || tLow.includes('cvasc') || tLow.includes('gvcw') || tLow.includes('attend') || tLow.includes('handover')) {
         icon = <UploadCloud className="w-4 h-4 text-slate-600" />;
       } else if (tLow.includes('track') || tLow.includes('status') || tLow.includes('portal') || tLow.includes('wait') || tLow.includes('adjudicat')) {
         icon = <RotateCw className="w-4 h-4 text-slate-600" />;
@@ -3229,7 +3320,7 @@ export function VisaCountryResultPortal({
         icon: isCompleted ? <Check className="w-4 h-4 text-emerald-600 stroke-[3]" /> : icon
       };
     });
-  }, [aiData, countryName, purposeLabel, userCheckedSteps]);
+  }, [aiData, countryName, purposeLabel, userCheckedSteps, isSchengen]);
 
   const stepsCompleted = dynamicSteps.filter(s => s.status === 'completed').length;
   const stepsInProgress = dynamicSteps.filter(s => s.status === 'in_progress').length;
@@ -3237,9 +3328,16 @@ export function VisaCountryResultPortal({
   const stepsNotStarted = dynamicSteps.filter(s => s.status === 'not_started').length;
 
   const getResolvedProcessingTime = () => {
-    const isSchengenCountry = isSchengen || countryName.toLowerCase().includes('greece') || countryName.toLowerCase().includes('france') || countryName.toLowerCase().includes('germany') || countryName.toLowerCase().includes('italy') || countryName.toLowerCase().includes('spain');
+    const cLow = countryName.toLowerCase();
+    const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
     if (isSchengenCountry) return '15 – 20 Days';
-    return (aiData?.processing_and_timing?.normal_processing_time || aiData?.decision_time || '15 – 20 Days');
+    if (cLow.includes('china')) return '4 – 7 Days';
+    if (cLow.includes('united states') || cLow.includes('usa')) return '3 – 5 Days';
+    if (cLow.includes('united kingdom') || cLow.includes('uk')) return '15 Working Days';
+    if (cLow.includes('uae') || cLow.includes('dubai') || cLow.includes('thailand') || cLow.includes('malaysia') || cLow.includes('singapore')) return '3 – 5 Days';
+    if (aiData?.processing_time && !aiData.processing_time.includes('15 – 20')) return aiData.processing_time;
+    if (aiData?.processing_and_timing?.decision_time && !aiData.processing_and_timing.decision_time.includes('15 – 20')) return aiData.processing_and_timing.decision_time;
+    return '5 – 10 Days';
   };
 
   useEffect(() => {

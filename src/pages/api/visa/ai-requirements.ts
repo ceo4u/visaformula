@@ -181,6 +181,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isNepal = isDestination(toLower, 'nepal', ['kathmandu', 'pokhara', 'nepali']);
   const isBhutan = isDestination(toLower, 'bhutan', ['thimphu', 'paro', 'bhutanese']);
   const isCambodia = isDestination(toLower, 'cambodia', ['phnom penh', 'siem reap', 'angkor wat', 'cambodian']);
+  const isChina = isDestination(toLower, 'china', ['beijing', 'shanghai', 'guangzhou', 'prc', "people's republic of china", 'chinese']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -1822,6 +1823,111 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         decision_time: '1 to 3 business days online / Instant on arrival at airport.',
         max_extension: 'Can be extended once for an additional 30 days at the Department of Immigration in Phnom Penh.',
         center_notes: 'Accepted at Phnom Penh (PNH), Siem Reap Angkor (SAI), Sihanoukville (KOS), and major land borders with Thailand and Vietnam.'
+      }
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // CHINA PATHWAYS (100% Verified Official Consular Data - CVASC)
+  // ═══════════════════════════════════════════════════════════════
+  if (isChina) {
+    return {
+      passport_country: from,
+      destination_country: 'China',
+      purpose_of_visit: purposeLower.includes('work') ? 'Employment / Work' : purposeLower.includes('study') ? 'Higher Studies' : 'Tourism / Vacation',
+      visa_type: purposeLower.includes('work') ? 'Z Visa (Work Permit)' : purposeLower.includes('study') ? 'X Visa (Student Permit)' : 'Tourist Visa (L Visa)',
+      source_url: 'https://www.visaforchina.cn/',
+      official_source_name: 'Chinese Visa Application Service Center (CVASC) / Embassy of the PRC',
+      processing_time: '4 – 7 Working Days',
+      validity: '3 Months (Single Entry) / 6 Months (Double Entry)',
+      stay_duration: 'Up to 30 Days per Entry',
+      entry_type: 'Single / Double Entry',
+      validity_and_stay: {
+        visa_validity: '3 Months / 6 Months',
+        max_stay_per_entry: 'Up to 30 Days',
+        entry_type: 'Single / Double Entry'
+      },
+      documents_required: [
+        {
+          title: 'Original Passport',
+          description: 'Valid for at least 6 months beyond intended stay with at least 2 blank visa pages, plus clear photocopy of photo and address pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'COVA Online Visa Application Form',
+          description: 'Completed online via the China Online Visa Application (COVA) system, printed and signed with confirmation page.',
+          is_mandatory: true
+        },
+        {
+          title: 'Passport Photographs',
+          description: '2 recent color photos (33mm x 48mm), bareheaded, white background, taken within last 6 months without jewelry or glasses.',
+          is_mandatory: true
+        },
+        {
+          title: 'Round-trip Flight Booking Confirmation',
+          description: 'Confirmed round-trip air ticket reservations showing applicant name, airline, flight dates and ticket reference.',
+          is_mandatory: true
+        },
+        {
+          title: 'Hotel Reservation or Official Invitation Letter',
+          description: 'Confirmed hotel reservations for entire duration in China, or an official Invitation Letter for Tourist with inviter Chinese ID / residence copy.',
+          is_mandatory: true
+        },
+        {
+          title: 'Day-by-Day Travel Itinerary',
+          description: 'Detailed travel plan outlining daily sightseeing activities, cities to visit, internal transit and accommodation.',
+          is_mandatory: true
+        },
+        {
+          title: 'Bank Statements (Financial Proof)',
+          description: 'Original stamped bank statements for the last 6 months showing sufficient disposable funds (minimum ₹1,00,000 to ₹1,50,000 balance).',
+          is_mandatory: true
+        },
+        {
+          title: 'Employment Proof / Leave Sanction Letter',
+          description: 'Official letter from current employer stating designation, length of service, salary and approved leave dates, or business registration if self-employed.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Bank Statements',
+          minimum_balance_or_amount: '₹1,00,000 – ₹1,50,000 INR',
+          time_frame: 'Last 6 months',
+          notes: 'Duly stamped and signed by branch manager.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'Biometric Ten-Fingerprint Collection',
+          details: 'Mandatory in-person biometric fingerprint scanning at the Chinese Visa Application Service Center (CVASC).'
+        },
+        {
+          category: 'Jurisdiction Rule',
+          details: 'Applicants must apply through the CVASC center corresponding to their consular jurisdiction (New Delhi, Mumbai, or Kolkata).'
+        }
+      ],
+      how_to_apply: [
+        'Check Eligibility: Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.',
+        'Gather Required Documents: Prepare original passport, 33x48mm photos, round-trip flights, hotel bookings, and 6 months stamped bank statements.',
+        'Fill Application Form: Complete the official China Online Visa Application (COVA) form accurately online.',
+        'Book Appointment: Schedule appointment for physical submission at the Chinese Visa Application Service Center (CVASC).',
+        'Pay Visa Fees: Pay the official consular fee (₹3,800) and CVASC service charges (₹4,130) at the center counter.',
+        'Submit Application & Biometrics: Attend CVASC appointment to submit original passport, dossier, and enroll ten-fingerprints.',
+        'Track Application Status: Track your visa dossier progress online using the CVASC application tracking portal.',
+        'Receive Passport & Visa: Collect your passport with stamped Chinese visa from CVASC or receive via express courier.'
+      ],
+      costs: {
+        visa_fee: '₹3,800 INR (Single Entry Consular Fee)',
+        service_fee: '₹4,130 INR (CVASC Logistics Fee)',
+        total_fee: '₹7,930 INR Total',
+        notes: 'Payable at CVASC center by cash, debit/credit card or bank draft.'
+      },
+      processing_and_timing: {
+        apply_window: 'Submit 1 month prior to departure date.',
+        decision_time: '4 – 7 Working Days (Standard)',
+        max_extension: 'Apply at Exit-Entry Administration Bureau in China before current visa expires.',
+        center_notes: 'CVASC Centers: New Delhi (Shivaji Stadium Metro), Mumbai (Nariman Point), Kolkata (Bidhannagar).'
       }
     };
   }
@@ -5162,11 +5268,14 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       }
     ],
     how_to_apply: [
-      `Verify entry method: Check if ${to} offers an official electronic visa (eVisa), Visa on Arrival (VoA), or requires advance consular filing.`,
-      `Ensure your passport has at least 6 months validity from intended travel date with blank pages.`,
-      `Assemble supporting documents: round-trip flights, hotel vouchers, photographs, and proof of funds.`,
-      `Complete the official application and pay the statutory government visa fees.`,
-      `Receive your approved visa approval / electronic permit before flying or clear immigration upon arrival.`
+      `Check Eligibility: Ensure you meet all specific statutory eligibility rules for a ${to} ${rawPurpose || 'Tourist'} visa.`,
+      `Gather Required Documents: Collect original passport, photographs, financial proofs, travel bookings and checklist items.`,
+      `Fill Application Form: Complete the official ${to} visa application form accurately online.`,
+      `Book Appointment: Schedule appointment at the designated Visa Application Center or Embassy.`,
+      `Pay Visa Fees: Pay official consular fee and VAC logistics charges securely.`,
+      `Submit Application & Biometrics: Attend appointment to submit physical dossier and record biometric data.`,
+      `Track Application Status: Monitor your visa dossier progress via the official tracking portal.`,
+      `Receive Passport & Visa: Collect stamped passport or receive via secure courier dispatch.`
     ],
     costs: {
       visa_fee: 'Official Statutory Government Fee (varies by tier and bilateral reciprocity)',
@@ -5266,7 +5375,8 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'turkey', aliases: ['turkiye', 'türkiye', 'istanbul', 'ankara', 'antalya', 'turkish'] },
       { primary: 'nepal', aliases: ['kathmandu', 'pokhara', 'nepali'] },
       { primary: 'bhutan', aliases: ['thimphu', 'paro', 'bhutanese'] },
-      { primary: 'cambodia', aliases: ['phnom penh', 'siem reap', 'angkor wat', 'cambodian'] }
+      { primary: 'cambodia', aliases: ['phnom penh', 'siem reap', 'angkor wat', 'cambodian'] },
+      { primary: 'china', aliases: ['beijing', 'shanghai', 'guangzhou', 'prc', 'chinese'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));

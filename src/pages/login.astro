@@ -9,7 +9,8 @@ import { LoginPortal } from '../components/interactive/LoginPortal';
   description="Sign in to your TravlTik visa consultation account. Complete your application filing, check upcoming session schedules, and upload passport document scans."
   hideHeader={true}
   hideFooter={true}
+  hideWidgets={true}
 >
   <!-- Fixed Modal Card Overlay -->
-  <LoginPortal client:only="react" />
+  <LoginPortal client:load />
 </Layout>

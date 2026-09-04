@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MessageSquare, X, Phone, Mail, ArrowLeft, Send, Bot, User, ChevronRight, Calendar, Globe, GraduationCap, Ticket, Briefcase, MessageCircle } from "lucide-react";
 
 type Msg = { role: "ai" | "user"; text: string; quickReplies?: string[] };

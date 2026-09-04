@@ -22,17 +22,22 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
   theme = 'light',
   className = '',
 }) => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const configuredSiteKey =
     (typeof import.meta !== 'undefined' && import.meta.env?.NEXT_PUBLIC_TURNSTILE_SITE_KEY) ||
     (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_TURNSTILE_SITE_KEY) ||
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-    process.env.PUBLIC_TURNSTILE_SITE_KEY ||
+    (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_TURNSTILE_SITE_KEY) ||
+    (typeof process !== 'undefined' && process.env?.PUBLIC_TURNSTILE_SITE_KEY) ||
     '0x4AAAAAAEkYe7hsfnXhxfvB';
 
-  // Use real configured site key (0x4AAAAAAEkYe7hsfnXhxfvB)
   const siteKey = configuredSiteKey;
 
-  if (!siteKey) {
+  if (!mounted || !siteKey) {
     return null;
   }
 

@@ -3703,56 +3703,56 @@ return (
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
             {/* Categories Tabs */}
-            <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar pb-3 mb-6 border-b border-slate-100">
+            <div className="flex items-center gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pt-1 pb-4 sm:pb-5 mb-6 sm:mb-7 border-b border-slate-100">
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('universities')}
-                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
                   activeSearchTab === 'universities'
-                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <GraduationCap className="w-4 h-4 stroke-[2.2]" />
+                <GraduationCap className="w-4.5 h-4.5 stroke-[2.2]" />
                 <span>Explore Universities</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('consultants')}
-                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
                   activeSearchTab === 'consultants'
-                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <UserCheck className="w-4 h-4 stroke-[2.2]" />
+                <UserCheck className="w-4.5 h-4.5 stroke-[2.2]" />
                 <span>Find Consultants</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('jobs')}
-                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
                   activeSearchTab === 'jobs'
-                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <Briefcase className="w-4 h-4 stroke-[2.2]" />
+                <Briefcase className="w-4.5 h-4.5 stroke-[2.2]" />
                 <span>Job Abroad</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('lawyers')}
-                className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                className={`flex items-center gap-2.5 text-xs sm:text-sm font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all cursor-pointer shrink-0 ${
                   activeSearchTab === 'lawyers'
-                    ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 border border-slate-200/60'
+                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
                 }`}
               >
-                <Scale className="w-4 h-4 stroke-[2.2]" />
+                <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
                 <span>Visa Appeal</span>
               </button>
             </div>

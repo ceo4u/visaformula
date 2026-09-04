@@ -1218,7 +1218,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         }
       ],
       how_to_apply: [
-        'eVisa Portal Registration: Create an account and submit your electronic visa dossier on the official MAE portal: evisa.mae.ro.',
+        'Visa Portal Registration: Create an account and submit your electronic visa dossier on the official MAE portal: evisa.mae.ro.',
         'Online Consular Validation: The Consular Section of the Embassy of Romania reviews the uploaded documents and issues validation for appointment booking.',
         'Appointment Booking & Biometrics: Schedule and attend your consular / VAC appointment in New Delhi, Mumbai, or authorized visa centers with original passport and physical documents.',
         'Biometric Submission: Provide 10-digit fingerprint scans and facial biometrics during the in-person appointment.',

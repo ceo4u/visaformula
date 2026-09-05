@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Lock, Briefcase } from "lucide-react";
+import { Calendar, Lock, Briefcase, Plane } from "lucide-react";
 
 interface ConsultationsProps {
     activeTab: string;
@@ -54,6 +54,23 @@ export const Consultations: React.FC<ConsultationsProps> = ({ activeTab }) => {
                         <h4 className="font-extrabold text-slate-900">Visa Decision Clearance</h4>
                         <p className="text-slate-500 text-[11px]">Remaining 30% released upon passport stamping and outcome delivery.</p>
                     </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (activeTab === "travel-history" || activeTab === "visa-history") {
+        return (
+            <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4 animate-fade-up">
+                <Plane className="w-12 h-12 text-[#00a896] mx-auto" />
+                <h3 className="text-lg font-black text-slate-900">Your International Travel History</h3>
+                <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
+                    Track your past visas, entry/exit stamps, and international journeys to strengthen your visa readiness footprint.
+                </p>
+                <div className="pt-2">
+                    <a href="/dashboard?tab=scanned-documents" className="inline-block bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
+                        Upload Passport Stamps in Document Vault →
+                    </a>
                 </div>
             </div>
         );

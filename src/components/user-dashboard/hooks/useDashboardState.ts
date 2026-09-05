@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   LayoutDashboard, Briefcase, ShieldCheck, Luggage,
-  FileText, Calendar, Bookmark, Lock, BookOpen, User
+  FileText, Calendar, Bookmark, Lock, BookOpen, User, Plane
 } from "lucide-react";
 import { normalizeCountryName } from "../utils/countryHelpers";
 import { useVaultPassword } from "./useVaultPassword";
@@ -37,6 +37,7 @@ export function useDashboardState() {
         if (tab === "vault" || tab === "documents" || tab === "scanned-documents") return "scanned-documents";
         if (tab === "readiness" || tab === "visa-readiness") return "visa-readiness";
         if (tab === "cases" || tab === "applications") return "cases";
+        if (tab === "travel-history" || tab === "visa-history") return "travel-history";
         return tab;
       }
     }
@@ -365,7 +366,7 @@ export function useDashboardState() {
     {
       title: "SUPPORT",
       items: [
-        { id: "visa-history", label: "Visa History", icon: BookOpen },
+        { id: "travel-history", label: "Travel History", icon: Plane },
         { id: "profile", label: "Settings", icon: User },
       ]
     }

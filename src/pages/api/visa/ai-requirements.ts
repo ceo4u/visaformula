@@ -307,10 +307,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
 
   const isUK = isDestination(toLower, 'united kingdom', ['uk', 'great britain', 'england', 'scotland', 'wales', 'british']);
   const isGreece = isDestination(toLower, 'greece', ['hellas', 'athens', 'thessaloniki']);
+  const isSpain = isDestination(toLower, 'spain', ['espana', 'españa', 'madrid', 'barcelona', 'seville', 'valencia', 'spanish']);
   const isRomania = isDestination(toLower, 'romania', ['bucharest', 'cluj', 'timisoara', 'brasov', 'iasi', 'constanta']);
   const isBulgaria = isDestination(toLower, 'bulgaria', ['sofia', 'varna', 'plovdiv']);
   const isCroatia = isDestination(toLower, 'croatia', ['zagreb', 'dubrovnik', 'split']);
-  const isSchengen = isGreece || isRomania || isBulgaria || isCroatia || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein'].some(c => isDestination(toLower, c));
+  const isSchengen = isGreece || isSpain || isRomania || isBulgaria || isCroatia || ['france', 'germany', 'italy', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein'].some(c => isDestination(toLower, c));
   const isUSA = isDestination(toLower, 'united states', ['usa', 'us', 'america', 'american']);
   const isCanada = isDestination(toLower, 'canada', ['canadian']);
   const isAustralia = isDestination(toLower, 'australia', ['australian', 'aussie']);
@@ -3420,6 +3421,15 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       visa_type: 'Standard Visitor Visa (6 Months)',
       source_url: 'https://www.gov.uk/standard-visitor',
       official_source_name: 'UK Visas & Immigration (UKVI) official sources',
+      processing_time: 'Standard 3 Weeks (15 Working Days)',
+      validity: '6 Months (Standard Multiple Entry)',
+      stay_duration: 'Up to 6 Months (180 Days) per Visit',
+      entry_type: 'Multiple Entry',
+      validity_and_stay: {
+        visa_validity: '6 Months (Standard Multiple Entry)',
+        max_stay_per_entry: 'Up to 6 Months (180 Days)',
+        entry_type: 'Multiple Entry'
+      },
       documents_required: [
         {
           title: 'Valid Passport',
@@ -3932,12 +3942,12 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // 2. GREECE & SCHENGEN PATHWAYS
+  // 2. GREECE, SPAIN & SCHENGEN PATHWAYS
   // ═══════════════════════════════════════════════════════════════
-  if (isGreece || isSchengen) {
-    const dest = isGreece ? 'Greece' : to;
+  if (isGreece || isSpain || isSchengen) {
+    const dest = isGreece ? 'Greece' : isSpain ? 'Spain' : to;
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
-    const isStudy = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education');
+    const isStudy = purposeLower.includes('stud') || purposeLower.includes('higher') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('college') || purposeLower.includes('academic');
     const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment');
     const isBusiness = purposeLower.includes('business');
     const isFamily = purposeLower.includes('family') || purposeLower.includes('friend');
@@ -3948,7 +3958,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         destination_country: dest,
         purpose_of_visit: 'Permanent Residency / Settlement',
         visa_type: `${dest} Long-Term National Residence Permit (Type D / EU Permanent Settlement)`,
-        source_url: isGreece ? 'https://migration.gov.gr/en/' : 'https://www.vfsglobal.com',
+        source_url: isGreece ? 'https://migration.gov.gr/en/' : isSpain ? 'https://www.inclusion.gob.es' : 'https://www.vfsglobal.com',
         official_source_name: `Ministry of Migration & Asylum & Consular Affairs of ${dest}`,
         processing_time: '60 to 90 Days Consular SLA',
         validity: '5-Year Permanent Residence Card (EU Long-Term Resident)',
@@ -4000,8 +4010,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         destination_country: dest,
         purpose_of_visit: 'Higher Studies',
         visa_type: `${dest} National Student Visa (Type D Long-Stay)`,
-        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
-        official_source_name: `Consular Affairs & Ministry of Foreign Affairs of ${dest}`,
+        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : isSpain ? 'https://india.blsspainvisa.com' : 'https://www.vfsglobal.com',
+        official_source_name: isGreece ? 'Consular Affairs, Embassy of Greece & GVCW' : isSpain ? 'Ministry of Foreign Affairs, Spain & BLS International Spain' : `Consular Affairs & Ministry of Foreign Affairs of ${dest}`,
         processing_time: '30 to 60 Calendar Days (National D Visa)',
         validity: '1 Year (Renewable upon arrival)',
         stay_duration: 'Duration of Academic Program',
@@ -4053,27 +4063,31 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           },
           {
             category: 'Biometrics at Visa Application Center',
-            details: 'Mandatory in-person biometric appointment for fingerprinting.'
+            details: isSpain
+              ? 'Mandatory in-person biometric appointment at BLS International Spain Visa Application Centre.'
+              : isGreece
+              ? 'Mandatory in-person biometric appointment at GVCW Visa Application Center.'
+              : 'Mandatory in-person biometric appointment at authorized Visa Application Center.'
           }
         ],
         how_to_apply: [
           'Secure unconditional admission from authorized European institution.',
           'Complete National D visa application and compile apostilled dossier.',
-          'Book appointment at consular visa center.',
+          isSpain ? 'Book appointment at BLS International Spain Visa Application Centre.' : 'Book appointment at consular visa center.',
           'Submit biometrics, dossier, and attend consular interview if requested.',
           'Receive National D student visa sticker in passport.'
         ],
         costs: {
           visa_fee: '€180 (approx. ₹16,400)',
-          service_fee: '€30 (VAC Fee)',
-          total_fee: '€210 Total Reference',
+          service_fee: isSpain ? '€17 (BLS Fee)' : '€30 (VAC Fee)',
+          total_fee: isSpain ? '€197 Total Reference' : '€210 Total Reference',
           notes: 'Official consular fee for national long-stay visa.'
         },
         processing_and_timing: {
           apply_window: 'Apply 2 to 3 months prior to intake start date.',
           decision_time: 'Decision: 30 to 60 calendar days.',
           max_extension: 'Depends on national immigration authority clearance.',
-          center_notes: 'Requires in-person biometric submission.'
+          center_notes: isSpain ? 'Processed via BLS International Spain.' : 'Requires in-person biometric submission.'
         }
       };
     }
@@ -4084,8 +4098,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         destination_country: dest,
         purpose_of_visit: 'Employment / Work',
         visa_type: `${dest} National Employment Visa (Type D)`,
-        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
-        official_source_name: `Ministry of Labour & Consular Affairs of ${dest}`,
+        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : isSpain ? 'https://india.blsspainvisa.com' : 'https://www.vfsglobal.com',
+        official_source_name: isGreece ? 'Ministry of Labour & Consular Affairs of Greece' : isSpain ? 'Ministry of Inclusion, Social Security & Migration, Spain & BLS International' : `Ministry of Labour & Consular Affairs of ${dest}`,
         processing_time: '45 to 90 Calendar Days (Post Work Permit)',
         validity: '1 to 2 Years (Renewable)',
         stay_duration: 'Employment Contract Duration',
@@ -4162,17 +4176,17 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         passport_country: from,
         destination_country: dest,
         purpose_of_visit: 'Business Visit',
-        visa_type: 'Schengen Business Visa (Type C)',
-        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
-        official_source_name: `${dest} Consular Affairs & VFS/GVCW Portals`,
-        processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
-        validity: 'Up to 90 Days',
-        stay_duration: 'Up to 90 Days within 180 Days',
+        visa_type: isGreece ? 'Schengen Business Visa (Type C) — Greece' : isSpain ? 'Schengen Business Visa (Type C) — Spain' : `Schengen Business Visa (Type C) — ${dest}`,
+        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : isSpain ? 'https://india.blsspainvisa.com' : 'https://www.vfsglobal.com',
+        official_source_name: isGreece ? 'Embassy of Greece & GVCW Portals' : isSpain ? 'Embassy of Spain & BLS International Spain' : `${dest} Consular Affairs & VFS/GVCW Portals`,
+        processing_time: '15 Calendar Days (Standard Consular SLA) / Up to 45 Days (Peak)',
+        validity: 'Based on approved business itinerary (up to 6 months or 1-5 years multi-entry)',
+        stay_duration: 'Up to 90 days within any 180-day rolling period across Schengen Area',
         entry_type: 'Short Stay Business (Type C)',
         documents_required: [
           {
             title: 'Valid Passport',
-            description: 'Valid for at least 3 months beyond departure date, issued within 10 years with 2 blank pages.',
+            description: 'Valid for at least 3 months beyond departure date from Schengen area, issued within 10 years with 2 blank pages.',
             is_mandatory: true
           },
           {
@@ -4187,7 +4201,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           },
           {
             title: 'Travel Medical Insurance',
-            description: 'Minimum €30,000 coverage across all 29 Schengen states with repatriation cover.',
+            description: 'Minimum 30,000 EUR coverage across all 29 Schengen states with emergency hospitalization and medical repatriation cover.',
             is_mandatory: true
           },
           {
@@ -4199,7 +4213,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         financial_proofs: [
           {
             type: 'Company & Personal Bank Statements',
-            minimum_balance_or_amount: '€50 – €70 per day of intended stay',
+            minimum_balance_or_amount: isSpain ? 'Minimum 122 EUR/day (statutory solvency floor: 1,099 EUR)' : '50 – 70 EUR per day of intended stay',
             time_frame: 'Last 3 to 6 months',
             notes: 'Stamped and signed by issuing bank; company financial undertaking letter.'
           },
@@ -4213,31 +4227,35 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         other_requirements: [
           {
             category: 'Biometrics at Application Center',
-            details: 'Mandatory in-person appointment for 10-finger biometric scan.'
+            details: isSpain
+              ? 'Mandatory in-person appointment for 10-finger biometric scan at BLS International Spain.'
+              : isGreece
+              ? 'Mandatory in-person appointment for 10-finger biometric scan at GVCW Visa Application Center.'
+              : 'Mandatory in-person appointment for 10-finger biometric scan at authorized VAC.'
           },
           {
             category: 'Schengen 90/180 Rule',
-            details: 'Stay permitted up to 90 days in any 180-day window for business meetings.'
+            details: 'Stay permitted up to 90 days in any 180-day window for business meetings across Schengen member states.'
           }
         ],
         how_to_apply: [
           'Complete online harmonized Schengen application form.',
-          'Compile business invitation, company NOC, and €30,000 insurance.',
-          'Book appointment at authorized VAC (GVCW / VFS).',
+          'Compile business invitation, company NOC, and 30,000 EUR insurance.',
+          isSpain ? 'Book appointment at BLS International Spain Visa Application Centre.' : 'Book appointment at authorized VAC (GVCW / VFS).',
           'Attend appointment for biometrics and submission.',
           'Collect stamped passport.'
         ],
         costs: {
-          visa_fee: '€90',
-          service_fee: '€30',
-          total_fee: '€120',
-          notes: 'Payable in local currency at VAC submission.'
+          visa_fee: '90 EUR (Standard Adult) / 45 EUR (Children 6–12)',
+          service_fee: isSpain ? '17 EUR (BLS International Service Fee)' : '30 EUR (VAC Service Fee)',
+          total_fee: isSpain ? '107 EUR Total' : '120 EUR Total',
+          notes: 'Payable in Indian Rupees (INR) at VAC submission.'
         },
         processing_and_timing: {
           apply_window: 'Apply up to 6 months prior to business travel.',
-          decision_time: 'Decision: up to 15 calendar days from consular receipt.',
-          max_extension: 'May extend to 45 calendar days during peak consular load.',
-          center_notes: 'Courier transit applies for non-metro centers.'
+          decision_time: 'Standard: 15 calendar days from consular receipt (may extend to 45 calendar days during peak periods).',
+          max_extension: 'Maximum stay: Up to 90 days within any 180-day rolling period across Schengen Area.',
+          center_notes: isSpain ? 'BLS International Spain centers across India.' : 'Authorized VAC centers across India.'
         }
       };
     }
@@ -4247,22 +4265,26 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         passport_country: from,
         destination_country: dest,
         purpose_of_visit: 'Family / Friends Visit',
-        visa_type: 'Schengen Visitor Visa (Private Visit)',
-        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : 'https://www.vfsglobal.com',
-        official_source_name: `${dest} Consular Affairs & Diplomatic Missions`,
-        processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
-        validity: 'Up to 90 Days',
-        stay_duration: 'Up to 90 Days within 180 Days',
+        visa_type: isGreece ? 'Schengen Visitor Visa (Private Visit) — Greece' : isSpain ? 'Schengen Visitor Visa (Private Visit) — Spain' : `Schengen Visitor Visa (Private Visit) — ${dest}`,
+        source_url: isGreece ? 'https://in-gr.gvcworld.eu/en' : isSpain ? 'https://india.blsspainvisa.com' : 'https://www.vfsglobal.com',
+        official_source_name: isGreece ? 'Embassy of Greece & GVCW' : isSpain ? 'Embassy of Spain & BLS International Spain' : `${dest} Consular Affairs & Diplomatic Missions`,
+        processing_time: '15 Calendar Days (Standard Consular SLA) / Up to 45 Days (Peak)',
+        validity: 'Based on approved visit itinerary (up to 90 days per visit)',
+        stay_duration: 'Up to 90 days within any 180-day rolling period across Schengen Area',
         entry_type: 'Short Stay Private Visit (Type C)',
         documents_required: [
           {
             title: 'Valid Passport',
-            description: 'Valid for at least 3 months after departure date with 2 blank pages.',
+            description: 'Valid for at least 3 months after departure date from Schengen area with 2 blank pages, issued within 10 years.',
             is_mandatory: true
           },
           {
-            title: 'Official Municipal Host Declaration',
-            description: 'Formal invitation authenticated by local municipality / Greek Police in host country.',
+            title: isSpain ? 'Official Policía Nacional Carta de Invitación' : 'Official Municipal Host Declaration',
+            description: isSpain
+              ? 'Mandatory official Carta de Invitación (Model 790 Code 012) issued by the local Policía Nacional in Spain. Private handwritten, notarized, or email letters are NOT accepted by the Spanish Embassy/BLS.'
+              : isGreece
+              ? 'Formal invitation authenticated by local municipality / Greek Police in host country or via gov.gr.'
+              : 'Formal invitation authenticated by local municipality in host country.',
             is_mandatory: true
           },
           {
@@ -4277,14 +4299,14 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           },
           {
             title: 'Travel Medical Insurance',
-            description: 'Minimum €30,000 coverage across all Schengen states.',
+            description: 'Minimum 30,000 EUR coverage across all Schengen states covering emergency medical treatment and repatriation.',
             is_mandatory: true
           }
         ],
         financial_proofs: [
           {
             type: 'Bank Statements (Traveler or Host)',
-            minimum_balance_or_amount: '€50 per day of intended stay',
+            minimum_balance_or_amount: isSpain ? 'Minimum 122 EUR/day per person (irreducible floor: 1,099 EUR)' : '50 EUR per day of intended stay',
             time_frame: 'Last 3 to 6 months',
             notes: 'Bank statements with official stamp; host tax return if sponsoring living costs.'
           }
@@ -4296,72 +4318,93 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           },
           {
             category: 'Biometrics Submission',
-            details: 'Mandatory in-person fingerprint and photograph capture at VAC.'
+            details: isSpain
+              ? 'Mandatory in-person fingerprint and photograph capture at BLS International Spain.'
+              : 'Mandatory in-person fingerprint and photograph capture at authorized VAC.'
           }
         ],
         how_to_apply: [
           'Complete Schengen visa application form.',
-          'Obtain authenticated municipal invitation from host.',
-          'Book appointment at authorized visa application center.',
+          isSpain ? 'Obtain official Carta de Invitación from host (issued by Policía Nacional in Spain).' : 'Obtain authenticated municipal invitation from host.',
+          isSpain ? 'Book appointment at BLS International Spain Visa Application Centre.' : 'Book appointment at authorized visa application center.',
           'Submit biometrics and supporting dossier.',
           'Track application and collect passport.'
         ],
         costs: {
-          visa_fee: '€90',
-          service_fee: '€30',
-          total_fee: '€120',
-          notes: 'Payable in local currency at VAC submission.'
+          visa_fee: '90 EUR (Standard Adult) / 45 EUR (Children 6–12)',
+          service_fee: isSpain ? '17 EUR (BLS Service Fee)' : '30 EUR (VAC Service Fee)',
+          total_fee: isSpain ? '107 EUR Total' : '120 EUR Total',
+          notes: 'Payable in Indian Rupees (INR) at VAC submission.'
         },
         processing_and_timing: {
           apply_window: 'Apply up to 6 months before travel.',
-          decision_time: 'Decision: up to 15 calendar days.',
-          max_extension: 'May extend to 45 calendar days.',
-          center_notes: 'Regional dispatch applies.'
+          decision_time: 'Standard: 15 calendar days from consular receipt (up to 45 calendar days during peak seasons).',
+          max_extension: 'Maximum stay: Up to 90 days within any rolling 180-day period across Schengen Area.',
+          center_notes: isSpain ? 'BLS International Spain centers across India.' : 'Authorized VAC centers across India.'
         }
       };
     }
 
-    // ── Greece / Schengen Tourism (100% Verified — Embassy of Greece & GVCW Standards) ──
+    // ── Greece, Spain & Schengen Tourism (100% Verified Consular Standards) ──
     return {
       passport_country: from,
       destination_country: dest,
       purpose_of_visit: 'Tourism / Vacation',
-      visa_type: isGreece ? 'Schengen Short-Stay Visa Type C — Greece (via GVCW / Embassy of Greece)' : 'Short-stay Schengen Visa (Type C)',
-      source_url: isGreece ? 'https://in-gr.gvcworld.eu/en/visa-info-tourism' : 'https://www.vfsglobal.com',
+      visa_type: isGreece
+        ? 'Schengen Short-Stay Visa Type C — Greece (via GVCW / Embassy of Greece)'
+        : isSpain
+        ? 'Schengen Short-Stay Visa Type C — Spain (via BLS International / Embassy of Spain)'
+        : `Short-stay Schengen Visa (Type C) — ${dest}`,
+      source_url: isGreece
+        ? 'https://in-gr.gvcworld.eu/en/visa-info-tourism'
+        : isSpain
+        ? 'https://india.blsspainvisa.com'
+        : 'https://www.vfsglobal.com',
       official_source_name: isGreece
         ? 'Embassy of Greece, New Delhi — GVC World (GVCW) Official Portal'
+        : isSpain
+        ? 'Embassy of Spain in India — BLS International Spain Visa Centre'
         : `${dest} Embassy — VFS Global Official Portal`,
-      processing_time: '15 Calendar Days (Standard) / Up to 45 Days (Peak)',
-      validity: 'Up to 90 Days',
-      stay_duration: 'Up to 90 Days within 180 Days',
+      processing_time: '15 Calendar Days (Standard Consular SLA) / Up to 45 Days (Peak)',
+      validity: 'Based on approved itinerary (up to 6 months or 1-5 years multi-entry for eligible applicants)',
+      stay_duration: 'Up to 90 days within any 180-day rolling period across Schengen Area',
       entry_type: 'Short Stay (Single / Multiple Entry)',
+      validity_and_stay: {
+        visa_validity: 'Based on approved itinerary (up to 6 months or 1-5 years multi-entry)',
+        max_stay_per_entry: 'Up to 90 days within any 180-day rolling period',
+        entry_type: 'Short Stay (Single / Multiple Entry)'
+      },
       documents_required: [
         {
           title: 'Valid Passport',
-          description: 'Must be valid for at least 6 months from planned departure date (Schengen legal minimum: 3 months beyond return, but 6 months recommended). Issued within last 10 years. Minimum 2 blank visa pages required. Carry all old passports if any.',
+          description: 'Must be valid for at least 3 months beyond planned departure date from Schengen territory (6 months recommended). Issued within last 10 years with minimum 2 blank visa pages. Carry all old passports if any.',
           is_mandatory: true
         },
         {
           title: 'Harmonised Schengen Visa Application Form',
           description: isGreece
             ? 'Official Harmonised Schengen Visa Application Form — completed online via the GVCW E-VISA Portal (in-gr.gvcworld.eu) or downloaded from the Embassy of Greece website.'
+            : isSpain
+            ? 'Official Spanish Harmonised Schengen Visa Application Form — completed, printed, and signed. Downloaded from the BLS International Spain portal (india.blsspainvisa.com) or the Ministry of Foreign Affairs (MAEC).'
             : 'Completed Harmonised Schengen Visa Application Form — fully filled, signed, and dated by the applicant. Available from the official embassy or VFS portal.',
           is_mandatory: true
         },
         {
           title: 'Biometric Passport Photos — 35×45mm',
-          description: '2 recent identical biometric colour photographs. Size: 35mm × 45mm. White or off-white plain background. Neutral expression, mouth closed, eyes open and looking directly at camera. Taken within the last 6 months. No glasses, head coverings (except religious), or digital filters.',
+          description: '2 recent identical biometric colour photographs. Size: 35mm × 45mm. White or light grey plain background, 70–80% face coverage, neutral expression. Taken within the last 6 months. No glasses, head coverings (except religious), or digital filters.',
           is_mandatory: true
         },
         {
-          title: 'Travel Medical Insurance — Min. €30,000',
-          description: 'Mandatory Schengen Travel Health Insurance policy. Minimum coverage: €30,000 (thirty thousand euros). Must cover: emergency medical treatment, hospitalization, medical repatriation and repatriation of mortal remains. Valid for ALL Schengen Area countries. Coverage must span the entire trip duration including buffer days.',
+          title: 'Travel Medical Insurance — Minimum 30,000 EUR',
+          description: 'Mandatory Schengen Travel Health Insurance policy with minimum coverage of 30,000 EUR (thirty thousand euros). Must cover emergency medical treatment, hospitalisation, urgent medical evacuation, and repatriation of mortal remains. Valid across all 29 Schengen Area countries for entire trip duration.',
           is_mandatory: true
         },
         {
           title: 'Round-Trip Flight Itinerary / Reservations (with PNR)',
           description: isGreece
-            ? 'Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR (Passenger Name Record). ⚠️ Do NOT purchase non-refundable tickets before the visa is issued — book a refundable or on-hold reservation only. Itinerary must show travel from India → Greece → India.'
+            ? 'Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR (Passenger Name Record). Do NOT purchase non-refundable tickets prior to visa grant — book a refundable or on-hold reservation. Itinerary must show travel from India to Greece and return.'
+            : isSpain
+            ? 'Confirmed round-trip flight reservation with verifiable PNR entering and exiting Spain. Do NOT purchase non-refundable tickets prior to visa issuance — book refundable or on-hold reservation only.'
             : `Confirmed round-trip flight reservation showing outbound and return flights with a verifiable PNR. Do NOT purchase non-refundable tickets prior to visa approval. Itinerary must show travel between ${from} and ${dest}.`,
           is_mandatory: true
         },
@@ -4369,6 +4412,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           title: 'Proof of Accommodation for Entire Stay',
           description: isGreece
             ? 'Confirmed hotel bookings for every night of your stay in Greece (all cities/islands including Athens, Santorini, Mykonos, Crete, etc.). If staying with family/friends: an official Invitation Letter (Declaration of Hospitality) submitted via the Greek Police or authenticated via gov.gr. Booking.com or Airbnb confirmations showing full name, dates, and property address are accepted.'
+            : isSpain
+            ? 'Confirmed hotel bookings covering all nights in Spain. If staying as an invited guest with friends or relatives: Mandatory official Carta de Invitación (Letter of Invitation) issued by the local Policía Nacional in Spain (Model 790 Code 012). Private handwritten, notarized, or email letters are NOT accepted by the Spanish Embassy/BLS.'
             : 'Confirmed hotel bookings or accommodation proof for all nights of stay. Must show full name, dates of stay, and property address. If staying with host: notarized invitation letter from host with their residence proof.',
           is_mandatory: true
         },
@@ -4376,6 +4421,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           title: 'Detailed Day-by-Day Travel Itinerary / Cover Letter',
           description: isGreece
             ? 'A cover letter (self-written or agency-prepared) providing a clear day-by-day travel plan: Entry and exit dates. Cities/islands to be visited (e.g., Day 1-3: Athens, Day 4-6: Santorini, Day 7-9: Mykonos, Day 10: Departure). Mode of transport between islands (ferry/domestic flight). Purpose of each stop. This helps the consular officer assess your trip is genuine tourism.'
+            : isSpain
+            ? 'A cover letter providing a detailed day-by-day travel itinerary across Spain (e.g., Madrid, Barcelona, Seville, Valencia), domestic transit reservations (Renfe trains/domestic flights), and clear travel purpose demonstrating genuine tourism.'
             : 'A detailed cover letter explaining your travel plans day-by-day, cities to visit, activities, and return intention.',
           is_mandatory: true
         },
@@ -4386,7 +4433,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         },
         {
           title: 'Bank Account Statements — Last 3 to 6 Months',
-          description: 'Original bank statements for ALL your bank accounts for the last 3 to 6 months. Must be stamped and signed by the bank branch manager (self-printed online statements NOT accepted). Must show sufficient funds — typically €50 to €70 per day of stay (e.g., 10-day trip = minimum €500–€700 liquid balance). Statements must clearly show: account holder name, account number, transaction history, and closing balance.',
+          description: isSpain
+            ? 'Original bank statements for ALL accounts for the last 3 to 6 months stamped and signed by the bank branch. Must satisfy Spain statutory economic solvency benchmark: minimum 122 EUR per person per day of stay, with an absolute irreducible minimum of 1,099 EUR per person (equivalent to 9 days) regardless of shorter trip duration (Order PRE/1282/2007). Statements must demonstrate regular income credits and sufficient liquid funds.'
+            : isGreece
+            ? 'Original bank statements for ALL your bank accounts for the last 3 to 6 months. Must be stamped and signed by the bank branch manager (self-printed online statements NOT accepted). Must show sufficient funds — typically 50 to 70 EUR per day of stay (e.g., 10-day trip = minimum 500–700 EUR liquid balance). Statements must clearly show: account holder name, account number, transaction history, and closing balance.'
+            : 'Original bank statements for ALL your bank accounts for the last 3 to 6 months. Must be stamped and signed by the bank branch manager. Must show sufficient funds — typically 50 to 70 EUR per day of stay.',
           is_mandatory: true
         },
         {
@@ -4397,12 +4448,16 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       ],
       financial_proofs: [
         {
-          type: 'Bank Account Statements',
-          minimum_balance_or_amount: '€50–€70 / day (~ ₹5,000–₹7,000)',
+          type: isSpain ? 'Bank Account Statements (Statutory Solvency)' : 'Bank Account Statements',
+          minimum_balance_or_amount: isSpain
+            ? '122 EUR / day per person (Irreducible floor: 1,099 EUR per person)'
+            : '50–70 EUR / day (~ ₹5,000–₹7,000 INR)',
           time_frame: 'Last 3 to 6 months',
-          notes: isGreece
+          notes: isSpain
+            ? 'Statutory solvency benchmark under Spanish Ministry of the Presidency Order PRE/1282/2007. Minimum 122 EUR/day with a mandatory irreducible minimum of 1,099 EUR per person even for trips under 9 days. Original bank stamp + signature mandatory.'
+            : isGreece
             ? 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory.'
-            : `Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory.`
+            : 'Must show regular income credits, no sudden large deposits. Original bank stamp + branch manager signature mandatory.'
         },
         {
           type: 'Income Tax Returns (ITR-V)',
@@ -4434,6 +4489,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           category: '⚠️ Application Form — CRITICAL',
           details: isGreece
             ? 'Use ONLY the official Harmonised Schengen Visa Application Form from GVCW (in-gr.gvcworld.eu) or the Embassy of Greece. The GVCW e-portal guides applicants through completing and submitting the correct form online.'
+            : isSpain
+            ? 'Use ONLY the official Spanish Harmonised Schengen Visa Application Form downloaded from BLS International (india.blsspainvisa.com) or the Embassy of Spain.'
             : 'Use the official Harmonised Schengen Visa Application Form from your target country\'s embassy or authorized VAC portal.'
         },
         {
@@ -4441,36 +4498,57 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           details: 'A Schengen Type C visa allows stays of up to 90 days within any rolling 180-day period across all 29 Schengen Area countries combined. Overstaying results in a multi-year Schengen entry ban and potential deportation.'
         },
         {
-          category: 'Biometrics — Mandatory In-Person Appointment',
-          details: isGreece
-            ? 'All applicants must attend an in-person appointment at the GVCW Visa Application Center (VAC) in India (New Delhi, Mumbai, Chennai, Kolkata, Bangalore, Hyderabad, Ahmedabad, Chandigarh). Biometrics include: 10-finger digital fingerprint scan + live digital facial photograph. Children under 12 are exempt from fingerprinting.'
+          category: isSpain ? 'VAC Submission — BLS International Exclusively' : isGreece ? 'Biometrics — Mandatory In-Person Appointment (GVCW)' : 'Biometrics — Mandatory In-Person Appointment',
+          details: isSpain
+            ? 'In India, visa applications for Spain are processed EXCLUSIVELY by BLS International (india.blsspainvisa.com) in centers across New Delhi, Mumbai, Bengaluru, Chennai, Kolkata, Hyderabad, Ahmedabad, Chandigarh, Kochi, Jalandhar, and Puducherry. Spain does NOT use VFS Global in India. All applicants must book an appointment on the BLS Spain portal.'
+            : isGreece
+            ? 'All applicants must attend an in-person appointment at the GVCW Visa Application Center (VAC) in India (New Delhi, Mumbai, Chennai, Kolkata, Bengaluru, Hyderabad, Ahmedabad, Chandigarh). Biometrics include: 10-finger digital fingerprint scan + live digital facial photograph. Children under 12 are exempt from fingerprinting.'
             : 'Mandatory in-person appointment for 10-finger biometric scan and live digital facial photograph at authorized VAC. Children under 12 exempt from fingerprinting.'
         },
+        ...(isSpain ? [
+          {
+            category: 'Mandatory Carta de Invitación for Private Accommodation',
+            details: 'If staying with friends, family, or partners in Spain, the host must obtain an official Carta de Invitación (Model 790 Code 012) issued directly by the local Policía Nacional in Spain. Ordinary private letters, handwritten notes, or notary-attested invitations are strictly rejected by the Spanish Consular posts.'
+          },
+          {
+            category: 'Spain Statutory Economic Solvency Floor',
+            details: 'Spanish border and consular regulations require proof of financial means equivalent to at least 122 EUR per day of stay, with an absolute minimum irreducible floor of 1,099 EUR per person regardless of shorter stay length (Order PRE/1282/2007).'
+          }
+        ] : []),
         {
           category: 'Strong Ties to Home Country',
-          details: isGreece
-            ? 'The consular officer must be convinced you will return to India before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for Greece visa rejection.'
-            : `The consular officer must be convinced you will return to your home country before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for visa rejection.`
+          details: `The consular officer must be convinced you will return to ${from} before your visa expires. Provide strong evidence of ties: Employment letter, property ownership documents, family responsibilities, bank assets, or business ownership. Weak home-country ties are the #1 reason for visa rejection.`
         },
         {
           category: 'Travel & Hotel — Do NOT Buy Non-Refundable',
           details: 'Only book refundable/on-hold flight reservations and hotel bookings for the visa application. Wait for visa approval before making non-refundable purchases. Many travel agents offer "visa purpose" itineraries that are valid for 2-4 weeks for consular submission.'
         },
         {
-          category: isGreece ? 'Greece-Specific: Island Travel Planning' : 'Schengen Travel Planning',
+          category: isGreece ? 'Greece-Specific: Island Travel Planning' : isSpain ? 'Spain-Specific: Regional Itinerary Planning' : 'Schengen Travel Planning',
           details: isGreece
             ? 'If visiting Greek islands (Santorini, Mykonos, Crete, Rhodes, Corfu), include inter-island ferry/domestic flight bookings in your itinerary. Ferry routes from Athens (Piraeus port) to islands are popular — book on seajets.gr or ferryscanner.com for your visa application. Include these in your accommodation proof.'
+            : isSpain
+            ? 'If visiting multiple regions in Spain (e.g., Madrid, Catalonia, Andalusia, Basque Country), include inter-city transport reservations (Renfe trains or domestic flights) in your application dossier.'
             : 'Plan your primary entry Schengen country carefully — you must apply to the embassy of the country where you will spend the most time, or your first point of entry if travel time is equal.'
         }
       ],
-      how_to_apply: isGreece ? [
+      how_to_apply: isSpain ? [
+        'Check Eligibility: Confirm Spain is your main Schengen destination (longest duration of stay or first point of entry).',
+        'Gather Required Documents: Assemble original passport, 35x45mm photos, 30,000 EUR insurance, round-trip flight reservations, hotel vouchers (or police-approved Carta de Invitación), and bank statements satisfying the 122 EUR/day solvency floor.',
+        'Fill Application Form: Complete and sign the official Spanish Schengen Visa Application Form from BLS International (india.blsspainvisa.com).',
+        'Book Appointment: Schedule your in-person appointment at the nearest BLS International Spain Visa Application Centre.',
+        'Submit Dossier & Biometrics: Attend your appointment at BLS Spain to submit physical dossier and provide 10-finger biometrics.',
+        'Pay Visa Fees: Pay the 90 EUR consular fee and BLS service charge in INR at the visa centre.',
+        'Track Application Status: Monitor your application status online via the official BLS Spain tracking portal.',
+        'Receive Passport & Visa: Collect your stamped passport from the BLS centre or receive it by secure courier.'
+      ] : isGreece ? [
         'Check Eligibility: Make sure you meet all the eligibility criteria for a Greece Tourist Visa.',
         'Gather Required Documents: Prepare all mandatory documents as per the official checklist.',
-        'Fill Application Form: Complete the Harmonised Schengen Visa Application Form on the official GVCW portal.',
+        'Fill Application Form: Complete the Harmonised Schengen Visa Application Form on the official GVCW portal (in-gr.gvcworld.eu).',
         'Book Appointment: Schedule your in-person appointment at the nearest GVCW Visa Application Center.',
         'Pay Visa Fees: Pay the applicable visa fee online or at the Visa Center counter.',
         'Submit Application: Attend appointment to submit physical dossier and record biometric data.',
-        'Track Application Status: Track your application status online via the official embassy tracking portal.',
+        'Track Application Status: Track your application status online via the official GVCW tracking portal.',
         'Receive Passport & Visa: Collect your stamped passport or receive it by secure courier.'
       ] : [
         'Check Eligibility: Verify you meet all Schengen entry and stay conditions.',
@@ -4483,20 +4561,32 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         'Receive Passport & Visa: Collect your passport with the approved visa sticker or receive via courier.'
       ],
       costs: {
-        visa_fee: '€90 (approx. ₹8,100 at current exchange rate)',
-        service_fee: isGreece ? '€30 — GVCW VAC Service Charge (approx. ₹2,700)' : '€30 — VAC Service Charge',
-        total_fee: '€120 Total (approx. ₹10,800)',
-        notes: isGreece
-          ? 'Fees payable in INR at the GVCW VAC at time of appointment. Embassy visa fee (€90) is NON-REFUNDABLE even if the visa is refused. Children under 6: FREE. Children 6–12: €45 (half fee). Rate subject to INR/EUR exchange rate on date of payment.'
-          : 'Fees payable in INR at the VAC. Embassy visa fee is non-refundable if refused. Children under 6: free. Children 6–12: €45.'
+        visa_fee: '90 EUR (Standard Adult) / 45 EUR (Children 6–12) / Free (Children under 6)',
+        service_fee: isSpain
+          ? '17 EUR — BLS International Service Charge (approx. ₹1,550 INR)'
+          : isGreece
+          ? '30 EUR — GVCW VAC Service Charge (approx. ₹2,700 INR)'
+          : '30 EUR — VAC Service Charge',
+        total_fee: isSpain
+          ? '107 EUR Total (approx. ₹9,650 INR)'
+          : '120 EUR Total (approx. ₹10,800 INR)',
+        notes: isSpain
+          ? 'Consular visa fee (90 EUR adult / 45 EUR children 6–12 / 0 EUR children under 6) plus BLS service fee (17 EUR) payable in INR at the BLS Spain Visa Centre at time of appointment. Embassy visa fee is NON-REFUNDABLE.'
+          : isGreece
+          ? 'Fees payable in INR at the GVCW VAC at time of appointment. Embassy visa fee (90 EUR adult / 45 EUR children 6–12 / 0 EUR children under 6) is NON-REFUNDABLE even if the visa is refused. Rate subject to consular exchange rate on date of payment.'
+          : 'Fees payable in INR at the VAC. Embassy visa fee is 90 EUR for adults, 45 EUR for children aged 6–12, and free for children under 6.'
       },
       processing_and_timing: {
         apply_window: 'Apply between 6 months and minimum 15 calendar days before travel date.',
-        decision_time: isGreece
+        decision_time: isSpain
+          ? 'Standard: 15 calendar days from consular receipt at Embassy of Spain (New Delhi) or Consulate General (Mumbai). Peak summer season may extend up to 45 calendar days.'
+          : isGreece
           ? 'Standard: 15 calendar days from date of admissible application receipt at Embassy of Greece. Peak season (June–August / Christmas): may extend up to 45 calendar days.'
           : 'Standard: 15 calendar days. May extend up to 45 days.',
-        max_extension: 'Maximum stay: 90 days within any rolling 180-day period (Schengen 90/180 rule).',
-        center_notes: isGreece
+        max_extension: 'Maximum stay: Up to 90 days within any rolling 180-day period across the Schengen Area (Schengen 90/180 rule).',
+        center_notes: isSpain
+          ? 'BLS International Spain centers in India: New Delhi, Mumbai, Bengaluru, Chennai, Kolkata, Hyderabad, Ahmedabad, Chandigarh, Kochi, Jalandhar, Puducherry.'
+          : isGreece
           ? 'GVCW VAC locations in India: New Delhi (main), Mumbai, Chennai, Kolkata, Bengaluru, Hyderabad, Ahmedabad, Chandigarh. Non-Delhi applications may require 3–5 additional days for document dispatch to Embassy.'
           : 'VFS Global VAC centers across major Indian cities. Non-metro applications may need extra dispatch days.'
       }
@@ -4509,7 +4599,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   if (isUSA) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
     const isBusiness = purposeLower.includes('business') || purposeLower.includes('corporate') || purposeLower.includes('commercial') || purposeLower.includes('b1') || purposeLower.includes('meeting') || purposeLower.includes('conference');
-    const isStudent = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('university') || purposeLower.includes('college');
+    const isStudent = purposeLower.includes('stud') || purposeLower.includes('higher') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('college') || purposeLower.includes('academic');
     const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('h1b') || purposeLower.includes('l1');
 
     if (isPR) {
@@ -4790,7 +4880,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   // ═══════════════════════════════════════════════════════════════
   if (isCanada) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
-    const isStudent = purposeLower.includes('study') || purposeLower.includes('student');
+    const isStudent = purposeLower.includes('stud') || purposeLower.includes('higher') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('college');
 
     if (isPR) {
       return {
@@ -4894,7 +4984,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   // ═══════════════════════════════════════════════════════════════
   if (isAustralia) {
     const isPR = purposeLower.includes('pr') || purposeLower.includes('permanent') || purposeLower.includes('immigrat') || purposeLower.includes('green') || purposeLower.includes('settle');
-    
+    const isStudent = purposeLower.includes('stud') || purposeLower.includes('higher') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('college') || purposeLower.includes('academic');
+
     if (isPR) {
       return {
         passport_country: from,
@@ -4950,6 +5041,105 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       };
     }
 
+    if (isStudent) {
+      return {
+        passport_country: from,
+        destination_country: 'Australia',
+        purpose_of_visit: 'Higher Education / University Enrollment',
+        visa_type: 'Student Visa (Subclass 500)',
+        source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500',
+        official_source_name: 'Australian Department of Home Affairs (ImmiAccount)',
+        processing_time: 'Higher Education Sector: 30 to 60 calendar days (Peak intake: up to 10 weeks)',
+        validity: 'Duration of enrolled CRICOS course plus 1 to 2 months post-study buffer',
+        stay_duration: 'Full duration of registered academic program (up to 5 years)',
+        entry_type: 'Multiple Entry',
+        validity_and_stay: {
+          visa_validity: 'Duration of enrolled CRICOS academic program + 2 months post-study buffer',
+          max_stay_per_entry: 'Full course duration with continuous residence rights',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          {
+            title: 'Valid Passport Bio-Pages',
+            description: 'Clear high-resolution color scan of all informational and stamped pages of valid passport.',
+            is_mandatory: true
+          },
+          {
+            title: 'Electronic Confirmation of Enrolment (eCoE)',
+            description: 'Official digital Confirmation of Enrolment (eCoE) code issued by an Australian educational institution registered under CRICOS.',
+            is_mandatory: true
+          },
+          {
+            title: 'Overseas Student Health Cover (OSHC)',
+            description: 'Approved Australian medical insurance policy covering the entire duration from intended arrival until visa expiration.',
+            is_mandatory: true
+          },
+          {
+            title: 'Genuine Student (GS) Responses & Evidence',
+            description: 'Documented responses covering current circumstances, course justification, value to future career, and study progression (replaces retired GTE requirement).',
+            is_mandatory: true
+          },
+          {
+            title: 'English Language Proficiency Test Score',
+            description: 'Valid official test scorecard from IELTS Academic, PTE Academic, or TOEFL iBT meeting institution and visa benchmark.',
+            is_mandatory: true
+          },
+          {
+            title: 'Financial Capacity Evidence',
+            description: 'Verifiable proof of 1 year tuition fees + living costs (minimum AUD 29,710/yr) + return travel costs via seasoned bank deposits, education loans, or approved sponsors.',
+            is_mandatory: true
+          },
+          {
+            title: 'Academic Records & Certificates',
+            description: 'Certified copies of graduation degrees, academic mark sheets, school-leaving certificates, and relevant CV / work experience letters.',
+            is_mandatory: true
+          }
+        ],
+        financial_proofs: [
+          {
+            type: '1 Year Tuition Fees + Living Expenses',
+            minimum_balance_or_amount: 'AUD 29,710/yr living costs + annual course fee',
+            time_frame: 'Seasoned bank deposits / approved education loan',
+            notes: 'Must demonstrate genuine access to unencumbered funds covering first year of study, travel, and health cover.'
+          }
+        ],
+        other_requirements: [
+          {
+            category: 'Work Rights & Condition 8105',
+            details: 'Student visa holders are permitted to work up to 48 hours per fortnight during recognized course study sessions, and unlimited hours during scheduled course breaks.'
+          },
+          {
+            category: 'Subclass Integrity Mandate',
+            details: 'Do not use Subclass 600 Visitor forms for academic degree study programs exceeding 3 months. Full degree studies strictly require Subclass 500.'
+          },
+          {
+            category: 'Biometrics & Health Examination (HAP ID)',
+            details: 'Indian passport holders must attend an authorized VFS Global Australian Biometric Collection Centre (ABCC) and complete health examinations at a designated panel clinic.'
+          }
+        ],
+        how_to_apply: [
+          '1. Obtain an unconditional offer letter and pay the initial deposit to receive your official electronic Confirmation of Enrolment (eCoE) from a CRICOS-registered institution.',
+          '2. Purchase mandatory Overseas Student Health Cover (OSHC) covering the full duration of your stay.',
+          '3. Create an account and log in to the official ImmiAccount portal (online.immi.gov.au).',
+          '4. Complete the online Subclass 500 Student Visa application form, providing structured responses to the Genuine Student (GS) criteria.',
+          '5. Upload certified color scans of your passport, eCoE, OSHC policy, English proficiency results, academic transcripts, and financial solvency proof.',
+          '6. Pay the official Department of Home Affairs visa application charge (AUD 1,600) online.',
+          '7. Download the Biometrics Requirement Letter and complete mandatory biometric collection at VFS Global ABCC and health examinations at an authorized panel clinic.'
+        ],
+        costs: {
+          visa_fee: 'AUD 1,600 (Base application charge for Primary Applicant)',
+          service_fee: 'Payable at VFS Global Australia Biometric Collection Centre (approx. ₹1,650 INR)',
+          total_fee: 'AUD 1,600 Base Application Charge',
+          notes: 'Paid online via ImmiAccount. Excludes OSHC insurance premium and panel clinic health assessment fees.'
+        },
+        processing_and_timing: {
+          apply_window: 'Lodge application at least 6 to 12 weeks prior to course orientation date.',
+          decision_time: 'Higher Education Sector: 30 to 60 calendar days (Peak intake: up to 10 weeks).',
+          max_extension: 'Renewable within Australia by lodging a further Subclass 500 application with a new eCoE prior to visa expiry.'
+        }
+      };
+    }
+
     return {
       passport_country: from,
       destination_country: 'Australia',
@@ -4957,10 +5147,19 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       visa_type: 'Visitor Visa (Subclass 600 - Tourist Stream)',
       source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/visitor-600',
       official_source_name: 'Australian Department of Home Affairs (ImmiAccount)',
+      processing_time: '15 to 25 Calendar Days (Standard Assessment Stream)',
+      validity: 'Up to 12 Months (Single or Multiple Entry as granted by Case Officer)',
+      stay_duration: '3, 6, or 12 Months per stay (as stipulated in Grant Notice)',
+      entry_type: 'Single or Multiple Entry',
+      validity_and_stay: {
+        visa_validity: 'Up to 12 Months',
+        max_stay_per_entry: 'Up to 3, 6, or 12 Months per stay',
+        entry_type: 'Single or Multiple Entry'
+      },
       documents_required: [
         { title: 'Current Passport', description: 'High-resolution color scan of all pages of your current valid passport.', is_mandatory: true },
         { title: 'National Identity Proof', description: 'Color copy of Aadhaar Card / National ID and PAN card.', is_mandatory: true },
-        { title: 'Genuine Temporary Entrant Proof', description: 'Cover letter detailing visit itinerary, travel activities, and strong ties to return to home country.', is_mandatory: true },
+        { title: 'Genuine Visitor Proof & Travel Intent', description: 'Detailed travel itinerary, planned activities, proof of employment leave, and strong economic ties ensuring return to home country.', is_mandatory: true },
         { title: 'Employment Evidence', description: 'Employment contract, recent 3 months payslips, and employer approved leave letter.', is_mandatory: true }
       ],
       financial_proofs: [
@@ -5580,9 +5779,9 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    const rawFrom = body.fromCountry || body.passportCountry || 'India';
-    const rawTo = body.toCountry || body.destinationCountry || 'Greece';
-    const purpose = body.purpose || 'Tourism / Vacation';
+    const rawFrom = body.fromCountry || body.passportCountry || body.passport_country || body.from || 'India';
+    const rawTo = body.toCountry || body.destinationCountry || body.destination_country || body.to || 'Greece';
+    const purpose = body.purpose || body.purposeOfVisit || body.purpose_of_visit || 'Tourism / Vacation';
 
     const fromCountry = cleanCountryName(rawFrom);
     const toCountry = cleanCountryName(rawTo);

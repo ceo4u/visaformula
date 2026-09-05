@@ -666,16 +666,16 @@ COUNTRY_DATABASE['us'] = COUNTRY_DATABASE['united-states'];
 
 // ── SCHENGEN AREA STANDARD DATABASE ──
 const SCHENGEN_BASE: Partial<VisaCountryData> = {
-  lengthOfStay: 'Up to 90 Days',
-  validity: 'Up to 90 Days',
+  lengthOfStay: 'Up to 90 Days within 180 Days',
+  validity: 'Based on approved itinerary (up to 6 months or 1 year multi-entry)',
   entryType: 'Short Stay (Single / Multiple Entry)',
   visaType: 'Harmonised Schengen Visa (Type C)',
   processingDays: 15,
   governmentFeeINR: 8100, // €90 official EU Schengen fee
   serviceFeeINR: 2700,    // €30 standard VAC fee
   variants: [
-    { id: 'tourist-schengen', label: 'Tourist Short-Stay (Type C)', stay: 'Up to 90 Days', govFee: 8100, servFee: 2700, popular: true },
-    { id: 'business-schengen', label: 'Business / Conference (Type C)', stay: 'Up to 90 Days', govFee: 8100, servFee: 2700 },
+    { id: 'tourist-schengen', label: 'Tourist Short-Stay (Type C)', stay: 'Up to 90 Days within 180 Days', govFee: 8100, servFee: 2700, popular: true },
+    { id: 'business-schengen', label: 'Business / Conference (Type C)', stay: 'Up to 90 Days within 180 Days', govFee: 8100, servFee: 2700 },
   ]
 };
 
@@ -709,6 +709,8 @@ COUNTRY_DATABASE['spain'] = {
   countryName: 'Spain',
   flagEmoji: '🇪🇸',
   heroImage: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=1600&auto=format&fit=crop&q=85',
+  visaType: 'Schengen Short-Stay Visa Type C — Spain (via BLS International Spain)',
+  serviceFeeINR: 1550, // approx. 17 EUR BLS service fee
 };
 COUNTRY_DATABASE['switzerland'] = {
   ...SCHENGEN_BASE,
@@ -1540,6 +1542,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isAustralia = cNorm.includes('australia') || cNorm.includes('aus');
   const isGermany = cNorm.includes('germany') || cNorm.includes('deutschland');
   const isGreece = cNorm.includes('greece') || cNorm.includes('hellenic');
+  const isSpain = cNorm.includes('spain') || cNorm.includes('españa') || cNorm.includes('espana');
   const isJapan = cNorm.includes('japan');
   const isNewZealand = cNorm.includes('new zealand') || cNorm.includes('nz');
   const isIreland = cNorm.includes('ireland');
@@ -1928,8 +1931,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     }
   }
 
-  // Case 8: Schengen Area (Including Greece - Official GVC World / EU Schengen Rules)
-  if (isSchengen || isGreece) {
+  // Case 8: Schengen Area (Including Greece & Spain - Official Consular Rules)
+  if (isSchengen || isGreece || isSpain) {
     if (isStudy) {
       return {
         isExempt: false,
@@ -1944,7 +1947,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         visaPillTag: "CONSULAR VISA REQUIRED",
         digitalCardName: "National Type D Visa Sticker",
         digitalCardDesc: "Official consular long-stay student visa sticker with Schengen mobility.",
-        sources: [isGreece ? "Global Visa Center World (GVCW)" : "Schengen Consular Affairs", "Ministry of Foreign Affairs", "IATA Timatic 2026"],
+        sources: [isGreece ? "Global Visa Center World (GVCW)" : isSpain ? "BLS International Spain / Spanish Embassy" : "Schengen Consular Affairs", "Ministry of Foreign Affairs", "IATA Timatic 2026"],
         maxStay: "Duration of Academic Degree",
         conditionsForVisa: [
           `Formal acceptance letter from accredited institution in ${country}.`,
@@ -1955,18 +1958,18 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         feesAndProcessing: {
           costItems: [
             { label: "National Type D Visa Fee", amount: "€75 (approx. ₹6,800)", note: "Official consular long-term visa fee" },
-            { label: isGreece ? "GVCW / VFS Service Fee" : "VFS / TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric and center logistics" }
+            { label: isGreece ? "GVCW Service Fee" : isSpain ? "BLS International Fee" : "VFS / TLS Service Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : "₹2,500 – ₹3,200", note: "Biometric and center logistics" }
           ],
-          totalEstimatedINR: "€75 (approx. ₹6,800) + Logistics",
+          totalEstimatedINR: isSpain ? "€75 + €17 (approx. ₹8,350)" : "€75 (approx. ₹6,800) + Logistics",
           processingTime: "15 to 45 Calendar Days",
-          processingSLA: isGreece ? "Processed by Greek Consular Authorities via GVCW centers." : "Processed by designated consular mission.",
+          processingSLA: isGreece ? "Processed by Greek Consular Authorities via GVCW centers." : isSpain ? "Processed by Embassy of Spain / BLS centers." : "Processed by designated consular mission.",
           applicationWindow: "Apply up to 6 Months before course start",
           earlyEntryBuffer: "Travel permitted 2 to 3 weeks before classes begin"
         },
         applicationProcess: {
           submission: "1. Institutional Acceptance: Secure official enrollment certificate.",
           onlineForm: "2. National Visa Form: Fill national visa application form with photo.",
-          appointments: isGreece ? "3. GVCW Appointment: Book biometrics at GVCW Visa Application Center." : "3. VFS/TLS Appointment: Book biometrics at VAC.",
+          appointments: isGreece ? "3. GVCW Appointment: Book biometrics at GVCW Visa Application Center." : isSpain ? "3. BLS Spain Appointment: Book biometrics at BLS International Spain Centre." : "3. VFS/TLS Appointment: Book biometrics at VAC.",
           documentsAndBiometrics: [
             "Valid Passport (issued within 10 years, valid for 1+ year)",
             "University Acceptance Certificate & Receipt of Fees",
@@ -1991,7 +1994,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         visaPillTag: "CONSULAR VISA REQUIRED",
         digitalCardName: "National Type D Work Visa",
         digitalCardDesc: "Official employment authorization sticker.",
-        sources: [isGreece ? "GVCW / Greek Embassy" : "Ministry of Labour & Consular Affairs", "IATA Timatic 2026"],
+        sources: [isGreece ? "GVCW / Greek Embassy" : isSpain ? "BLS Spain / Spanish Embassy" : "Ministry of Labour & Consular Affairs", "IATA Timatic 2026"],
         maxStay: "1 to 2 Years (Renewable)",
         conditionsForVisa: [
           "Signed employment agreement with registered enterprise.",
@@ -2001,7 +2004,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         feesAndProcessing: {
           costItems: [
             { label: "National Type D Employment Fee", amount: "€180 (approx. ₹16,400)", note: "Official consular long-stay fee" },
-            { label: "VAC Biometric Fee", amount: "₹2,500 – ₹3,200", note: "VAC service charge" }
+            { label: isSpain ? "BLS Biometric Fee" : "VAC Biometric Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : "₹2,500 – ₹3,200", note: "VAC service charge" }
           ],
           totalEstimatedINR: "€180 (approx. ₹16,400)",
           processingTime: "30 to 60 Calendar Days",
@@ -2012,7 +2015,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         applicationProcess: {
           submission: "1. Labour Approval: Sponsoring enterprise secures work authorization in Europe.",
           onlineForm: "2. Visa Application: Complete long-term national D visa application.",
-          appointments: isGreece ? "3. GVCW Biometrics: Attend appointment at GVCW center." : "3. Consular Appointment: Submit biometrics.",
+          appointments: isGreece ? "3. GVCW Biometrics: Attend appointment at GVCW center." : isSpain ? "3. BLS Spain Biometrics: Attend appointment at BLS Spain center." : "3. Consular Appointment: Submit biometrics.",
           documentsAndBiometrics: [
             "Valid Passport with at least 1 year validity",
             "Signed Employment Contract & Ministry Pre-Approval",
@@ -2023,21 +2026,21 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         }
       };
     } else {
-      // Tourism / Short Stay Type C (GVC World / Schengen Code Official)
+      // Tourism / Short Stay Type C (GVC World / BLS Spain / Schengen Code Official)
       return {
         isExempt: false,
         verdictTitle: `${nationality} passport holders require a Schengen Visa for ${country}`,
         verdictSummary: `Short-stay visa (Type C) required before departure. Valid across all 29 European Schengen states.`,
-        entryStatus: isGreece ? "Greece Schengen Visa (Type C)" : "Schengen Short-Stay Visa",
+        entryStatus: isGreece ? "Greece Schengen Visa (Type C)" : isSpain ? "Spain Schengen Visa (Type C)" : "Schengen Short-Stay Visa",
         entryStatusSubtext: "15 Calendar Days Processing",
-        stayDuration: "Up to 90 Days",
-        stayDurationSubtext: "Within any 180-day period",
+        stayDuration: "Up to 90 Days within 180 Days",
+        stayDurationSubtext: "Within any rolling 180-day period",
         entryType: "Single / Multiple Entry",
         entryTypeSubtext: "Valid in 29 Schengen states",
         visaPillTag: "CONSULAR VISA REQUIRED",
-        digitalCardName: "Schengen Consular Portal",
+        digitalCardName: isSpain ? "BLS Spain Consular Portal" : isGreece ? "GVCW Greece Portal" : "Schengen Consular Portal",
         digitalCardDesc: "Official Schengen visa sticker in passport valid across 29 European member states.",
-        sources: [isGreece ? "Global Visa Center World (GVCW)" : "European Commission", "Consular Affairs Department", "IATA Timatic 2026"],
+        sources: [isGreece ? "Global Visa Center World (GVCW)" : isSpain ? "BLS International Spain" : "European Commission", "Consular Affairs Department", "IATA Timatic 2026"],
         maxStay: "90 Days within 180 Days",
         conditionsForVisa: [
           `Tourism, business visits, or family trips across Schengen territory.`,
@@ -2046,29 +2049,31 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         ],
         feesAndProcessing: {
           costItems: [
-            { label: "Schengen Visa Fee (Adult)", amount: "€90 (approx. ₹8,200)", note: "Official EU / GVCW consular fee (Children 6-12: €45)" },
-            { label: isGreece ? "GVCW Service Fee" : "VFS / TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
+            { label: "Schengen Visa Fee (Adult)", amount: "€90 (approx. ₹8,200)", note: "Official EU consular fee (Children 6-12: €45; under 6: Free)" },
+            { label: isGreece ? "GVCW Service Fee" : isSpain ? "BLS International Service Fee" : "VFS / TLS Service Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : isGreece ? "€30 (approx. ₹2,700)" : "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
           ],
-          totalEstimatedINR: "€90 (approx. ₹8,200) + Logistics",
+          totalEstimatedINR: isSpain ? "€107 (approx. ₹9,650)" : "€120 (approx. ₹10,800)",
           processingTime: "15 Calendar Days (Standard Consular Period)",
           processingSLA: isGreece 
             ? "Lodged at GVCW VACs across India and assessed by the Embassy of Greece in New Delhi." 
+            : isSpain
+            ? "Lodged at BLS International Spain Visa Application Centres across India and assessed by Embassy of Spain / Consulate General in Mumbai."
             : "Appointments scheduled at designated VFS/TLS global visa application centers.",
           applicationWindow: "Apply up to 6 Months before planned travel (minimum 15 working days)",
           earlyEntryBuffer: "Travel permitted within valid visa dates"
         },
         applicationProcess: {
-          submission: "1. Visa Form Filing: Complete official harmonized Schengen visa application form.",
-          onlineForm: "2. Document Preparation: Compile round-trip flights, hotel vouchers, 3-6 month stamped bank statements & €30k insurance.",
-          appointments: isGreece ? "3. GVCW Biometrics: Book and attend appointment at nearest GVCW Center in India." : "3. VFS/TLS Biometrics: Attend appointment for fingerprinting & passport submission.",
+          submission: isSpain ? "1. Visa Form Filing: Complete official Spanish Schengen visa application form from BLS Spain." : "1. Visa Form Filing: Complete official harmonized Schengen visa application form.",
+          onlineForm: isSpain ? "2. Document Preparation: Compile round-trip flights, hotel bookings (or police-approved Carta de Invitación), 3-6 month bank statements & €30k insurance." : "2. Document Preparation: Compile round-trip flights, hotel vouchers, 3-6 month stamped bank statements & €30k insurance.",
+          appointments: isGreece ? "3. GVCW Biometrics: Book and attend appointment at nearest GVCW Center in India." : isSpain ? "3. BLS Spain Biometrics: Book and attend appointment at nearest BLS International Spain Center in India." : "3. VFS/TLS Biometrics: Attend appointment for fingerprinting & passport submission.",
           documentsAndBiometrics: [
             "Passport valid for at least 3 months beyond departure date with 2 blank pages (issued within 10 years)",
-            "2 Recent Passport Photos (35x40mm or 35x45mm, white background, facing forward)",
-            "Travel Medical Insurance with minimum €30,000 coverage for medical repatriation",
+            "2 Recent Passport Photos (35x45mm, white background, facing forward)",
+            "Travel Medical Insurance with minimum €30,000 coverage for medical repatriation across all 29 Schengen states",
             "Cover Letter with day-by-day itinerary & purpose of visit",
-            "Bank statements of last 3-6 months with original bank seal and stamp",
-            "Confirmed round-trip flight reservations & hotel accommodation bookings",
-            "Employment NOC / Salary slips of last 3 months or Student Enrollment Proof"
+            isSpain ? "Bank statements of last 3-6 months meeting Spain statutory solvency: min €122/day (min €1,099 floor)" : "Bank statements of last 3-6 months with original bank seal and stamp",
+            isSpain ? "Confirmed round-trip flight reservations & hotel bookings (or official Carta de Invitación from Policía Nacional if hosted in Spain)" : "Confirmed round-trip flight reservations & hotel accommodation bookings",
+            "Employment NOC / Salary slips of last 3 months or Student Enrollment Proof / Business registration & ITR"
           ]
         }
       };
@@ -2878,8 +2883,8 @@ export function VisaCountryResultPortal({
   const flagEmoji = baseData.flagEmoji || '🌍';
   const heroImage = getCountry4kLandmark(countryName, slugClean);
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
-  const lengthOfStay = baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Regulations');
-  const validity = baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Regulations');
+  const lengthOfStay = baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days within 180 Days' : 'Per Official Regulations');
+  const validity = baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Regulations');
   const entryType = baseData.entryType || (isSchengen ? 'Short Stay' : 'Per Official Regulations');
   const visaType = baseData.visaType || (isSchengen ? 'Harmonised Schengen Visa (Type C)' : `${countryName} Entry Visa / Permit`);
   const processingDays = typeof baseData.processingDays === 'number' ? baseData.processingDays : (isSchengen ? 15 : 7);
@@ -3302,11 +3307,11 @@ export function VisaCountryResultPortal({
       },
       {
         title: 'Book Appointment',
-        desc: `Schedule mandatory biometric appointment at the nearest ${cLow.includes('greece') ? 'GVCW' : 'VFS Global'} Visa Center.`
+        desc: `Schedule mandatory biometric appointment at the nearest ${cLow.includes('greece') ? 'GVCW' : cLow.includes('spain') ? 'BLS International' : 'VFS Global'} Visa Center.`
       },
       {
         title: 'Pay Visa Fees',
-        desc: 'Pay the official Schengen consular fee (€90) and VAC service logistics fee (€30).'
+        desc: `Pay the official Schengen consular fee (€90) and VAC service fee (${cLow.includes('spain') ? '€17 / ₹1,550' : '€30 / ₹2,700'}).`
       },
       {
         title: 'Submit Application & Biometrics',
@@ -3497,21 +3502,20 @@ export function VisaCountryResultPortal({
       return 'Instant on Arrival (0 Days)';
     }
 
-    if (isSchengenCountry) return '15 – 20 Days';
+    // Always prefer verified AI requirements data if available
+    if (aiData?.processing_time) {
+      return aiData.processing_time;
+    }
+    if (aiData?.processing_and_timing?.decision_time) {
+      return aiData.processing_and_timing.decision_time;
+    }
+
+    if (isSchengenCountry) return '15 Calendar Days (Consular SLA)';
     if (cLow.includes('china')) return '4 – 7 Days';
     if (cLow.includes('united states') || cLow.includes('usa')) return '3 – 5 Days';
     if (cLow.includes('united kingdom') || cLow.includes('uk')) return '15 Working Days';
     if (cLow.includes('uae') || cLow.includes('dubai') || cLow.includes('singapore')) return '3 – 5 Days';
 
-    // Disallow ANY 15-20 variation for non-Schengen destinations
-    const is15to20 = (val?: string) => !val || /15\s*[-–—to]+\s*20/i.test(val);
-
-    if (aiData?.processing_time && !is15to20(aiData.processing_time)) {
-      return aiData.processing_time;
-    }
-    if (aiData?.processing_and_timing?.decision_time && !is15to20(aiData.processing_and_timing.decision_time)) {
-      return aiData.processing_and_timing.decision_time;
-    }
     return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : 'Per Official Regulations';
   };
 
@@ -3658,7 +3662,7 @@ export function VisaCountryResultPortal({
         : isPR
         ? 'Permanent Residency'
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
-      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || '15 - 20 Days';
+      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isSchengen ? '15 Calendar Days' : 'Per Official Consular SLA');
       const consularFeeVal = aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? 'EUR 90' : 'Official Consular Fee');
       const serviceFeeVal = aiData?.costs?.service_fee || 'Rs. 2,200 (TravlTik Fast-Track Concierge)';
       const stayDurationVal = isStudy 
@@ -3747,12 +3751,12 @@ export function VisaCountryResultPortal({
         trackingId,
         processingTime: processingTimeVal,
         embassyFee: consularFeeVal,
-        childFee: isSchengen ? 'EUR 40' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
+        childFee: isSchengen ? '45 EUR (under 6: Free)' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
         serviceFee: serviceFeeVal,
-        totalFee: isSchengen ? 'EUR 105' : (aiData?.costs?.total_fee || consularFeeVal),
+        totalFee: isSchengen ? (countryName.toLowerCase().includes('spain') ? '107 EUR' : '120 EUR') : (aiData?.costs?.total_fee || consularFeeVal),
         feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
         stayDuration: stayDurationVal,
-        validity: isSchengen ? 'Up to 90 Days' : '180 Days',
+        validity: isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days',
         entryType: 'Single / Multiple Entry',
         applyWindow: 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
         profileScore: currentProfileScore,
@@ -3797,7 +3801,7 @@ export function VisaCountryResultPortal({
           documentsCount: rawDocs.length,
           submittedAt: submissionDate,
           targetDate: processingTimeVal,
-          validity: isSchengen ? 'Up to 90 Days' : '180 Days',
+          validity: isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days',
           entryType: 'Single / Multiple Entry',
           consularFee: consularFeeVal,
           serviceFee: serviceFeeVal,
@@ -5672,7 +5676,7 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
@@ -5835,7 +5839,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}
+                      {cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))}
                     </strong>
                   </div>
                 </div>

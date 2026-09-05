@@ -6374,7 +6374,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         let extractedDocNumber = '';
                                         let extractedFullName = fullName || '';
                                         let extractedDob = '';
-                                        let extractedNationality = passportCountry || currentPassName || 'India';
+                                        let extractedNationality = passportCountry || selectedPassport || 'India';
                                         let extractedSex = 'M';
                                         let extractedPlaceOfBirth = 'On File';
                                         let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -6500,8 +6500,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             isRealUpload: true,
                                             isUploaded: true,
                                             docNumber: extractedDocNumber,
-                                            issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || currentPassName || 'India'}` : 'Consular Authority',
-                                            country: extractedNationality || passportCountry || currentPassName || 'India',
+                                            issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || selectedPassport || 'India'}` : 'Consular Authority',
+                                            country: extractedNationality || passportCountry || selectedPassport || 'India',
                                             holderName: extractedFullName || fullName || 'Traveler',
                                             subDetails: scanSummary,
                                             status: 'verified',

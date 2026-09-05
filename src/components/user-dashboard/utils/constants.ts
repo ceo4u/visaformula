@@ -101,52 +101,12 @@ export const defaultVaultList: VaultDocItem[] = [
     hint: 'Front & back booklet pages with clear MRZ zone'
   },
   {
-    key: 'statutory_national_id',
-    title: 'National Identity Card (Aadhaar / National ID)',
-    description: 'Official government-issued photo identity or citizenship card of the traveller.',
-    icon: '🪪',
-    mandatory: false,
-    hint: 'Government-issued photo identification'
-  },
-  {
-    key: 'statutory_tax_id',
-    title: 'PAN Card / Taxpayer Identification',
-    description: 'Official taxpayer identification number or PAN card document.',
-    icon: '💳',
-    mandatory: false,
-    hint: 'Official tax registration document'
-  },
-  {
-    key: 'statutory_financial',
-    title: 'Bank Statement (Last 6 Months)',
-    description: 'Recent consecutive months stamped bank statements demonstrating financial solvency.',
-    icon: '🏦',
-    mandatory: false,
-    hint: 'Bank statement with official branch seal'
-  },
-  {
     key: 'statutory_photos',
     title: 'Biometric Passport Photos (35×45mm)',
     description: 'Recent color biometric photographs conforming to international travel standards.',
     icon: '📸',
     mandatory: false,
     hint: 'White background, neutral facial expression'
-  },
-  {
-    key: 'statutory_insurance',
-    title: 'Travel Medical Insurance Policy',
-    description: 'Comprehensive travel health policy covering emergency medical expenses and evacuation.',
-    icon: '🛡️',
-    mandatory: false,
-    hint: 'Comprehensive travel health policy certificate'
-  },
-  {
-    key: 'statutory_flight',
-    title: 'Flight Ticket / Booking Itinerary',
-    description: 'Official airline round-trip reservation or confirmed PNR itinerary.',
-    icon: '✈️',
-    mandatory: false,
-    hint: 'Confirmed flight ticket / PNR itinerary'
   },
   {
     key: 'statutory_accommodation',

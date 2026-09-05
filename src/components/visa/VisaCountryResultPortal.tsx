@@ -3843,8 +3843,40 @@ export function VisaCountryResultPortal({
   };
 
   const [checklistSyncedToast, setChecklistSyncedToast] = useState<{ show: boolean; msg: string; trackingId: string } | null>(null);
+  const [showLoginRequiredModal, setShowLoginRequiredModal] = useState(false);
+
+  const checkIsUserLoggedIn = () => {
+    if (typeof window === 'undefined') return false;
+    const userStr = localStorage.getItem('travltik_user');
+    const seekerEmail = localStorage.getItem('seeker_email');
+    const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
+
+    if (userStr && userStr !== 'null' && userStr !== 'undefined') {
+      try {
+        const parsed = JSON.parse(userStr);
+        if (parsed && (parsed.email || parsed.uid || parsed.id)) {
+          return true;
+        }
+      } catch (_) {}
+    }
+
+    if (seekerEmail && seekerEmail !== 'seeker@travltik.com' && seekerEmail !== 'guest@travltik.com' && seekerEmail.includes('@')) {
+      return true;
+    }
+
+    if (expertLoggedIn) {
+      return true;
+    }
+
+    return false;
+  };
 
   const handleDownloadAndSyncChecklist = () => {
+    if (!checkIsUserLoggedIn()) {
+      setShowLoginRequiredModal(true);
+      return;
+    }
+
     try {
       const trackingId = `TT-${(countryName || 'VI').slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`;
       const submissionDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -4065,13 +4097,6 @@ export function VisaCountryResultPortal({
           status: 'AI Verified & Checklist Synced',
           submitted_at: submissionDate
         }));
-
-        // Ensure seeker basic identity exists for direct dashboard viewing
-        if (!localStorage.getItem('seeker_email') && !(localStorage.getItem('travltik_user'))) {
-          localStorage.setItem('seeker_email', 'seeker@travltik.com');
-          localStorage.setItem('seeker_firstName', 'TravlTik');
-          localStorage.setItem('seeker_lastName', 'Seeker');
-        }
 
         // Trigger storage event so dashboard tabs reactively update
         window.dispatchEvent(new Event('storage'));
@@ -10343,6 +10368,62 @@ export function VisaCountryResultPortal({
           >
             View Applications →
           </a>
+        </div>
+      )}
+
+      {/* ── LOGIN REQUIRED MODAL (TRIGGERED ON DOWNLOAD & SYNC) ── */}
+      {showLoginRequiredModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left">
+          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200">
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setShowLoginRequiredModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Icon Badge */}
+            <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center mx-auto text-amber-600 shadow-xs">
+              <Lock className="w-7 h-7" />
+            </div>
+
+            {/* Title & Description */}
+            <div className="space-y-2">
+              <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
+                Authentication Required
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Login Required to Download &amp; Sync
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Please sign in to your TravlTik account to download your official {countryName} Visa Checklist PDF and securely sync your dossier to your dashboard.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-2.5 pt-2">
+              <a
+                href={`/login?redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : `/visa/${slugClean}`)}`}
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 hover:from-black hover:to-slate-900 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+              >
+                <span>Sign In to Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              <a
+                href={`/login?mode=signup&redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : `/visa/${slugClean}`)}`}
+                className="w-full flex items-center justify-center py-3 px-6 rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-colors"
+              >
+                Create Free Account
+              </a>
+            </div>
+
+            <p className="text-[11px] text-slate-400">
+              🔒 256-bit encrypted • Official Embassy &amp; Consular Document Security
+            </p>
+          </div>
         </div>
       )}
 

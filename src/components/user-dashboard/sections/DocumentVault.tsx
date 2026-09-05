@@ -448,9 +448,19 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         };
     });
 
-    // Append any extra user documents uploaded
+    // Append any extra user documents uploaded (excluding removed document types: Aadhaar, PAN, Bank Statement, Insurance, Flight Ticket)
     documents.forEach((d: any, idx: number) => {
         if (!matchedUserDocIds.has(d.id)) {
+            const dTitleL = (d.title || d.label || '').toLowerCase();
+            const dType = (d.type || '').toLowerCase();
+            const isExcluded = 
+                dTitleL.includes('aadhaar') || dTitleL.includes('aadhar') || dTitleL.includes('national id') ||
+                dTitleL.includes('pan card') || dTitleL.includes('taxpayer') ||
+                dTitleL.includes('bank statement') || dTitleL.includes('financial') || dType === 'bank' ||
+                dTitleL.includes('insurance') || dType === 'insurance' ||
+                dTitleL.includes('flight ticket') || dTitleL.includes('booking itinerary') || (dType === 'flight' && !dTitleL.includes('passport'));
+            if (isExcluded) return;
+
             const expInfo = computeExpiryStatus(d.expiryDate || (d.type === 'id' ? 'Permanent' : undefined));
             routeDocumentsList.push({
                 id: d.id || `extra-doc-${idx}`,

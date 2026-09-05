@@ -771,7 +771,7 @@ export function VisaMatchWidget() {
                         ✨
                       </div>
                       <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                        {isSeekerLoggedIn ? "Confirm Details for Instant Match" : "Seeker Sign Up / Login Required"}
+                        {isSeekerLoggedIn ? "Confirm Details for Instant Match" : "Traveller Sign Up / Login Required"}
                       </h3>
                       <p className="text-xs text-slate-500 font-medium">
                         Target: <span className="font-extrabold text-[#00a896]">{targetCountry || "Canada"} ({visaType || "Visa"})</span>
@@ -782,7 +782,7 @@ export function VisaMatchWidget() {
                       <div className="p-3 bg-teal-50 border border-teal-200/80 rounded-2xl text-teal-900 text-xs font-bold flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="text-base">👤</span>
-                          <span>Seeker Account: <strong>{fullName || email}</strong></span>
+                          <span>Traveller Account: <strong>{fullName || email}</strong></span>
                         </div>
                         <span className="text-[10px] bg-[#00a896] text-white px-2 py-0.5 rounded-full font-extrabold">Active</span>
                       </div>
@@ -798,7 +798,7 @@ export function VisaMatchWidget() {
                                 : "text-slate-500 hover:text-slate-800"
                             }`}
                           >
-                            ✨ Sign Up as Seeker
+                            ✨ Sign Up as Traveller
                           </button>
                           <button
                             type="button"
@@ -809,7 +809,7 @@ export function VisaMatchWidget() {
                                 : "text-slate-500 hover:text-slate-800"
                             }`}
                           >
-                            🔑 Seeker Login
+                            🔑 Traveller Login
                           </button>
                         </div>
                       </div>

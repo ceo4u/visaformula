@@ -3318,7 +3318,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             items: [
                 { id: "scanned-documents", label: "Document Vault", icon: FileText },
                 { id: "consultations", label: "Bookings & Sessions", icon: Calendar },
-                { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
+                { id: "favourite-experts", label: "Saved Service Providers", icon: Bookmark },
                 { id: "escrow-milestones", label: "Escrow Vault", icon: Lock, badge: "SAFE", badgeColor: "bg-teal-50 text-teal-700 border border-teal-200/60" },
             ]
         },
@@ -3572,7 +3572,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <a href="/find-experts" className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-2 transition-all">
-                                        <Search className="w-3.5 h-3.5" /> Find Expert
+                                        <Search className="w-3.5 h-3.5" /> Find Service Provider
                                     </a>
                                 </div>
                             </div>
@@ -4713,7 +4713,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         className="w-full py-2.5 px-4 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-black shadow-md transition-all flex items-center justify-center gap-2 text-center cursor-pointer"
                                                     >
                                                         <Users className="w-4 h-4 text-emerald-400" />
-                                                        <span>Book Consultation with Verified Expert →</span>
+                                                        <span>Book Consultation with Verified Service Provider →</span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -7870,7 +7870,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     {activeTab === "consultations" && (
                         <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4 animate-fade-up">
                             <Calendar className="w-12 h-12 text-[#00a896] mx-auto" />
-                            <h3 className="text-lg font-black text-slate-900">1-on-1 Expert Consultation Schedule</h3>
+                            <h3 className="text-lg font-black text-slate-900">1-on-1 Service Provider Consultation Schedule</h3>
                             <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
                                 View your upcoming video advisory calls with OISC & Bar-licensed solicitors and verified immigration consultants.
                             </p>
@@ -7926,7 +7926,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your TravlTik profile.
                             </p>
                             <a href="/find-experts" className="inline-block bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
-                                Connect with Expert →
+                                Connect with Service Provider →
                             </a>
                         </div>
                     )}

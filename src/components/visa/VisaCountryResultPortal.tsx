@@ -2885,6 +2885,30 @@ export function VisaCountryResultPortal({
   const processingDays = typeof baseData.processingDays === 'number' ? baseData.processingDays : (isSchengen ? 15 : 7);
   const flagCode4k = useMemo(() => get4kCountryFlag(countryName, slugClean), [countryName, slugClean]);
 
+  const cNameLower = (countryName || slugClean).toLowerCase();
+  const isVisaOnArrivalOrFree = useMemo(() => {
+    return cNameLower.includes('mauritius') || 
+      cNameLower.includes('jamaica') || 
+      cNameLower.includes('kingston') || 
+      cNameLower.includes('montego') || 
+      cNameLower.includes('maldives') || 
+      cNameLower.includes('seychelles') || 
+      cNameLower.includes('thailand') || 
+      cNameLower.includes('malaysia') || 
+      cNameLower.includes('nepal') || 
+      cNameLower.includes('bhutan') ||
+      !!(baseData.entryType && (
+        baseData.entryType.toLowerCase().includes('free') ||
+        baseData.entryType.toLowerCase().includes('arrival') ||
+        baseData.entryType.toLowerCase().includes('exempt')
+      )) ||
+      !!(baseData.visaType && (
+        baseData.visaType.toLowerCase().includes('free') ||
+        baseData.visaType.toLowerCase().includes('arrival') ||
+        baseData.visaType.toLowerCase().includes('exempt')
+      ));
+  }, [cNameLower, baseData.entryType, baseData.visaType]);
+
   const variants = baseData.variants || [
     { id: 'standard', label: `Standard Tourist Entry`, stay: 'Depending on application', govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },
     { id: 'express', label: `Express Fast-Track (Priority)`, stay: 'Depending on application', govFee: (baseData.governmentFeeINR || 6500) + 2000, servFee: (baseData.serviceFeeINR || 2500) + 1000 }

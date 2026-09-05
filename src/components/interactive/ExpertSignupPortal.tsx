@@ -356,7 +356,7 @@ function ExpertSignupPortalContent() {
             {/* Background connecting bar */}
             <div className="absolute top-4 left-6 right-6 h-0.5 bg-slate-700/60 -z-0" />
             <div 
-              className="absolute top-4 left-6 h-0.5 bg-[#00a896] transition-all duration-500 -z-0" 
+              className="absolute top-4 left-6 h-0.5 bg-[#481268] transition-all duration-500 -z-0" 
               style={{ width: `${((step - 1) / 3) * 100}%` }}
             />
 
@@ -376,16 +376,16 @@ function ExpertSignupPortalContent() {
                     disabled={step < s.num}
                     className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
                       isDone
-                        ? "bg-[#00a896] text-white shadow-sm ring-4 ring-emerald-500/20 cursor-pointer"
+                        ? "bg-[#481268] text-white shadow-sm ring-4 ring-purple-400/30 cursor-pointer"
                         : isActive
-                        ? "bg-[#00a896] text-white ring-4 ring-emerald-400/30 shadow-md scale-105"
+                        ? "bg-[#481268] text-white ring-4 ring-purple-300/60 shadow-md scale-105"
                         : "bg-white text-slate-400 border border-slate-200"
                     }`}
                   >
                     {isDone ? <Check className="w-4 h-4 stroke-[3]" /> : s.num}
                   </button>
                   <span className={`text-[11px] sm:text-xs font-semibold mt-1.5 transition-colors text-center hidden sm:block ${
-                    isActive ? "text-emerald-400 font-bold drop-shadow-xs" : isDone ? "text-emerald-300 font-semibold" : "text-slate-300"
+                    isActive ? "text-purple-300 font-bold drop-shadow-xs" : isDone ? "text-purple-200 font-semibold" : "text-slate-300"
                   }`}>
                     {s.label}
                   </span>
@@ -542,7 +542,7 @@ function ExpertSignupPortalContent() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Enter your full name"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                 />
               </div>
 
@@ -557,7 +557,7 @@ function ExpertSignupPortalContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                 />
               </div>
 
@@ -570,7 +570,7 @@ function ExpertSignupPortalContent() {
                   <select
                     value={mobileCode}
                     onChange={(e) => setMobileCode(e.target.value)}
-                    className="px-2.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                    className="px-2.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
                   >
                     <option value="+91">+91 (IN)</option>
                     <option value="+1">+1 (US/CA)</option>
@@ -584,7 +584,7 @@ function ExpertSignupPortalContent() {
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
                     placeholder="Enter mobile number"
-                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -601,7 +601,7 @@ function ExpertSignupPortalContent() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password"
-                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                   />
                   <button
                     type="button"
@@ -625,7 +625,7 @@ function ExpertSignupPortalContent() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Re-enter password"
-                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                   />
                   <button
                     type="button"
@@ -639,20 +639,20 @@ function ExpertSignupPortalContent() {
 
               {/* Password Checklist Criteria */}
               <div className="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-                <div className={`flex items-center gap-1.5 ${isMinLength ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
-                  <Check className={`w-3.5 h-3.5 ${isMinLength ? "text-emerald-600" : "text-slate-300"}`} />
+                <div className={`flex items-center gap-1.5 ${isMinLength ? "text-purple-700 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${isMinLength ? "text-purple-700 stroke-[3]" : "text-slate-300"}`} />
                   <span>Minimum 8 characters</span>
                 </div>
-                <div className={`flex items-center gap-1.5 ${hasUppercase ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
-                  <Check className={`w-3.5 h-3.5 ${hasUppercase ? "text-emerald-600" : "text-slate-300"}`} />
+                <div className={`flex items-center gap-1.5 ${hasUppercase ? "text-purple-700 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasUppercase ? "text-purple-700 stroke-[3]" : "text-slate-300"}`} />
                   <span>One uppercase letter</span>
                 </div>
-                <div className={`flex items-center gap-1.5 ${hasNumber ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
-                  <Check className={`w-3.5 h-3.5 ${hasNumber ? "text-emerald-600" : "text-slate-300"}`} />
+                <div className={`flex items-center gap-1.5 ${hasNumber ? "text-purple-700 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasNumber ? "text-purple-700 stroke-[3]" : "text-slate-300"}`} />
                   <span>One number</span>
                 </div>
-                <div className={`flex items-center gap-1.5 ${hasSpecial ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
-                  <Check className={`w-3.5 h-3.5 ${hasSpecial ? "text-emerald-600" : "text-slate-300"}`} />
+                <div className={`flex items-center gap-1.5 ${hasSpecial ? "text-purple-700 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasSpecial ? "text-purple-700 stroke-[3]" : "text-slate-300"}`} />
                   <span>One special character</span>
                 </div>
               </div>
@@ -664,15 +664,15 @@ function ExpertSignupPortalContent() {
                     type="checkbox"
                     checked={agreedToTerms}
                     onChange={(e) => setAgreedToTerms(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 rounded text-[#00a896] focus:ring-[#00a896] accent-[#00a896] cursor-pointer"
+                    className="mt-0.5 w-4 h-4 rounded text-[#481268] focus:ring-[#481268] accent-[#481268] cursor-pointer"
                   />
                   <span>
                     I agree to TravlTik's{" "}
-                    <a href="/terms" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                    <a href="/terms" target="_blank" className="font-bold text-[#481268] hover:underline">
                       Terms & Conditions
                     </a>{" "}
                     and{" "}
-                    <a href="/privacy" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                    <a href="/privacy" target="_blank" className="font-bold text-[#481268] hover:underline">
                       Privacy Policy
                     </a>
                   </span>
@@ -682,7 +682,7 @@ function ExpertSignupPortalContent() {
               {/* Action Button: Create Account */}
               <button
                 type="submit"
-                className="w-full mt-3 py-3.5 px-4 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-sm rounded-2xl shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
+                className="w-full mt-3 py-3.5 px-4 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm rounded-2xl shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>Create Account</span>
                 <ArrowRight className="w-4 h-4" />
@@ -691,7 +691,7 @@ function ExpertSignupPortalContent() {
               {/* Already have account */}
               <div className="text-center pt-2 text-xs text-slate-500">
                 Already have an account?{" "}
-                <a href="/login" className="font-bold text-[#00a896] hover:underline">
+                <a href="/login" className="font-bold text-[#481268] hover:underline">
                   Sign in
                 </a>
               </div>
@@ -708,10 +708,10 @@ function ExpertSignupPortalContent() {
             <div>
               <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
                 <span>Step 2 of 4</span>
-                <span className="text-[#00a896]">50% Completed</span>
+                <span className="text-[#481268]">50% Completed</span>
               </div>
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
-                <div className="w-1/2 h-full bg-[#00a896] rounded-full transition-all duration-300" />
+                <div className="w-1/2 h-full bg-[#481268] rounded-full transition-all duration-300" />
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Tell us about your business
@@ -729,7 +729,7 @@ function ExpertSignupPortalContent() {
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="Enter business name"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
               />
             </div>
 
@@ -741,7 +741,7 @@ function ExpertSignupPortalContent() {
               <select
                 value={businessType}
                 onChange={(e) => setBusinessType(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
               >
                 {BUSINESS_TYPES.map(bt => (
                   <option key={bt} value={bt}>{bt}</option>
@@ -757,7 +757,7 @@ function ExpertSignupPortalContent() {
               <select
                 value={yearEstablished}
                 onChange={(e) => setYearEstablished(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
               >
                 {ESTABLISHED_YEARS.map(yr => (
                   <option key={yr} value={yr}>{yr}</option>
@@ -776,7 +776,7 @@ function ExpertSignupPortalContent() {
                 value={businessEmail}
                 onChange={(e) => setBusinessEmail(e.target.value)}
                 placeholder="Enter business email"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
               />
             </div>
 
@@ -794,7 +794,7 @@ function ExpertSignupPortalContent() {
                   value={businessPhone}
                   onChange={(e) => setBusinessPhone(e.target.value)}
                   placeholder="Enter business phone"
-                  className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -809,7 +809,7 @@ function ExpertSignupPortalContent() {
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
                 placeholder="Enter website URL"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
               />
             </div>
 
@@ -822,7 +822,7 @@ function ExpertSignupPortalContent() {
                 <select
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
                 >
                   <option value="India">India</option>
                   <option value="United States">United States</option>
@@ -842,7 +842,7 @@ function ExpertSignupPortalContent() {
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                   placeholder="Select state"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
                 />
               </div>
             </div>
@@ -858,7 +858,7 @@ function ExpertSignupPortalContent() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Enter city"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
               />
             </div>
 
@@ -873,7 +873,7 @@ function ExpertSignupPortalContent() {
                 value={businessAddress}
                 onChange={(e) => setBusinessAddress(e.target.value)}
                 placeholder="Enter full business address"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
               />
             </div>
 
@@ -887,7 +887,7 @@ function ExpertSignupPortalContent() {
                 value={pinCode}
                 onChange={(e) => setPinCode(e.target.value)}
                 placeholder="Enter PIN / ZIP code"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
               />
             </div>
 
@@ -902,7 +902,7 @@ function ExpertSignupPortalContent() {
               </button>
               <button
                 type="submit"
-                className="px-8 py-3 rounded-2xl bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
+                className="px-8 py-3 rounded-2xl bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
               >
                 <span>Next</span>
                 <ArrowRight className="w-4 h-4" />
@@ -920,10 +920,10 @@ function ExpertSignupPortalContent() {
             <div>
               <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
                 <span>Step 3 of 4</span>
-                <span className="text-[#00a896]">75% Completed</span>
+                <span className="text-[#481268]">75% Completed</span>
               </div>
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
-                <div className="w-3/4 h-full bg-[#00a896] rounded-full transition-all duration-300" />
+                <div className="w-3/4 h-full bg-[#481268] rounded-full transition-all duration-300" />
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Your Services & Expertise
@@ -949,17 +949,17 @@ function ExpertSignupPortalContent() {
                       onClick={() => toggleService(s.name)}
                       className={`relative p-3.5 sm:p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer min-h-[90px] sm:min-h-[100px] ${
                         isSelected
-                          ? "border-2 border-[#00a896] bg-emerald-50/40 shadow-xs"
+                          ? "border-2 border-[#481268] bg-purple-50/50 shadow-xs"
                           : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
                       }`}
                     >
                       {/* Checkmark indicator */}
                       <div className="flex items-center justify-between w-full mb-2">
-                        <div className={`p-1.5 rounded-xl ${isSelected ? "bg-[#00a896] text-white" : "bg-slate-100 text-slate-600"}`}>
+                        <div className={`p-1.5 rounded-xl ${isSelected ? "bg-[#481268] text-white" : "bg-slate-100 text-slate-600"}`}>
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${
-                          isSelected ? "border-[#00a896] bg-[#00a896] text-white" : "border-slate-300 bg-white"
+                          isSelected ? "border-[#481268] bg-[#481268] text-white" : "border-slate-300 bg-white"
                         }`}>
                           {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
@@ -988,7 +988,7 @@ function ExpertSignupPortalContent() {
                   value={destinationSearch}
                   onChange={(e) => setDestinationSearch(e.target.value)}
                   placeholder="Search countries..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
                 />
               </div>
 
@@ -997,7 +997,7 @@ function ExpertSignupPortalContent() {
                 {selectedDestinations.map(d => (
                   <span
                     key={d}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-[#008f80] text-xs font-bold rounded-full"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 border border-purple-200 text-[#481268] text-xs font-bold rounded-full"
                   >
                     <span>{d}</span>
                     <button
@@ -1037,7 +1037,7 @@ function ExpertSignupPortalContent() {
               <select
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
               >
                 {EXPERIENCE_OPTIONS.map(exp => (
                   <option key={exp} value={exp}>{exp}</option>
@@ -1060,7 +1060,7 @@ function ExpertSignupPortalContent() {
                       onClick={() => toggleLanguage(lang)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                         isSel
-                          ? "border-[#00a896] bg-[#00a896] text-white shadow-2xs"
+                          ? "border-[#481268] bg-[#481268] text-white shadow-2xs"
                           : "border-slate-200 bg-slate-50/80 text-slate-700 hover:bg-slate-100"
                       }`}
                     >
@@ -1083,7 +1083,7 @@ function ExpertSignupPortalContent() {
               <button
                 type="button"
                 onClick={handleStep3Next}
-                className="px-8 py-3 rounded-2xl bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
+                className="px-8 py-3 rounded-2xl bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
               >
                 <span>Next</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1101,10 +1101,10 @@ function ExpertSignupPortalContent() {
             <div>
               <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
                 <span>Step 4 of 4</span>
-                <span className="text-[#00a896]">100% Completed</span>
+                <span className="text-[#481268]">100% Completed</span>
               </div>
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
-                <div className="w-full h-full bg-[#00a896] rounded-full transition-all duration-300" />
+                <div className="w-full h-full bg-[#481268] rounded-full transition-all duration-300" />
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Review & Submit
@@ -1123,7 +1123,7 @@ function ExpertSignupPortalContent() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="text-xs font-bold text-[#00a896] hover:underline cursor-pointer"
+                  className="text-xs font-bold text-[#481268] hover:underline cursor-pointer"
                 >
                   Edit
                 </button>
@@ -1131,7 +1131,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Business Name */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <Building className="w-4 h-4" />
                 </div>
                 <div>
@@ -1142,7 +1142,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Business Type */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <Briefcase className="w-4 h-4" />
                 </div>
                 <div>
@@ -1153,7 +1153,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Services */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <Shield className="w-4 h-4" />
                 </div>
                 <div>
@@ -1164,7 +1164,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Destinations */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -1175,7 +1175,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Experience */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
@@ -1186,7 +1186,7 @@ function ExpertSignupPortalContent() {
 
               {/* Item: Languages */}
               <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
                   <Globe className="w-4 h-4" />
                 </div>
                 <div>
@@ -1197,11 +1197,11 @@ function ExpertSignupPortalContent() {
             </div>
 
             {/* Confirmation Box */}
-            <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 text-[11px] sm:text-xs text-slate-700">
-              <CheckCircle2 className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-purple-50/50 border border-purple-200/80 text-[11px] sm:text-xs text-slate-700">
+              <CheckCircle2 className="w-4 h-4 text-[#481268] shrink-0 mt-0.5" />
               <span className="leading-relaxed">
                 By submitting, you confirm that all the information provided is accurate and you agree to our{" "}
-                <a href="/terms" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                <a href="/terms" target="_blank" className="font-bold text-[#481268] hover:underline">
                   Terms & Conditions
                 </a>.
               </span>
@@ -1222,7 +1222,7 @@ function ExpertSignupPortalContent() {
               type="button"
               onClick={handleSubmitApplication}
               disabled={isSubmitting}
-              className="w-full py-4 px-6 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-75"
+              className="w-full py-4 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-75"
             >
               <Send className="w-4 h-4" />
               <span>{isSubmitting ? "Submitting Application..." : "Submit Application"}</span>
@@ -1252,7 +1252,7 @@ function ExpertSignupPortalContent() {
         {step === 5 && (
           <div className="text-center py-6 sm:py-8 space-y-4 animate-fade-in">
             {/* Animated Badge */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#00a896] shadow-inner animate-bounce">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-3xl bg-purple-50 border border-purple-200 flex items-center justify-center text-[#481268] shadow-inner animate-bounce">
               <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12" />
             </div>
 
@@ -1276,7 +1276,7 @@ function ExpertSignupPortalContent() {
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto">
               <a
                 href="/consultant/dashboard"
-                className="w-full sm:w-auto py-3.5 px-6 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition-all text-center"
+                className="w-full sm:w-auto py-3.5 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition-all text-center"
               >
                 Go to Consultant Dashboard
               </a>

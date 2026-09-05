@@ -1568,7 +1568,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             return {
                 score: 0,
                 category: categoryName,
-                statusText: 'AWAITING SELECTIONS',
+                statusText: 'VERIFICATION PENDING',
                 badgeBg: 'bg-slate-100 text-slate-600 border border-slate-200',
                 recommendations: [`Select your ${categoryName} criteria or check off required embassy documents below to calculate your official readiness score.`],
                 redFlags: [],
@@ -3298,6 +3298,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             title: "GENERAL",
             items: [
                 { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                { id: "cases", label: "Visa Applications", icon: Briefcase, count: visasProcessingState.length > 0 ? visasProcessingState.length : undefined },
                 { 
                     id: "visa-readiness", 
                     label: "Visa Readiness", 
@@ -3309,7 +3310,6 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         ? "bg-amber-50 text-amber-700 border border-amber-200/60"
                         : "bg-rose-50 text-rose-700 border border-rose-200/60"
                 },
-                { id: "cases", label: "Visa Applications", icon: Briefcase, count: visasProcessingState.length > 0 ? visasProcessingState.length : undefined },
                 { id: "predeparture", label: "Pre-Departure", icon: Luggage, badge: "AI", badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
             ]
         },
@@ -3374,7 +3374,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                 <div className="flex items-center gap-3 sm:gap-4">
                     <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
-                        <Plus className="w-3.5 h-3.5" /> Book Consultation
+                        <Search className="w-3.5 h-3.5" /> Find Consultants
                     </a>
 
                     <button onClick={() => setActiveTab("consultations")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
@@ -3591,7 +3591,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         </span>
                                         <span className="text-xs font-semibold text-slate-500 mt-2 block group-hover:underline">
                                             {comprehensiveAuditMetrics.isUnselected
-                                                ? 'Awaiting Selections • Audit →'
+                                                ? 'Verification Pending • Audit →'
                                                 : comprehensiveAuditMetrics.score >= 70
                                                 ? 'Benchmark Met • Audit →'
                                                 : 'Consultant Advised • Audit →'}
@@ -3881,7 +3881,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         : 'bg-amber-600 text-white'
                                                 }`}>
                                                     {comprehensiveAuditMetrics.isUnselected
-                                                        ? 'Awaiting Selections'
+                                                        ? 'Verification Pending'
                                                         : comprehensiveAuditMetrics.score >= 70
                                                         ? 'Benchmark Met'
                                                         : 'Needs Audit'}
@@ -4628,7 +4628,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                     : 'bg-amber-500 text-white'
                                             }`}>
                                                 {comprehensiveAuditMetrics.isUnselected
-                                                    ? 'AWAITING SELECTIONS'
+                                                    ? 'VERIFICATION PENDING'
                                                     : comprehensiveAuditMetrics.score >= 70
                                                     ? 'BENCHMARK MET'
                                                     : 'RISK DETECTED'}
@@ -4681,7 +4681,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                     comprehensiveAuditMetrics.score >= 70 ? 'text-emerald-600' : 'text-amber-600'
                                                 }`}>
                                                     {comprehensiveAuditMetrics.isUnselected
-                                                        ? 'Awaiting Selections'
+                                                        ? 'Verification Pending'
                                                         : comprehensiveAuditMetrics.score >= 70
                                                         ? 'Ready for Submission'
                                                         : 'Needs Document Audit'}

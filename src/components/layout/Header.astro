@@ -181,7 +181,7 @@ const isHome = pathname === '/' || pathname === '';
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name"></div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#420f79] hover:bg-[#420f79]/5 transition-all group/item">
+                        <a id="nav-profile-dashboard-link" href="/traveller/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#420f79] hover:bg-[#420f79]/5 transition-all group/item">
                             <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#420f79] transition-colors" />
                             <span>My Dashboard</span>
                         </a>
@@ -199,7 +199,7 @@ const isHome = pathname === '/' || pathname === '';
             <a href="/signup" id="mobile-top-signup-btn" class="bg-slate-900 hover:bg-slate-800 text-white !text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#420f79]/30 bg-[#420f79] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">
+            <a href="/traveller/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#420f79]/30 bg-[#420f79] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                 <span class="font-black text-xs sm:text-sm text-white bg-[#420f79] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters"></span>
             </a>
@@ -300,7 +300,7 @@ const isHome = pathname === '/' || pathname === '';
                         <div class="text-sm font-extrabold text-black truncate mt-0.5" id="mobile-nav-profile-name"></div>
                     </div>
                 </div>
-                <a id="mobile-nav-profile-dashboard-link" href="/dashboard" class="block text-center py-2.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white font-bold text-sm rounded-xl shadow-md transition-colors">
+                <a id="mobile-nav-profile-dashboard-link" href="/traveller/dashboard" class="block text-center py-2.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white font-bold text-sm rounded-xl shadow-md transition-colors">
                     My Dashboard
                 </a>
                 <button id="mobile-nav-profile-logout-btn" class="block text-center py-2.5 border border-slate-200 text-red-600 font-bold text-sm rounded-xl hover:bg-red-50 transition-colors w-full cursor-pointer bg-white">
@@ -440,18 +440,18 @@ const isHome = pathname === '/' || pathname === '';
             // Prepare info
             let displayName = "User Profile";
             let displayLetters = "U";
-            let dashboardHref = "/dashboard";
+            let dashboardHref = "/traveller/dashboard";
             let displayPhoto = "";
 
             if (expertBusiness) {
                 displayName = expertBusiness;
                 displayLetters = expertBusiness.charAt(0).toUpperCase();
-                dashboardHref = "/consultant/dashboard";
+                dashboardHref = "/service-provider/dashboard";
                 displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
             } else if (seekerFirst) {
                 displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
                 displayLetters = seekerFirst.charAt(0).toUpperCase();
-                dashboardHref = "/dashboard";
+                dashboardHref = "/traveller/dashboard";
                 displayPhoto = localStorage.getItem("seeker_profilePhoto") || "";
             } else if (userStr) {
                 try {
@@ -467,9 +467,9 @@ const isHome = pathname === '/' || pathname === '';
                         displayPhoto = u.photoURL;
                     }
                     if (u && u.type === "expert") {
-                        dashboardHref = "/consultant/dashboard";
+                        dashboardHref = "/service-provider/dashboard";
                     } else {
-                        dashboardHref = "/dashboard";
+                        dashboardHref = "/traveller/dashboard";
                     }
                 } catch(e) {}
             }

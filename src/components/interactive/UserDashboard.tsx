@@ -3048,13 +3048,13 @@ function cleanShortDocRequirement(title: string, description: string): string {
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
             if (isLoggedInExpert === "true") {
-                window.location.href = "/consultant/dashboard";
+                window.location.href = "/service-provider/dashboard";
                 return;
             }
 
             // If user has no login credentials and no active journey/case, then redirect to login
             if (!userStr && !savedEmail && !localJourney && !activeCasesStr) {
-                window.location.href = "/login?redirect=/dashboard";
+                window.location.href = "/login?redirect=/traveller/dashboard";
                 return;
             }
 
@@ -3062,7 +3062,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                 try {
                     const u = JSON.parse(userStr);
                     if (u && u.type === "expert") {
-                        window.location.href = "/consultant/dashboard";
+                        window.location.href = "/service-provider/dashboard";
                         return;
                     }
                     if (u && u.email) {

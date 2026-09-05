@@ -121,7 +121,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 window.location.href = res.redirect;
                 return;
             }
-            window.location.href = res?.user?.type === "expert" ? "/consultant/dashboard" : "/dashboard";
+            window.location.href = res?.user?.type === "expert" ? "/service-provider/dashboard" : "/traveller/dashboard";
         } catch (e: any) {
             console.error("Google auth error:", e);
             const msg = e?.message || "Google Authentication failed.";
@@ -151,12 +151,12 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 try {
                     const userObj = JSON.parse(userStr);
                     if (userObj.type === "expert") {
-                        window.location.href = "/consultant/dashboard";
+                        window.location.href = "/service-provider/dashboard";
                         return;
                     }
                 } catch (e) {}
             }
-            window.location.href = "/dashboard";
+            window.location.href = "/traveller/dashboard";
         } catch (err: any) {
             setLoginError(err?.message?.includes("invalid") ? "Invalid email or password." : err?.message || "Login failed.");
         } finally {
@@ -309,7 +309,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
 
             setIsRegistrationSuccess(true);
             setTimeout(() => {
-                window.location.href = "/dashboard";
+                window.location.href = "/traveller/dashboard";
             }, 1500);
         }
     };
@@ -924,7 +924,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </p>
                                 </div>
                                 <a
-                                    href="/dashboard"
+                                    href="/traveller/dashboard"
                                     className="w-full inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl text-xs transition-all shadow-md active:scale-95 cursor-pointer"
                                 >
                                     <span>Go to Dashboard</span>

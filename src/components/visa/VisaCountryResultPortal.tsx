@@ -3776,7 +3776,7 @@ export function VisaCountryResultPortal({
           { question: 'What if my passport expires in less than 6 months?', answer: 'Airlines and border control strictly enforce 6-month validity; please renew your passport before lodging.' },
           { question: 'Are visa application and VAC fees refundable?', answer: 'Consular fees cover administrative adjudication and are strictly non-refundable regardless of outcome.' }
         ],
-        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : 'https://travltik.com/dashboard',
+        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://travltik.com/traveller/dashboard',
         timestamp: submissionDate
       };
       downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
@@ -10219,10 +10219,10 @@ export function VisaCountryResultPortal({
 
             <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-2">
               <a
-                href="/dashboard"
+                href="/traveller/dashboard"
                 className="w-full py-3.5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5b] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 text-center"
               >
-                <span>View in User Dashboard →</span>
+                <span>View in Traveller Dashboard →</span>
               </a>
               <button
                 type="button"
@@ -10257,7 +10257,7 @@ export function VisaCountryResultPortal({
             </div>
           </div>
           <a
-            href="/dashboard?tab=cases"
+            href="/traveller/dashboard?tab=cases"
             className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs text-center shrink-0 transition-colors shadow-xs"
           >
             View Applications →

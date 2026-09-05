@@ -2079,9 +2079,9 @@ export function AITripPlannerLanding() {
     });
 
     if (isUserLoggedIn()) {
-      window.location.href = '/dashboard';
+      window.location.href = '/traveller/dashboard';
     } else {
-      window.location.href = '/login?redirect=/dashboard';
+      window.location.href = '/login?redirect=/traveller/dashboard';
     }
   };
 
@@ -3111,7 +3111,7 @@ return (
           </a>
 
           {/* Profile */}
-          <a href="/dashboard" className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group">
+          <a href="/traveller/dashboard" className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group">
             <div className="w-5 h-5 flex items-center justify-center">
               <User className="w-5 h-5 stroke-[2]" />
             </div>

@@ -16,8 +16,8 @@ function LoginPortalContent() {
     const [turnstileToken, setTurnstileToken] = useState("");
 
     const getRedirectDestination = (userType?: string): string => {
-        if (typeof window === "undefined") return "/dashboard";
-        if (userType === "expert") return "/consultant/dashboard";
+        if (typeof window === "undefined") return "/traveller/dashboard";
+        if (userType === "expert") return "/service-provider/dashboard";
         const params = new URLSearchParams(window.location.search);
         const redirectParam = params.get("redirect");
         if (
@@ -30,7 +30,7 @@ function LoginPortalContent() {
         ) {
             return redirectParam;
         }
-        return "/dashboard";
+        return "/traveller/dashboard";
     };
 
     // Fast check: If already logged in, redirect immediately without waiting or buffering
@@ -320,13 +320,13 @@ function LoginPortalContent() {
                     </p>
                     <div className="grid grid-cols-2 gap-2.5">
                         <a
-                            href="/signup/seeker"
+                            href="/signup/traveller"
                             className="bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3 px-3 rounded-2xl text-xs transition-all shadow-sm flex items-center justify-center text-center cursor-pointer"
                         >
                             Register as Traveller
                         </a>
                         <a
-                            href="/signup/expert"
+                            href="/signup/service-provider"
                             className="bg-white hover:bg-slate-50 text-slate-900 font-bold py-3 px-3 rounded-2xl text-xs border border-slate-200 transition-all shadow-2xs flex items-center justify-center text-center cursor-pointer"
                         >
                             Register as Service Provider

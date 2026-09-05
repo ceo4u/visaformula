@@ -184,10 +184,10 @@ export function FindExpertsPortal() {
                 window.location.href = res.redirect;
                 return;
             }
-            window.location.href = '/consultant/dashboard';
+            window.location.href = '/service-provider/dashboard';
         } catch (err) {
             console.error("Expert Google login error:", err);
-            window.location.href = '/signup/expert';
+            window.location.href = '/signup/service-provider';
         } finally {
             setGoogleLoading(false);
         }

@@ -43,7 +43,7 @@ export default function RegisterStart() {
         }
       }
 
-      window.location.href = data.redirectUrl || (formData.role === 'expert' ? '/signup/expert' : '/onboarding');
+      window.location.href = data.redirectUrl || (formData.role === 'expert' ? '/signup/service-provider' : '/onboarding');
     } catch (err) {
       setErrorMessage('Server connection error. Please try again.');
       setIsSubmitting(false);

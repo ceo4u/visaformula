@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const googleUid = fbUser.uid || '';
                     const role = (sessionStorage.getItem("google_auth_role") || 'seeker') as 'seeker' | 'expert';
                     const rawReturn = sessionStorage.getItem("google_auth_return");
-                    const returnPath = (rawReturn && rawReturn.startsWith("/") && rawReturn !== "/" && rawReturn !== "/login" && !rawReturn.startsWith("/login?")) ? rawReturn : "/dashboard";
+                    const returnPath = (rawReturn && rawReturn.startsWith("/") && rawReturn !== "/" && rawReturn !== "/login" && !rawReturn.startsWith("/login?")) ? rawReturn : "/traveller/dashboard";
                     sessionStorage.removeItem("google_auth_return");
                     sessionStorage.removeItem("google_auth_role");
 
@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                                 localStorage.setItem("seeker_email", googleEmail);
                                 localStorage.setItem("seeker_firstName", gFirstName);
                                 localStorage.setItem("seeker_lastName", gLastName);
-                                window.location.href = resolvedUser.type === "expert" ? "/consultant/dashboard" : returnPath;
+                                window.location.href = resolvedUser.type === "expert" ? "/service-provider/dashboard" : returnPath;
                                 return;
                             }
                         }
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     localStorage.setItem("seeker_email", googleEmail);
                     localStorage.setItem("seeker_firstName", gFirstName);
                     localStorage.setItem("seeker_lastName", gLastName);
-                    window.location.href = role === "expert" ? "/consultant/dashboard" : returnPath;
+                    window.location.href = role === "expert" ? "/service-provider/dashboard" : returnPath;
                     return;
                 }
             } catch (err) {
@@ -308,7 +308,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return {
             status: 'success',
             ...data,
-            redirect: data.redirect || (realUser.type === 'expert' ? '/consultant/dashboard' : '/dashboard')
+            redirect: data.redirect || (realUser.type === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard')
         };
     };
 

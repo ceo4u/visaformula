@@ -4,8 +4,8 @@ import { Shield, Lock, Phone, Mail, MapPin, ChevronRight, Facebook, Twitter, Ins
 import Logo from '../Logo.astro';
 
 const consultantLinks = [
-  { label: "Register as a Consultant", href: "/register-provider" },
-  { label: "Consultant Dashboard Login", href: "/consultant/dashboard" },
+  { label: "Register as a Service Provider", href: "/signup/service-provider" },
+  { label: "Service Provider Dashboard", href: "/service-provider/dashboard" },
   { label: "Verification Guidelines", href: "/verification-guidelines" },
   { label: "Find Opportunities", href: "/jobs" },
 ];
@@ -18,7 +18,7 @@ const securityLinks = [
 ];
 
 const seekerLinks = [
-  { label: "Find Verified Experts", href: "/find-experts" },
+  { label: "Find Verified Service Providers", href: "/find-experts" },
   { label: "AI Visa Eligibility", href: "/readiness" },
   { label: "Visa Guides", href: "/visa-guide" },
   { label: "VFS Global Appointment", href: "/vfs-booking" },
@@ -38,7 +38,7 @@ const companyLinks = [
       
       <div>
         <h4 class="font-sans text-[13px] font-bold tracking-wider text-white mb-4">
-          For Consultants
+          For Service Providers
         </h4>
         <ul class="space-y-3">
           {consultantLinks.map((link) => (

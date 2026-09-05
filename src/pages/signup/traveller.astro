@@ -1,0 +1,22 @@
+---
+// src/pages/signup/traveller.astro
+import Layout from '../../layouts/Layout.astro';
+import LandingPage from '../../components/landing/LandingPage';
+import { SignupFlowPortal } from '../../components/interactive/SignupFlowPortal';
+---
+
+<Layout 
+  title="Sign Up as Traveller - TravlTik" 
+  description="Create your traveller account on TravlTik to track applications, consult service providers, and manage document filings."
+  hideHeader={true}
+  hideFooter={true}
+  hideWidgets={true}
+>
+  <!-- Live Background Homepage (Blurred & Semi-Transparent) -->
+  <div class="pointer-events-none filter blur-[3px] opacity-75 fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <LandingPage client:only="react" />
+  </div>
+
+  <!-- Fixed Traveller Registration Modal Overlay -->
+  <SignupFlowPortal client:only="react" initialMode="seeker" />
+</Layout>

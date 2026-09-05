@@ -17,7 +17,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
             if (roleParam === "seeker") {
                 setMode("seeker");
             } else if (roleParam === "expert") {
-                window.location.href = "/signup/expert";
+                window.location.href = "/signup/service-provider";
             } else if (roleParam === "selection") {
                 setMode("selection");
             } else if (initialMode) {
@@ -125,7 +125,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
 
                             {/* Service Provider Option */}
                             <a 
-                                href="/signup/expert"
+                                href="/signup/service-provider"
                                 className="group flex flex-col items-center justify-between text-center cursor-pointer w-full sm:w-[260px] bg-slate-50 hover:bg-slate-100/90 p-6 rounded-3xl border-2 border-slate-200 hover:border-slate-800 hover:shadow-xl transition-all font-sans"
                             >
                                 <div className="flex flex-col items-center">

@@ -186,7 +186,7 @@ export const POST: APIRoute = async ({ request }) => {
       ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || profileDisplayName || email.split('@')[0]
       : user.business_name || profileDisplayName || email.split('@')[0];
 
-    const redirectTarget = userRole === 'expert' ? '/consultant/dashboard' : '/dashboard';
+    const redirectTarget = userRole === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard';
 
     console.log(`[API /api/auth/google] Authentication Successful for ${email}. Session Created.`);
 

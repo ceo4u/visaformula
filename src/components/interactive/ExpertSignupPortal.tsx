@@ -1343,16 +1343,16 @@ function ExpertSignupPortalContent() {
               <ul className="list-disc pl-4 space-y-1 text-slate-600">
                 <li>Our verification team will review your business credentials.</li>
                 <li>Your listing on the TravlTik marketplace will be activated upon review.</li>
-                <li>You can now access your Consultant Dashboard to customize your profile and consultation fees.</li>
+                <li>You can now access your Service Provider Dashboard to customize your profile and consultation fees.</li>
               </ul>
             </div>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto">
               <a
-                href="/consultant/dashboard"
+                href="/service-provider/dashboard"
                 className="w-full sm:w-auto py-3.5 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition-all text-center"
               >
-                Go to Consultant Dashboard
+                Go to Service Provider Dashboard
               </a>
               <a
                 href="/"

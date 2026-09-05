@@ -1,0 +1,15 @@
+---
+// src/pages/service-provider/dashboard.astro
+import Layout from '../../layouts/Layout.astro';
+import { ConsultantDashboard } from '../../components/interactive/ConsultantDashboard';
+---
+
+<Layout 
+  title="Service Provider Dashboard | TravlTik" 
+  description="Manage your practice, client pipeline, consultations, and escrow milestones."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <!-- Mount client-only React expert dashboard island -->
+  <ConsultantDashboard client:only="react" />
+</Layout>

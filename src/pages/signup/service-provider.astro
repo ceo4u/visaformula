@@ -1,0 +1,31 @@
+---
+// src/pages/signup/service-provider.astro
+import Layout from '../../layouts/Layout.astro';
+import LandingPage from '../../components/landing/LandingPage';
+import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPortal';
+---
+
+<Layout 
+  title="Sign Up as Service Provider - TravlTik" 
+  description="Register as a service provider on TravlTik to consult clients and grow your global practice."
+  hideHeader={true}
+  hideFooter={true}
+  hideWidgets={true}
+>
+  <!-- Live Background Homepage (Blurred & Semi-Transparent) -->
+  <div class="pointer-events-none filter blur-[3px] opacity-75 fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <LandingPage client:only="react" />
+  </div>
+
+  <!-- Transparent Dark Overlay Backdrop (Exact same as traveller login) -->
+  <div class="fixed inset-0 z-10 bg-slate-900/60 backdrop-blur-md pointer-events-none" aria-hidden="true"></div>
+
+  <!-- Service Provider Registration Wizard — perfectly centered on all screens -->
+  <div class="relative z-30 min-h-screen overflow-y-auto">
+    <div class="flex min-h-full items-center justify-center px-4 py-8 sm:py-12">
+      <div class="w-full max-w-4xl">
+        <ExpertSignupPortal client:only="react" />
+      </div>
+    </div>
+  </div>
+</Layout>

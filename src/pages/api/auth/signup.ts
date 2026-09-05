@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
         success: true, 
         message: 'User registered successfully!',
         user: newUser,
-        redirectUrl: role === 'expert' ? '/signup/expert' : '/onboarding'
+        redirectUrl: role === 'expert' ? '/signup/service-provider' : '/onboarding'
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );

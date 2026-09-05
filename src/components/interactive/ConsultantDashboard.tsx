@@ -485,7 +485,7 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
             localStorage.removeItem("expert_email");
-            localStorage.removeItem("travltik_user"); window.location.href = "/signup/expert";
+            localStorage.removeItem("travltik_user"); window.location.href = "/signup/service-provider";
         }
     };
 

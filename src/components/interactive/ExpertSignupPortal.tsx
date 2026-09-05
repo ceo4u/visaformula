@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { 
-  CheckCircle2, ArrowRight, Send, 
+  CheckCircle2, ArrowRight, ArrowLeft, Send, 
   Building, Briefcase, MapPin, Clock, Globe, 
   Shield, Plane, Car, Hotel, GraduationCap, 
   Sparkles, Luggage, Umbrella, Check, X, 
@@ -332,8 +332,20 @@ function ExpertSignupPortalContent() {
   );
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-6 sm:py-10 px-3 sm:px-4 font-sans text-slate-900">
+    <div className="w-full max-w-2xl mx-auto py-4 sm:py-8 px-3 sm:px-4 font-sans text-slate-900">
       
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* TOP BACK TO HOME & LOGO HEADER (Matching Traveller Login Modal)        */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      <div className="w-full max-w-xl mx-auto flex items-center justify-between mb-5 px-1 shrink-0 gap-2 font-sans">
+        <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
+          <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
+        </a>
+        <a href="/" className="shrink-0">
+          <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
+        </a>
+      </div>
+
       {/* ────────────────────────────────────────────────────────────────────── */}
       {/* TOP STEPPER HEADER (Exact Match: 4 Steps)                              */}
       {/* ────────────────────────────────────────────────────────────────────── */}
@@ -342,7 +354,7 @@ function ExpertSignupPortalContent() {
           <div className="flex items-center justify-between max-w-xl mx-auto px-2 relative">
             
             {/* Background connecting bar */}
-            <div className="absolute top-4 left-6 right-6 h-0.5 bg-slate-200 -z-0" />
+            <div className="absolute top-4 left-6 right-6 h-0.5 bg-slate-700/60 -z-0" />
             <div 
               className="absolute top-4 left-6 h-0.5 bg-[#00a896] transition-all duration-500 -z-0" 
               style={{ width: `${((step - 1) / 3) * 100}%` }}
@@ -364,16 +376,16 @@ function ExpertSignupPortalContent() {
                     disabled={step < s.num}
                     className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
                       isDone
-                        ? "bg-[#00a896] text-white shadow-sm ring-4 ring-emerald-50 cursor-pointer"
+                        ? "bg-[#00a896] text-white shadow-sm ring-4 ring-emerald-500/20 cursor-pointer"
                         : isActive
-                        ? "bg-[#00a896] text-white ring-4 ring-emerald-100 shadow-md scale-105"
+                        ? "bg-[#00a896] text-white ring-4 ring-emerald-400/30 shadow-md scale-105"
                         : "bg-white text-slate-400 border border-slate-200"
                     }`}
                   >
                     {isDone ? <Check className="w-4 h-4 stroke-[3]" /> : s.num}
                   </button>
                   <span className={`text-[11px] sm:text-xs font-semibold mt-1.5 transition-colors text-center hidden sm:block ${
-                    isActive ? "text-[#00a896] font-bold" : isDone ? "text-slate-700" : "text-slate-400"
+                    isActive ? "text-emerald-400 font-bold drop-shadow-xs" : isDone ? "text-emerald-300 font-semibold" : "text-slate-300"
                   }`}>
                     {s.label}
                   </span>

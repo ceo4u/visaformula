@@ -3198,9 +3198,9 @@ function cleanShortDocRequirement(title: string, description: string): string {
         }
     }, []);
 
-    // ── LIVE AI CONSULAR REQUIREMENTS SYNC FOR DOCUMENT VAULT ──
+    // ── LIVE AI CONSULAR REQUIREMENTS SYNC FOR VISA APPLICATIONS ──
     useEffect(() => {
-        if (activeTab === "scanned-documents") {
+        if (activeTab === "cases") {
             const currentDest = normalizeCountryName(selectedDestination);
             const currentPass = normalizeCountryName(selectedPassport);
             if (!aiVisaData || normalizeCountryName(aiVisaData.destination_country || '') !== currentDest) {
@@ -5390,14 +5390,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 </div>
 
                                                 {/* Key Case Specs */}
-                                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                                                     <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
                                                         <span className="text-[10px] font-bold text-slate-400 block uppercase">Vault Documents</span>
                                                         <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount ?? documents.filter(d => d.isUploaded || d.isRealUpload).length} Files OCR Verified</strong>
-                                                    </div>
-                                                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Active Add-Ons</span>
-                                                        <strong className="text-xs font-black text-emerald-600 mt-0.5 block">{cItem.addonsCount || 0} Protections Active</strong>
                                                     </div>
                                                     <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
                                                         <span className="text-[10px] font-bold text-slate-400 block uppercase">Submitted On</span>
@@ -6003,95 +5999,84 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             return Boolean(d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'));
                         });
 
-                        // ── 1. COMPILE FULL STATUTORY ROUTE DOCUMENTS CHECKLIST (FROM AI RESULT OR CONSULAR RULES) ──
-                        const currentDestName = normalizeCountryName(selectedDestination);
-                        const currentPassName = normalizeCountryName(selectedPassport);
-                        const isAiDataMatching = aiVisaData?.documents_required && 
-                            Array.isArray(aiVisaData.documents_required) && 
-                            aiVisaData.documents_required.length > 0 && 
-                            normalizeCountryName(aiVisaData.destination_country || '') === currentDestName;
-
-                        const destSpecificList: VaultDocItem[] = isAiDataMatching
-                            ? aiVisaData.documents_required.map((doc: any, idx: number) => ({
-                                key: `ai_doc_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-                                title: doc.title,
-                                description: doc.description || 'Mandatory consular compliance document required by destination authorities.',
-                                icon: getAiDocIcon(doc.title),
-                                mandatory: doc.is_mandatory !== false,
-                                hint: doc.is_mandatory !== false ? 'Mandatory Statutory Requirement' : 'Supporting / Optional'
-                            }))
-                            : getDestinationChecklist(currentDestName, selectedPurpose);
-                        
-                        // Universal core international travel statutory documents
-                        const universalCoreList: VaultDocItem[] = [
+                        // ── 1. DEFAULT TRAVEL DOCUMENTS VAULT (PERMANENT PERSONAL LOCKER - NO AI ROUTE POLLUTION) ──
+                        // Standard identification, civil status, and travel records kept in the traveller's vault
+                        const defaultVaultList: VaultDocItem[] = [
                             {
                                 key: 'statutory_passport',
-                                title: 'Original Passport (6+ Months Validity)',
+                                title: 'Valid Passport',
                                 description: `Valid biometric machine-readable passport issued by Government of ${selectedPassport || 'India'} with at least 6 months validity from departure date.`,
                                 icon: '📘',
                                 mandatory: true,
                                 hint: 'Front & back booklet pages with clear MRZ zone'
                             },
                             {
-                                key: 'statutory_flight',
-                                title: 'Confirmed Round-Trip Flight Itinerary',
-                                description: `Official airline flight ticket or confirmed PNR reservation showing round-trip travel between ${selectedPassport || 'origin'} and ${selectedDestination}.`,
-                                icon: '✈️',
-                                mandatory: true,
-                                hint: 'Confirmed flight ticket / PNR itinerary'
+                                key: 'statutory_national_id',
+                                title: 'National Identity Card (Aadhaar / National ID)',
+                                description: 'Official government-issued photo identity or citizenship card of the traveller.',
+                                icon: '🪪',
+                                mandatory: false,
+                                hint: 'Government-issued photo identification'
+                            },
+                            {
+                                key: 'statutory_tax_id',
+                                title: 'PAN Card / Taxpayer Identification',
+                                description: 'Official taxpayer identification number or PAN card document.',
+                                icon: '💳',
+                                mandatory: false,
+                                hint: 'Official tax registration document'
+                            },
+                            {
+                                key: 'statutory_financial',
+                                title: 'Bank Statement (Last 6 Months)',
+                                description: 'Recent consecutive months stamped bank statements demonstrating financial solvency.',
+                                icon: '🏦',
+                                mandatory: false,
+                                hint: 'Bank statement with official branch seal'
+                            },
+                            {
+                                key: 'statutory_photos',
+                                title: 'Biometric Passport Photos (35×45mm)',
+                                description: 'Recent color biometric photographs conforming to international travel standards.',
+                                icon: '📸',
+                                mandatory: false,
+                                hint: 'White background, neutral facial expression'
                             },
                             {
                                 key: 'statutory_insurance',
                                 title: 'Travel Medical Insurance Policy',
-                                description: `Comprehensive travel health policy covering medical emergencies and repatriation up to ${currentDestName.toLowerCase().includes('schengen') || currentDestName.toLowerCase().includes('france') || currentDestName.toLowerCase().includes('germany') ? '€30,000' : '$50,000 USD'}.`,
+                                description: 'Comprehensive travel health policy covering emergency medical expenses and evacuation.',
                                 icon: '🛡️',
-                                mandatory: true,
-                                hint: 'Policy certificate with covered traveler name'
+                                mandatory: false,
+                                hint: 'Comprehensive travel health policy certificate'
+                            },
+                            {
+                                key: 'statutory_flight',
+                                title: 'Flight Ticket / Booking Itinerary',
+                                description: 'Official airline round-trip reservation or confirmed PNR itinerary.',
+                                icon: '✈️',
+                                mandatory: false,
+                                hint: 'Confirmed flight ticket / PNR itinerary'
                             },
                             {
                                 key: 'statutory_accommodation',
                                 title: 'Proof of Accommodation / Hotel Stay',
-                                description: `Confirmed hotel booking voucher, rental agreement, or official host invitation for the duration of stay in ${selectedDestination}.`,
+                                description: 'Confirmed hotel booking voucher, rental agreement, or official host invitation.',
                                 icon: '🏨',
-                                mandatory: true,
+                                mandatory: false,
                                 hint: 'Hotel reservation voucher or host declaration'
                             },
                             {
-                                key: 'statutory_financial',
-                                title: 'Proof of Financial Solvency (Bank Statements)',
-                                description: 'Recent 3 to 6 consecutive months stamped official bank statements demonstrating adequate liquid travel maintenance funds.',
-                                icon: '🏦',
-                                mandatory: true,
-                                hint: 'Bank statement with official branch seal'
-                            },
-                            {
-                                key: 'statutory_national_id',
-                                title: 'National Identity Proof (PAN / Aadhaar / National ID)',
-                                description: `Official government-issued national identity card of the traveler from ${selectedPassport || 'India'}.`,
-                                icon: '🪪',
+                                key: 'statutory_employment',
+                                title: 'Employment Proof / Salary Slips',
+                                description: 'Official employer letter, salary slips, or business registration certificate.',
+                                icon: '💼',
                                 mandatory: false,
-                                hint: 'Government photo identity card'
+                                hint: 'Proof of occupation or business'
                             }
                         ];
 
-                        // Combine destination specific + universal without duplicates
-                        const combinedRouteRequirements: VaultDocItem[] = [];
-                        (destSpecificList || []).forEach(item => combinedRouteRequirements.push(item));
-                        universalCoreList.forEach(core => {
-                            const exists = combinedRouteRequirements.some(existing => {
-                                const eT = existing.title.toLowerCase();
-                                const eK = existing.key.toLowerCase();
-                                const cT = core.title.toLowerCase();
-                                const cK = core.key.toLowerCase();
-                                if (cK.includes('passport') && (eK.includes('passport') || eT.includes('passport'))) return true;
-                                if (cK.includes('flight') && (eK.includes('flight') || eT.includes('flight') || eT.includes('ticket'))) return true;
-                                if (cK.includes('insurance') && (eK.includes('insurance') || eT.includes('insurance'))) return true;
-                                if (cK.includes('financial') && (eK.includes('bank') || eT.includes('bank') || eT.includes('financial') || eT.includes('solvency'))) return true;
-                                if (cK.includes('accommodation') && (eK.includes('hotel') || eT.includes('hotel') || eT.includes('accommodation'))) return true;
-                                return eK === cK || eT === cT;
-                            });
-                            if (!exists) combinedRouteRequirements.push(core);
-                        });
+                        const combinedRouteRequirements: VaultDocItem[] = [...defaultVaultList];
 
                         // ── 2. MATCH AGAINST USER UPLOADS ──
                         const matchedUserDocIds = new Set<string>();
@@ -6875,10 +6860,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                         <span className="text-amber-600 font-bold">
                                                                             Pending Upload
                                                                         </span>
-                                                                        <span className="text-slate-300">•</span>
-                                                                        <span className="text-slate-400 font-medium">
-                                                                            {selectedPassport || 'India'} ➔ {selectedDestination} Consular Compliance
-                                                                        </span>
+                                                                        {doc.hint && (
+                                                                            <>
+                                                                                <span className="text-slate-300">•</span>
+                                                                                <span className="text-slate-400 font-medium truncate">
+                                                                                    {doc.hint}
+                                                                                </span>
+                                                                            </>
+                                                                        )}
                                                                     </div>
                                                                 )}
                                                             </div>

@@ -170,6 +170,15 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS country VARCHAR(150);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS verification_status VARCHAR(50) DEFAULT 'pending';`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS business_type VARCHAR(100);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS year_established VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS business_email VARCHAR(255);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS business_phone VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS website VARCHAR(255);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS pin_code VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS full_name VARCHAR(150);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS experience_years VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS languages_spoken TEXT;`);
 
 
   // 3. Sessions Table

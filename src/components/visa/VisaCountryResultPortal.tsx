@@ -6601,7 +6601,7 @@ export function VisaCountryResultPortal({
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Return Intent:</strong> {isUSA ? 'Applicant must demonstrate strong economic and residential roots to overcome INA Section 214(b) presumption.' : 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'}</span>
+                        <span><strong className="font-semibold text-slate-900">Return Intent:</strong> {(countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa')) ? 'Applicant must demonstrate strong economic and residential roots to overcome INA Section 214(b) presumption.' : 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'}</span>
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>

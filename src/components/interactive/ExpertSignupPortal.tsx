@@ -1,1557 +1,1241 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { 
-  CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
-  User, FileText, Globe, Star, Shield, ArrowUpRight, 
-  MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
-  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown, Edit2, Eye, EyeOff
+  CheckCircle2, ArrowRight, Send, 
+  Building, Briefcase, MapPin, Clock, Globe, 
+  Shield, Plane, Car, Hotel, GraduationCap, 
+  Sparkles, Luggage, Umbrella, Check, X, 
+  Search, Eye, EyeOff
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
 
-// ─── Custom Dropdown (no browser-blue) ───────────────────────────────────────
-interface CustomSelectProps {
-  value: string;
-  onChange: (val: string) => void;
-  options: { value: string; label: string }[];
-  className?: string;
-}
-function CustomSelect({ value, onChange, options, className = "" }: CustomSelectProps) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+// ─── Available Services for 3x3 Grid (Step 3) ─────────────────────────────────
+const AVAILABLE_SERVICES = [
+  { id: "visa_consultant", name: "Visa Consultant", icon: Shield },
+  { id: "immigration_consultant", name: "Immigration Consultant", icon: Building },
+  { id: "travel_agent", name: "Travel Agent", icon: Plane },
+  { id: "tour_operator", name: "Tour Operator", icon: Luggage },
+  { id: "travel_insurance", name: "Travel Insurance", icon: Umbrella },
+  { id: "accommodation", name: "Accommodation", icon: Hotel },
+  { id: "transport_car_rental", name: "Transport / Car Rental", icon: Car },
+  { id: "education_consultant", name: "Education Consultant", icon: GraduationCap },
+  { id: "other_services", name: "Other Services", icon: Sparkles },
+];
 
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+// ─── Available Top Countries ──────────────────────────────────────────────────
+const POPULAR_DESTINATIONS = [
+  "United States", "Canada", "United Kingdom", "Australia", "UAE", 
+  "Germany", "Singapore", "New Zealand", "Schengen Area", "France", 
+  "Italy", "Japan", "Switzerland", "Ireland", "Netherlands"
+];
 
-  const selected = options.find(o => o.value === value);
+// ─── Available Languages ──────────────────────────────────────────────────────
+const POPULAR_LANGUAGES = [
+  "English", "Hindi", "Punjabi", "Gujarati", "Spanish", 
+  "French", "German", "Arabic", "Mandarin", "Bengali"
+];
 
-  return (
-    <div ref={ref} className={`relative ${className}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <button
-        type="button"
-        onClick={() => setOpen(prev => !prev)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer"
-        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-      >
-        <span>{selected?.label || "Select..."}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-      </button>
+// ─── Business Types ───────────────────────────────────────────────────────────
+const BUSINESS_TYPES = [
+  "Private Limited Company",
+  "Public Limited Company",
+  "Partnership Firm",
+  "Sole Proprietorship",
+  "Limited Liability Partnership (LLP)",
+  "Individual / Freelance Consultant",
+  "Other"
+];
 
-      {open && (
-        <div className="absolute z-50 top-full mt-1.5 left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
-          {options.map(opt => (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => { onChange(opt.value); setOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                opt.value === value
-                  ? "bg-slate-900 text-white font-semibold"
-                  : "text-slate-700 hover:bg-slate-100"
-              }`}
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Years of Experience Options ──────────────────────────────────────────────
+const EXPERIENCE_OPTIONS = [
+  "Less than 1 Year",
+  "1 - 3 Years",
+  "3 - 5 Years",
+  "5 - 10 Years",
+  "10+ Years"
+];
+
+// Generate past years from 2026 down to 1980
+const ESTABLISHED_YEARS = Array.from({ length: 47 }, (_, i) => String(2026 - i));
 
 function ExpertSignupPortalContent() {
-  // Wizard Step State: 1 (Business Info), 2 (Services & Expertise), 3 (Location & Verification), 3.5 (OTP Modal), 4 (Congratulations / Done)
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
+  const { signInWithGoogle } = useAuth();
 
-  // --- Step 1: Business Info States ---
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [businessName, setBusinessName] = useState("");
+  // Active step: 1 (Create Account), 2 (Business Details), 3 (Services & Expertise), 4 (Review & Submit), 5 (Celebration/Done)
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+
+  // ─── Step 1: Create Account Form ───────────────────────────────────────────
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobileCode, setMobileCode] = useState("+91");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [businessType, setBusinessType] = useState("");
-  const [yearsInBusiness, setYearsInBusiness] = useState("");
-  const [businessWebsite, setBusinessWebsite] = useState("");
-  const [businessDescription, setBusinessDescription] = useState("");
-  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
-
-  // --- Step 2: Services & Expertise States ---
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-  const [consultationMode, setConsultationMode] = useState<"Online" | "In Office" | "Both" | "">("");
-  const [customServiceInput, setCustomServiceInput] = useState("");
-  const [showAddCustomService, setShowAddCustomService] = useState(false);
-
-  // --- Step 3: Location & Verification States ---
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [landmark, setLandmark] = useState("");
-  const [pinCode, setPinCode] = useState("");
-  const [officeAddress, setOfficeAddress] = useState("");
-  const [pinLocation, setPinLocation] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [whatsappNumber, setWhatsappNumber] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-  const [docUploads, setDocUploads] = useState<Record<string, boolean | string>>({
-    businessReg: false,
-    profLicense: false,
-    officePhoto: false,
-    govId: false
-  });
-
-  // --- Step 3.5: OTP Verification States ---
-  const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
-  const [resendCooldown, setResendCooldown] = useState(30);
-  const [verifyingOtp, setVerifyingOtp] = useState(false);
-  const [otpError, setOtpError] = useState("");
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
-  const [tempEmail, setTempEmail] = useState("");
-
-  const [validationError, setValidationError] = useState("");
-  const { signInWithGoogle } = useAuth();
+  const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  // Available options
-  const defaultServices = [
-    "Study", "Visit", "Work", "Visa Appeals", "Digital Nomad", "PR",
-    "Student Visa", "Visitor Visa", "PR / Permanent Residency", "Work Visa", 
-    "Business Visa", "Dependent Visa", "Investor Visa", "Citizenship", 
-    "Appeals / Tribunal", "University Admissions", "Jobs Abroad", "Travel Insurance"
-  ];
+  // ─── Step 2: Business Details Form ─────────────────────────────────────────
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("Private Limited Company");
+  const [yearEstablished, setYearEstablished] = useState("2020");
+  const [businessEmail, setBusinessEmail] = useState("");
+  const [businessPhone, setBusinessPhone] = useState("");
+  const [website, setWebsite] = useState("");
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [businessAddress, setBusinessAddress] = useState("");
+  const [pinCode, setPinCode] = useState("");
 
-  const defaultCountries = [
-    { name: "Canada", flag: "🇨🇦" },
-    { name: "Australia", flag: "🇦🇺" },
-    { name: "UK", flag: "🇬🇧" },
-    { name: "USA", flag: "🇺🇸" },
-    { name: "Germany", flag: "🇩🇪" },
-    { name: "Schengen Countries", flag: "🇪🇺" },
-    { name: "New Zealand", flag: "🇳🇿" },
-    { name: "UAE", flag: "🇦🇪" },
-    { name: "Europe", flag: "🇪🇺" },
-    { name: "Singapore", flag: "🇸🇬" },
-    { name: "Ireland", flag: "🇮🇪" },
-    { name: "Other", flag: "🌐" }
-  ];
-
-  const defaultLanguages = ["English", "Hindi", "Telugu", "Tamil", "Punjabi", "Arabic", "French", "Other"];
-
-  // Auto-restore draft from localStorage on mount so details never vanish
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isLoggedIn = localStorage.getItem("expert_isLoggedIn");
-      if (isLoggedIn === "true") {
-        setCurrentStep(4);
-        return;
-      }
-      try {
-        const savedDraft = localStorage.getItem("expert_form_draft");
-        if (savedDraft) {
-          const draft = JSON.parse(savedDraft);
-          if (draft.firstName && draft.firstName !== "Google") setFirstName(draft.firstName);
-          if (draft.lastName && draft.lastName !== "User") setLastName(draft.lastName);
-          if (draft.businessName) setBusinessName(draft.businessName);
-          if (draft.businessType) setBusinessType(draft.businessType);
-          if (draft.yearsInBusiness) setYearsInBusiness(draft.yearsInBusiness);
-          if (draft.businessWebsite) setBusinessWebsite(draft.businessWebsite);
-          if (draft.businessDescription) setBusinessDescription(draft.businessDescription);
-          if (draft.companyLogo) setCompanyLogo(draft.companyLogo);
-          if (draft.selectedServices) setSelectedServices(draft.selectedServices);
-          if (draft.selectedCountries) setSelectedCountries(draft.selectedCountries);
-          if (draft.selectedLanguages) setSelectedLanguages(draft.selectedLanguages);
-          if (draft.consultationMode) setConsultationMode(draft.consultationMode);
-          if (draft.country) setCountry(draft.country);
-          if (draft.state) setState(draft.state);
-          if (draft.city) setCity(draft.city);
-          if (draft.streetAddress) setStreetAddress(draft.streetAddress);
-          if (draft.landmark) setLandmark(draft.landmark);
-          if (draft.pinCode) setPinCode(draft.pinCode);
-          if (draft.phoneNumber) setPhoneNumber(draft.phoneNumber);
-          if (draft.whatsappNumber) setWhatsappNumber(draft.whatsappNumber);
-          if (draft.emailAddress) setEmailAddress(draft.emailAddress);
-          if (draft.currentStep && draft.currentStep >= 1 && draft.currentStep <= 3) {
-            setCurrentStep(draft.currentStep);
-          }
-        }
-      } catch (e) {}
-    }
-  }, []);
-
-  // Auto-save draft to localStorage whenever fields change
-  useEffect(() => {
-    if (typeof window !== "undefined" && currentStep >= 1 && currentStep <= 3) {
-      try {
-        const draft = {
-          firstName, lastName, businessName, businessType, yearsInBusiness,
-          businessWebsite, businessDescription, companyLogo,
-          selectedServices, selectedCountries, selectedLanguages, consultationMode,
-          country, state, city, streetAddress, landmark, pinCode,
-          phoneNumber, whatsappNumber, emailAddress, currentStep
-        };
-        localStorage.setItem("expert_form_draft", JSON.stringify(draft));
-      } catch (e) {}
-    }
-  }, [
-    firstName, lastName, businessName, businessType, yearsInBusiness,
-    businessWebsite, businessDescription, companyLogo,
-    selectedServices, selectedCountries, selectedLanguages, consultationMode,
-    country, state, city, streetAddress, landmark, pinCode,
-    phoneNumber, whatsappNumber, emailAddress, currentStep
+  // ─── Step 3: Services & Expertise Form ─────────────────────────────────────
+  const [selectedServices, setSelectedServices] = useState<string[]>([
+    "Visa Consultant",
+    "Immigration Consultant"
+  ]);
+  const [selectedDestinations, setSelectedDestinations] = useState<string[]>([
+    "United States",
+    "Canada",
+    "United Kingdom",
+    "Australia",
+    "UAE"
+  ]);
+  const [destinationSearch, setDestinationSearch] = useState("");
+  const [experience, setExperience] = useState("5 - 10 Years");
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([
+    "English",
+    "Hindi"
   ]);
 
-  useEffect(() => {
-    let timer: any;
-    if (resendCooldown > 0) {
-      timer = setInterval(() => setResendCooldown(prev => prev - 1), 1000);
-    }
-    return () => clearInterval(timer);
-  }, [resendCooldown]);
-
+  // ─── General Wizard State ──────────────────────────────────────────────────
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
 
-  // Google OAuth Signup for Expert / Consultant
+  // Auto-sync email & phone into business fields when Step 1 changes
+  useEffect(() => {
+    if (!businessEmail && email) setBusinessEmail(email);
+    if (!businessPhone && mobileNumber) setBusinessPhone(mobileNumber);
+    if (!businessName && fullName) setBusinessName(`${fullName}'s Immigration`);
+  }, [email, mobileNumber, fullName]);
+
+  // Password validation checklist checks
+  const isMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isPasswordValid = isMinLength && hasUppercase && hasNumber && hasSpecial;
+
+  // Toggle service selection
+  const toggleService = (serviceName: string) => {
+    if (selectedServices.includes(serviceName)) {
+      if (selectedServices.length > 1) {
+        setSelectedServices(selectedServices.filter(s => s !== serviceName));
+      }
+    } else {
+      setSelectedServices([...selectedServices, serviceName]);
+    }
+  };
+
+  // Toggle destination selection
+  const toggleDestination = (dest: string) => {
+    if (selectedDestinations.includes(dest)) {
+      if (selectedDestinations.length > 1) {
+        setSelectedDestinations(selectedDestinations.filter(d => d !== dest));
+      }
+    } else {
+      setSelectedDestinations([...selectedDestinations, dest]);
+    }
+  };
+
+  // Toggle language selection
+  const toggleLanguage = (lang: string) => {
+    if (selectedLanguages.includes(lang)) {
+      if (selectedLanguages.length > 1) {
+        setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
+      }
+    } else {
+      setSelectedLanguages([...selectedLanguages, lang]);
+    }
+  };
+
+  // ─── Google SSO Sign Up ────────────────────────────────────────────────────
   const handleGoogleSignup = async () => {
+    setErrorMsg("");
     setGoogleLoading(true);
-    setValidationError("");
     try {
       const res = await signInWithGoogle('expert', 'signup', turnstileToken);
-      if (res && res.redirect) {
-        window.location.href = res.redirect;
-        return;
+      if (res?.user) {
+        const u = res.user;
+        if (u.displayName) setFullName(u.displayName);
+        if (u.email) {
+          setEmail(u.email);
+          setBusinessEmail(u.email);
+        }
+        setBusinessName(u.displayName ? `${u.displayName}'s Advisory` : "Global Visa Advisory");
+        // Smoothly proceed to Step 2
+        setStep(2);
       }
-      window.location.href = '/consultant/dashboard';
-    } catch (e: any) {
-      const msg = e?.message || '';
-      if (msg.includes('popup-closed') || msg.includes('closed-by-user')) {
-        setValidationError("Google sign-in was cancelled. Please try again.");
-      } else if (msg.includes('popup-blocked')) {
-        setValidationError("Popup was blocked by your browser. Please allow popups for this site and try again.");
-      } else {
-        setValidationError(msg || "Google Sign-In failed. Please try again or register with Email.");
+    } catch (err: any) {
+      if (!err?.message?.includes("cancelled") && !err?.message?.includes("closed-by-user")) {
+        setErrorMsg(err?.message || "Google sign-in failed.");
       }
     } finally {
       setGoogleLoading(false);
     }
   };
 
-  // Toggle helpers
-  const toggleService = (svc: string) => {
-    setSelectedServices(prev => prev.includes(svc) ? prev.filter(x => x !== svc) : [...prev, svc]);
-  };
+  // ─── Step 1 Next: Validate & Advance ────────────────────────────────────────
+  const handleStep1Next = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
 
-  const toggleCountry = (ctry: string) => {
-    setSelectedCountries(prev => prev.includes(ctry) ? prev.filter(x => x !== ctry) : [...prev, ctry]);
-  };
-
-  const toggleLanguage = (lang: string) => {
-    setSelectedLanguages(prev => prev.includes(lang) ? prev.filter(x => x !== lang) : [...prev, lang]);
-  };
-
-  const handleAddCustomService = () => {
-    if (customServiceInput.trim()) {
-      setSelectedServices(prev => [...prev, customServiceInput.trim()]);
-      setCustomServiceInput("");
-      setShowAddCustomService(false);
+    if (!fullName.trim()) {
+      setErrorMsg("Please enter your full name.");
+      return;
     }
-  };
+    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+    if (!mobileNumber.trim() || mobileNumber.length < 7) {
+      setErrorMsg("Please enter a valid mobile number.");
+      return;
+    }
+    if (!isPasswordValid) {
+      setErrorMsg("Please ensure your password meets all 4 security criteria.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMsg("Passwords do not match.");
+      return;
+    }
+    if (!agreedToTerms) {
+      setErrorMsg("Please accept the Terms & Conditions to proceed.");
+      return;
+    }
 
-  // Step Navigators
-  const goToNextStep = (target: number) => {
-    setValidationError("");
-    if (currentStep === 1) {
-      if (!firstName.trim() || !lastName.trim()) {
-        setValidationError("Please enter your First Name and Last Name.");
-        return;
-      }
-      if (!businessName.trim()) {
-        setValidationError("Please enter your Business Name.");
-        return;
-      }
-      if (!password) {
-        setValidationError("Please create a Password for your account.");
-        return;
-      }
-      if (password.length < 6) {
-        setValidationError("Password must be at least 6 characters long.");
-        return;
-      }
-      if (password !== confirmPassword) {
-        setValidationError("Passwords do not match. Please verify and try again.");
-        return;
-      }
-      if (!emailAddress.trim() || !/\S+@\S+\.\S+/.test(emailAddress.trim())) {
-        setValidationError("Please enter a valid Email Address.");
-        return;
-      }
-      if (!businessDescription.trim()) {
-        setValidationError("Please provide a brief Business Description.");
-        return;
-      }
-    }
-    if (currentStep === 2) {
-      if (selectedServices.length === 0) {
-        setValidationError("Please select at least one service you offer.");
-        return;
-      }
-    }
-    setCurrentStep(target);
+    setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const [sendingOtp, setSendingOtp] = useState(false);
+  // ─── Step 2 Next: Validate & Advance ────────────────────────────────────────
+  const handleStep2Next = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
 
-  const sendVerificationEmail = async (targetEmail: string) => {
-    setSendingOtp(true);
-    setOtpError("");
-    try {
-      const res = await fetch("/api/auth/send-verification-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: targetEmail.trim() }),
-      });
-      const data = await res.json();
-      // Keep inputs blank so user must enter OTP received in email
-      setOtpDigits(Array(6).fill(""));
-      if (!res.ok) {
-        console.warn("[ExpertSignupPortal] OTP send response:", data);
-        if (data.message) setOtpError(data.message);
-      }
-
-    } catch (e) {
-      console.error("[ExpertSignupPortal] OTP send error:", e);
-    } finally {
-      setSendingOtp(false);
+    if (!businessName.trim()) {
+      setErrorMsg("Please enter your business or company name.");
+      return;
     }
+    if (!businessEmail.trim()) {
+      setErrorMsg("Please enter your business email.");
+      return;
+    }
+    if (!city.trim()) {
+      setErrorMsg("Please enter your city.");
+      return;
+    }
+    if (!businessAddress.trim()) {
+      setErrorMsg("Please enter your business address.");
+      return;
+    }
+
+    setStep(3);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Trigger OTP Verification on "Complete & Continue" — dispatches real Resend email
-  const handleCompleteAndContinue = () => {
-    setValidationError("");
-    if (!phoneNumber.trim()) {
-      setValidationError("Please enter your Phone Number.");
+  // ─── Step 3 Next: Validate & Advance ────────────────────────────────────────
+  const handleStep3Next = () => {
+    setErrorMsg("");
+    if (selectedServices.length === 0) {
+      setErrorMsg("Please select at least one service.");
       return;
     }
-    if (!emailAddress.trim()) {
-      setValidationError("Please enter your Email Address.");
+    if (selectedDestinations.length === 0) {
+      setErrorMsg("Please select at least one destination country.");
       return;
     }
-    setShowOtpModal(true);
-    setResendCooldown(30);
-    sendVerificationEmail(emailAddress);
+
+    setStep(4);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Verify OTP and complete registration — saves full profile to localStorage so FindExpertsPortal lists this expert
-  const handleVerifyOtp = async () => {
-    const code = otpDigits.join("");
-    if (code.length < 6) {
-      setOtpError("Please enter the complete 6-digit verification code.");
-      return;
-    }
-
-    setVerifyingOtp(true);
-    setOtpError("");
+  // ─── Step 4: Final Submit Application ──────────────────────────────────────
+  const handleSubmitApplication = async () => {
+    setErrorMsg("");
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/auth/verify-email-code", {
+      const fullContact = `${mobileCode} ${mobileNumber || businessPhone}`.trim();
+      const payload = {
+        business_name: businessName || fullName || "Service Provider",
+        full_name: fullName,
+        email: (businessEmail || email).toLowerCase().trim(),
+        password,
+        contact_number: fullContact,
+        advisor_type: businessType,
+        business_type: businessType,
+        year_established: yearEstablished,
+        business_email: businessEmail || email,
+        business_phone: businessPhone || mobileNumber,
+        website,
+        country,
+        state,
+        city,
+        office_address: businessAddress,
+        pin_code: pinCode,
+        services: selectedServices,
+        expertise_tags: selectedServices,
+        destinations: selectedDestinations,
+        countries_expertise: JSON.stringify(selectedDestinations),
+        experience_years: experience,
+        languages_spoken: JSON.stringify(selectedLanguages),
+        turnstileToken,
+      };
+
+      const resp = await fetch("/api/register/expert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailAddress, code }),
+        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok && data.status === "error") {
-        setOtpError(data.message || "Invalid verification code. Please check and try again.");
-        setVerifyingOtp(false);
-        return;
-      }
-    } catch (e) {
-      console.warn("[handleVerifyOtp] Verification fallback mode:", e);
-    }
 
-    setTimeout(() => {
-      if (typeof window !== "undefined") {
-        // Core identity
+      const data = await resp.json();
+
+      if (!resp.ok || data.status === "error") {
+        throw new Error(data.message || "Registration failed. Please try again.");
+      }
+
+      // Save user session in localStorage
+      if (data.user && typeof window !== "undefined") {
+        localStorage.setItem("travltik_user", JSON.stringify(data.user));
         localStorage.setItem("expert_isLoggedIn", "true");
-        localStorage.setItem("expert_firstName", firstName);
-        localStorage.setItem("expert_lastName", lastName);
-        localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim() || "TravlTik Consultant");
-        localStorage.setItem("expert_businessType", businessType);
-        localStorage.setItem("expert_yearsInBusiness", yearsInBusiness);
-        localStorage.setItem("expert_businessWebsite", businessWebsite);
-        localStorage.setItem("expert_businessDescription", businessDescription);
-        if (companyLogo) localStorage.setItem("expert_profilePhoto", companyLogo);
-
-        // Contact
-        localStorage.setItem("expert_email", emailAddress);
-        localStorage.setItem("expert_contactNumber", phoneNumber);
-        localStorage.setItem("expert_whatsapp", whatsappNumber);
-
-        // Address — detailed
-        localStorage.setItem("expert_streetAddress", streetAddress);
-        localStorage.setItem("expert_landmark", landmark);
-        localStorage.setItem("expert_pinCode", pinCode);
-        localStorage.setItem("expert_city", city);
-        localStorage.setItem("expert_state", state);
-        localStorage.setItem("expert_country", country);
-        localStorage.setItem("expert_officeAddress", [streetAddress, landmark, city, state, country].filter(Boolean).join(", "));
-
-        // Services & expertise
-        localStorage.setItem("expert_services", JSON.stringify(selectedServices));
-        localStorage.setItem("expert_countries", JSON.stringify(selectedCountries));
-        localStorage.setItem("expert_languages", JSON.stringify(selectedLanguages));
-        localStorage.setItem("expert_consultationMode", consultationMode);
-        localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
-        localStorage.setItem("expert_countriesExpertise", selectedCountries.join(", "));
-        localStorage.setItem("expert_advisorType", businessType || "Visa Consultant");
-
-        // Add to global experts list for FindExpertsPortal
-        const fullName = businessName || `${firstName} ${lastName}`.trim() || "TravlTik Consultant";
-        const newExpert = {
-          id: `expert-${Date.now()}`,
-          name: fullName,
-          category: selectedServices.some(s => s.toLowerCase().includes("student")) ? "student"
-                  : selectedServices.some(s => s.toLowerCase().includes("work") || s.toLowerCase().includes("permit")) ? "work"
-                  : "pr",
-          role: businessType || "Visa Consultant",
-          rating: 5.0,
-          reviews: 1,
-          price: 299,
-          city: city || "Remote",
-          countries: selectedCountries.length > 0 ? selectedCountries : ["India"],
-          experience: yearsInBusiness === "Less than 1 year" ? 1
-                    : yearsInBusiness === "1-2 years" ? 2
-                    : yearsInBusiness === "3-5 years" ? 4
-                    : yearsInBusiness === "5-10 years" ? 7
-                    : yearsInBusiness === "10+ years" ? 12 : 5,
-          isRemote: consultationMode === "Online" || consultationMode === "Both",
-          isAvailableToday: true,
-          isEmergency: false,
-          tags: selectedServices.slice(0, 3),
-          image: companyLogo || "",
-        };
-
-        let existingList: any[] = [];
-        try {
-          const stored = localStorage.getItem("travltik_all_experts");
-          if (stored) existingList = JSON.parse(stored);
-        } catch(e) {}
-
-        const alreadyExists = existingList.some((e: any) => e.name?.toLowerCase() === fullName.toLowerCase());
-        if (!alreadyExists) {
-          existingList = [newExpert, ...existingList];
-          localStorage.setItem("travltik_all_experts", JSON.stringify(existingList));
-        }
-
-        // Complete Expert DB Registration
-        fetch("/api/register/expert", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            ...(turnstileToken ? { "x-turnstile-token": turnstileToken } : {})
-          },
-          body: JSON.stringify({
-            turnstileToken,
-            business_name: businessName || `${firstName} ${lastName}`.trim(),
-            email: emailAddress,
-            password: password,
-            contact_number: phoneNumber,
-            advisor_type: businessType || "Freelancer",
-            about_me: businessDescription,
-            portfolio_link: businessWebsite,
-            office_address: [streetAddress, landmark, city, state, country].filter(Boolean).join(", "),
-            gov_registration_number: '',
-            expertise_tags: selectedServices,
-            countries_expertise: selectedCountries
-          })
-        }).catch(e => console.warn("Expert DB reg error:", e));
-
-        // Send Welcome Email instantly via Resend
-        fetch("/api/auth/send-welcome-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: emailAddress,
-            firstName: firstName || businessName,
-            displayName: businessName || `${firstName} ${lastName}`.trim(),
-            userType: "expert",
-          }),
-        }).catch(e => console.error("Welcome email send error:", e));
-
+        localStorage.setItem("expert_email", data.user.email);
+        localStorage.setItem("expert_businessName", data.user.displayName || businessName);
       }
-      setVerifyingOtp(false);
-      setShowOtpModal(false);
-      setCurrentStep(4);
+
+      // Proceed to celebratory success step
+      setStep(5);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 800);
-  };
-
-  const handleDigitChange = (val: string, idx: number) => {
-    const clean = val.replace(/\D/g, "").slice(-1);
-    const updated = [...otpDigits];
-    updated[idx] = clean;
-    setOtpDigits(updated);
-    setOtpError("");
-
-    if (clean && idx < 5) {
-      const nextInput = document.getElementById(`reg-otp-box-${idx + 1}`);
-      if (nextInput) nextInput.focus();
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Failed to submit application. Please check your details.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleDigitKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
-    if (e.key === "Backspace" && !otpDigits[idx] && idx > 0) {
-      const prevInput = document.getElementById(`reg-otp-box-${idx - 1}`);
-      if (prevInput) prevInput.focus();
-    }
-  };
+  // ─── Filter destinations matching search ────────────────────────────────────
+  const filteredDestinations = POPULAR_DESTINATIONS.filter(
+    d => d.toLowerCase().includes(destinationSearch.toLowerCase()) && !selectedDestinations.includes(d)
+  );
 
   return (
-    <div className="w-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      {/* Top-left fixed Back button — steps back when in wizard, goes home when on step 1 */}
-      {currentStep !== 4 && (
-        <div className="fixed top-4 left-4 z-40 pointer-events-auto">
-          <button
-            type="button"
-            onClick={() => {
-              if (currentStep > 1) {
-                setCurrentStep(prev => prev - 1);
-              } else {
-                window.location.href = "/";
-              }
-            }}
-            className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md cursor-pointer active:scale-95"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{currentStep > 1 ? "Back" : "Back to Home"}</span>
-          </button>
+    <div className="w-full max-w-2xl mx-auto py-6 sm:py-10 px-3 sm:px-4 font-sans text-slate-900">
+      
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* TOP STEPPER HEADER (Exact Match: 4 Steps)                              */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {step !== 5 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between max-w-xl mx-auto px-2 relative">
+            
+            {/* Background connecting bar */}
+            <div className="absolute top-4 left-6 right-6 h-0.5 bg-slate-200 -z-0" />
+            <div 
+              className="absolute top-4 left-6 h-0.5 bg-[#00a896] transition-all duration-500 -z-0" 
+              style={{ width: `${((step - 1) / 3) * 100}%` }}
+            />
+
+            {[
+              { num: 1, label: "Create Account" },
+              { num: 2, label: "Business Details" },
+              { num: 3, label: "Services & Expertise" },
+              { num: 4, label: "Review & Submit" },
+            ].map((s) => {
+              const isDone = step > s.num;
+              const isActive = step === s.num;
+              return (
+                <div key={s.num} className="flex flex-col items-center relative z-10">
+                  <button
+                    type="button"
+                    onClick={() => { if (step > s.num) setStep(s.num as any); }}
+                    disabled={step < s.num}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
+                      isDone
+                        ? "bg-[#00a896] text-white shadow-sm ring-4 ring-emerald-50 cursor-pointer"
+                        : isActive
+                        ? "bg-[#00a896] text-white ring-4 ring-emerald-100 shadow-md scale-105"
+                        : "bg-white text-slate-400 border border-slate-200"
+                    }`}
+                  >
+                    {isDone ? <Check className="w-4 h-4 stroke-[3]" /> : s.num}
+                  </button>
+                  <span className={`text-[11px] sm:text-xs font-semibold mt-1.5 transition-colors text-center hidden sm:block ${
+                    isActive ? "text-[#00a896] font-bold" : isDone ? "text-slate-700" : "text-slate-400"
+                  }`}>
+                    {s.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      <div className="w-full">
-        
-        {/* Validation error message */}
-        {validationError && (
-          <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-2xl text-center shadow-xs">
-            {validationError}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* MAIN WHITE CARD CONTAINER                                              */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-xl border border-slate-200/90 relative transition-all">
+
+        {/* Global Error Banner */}
+        {errorMsg && (
+          <div className="mb-5 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-600 text-xs sm:text-sm font-semibold flex items-center gap-2">
+            <span className="shrink-0 text-base">⚠️</span>
+            <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* SCREEN 0: INITIAL START OPTIONS ("Create your account") */}
-        {currentStep === 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90">
-            
-            {/* Left Options Box */}
-            <div className="md:col-span-7 space-y-5">
-              <div>
-                <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Create your account</h1>
-                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} className="text-sm text-slate-500 mt-1.5">Welcome! Sign up to get started as a verified consultant</p>
-              </div>
-
-              <div className="space-y-3">
-                {/* Google Button */}
-                <button
-                  onClick={handleGoogleSignup}
-                  onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  disabled={googleLoading}
-                  className="w-full py-3.5 px-5 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl font-semibold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-sm cursor-pointer text-sm"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                >
-                  {googleLoading ? (
-                    <svg className="animate-spin w-4 h-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" viewBox="0 0 24 24">
-                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                    </svg>
-                  )}
-                  <span>{googleLoading ? "Signing in with Google..." : "Continue with Google"}</span>
-                </button>
-
-                {/* Cloudflare Turnstile Bot Protection */}
-                <TurnstileWidget
-                  onSuccess={(t) => setTurnstileToken(t)}
-                  onError={() => setTurnstileToken("")}
-                  onExpire={() => setTurnstileToken("")}
-                  theme="light"
-                />
-              </div>
-
-              <div className="relative flex items-center justify-center">
-                <div className="border-t border-slate-200 w-full" />
-                <span className="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-widest absolute" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>OR</span>
-              </div>
-
-              <button
-                onClick={() => setCurrentStep(1)}
-                className="w-full py-3.5 px-5 bg-[#0c1a2e] hover:bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer active:scale-98 text-sm"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                <Mail className="w-4.5 h-4.5" />
-                <span>Continue with Email</span>
-              </button>
-
-              <p className="text-xs text-slate-400 text-center flex items-center justify-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <Lock className="w-3 h-3" />
-                <span>Your data is safe with us. We never post on your behalf.</span>
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* STEP 1: CREATE ACCOUNT                                               */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {step === 1 && (
+          <div className="space-y-5 animate-fade-in">
+            {/* Header */}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Create Your Account
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Join TravlTik and grow your business.
               </p>
             </div>
 
-            {/* Right "Why register on TravlTik?" Card */}
-            <div className="md:col-span-5 bg-teal-50/60 border border-teal-200/60 rounded-3xl p-6 space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <Shield className="w-4.5 h-4.5 text-[#00a896] shrink-0" />
-                <span>Why register on TravlTik?</span>
-              </h3>
+            {/* Social SSO Buttons */}
+            <div className="space-y-2.5 pt-1">
+              {/* Google SSO */}
+              <button
+                type="button"
+                onClick={handleGoogleSignup}
+                onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                disabled={googleLoading}
+                className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs hover:shadow-xs active:scale-[0.99] cursor-pointer"
+              >
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
+                <span>{googleLoading ? "Connecting Google..." : "Continue with Google"}</span>
+              </button>
 
-              <ul className="space-y-3 text-xs font-bold text-slate-700">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
-                  <span>Get quality visa related enquiries</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
-                  <span>Build trust with Verified Badge</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
-                  <span>Grow your business globally</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
-                  <span>Manage everything in one place</span>
-                </li>
-              </ul>
+              {/* Facebook SSO */}
+              <button
+                type="button"
+                onClick={() => setErrorMsg("Facebook sign-in will be available soon. Please use Google or Email.")}
+                className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs hover:shadow-xs active:scale-[0.99] cursor-pointer"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="#1877F2" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span>Continue with Facebook</span>
+              </button>
+
+              {/* Apple SSO */}
+              <button
+                type="button"
+                onClick={() => setErrorMsg("Apple sign-in will be available soon. Please use Google or Email.")}
+                className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs hover:shadow-xs active:scale-[0.99] cursor-pointer"
+              >
+                <svg className="w-4 h-4 shrink-0 fill-current text-slate-900" viewBox="0 0 24 24">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.9.04-2 .6-2.65 1.36-.58.67-1.09 1.74-.95 2.78 1.02.08 2.06-.52 2.68-1.27z"/>
+                </svg>
+                <span>Continue with Apple</span>
+              </button>
             </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 my-3">
+              <div className="flex-1 h-px bg-slate-200" />
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                OR
+              </span>
+              <div className="flex-1 h-px bg-slate-200" />
+            </div>
+
+            <div className="text-center -mt-2">
+              <span className="text-xs font-bold text-slate-600">
+                Sign up with Email
+              </span>
+            </div>
+
+            {/* Email Registration Form */}
+            <form onSubmit={handleStep1Next} className="space-y-3.5">
+              
+              {/* Full Name */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Enter your full name"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Mobile Number */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Mobile Number
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    value={mobileCode}
+                    onChange={(e) => setMobileCode(e.target.value)}
+                    className="px-2.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+                  >
+                    <option value="+91">+91 (IN)</option>
+                    <option value="+1">+1 (US/CA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+971">+971 (UAE)</option>
+                    <option value="+61">+61 (AU)</option>
+                  </select>
+                  <input
+                    type="tel"
+                    required
+                    value={mobileNumber}
+                    onChange={(e) => setMobileNumber(e.target.value)}
+                    placeholder="Enter mobile number"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter password"
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm Password */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter password"
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Password Checklist Criteria */}
+              <div className="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+                <div className={`flex items-center gap-1.5 ${isMinLength ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${isMinLength ? "text-emerald-600" : "text-slate-300"}`} />
+                  <span>Minimum 8 characters</span>
+                </div>
+                <div className={`flex items-center gap-1.5 ${hasUppercase ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasUppercase ? "text-emerald-600" : "text-slate-300"}`} />
+                  <span>One uppercase letter</span>
+                </div>
+                <div className={`flex items-center gap-1.5 ${hasNumber ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasNumber ? "text-emerald-600" : "text-slate-300"}`} />
+                  <span>One number</span>
+                </div>
+                <div className={`flex items-center gap-1.5 ${hasSpecial ? "text-emerald-600 font-bold" : "text-slate-400"}`}>
+                  <Check className={`w-3.5 h-3.5 ${hasSpecial ? "text-emerald-600" : "text-slate-300"}`} />
+                  <span>One special character</span>
+                </div>
+              </div>
+
+              {/* Agreement Checkbox */}
+              <div className="pt-2">
+                <label className="flex items-start gap-2.5 cursor-pointer select-none text-[11px] sm:text-xs text-slate-600 leading-snug">
+                  <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 rounded text-[#00a896] focus:ring-[#00a896] accent-[#00a896] cursor-pointer"
+                  />
+                  <span>
+                    I agree to TravlTik's{" "}
+                    <a href="/terms" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                      Terms & Conditions
+                    </a>{" "}
+                    and{" "}
+                    <a href="/privacy" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                      Privacy Policy
+                    </a>
+                  </span>
+                </label>
+              </div>
+
+              {/* Action Button: Create Account */}
+              <button
+                type="submit"
+                className="w-full mt-3 py-3.5 px-4 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-sm rounded-2xl shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Create Account</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              {/* Already have account */}
+              <div className="text-center pt-2 text-xs text-slate-500">
+                Already have an account?{" "}
+                <a href="/login" className="font-bold text-[#00a896] hover:underline">
+                  Sign in
+                </a>
+              </div>
+            </form>
           </div>
         )}
 
-        {/* WIZARD CONTAINER FOR STEPS 1, 2, 3 */}
-        {currentStep >= 1 && currentStep <= 3 && (
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90 space-y-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            
-            {/* STEP HEADER & WIZARD PROGRESS BAR */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div>
-                <span className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  STEP {currentStep}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {currentStep === 1 && "Business Information"}
-                  {currentStep === 2 && "Services & Expertise"}
-                  {currentStep === 3 && "Location & Verification"}
-                </h2>
-                <p className="text-sm text-slate-500 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {currentStep === 1 && "Tell us about your business"}
-                  {currentStep === 2 && "Tell us about your services"}
-                  {currentStep === 3 && "Help clients find and trust you"}
-                </p>
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* STEP 2: BUSINESS DETAILS                                             */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {step === 2 && (
+          <form onSubmit={handleStep2Next} className="space-y-4 animate-fade-in">
+            {/* Top Indicator */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
+                <span>Step 2 of 4</span>
+                <span className="text-[#00a896]">50% Completed</span>
               </div>
-
-              <div className="text-right">
-                <span className="text-xs font-black text-slate-900 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
-                  {currentStep}/3
-                </span>
+              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="w-1/2 h-full bg-[#00a896] rounded-full transition-all duration-300" />
               </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Tell us about your business
+              </h2>
             </div>
 
-            {/* Progress Bar Indicator */}
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-slate-900 h-full transition-all duration-300 ease-out"
-                style={{ width: `${(currentStep / 3) * 100}%` }}
+            {/* Business / Company Name */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Business / Company Name *
+              </label>
+              <input
+                type="text"
+                required
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                placeholder="Enter business name"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
               />
             </div>
 
-            {/* STEP 1: BUSINESS INFORMATION */}
-            {currentStep === 1 && (
-              <div className="space-y-5 animate-premium-fade" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {/* Business Type */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Business Type *
+              </label>
+              <select
+                value={businessType}
+                onChange={(e) => setBusinessType(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+              >
+                {BUSINESS_TYPES.map(bt => (
+                  <option key={bt} value={bt}>{bt}</option>
+                ))}
+              </select>
+            </div>
 
-                {/* Clean Standard Continue with Google Button */}
-                <button
-                  type="button"
-                  onClick={handleGoogleSignup}
-                  onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
-                  disabled={googleLoading}
-                  className="w-full bg-white hover:bg-slate-50 text-slate-900 font-bold py-3.5 px-4 rounded-2xl border border-slate-300 transition-all flex items-center justify-center gap-3 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99]"
+            {/* Year Established */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Year Established
+              </label>
+              <select
+                value={yearEstablished}
+                onChange={(e) => setYearEstablished(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+              >
+                {ESTABLISHED_YEARS.map(yr => (
+                  <option key={yr} value={yr}>{yr}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Business Email */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Business Email *
+              </label>
+              <input
+                type="email"
+                required
+                value={businessEmail}
+                onChange={(e) => setBusinessEmail(e.target.value)}
+                placeholder="Enter business email"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+              />
+            </div>
+
+            {/* Business Phone */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Business Phone
+              </label>
+              <div className="flex gap-2">
+                <span className="px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-xs font-bold text-slate-600 flex items-center">
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  value={businessPhone}
+                  onChange={(e) => setBusinessPhone(e.target.value)}
+                  placeholder="Enter business phone"
+                  className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Website (Optional) */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Website (Optional)
+              </label>
+              <input
+                type="url"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                placeholder="Enter website URL"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all"
+              />
+            </div>
+
+            {/* Location: Country & State */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Country *
+                </label>
+                <select
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
                 >
-                  {googleLoading ? (
-                    <span className="flex items-center gap-2 text-sm font-bold text-slate-600">
-                      <span className="w-4 h-4 border-2 border-slate-300 border-t-slate-900 rounded-full animate-spin" />
-                      <span>Connecting Google...</span>
-                    </span>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                      </svg>
-                      <span className="text-sm font-bold text-slate-800">
-                        Continue with Google
-                      </span>
-                    </>
-                  )}
-                </button>
-
-                <div className="relative flex items-center justify-center my-3">
-                  <div className="border-t border-slate-200 w-full" />
-                  <span className="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest absolute">Or register with email</span>
-                </div>
-
-                {/* First Name + Last Name */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>First Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="Enter your first name"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Last Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Enter your last name"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    />
-                  </div>
-                </div>
-
-                {/* Business Name */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={businessName}
-                    onChange={(e) => setBusinessName(e.target.value)}
-                    placeholder="Enter your business name"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  />
-                </div>
-
-                {/* Password & Confirm Password */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password *</label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Create a password (min 6 chars)"
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896] pr-10"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                      >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Confirm Password *</label>
-                    <div className="relative">
-                      <input
-                        type={showConfirmPassword ? "text" : "password"}
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Re-enter your password"
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896] pr-10"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                    </div>
-                    {/* INLINE POP ERROR RIGHT UNDER CONFIRM PASSWORD FIELD */}
-                    {(confirmPassword && password !== confirmPassword) || (validationError && validationError.includes("Passwords do not match")) ? (
-                      <div className="mt-2 p-2.5 bg-rose-50 border border-rose-300 text-rose-700 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm animate-pulse">
-                        <span className="bg-rose-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0">!</span>
-                        <span>Password does not match! Please verify your password.</span>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Type *</label>
-                    <CustomSelect
-                      value={businessType}
-                      onChange={setBusinessType}
-                      options={[
-                        { value: "Registered consultancy", label: "Registered consultancy" },
-                        { value: "Authorised immigration / visa appeal lawyer", label: "Authorised immigration / visa appeal lawyer" },
-                        { value: "Education & Training Institute", label: "Education & Training Institute" },
-                        { value: "Freelancer", label: "Freelancer" },
-                        { value: "Employer / HR agency", label: "Employer / HR agency" },
-                        { value: "Tour operator", label: "Tour operator" },
-                      ]}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Years in Business *</label>
-                    <CustomSelect
-                      value={yearsInBusiness}
-                      onChange={setYearsInBusiness}
-                      options={[
-                        { value: "Less than 1 year", label: "Less than 1 year" },
-                        { value: "1-2 years", label: "1-2 years" },
-                        { value: "3-5 years", label: "3-5 years" },
-                        { value: "5-10 years", label: "5-10 years" },
-                        { value: "10+ years", label: "10+ years" },
-                      ]}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Email Address *</label>
-                  <input
-                    type="email"
-                    required
-                    value={emailAddress}
-                    onChange={(e) => setEmailAddress(e.target.value)}
-                    placeholder="you@company.com"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Company Logo</label>
-                    <label
-                      htmlFor="company-logo-upload"
-                      className="block border-2 border-dashed border-slate-300 rounded-2xl p-5 text-center bg-slate-50/50 hover:bg-slate-50 hover:border-[#00a896] transition-all cursor-pointer group"
-                    >
-                      {companyLogo ? (
-                        <div className="relative">
-                          <img
-                            src={companyLogo}
-                            alt="Company Logo"
-                            className="w-20 h-20 object-contain rounded-xl mx-auto border border-slate-200"
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => { e.preventDefault(); setCompanyLogo(null); }}
-                            className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white rounded-full text-[10px] flex items-center justify-center font-bold hover:bg-rose-600"
-                          >
-                            ×
-                          </button>
-                          <p className="text-[11px] font-semibold text-[#00a896] mt-2">✓ Logo uploaded — click to change</p>
-                        </div>
-                      ) : (
-                        <>
-                          <Upload className="w-7 h-7 text-slate-400 group-hover:text-[#00a896] mx-auto mb-2 transition-colors" />
-                          <p className="text-xs font-bold text-slate-700" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Click to upload logo</p>
-                          <p className="text-[10px] font-semibold text-slate-400 mt-1">PNG, JPG (Max 2MB)</p>
-                        </>
-                      )}
-                    </label>
-                    <input
-                      id="company-logo-upload"
-                      type="file"
-                      accept="image/png,image/jpeg,image/jpg,image/webp"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        if (file.size > 2 * 1024 * 1024) {
-                          setValidationError("Logo file size must be under 2MB.");
-                          return;
-                        }
-                        const reader = new FileReader();
-                        reader.onload = (ev) => setCompanyLogo(ev.target?.result as string);
-                        reader.readAsDataURL(file);
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-extrabold text-slate-900">Business Description *</label>
-                      <span className="text-[10px] font-bold text-slate-400">{businessDescription.length}/300</span>
-                    </div>
-                    <textarea
-                      maxLength={300}
-                      rows={4}
-                      value={businessDescription}
-                      onChange={(e) => setBusinessDescription(e.target.value)}
-                      placeholder="Briefly describe your business and services you offer..."
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] resize-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Footer Controls */}
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1">
-                    <Lock className="w-3 h-3 text-[#00a896]" />
-                    <span>We save your progress automatically</span>
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={() => goToNextStep(2)}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <span>Next Step</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+                  <option value="India">India</option>
+                  <option value="United States">United States</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Australia">Australia</option>
+                  <option value="UAE">UAE</option>
+                </select>
               </div>
-            )}
 
-            {/* STEP 2: SERVICES & EXPERTISE */}
-            {currentStep === 2 && (
-              <div className="space-y-6 animate-premium-fade">
-                
-                {/* Services You Offer */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-extrabold text-slate-900">Services You Offer (Select all that apply)</label>
-                  <div className="flex flex-wrap gap-2">
-                    {defaultServices.map((svc, i) => {
-                      const isSelected = selectedServices.includes(svc);
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => toggleService(svc)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                            isSelected
-                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
-                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                          }`}
-                        >
-                          {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
-                          <span>{svc}</span>
-                        </button>
-                      );
-                    })}
-
-                    <button
-                      type="button"
-                      onClick={() => setShowAddCustomService(true)}
-                      className="px-3.5 py-2 rounded-xl text-xs font-extrabold border border-dashed border-slate-400 text-slate-700 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer flex items-center gap-1"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-
-                  {/* INLINE POP ERROR RIGHT UNDER SERVICE CHIPS SELECTION */}
-                  {selectedServices.length === 0 && validationError && validationError.includes("at least one service") && (
-                    <div className="mt-2.5 p-3 bg-rose-50 border-2 border-rose-400 text-rose-700 text-xs font-extrabold rounded-2xl flex items-center justify-between shadow-md animate-pulse">
-                      <div className="flex items-center gap-2">
-                        <span className="bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-black shrink-0">!</span>
-                        <span>Please select at least one service you offer to continue.</span>
-                      </div>
-                      <span className="bg-rose-600 text-white text-[10px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wider">Required Field</span>
-                    </div>
-                  )}
-
-                  {showAddCustomService && (
-                    <div className="flex gap-2 pt-2 max-w-md">
-                      <input
-                        type="text"
-                        value={customServiceInput}
-                        onChange={(e) => setCustomServiceInput(e.target.value)}
-                        placeholder="Enter custom service name"
-                        className="flex-1 px-3.5 py-2 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-slate-900"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleAddCustomService}
-                        className="bg-[#0c1a2e] text-white px-4 py-2 rounded-xl text-xs font-bold"
-                      >
-                        Add
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Countries You Deal With */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-extrabold text-slate-900">Countries You Deal With (Select all that apply)</label>
-                  <div className="flex flex-wrap gap-2">
-                    {defaultCountries.map((c, i) => {
-                      const isSelected = selectedCountries.includes(c.name);
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => toggleCountry(c.name)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-2 ${
-                            isSelected
-                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
-                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                          }`}
-                        >
-                          <span>{c.flag}</span>
-                          <span>{c.name}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Languages Spoken */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-extrabold text-slate-900">Languages Spoken (Select all that apply)</label>
-                  <div className="flex flex-wrap gap-2">
-                    {defaultLanguages.map((lang, i) => {
-                      const isSelected = selectedLanguages.includes(lang);
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => toggleLanguage(lang)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                            isSelected
-                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
-                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                          }`}
-                        >
-                          {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
-                          <span>{lang}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Consultation Mode */}
-                <div className="space-y-2.5">
-                  <label className="block text-xs font-extrabold text-slate-900">Consultation Mode</label>
-                  <div className="flex items-center gap-6 bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="consultMode"
-                        checked={consultationMode === "Online"}
-                        onChange={() => setConsultationMode("Online")}
-                        className="accent-[#0c1a2e]"
-                      />
-                      <span>Online</span>
-                    </label>
-
-                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="consultMode"
-                        checked={consultationMode === "In Office"}
-                        onChange={() => setConsultationMode("In Office")}
-                        className="accent-[#0c1a2e]"
-                      />
-                      <span>In Office</span>
-                    </label>
-
-                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="consultMode"
-                        checked={consultationMode === "Both"}
-                        onChange={() => setConsultationMode("Both")}
-                        className="accent-[#0c1a2e]"
-                      />
-                      <span>Both</span>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Footer Controls */}
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(1)}
-                    className="w-full sm:w-auto px-6 py-3 border border-slate-300 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Back</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => goToNextStep(3)}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <span>Next Step</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  State / Province
+                </label>
+                <input
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  placeholder="Select state"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                />
               </div>
-            )}
+            </div>
 
-            {/* STEP 3: LOCATION & VERIFICATION */}
-            {currentStep === 3 && (
-              <div className="space-y-6 animate-premium-fade">
-                
-                {/* Business Location Dropdowns */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Business Location</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Country *</label>
-                      <CustomSelect
-                        value={country}
-                        onChange={setCountry}
-                        options={[
-                          { value: "India", label: "India 🇮🇳" },
-                          { value: "UAE", label: "UAE 🇦🇪" },
-                          { value: "United Kingdom", label: "United Kingdom 🇬🇧" },
-                          { value: "Canada", label: "Canada 🇨🇦" },
-                          { value: "Australia", label: "Australia 🇦🇺" },
-                          { value: "USA", label: "USA 🇺🇸" },
-                          { value: "Germany", label: "Germany 🇩🇪" },
-                          { value: "Singapore", label: "Singapore 🇸🇬" },
-                          { value: "New Zealand", label: "New Zealand 🇳🇿" },
-                          { value: "Other", label: "Other 🌐" },
-                        ]}
-                        className=""
-                      />
-                    </div>
+            {/* City */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                City *
+              </label>
+              <input
+                type="text"
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Enter city"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+              />
+            </div>
 
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">State *</label>
-                      <input
-                        type="text"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                        placeholder="Select State"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      />
-                    </div>
+            {/* Business Address */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Business Address *
+              </label>
+              <input
+                type="text"
+                required
+                value={businessAddress}
+                onChange={(e) => setBusinessAddress(e.target.value)}
+                placeholder="Enter full business address"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+              />
+            </div>
 
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">City *</label>
-                      <input
-                        type="text"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        placeholder="Select City"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      />
-                    </div>
-                  </div>
-                </div>
+            {/* PIN / ZIP Code */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                PIN / ZIP Code
+              </label>
+              <input
+                type="text"
+                value={pinCode}
+                onChange={(e) => setPinCode(e.target.value)}
+                placeholder="Enter PIN / ZIP code"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+              />
+            </div>
 
-                {/* Detailed Address */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Office Address Details</h4>
-
-                  {/* Street Address */}
-                  <div>
-                    <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Street Address *</label>
-                    <input
-                      type="text"
-                      value={streetAddress}
-                      onChange={(e) => setStreetAddress(e.target.value)}
-                      placeholder="Building no., Street name, Area"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    />
-                  </div>
-
-                  {/* Landmark + Pin/Zip Code */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Landmark</label>
-                      <input
-                        type="text"
-                        value={landmark}
-                        onChange={(e) => setLandmark(e.target.value)}
-                        placeholder="e.g. Near City Mall, Opposite Metro"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Pin / Zip Code *</label>
-                      <input
-                        type="text"
-                        value={pinCode}
-                        onChange={(e) => setPinCode(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                        placeholder="e.g. 110001"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Google Maps / Pin Location — removed */}
-                </div>
-
-                {/* Contact Information */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Contact Information</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Phone Number *</label>
-                      <input
-                        type="tel"
-                        required
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">WhatsApp Number</label>
-                      <input
-                        type="tel"
-                        value={whatsappNumber}
-                        onChange={(e) => setWhatsappNumber(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Business Website (Optional)</label>
-                      <input
-                        type="url"
-                        value={businessWebsite}
-                        onChange={(e) => setBusinessWebsite(e.target.value)}
-                        placeholder="https://www.yourwebsite.com"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Verification Documents (Optional but recommended) */}
-              <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Verification Documents (Optional but recommended)</h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {[
-                      { key: "businessReg", label: "Business Registration", accept: ".pdf,image/*" },
-                      { key: "profLicense", label: "Professional License", accept: ".pdf,image/*" },
-                      { key: "officePhoto", label: "Office Photo", accept: "image/*" },
-                      { key: "govId", label: "Government ID", accept: ".pdf,image/*" }
-                    ].map((doc, i) => {
-                      const isUploaded = !!docUploads[doc.key];
-                      const fileName = typeof docUploads[doc.key] === 'string' ? docUploads[doc.key] as string : null;
-                      return (
-                        <label
-                          key={i}
-                          htmlFor={`doc-upload-${doc.key}`}
-                          className={`p-3 border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all block ${
-                            isUploaded
-                              ? 'bg-teal-50/80 border-[#00a896] text-[#00a896]'
-                              : 'bg-slate-50/50 border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-[#00a896]'
-                          }`}
-                        >
-                          <Upload className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                          <p className="text-[11px] font-extrabold leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{doc.label}</p>
-                          <span className="text-[9px] font-bold block mt-1 truncate px-1">
-                            {isUploaded ? (fileName ? `✓ ${fileName.slice(0, 12)}…` : "✓ Uploaded") : "Click to Upload"}
-                          </span>
-                          <input
-                            id={`doc-upload-${doc.key}`}
-                            type="file"
-                            accept={doc.accept}
-                            className="hidden"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (!file) return;
-                              if (file.size > 10 * 1024 * 1024) {
-                                setValidationError(`${doc.label} must be under 10MB.`);
-                                return;
-                              }
-                              setDocUploads(prev => ({ ...prev, [doc.key]: file.name }));
-                            }}
-                          />
-                        </label>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Footer Controls */}
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(2)}
-                    className="w-full sm:w-auto px-6 py-3 border border-slate-300 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Back</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCompleteAndContinue}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <span>Complete & Continue</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+            {/* Navigation Buttons: Back & Next */}
+            <div className="flex items-center justify-between pt-4 gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="px-6 py-3 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-2xs"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="px-8 py-3 rounded-2xl bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
+              >
+                <span>Next</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </form>
         )}
 
-        {/* STEP 3.5: OTP VERIFICATION MODAL / OVERLAY */}
-        {showOtpModal && (
-          <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-up">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200/90 space-y-5 text-center relative" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              
-              <button
-                onClick={() => setShowOtpModal(false)}
-                className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* STEP 3: SERVICES & EXPERTISE                                         */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {step === 3 && (
+          <div className="space-y-6 animate-fade-in">
+            {/* Top Indicator */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
+                <span>Step 3 of 4</span>
+                <span className="text-[#00a896]">75% Completed</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="w-3/4 h-full bg-[#00a896] rounded-full transition-all duration-300" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Your Services & Expertise
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Select the services you provide and destinations you specialize in.
+              </p>
+            </div>
 
-              <div className="w-14 h-14 bg-slate-100 border border-slate-200 text-slate-900 rounded-2xl flex items-center justify-center mx-auto shadow-2xs">
-                <Mail className="w-7 h-7" />
+            {/* 3x3 Grid of Services */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-2.5">
+                I provide services as (Select all that apply)
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {AVAILABLE_SERVICES.map((s) => {
+                  const Icon = s.icon;
+                  const isSelected = selectedServices.includes(s.name);
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => toggleService(s.name)}
+                      className={`relative p-3.5 sm:p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer min-h-[90px] sm:min-h-[100px] ${
+                        isSelected
+                          ? "border-2 border-[#00a896] bg-emerald-50/40 shadow-xs"
+                          : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
+                      }`}
+                    >
+                      {/* Checkmark indicator */}
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <div className={`p-1.5 rounded-xl ${isSelected ? "bg-[#00a896] text-white" : "bg-slate-100 text-slate-600"}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${
+                          isSelected ? "border-[#00a896] bg-[#00a896] text-white" : "border-slate-300 bg-white"
+                        }`}>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                      </div>
+
+                      <span className={`text-xs font-bold leading-snug ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
+                        {s.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Destinations Specialization */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-2">
+                Destinations you specialize in (Select all that apply)
+              </label>
+
+              {/* Country search input */}
+              <div className="relative mb-3">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={destinationSearch}
+                  onChange={(e) => setDestinationSearch(e.target.value)}
+                  placeholder="Search countries..."
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00a896] transition-all"
+                />
               </div>
 
-              <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Verify Your Contact Email</h3>
-                <p className="text-xs font-semibold text-slate-500 mt-1.5 leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  We have sent a 6-digit verification code to
-                </p>
-
-                {!isEditingEmail ? (
-                  <div className="inline-flex items-center gap-2 bg-slate-100 px-3.5 py-1.5 rounded-full mt-2 border border-slate-200">
-                    <strong className="text-slate-800 text-xs font-bold">{emailAddress || "your email address"}</strong>
+              {/* Selected Country Pills */}
+              <div className="flex flex-wrap gap-1.5 mb-2.5">
+                {selectedDestinations.map(d => (
+                  <span
+                    key={d}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-[#008f80] text-xs font-bold rounded-full"
+                  >
+                    <span>{d}</span>
                     <button
                       type="button"
-                      onClick={() => {
-                        setTempEmail(emailAddress);
-                        setIsEditingEmail(true);
-                      }}
-                      className="text-slate-900 hover:underline text-xs font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
-                      title="Edit Email Address"
+                      onClick={() => toggleDestination(d)}
+                      className="hover:text-red-500 cursor-pointer"
                     >
-                      <Edit2 className="w-3 h-3" />
-                      <span>Edit</span>
+                      <X className="w-3 h-3" />
                     </button>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center gap-2 mt-2.5">
-                    <input
-                      type="email"
-                      value={tempEmail}
-                      onChange={(e) => setTempEmail(e.target.value)}
-                      placeholder="Enter correct email"
-                      className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 w-full max-w-[210px]"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      autoFocus
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (tempEmail.trim()) {
-                          const newEmail = tempEmail.trim();
-                          setEmailAddress(newEmail);
-                          setIsEditingEmail(false);
-                          setResendCooldown(30);
-                          sendVerificationEmail(newEmail);
-                        }
-                      }}
-                      className="px-3 py-1.5 bg-[#0c1a2e] hover:bg-slate-800 text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95"
-                    >
-                      Save & Send Code
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsEditingEmail(false)}
-                      className="px-2 py-1.5 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {otpError && (
-                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl text-center">
-                  {otpError}
-                </div>
-              )}
-
-              {/* 6 Digit OTP Inputs */}
-              <div className="flex justify-center gap-2 pt-2">
-                {otpDigits.map((digit, idx) => (
-                  <input
-                    key={idx}
-                    id={`reg-otp-box-${idx}`}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleDigitChange(e.target.value, idx)}
-                    onKeyDown={(e) => handleDigitKeyDown(e, idx)}
-                    className="w-10 h-12 text-center text-lg font-black bg-slate-50 border border-slate-300 rounded-xl focus:border-slate-900 outline-none"
-                  />
+                  </span>
                 ))}
               </div>
 
-              <div className="text-xs font-semibold text-slate-500 pt-1">
-                {resendCooldown > 0 ? (
-                  <span>Resend code in <strong className="text-slate-800">{resendCooldown}s</strong></span>
-                ) : (
+              {/* Quick Suggestion Chips */}
+              <div className="flex flex-wrap gap-1.5 items-center">
+                <span className="text-[11px] font-semibold text-slate-400 mr-1">
+                  Suggestions:
+                </span>
+                {(destinationSearch ? filteredDestinations : POPULAR_DESTINATIONS.filter(d => !selectedDestinations.includes(d))).slice(0, 6).map(d => (
                   <button
-                    onClick={() => {
-                      setResendCooldown(30);
-                      sendVerificationEmail(emailAddress);
-                    }}
-                    className="text-slate-900 font-bold hover:underline cursor-pointer"
+                    key={d}
+                    type="button"
+                    onClick={() => toggleDestination(d)}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold rounded-full transition-all cursor-pointer flex items-center gap-1"
                   >
-                    Resend Verification Code
+                    <span>+ {d}</span>
                   </button>
-                )}
+                ))}
+              </div>
+            </div>
+
+            {/* Years of Experience */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Years of Experience
+              </label>
+              <select
+                value={experience}
+                onChange={(e) => setExperience(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00a896] cursor-pointer"
+              >
+                {EXPERIENCE_OPTIONS.map(exp => (
+                  <option key={exp} value={exp}>{exp}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Languages Spoken */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-2">
+                Languages Spoken
+              </label>
+              <div className="flex flex-wrap gap-1.5">
+                {POPULAR_LANGUAGES.map(lang => {
+                  const isSel = selectedLanguages.includes(lang);
+                  return (
+                    <button
+                      key={lang}
+                      type="button"
+                      onClick={() => toggleLanguage(lang)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                        isSel
+                          ? "border-[#00a896] bg-[#00a896] text-white shadow-2xs"
+                          : "border-slate-200 bg-slate-50/80 text-slate-700 hover:bg-slate-100"
+                      }`}
+                    >
+                      {lang}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Navigation Buttons: Back & Next */}
+            <div className="flex items-center justify-between pt-4 gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(2)}
+                className="px-6 py-3 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-2xs"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={handleStep3Next}
+                className="px-8 py-3 rounded-2xl bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] cursor-pointer flex items-center gap-2"
+              >
+                <span>Next</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* STEP 4: REVIEW & SUBMIT (Documents omitted per user request)          */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {step === 4 && (
+          <div className="space-y-6 animate-fade-in">
+            {/* Top Indicator */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
+                <span>Step 4 of 4</span>
+                <span className="text-[#00a896]">100% Completed</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="w-full h-full bg-[#00a896] rounded-full transition-all duration-300" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Review & Submit
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Please review your information before submitting.
+              </p>
+            </div>
+
+            {/* Summary Box with Edit link */}
+            <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-5 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 className="text-sm font-bold text-slate-900">
+                  Summary
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="text-xs font-bold text-[#00a896] hover:underline cursor-pointer"
+                >
+                  Edit
+                </button>
               </div>
 
-              {/* Cloudflare Turnstile Bot Protection */}
+              {/* Item: Business Name */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <Building className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Business Name</div>
+                  <div className="font-bold text-slate-800">{businessName || "Not provided"}</div>
+                </div>
+              </div>
+
+              {/* Item: Business Type */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <Briefcase className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Business Type</div>
+                  <div className="font-bold text-slate-800">{businessType}</div>
+                </div>
+              </div>
+
+              {/* Item: Services */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <Shield className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Services</div>
+                  <div className="font-bold text-slate-800">{selectedServices.join(", ")}</div>
+                </div>
+              </div>
+
+              {/* Item: Destinations */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Destinations</div>
+                  <div className="font-bold text-slate-800">{selectedDestinations.join(", ")}</div>
+                </div>
+              </div>
+
+              {/* Item: Experience */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Experience</div>
+                  <div className="font-bold text-slate-800">{experience}</div>
+                </div>
+              </div>
+
+              {/* Item: Languages */}
+              <div className="flex items-start gap-3 text-xs sm:text-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-50 text-[#00a896] shrink-0 mt-0.5">
+                  <Globe className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-slate-400">Languages</div>
+                  <div className="font-bold text-slate-800">{selectedLanguages.join(", ")}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Confirmation Box */}
+            <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 text-[11px] sm:text-xs text-slate-700">
+              <CheckCircle2 className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+              <span className="leading-relaxed">
+                By submitting, you confirm that all the information provided is accurate and you agree to our{" "}
+                <a href="/terms" target="_blank" className="font-bold text-[#00a896] hover:underline">
+                  Terms & Conditions
+                </a>.
+              </span>
+            </div>
+
+            {/* Cloudflare Turnstile bot protection */}
+            <div className="flex justify-center pt-1">
               <TurnstileWidget
                 onSuccess={(t) => setTurnstileToken(t)}
                 onError={() => setTurnstileToken("")}
                 onExpire={() => setTurnstileToken("")}
                 theme="light"
               />
+            </div>
 
+            {/* Submit Button */}
+            <button
+              type="button"
+              onClick={handleSubmitApplication}
+              disabled={isSubmitting}
+              className="w-full py-4 px-6 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-75"
+            >
+              <Send className="w-4 h-4" />
+              <span>{isSubmitting ? "Submitting Application..." : "Submit Application"}</span>
+            </button>
+
+            {/* Footer subtext */}
+            <p className="text-center text-xs text-slate-400 font-medium">
+              You will receive an email once your application is reviewed.
+            </p>
+
+            {/* Back Button */}
+            <div className="flex justify-center pt-2">
               <button
                 type="button"
-                onClick={handleVerifyOtp}
-                disabled={verifyingOtp}
-                className="w-full py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer active:scale-98 disabled:bg-slate-300"
+                onClick={() => setStep(3)}
+                className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
               >
-                {verifyingOtp ? "Verifying Code..." : "Verify Code & Finish"}
+                ← Back to Services & Expertise
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 4: COMPLETION SCREEN ("YOU'RE ALL SET!") */}
-        {currentStep === 4 && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90 text-center space-y-6 animate-premium-fade" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            
-            {/* Top Celebration Badge */}
-            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[10px] font-black px-4 py-1.5 rounded-full border border-emerald-300 uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              <span>YOU'RE ALL SET!</span>
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {/* STEP 5: CELEBRATION / SUCCESS SCREEN                                 */}
+        {/* ──────────────────────────────────────────────────────────────────── */}
+        {step === 5 && (
+          <div className="text-center py-6 sm:py-8 space-y-4 animate-fade-in">
+            {/* Animated Badge */}
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#00a896] shadow-inner animate-bounce">
+              <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12" />
             </div>
 
-            {/* Checkmark Graphic */}
-            <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
-              <div className="w-24 h-24 bg-[#00a896] rounded-full flex items-center justify-center text-white shadow-xl shadow-teal-500/20">
-                <CheckCircle className="w-14 h-14" />
-              </div>
-            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Application Submitted!
+            </h2>
 
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Congratulations!</h2>
-              <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-md mx-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Your account has been created successfully. Your profile is now live on TravlTik.
-              </p>
-            </div>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+              Thank you for applying to become a verified TravlTik Service Provider. We have sent a confirmation email to <span className="font-bold text-slate-900">{businessEmail || email}</span>.
+            </p>
 
-            {/* Profile Completion Box */}
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-5 max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xs">
-              <div className="flex items-center gap-4">
-                <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
-                  <svg className="w-14 h-14 transform -rotate-90" viewBox="0 0 36 36">
-                    <path className="text-slate-200" strokeWidth="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path className="text-[#00a896]" strokeWidth="3" strokeDasharray="100, 100" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                  </svg>
-                  <span className="absolute text-xs font-black text-[#00a896]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>100%</span>
-                </div>
-                <div>
-                  <h4 className="text-xs font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Profile Completion</h4>
-                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Awesome! Your registration & profile are 100% complete and live.</p>
-                </div>
-              </div>
-
-              <a
-                href="/consultant/dashboard"
-                className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 transition-colors shadow-xs flex items-center gap-1 cursor-pointer"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                <span>Go to Dashboard</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* What's Next Checklist */}
-            <div className="bg-teal-50/60 border border-teal-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-3">
-              <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <Shield className="w-4 h-4 text-[#00a896]" />
-                <span>WHAT'S NEXT?</span>
-              </h4>
-              <ul className="space-y-2.5 text-xs font-bold text-slate-700" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <li className="flex items-center gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
-                  <span>Our team will verify your details</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
-                  <span>You can start receiving enquiries</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
-                  <span>Build your reputation with reviews</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
-                  <span>Grow your business globally</span>
-                </li>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl max-w-md mx-auto text-left text-xs space-y-2">
+              <div className="font-bold text-slate-800">What happens next?</div>
+              <ul className="list-disc pl-4 space-y-1 text-slate-600">
+                <li>Our verification team will review your business credentials.</li>
+                <li>Your listing on the TravlTik marketplace will be activated upon review.</li>
+                <li>You can now access your Consultant Dashboard to customize your profile and consultation fees.</li>
               </ul>
             </div>
 
-            {/* Go to Dashboard CTA */}
-            <div className="pt-2">
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto">
               <a
                 href="/consultant/dashboard"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white text-xs sm:text-sm font-black rounded-2xl shadow-xl transition-all active:scale-98 cursor-pointer"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                className="w-full sm:w-auto py-3.5 px-6 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition-all text-center"
               >
-                <LayoutDashboard className="w-4.5 h-4.5" />
-                <span>Go to Dashboard</span>
+                Go to Consultant Dashboard
+              </a>
+              <a
+                href="/"
+                className="w-full sm:w-auto py-3.5 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm rounded-2xl transition-all text-center"
+              >
+                Return to Home
               </a>
             </div>
           </div>
         )}
+
       </div>
+
     </div>
   );
 }
@@ -1563,3 +1247,5 @@ export function ExpertSignupPortal() {
     </AuthProvider>
   );
 }
+
+export default ExpertSignupPortal;

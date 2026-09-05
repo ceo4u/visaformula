@@ -1012,8 +1012,8 @@ export function UserDashboard() {
     const [vaultActionToast, setVaultActionToast] = useState<string | null>(null);
     const vaultFileInputRef = useRef<HTMLInputElement | null>(null);
     const replaceFileInputRef = useRef<HTMLInputElement | null>(null);
-    const [vaultDocFilter, setVaultDocFilter] = useState<"all" | "mandatory" | "recommended">("all");
     const [vaultUploadTargetReq, setVaultUploadTargetReq] = useState<{ key: string; title: string; type: string } | null>(null);
+    const vaultUploadTargetReqRef = useRef<{ key: string; title: string; type: string } | null>(null);
     const [expandedDocKey, setExpandedDocKey] = useState<string | null>(null);
     const [inspectDocData, setInspectDocData] = useState<{
         title: string;
@@ -6188,7 +6188,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             : (routeDocumentsList.find(d => d.isUploaded) || (routeDocumentsList.length > 0 ? routeDocumentsList[0] : null));
 
                         // Handler for uploading documents directly into vault with AI OCR extraction
-                        const handleUploadVaultDocument = async (file: File) => {
+                        const handleUploadVaultDocument = async (file: File, targetOverride?: { key: string; title: string; type: string } | null) => {
                             if (!file) return;
                             setIsScanningVaultDoc(true);
                             const fileSizeFormatted = file.size > 1024 * 1024
@@ -6198,173 +6198,193 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             try {
                                 const reader = new FileReader();
                                 reader.onload = async () => {
-                                    const base64 = reader.result as string;
-                                    const docReq = vaultUploadTargetReq;
-                                    const effectiveTitle = docReq ? docReq.title : file.name.replace(/\.[^/.]+$/, "");
-                                    const effectiveKey = docReq ? docReq.key : 'vault_upload';
+                                    try {
+                                        const base64 = (reader.result as string) || '';
+                                        const docReq = targetOverride || vaultUploadTargetReqRef.current || vaultUploadTargetReq;
+                                        const effectiveTitle = docReq ? docReq.title : file.name.replace(/\.[^/.]+$/, "");
+                                        const effectiveKey = docReq ? docReq.key : 'vault_upload';
 
-                                    let scanSummary = 'Verified & Ingested into Encrypted Vault';
-                                    let extractedDocNumber = '';
-                                    let extractedFullName = fullName || '';
-                                    let extractedDob = '';
-                                    let extractedNationality = passportCountry || currentPassName || 'India';
-                                    let extractedSex = 'M';
-                                    let extractedPlaceOfBirth = 'On File';
-                                    let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-                                    let extractedExpiryDate = '';
+                                        let scanSummary = 'Verified & Ingested into Encrypted Vault';
+                                        let extractedDocNumber = '';
+                                        let extractedFullName = fullName || '';
+                                        let extractedDob = '';
+                                        let extractedNationality = passportCountry || currentPassName || 'India';
+                                        let extractedSex = 'M';
+                                        let extractedPlaceOfBirth = 'On File';
+                                        let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                        let extractedExpiryDate = '';
 
-                                    const docNameLower = (effectiveTitle + ' ' + file.name).toLowerCase();
-                                    let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = (docReq?.type as any) || 'other';
-                                    if (type === 'other') {
-                                        if (docNameLower.includes('passport')) type = 'passport';
-                                        else if (docNameLower.includes('visa')) type = 'visa';
-                                        else if (docNameLower.includes('insurance')) type = 'insurance';
-                                        else if (docNameLower.includes('flight') || docNameLower.includes('ticket')) type = 'flight';
-                                        else if (docNameLower.includes('bank') || docNameLower.includes('statement') || docNameLower.includes('financial')) type = 'bank';
-                                        else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
-                                    }
-
-                                    const isPassportUpload = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport');
-
-                                    if (isPassportUpload) {
-                                        try {
-                                            const res = await fetch('/api/ocr-analyze-passport', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                    base64Image: base64,
-                                                    mimeType: file.type || 'image/jpeg',
-                                                    fileName: file.name,
-                                                    targetCountry: selectedDestination || 'Global'
-                                                })
-                                            });
-                                            const json = await res.json();
-                                            if (json?.success && json?.data) {
-                                                const pData = json.data;
-                                                if (pData.passportNumber) extractedDocNumber = pData.passportNumber;
-                                                if (pData.fullName) extractedFullName = pData.fullName;
-                                                if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
-                                                if (pData.nationality) extractedNationality = pData.nationality;
-                                                if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
-                                                if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
-                                                if (pData.issueDate) extractedIssueDate = pData.issueDate;
-                                                if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
-                                                scanSummary = `Passport ${extractedDocNumber || ''} verified. MRZ checksum valid.`;
-                                            }
-                                        } catch(e) {
-                                            console.error('Passport OCR error:', e);
+                                        const docNameLower = (effectiveTitle + ' ' + file.name).toLowerCase();
+                                        let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = (docReq?.type as any) || 'other';
+                                        if (type === 'other') {
+                                            if (docNameLower.includes('passport')) type = 'passport';
+                                            else if (docNameLower.includes('visa')) type = 'visa';
+                                            else if (docNameLower.includes('insurance')) type = 'insurance';
+                                            else if (docNameLower.includes('flight') || docNameLower.includes('ticket')) type = 'flight';
+                                            else if (docNameLower.includes('bank') || docNameLower.includes('statement') || docNameLower.includes('financial')) type = 'bank';
+                                            else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
                                         }
-                                    } else {
-                                        try {
-                                            const res = await fetch('/api/ocr-analyze-document', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                    base64Image: base64,
-                                                    mimeType: file.type || 'application/pdf',
-                                                    documentTitle: effectiveTitle,
-                                                    documentKey: effectiveKey,
-                                                    countryName: selectedDestination,
-                                                    passportCountry: selectedPassport
-                                                })
-                                            });
-                                            const json = await res.json();
-                                            if (json?.success && json?.data) {
-                                                if (json.data.summary) scanSummary = json.data.summary;
-                                                const ext = json.data.extractedDetails || json.data.extracted;
-                                                if (ext) {
-                                                    extractedDocNumber = ext.documentNumber || ext.docNumber || '';
-                                                    if (ext.holderName || ext.fullName) extractedFullName = ext.holderName || ext.fullName;
-                                                    extractedDob = ext.dateOfBirth || ext.dob || '';
-                                                    extractedNationality = ext.nationality || extractedNationality;
-                                                    extractedSex = ext.sex || extractedSex;
-                                                    extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
-                                                    extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
-                                                    extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+
+                                        const isPassportUpload = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport');
+
+                                        if (isPassportUpload) {
+                                            try {
+                                                const res = await fetch('/api/ocr-analyze-passport', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({
+                                                        base64Image: base64,
+                                                        mimeType: file.type || 'image/jpeg',
+                                                        fileName: file.name,
+                                                        targetCountry: selectedDestination || 'Global'
+                                                    })
+                                                });
+                                                if (res.ok) {
+                                                    const json = await res.json();
+                                                    if (json?.success && json?.data) {
+                                                        const pData = json.data;
+                                                        if (pData.passportNumber) extractedDocNumber = pData.passportNumber;
+                                                        if (pData.fullName) extractedFullName = pData.fullName;
+                                                        if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
+                                                        if (pData.nationality) extractedNationality = pData.nationality;
+                                                        if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
+                                                        if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
+                                                        if (pData.issueDate) extractedIssueDate = pData.issueDate;
+                                                        if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
+                                                        scanSummary = `Passport ${extractedDocNumber || ''} verified. MRZ checksum valid.`;
+                                                    }
                                                 }
+                                            } catch(e) {
+                                                console.error('Passport OCR error:', e);
                                             }
-                                        } catch(e) {}
-                                    }
+                                        } else {
+                                            try {
+                                                const res = await fetch('/api/ocr-analyze-document', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({
+                                                        base64Image: base64,
+                                                        mimeType: file.type || 'application/pdf',
+                                                        documentTitle: effectiveTitle,
+                                                        documentKey: effectiveKey,
+                                                        countryName: selectedDestination,
+                                                        passportCountry: selectedPassport
+                                                    })
+                                                });
+                                                if (res.ok) {
+                                                    const json = await res.json();
+                                                    if (json?.success && json?.data) {
+                                                        if (json.data.summary) scanSummary = json.data.summary;
+                                                        const ext = json.data.extractedDetails || json.data.extracted;
+                                                        if (ext) {
+                                                            extractedDocNumber = ext.documentNumber || ext.docNumber || '';
+                                                            if (ext.holderName || ext.fullName) extractedFullName = ext.holderName || ext.fullName;
+                                                            extractedDob = ext.dateOfBirth || ext.dob || '';
+                                                            extractedNationality = ext.nationality || extractedNationality;
+                                                            extractedSex = ext.sex || extractedSex;
+                                                            extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
+                                                            extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
+                                                            extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+                                                        }
+                                                    }
+                                                }
+                                            } catch(e) {}
+                                        }
 
-                                    if (!extractedDocNumber) {
-                                        extractedDocNumber = type === 'passport' ? `P${Math.floor(1000000 + Math.random() * 9000000)}`
-                                            : type === 'insurance' ? `POL-${Math.floor(100000 + Math.random() * 900000)}`
-                                            : type === 'flight' ? `PNR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
-                                            : type === 'bank' ? `ACC-${Math.floor(100000 + Math.random() * 900000)}`
-                                            : `DOC-${Date.now().toString().slice(-6)}`;
-                                    }
+                                        if (!extractedDocNumber) {
+                                            extractedDocNumber = type === 'passport' ? `P${Math.floor(1000000 + Math.random() * 9000000)}`
+                                                : type === 'insurance' ? `POL-${Math.floor(100000 + Math.random() * 900000)}`
+                                                : type === 'flight' ? `PNR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+                                                : type === 'bank' ? `ACC-${Math.floor(100000 + Math.random() * 900000)}`
+                                                : `DOC-${Date.now().toString().slice(-6)}`;
+                                        }
 
-                                    const newDocObj = {
-                                        id: `doc-${Date.now()}`,
-                                        label: file.name,
-                                        title: effectiveTitle,
-                                        type,
-                                        reqKey: effectiveKey,
-                                        isRealUpload: true,
-                                        isUploaded: true,
-                                        docNumber: extractedDocNumber,
-                                        issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || currentPassName || 'India'}` : 'Consular Authority',
-                                        country: extractedNationality || passportCountry || currentPassName || 'India',
-                                        holderName: extractedFullName || fullName || 'Traveler',
-                                        subDetails: scanSummary,
-                                        status: 'verified',
-                                        size: fileSizeFormatted,
-                                        uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                                        expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : '—'),
-                                        scannedMethod: 'OCR Scanned',
-                                        summary: scanSummary,
-                                        fileData: base64,
-                                        ocrData: {
-                                            documentNumber: extractedDocNumber,
+                                        const newDocObj = {
+                                            id: `doc-${Date.now()}`,
+                                            label: file.name,
+                                            title: effectiveTitle,
+                                            type,
+                                            reqKey: effectiveKey,
+                                            isRealUpload: true,
+                                            isUploaded: true,
                                             docNumber: extractedDocNumber,
-                                            fullName: extractedFullName || fullName || '',
-                                            dob: extractedDob || '',
-                                            nationality: extractedNationality || '',
-                                            sex: extractedSex || 'Male',
-                                            placeOfBirth: extractedPlaceOfBirth || '',
-                                            issueDate: extractedIssueDate || '',
-                                            expiryDate: extractedExpiryDate || ''
-                                        }
-                                    };
+                                            issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || currentPassName || 'India'}` : 'Consular Authority',
+                                            country: extractedNationality || passportCountry || currentPassName || 'India',
+                                            holderName: extractedFullName || fullName || 'Traveler',
+                                            subDetails: scanSummary,
+                                            status: 'verified',
+                                            size: fileSizeFormatted,
+                                            uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                                            expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : '—'),
+                                            scannedMethod: 'OCR Scanned',
+                                            summary: scanSummary,
+                                            fileData: base64,
+                                            ocrData: {
+                                                documentNumber: extractedDocNumber,
+                                                docNumber: extractedDocNumber,
+                                                fullName: extractedFullName || fullName || '',
+                                                dob: extractedDob || '',
+                                                nationality: extractedNationality || '',
+                                                sex: extractedSex || 'Male',
+                                                placeOfBirth: extractedPlaceOfBirth || '',
+                                                issueDate: extractedIssueDate || '',
+                                                expiryDate: extractedExpiryDate || ''
+                                            }
+                                        };
 
-                                    setDocuments(prev => {
-                                        const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle);
-                                        const updated = [newDocObj, ...filtered];
-                                        try {
-                                            localStorage.setItem('seeker_documents', JSON.stringify(updated));
-                                        } catch(e) {}
-                                        return updated;
-                                    });
-
-                                    // Mark verified in vaultChecklistState if tied to a requirement key
-                                    if (effectiveKey && effectiveKey !== 'vault_upload') {
-                                        const targetDest = normalizeCountryName(selectedDestination);
-                                        const storageKey = `vault_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
-                                        setVaultChecklistState(prev => {
-                                            const next = {
-                                                ...prev,
-                                                [effectiveKey]: {
-                                                    fileName: file.name,
-                                                    size: fileSizeFormatted,
-                                                    verified: true,
-                                                    uploadedAt: new Date().toLocaleDateString('en-GB')
-                                                }
-                                            };
-                                            try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch(e) {}
-                                            return next;
+                                        setDocuments(prev => {
+                                            const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle);
+                                            const updated = [newDocObj, ...filtered];
+                                            try {
+                                                const forStorage = updated.map(d => ({ ...d, fileData: undefined }));
+                                                localStorage.setItem('seeker_documents', JSON.stringify(forStorage));
+                                            } catch(e) {}
+                                            return updated;
                                         });
-                                    }
 
-                                    setSelectedVaultDoc(newDocObj);
-                                    setVaultUploadTargetReq(null);
+                                        // Mark verified in vaultChecklistState if tied to a requirement key
+                                        if (effectiveKey && effectiveKey !== 'vault_upload') {
+                                            const targetDest = normalizeCountryName(selectedDestination);
+                                            const storageKey = `vault_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+                                            setVaultChecklistState(prev => {
+                                                const next = {
+                                                    ...prev,
+                                                    [effectiveKey]: {
+                                                        fileName: file.name,
+                                                        size: fileSizeFormatted,
+                                                        verified: true,
+                                                        uploadedAt: new Date().toLocaleDateString('en-GB')
+                                                    }
+                                                };
+                                                try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch(e) {}
+                                                return next;
+                                            });
+                                        }
+
+                                        setSelectedVaultDoc(newDocObj);
+                                        setVaultUploadTargetReq(null);
+                                        vaultUploadTargetReqRef.current = null;
+                                        setIsScanningVaultDoc(false);
+                                        setVaultActionToast(`✓ "${effectiveTitle}" uploaded and verified in your Document Vault!`);
+                                        setTimeout(() => setVaultActionToast(null), 3500);
+                                    } catch (innerErr) {
+                                        console.error("Vault doc ingestion inner error:", innerErr);
+                                        setIsScanningVaultDoc(false);
+                                        setVaultUploadTargetReq(null);
+                                        vaultUploadTargetReqRef.current = null;
+                                    }
+                                };
+                                reader.onerror = () => {
                                     setIsScanningVaultDoc(false);
-                                    setVaultActionToast(`✓ "${effectiveTitle}" uploaded and verified in your Document Vault!`);
-                                    setTimeout(() => setVaultActionToast(null), 3500);
+                                    setVaultUploadTargetReq(null);
+                                    vaultUploadTargetReqRef.current = null;
                                 };
                                 reader.readAsDataURL(file);
                             } catch(err) {
+                                console.error("Vault upload outer error:", err);
                                 setIsScanningVaultDoc(false);
                                 setVaultUploadTargetReq(null);
+                                vaultUploadTargetReqRef.current = null;
                             }
                         };
 
@@ -6462,21 +6482,19 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         };
 
                         const handleSubmitStagedPassport = () => {
+                            const passportReq = {
+                                key: 'statutory_passport',
+                                title: 'Original Passport (6+ Months Validity)',
+                                type: 'passport'
+                            };
+                            setVaultUploadTargetReq(passportReq);
+                            vaultUploadTargetReqRef.current = passportReq;
+
                             if (stagedPassportFile) {
-                                setVaultUploadTargetReq({
-                                    key: 'statutory_passport',
-                                    title: 'Original Passport (6+ Months Validity)',
-                                    type: 'passport'
-                                });
-                                handleUploadVaultDocument(stagedPassportFile);
+                                handleUploadVaultDocument(stagedPassportFile, passportReq);
                                 setStagedPassportFile(null);
                                 setStagedPassportPreview(null);
                             } else {
-                                setVaultUploadTargetReq({
-                                    key: 'statutory_passport',
-                                    title: 'Original Passport (6+ Months Validity)',
-                                    type: 'passport'
-                                });
                                 vaultFileInputRef.current?.click();
                             }
                         };
@@ -6496,7 +6514,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     className="hidden"
                                     onChange={(e) => {
                                         const f = e.target.files?.[0];
-                                        if (f) handleUploadVaultDocument(f);
+                                        if (f) handleUploadVaultDocument(f, vaultUploadTargetReqRef.current || vaultUploadTargetReq);
                                         e.target.value = '';
                                     }}
                                 />
@@ -6986,64 +7004,72 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         activeSelectedDoc.reqKey?.toLowerCase().includes('passport') ||
                                         (activeSelectedDoc.title || '').toLowerCase().includes('passport');
 
-                                    const displayDocNumber = activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
-                                    const displayFullName = activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
-                                    const nameParts = displayFullName === '—' ? [] : displayFullName.trim().split(/\s+/);
-                                    const displaySurname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : (displayFullName || '—');
-                                    const displayGivenNames = nameParts.length > 1 ? nameParts.slice(0, -1).join(' ') : (displayFullName || '—');
-                                    const displayNationality = activeSelectedDoc.ocrData?.nationality || (activeSelectedDoc.country === 'India' ? 'Indian' : (activeSelectedDoc.country || '—'));
+                                     const displayDocNumber = activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
+                                     const displayFullName = activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
+                                     const nameParts = (displayFullName === '—' || !displayFullName) ? [] : String(displayFullName).trim().split(/\s+/);
+                                     const displaySurname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : (displayFullName || '—');
+                                     const displayGivenNames = nameParts.length > 1 ? nameParts.slice(0, -1).join(' ') : (displayFullName || '—');
+                                     const displayNationality = activeSelectedDoc.ocrData?.nationality || (activeSelectedDoc.country === 'India' ? 'Indian' : (activeSelectedDoc.country || '—'));
 
-                                    // Date formatting helpers
-                                    const formatDatePreview = (dateStr?: string, fallback: string = '—') => {
-                                        if (!dateStr || dateStr === '—') return fallback;
-                                        const s = dateStr.trim();
-                                        if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s;
-                                        const d = new Date(s);
-                                        if (!isNaN(d.getTime())) {
-                                            const dd = String(d.getDate()).padStart(2, '0');
-                                            const mm = String(d.getMonth() + 1).padStart(2, '0');
-                                            return `${dd}/${mm}/${d.getFullYear()}`;
-                                        }
-                                        return s;
-                                    };
+                                     // Date formatting helpers
+                                     const formatDatePreview = (dateStr?: string, fallback: string = '—') => {
+                                         if (!dateStr || dateStr === '—') return fallback;
+                                         try {
+                                             const s = String(dateStr).trim();
+                                             if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s;
+                                             const d = new Date(s);
+                                             if (!isNaN(d.getTime())) {
+                                                 const dd = String(d.getDate()).padStart(2, '0');
+                                                 const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                                 return `${dd}/${mm}/${d.getFullYear()}`;
+                                             }
+                                             return s;
+                                         } catch(e) {
+                                             return fallback;
+                                         }
+                                     };
 
-                                    const formatDateOcr = (dateStr?: string, fallback: string = '—') => {
-                                        if (!dateStr || dateStr === '—') return fallback;
-                                        const s = dateStr.trim();
-                                        const parts = s.split('/');
-                                        if (parts.length === 3) {
-                                            const d = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
-                                            if (!isNaN(d.getTime())) {
-                                                return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-                                            }
-                                        }
-                                        const d = new Date(s);
-                                        if (!isNaN(d.getTime())) {
-                                            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-                                        }
-                                        return s;
-                                    };
+                                     const formatDateOcr = (dateStr?: string, fallback: string = '—') => {
+                                         if (!dateStr || dateStr === '—') return fallback;
+                                         try {
+                                             const s = String(dateStr).trim();
+                                             const parts = s.split('/');
+                                             if (parts.length === 3) {
+                                                 const d = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                                                 if (!isNaN(d.getTime())) {
+                                                     return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                                 }
+                                             }
+                                             const d = new Date(s);
+                                             if (!isNaN(d.getTime())) {
+                                                 return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                             }
+                                             return s;
+                                         } catch(e) {
+                                             return fallback;
+                                         }
+                                     };
 
-                                    const displayDobFormatted = formatDatePreview(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
-                                    const displayDobText = formatDateOcr(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
+                                     const displayDobFormatted = formatDatePreview(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
+                                     const displayDobText = formatDateOcr(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
 
-                                    const rawSex = (activeSelectedDoc.ocrData?.sex || '').toUpperCase();
-                                    const displaySex = rawSex.startsWith('F') ? 'Female' : rawSex.startsWith('M') ? 'Male' : (rawSex || '—');
-                                    const displaySexCode = rawSex.startsWith('F') ? 'F' : rawSex.startsWith('M') ? 'M' : '—';
+                                     const rawSex = String(activeSelectedDoc.ocrData?.sex || '').toUpperCase();
+                                     const displaySex = rawSex.startsWith('F') ? 'Female' : rawSex.startsWith('M') ? 'Male' : (rawSex || '—');
+                                     const displaySexCode = rawSex.startsWith('F') ? 'F' : rawSex.startsWith('M') ? 'M' : '—';
 
-                                    const displayPlaceOfBirth = activeSelectedDoc.ocrData?.placeOfBirth || '—';
+                                     const displayPlaceOfBirth = activeSelectedDoc.ocrData?.placeOfBirth || '—';
 
-                                    const displayIssueDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.issueDate, '—');
-                                    const displayIssueDateText = formatDateOcr(activeSelectedDoc.ocrData?.issueDate, '—');
+                                     const displayIssueDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.issueDate, '—');
+                                     const displayIssueDateText = formatDateOcr(activeSelectedDoc.ocrData?.issueDate, '—');
 
-                                    const displayExpiryDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
-                                    const displayExpiryDateText = formatDateOcr(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
+                                     const displayExpiryDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
+                                     const displayExpiryDateText = formatDateOcr(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
 
-                                    const cleanSurname = displaySurname === '—' ? '' : displaySurname.toUpperCase().replace(/[^A-Z]/g, '');
-                                    const cleanGiven = displayGivenNames === '—' ? '' : displayGivenNames.toUpperCase().replace(/[^A-Z]/g, '<');
-                                    const mrzLine1 = `P<IND${cleanSurname}<<${cleanGiven}`.padEnd(44, '<').slice(0, 44);
-                                    const cleanDoc = displayDocNumber === '—' ? '' : displayDocNumber.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                                    const mrzLine2 = `${cleanDoc}<8IND8104057${displaySexCode}3104042<<<<<<<<<<<<<<<08`.padEnd(44, '<').slice(0, 44);
+                                     const cleanSurname = (displaySurname && displaySurname !== '—') ? String(displaySurname).toUpperCase().replace(/[^A-Z]/g, '') : '';
+                                     const cleanGiven = (displayGivenNames && displayGivenNames !== '—') ? String(displayGivenNames).toUpperCase().replace(/[^A-Z]/g, '<') : '';
+                                     const mrzLine1 = `P<IND${cleanSurname}<<${cleanGiven}`.padEnd(44, '<').slice(0, 44);
+                                     const cleanDoc = (displayDocNumber && displayDocNumber !== '—') ? String(displayDocNumber).toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
+                                     const mrzLine2 = `${cleanDoc}<8IND8104057${displaySexCode || 'M'}3104042<<<<<<<<<<<<<<<08`.padEnd(44, '<').slice(0, 44);
 
                                     // ─────────────────────────────────────────────────────────────
                                     // 1. PASSPORT SPECIFIC FLOW (MATCHING EXACT PHOTO media_1788588107025)

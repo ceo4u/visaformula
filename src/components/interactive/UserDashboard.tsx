@@ -6194,17 +6194,22 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         const combinedRouteRequirements: VaultDocItem[] = [...defaultVaultList];
 
                         // ── 2. MATCH AGAINST USER UPLOADS ──
+                        const sortedUserDocs = [...userUploadedDocs].sort((a: any, b: any) => {
+                            if (a.fileData && !b.fileData) return -1;
+                            if (!a.fileData && b.fileData) return 1;
+                            return (b.id || '').localeCompare(a.id || '');
+                        });
                         const matchedUserDocIds = new Set<string>();
                         const routeDocumentsList: any[] = combinedRouteRequirements.map((req, idx) => {
                             // 1. Exact match by reqKey or id first
-                            let matchedDoc = userUploadedDocs.find(d => {
+                            let matchedDoc = sortedUserDocs.find(d => {
                                 if (matchedUserDocIds.has(d.id)) return false;
                                 return (d.reqKey && d.reqKey === req.key) || d.id === req.key;
                             });
 
                             // 2. Specific matching if no exact key
                             if (!matchedDoc) {
-                                matchedDoc = userUploadedDocs.find(d => {
+                                matchedDoc = sortedUserDocs.find(d => {
                                     if (matchedUserDocIds.has(d.id)) return false;
                                     const dTitleL = (d.title || d.label || '').toLowerCase();
                                     const dType = d.type || '';
@@ -6280,7 +6285,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 scannedMethod: isUploaded ? (matchedDoc.scannedMethod || 'OCR Scanned') : 'Unscanned',
                                 uploadedAt: isUploaded ? (matchedDoc.uploadedAt || 'Recently') : '—',
                                 size: isUploaded ? (matchedDoc.size || '1.8 MB') : '—',
-                                fileData: isUploaded ? matchedDoc.fileData : null,
+                                fileData: isUploaded ? ((matchedDoc && matchedDoc.fileData) || (typeof window !== 'undefined' ? (
+                                    localStorage.getItem(`vault_file_preview_${req.key}`) ||
+                                    sessionStorage.getItem(`vault_file_preview_${req.key}`) ||
+                                    (req.key === 'statutory_passport' || type === 'passport' ? (localStorage.getItem('vault_file_preview_statutory_passport') || sessionStorage.getItem('vault_file_preview_statutory_passport')) : null)
+                                ) : null)) : null,
                                 ocrData: isUploaded ? (matchedDoc.ocrData || {
                                     documentNumber: matchedDoc.docNumber || 'DOC-ON-FILE',
                                     fullName: matchedDoc.holderName || fullName || 'Traveler',
@@ -6542,8 +6551,31 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             }
                                         } catch(e) {}
 
+                                        // Store file preview in local & session storage for persistent view
+                                        try {
+                                            if (base64) {
+                                                localStorage.setItem(`vault_file_preview_${effectiveKey}`, base64);
+                                                sessionStorage.setItem(`vault_file_preview_${effectiveKey}`, base64);
+                                                localStorage.setItem(`vault_file_preview_${newDocObj.id}`, base64);
+                                                sessionStorage.setItem(`vault_file_preview_${newDocObj.id}`, base64);
+                                                if (effectiveKey === 'statutory_passport' || type === 'passport') {
+                                                    localStorage.setItem('vault_file_preview_statutory_passport', base64);
+                                                    sessionStorage.setItem('vault_file_preview_statutory_passport', base64);
+                                                }
+                                            }
+                                        } catch(e) {}
+
                                         setDocuments(prev => {
-                                            const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle && p.reqKey !== effectiveKey);
+                                            const isPass = effectiveKey === 'statutory_passport' || type === 'passport';
+                                            const filtered = (prev || []).filter(p => {
+                                                if (p.id === effectiveKey || p.title === effectiveTitle || p.reqKey === effectiveKey) return false;
+                                                if (isPass) {
+                                                    const pTitleL = (p.title || p.label || '').toLowerCase();
+                                                    const pKey = (p.reqKey || p.id || '').toLowerCase();
+                                                    if (p.type === 'passport' || pKey.includes('passport') || pTitleL.includes('passport')) return false;
+                                                }
+                                                return true;
+                                            });
                                             const updated = [newDocObj, ...filtered];
                                             try {
                                                 const forStorage = updated.map(d => ({ ...d, fileData: undefined }));
@@ -7652,23 +7684,53 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                                                     {/* LEFT COLUMN: Document Preview */}
                                                     <div className="space-y-3">
-                                                        <h4 className="text-sm font-bold text-slate-900">
-                                                            Document Preview
-                                                        </h4>
+                                                        <div className="flex items-center justify-between">
+                                                            <h4 className="text-sm font-bold text-slate-900">
+                                                                Document Preview
+                                                            </h4>
+                                                            <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200/60">
+                                                                Uploaded Original
+                                                            </span>
+                                                        </div>
                                                         <div className="bg-white rounded-xl border border-slate-200/90 p-2 shadow-2xs overflow-hidden">
-                                                            {activeSelectedDoc.fileData && activeSelectedDoc.fileData.startsWith('data:image') ? (
-                                                                <img
-                                                                    src={activeSelectedDoc.fileData}
-                                                                    alt="Passport Document Preview"
-                                                                    className="w-full h-auto rounded-lg object-contain max-h-[360px] mx-auto"
-                                                                />
-                                                            ) : (
-                                                                <img
-                                                                    src="/images/passport/passport_preview_card.png"
-                                                                    alt="Passport Document Preview"
-                                                                    className="w-full h-auto rounded-lg object-contain"
-                                                                />
-                                                            )}
+                                                            {(() => {
+                                                                const previewSrc = activeSelectedDoc.fileData ||
+                                                                    (typeof window !== 'undefined' ? (
+                                                                        localStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                                        sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                                        (isPassportDoc ? (localStorage.getItem('vault_file_preview_statutory_passport') || sessionStorage.getItem('vault_file_preview_statutory_passport')) : null)
+                                                                    ) : null);
+
+                                                                if (previewSrc && (previewSrc.startsWith('data:image') || previewSrc.startsWith('http') || previewSrc.startsWith('/'))) {
+                                                                    return (
+                                                                        <img
+                                                                            src={previewSrc}
+                                                                            alt={activeSelectedDoc.title || "Passport Document Preview"}
+                                                                            className="w-full h-auto rounded-lg object-contain max-h-[420px] mx-auto border border-slate-100 shadow-2xs"
+                                                                        />
+                                                                    );
+                                                                }
+                                                                if (previewSrc && previewSrc.startsWith('data:application/pdf')) {
+                                                                    return (
+                                                                        <iframe
+                                                                            src={previewSrc}
+                                                                            title="Document Preview"
+                                                                            className="w-full h-[380px] rounded-lg border border-slate-200"
+                                                                        />
+                                                                    );
+                                                                }
+                                                                return (
+                                                                    <div className="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-xl p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-3 min-h-[300px]">
+                                                                        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center shadow-2xs">
+                                                                            <FileText className="w-6 h-6" />
+                                                                        </div>
+                                                                        <div className="space-y-1 max-w-xs">
+                                                                            <p className="text-sm font-bold text-slate-700">{activeSelectedDoc.label || activeSelectedDoc.title}</p>
+                                                                            <p className="text-xs text-slate-400 font-medium">Original document bio-data recorded & verified in encrypted vault.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })()}
                                                         </div>
                                                     </div>
 

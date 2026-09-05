@@ -294,9 +294,11 @@ Extract:
 5. Nationality (Issuing country full name, e.g. "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", etc.)
 6. Date of Birth (format strictly as YYYY-MM-DD, e.g. "2002-07-15")
 7. Sex (strictly "M" or "F")
-8. Date of Issue (format strictly as YYYY-MM-DD, e.g. "2024-05-20")
-9. Date of Expiry (format strictly as YYYY-MM-DD, e.g. "2034-05-19")
-10. Exact 2-line ICAO Doc 9303 MRZ lines visible at the bottom:
+8. Place of Birth (city, state, or country as printed, e.g. "HYDERABAD, TELANGANA" or "CHENNAI, TAMIL NADU" or "NEW YORK")
+9. Place of Issue (as printed on passport, e.g. "HYDERABAD" or "DELHI")
+10. Date of Issue (format strictly as YYYY-MM-DD, e.g. "2024-05-20")
+11. Date of Expiry (format strictly as YYYY-MM-DD, e.g. "2034-05-19")
+12. Exact 2-line ICAO Doc 9303 MRZ lines visible at the bottom:
     mrzLine1 (starts with P<)
     mrzLine2 (starts with passport number and contains dates)
 
@@ -315,6 +317,8 @@ Return ONLY valid JSON matching this schema:
   "nationality": "...",
   "dateOfBirth": "YYYY-MM-DD",
   "sex": "M or F",
+  "placeOfBirth": "...",
+  "placeOfIssue": "...",
   "issueDate": "YYYY-MM-DD",
   "expiryDate": "YYYY-MM-DD",
   "mrzLine1": "P<...",
@@ -431,6 +435,8 @@ Return ONLY valid JSON matching this schema:
           nationality: nationality,
           dateOfBirth: dateOfBirth,
           sex: parsed.sex || mrzParsed.sex || 'M',
+          placeOfBirth: parsed.placeOfBirth || 'On File',
+          placeOfIssue: parsed.placeOfIssue || '',
           issueDate: issueDate,
           expiryDate: expiryDate,
           remainingMonths: remainingMonths,

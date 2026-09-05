@@ -729,6 +729,70 @@ export async function runMigrations() {
     );
     CREATE UNIQUE INDEX IF NOT EXISTS idx_vrc_route_key ON visa_requirements_cache (route_key);
     CREATE INDEX IF NOT EXISTS idx_vrc_countries ON visa_requirements_cache (passport_country, destination_country, purpose);
+
+    -- ── V3 PURE LOGIC VERIFIED RECORDS TABLE ──
+    CREATE TABLE IF NOT EXISTS visa_verified_records (
+      id SERIAL PRIMARY KEY,
+      route_key VARCHAR(255) NOT NULL UNIQUE,
+      route_hash VARCHAR(64) NOT NULL,
+      passport_country VARCHAR(100) NOT NULL,
+      destination_country VARCHAR(100) NOT NULL,
+      purpose VARCHAR(100) NOT NULL,
+      payload_json JSONB NOT NULL,
+      field_applicability JSONB NOT NULL,
+      verification_status VARCHAR(50) NOT NULL,
+      source_urls TEXT[],
+      source_authority VARCHAR(100),
+      source_content_hash VARCHAR(64) NOT NULL,
+      source_snapshot TEXT,
+      evidence_anchors JSONB,
+      validation_errors TEXT[],
+      last_verified_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_vvr_route_key ON visa_verified_records (route_key);
+    CREATE INDEX IF NOT EXISTS idx_vvr_route_hash ON visa_verified_records (route_hash);
+    CREATE INDEX IF NOT EXISTS idx_vvr_expires_at ON visa_verified_records (expires_at);
+
+    -- ── V3 VISA REVIEW QUEUE TABLE ──
+    CREATE TABLE IF NOT EXISTS visa_review_queue (
+      id SERIAL PRIMARY KEY,
+      route_key VARCHAR(255) NOT NULL,
+      passport_country VARCHAR(100) NOT NULL,
+      destination_country VARCHAR(100) NOT NULL,
+      purpose VARCHAR(100) NOT NULL,
+      extracted_data JSONB,
+      source_url VARCHAR(500),
+      source_content_hash VARCHAR(64),
+      source_snapshot TEXT,
+      validation_errors TEXT[],
+      missing_applicable_fields TEXT[],
+      review_reason TEXT,
+      priority VARCHAR(20) DEFAULT 'normal',
+      status VARCHAR(50) DEFAULT 'pending_review',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_vrq_route_key ON visa_review_queue (route_key);
+    CREATE INDEX IF NOT EXISTS idx_vrq_status ON visa_review_queue (status);
+    CREATE INDEX IF NOT EXISTS idx_vrq_priority ON visa_review_queue (priority);
+
+    -- ── V3 SOURCE REGISTRY TABLE ──
+    CREATE TABLE IF NOT EXISTS source_registry (
+      id SERIAL PRIMARY KEY,
+      destination_country VARCHAR(100) NOT NULL,
+      exact_hostname VARCHAR(150) NOT NULL UNIQUE,
+      source_type VARCHAR(50) NOT NULL,
+      source_name VARCHAR(200) NOT NULL,
+      source_url VARCHAR(500) NOT NULL,
+      visa_path VARCHAR(255),
+      priority INTEGER DEFAULT 1,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_sr_exact_hostname ON source_registry (exact_hostname);
+    CREATE INDEX IF NOT EXISTS idx_sr_dest_country ON source_registry (destination_country);
   `);
   })();
   return migrationsPromise;

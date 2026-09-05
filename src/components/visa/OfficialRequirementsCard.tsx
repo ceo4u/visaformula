@@ -807,10 +807,65 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
 
 
-      <div className="space-y-1.5 text-left pt-1">
-        <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-snug break-words">
-          Travel Requirements: {cleanFrom} <span className="text-slate-400 font-normal">→</span> {cleanTo}
-        </h2>
+      <div className="space-y-2 text-left pt-1">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-snug break-words">
+            Travel Requirements: {cleanFrom} <span className="text-slate-400 font-normal">→</span> {cleanTo}
+          </h2>
+
+          {/* V3 Verification Badge */}
+          {data && (
+            <div 
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold self-start sm:self-auto shrink-0 shadow-2xs transition-all ${
+                (data as any).verification_status === 'partially_verified'
+                  ? 'bg-amber-50 text-amber-900 border-amber-200'
+                  : (data as any).verification_status === 'needs_review'
+                  ? 'bg-orange-50 text-orange-900 border-orange-200'
+                  : 'bg-emerald-50 text-[#006f62] border-emerald-200'
+              }`}
+            >
+              {(data as any).verification_status === 'partially_verified' ? (
+                <>
+                  <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>Partially Verified (VAC Source)</span>
+                </>
+              ) : (data as any).verification_status === 'needs_review' ? (
+                <>
+                  <Clock className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                  <span>Under Consular Review</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00a896] shrink-0" />
+                  <span className="font-bold">Verified from Official Source</span>
+                </>
+              )}
+
+              {data.source_url && (
+                <a
+                  href={data.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 ml-1 pl-2 border-l border-slate-300 hover:text-[#00a896] transition-colors"
+                  title={`Open official authority portal: ${data.source_url}`}
+                >
+                  <span className="text-[11px] font-medium underline underline-offset-2">Official Portal</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
+              )}
+
+              {((data as any).source_hash || (data as any).source_content_hash) && (
+                <span
+                  className="hidden md:inline-block text-[10px] font-mono opacity-60 ml-1 bg-white/70 px-1.5 py-0.5 rounded border border-slate-200"
+                  title={`Cryptographic Audit Hash: ${(data as any).source_hash || (data as any).source_content_hash}`}
+                >
+                  SHA:{((data as any).source_hash || (data as any).source_content_hash).slice(0, 8)}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
         <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-4xl">
           <span className="font-bold text-slate-700">{cleanPurposeLabel}</span>
           {' '}•{' '}

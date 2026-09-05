@@ -136,71 +136,59 @@ function getRouteStatutoryTime(dest: string): string {
   return '5 to 15 Business Days';
 }
 
-function getCleanShortTitle(title: string): string {
-  const t = (title || '').toLowerCase();
-  if (t.includes('passport') && (t.includes('bio') || t.includes('scan') || t.includes('page') || t.includes('last'))) return 'Passport';
-  if (t.includes('passport') && !t.includes('photo')) return 'Passport';
-  if (t.includes('photo') || t.includes('picture')) return 'Photograph';
-  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) return 'Travel Itinerary';
-  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) return 'Hotel Booking';
-  if (t.includes('insurance') || t.includes('medical')) return 'Travel Insurance';
-  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) return 'Bank Statements';
-  if (t.includes('cover') || t.includes('letter')) return 'Cover Letter';
-  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) return 'Employment Proof';
-  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) return 'ID Proof';
-  if (t.includes('form') || t.includes('application')) return 'Visa Application Form';
-  return title;
-}
+function parseStepText(text: string, index: number): { title: string; description: string; url?: string } {
+  if (!text) return { title: `Step ${index + 1}`, description: '' };
 
-function getCleanShortRequirement(req: string, title: string): string {
-  const t = (title || '').toLowerCase();
-  if (t.includes('passport') && !t.includes('photo')) {
-    return 'Valid for at least 6 months beyond return date';
+  // Remove leading numbers like "1. ", "1) ", "Step 1: "
+  let clean = text.replace(/^(?:step\s*\d+[\s:\.\)]*|\d+[\.\)]\s*)/i, '').trim();
+
+  // Extract official URL if present
+  const urlMatch = clean.match(/(https?:\/\/[^\s]+|[a-zA-Z0-9-]+\.(?:gov|govmu|org|com|net|in|ae|edu)[^\s]*)/i);
+  let url = urlMatch ? urlMatch[0].replace(/[.,;)]+$/, '') : undefined;
+  if (url && !url.startsWith('http')) {
+    url = `https://${url}`;
   }
-  if (t.includes('photo') || t.includes('picture')) {
-    return 'Recent photo, 35mm x 45mm, white background';
+
+  if (clean.includes(':')) {
+    const colonIdx = clean.indexOf(':');
+    const title = clean.substring(0, colonIdx).trim();
+    const description = clean.substring(colonIdx + 1).trim();
+    return { title: title || `Step ${index + 1}`, description: description || clean, url };
   }
-  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) {
-    return 'Confirmed flight tickets (round trip)';
+
+  const dotIdx = clean.indexOf('. ');
+  if (dotIdx > 0 && dotIdx < 50) {
+    return {
+      title: clean.substring(0, dotIdx).trim(),
+      description: clean.substring(dotIdx + 2).trim(),
+      url
+    };
   }
-  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) {
-    return 'Confirmed hotel reservations';
+
+  if (clean.length <= 45) {
+    return { title: clean, description: clean, url };
   }
-  if (t.includes('insurance') || t.includes('medical')) {
-    return 'Minimum coverage of €30,000';
-  }
-  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) {
-    return 'Last 3 months bank statements';
-  }
-  if (t.includes('cover') || t.includes('letter')) {
-    return 'Purpose of visit and travel details';
-  }
-  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) {
-    return 'Salary slips / Leave approval / NOC';
-  }
-  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) {
-    return 'Aadhaar Card / PAN Card copy';
-  }
-  if (t.includes('form') || t.includes('application')) {
-    return 'Complete and signed application form';
-  }
-  if (req && req.length > 55) {
-    return req.slice(0, 52).trim() + '...';
-  }
-  return req || 'Official consular document';
+
+  return {
+    title: clean.slice(0, 42).trim() + '...',
+    description: clean,
+    url
+  };
 }
 
 function getDocumentChecklistIcon(title: string) {
   const t = (title || '').toLowerCase();
-  if (t.includes('passport') && !t.includes('photo')) return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('form') || t.includes('application')) return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('photo') || t.includes('picture')) return <Camera className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) return <Plane className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) return <Building2 className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('insurance') || t.includes('medical')) return <ShieldCheck className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) return <Landmark className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) return <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />;
-  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) return <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('qr') || t.includes('digital') || t.includes('declaration') || t.includes('entry card') || t.includes('travel form')) {
+    return <FileText className="w-4 h-4 text-[#00a896] shrink-0" />;
+  }
+  if (t.includes('passport') && !t.includes('photo')) return <FileText className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('photo') || t.includes('picture')) return <Camera className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary') || t.includes('onward')) return <Plane className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay') || t.includes('resort')) return <Building2 className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('insurance') || t.includes('medical')) return <ShieldCheck className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement') || t.includes('fund')) return <Landmark className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) return <Briefcase className="w-4 h-4 text-slate-500 shrink-0" />;
+  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) return <CreditCard className="w-4 h-4 text-slate-500 shrink-0" />;
   return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
 }
 
@@ -341,8 +329,18 @@ export function VisaApplicationDetailsView({
     destination.toLowerCase().includes('maldives') ||
     destination.toLowerCase().includes('singapore');
 
-  const appointmentRequired = !isOnlineOrOnArrival;
-  const appointmentDisplay = appointmentRequired
+  const isVisaFree = 
+    (resolvedVisaType || '').toLowerCase().includes('free') ||
+    (destination.toLowerCase().includes('mauritius') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
+    (destination.toLowerCase().includes('maldives') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
+    (destination.toLowerCase().includes('thailand') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
+    (destination.toLowerCase().includes('nepal') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
+    (destination.toLowerCase().includes('bhutan') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian')));
+
+  const appointmentRequired = !isOnlineOrOnArrival && !isVisaFree;
+  const appointmentDisplay = isVisaFree
+    ? 'Not Required (Visa-Free Entry on Arrival)'
+    : appointmentRequired
     ? (application?.appointmentDate || 'To be scheduled upon document review')
     : 'Not Required (100% Online e-Visa Process)';
 
@@ -354,6 +352,52 @@ export function VisaApplicationDetailsView({
   const rawDocs: Array<{ title: string; description: string; is_mandatory: boolean }> = 
     (routeData?.documents_required && Array.isArray(routeData.documents_required) && routeData.documents_required.length > 0)
       ? routeData.documents_required
+      : destination.toLowerCase().includes('mauritius')
+      ? [
+          {
+            title: 'Original Passport',
+            description: 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.',
+            is_mandatory: true
+          },
+          {
+            title: 'Confirmed Return / Onward Flight Ticket',
+            description: 'Confirmed round-trip or onward airline ticket departing Mauritius within the 60-day permitted stay.',
+            is_mandatory: true
+          },
+          {
+            title: 'Proof of Accommodation / Hotel Voucher',
+            description: 'Confirmed hotel booking reservation or official host accommodation invitation letter with address and contact details.',
+            is_mandatory: true
+          },
+          {
+            title: 'Mauritius All-in-One Digital Travel Form',
+            description: 'Mandatory online entry form completed at safetravel.govmu.org prior to departure to generate the arrival QR code.',
+            is_mandatory: true
+          }
+        ]
+      : isVisaFree
+      ? [
+          {
+            title: 'Original Passport',
+            description: 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.',
+            is_mandatory: true
+          },
+          {
+            title: 'Confirmed Return / Onward Flight Ticket',
+            description: `Confirmed round-trip or onward airline ticket departing ${destination}.`,
+            is_mandatory: true
+          },
+          {
+            title: 'Proof of Accommodation / Hotel Voucher',
+            description: `Confirmed hotel booking reservation or registered host invitation in ${destination}.`,
+            is_mandatory: true
+          },
+          {
+            title: 'Digital Arrival / Health Declaration Form',
+            description: 'Mandatory digital arrival card or immigration declaration form completed prior to arrival.',
+            is_mandatory: true
+          }
+        ]
       : [
           {
             title: 'Passport Bio-Page Scan',
@@ -410,11 +454,12 @@ export function VisaApplicationDetailsView({
 
       if (t.includes('passport') && vName.includes('passport')) return true;
       if ((t.includes('photo') || t.includes('picture')) && (vName.includes('photo') || vName.includes('picture'))) return true;
-      if ((t.includes('flight') || t.includes('ticket') || t.includes('air')) && (vName.includes('flight') || vName.includes('ticket'))) return true;
-      if ((t.includes('hotel') || t.includes('accommodation') || t.includes('stay')) && (vName.includes('hotel') || vName.includes('stay') || vName.includes('accommodation'))) return true;
+      if ((t.includes('flight') || t.includes('ticket') || t.includes('air') || t.includes('onward')) && (vName.includes('flight') || vName.includes('ticket'))) return true;
+      if ((t.includes('hotel') || t.includes('accommodation') || t.includes('stay') || t.includes('resort')) && (vName.includes('hotel') || vName.includes('stay') || vName.includes('accommodation'))) return true;
       if ((t.includes('insurance') || t.includes('medical')) && (vName.includes('insurance') || vName.includes('medical'))) return true;
       if ((t.includes('bank') || t.includes('financial') || t.includes('solvency')) && (vName.includes('bank') || vName.includes('statement'))) return true;
       if ((t.includes('aadhaar') || t.includes('pan') || t.includes('id') || t.includes('identity')) && (vName.includes('aadhaar') || vName.includes('pan') || vName.includes('id'))) return true;
+      if ((t.includes('form') || t.includes('declaration') || t.includes('entry') || t.includes('qr')) && (vName.includes('form') || vName.includes('declaration') || vName.includes('entry') || vName.includes('qr'))) return true;
       return false;
     });
 
@@ -508,46 +553,58 @@ export function VisaApplicationDetailsView({
     }));
   };
 
-  const toggleAllSteps = () => {
-    const nextState = !allExpanded;
-    setAllExpanded(nextState);
-    setExpandedSteps({
-      1: nextState,
-      2: nextState,
-      3: nextState,
-      4: nextState,
-      5: nextState,
-      6: nextState
-    });
-  };
-
-  const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0;
-  const calculatedReadinessScore = typeof readinessScore === 'number' && readinessScore > 0
-    ? readinessScore
-    : Math.min(100, Math.round((progressPercent * 0.4) + (docsRatio * 50) + (genuineVaultDocsCount > 0 ? 10 : 0)));
-
-  const scoreLevel = calculatedReadinessScore >= 75 ? 'Consular Benchmark Met' : calculatedReadinessScore >= 50 ? 'Good Readiness' : 'In Preparation';
-
   // Dynamic Route Steps
   const routeSteps: string[] = (routeData?.how_to_apply && Array.isArray(routeData.how_to_apply) && routeData.how_to_apply.length >= 3)
     ? routeData.how_to_apply
+    : destination.toLowerCase().includes('mauritius')
+    ? [
+        "Check Passport Validity: Verify your passport has at least 6 months validity from departure date and min 2 blank pages.",
+        "Book Return Flights: Secure confirmed round-trip or onward air ticket departing Mauritius within the 60-day permitted stay.",
+        "Confirm Accommodation: Keep verified hotel/resort booking voucher or official resident host invitation in Mauritius ready.",
+        "Verify Travel Funds: Ensure access to sufficient funds (minimum 100 USD/day or international credit/forex cards).",
+        "Fill All-in-One Digital Form: Complete the official online Mauritius All-in-One Digital Travel Form at safetravel.govmu.org before departure.",
+        "Save All-in-One QR Code: Download and save the generated All-in-One Travel Declaration PDF and QR code on your smartphone.",
+        "Fly Directly to Mauritius: Board your flight directly to Sir Seewoosagur Ramgoolam (SSR) International Airport with zero advance visa.",
+        "Instant On-Arrival Stamping: Present passport, return ticket, hotel voucher & QR code at airport immigration for a free 60-day entry stamp (₹0fee)."
+      ]
+    : isVisaFree
+    ? [
+        `Check Passport Validity: Verify your passport has at least 6 months validity from departure date and at least 2 blank pages.`,
+        `Book Return Flights: Secure confirmed round-trip or onward airline ticket departing ${destination}.`,
+        `Confirm Accommodation: Keep confirmed hotel booking or registered host invitation voucher in ${destination} ready.`,
+        `Verify Travel Funds: Ensure access to sufficient funds for the duration of stay.`,
+        `Digital Arrival Declaration: Complete official online arrival card or digital entry declaration before departure.`,
+        `Save Entry QR Pass: Download and keep the digital arrival declaration QR code on your mobile device.`,
+        `Fly to Destination: Board flight directly to ${destination} with zero advance consular visa required.`,
+        `On-Arrival Border Stamping: Present passport, tickets, and entry pass at border control for instant entry stamp.`
+      ]
     : isOnlineOrOnArrival
     ? [
-        `Check eligibility and statutory entry conditions for ${destination}`,
-        `Assemble passport scan, passport photograph, and travel documents`,
-        `Complete online visa application form accurately`,
-        `Pay official government processing fees online (${feeDisplay})`,
-        `Submit application for automated consular & immigration clearance`,
-        `Receive and download your approved electronic visa / entry clearance`
+        `Check Eligibility: Verify statutory entry conditions and passport validity for ${destination}`,
+        `Assemble Documents: Prepare passport bio-page scan, recent digital photograph, and flight itinerary`,
+        `Online Application: Complete official online visa application form accurately`,
+        `Pay Fees Online: Pay official government visa processing fees (${feeDisplay})`,
+        `Consular Review: Submit application for automated consular & immigration adjudication`,
+        `Receive e-Visa: Download approved electronic visa authorization PDF prior to departure`
       ]
     : [
-        `Check consular visa requirements and appointment availability for ${destination}`,
-        `Assemble required document dossier and certified translations`,
-        `Complete official visa application form and print signature copy`,
-        `Pay consular visa fee and appointment slot booking charges (${feeDisplay})`,
-        `Submit documents and biometrics at the designated Visa Application Center`,
-        `Track passport status and receive stamped visa dossier via courier`
+        `Consular Requirements: Check visa category guidelines and appointment availability for ${destination}`,
+        `Dossier Preparation: Assemble required documents, bank statements, and certified translations`,
+        `Complete Application: Fill official visa application form and print signature copy`,
+        `Fee Settlement: Pay consular visa fee and appointment slot booking charges (${feeDisplay})`,
+        `Biometrics & Submission: Submit documents and biometric fingerprints at the designated Visa Application Center`,
+        `Passport Collection: Track status and receive stamped visa passport via courier or VAC collection`
       ];
+
+  const toggleAllSteps = () => {
+    const nextState = !allExpanded;
+    setAllExpanded(nextState);
+    const newMap: Record<number, boolean> = {};
+    for (let i = 1; i <= Math.max(6, routeSteps.length); i++) {
+      newMap[i] = nextState;
+    }
+    setExpandedSteps(newMap);
+  };
 
   return (
     <div className="space-y-6 animate-fade-up font-sans text-left">
@@ -636,6 +693,57 @@ export function VisaApplicationDetailsView({
                 <strong className="font-semibold text-slate-800">{entries}</strong>
               </div>
             </div>
+
+            {/* V3 Verification Pill */}
+            {routeData && (
+              <div className="pt-1 flex flex-wrap items-center gap-2 text-xs">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold ${
+                  routeData.verification_status === 'partially_verified'
+                    ? 'bg-amber-50 text-amber-900 border-amber-200'
+                    : routeData.verification_status === 'needs_review'
+                    ? 'bg-orange-50 text-orange-900 border-orange-200'
+                    : 'bg-emerald-50 text-[#006f62] border-emerald-200'
+                }`}>
+                  {routeData.verification_status === 'partially_verified' ? (
+                    <>
+                      <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span>Partially Verified (VAC)</span>
+                    </>
+                  ) : routeData.verification_status === 'needs_review' ? (
+                    <>
+                      <Clock className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                      <span>Under Consular Review</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#00a896] shrink-0" />
+                      <span className="font-bold">Verified from Official Source</span>
+                    </>
+                  )}
+                </span>
+
+                {routeData.source_url && (
+                  <a
+                    href={routeData.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-[#00a896] underline underline-offset-2 transition-colors"
+                  >
+                    <span>{routeData.official_source_name || 'Official Portal'}</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
+                )}
+
+                {(routeData.source_hash || routeData.source_content_hash) && (
+                  <span
+                    className="hidden sm:inline-block text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200"
+                    title={`Cryptographic Audit Hash: ${routeData.source_hash || routeData.source_content_hash}`}
+                  >
+                    SHA:{(routeData.source_hash || routeData.source_content_hash).slice(0, 8)}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Section 3: Travel & Return Dates */}
@@ -703,7 +811,7 @@ export function VisaApplicationDetailsView({
                 {currentStep > 3 ? <Check className="w-4 h-4 stroke-[3]" /> : '3'}
               </div>
               <span className={`text-xs mt-2 ${currentStep === 3 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
-                3. Application Form
+                {isVisaFree ? '3. Digital Form' : '3. Application Form'}
               </span>
             </div>
 
@@ -715,7 +823,7 @@ export function VisaApplicationDetailsView({
                 {currentStep > 4 ? <Check className="w-4 h-4 stroke-[3]" /> : '4'}
               </div>
               <span className={`text-xs mt-2 ${currentStep === 4 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
-                4. Pay Fees
+                {isVisaFree ? '4. Board Flight' : '4. Pay Fees'}
               </span>
             </div>
 
@@ -727,7 +835,7 @@ export function VisaApplicationDetailsView({
                 {currentStep > 5 ? <Check className="w-4 h-4 stroke-[3]" /> : '5'}
               </div>
               <span className={`text-xs mt-2 ${currentStep === 5 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
-                {isOnlineOrOnArrival ? '5. e-Visa Clearance' : '5. Submit & Biometrics'}
+                {isVisaFree ? '5. Immigration' : isOnlineOrOnArrival ? '5. e-Visa Clearance' : '5. Submit & Biometrics'}
               </span>
             </div>
 
@@ -739,7 +847,7 @@ export function VisaApplicationDetailsView({
                 {currentStep >= 6 ? <Check className="w-4 h-4 stroke-[3]" /> : '6'}
               </div>
               <span className={`text-xs mt-2 ${currentStep >= 6 ? 'font-black text-emerald-700' : 'font-medium text-slate-400'}`}>
-                {isOnlineOrOnArrival ? '6. Download e-Visa' : '6. Receive Passport'}
+                {isVisaFree ? '6. Entry Stamped' : isOnlineOrOnArrival ? '6. Download e-Visa' : '6. Receive Passport'}
               </span>
             </div>
           </div>
@@ -775,13 +883,14 @@ export function VisaApplicationDetailsView({
                 const isStepCompleted = currentStep > stepNum;
                 const isStepActive = currentStep === stepNum;
                 const isExpanded = !!expandedSteps[stepNum];
+                const { title: stepTitle, description: stepDesc, url: stepUrl } = parseStepText(stepText, idx);
 
                 return (
                   <div 
                     key={stepNum} 
                     className={`border rounded-2xl overflow-hidden transition-all ${
                       isStepActive 
-                        ? 'border-2 border-indigo-500/80 shadow-xs' 
+                        ? 'border-2 border-[#00a896]/80 shadow-xs' 
                         : 'border-slate-200'
                     }`}
                   >
@@ -793,7 +902,7 @@ export function VisaApplicationDetailsView({
                           : 'bg-white hover:bg-slate-50/70'
                       }`}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 min-w-0 pr-2">
                         <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
                           isStepCompleted 
                             ? 'bg-emerald-500 text-white' 
@@ -807,13 +916,15 @@ export function VisaApplicationDetailsView({
                             <CheckSquare className="w-3.5 h-3.5 stroke-[2.5]" />
                           ) : null}
                         </div>
-                        <div>
-                          <h3 className={`text-xs sm:text-sm font-black ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
-                            {stepNum}. {stepText.split('.')[0]}
+                        <div className="min-w-0">
+                          <h3 className={`text-xs sm:text-sm font-black truncate ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                            {stepNum}. {stepTitle}
                           </h3>
-                          <p className="text-[11px] text-slate-500 font-medium">
-                            {stepText}
-                          </p>
+                          {stepDesc && (
+                            <p className="text-[11px] text-slate-500 font-medium line-clamp-1 mt-0.5" title={stepDesc}>
+                              {stepDesc}
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -836,23 +947,27 @@ export function VisaApplicationDetailsView({
                     </div>
 
                     {isExpanded && (
-                      <div className={`p-4 border-t text-xs space-y-2.5 ${
-                        isStepActive ? 'bg-indigo-50/20 border-indigo-100 text-slate-700' : 'bg-slate-50 border-slate-200 text-slate-600'
+                      <div className={`p-4 border-t text-xs space-y-3 ${
+                        isStepActive ? 'bg-[#00a896]/5 border-[#00a896]/20 text-slate-700' : 'bg-slate-50 border-slate-200 text-slate-600'
                       }`}>
-                        <p className="leading-relaxed">
-                          {stepNum === 1 && `Verify statutory validity for ${destination}: passport must have minimum 6 months validity from intended date of entry and 2 blank visa pages.`}
-                          {stepNum === 2 && `Ensure all supporting documents (passport scan, photo, flight booking, accommodation voucher) meet official consulate specifications.`}
-                          {stepNum === 3 && `Dossier details are validated against your passport biodata to prevent discrepancy rejections.`}
-                          {stepNum === 4 && `Applicable visa processing & government statutory fees: ${feeDisplay}. ${feeNotes}`}
-                          {stepNum === 5 && (
-                            isOnlineOrOnArrival 
-                              ? `Application is submitted directly to the immigration portal for automated security adjudication. No physical center visit needed.`
-                              : `Dossier submitted to the official Visa Application Center. ${appointmentDisplay}`
-                          )}
-                          {stepNum === 6 && `Approved entry visa document or stamped passport will be delivered electronically or via secure courier.`}
+                        <p className="leading-relaxed font-normal text-slate-700">
+                          {stepDesc || stepText}
                         </p>
-                        {stepNum <= 2 && onOpenVault && (
-                          <div className="pt-1">
+
+                        <div className="flex flex-wrap items-center gap-2 pt-1">
+                          {stepUrl && (
+                            <a
+                              href={stepUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all"
+                            >
+                              <span>Open Official Portal ({stepUrl.replace(/^https?:\/\//, '').split('/')[0]})</span>
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+
+                          {(stepTitle.toLowerCase().includes('passport') || stepTitle.toLowerCase().includes('document') || stepTitle.toLowerCase().includes('flight') || stepTitle.toLowerCase().includes('accommodation') || stepTitle.toLowerCase().includes('hotel') || stepTitle.toLowerCase().includes('fund')) && onOpenVault && (
                             <button
                               type="button"
                               onClick={onOpenVault}
@@ -861,8 +976,8 @@ export function VisaApplicationDetailsView({
                               <Upload className="w-3.5 h-3.5" />
                               <span>{readyDocsCount > 0 ? `Manage Vault Documents (${readyDocsCount}/${checklistDocuments.length} Ready) →` : `Upload Required Documents in Vault →`}</span>
                             </button>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -912,16 +1027,16 @@ export function VisaApplicationDetailsView({
                       <td className="py-2.5 px-3">
                         <div className="flex items-center gap-2.5 min-w-0">
                           {getDocumentChecklistIcon(doc.name)}
-                          <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
-                            {getCleanShortTitle(doc.name)}
+                          <span className="font-bold text-slate-900 text-xs sm:text-sm truncate" title={doc.name}>
+                            {doc.name}
                           </span>
                         </div>
                       </td>
 
                       {/* 2. REQUIREMENT (Hidden on mobile) */}
                       <td className="py-2.5 px-3 text-slate-600 font-medium text-xs hidden md:table-cell">
-                        <span className="truncate block max-w-xs sm:max-w-md">
-                          {getCleanShortRequirement(doc.req, doc.name)}
+                        <span className="block max-w-xs sm:max-w-md line-clamp-2 text-slate-600 font-medium text-xs" title={doc.req}>
+                          {doc.req}
                         </span>
                       </td>
 
@@ -1191,6 +1306,61 @@ export function VisaApplicationDetailsView({
 
         </div>
       </div>
+
+      {/* Document Guidelines Modal */}
+      {showGuidelinesModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 animate-scale-up">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-[#00a896]" />
+                <h3 className="text-base font-black text-slate-900">Official Document Guidelines</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowGuidelinesModal(false)}
+                className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="space-y-3 text-xs text-slate-600 max-h-[60vh] overflow-y-auto pr-1">
+              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                <strong className="text-slate-900 font-bold block">1. Passport Validity</strong>
+                <p>Must have minimum 6 months validity from intended date of entry and at least 2 blank visa pages. No tears or physical damage.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                <strong className="text-slate-900 font-bold block">2. Return / Onward Travel Ticket</strong>
+                <p>Confirmed round-trip or onward airline ticket departing {destination} within permitted stay duration.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                <strong className="text-slate-900 font-bold block">3. Accommodation Proof</strong>
+                <p>Confirmed hotel booking voucher or official resident host invitation letter with full contact details in {destination}.</p>
+              </div>
+              {isVisaFree ? (
+                <div className="p-3 bg-emerald-50 rounded-xl space-y-1 border border-emerald-200">
+                  <strong className="text-emerald-950 font-bold block">4. Digital Arrival Declaration</strong>
+                  <p className="text-emerald-800">Must be submitted online prior to boarding flight to generate arrival clearance QR pass.</p>
+                </div>
+              ) : (
+                <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                  <strong className="text-slate-900 font-bold block">4. Financial Solvency &amp; Funds</strong>
+                  <p>Recent bank statements demonstrating sufficient funds for the entire duration of stay.</p>
+                </div>
+              )}
+            </div>
+            <div className="pt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShowGuidelinesModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+              >
+                Understood
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

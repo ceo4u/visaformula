@@ -29,6 +29,23 @@ import {
   getStudentFinancialProofs,
   getStudentOtherRequirements
 } from '../../../lib/student-visa';
+import {
+  getTourismOverview,
+  getTourismHighlights,
+  getTourismDocuments,
+  getTourismSteps,
+  getTourismFees,
+  getTourismProcessingTime,
+  getTourismProcessingDetails,
+  getTourismFAQ,
+  getTourismRequirements,
+  getTourismFinancialProofs,
+  getTourismValidity,
+  getTourismStayDuration,
+  getTourismEntryType,
+  getTourismOfficialSourceName,
+  getTourismVisaData
+} from '../../../lib/tourism-visa';
 
 export {
   normalizeCountry,
@@ -49,7 +66,22 @@ export {
   getStudentFees,
   getStudentFAQ,
   getStudentFinancialProofs,
-  getStudentOtherRequirements
+  getStudentOtherRequirements,
+  getTourismOverview,
+  getTourismHighlights,
+  getTourismDocuments,
+  getTourismSteps,
+  getTourismFees,
+  getTourismProcessingTime,
+  getTourismProcessingDetails,
+  getTourismFAQ,
+  getTourismRequirements,
+  getTourismFinancialProofs,
+  getTourismValidity,
+  getTourismStayDuration,
+  getTourismEntryType,
+  getTourismOfficialSourceName,
+  getTourismVisaData
 };
 
 export const prerender = false;
@@ -6154,6 +6186,22 @@ export const POST: APIRoute = async ({ request }) => {
         success: true,
         data: sanitizeCurrencyCodes(studentData as any),
         source: 'consular-student-pipeline',
+        verification_status: 'verified',
+        is_v3_verified: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const isTourism = purposeLower.includes('touris') || purposeLower.includes('visit') || purposeLower.includes('vacation') || purposeLower.includes('holiday') || purposeLower.includes('leisure') || !purpose || purposeLower === 'general';
+
+    if (isTourism) {
+      const tourismData = getTourismVisaData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(tourismData as any),
+        source: 'consular-tourism-pipeline',
         verification_status: 'verified',
         is_v3_verified: true
       }), {

@@ -19,6 +19,23 @@ import {
   getStudentOtherRequirements,
   getStudentOfficialSourceName
 } from '../../lib/student-visa';
+import {
+  getTourismSteps,
+  getTourismVisaSteps,
+  getTourismDocuments,
+  getTourismOverview,
+  getTourismHighlights,
+  getTourismFees,
+  getTourismProcessingTime,
+  getTourismProcessingDetails,
+  getTourismValidity,
+  getTourismStayDuration,
+  getTourismEntryType,
+  getTourismFAQ,
+  getTourismFinancialProofs,
+  getTourismRequirements,
+  getTourismOfficialSourceName
+} from '../../lib/tourism-visa';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3454,7 +3471,34 @@ export function VisaCountryResultPortal({
       return { title, desc };
     });
 
-    const default8Steps = isStudentPathway ? student8Steps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
+    const tourismSteps = getTourismSteps(countryName).map((s, i) => {
+      const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
+      let title = '';
+      let desc = '';
+      if (clean.includes('—')) {
+        const parts = clean.split('—');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('—').trim();
+      } else if (clean.includes('–')) {
+        const parts = clean.split('–');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('–').trim();
+      } else if (clean.includes(':')) {
+        const parts = clean.split(':');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(':').trim();
+      } else if (clean.includes(' - ')) {
+        const parts = clean.split(' - ');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(' - ').trim();
+      } else {
+        title = `Step ${i + 1}`;
+        desc = clean;
+      }
+      return { title, desc };
+    });
+
+    const default8Steps = isStudentPathway ? student8Steps : (tourismSteps && tourismSteps.length >= 4) ? tourismSteps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3706,19 +3750,6 @@ export function VisaCountryResultPortal({
       return getStudentProcessingTime(countryName);
     }
 
-    // Instant / VoA / Direct Visa-Free destinations
-    if (cLow.includes('mauritius') || cLow.includes('jamaica')) return 'Instant on Arrival (0 Days)';
-    if (cLow.includes('maldives') || cLow.includes('seychelles')) return 'Instant on Arrival (0 Days)';
-    if (isIndian && (cLow.includes('nepal') || cLow.includes('bhutan'))) return 'Instant (Freedom of Movement)';
-    if (isIndian && (cLow.includes('thailand') || cLow.includes('malaysia'))) {
-      if (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general') {
-        return 'Instant on Arrival (0 Days)';
-      }
-    }
-    if (typeof baseData?.processingDays === 'number' && baseData.processingDays === 0) {
-      return 'Instant on Arrival (0 Days)';
-    }
-
     // Always prefer verified AI requirements data if available
     if (aiData?.processing_time) {
       return aiData.processing_time;
@@ -3727,13 +3758,7 @@ export function VisaCountryResultPortal({
       return aiData.processing_and_timing.decision_time;
     }
 
-    if (isSchengenCountry) return '15 Calendar Days (Consular SLA)';
-    if (cLow.includes('china')) return '4 – 7 Days';
-    if (cLow.includes('united states') || cLow.includes('usa')) return '3 – 5 Days';
-    if (cLow.includes('united kingdom') || cLow.includes('uk')) return '15 Working Days';
-    if (cLow.includes('uae') || cLow.includes('dubai') || cLow.includes('singapore')) return '3 – 5 Days';
-
-    return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : 'Per Official Regulations';
+    return getTourismProcessingTime(countryName);
   };
 
   const resolvedOverview = useMemo(() => {
@@ -3752,7 +3777,10 @@ export function VisaCountryResultPortal({
     if (isStudyTab) {
       return getStudentOverview(countryName);
     }
-    return `Travel to ${countryName} for ${isStudyTab ? 'higher education, university enrollment and academic research' : isWorkTab ? 'professional employment, corporate engagements and work assignments' : 'tourism, leisure, visiting family or friends, or attending short term events'}.`;
+    if (isWorkTab) {
+      return `The ${countryName} Work Visa permits foreign professionals to reside and work legally in ${countryName} under approved employer sponsorship or official employment permits.`;
+    }
+    return getTourismOverview(countryName);
   }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab]);
 
   useEffect(() => {
@@ -3961,14 +3989,14 @@ export function VisaCountryResultPortal({
         : isPR
         ? 'Permanent Residency'
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
-      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isSchengen ? '15 Calendar Days' : 'Per Official Consular SLA');
-      const consularFeeVal = aiData?.costs?.visa_fee || (isStudy ? getStudentFees(countryName).visa_fee : countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? 'EUR 90' : 'Official Consular Fee');
-      const serviceFeeVal = aiData?.costs?.service_fee || (isStudy ? getStudentFees(countryName).service_fee : 'Rs. 2,200 (TravlTik Fast-Track Concierge)');
+      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || getTourismProcessingTime(countryName);
+      const consularFeeVal = aiData?.costs?.visa_fee || (isStudy ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
+      const serviceFeeVal = aiData?.costs?.service_fee || (isStudy ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee);
       const stayDurationVal = isStudy 
         ? getStudentStayDuration(countryName) 
         : isWork 
         ? '1 to 5 Years' 
-        : (isSchengen ? 'Up to 90 Days within 180 Days' : 'Up to 6 Months (180 Days)');
+        : getTourismStayDuration(countryName);
 
       // Compile Documents List from AI data or defaults
       const rawDocs = (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
@@ -3983,24 +4011,11 @@ export function VisaCountryResultPortal({
             description: d.description,
             isMandatory: d.is_mandatory !== false
           }))
-        : (isVisaOnArrivalOrFree && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general'))
-        ? [
-            { title: 'Valid Passport', description: 'Valid national passport for intended duration of stay with blank entry stamp page.', isMandatory: true },
-            { title: countryName.toLowerCase().includes('jamaica') ? 'C5 Online Form (enterjamaica.com)' : 'Digital Arrival Declaration / Card', description: countryName.toLowerCase().includes('jamaica') ? 'MANDATORY: Submit official digital C5 form online at enterjamaica.com before boarding.' : 'Official digital arrival or customs declaration card submitted prior to arrival.', isMandatory: true },
-            { title: 'Confirmed Return / Onward Flight Ticket', description: 'Round-trip or onward air tickets departing within authorized stay period.', isMandatory: true },
-            { title: 'Proof of Accommodation', description: 'Hotel booking confirmation, resort voucher, or host invitation with local address.', isMandatory: true },
-            { title: 'Proof of Sufficient Funds', description: 'International debit/credit cards or liquid funds for stay living expenses.', isMandatory: true }
-          ]
-        : [
-            { title: 'Valid Passport', description: 'Original passport valid at least 3-6 months beyond departure with min 2 blank pages.', isMandatory: true },
-            { title: 'Visa Application Form', description: 'Duly completed and signed official consular application form.', isMandatory: true },
-            { title: 'Biometric Photographs', description: 'Recent passport-sized photos meeting official consular specifications.', isMandatory: true },
-            { title: 'Confirmed Flight Reservations', description: 'Round-trip air ticket reservations with verifiable airline PNR.', isMandatory: true },
-            { title: 'Proof of Accommodation', description: 'Confirmed hotel reservation vouchers or official host invitation letter.', isMandatory: true },
-            ...(isSchengen ? [{ title: 'Travel Medical Insurance', description: 'Mandatory Schengen medical insurance covering min. €30,000 emergency evacuation.', isMandatory: true }] : []),
-            { title: 'Financial Proof', description: 'Stamped bank statements showing sufficient funds for travel.', isMandatory: true },
-            { title: 'Cover Letter & Travel Plan', description: 'Detailed itinerary explaining purpose of visit and ties to home country.', isMandatory: false }
-          ];
+        : getTourismDocuments(countryName).map(d => ({
+            title: d.title,
+            description: d.description,
+            isMandatory: d.is_mandatory !== false
+          }));
 
       // Compile Procedural Steps
       const rawSteps = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4)
@@ -4089,11 +4104,11 @@ export function VisaCountryResultPortal({
         embassyFee: consularFeeVal,
         childFee: isSchengen ? '45 EUR (under 6: Free)' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
         serviceFee: serviceFeeVal,
-        totalFee: isSchengen ? (countryName.toLowerCase().includes('spain') ? '107 EUR' : '120 EUR') : (aiData?.costs?.total_fee || consularFeeVal),
+        totalFee: aiData?.costs?.total_fee || (isStudy ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee),
         feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
         stayDuration: stayDurationVal,
-        validity: isStudy ? getStudentValidity(countryName) : (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days'),
-        entryType: isStudy ? getStudentEntryType(countryName) : 'Single / Multiple Entry',
+        validity: isStudy ? getStudentValidity(countryName) : getTourismValidity(countryName),
+        entryType: isStudy ? getStudentEntryType(countryName) : getTourismEntryType(countryName),
         applyWindow: isStudy ? 'Apply 3 to 4 months prior to program intake' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
         profileScore: currentProfileScore,
         profileDetails: profileDetailsList,
@@ -4104,13 +4119,7 @@ export function VisaCountryResultPortal({
           { title: 'Financial Solvency Benchmark', desc: getStudentFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Sufficient verified educational funds.' },
           { title: 'Academic Progression & Intent', desc: 'Documented course justification, SOP, and certified academic credentials.' },
           { title: 'Biometrics & Security Mandates', desc: getStudentOtherRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'VAC Biometrics and medical clearance.' }
-        ] : [
-          { title: 'Passport Validity Requirement', desc: 'Original passport must be valid for min. 6 months beyond travel date with 2 blank pages.' },
-          { title: 'Sufficient Financial Solvency', desc: 'Proof of liquid funds, bank statements, or approved sponsorship meeting immigration thresholds.' },
-          { title: 'Confirmed Travel & Lodging', desc: 'Verifiable round-trip air ticket reservations and hotel booking or host invitation.' },
-          { title: 'Overseas Medical Travel Insurance', desc: 'Medical insurance policy covering minimum EUR 30,000 / USD 50,000 including emergency evacuation.' },
-          { title: 'Consular & Biometric Compliance', desc: 'Attendance at VAC for biometric capture or digital declaration submission before arrival.' }
-        ],
+        ] : getTourismRequirements(countryName).map(r => ({ title: r.category, desc: r.details })),
         faqs: resolvedFaqs.slice(0, 5),
         trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://travltik.com/traveller/dashboard',
         timestamp: submissionDate
@@ -4142,7 +4151,7 @@ export function VisaCountryResultPortal({
           consularFee: consularFeeVal,
           serviceFee: serviceFeeVal,
           createdAt: new Date().toISOString(),
-          checklist: rawDocs.map(d => ({
+          checklist: rawDocs.map((d: any) => ({
             id: d.title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
             title: d.title,
             description: d.description,
@@ -4163,7 +4172,7 @@ export function VisaCountryResultPortal({
         // 3. PRE-POPULATE DOCUMENT VAULT CHECKLIST STATE FOR THIS DESTINATION
         const storageKey = `vault_checklist_${countryName}`.replace(/\s+/g, '_').toLowerCase();
         const existingVault = JSON.parse(localStorage.getItem(storageKey) || '{}');
-        rawDocs.forEach((d) => {
+        rawDocs.forEach((d: any) => {
           const docKey = d.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
           if (!existingVault[docKey]) {
             existingVault[docKey] = {
@@ -5768,13 +5777,13 @@ export function VisaCountryResultPortal({
     }
   ];
 
-  const resolvedFaqs = useMemo(() => {
+  const resolvedFaqs: Array<{ question: string; answer: string }> = useMemo(() => {
     if (isStudyTab) {
       if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
       return getStudentFAQ(countryName);
     }
     if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
-    return faqs;
+    return getTourismFAQ(countryName);
   }, [isStudyTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
 
     // Dynamic Official Checklist populated directly from live AI / Consular Registry
@@ -5873,6 +5882,53 @@ export function VisaCountryResultPortal({
       });
     }
 
+    // Tourism visa fallback if AI is still fetching
+    const tourDocs = getTourismDocuments(countryName);
+    if (tourDocs && tourDocs.length > 0) {
+      return tourDocs.map((doc, idx) => {
+        const key = `doc_tour_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const titleLower = doc.title.toLowerCase();
+        let icon = <FileText className="w-4 h-4" />;
+        let iconBg = 'bg-purple-100 text-purple-700';
+
+        if (titleLower.includes('passport')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-purple-100 text-purple-700';
+        } else if (titleLower.includes('photo') || titleLower.includes('picture')) {
+          icon = <Camera className="w-4 h-4" />;
+          iconBg = 'bg-amber-100 text-amber-700';
+        } else if (titleLower.includes('flight') || titleLower.includes('ticket') || titleLower.includes('itinerary')) {
+          icon = <Plane className="w-4 h-4" />;
+          iconBg = 'bg-sky-100 text-sky-700';
+        } else if (titleLower.includes('hotel') || titleLower.includes('stay') || titleLower.includes('accommodation')) {
+          icon = <Building2 className="w-4 h-4" />;
+          iconBg = 'bg-indigo-100 text-indigo-700';
+        } else if (titleLower.includes('insurance') || titleLower.includes('medical')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-rose-100 text-rose-700';
+        } else if (titleLower.includes('fund') || titleLower.includes('bank') || titleLower.includes('financial') || titleLower.includes('solvency')) {
+          icon = <CreditCard className="w-4 h-4" />;
+          iconBg = 'bg-teal-100 text-teal-700';
+        } else if (titleLower.includes('form') || titleLower.includes('application') || titleLower.includes('ds-160') || titleLower.includes('c5')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-emerald-100 text-emerald-700';
+        }
+
+        const sentences = doc.description
+          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
+          : ['Statutory consular requirement for official entry'];
+
+        return {
+          key,
+          name: doc.title,
+          mandatory: doc.is_mandatory !== false,
+          iconBg,
+          icon,
+          conditions: sentences.slice(0, 3)
+        };
+      });
+    }
+
     // Default fallback based on country if AI is still fetching
     const isUS = countryName.toLowerCase().includes('united states');
     return [
@@ -5939,13 +5995,13 @@ export function VisaCountryResultPortal({
 
   // Dynamic user-driven counts
   const totalDocsCount = portalDocItems.length;
-  const mandatoryDocsCount = portalDocItems.filter(d => d.mandatory).length;
-  const recommendedDocsCount = portalDocItems.filter(d => !d.mandatory).length;
+  const mandatoryDocsCount = portalDocItems.filter((d: any) => d.mandatory).length;
+  const recommendedDocsCount = portalDocItems.filter((d: any) => !d.mandatory).length;
 
-  const completedDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'completed').length;
-  const inProgressDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'in_progress').length;
-  const pendingDocsCount = portalDocItems.filter(d => portalUploadedDocs[d.key]?.status === 'pending').length;
-  const notStartedDocsCount = portalDocItems.filter(d => !portalUploadedDocs[d.key] || portalUploadedDocs[d.key]?.status === 'not_started').length;
+  const completedDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'completed').length;
+  const inProgressDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'in_progress').length;
+  const pendingDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'pending').length;
+  const notStartedDocsCount = portalDocItems.filter((d: any) => !portalUploadedDocs[d.key] || portalUploadedDocs[d.key]?.status === 'not_started').length;
 
   // Dynamic Visa Readiness Scoring (Profile Questionnaire + Document Availability)
   let profileScore = 0;
@@ -6059,11 +6115,11 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : (baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : getTourismValidity(countryName)))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : (baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
               </div>
             </div>
           </div>
@@ -6222,7 +6278,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : (baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))))}
+                      {cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : getTourismValidity(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6234,7 +6290,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.stay_duration || (isStudyTab ? getStudentStayDuration(countryName) : (baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))))}
+                      {cleanStatValue(aiData?.stay_duration || (isStudyTab ? getStudentStayDuration(countryName) : getTourismStayDuration(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6246,7 +6302,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : (baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))))}
+                      {cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : getTourismEntryType(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6320,7 +6376,7 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="space-y-2.5">
-                    {portalDocItems.slice(0, 4).map((doc, idx) => {
+                    {portalDocItems.slice(0, 4).map((doc: any, idx: number) => {
                       const isUploaded = portalUploadedDocs[doc.key]?.status === 'completed';
                       return (
                         <div key={doc.key || idx} className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
@@ -6416,51 +6472,51 @@ export function VisaCountryResultPortal({
                       </>
                     ) : (
                       <>
-                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                            <Sun className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Tourism</strong>
-                            <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Holiday or leisure trip</span>
-                          </div>
-                        </div>
+                        {(() => {
+                          const highlights = (aiData?.highlights && aiData.highlights.length > 0)
+                            ? aiData.highlights
+                            : getTourismHighlights(countryName);
 
-                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                            <Users className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Visit Family/ Friends</strong>
-                            <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Meet family or friends</span>
-                          </div>
-                        </div>
+                          const themes = [
+                            { bg: 'bg-blue-50/70', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-700/80' },
+                            { bg: 'bg-purple-50/70', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-700/80' },
+                            { bg: 'bg-rose-50/70', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-700/80' },
+                            { bg: 'bg-emerald-50/70', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-700/80' }
+                          ];
 
-                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                            <Calendar className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Events</strong>
-                            <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Attend events or meetings</span>
-                          </div>
-                        </div>
+                          const renderIcon = (iconName: string, idx: number) => {
+                            const i = (iconName || '').toLowerCase();
+                            if (i.includes('sun')) return <Sun className="w-4 h-4" />;
+                            if (i.includes('plane')) return <Plane className="w-4 h-4" />;
+                            if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
+                            if (i.includes('shield')) return <ShieldCheck className="w-4 h-4" />;
+                            if (i.includes('calendar') || i.includes('clock')) return <Calendar className="w-4 h-4" />;
+                            if (i.includes('user') || i.includes('people')) return <Users className="w-4 h-4" />;
+                            if (i.includes('award') || i.includes('star')) return <Award className="w-4 h-4" />;
+                            if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
+                            if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
+                            if (i.includes('globe')) return <Globe className="w-4 h-4" />;
+                            if (idx === 0) return <Sun className="w-4 h-4" />;
+                            if (idx === 1) return <Users className="w-4 h-4" />;
+                            if (idx === 2) return <Calendar className="w-4 h-4" />;
+                            return <ShieldCheck className="w-4 h-4" />;
+                          };
 
-                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                            <ShieldCheck className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Short Term Stay</strong>
-                            <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
-                              {countryName.toLowerCase().includes('china')
-                                ? 'Up to 30 Days per Entry (as determined by consular officer)'
-                                : isSchengen
-                                ? 'Up to 90 days within 180 days'
-                                : (aiData?.validity_and_stay?.max_stay_per_entry || aiData?.stay_duration || 'Up to 30 Days per Entry')}
-                            </span>
-                          </div>
-                        </div>
+                          return highlights.slice(0, 4).map((h: any, idx: number) => {
+                            const theme = themes[idx % themes.length];
+                            return (
+                              <div key={idx} className={`p-3.5 rounded-2xl ${theme.bg} border ${theme.border} flex items-start gap-3`}>
+                                <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0`}>
+                                  {renderIcon(h.icon, idx)}
+                                </div>
+                                <div className="min-w-0">
+                                  <strong className={`text-[15px] sm:text-[16px] font-semibold ${theme.text} block`}>{h.title}</strong>
+                                  <span className={`text-[13px] sm:text-[14px] ${theme.sub} font-normal leading-snug block`}>{h.desc}</span>
+                                </div>
+                              </div>
+                            );
+                          });
+                        })()}
                       </>
                     )}
                   </div>
@@ -6672,13 +6728,13 @@ export function VisaCountryResultPortal({
                 {/* Mobile Compact Document Cards List (Matching media_1788533524572.png) */}
                 <div className="md:hidden space-y-2.5 text-left">
                   {portalDocItems
-                    .filter(item => {
+                    .filter((item: any) => {
                       if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
                       if (portalDocFilter === 'recommended' && item.mandatory) return false;
                       if (portalDocSearch && !item.name.toLowerCase().includes(portalDocSearch.toLowerCase())) return false;
                       return true;
                     })
-                    .map((doc) => {
+                    .map((doc: any) => {
                       const uploaded = portalUploadedDocs[doc.key];
                       const isCompleted = uploaded?.status === 'completed';
                       const isPending = uploaded?.status === 'pending';
@@ -6751,13 +6807,13 @@ export function VisaCountryResultPortal({
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {portalDocItems
-                        .filter(item => {
+                        .filter((item: any) => {
                           if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
                           if (portalDocFilter === 'recommended' && item.mandatory) return false;
                           if (portalDocSearch && !item.name.toLowerCase().includes(portalDocSearch.toLowerCase())) return false;
                           return true;
                         })
-                        .map((doc) => {
+                        .map((doc: any) => {
                           const uploaded = portalUploadedDocs[doc.key];
                           const isYes = uploaded?.status === 'completed';
                           const isNo = uploaded?.status === 'pending';
@@ -6785,7 +6841,7 @@ export function VisaCountryResultPortal({
                               {/* Validity & Conditions - Numbered Format */}
                               <td className="py-4 px-4 align-top">
                                 <ol className="space-y-2 list-none">
-                                  {doc.conditions.map((cond, cIdx) => (
+                                  {doc.conditions.map((cond: any, cIdx: number) => (
                                     <li key={cIdx} className="flex items-start gap-2 text-[14px] sm:text-[15px] font-normal text-slate-700 leading-relaxed">
                                       <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5">{cIdx + 1}.</span>
                                       <span>{cond}</span>
@@ -6879,7 +6935,7 @@ export function VisaCountryResultPortal({
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : countryName.toLowerCase().includes('china') ? 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).' : (aiData?.processing_and_timing?.max_extension || aiData?.validity_and_stay?.max_stay_per_entry || 'Maximum authorized stay determined at port of entry.')}</span>
+                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : (aiData?.stay_duration || getTourismStayDuration(countryName))}</span>
                       </li>
                       {isStudyTab ? (
                         <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
@@ -6909,7 +6965,7 @@ export function VisaCountryResultPortal({
                           ? aiData.financial_proofs
                           : isStudyTab
                           ? getStudentFinancialProofs(countryName)
-                          : null;
+                          : getTourismFinancialProofs(countryName);
                         if (fpList && fpList.length > 0) {
                           return fpList.slice(0, 3).map((fp: any, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
@@ -7003,7 +7059,7 @@ export function VisaCountryResultPortal({
                           ? aiData.other_requirements
                           : isStudyTab
                           ? getStudentOtherRequirements(countryName)
-                          : null;
+                          : getTourismRequirements(countryName);
                         if (otherList && otherList.length > 0) {
                           return otherList.slice(0, 3).map((orq: any, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
@@ -7191,7 +7247,7 @@ export function VisaCountryResultPortal({
                 <div>
                   <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Fees &amp; Payment Details</h2>
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5">
-                    Official statutory fees verified from {aiData?.official_source_name || (isStudyTab ? getStudentOfficialSourceName(countryName) : ('the Embassy of ' + countryName))}.
+                    Official statutory fees verified from {aiData?.official_source_name || (isStudyTab ? getStudentOfficialSourceName(countryName) : getTourismOfficialSourceName(countryName))}.
                   </p>
                 </div>
 
@@ -7199,25 +7255,25 @@ export function VisaCountryResultPortal({
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">Consular Visa Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
+                      {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                     </strong>
                   </div>
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : countryName.toLowerCase().includes('mauritius') ? '₹0 (No Appointment Needed)' : countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
+                      {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
                     <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Total Official Fee</span>
                     <strong className="text-[20px] sm:text-[22px] font-semibold text-teal-700">
-                      {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : countryName.toLowerCase().includes('mauritius') ? '₹0 (Free on Arrival)' : countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
+                      {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                     </strong>
                   </div>
                 </div>
-                {(aiData?.costs?.notes || (isStudyTab && getStudentFees(countryName).notes)) && (
+                {(aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : getTourismFees(countryName).notes)) && (
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                    ℹ️ {aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : '')}
+                    ℹ️ {aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : getTourismFees(countryName).notes)}
                   </p>
                 )}
                 <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal">
@@ -7236,10 +7292,10 @@ export function VisaCountryResultPortal({
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isStudyTab ? getStudentProcessingTime(countryName) : countryName.toLowerCase().includes('mauritius') ? 'Instant on Arrival (0 Days)' : isSchengen ? '15 – 20 Days' : '5 – 10 Days')}
+                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isStudyTab ? getStudentProcessingTime(countryName) : getTourismProcessingTime(countryName))}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isStudyTab ? getStudentProcessingDetails(countryName) : countryName.toLowerCase().includes('mauritius') ? 'Granted directly upon landing at SSR International Airport (Mauritius).' : 'Calculated from the date biometric submission is completed at the consular center.')}
+                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isStudyTab ? getStudentProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
@@ -7284,7 +7340,7 @@ export function VisaCountryResultPortal({
               <div className="space-y-4 text-left animate-fade-up">
                 <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 px-1 tracking-tight">Frequently Asked Questions</h2>
                 <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
-                  {resolvedFaqs.map((faq, idx) => {
+                  {resolvedFaqs.map((faq: { question: string; answer: string }, idx: number) => {
                     const isOpen = Boolean(openFaqs[idx]);
                     return (
                       <div key={idx} className="transition-colors">
@@ -7392,19 +7448,19 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Adult)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : isSchengen ? '€80' : '$185 USD')}
+                    {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Child 6-12 yrs)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.child_fee || (isStudyTab ? 'N/A (Primary Applicant)' : isSchengen ? '€40' : '$95 USD')}
+                    {aiData?.costs?.child_fee || (isStudyTab ? 'N/A (Primary Applicant)' : isSchengen ? '€45' : '$95 USD')}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Service Fee</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : isSchengen ? '€25' : '$25 USD')}
+                    {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                   </strong>
                 </div>
 
@@ -7413,7 +7469,7 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-slate-900 text-[14px]">Total</span>
                   <strong className="text-[16px] font-semibold text-slate-900">
-                    {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : isSchengen ? '€105' : '$210 USD')}
+                    {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                   </strong>
                 </div>
 
@@ -10157,7 +10213,7 @@ export function VisaCountryResultPortal({
               </div>
 
               <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
-                {resolvedFaqs.map((faq, idx) => {
+                {resolvedFaqs.map((faq: { question: string; answer: string }, idx: number) => {
                   const isOpen = activeFaq === idx;
                   return (
                     <div key={idx} className="bg-white">

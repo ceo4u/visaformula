@@ -197,3 +197,6 @@ export async function runV3VerificationEngine(params: {
     message: `Unable to verify requirements from registered official sources for ${toCountry}`
   };
 }
+
+export { getVisaRequirements } from './orchestrator';
+

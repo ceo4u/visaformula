@@ -2,7 +2,8 @@
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
 import path from 'path';
-import type { V3VisaData, ApplicableField } from './types';
+import type { VisaData, V3VisaData } from './types';
+import { createField } from './types';
 
 function getGeminiApiKey(): string {
   let key = (
@@ -34,6 +35,258 @@ function getGeminiApiKey(): string {
   return '';
 }
 
+const EXTRACTION_PROMPT = `
+Extract visa requirements from the source content below.
+
+SOURCE CONTENT:
+{{CONTENT}}
+
+SOURCE URL: {{URL}}
+
+TASK: Extract requirements for {{FROM}} passport holders to {{TO}} for {{PURPOSE}}.
+
+CRITICAL RULES:
+1. ONLY extract what is explicitly stated in the source
+2. For each field, provide EXACT evidence text
+3. If not mentioned -> applicable: false with reason
+4. NEVER use training data
+
+Return JSON:
+{
+  "fields": {
+    "visa_type": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "visa_required": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "visa_free": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "visa_on_arrival": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "evisa_available": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "validity": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "stay_duration": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "entry_type": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "processing_time": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "fee": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "fee_currency": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "service_fee": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "total_fee": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "application_method": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "application_url": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "application_form": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "biometrics_required": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "vac_required": { "value": true, "applicable": true, "reason": "...", "evidence": "..." },
+    "vac_name": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "mandatory_documents": { "value": ["..."], "applicable": true, "reason": "...", "evidence": "..." },
+    "financial_requirements": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "insurance_requirements": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." },
+    "passport_validity_required": { "value": "...", "applicable": true, "reason": "...", "evidence": "..." }
+  }
+}
+`;
+
+export async function extractWithEvidence(
+  content: string,
+  url: string,
+  fromCountry: string,
+  toCountry: string,
+  purpose: string
+): Promise<VisaData | null> {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) return null;
+
+  const ai = new GoogleGenAI({ apiKey });
+
+  let extractedContent = content;
+  if (content.length > 50000) {
+    const visaRegex = /visa|entry|stay|fee|document|passport|requirement|application/i;
+    const sections = content.split(/\n\n/);
+    const relevantSections = sections.filter(s => visaRegex.test(s));
+    extractedContent = relevantSections.join('\n\n');
+    if (extractedContent.length > 50000) {
+      extractedContent = extractedContent.slice(0, 50000);
+    }
+  }
+
+  const prompt = EXTRACTION_PROMPT
+    .replace('{{CONTENT}}', extractedContent)
+    .replace('{{URL}}', url)
+    .replace('{{FROM}}', fromCountry)
+    .replace('{{TO}}', toCountry)
+    .replace('{{PURPOSE}}', purpose);
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash-exp',
+      contents: prompt,
+      config: {
+        temperature: 0.0,
+        responseMimeType: 'application/json'
+      }
+    });
+
+    const text = response.text;
+    if (!text) return null;
+
+    const parsed = JSON.parse(text);
+    const fields = parsed.fields || {};
+
+    return {
+      passport_country: fromCountry,
+      destination_country: toCountry,
+      purpose_of_visit: purpose,
+
+      visa_type: createField(
+        fields.visa_type?.value || null,
+        fields.visa_type?.evidence || null,
+        fields.visa_type?.applicable !== false,
+        fields.visa_type?.reason
+      ),
+      visa_required: createField(
+        fields.visa_required?.value ?? null,
+        fields.visa_required?.evidence || null,
+        fields.visa_required?.applicable !== false,
+        fields.visa_required?.reason
+      ),
+      visa_free: createField(
+        fields.visa_free?.value ?? null,
+        fields.visa_free?.evidence || null,
+        fields.visa_free?.applicable !== false,
+        fields.visa_free?.reason
+      ),
+      visa_on_arrival: createField(
+        fields.visa_on_arrival?.value ?? null,
+        fields.visa_on_arrival?.evidence || null,
+        fields.visa_on_arrival?.applicable !== false,
+        fields.visa_on_arrival?.reason
+      ),
+      evisa_available: createField(
+        fields.evisa_available?.value ?? null,
+        fields.evisa_available?.evidence || null,
+        fields.evisa_available?.applicable !== false,
+        fields.evisa_available?.reason
+      ),
+      validity: createField(
+        fields.validity?.value || null,
+        fields.validity?.evidence || null,
+        fields.validity?.applicable !== false,
+        fields.validity?.reason
+      ),
+      stay_duration: createField(
+        fields.stay_duration?.value || null,
+        fields.stay_duration?.evidence || null,
+        fields.stay_duration?.applicable !== false,
+        fields.stay_duration?.reason
+      ),
+      entry_type: createField(
+        fields.entry_type?.value || null,
+        fields.entry_type?.evidence || null,
+        fields.entry_type?.applicable !== false,
+        fields.entry_type?.reason
+      ),
+      processing_time: createField(
+        fields.processing_time?.value || null,
+        fields.processing_time?.evidence || null,
+        fields.processing_time?.applicable !== false,
+        fields.processing_time?.reason
+      ),
+      fee: createField(
+        fields.fee?.value || null,
+        fields.fee?.evidence || null,
+        fields.fee?.applicable !== false,
+        fields.fee?.reason
+      ),
+      fee_currency: createField(
+        fields.fee_currency?.value || null,
+        fields.fee_currency?.evidence || null,
+        fields.fee_currency?.applicable !== false,
+        fields.fee_currency?.reason
+      ),
+      service_fee: createField(
+        fields.service_fee?.value || null,
+        fields.service_fee?.evidence || null,
+        fields.service_fee?.applicable !== false,
+        fields.service_fee?.reason
+      ),
+      total_fee: createField(
+        fields.total_fee?.value || null,
+        fields.total_fee?.evidence || null,
+        fields.total_fee?.applicable !== false,
+        fields.total_fee?.reason
+      ),
+      application_method: createField(
+        fields.application_method?.value || null,
+        fields.application_method?.evidence || null,
+        fields.application_method?.applicable !== false,
+        fields.application_method?.reason
+      ),
+      application_url: createField(
+        fields.application_url?.value || null,
+        fields.application_url?.evidence || null,
+        fields.application_url?.applicable !== false,
+        fields.application_url?.reason
+      ),
+      application_form: createField(
+        fields.application_form?.value || null,
+        fields.application_form?.evidence || null,
+        fields.application_form?.applicable !== false,
+        fields.application_form?.reason
+      ),
+      biometrics_required: createField(
+        fields.biometrics_required?.value ?? null,
+        fields.biometrics_required?.evidence || null,
+        fields.biometrics_required?.applicable !== false,
+        fields.biometrics_required?.reason
+      ),
+      vac_required: createField(
+        fields.vac_required?.value ?? null,
+        fields.vac_required?.evidence || null,
+        fields.vac_required?.applicable !== false,
+        fields.vac_required?.reason
+      ),
+      vac_name: createField(
+        fields.vac_name?.value || null,
+        fields.vac_name?.evidence || null,
+        fields.vac_name?.applicable !== false,
+        fields.vac_name?.reason
+      ),
+      mandatory_documents: createField(
+        fields.mandatory_documents?.value || null,
+        fields.mandatory_documents?.evidence || null,
+        fields.mandatory_documents?.applicable !== false,
+        fields.mandatory_documents?.reason
+      ),
+      financial_requirements: createField(
+        fields.financial_requirements?.value || null,
+        fields.financial_requirements?.evidence || null,
+        fields.financial_requirements?.applicable !== false,
+        fields.financial_requirements?.reason
+      ),
+      insurance_requirements: createField(
+        fields.insurance_requirements?.value || null,
+        fields.insurance_requirements?.evidence || null,
+        fields.insurance_requirements?.applicable !== false,
+        fields.insurance_requirements?.reason
+      ),
+      passport_validity_required: createField(
+        fields.passport_validity_required?.value || null,
+        fields.passport_validity_required?.evidence || null,
+        fields.passport_validity_required?.applicable !== false,
+        fields.passport_validity_required?.reason
+      ),
+
+      source_url: url,
+      source_authority: null,
+      source_content_hash: null,
+      source_snapshot: null,
+      last_verified_at: new Date().toISOString(),
+      verification_status: 'unverified',
+      _timestamp: new Date().toISOString(),
+      _version: '3.0'
+    };
+  } catch (error) {
+    console.error('[Extractor] Error:', error);
+    return null;
+  }
+}
+
+// Backward compatibility extractor
 export async function extractEvidenceWithGemini(
   cleanedContent: string,
   sourceUrl: string,
@@ -42,114 +295,87 @@ export async function extractEvidenceWithGemini(
   toCountry: string,
   purpose: string
 ): Promise<V3VisaData | null> {
-  const apiKey = getGeminiApiKey();
-  if (!apiKey) {
-    console.warn('[V3Extractor] GEMINI_API_KEY is not configured.');
-    return null;
-  }
+  const data = await extractWithEvidence(cleanedContent, sourceUrl, fromCountry, toCountry, purpose);
+  if (!data) return null;
 
-  const ai = new GoogleGenAI({ apiKey });
-
-  const systemInstruction = `
-You are an expert consular compliance data extractor.
-Your task is to extract visa requirements for a traveler from ${fromCountry} traveling to ${toCountry} for the purpose of "${purpose}".
-
-CRITICAL EXTRACTION RULES:
-1. SOURCE IS TRUTH: You are strictly an EXTRACTOR, NOT a generator or knowledge base.
-2. DO NOT hallucinate, assume, or invent details not present in the provided source text.
-3. If information for a field is not found in the source text, set "value": null.
-4. FOR EVERY FIELD, return an object containing:
-   - "value": string or boolean or array or null
-   - "applicable": boolean (false if the field does not apply to this route, e.g., visa-free entry has no visa fee or consular processing time)
-   - "reason": optional short string explaining why it is not applicable or why null
-   - "evidence": exact verbatim quote/substring copied directly from the source text that supports this value. NEVER paraphrase.
-5. NO GENERIC PLACEHOLDERS: Never output generic phrases like "as per embassy regulations", "official consular fee", "depends on application", "check embassy website", "varies". If the exact number or instruction is absent, return value: null.
-6. APPLICABILITY LOGIC:
-   - For Visa-Free entry routes:
-     * "visa_required": { "value": false, "applicable": true, "evidence": "..." }
-     * "visa_type": { "value": null, "applicable": false, "reason": "Visa-free entry" }
-     * "fee": { "value": null, "applicable": false, "reason": "No visa fee for visa-free entry" }
-     * "processing_time": { "value": null, "applicable": false, "reason": "Instant entry on arrival" }
-   - For eVisa / Consular Visa routes:
-     * "visa_required": { "value": true, "applicable": true, "evidence": "..." }
-     * "visa_type": { "value": "...", "applicable": true, "evidence": "..." }
-     * "fee": { "value": "...", "applicable": true, "evidence": "..." }
-     * "processing_time": { "value": "...", "applicable": true, "evidence": "..." }
-`.trim();
-
-  const userPrompt = `
-Source URL: ${sourceUrl}
-Retrieved At: ${retrievedAt}
-Route: From ${fromCountry} to ${toCountry} (${purpose})
-
-OFFICIAL SOURCE CONTENT:
-\"\"\"
-${cleanedContent.slice(0, 45000)}
-\"\"\"
-
-Extract the visa requirements as valid JSON matching this exact structure:
-{
-  "passport_country": "${fromCountry}",
-  "destination_country": "${toCountry}",
-  "purpose": "${purpose}",
-  "visa_required": { "value": true or false, "applicable": true, "evidence": "exact quote" },
-  "visa_type": { "value": "...", "applicable": true or false, "reason": "...", "evidence": "..." },
-  "validity": { "value": "...", "applicable": true, "evidence": "..." },
-  "stay_duration": { "value": "...", "applicable": true, "evidence": "..." },
-  "entry_type": { "value": "Single" or "Multiple", "applicable": true, "evidence": "..." },
-  "processing_time": { "value": "...", "applicable": true or false, "reason": "...", "evidence": "..." },
-  "fee": { "value": "...", "applicable": true or false, "reason": "...", "evidence": "..." },
-  "documents_required": {
-    "value": [
-      { "title": "...", "description": "...", "is_mandatory": true }
-    ],
-    "applicable": true,
-    "evidence": "..."
-  },
-  "how_to_apply": {
-    "value": ["Step 1: ...", "Step 2: ..."],
-    "applicable": true,
-    "evidence": "..."
-  },
-  "financial_proofs": {
-    "value": [{ "type": "...", "amount_or_balance": "...", "duration": "...", "notes": "..." }],
-    "applicable": true or false,
-    "evidence": "..."
-  },
-  "other_requirements": {
-    "value": ["..."],
-    "applicable": true or false,
-    "evidence": "..."
-  }
-}
-Output ONLY raw JSON. Do not wrap in markdown or backticks.
-`.trim();
-
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        { role: 'user', parts: [{ text: `${systemInstruction}\n\n${userPrompt}` }] }
+  return {
+    passport_country: data.passport_country,
+    destination_country: data.destination_country,
+    purpose: data.purpose_of_visit,
+    visa_type: {
+      value: data.visa_type.value,
+      applicable: data.visa_type.applicable,
+      reason: data.visa_type.reason,
+      evidence: data.visa_type.evidence || undefined
+    },
+    visa_required: {
+      value: data.visa_required.value,
+      applicable: data.visa_required.applicable,
+      reason: data.visa_required.reason,
+      evidence: data.visa_required.evidence || undefined
+    },
+    validity: {
+      value: data.validity.value,
+      applicable: data.validity.applicable,
+      reason: data.validity.reason,
+      evidence: data.validity.evidence || undefined
+    },
+    stay_duration: {
+      value: data.stay_duration.value,
+      applicable: data.stay_duration.applicable,
+      reason: data.stay_duration.reason,
+      evidence: data.stay_duration.evidence || undefined
+    },
+    entry_type: {
+      value: data.entry_type.value,
+      applicable: data.entry_type.applicable,
+      reason: data.entry_type.reason,
+      evidence: data.entry_type.evidence || undefined
+    },
+    processing_time: {
+      value: data.processing_time.value,
+      applicable: data.processing_time.applicable,
+      reason: data.processing_time.reason,
+      evidence: data.processing_time.evidence || undefined
+    },
+    fee: {
+      value: data.fee.value,
+      applicable: data.fee.applicable,
+      reason: data.fee.reason,
+      evidence: data.fee.evidence || undefined
+    },
+    documents_required: {
+      value: (data.mandatory_documents.value || []).map((m: string) => ({
+        title: m,
+        description: `Mandatory document: ${m}`,
+        is_mandatory: true
+      })),
+      applicable: data.mandatory_documents.applicable,
+      evidence: data.mandatory_documents.evidence || undefined
+    },
+    how_to_apply: {
+      value: [
+        `Apply online via ${data.application_url.value || 'official portal'}`,
+        `Submit application form: ${data.application_form.value || 'Standard form'}`,
+        data.biometrics_required.value ? 'Complete biometric appointment' : 'No biometrics required'
       ],
-      config: {
-        responseMimeType: 'application/json',
-        temperature: 0.1
-      }
-    });
-
-    const rawText = response.text?.trim();
-    if (!rawText) return null;
-
-    const cleanedJson = rawText
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/```\s*$/i, '')
-      .trim();
-
-    const parsed = JSON.parse(cleanedJson) as V3VisaData;
-    return parsed;
-  } catch (err) {
-    console.error('[V3Extractor] Extraction failed:', err);
-    return null;
-  }
+      applicable: true
+    },
+    financial_proofs: {
+      value: data.financial_requirements.value ? [{
+        type: 'Proof of Funds',
+        amount_or_balance: data.financial_requirements.value,
+        duration: 'Recent statements'
+      }] : [],
+      applicable: data.financial_requirements.applicable,
+      evidence: data.financial_requirements.evidence || undefined
+    },
+    other_requirements: {
+      value: [
+        data.insurance_requirements.value ? `Insurance: ${data.insurance_requirements.value}` : '',
+        data.passport_validity_required.value ? `Passport Validity: ${data.passport_validity_required.value}` : ''
+      ].filter(Boolean),
+      applicable: true
+    }
+  };
 }

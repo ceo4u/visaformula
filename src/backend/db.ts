@@ -793,6 +793,13 @@ export async function runMigrations() {
     );
     CREATE UNIQUE INDEX IF NOT EXISTS idx_sr_exact_hostname ON source_registry (exact_hostname);
     CREATE INDEX IF NOT EXISTS idx_sr_dest_country ON source_registry (destination_country);
+
+    -- V3 Column Migrations & Alignment
+    ALTER TABLE visa_verified_records ADD COLUMN IF NOT EXISTS field_status JSONB;
+    ALTER TABLE visa_verified_records ALTER COLUMN route_hash DROP NOT NULL;
+    ALTER TABLE visa_verified_records ALTER COLUMN field_applicability DROP NOT NULL;
+    ALTER TABLE visa_verified_records ALTER COLUMN source_content_hash DROP NOT NULL;
+    ALTER TABLE visa_review_queue ADD COLUMN IF NOT EXISTS assigned_to VARCHAR(255);
   `);
   })();
   return migrationsPromise;

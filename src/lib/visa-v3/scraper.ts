@@ -115,3 +115,6 @@ export async function fetchAndSnapshot(
     };
   }
 }
+
+export { fetchSourceContent, detectSourceChange } from './content-retriever';
+

@@ -3780,6 +3780,37 @@ export function VisaCountryResultPortal({
     });
   };
 
+  const handleToggleDocChecklist = (docKey: string, choice: 'yes' | 'no') => {
+    setPortalUploadedDocs(prev => {
+      const current = prev[docKey];
+      const isCurrentlyYes = current?.status === 'completed';
+      const isCurrentlyNo = current?.status === 'pending';
+
+      let newStatus: 'completed' | 'pending' | 'not_started';
+      if (choice === 'yes') {
+        newStatus = isCurrentlyYes ? 'not_started' : 'completed';
+      } else {
+        newStatus = isCurrentlyNo ? 'not_started' : 'pending';
+      }
+
+      const updated = {
+        ...prev,
+        [docKey]: {
+          fileName: newStatus === 'completed' ? 'Checklist Verified (Yes)' : (current?.fileName || 'Pending Checklist Item'),
+          fileSize: current?.fileSize || '',
+          uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          status: newStatus
+        }
+      };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`portal_docs_${slugClean}`, JSON.stringify(updated));
+        } catch (err) {}
+      }
+      return updated;
+    });
+  };
+
   // Consultant Filter & Booking States
   const [consultantLocationQuery, setConsultantLocationQuery] = useState('');
   const [consultantCountryFilter, setConsultantCountryFilter] = useState('All Countries (Global)');
@@ -6550,7 +6581,7 @@ export function VisaCountryResultPortal({
                     .map((doc) => {
                       const uploaded = portalUploadedDocs[doc.key];
                       const isCompleted = uploaded?.status === 'completed';
-                      const isInProgress = uploaded?.status === 'in_progress';
+                      const isPending = uploaded?.status === 'pending';
                       return (
                         <div
                           key={doc.key}
@@ -6563,46 +6594,44 @@ export function VisaCountryResultPortal({
                             <div className="min-w-0">
                               <strong className="text-[15px] font-semibold text-slate-900 block truncate">{doc.name}</strong>
                               <div className="flex items-center gap-1.5 mt-0.5">
-                                <span className={`text-[12px] font-medium ${doc.mandatory ? 'text-teal-700' : 'text-slate-500'}`}>
+                                <span className={`text-[12px] font-medium ${doc.mandatory ? 'text-rose-700' : 'text-slate-500'}`}>
                                   {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                 </span>
-                                {uploaded?.validDate ? (
-                                  <>
-                                    <span className="text-slate-300">•</span>
-                                    <span className="text-[12px] font-normal text-slate-500 truncate">{uploaded.validDate}</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span className="text-slate-300">•</span>
-                                    <span className="text-[12px] font-normal text-slate-500 truncate max-w-[120px]">{doc.conditions[0] || 'Required'}</span>
-                                  </>
-                                )}
+                                <span className="text-slate-300">•</span>
+                                <span className="text-[12px] font-normal text-slate-500 truncate max-w-[130px]">{doc.conditions[0] || 'Required'}</span>
                               </div>
                             </div>
                           </div>
 
                           <div className="shrink-0 flex items-center gap-1.5">
-                            {isCompleted ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium">
-                                <Check className="w-3 h-3 stroke-[3]" />
-                                <span>Completed</span>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
+                                isCompleted
+                                  ? 'bg-emerald-50 border-emerald-400 text-emerald-800 font-bold shadow-2xs'
+                                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                              }`}
+                            >
+                              <span className={`font-mono text-xs font-bold ${isCompleted ? 'text-emerald-700' : 'text-slate-400'}`}>
+                                [{isCompleted ? '✓' : ' '}]
                               </span>
-                            ) : isInProgress ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[12px] font-medium">
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
-                                <span>In Progress</span>
+                              <span>Yes</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleDocChecklist(doc.key, 'no')}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
+                                isPending
+                                  ? 'bg-rose-50 border-rose-400 text-rose-800 font-bold shadow-2xs'
+                                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                              }`}
+                            >
+                              <span className={`font-mono text-xs font-bold ${isPending ? 'text-rose-700' : 'text-slate-400'}`}>
+                                [{isPending ? '✓' : ' '}]
                               </span>
-                            ) : (
-                              <label className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium cursor-pointer hover:bg-amber-100 transition-colors">
-                                <Clock className="w-3 h-3" />
-                                <span>Pending</span>
-                                <input
-                                  type="file"
-                                  className="hidden"
-                                  onChange={(e) => handlePortalFileUpload(doc.key, e)}
-                                />
-                              </label>
-                            )}
+                              <span>No</span>
+                            </button>
                           </div>
                         </div>
                       );
@@ -6615,11 +6644,9 @@ export function VisaCountryResultPortal({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
-                          <th className="py-3 px-4 text-left">Document Name</th>
-                          <th className="py-3 px-4 text-left">Validity &amp; Conditions</th>
-                          <th className="py-3 px-4 text-left">Your Document</th>
-                          <th className="py-3 px-4 text-left">Status</th>
-                          <th className="py-3 px-4 text-right">Action</th>
+                          <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
+                          <th className="py-3.5 px-4 text-left w-[48%]">Validity &amp; Conditions</th>
+                          <th className="py-3.5 px-4 text-left w-[24%]">Status</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -6632,6 +6659,9 @@ export function VisaCountryResultPortal({
                         })
                         .map((doc) => {
                           const uploaded = portalUploadedDocs[doc.key];
+                          const isYes = uploaded?.status === 'completed';
+                          const isNo = uploaded?.status === 'pending';
+
                           return (
                             <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
                               
@@ -6652,116 +6682,61 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Validity & Conditions - Important Document Instructions (14-15px / 400) */}
+                              {/* Validity & Conditions - Numbered Format */}
                               <td className="py-4 px-4 align-top">
-                                <ul className="space-y-1.5">
+                                <ol className="space-y-2 list-none">
                                   {doc.conditions.map((cond, cIdx) => (
-                                    <li key={cIdx} className="flex items-start gap-1.5 text-[14px] sm:text-[15px] font-normal text-slate-700 leading-relaxed">
-                                      <span className="text-slate-400 select-none">•</span>
+                                    <li key={cIdx} className="flex items-start gap-2 text-[14px] sm:text-[15px] font-normal text-slate-700 leading-relaxed">
+                                      <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5">{cIdx + 1}.</span>
                                       <span>{cond}</span>
                                     </li>
                                   ))}
-                                </ul>
+                                </ol>
                               </td>
 
-                              {/* Your Document */}
+                              {/* Status - Square Bracket Yes/No Checklist */}
                               <td className="py-4 px-4 align-top">
-                                {uploaded ? (
-                                  <div className="space-y-1">
-                                    <span className={`inline-block px-2 py-0.5 rounded-md text-[12px] font-medium ${
-                                      uploaded.status === 'completed'
-                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                        : uploaded.status === 'pending'
-                                        ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                                        : 'bg-amber-50 text-amber-700 border border-amber-200'
-                                    }`}>
-                                      {uploaded.status === 'completed' ? (uploaded.validDate ? 'Valid' : 'Uploaded') : uploaded.status === 'pending' ? 'Expired' : 'Uploaded'}
-                                    </span>
-                                    {uploaded.validDate && (
-                                      <span className="block text-[12px] sm:text-[13px] font-normal text-slate-600">{uploaded.validDate}</span>
-                                    )}
-                                    {uploaded.docNumber && (
-                                      <span className="block text-[12px] sm:text-[13px] font-normal text-slate-500">{uploaded.docNumber}</span>
-                                    )}
-                                    <span className="block text-[13px] font-medium text-slate-800 truncate max-w-[150px]">
-                                      {uploaded.fileName}
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <div className="space-y-1.5">
-                                    <span className="text-slate-500 text-[13px] font-normal block">Not Uploaded</span>
-                                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-[12px] sm:text-[13px] font-semibold text-slate-700 cursor-pointer transition-colors shadow-2xs">
-                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
-                                      <span>Upload Document</span>
-                                      <input
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handlePortalFileUpload(doc.key, e)}
-                                      />
-                                    </label>
-                                  </div>
-                                )}
-                              </td>
+                                <div className="flex flex-col gap-2">
+                                  <div className="flex items-center gap-2">
+                                    {/* [ ] Yes Checklist Option */}
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
+                                      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
+                                        isYes
+                                          ? 'bg-emerald-50 border-emerald-400 text-emerald-800 shadow-2xs ring-1 ring-emerald-400/40'
+                                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                                      }`}
+                                      title="Mark document as ready (Yes)"
+                                    >
+                                      <span className={`font-mono text-sm font-bold ${isYes ? 'text-emerald-700' : 'text-slate-400'}`}>
+                                        [{isYes ? '✓' : ' '}]
+                                      </span>
+                                      <span>Yes</span>
+                                    </button>
 
-                              {/* Status */}
-                              <td className="py-4 px-4 align-top">
-                                {uploaded?.status === 'completed' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-emerald-700">
-                                    <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
-                                    <span>Completed</span>
-                                  </span>
-                                ) : uploaded?.status === 'in_progress' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-amber-700">
-                                    <Clock className="w-4 h-4" />
-                                    <span>In Progress</span>
-                                  </span>
-                                ) : uploaded?.status === 'pending' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-rose-600">
-                                    <AlertCircle className="w-4 h-4" />
-                                    <span>Pending</span>
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-slate-400">
-                                    <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-300" />
-                                    <span>Not Started</span>
-                                  </span>
-                                )}
-                              </td>
+                                    {/* [ ] No Checklist Option */}
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleDocChecklist(doc.key, 'no')}
+                                      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
+                                        isNo
+                                          ? 'bg-rose-50 border-rose-400 text-rose-800 shadow-2xs ring-1 ring-rose-400/40'
+                                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                                      }`}
+                                      title="Mark document as pending / not ready (No)"
+                                    >
+                                      <span className={`font-mono text-sm font-bold ${isNo ? 'text-rose-700' : 'text-slate-400'}`}>
+                                        [{isNo ? '✓' : ' '}]
+                                      </span>
+                                      <span>No</span>
+                                    </button>
+                                  </div>
 
-                              {/* Action */}
-                              <td className="py-4 px-4 align-top text-right">
-                                <div className="flex items-center justify-end gap-2">
-                                  {uploaded ? (
-                                    <>
-                                      <button
-                                        type="button"
-                                        onClick={() => setInspectDocItem({ ...doc, ...uploaded })}
-                                        className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-[13px] font-semibold text-slate-700 cursor-pointer shadow-2xs"
-                                      >
-                                        View
-                                      </button>
-                                      <label className="px-3 py-1.5 rounded-xl border border-teal-200 text-teal-700 hover:bg-teal-50 text-[13px] font-semibold cursor-pointer shadow-2xs">
-                                        Update
-                                        <input
-                                          type="file"
-                                          className="hidden"
-                                          onChange={(e) => handlePortalFileUpload(doc.key, e)}
-                                        />
-                                      </label>
-                                    </>
-                                  ) : (
-                                    <label className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[13px] font-semibold cursor-pointer shadow-2xs">
-                                      Upload
-                                      <input
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handlePortalFileUpload(doc.key, e)}
-                                      />
-                                    </label>
-                                  )}
-                                  <button className="p-1 rounded text-slate-400 hover:text-slate-700 cursor-pointer">
-                                    <MoreVertical className="w-4 h-4" />
-                                  </button>
+                                  {/* Helper state indicator */}
+                                  <span className="text-[11px] font-medium text-slate-400">
+                                    {isYes ? '✓ Ready / Available' : isNo ? '⚠️ Document Pending' : 'Tick [✓] to verify'}
+                                  </span>
                                 </div>
                               </td>
 

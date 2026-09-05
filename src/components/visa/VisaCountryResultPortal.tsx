@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
 import { ConsularMockPrepCard } from './ConsularMockPrepCard';
+import { getStudentVisaSteps, getStudentDocuments } from '../../lib/student-visa';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3408,7 +3409,35 @@ export function VisaCountryResultPortal({
       }
     ];
 
-    const default8Steps = isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
+    const isStudentPathway = activePurposeTab === 'study' || initialPurpose === 'study';
+    const student8Steps = getStudentVisaSteps(passportCountry, countryName, 'Student Visa').map((s, i) => {
+      const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
+      let title = '';
+      let desc = '';
+      if (clean.includes('—')) {
+        const parts = clean.split('—');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('—').trim();
+      } else if (clean.includes('–')) {
+        const parts = clean.split('–');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('–').trim();
+      } else if (clean.includes(':')) {
+        const parts = clean.split(':');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(':').trim();
+      } else if (clean.includes(' - ')) {
+        const parts = clean.split(' - ');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(' - ').trim();
+      } else {
+        title = `Step ${i + 1}`;
+        desc = clean;
+      }
+      return { title, desc };
+    });
+
+    const default8Steps = isStudentPathway ? student8Steps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3557,10 +3586,22 @@ export function VisaCountryResultPortal({
             .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
             .replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '')
             .trim();
-          if (clean.includes(':')) {
+          if (clean.includes('—')) {
+            const parts = clean.split('—');
+            title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
+            desc = parts.slice(1).join('—').trim();
+          } else if (clean.includes('–')) {
+            const parts = clean.split('–');
+            title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
+            desc = parts.slice(1).join('–').trim();
+          } else if (clean.includes(':')) {
             const parts = clean.split(':');
             title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
             desc = parts.slice(1).join(':').trim();
+          } else if (clean.includes(' - ')) {
+            const parts = clean.split(' - ');
+            title = parts[0].trim().replace(/\s*\([^)]*\)/g, '');
+            desc = parts.slice(1).join(' - ').trim();
           } else {
             title = default8Steps[idx]?.title || `Step ${idx + 1}`;
             desc = clean;
@@ -3909,6 +3950,12 @@ export function VisaCountryResultPortal({
             description: d.description || d.hint || 'Must comply with official consular specifications.',
             isMandatory: d.is_mandatory !== false
           }))
+        : isStudy
+        ? getStudentDocuments(passportCountry, countryName, 'Student').map(d => ({
+            title: d.title,
+            description: d.description,
+            isMandatory: d.is_mandatory !== false
+          }))
         : (isVisaOnArrivalOrFree && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general'))
         ? [
             { title: 'Valid Passport', description: 'Valid national passport for intended duration of stay with blank entry stamp page.', isMandatory: true },
@@ -3933,15 +3980,46 @@ export function VisaCountryResultPortal({
         ? aiData.how_to_apply.map((s: any, idx: number) => {
             const raw = typeof s === 'string' ? s : (s.title || s.step || `Step ${idx + 1}`);
             const clean = raw.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
-            const parts = clean.split(':');
+            let title = '';
+            let desc = '';
+            if (clean.includes('—')) {
+              const parts = clean.split('—');
+              title = parts[0].trim();
+              desc = parts.slice(1).join('—').trim();
+            } else if (clean.includes('–')) {
+              const parts = clean.split('–');
+              title = parts[0].trim();
+              desc = parts.slice(1).join('–').trim();
+            } else if (clean.includes(':')) {
+              const parts = clean.split(':');
+              title = parts[0].trim();
+              desc = parts.slice(1).join(':').trim();
+            } else if (clean.includes(' - ')) {
+              const parts = clean.split(' - ');
+              title = parts[0].trim();
+              desc = parts.slice(1).join(' - ').trim();
+            } else {
+              title = clean;
+              desc = 'Follow official consular procedural guidelines.';
+            }
             return {
               step: idx + 1,
-              title: parts[0].trim() || clean,
-              desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
+              title: title || clean,
+              desc: desc || 'Follow official consular procedural guidelines.'
             };
           })
         : (dynamicSteps && dynamicSteps.length > 0)
         ? dynamicSteps.map(s => ({ step: s.step, title: s.title, desc: s.desc }))
+        : isStudy
+        ? getStudentVisaSteps(passportCountry, countryName, 'Student Visa').map((s, idx) => {
+            const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
+            const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
+            return {
+              step: idx + 1,
+              title: parts[0]?.trim() || `Step ${idx + 1}`,
+              desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
+            };
+          })
         : [
             { step: 1, title: 'Check Eligibility & Jurisdiction', desc: 'Confirm entry requirements and consular jurisdiction for your passport.' },
             { step: 2, title: 'Gather Supporting Documents', desc: 'Collect valid passport, photo, hotel, flight, and financial proof.' },
@@ -5715,6 +5793,50 @@ export function VisaCountryResultPortal({
       });
     }
 
+    // Student visa fallback if AI is still fetching
+    if (activePurposeTab === 'study' || initialPurpose === 'study') {
+      const studentDocs = getStudentDocuments(passportCountry, countryName, 'Student');
+      return studentDocs.map((doc, idx) => {
+        const key = `doc_std_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const titleLower = doc.title.toLowerCase();
+        let icon = <FileText className="w-4 h-4" />;
+        let iconBg = 'bg-purple-100 text-purple-700';
+
+        if (titleLower.includes('passport')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-purple-100 text-purple-700';
+        } else if (titleLower.includes('photo')) {
+          icon = <Camera className="w-4 h-4" />;
+          iconBg = 'bg-amber-100 text-amber-700';
+        } else if (titleLower.includes('acceptance') || titleLower.includes('offer') || titleLower.includes('admission') || titleLower.includes('ecoe') || titleLower.includes('cas') || titleLower.includes('i-20') || titleLower.includes('loa') || titleLower.includes('pal')) {
+          icon = <Building2 className="w-4 h-4" />;
+          iconBg = 'bg-indigo-100 text-indigo-700';
+        } else if (titleLower.includes('insurance') || titleLower.includes('oshc') || titleLower.includes('medical') || titleLower.includes('health') || titleLower.includes('tb')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-rose-100 text-rose-700';
+        } else if (titleLower.includes('fund') || titleLower.includes('financial') || titleLower.includes('blocked') || titleLower.includes('gic') || titleLower.includes('fee') || titleLower.includes('maintenance')) {
+          icon = <CreditCard className="w-4 h-4" />;
+          iconBg = 'bg-teal-100 text-teal-700';
+        } else if (titleLower.includes('english') || titleLower.includes('language') || titleLower.includes('proficiency') || titleLower.includes('academic') || titleLower.includes('aps') || titleLower.includes('gs')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-emerald-100 text-emerald-700';
+        }
+
+        const sentences = doc.description
+          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
+          : ['Official consular requirement for student visa'];
+
+        return {
+          key,
+          name: doc.title,
+          mandatory: doc.is_mandatory !== false,
+          iconBg,
+          icon,
+          conditions: sentences.slice(0, 3)
+        };
+      });
+    }
+
     // Default fallback based on country if AI is still fetching
     const isUS = countryName.toLowerCase().includes('united states');
     return [
@@ -5777,7 +5899,7 @@ export function VisaCountryResultPortal({
         ]
       }
     ];
-  }, [aiData, isSchengen, countryName]);
+  }, [aiData, isSchengen, countryName, activePurposeTab, initialPurpose, passportCountry]);
 
   // Dynamic user-driven counts
   const totalDocsCount = portalDocItems.length;

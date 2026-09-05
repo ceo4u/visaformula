@@ -740,6 +740,26 @@ COUNTRY_DATABASE['schengen'] = {
   flagEmoji: '🇪🇺',
   heroImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&auto=format&fit=crop&q=85',
 };
+COUNTRY_DATABASE['jamaica'] = {
+  countryName: 'Jamaica',
+  flagEmoji: '🇯🇲',
+  heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1600&auto=format&fit=crop&q=85',
+  lengthOfStay: 'Up to 30 Days',
+  validity: '30 Days on Arrival',
+  entryType: 'Visa-Free Entry (Commonwealth)',
+  visaType: 'Visa-Free Entry (Commonwealth)',
+  processingDays: 0,
+  governmentFeeINR: 0,
+  serviceFeeINR: 0,
+  variants: [
+    { id: 'visa-free-30', label: 'Visa-Free Tourism (30 Days)', stay: 'Up to 30 Days', govFee: 0, servFee: 0, popular: true }
+  ]
+};
+COUNTRY_DATABASE['kingston'] = COUNTRY_DATABASE['jamaica'];
+COUNTRY_DATABASE['montego-bay'] = COUNTRY_DATABASE['jamaica'];
+COUNTRY_DATABASE['montego_bay'] = COUNTRY_DATABASE['jamaica'];
+COUNTRY_DATABASE['negril'] = COUNTRY_DATABASE['jamaica'];
+COUNTRY_DATABASE['ocho-rios'] = COUNTRY_DATABASE['jamaica'];
 
 function formatTargetDate(daysToAdd: number) {
   const d = new Date();
@@ -2858,11 +2878,11 @@ export function VisaCountryResultPortal({
   const flagEmoji = baseData.flagEmoji || '🌍';
   const heroImage = getCountry4kLandmark(countryName, slugClean);
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
-  const lengthOfStay = isSchengen ? 'Up to 90 Days' : 'Depending on application';
-  const validity = baseData.validity || (isSchengen ? 'Up to 90 Days' : '90 Days');
-  const entryType = isSchengen ? 'Short Stay' : 'Single / Multiple (Depending on application)';
-  const visaType = baseData.visaType || (isSchengen ? 'Harmonised Schengen Visa (Type C)' : 'Official E-Visa');
-  const processingDays = typeof baseData.processingDays === 'number' ? baseData.processingDays : (isSchengen ? 15 : 10);
+  const lengthOfStay = baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Regulations');
+  const validity = baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Regulations');
+  const entryType = baseData.entryType || (isSchengen ? 'Short Stay' : 'Per Official Regulations');
+  const visaType = baseData.visaType || (isSchengen ? 'Harmonised Schengen Visa (Type C)' : `${countryName} Entry Visa / Permit`);
+  const processingDays = typeof baseData.processingDays === 'number' ? baseData.processingDays : (isSchengen ? 15 : 7);
   const flagCode4k = useMemo(() => get4kCountryFlag(countryName, slugClean), [countryName, slugClean]);
 
   const variants = baseData.variants || [
@@ -3090,7 +3110,8 @@ export function VisaCountryResultPortal({
     const isUS = cLow.includes('united states') || cLow.includes('usa');
     const isUK = cLow.includes('united kingdom') || cLow.includes('uk');
     const isMauritius = cLow.includes('mauritius');
-    const isVisaOnArrivalOrFree = isMauritius || 
+    const isJamaica = cLow.includes('jamaica') || cLow.includes('kingston') || cLow.includes('montego');
+    const isVisaOnArrivalOrFree = isMauritius || isJamaica ||
       cLow.includes('maldives') || 
       cLow.includes('seychelles') || 
       cLow.includes('thailand') || 
@@ -3103,6 +3124,41 @@ export function VisaCountryResultPortal({
       baseData.visaType?.toLowerCase().includes('free') ||
       baseData.visaType?.toLowerCase().includes('arrival') ||
       baseData.visaType?.toLowerCase().includes('exempt');
+
+    const jamaicaVoASteps = [
+      {
+        title: 'Check Indian Passport Validity',
+        desc: 'Ensure your valid Indian passport is valid for your intended stay in Jamaica with at least 1 blank page for the entry stamp.'
+      },
+      {
+        title: 'Book Confirmed Return / Onward Flights',
+        desc: 'Keep confirmed round-trip or onward air tickets departing Jamaica within the authorized 30-day visa-free stay.'
+      },
+      {
+        title: 'Prepare Proof of Accommodation',
+        desc: 'Keep your hotel reservation voucher, Airbnb confirmation, or host invitation letter in Jamaica readily available.'
+      },
+      {
+        title: 'Ensure Sufficient Travel Funds',
+        desc: 'Carry proof of adequate funds (international credit/debit cards or cash) for living expenses during your stay in Jamaica.'
+      },
+      {
+        title: 'Complete Online C5 Declaration (enterjamaica.com)',
+        desc: 'MANDATORY: Fill out the official digital C5 Immigration & Customs Form online at https://enterjamaica.com prior to departure.'
+      },
+      {
+        title: 'Download & Save C5 QR Code',
+        desc: 'Save the generated C5 submission confirmation QR code on your mobile device to present at check-in and Jamaica border control.'
+      },
+      {
+        title: 'Board Flight to Jamaica',
+        desc: 'Travel directly to Norman Manley (KIN) or Sangster (MBJ) International Airport with zero advance embassy visits or biometrics.'
+      },
+      {
+        title: 'Receive Instant Entry Permit Stamp on Arrival (Free)',
+        desc: 'Present your passport and C5 QR code to the PICA immigration officer at airport border control to receive your 30-day entry stamp.'
+      }
+    ];
 
     const mauritiusVoASteps = [
       {
@@ -3174,7 +3230,7 @@ export function VisaCountryResultPortal({
       }
     ];
 
-    const default8Steps = isMauritius ? mauritiusVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
+    const default8Steps = isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3405,7 +3461,7 @@ export function VisaCountryResultPortal({
     const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
 
     // Instant / VoA / Direct Visa-Free destinations
-    if (cLow.includes('mauritius')) return 'Instant on Arrival (0 Days)';
+    if (cLow.includes('mauritius') || cLow.includes('jamaica')) return 'Instant on Arrival (0 Days)';
     if (cLow.includes('maldives') || cLow.includes('seychelles')) return 'Instant on Arrival (0 Days)';
     if (isIndian && (cLow.includes('nepal') || cLow.includes('bhutan'))) return 'Instant (Freedom of Movement)';
     if (isIndian && (cLow.includes('thailand') || cLow.includes('malaysia'))) {
@@ -3432,7 +3488,7 @@ export function VisaCountryResultPortal({
     if (aiData?.processing_and_timing?.decision_time && !is15to20(aiData.processing_and_timing.decision_time)) {
       return aiData.processing_and_timing.decision_time;
     }
-    return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : '5 – 10 Days';
+    return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : 'Per Official Regulations';
   };
 
   useEffect(() => {
@@ -3594,16 +3650,23 @@ export function VisaCountryResultPortal({
             description: d.description || d.hint || 'Must comply with official consular specifications.',
             isMandatory: d.is_mandatory !== false
           }))
+        : (isVisaOnArrivalOrFree && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general'))
+        ? [
+            { title: 'Valid Passport', description: 'Valid national passport for intended duration of stay with blank entry stamp page.', isMandatory: true },
+            { title: countryName.toLowerCase().includes('jamaica') ? 'C5 Online Form (enterjamaica.com)' : 'Digital Arrival Declaration / Card', description: countryName.toLowerCase().includes('jamaica') ? 'MANDATORY: Submit official digital C5 form online at enterjamaica.com before boarding.' : 'Official digital arrival or customs declaration card submitted prior to arrival.', isMandatory: true },
+            { title: 'Confirmed Return / Onward Flight Ticket', description: 'Round-trip or onward air tickets departing within authorized stay period.', isMandatory: true },
+            { title: 'Proof of Accommodation', description: 'Hotel booking confirmation, resort voucher, or host invitation with local address.', isMandatory: true },
+            { title: 'Proof of Sufficient Funds', description: 'International debit/credit cards or liquid funds for stay living expenses.', isMandatory: true }
+          ]
         : [
             { title: 'Valid Passport', description: 'Original passport valid at least 3-6 months beyond departure with min 2 blank pages.', isMandatory: true },
             { title: 'Visa Application Form', description: 'Duly completed and signed official consular application form.', isMandatory: true },
-            { title: 'Biometric Photographs', description: 'Recent 35x45mm passport photos on white background with 80% face coverage.', isMandatory: true },
+            { title: 'Biometric Photographs', description: 'Recent passport-sized photos meeting official consular specifications.', isMandatory: true },
             { title: 'Confirmed Flight Reservations', description: 'Round-trip air ticket reservations with verifiable airline PNR.', isMandatory: true },
             { title: 'Proof of Accommodation', description: 'Confirmed hotel reservation vouchers or official host invitation letter.', isMandatory: true },
-            { title: 'Travel Medical Insurance', description: 'Overseas medical insurance covering min. €30,000 / $50,000 emergency evacuation.', isMandatory: true },
-            { title: 'Bank Statements (3-6 Months)', description: 'Original stamped and signed bank statements showing sufficient funds.', isMandatory: true },
-            { title: 'Cover Letter & Travel Plan', description: 'Detailed itinerary explaining purpose of visit and ties to home country.', isMandatory: true },
-            { title: 'Employment / Income Proof', description: 'Employer leave NOC letter, last 3 months salary slips, or ITR acknowledgment.', isMandatory: false }
+            ...(isSchengen ? [{ title: 'Travel Medical Insurance', description: 'Mandatory Schengen medical insurance covering min. €30,000 emergency evacuation.', isMandatory: true }] : []),
+            { title: 'Financial Proof', description: 'Stamped bank statements showing sufficient funds for travel.', isMandatory: true },
+            { title: 'Cover Letter & Travel Plan', description: 'Detailed itinerary explaining purpose of visit and ties to home country.', isMandatory: false }
           ];
 
       // Compile Procedural Steps
@@ -5572,7 +5635,7 @@ export function VisaCountryResultPortal({
                   {countryName} {purposeLabel} Visa
                 </h1>
                 <span className="text-[13px] font-normal text-slate-500 block mt-0.5">
-                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || 'Official Consular Registry')}
+                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
                 </span>
               </div>
             </div>
@@ -5585,11 +5648,11 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">Up to 90 Days</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">Single Entry</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))}</strong>
               </div>
             </div>
           </div>
@@ -5723,7 +5786,7 @@ export function VisaCountryResultPortal({
                   {countryName} {purposeLabel} Visa
                 </h1>
                 <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 mt-1 block">
-                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || 'Official Consular Registry')}
+                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
                 </span>
               </div>
 
@@ -5748,7 +5811,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || validity) || 'Up to 90 Days'}
+                      {cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}
                     </strong>
                   </div>
                 </div>
@@ -5760,7 +5823,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.stay_duration || stayPeriod) || 'Up to 90 Days'}
+                      {cleanStatValue(aiData?.stay_duration || baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}
                     </strong>
                   </div>
                 </div>
@@ -5772,7 +5835,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.entry_type || entryType) || 'Short Stay'}
+                      {cleanStatValue(aiData?.entry_type || baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))}
                     </strong>
                   </div>
                 </div>
@@ -6025,23 +6088,36 @@ export function VisaCountryResultPortal({
 
                 {/* 2. Documents Required Card */}
                 {(() => {
-                  const defaultPortalOverviewDocs = [
-                    { title: 'Passport', desc: 'Valid for at least 3 months beyond intended stay', icon: <FileText className="w-4 h-4 text-purple-600" />, bg: 'bg-purple-50 border-purple-100' },
-                    { title: 'Visa Application Form', desc: 'Duly filled and signed application form', icon: <FileText className="w-4 h-4 text-emerald-600" />, bg: 'bg-emerald-50 border-emerald-100' },
-                    { title: 'Photographs', desc: 'Recent passport-sized photographs', icon: <Camera className="w-4 h-4 text-amber-600" />, bg: 'bg-amber-50 border-amber-100' },
-                    { title: 'Travel Itinerary', desc: 'Confirmed flight booking', icon: <Plane className="w-4 h-4 text-teal-600" />, bg: 'bg-teal-50 border-teal-100' },
-                    { title: 'Accommodation Proof', desc: 'Hotel booking or invitation letter', icon: <Building2 className="w-4 h-4 text-indigo-600" />, bg: 'bg-indigo-50 border-indigo-100' },
-                    { title: 'Travel Insurance', desc: 'Minimum cover of €30,000 / Adequate medical cover', icon: <Shield className="w-4 h-4 text-sky-600" />, bg: 'bg-sky-50 border-sky-100' },
-                    { title: 'Financial Proof', desc: 'Bank statements / payslips / tax returns', icon: <CreditCard className="w-4 h-4 text-rose-600" />, bg: 'bg-rose-50 border-rose-100' },
-                    { title: 'Cover Letter', desc: 'Purpose of visit and travel details', icon: <FileText className="w-4 h-4 text-red-600" />, bg: 'bg-red-50 border-red-100' },
+                  const isDestinationVisaFree = isVisaOnArrivalOrFree || 
+                    countryName.toLowerCase().includes('jamaica') ||
+                    countryName.toLowerCase().includes('mauritius') ||
+                    countryName.toLowerCase().includes('maldives') ||
+                    countryName.toLowerCase().includes('seychelles');
+
+                  const defaultPortalOverviewDocs = (isDestinationVisaFree && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? [
+                    { title: 'Valid Passport', desc: 'Valid national passport for duration of stay with blank entry stamp page', icon: <FileText className="w-4 h-4 text-purple-600" />, bg: 'bg-purple-50 border-purple-100' },
+                    { title: countryName.toLowerCase().includes('jamaica') ? 'C5 Online Form (enterjamaica.com)' : 'Digital Arrival Declaration / Card', desc: countryName.toLowerCase().includes('jamaica') ? 'Mandatory digital C5 customs & immigration declaration' : 'Mandatory digital arrival or disembarkation declaration', icon: <FileText className="w-4 h-4 text-emerald-600" />, bg: 'bg-emerald-50 border-emerald-100' },
+                    { title: 'Return Flight Ticket', desc: 'Confirmed return or onward flight departing within authorized stay', icon: <Plane className="w-4 h-4 text-teal-600" />, bg: 'bg-teal-50 border-teal-100' },
+                    { title: 'Accommodation Proof', desc: 'Hotel booking confirmation, resort reservation, or host letter', icon: <Building2 className="w-4 h-4 text-indigo-600" />, bg: 'bg-indigo-50 border-indigo-100' },
+                    { title: 'Financial Solvency', desc: 'International debit/credit cards or liquid funds for stay expenses', icon: <CreditCard className="w-4 h-4 text-rose-600" />, bg: 'bg-rose-50 border-rose-100' },
+                    { title: 'Travel Health Cover', desc: 'Comprehensive travel health coverage (recommended for international transit)', icon: <Shield className="w-4 h-4 text-sky-600" />, bg: 'bg-sky-50 border-sky-100' }
+                  ] : [
+                    { title: 'Passport', desc: 'Valid for at least 6 months beyond intended stay', icon: <FileText className="w-4 h-4 text-purple-600" />, bg: 'bg-purple-50 border-purple-100' },
+                    { title: 'Visa Application Form', desc: 'Duly completed and signed official consular application form', icon: <FileText className="w-4 h-4 text-emerald-600" />, bg: 'bg-emerald-50 border-emerald-100' },
+                    { title: 'Photographs', desc: 'Recent passport-sized photographs per consular specs', icon: <Camera className="w-4 h-4 text-amber-600" />, bg: 'bg-amber-50 border-amber-100' },
+                    { title: 'Travel Itinerary', desc: 'Confirmed flight booking or flight reservation', icon: <Plane className="w-4 h-4 text-teal-600" />, bg: 'bg-teal-50 border-teal-100' },
+                    { title: 'Accommodation Proof', desc: 'Hotel booking or official invitation letter', icon: <Building2 className="w-4 h-4 text-indigo-600" />, bg: 'bg-indigo-50 border-indigo-100' },
+                    { title: 'Travel Insurance', desc: isSchengen ? 'Minimum cover of €30,000 / Adequate medical cover' : 'Emergency medical & repatriation cover', icon: <Shield className="w-4 h-4 text-sky-600" />, bg: 'bg-sky-50 border-sky-100' },
+                    { title: 'Financial Proof', desc: 'Bank statements / proof of sufficient travel funds', icon: <CreditCard className="w-4 h-4 text-rose-600" />, bg: 'bg-rose-50 border-rose-100' },
+                    { title: 'Cover Letter', desc: 'Purpose of visit and travel schedule', icon: <FileText className="w-4 h-4 text-red-600" />, bg: 'bg-red-50 border-red-100' },
                   ];
 
                   const overviewDocsList = (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
                     ? aiData.documents_required.slice(0, 8).map((d: any, idx: number) => ({
                         title: d.title || d.name || defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].title,
                         desc: d.description || d.hint || defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].desc,
-                        icon: defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].icon,
-                        bg: defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length].bg
+                        icon: defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length]?.icon || <FileText className="w-4 h-4 text-purple-600" />,
+                        bg: defaultPortalOverviewDocs[idx % defaultPortalOverviewDocs.length]?.bg || 'bg-purple-50 border-purple-100'
                       }))
                     : defaultPortalOverviewDocs;
 

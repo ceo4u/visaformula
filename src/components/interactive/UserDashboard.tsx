@@ -2987,7 +2987,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             trackingId: parsedJ.tracking_id || 'TT-APP-2026-9824',
                             destination: parsedJ.destination,
                             destinationFlag: parsedJ.destination_flag || '🌍',
-                            visaType: parsedJ.visa_type || 'Standard Visitor Visa',
+                            visaType: parsedJ.visa_type || `${parsedJ.destination} Visa / Entry Permit`,
                             purpose: parsedJ.purpose || 'tourism',
                             passport: parsedJ.passport_country || 'India',
                             status: genuineDocsCount > 0 ? 'Dossier Ingested & AI Verified' : 'Requirements & Eligibility Active',

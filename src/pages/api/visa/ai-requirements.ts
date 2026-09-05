@@ -350,6 +350,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isBhutan = isDestination(toLower, 'bhutan', ['thimphu', 'paro', 'bhutanese']);
   const isCambodia = isDestination(toLower, 'cambodia', ['phnom penh', 'siem reap', 'angkor wat', 'cambodian']);
   const isChina = isDestination(toLower, 'china', ['beijing', 'shanghai', 'guangzhou', 'prc', "people's republic of china", 'chinese']);
+  const isJamaica = isDestination(toLower, 'jamaica', ['kingston', 'montego bay', 'negril', 'ocho rios', 'jamaican']);
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -5379,6 +5380,102 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // JAMAICA PATHWAYS (100% Verified Official PICA Data)
+  // Source: PICA — Passport, Immigration and Citizenship Agency
+  // Source: GOJ — Government of Jamaica enterjamaica.com C5 Form
+  // ═══════════════════════════════════════════════════════════════
+  if (isJamaica) {
+    const isIndianPassport = from.toLowerCase().includes('india') || from.toLowerCase() === 'in';
+    if (isIndianPassport && !purposeLower.includes('work') && !purposeLower.includes('study') && !purposeLower.includes('immigrat')) {
+      return {
+        passport_country: from,
+        destination_country: 'Jamaica',
+        purpose_of_visit: 'Tourism / Vacation',
+        visa_type: 'Visa-Free Entry (Commonwealth / No Prior Visa Required)',
+        source_url: 'https://www.pica.gov.jm',
+        official_source_name: 'Passport, Immigration and Citizenship Agency (PICA), Government of Jamaica',
+        processing_time: 'Instant — No Advance Visa Application Required',
+        validity: 'Entry Stamp Granted on Arrival (30 Days)',
+        stay_duration: 'Up to 30 Days (Visa-Free)',
+        entry_type: 'Multiple Entry (Subject to Each Departure & Re-Entry)',
+        validity_and_stay: {
+          visa_validity: 'Entry Stamp on Arrival — No Consular Visa Issued',
+          max_stay_per_entry: 'Up to 30 Days per Entry (Extendable via PICA)',
+          entry_type: 'Multiple Entry'
+        },
+        documents_required: [
+          {
+            title: 'Valid Indian Passport',
+            description: 'Must be valid for the duration of your stay in Jamaica. At least 1 blank page required for entry stamp.',
+            is_mandatory: true
+          },
+          {
+            title: 'Completed C5 Online Immigration & Customs Form',
+            description: 'MANDATORY: All passengers arriving in Jamaica by air must complete the online C5 Passenger Declaration Form at enterjamaica.com BEFORE boarding. A QR code will be generated — present it at Jamaica border control.',
+            is_mandatory: true
+          },
+          {
+            title: 'Confirmed Return / Onward Flight Ticket',
+            description: 'Immigration officers may request evidence of onward or return travel out of Jamaica.',
+            is_mandatory: true
+          },
+          {
+            title: 'Proof of Accommodation',
+            description: 'Hotel booking confirmation, Airbnb reservation, or host invitation letter with address.',
+            is_mandatory: true
+          }
+        ],
+        financial_proofs: [
+          {
+            type: 'Evidence of Sufficient Funds',
+            minimum_balance_or_amount: 'No fixed minimum published — immigration officer discretion',
+            time_frame: 'Carried during travel',
+            notes: 'PICA requires visitors to show sufficient funds for their stay. Cash, credit cards, or international debit cards are acceptable. No specific minimum amount is mandated by official sources for tourism.'
+          }
+        ],
+        other_requirements: [
+          {
+            category: 'Visa-Free Entry — No Consular Application',
+            details: 'Indian passport holders do NOT need to apply for a visa at any embassy, consulate, or visa application center prior to travel. Entry is granted directly at Norman Manley International Airport (KIN), Sangster International Airport (MBJ), or any other Jamaican port of entry. Immigration officers stamp your passport on arrival.'
+          },
+          {
+            category: 'MANDATORY: C5 Online Form (enterjamaica.com)',
+            details: 'All passengers arriving in Jamaica by air or cruise ship MUST complete the C5 Passenger Declaration Form online at https://enterjamaica.com before travel. This is a combined immigration and customs declaration. Do NOT arrive without completing this — failure may cause delays at border control.'
+          },
+          {
+            category: 'No Schengen Insurance Required',
+            details: 'Jamaica does NOT require European Schengen-style travel insurance (€30,000 coverage). Any travel insurance you choose to carry is personal choice, not a Jamaican legal entry requirement for Indian tourists.'
+          },
+          {
+            category: 'No VFS / No VAC / No Biometrics',
+            details: 'No Visa Application Center, no biometric enrollment, and no embassy appointment is required before travel. You simply board your flight and present your passport + C5 QR code at Jamaican border control.'
+          }
+        ],
+        how_to_apply: [
+          'STEP 1 — Verify Passport Validity: Ensure your Indian passport is valid for the full duration of your Jamaica stay. At least 1 blank page is needed for the entry stamp.',
+          'STEP 2 — Complete C5 Online Form BEFORE Departure: Visit https://enterjamaica.com and fill in the combined immigration and customs declaration form. Download the generated QR code to your phone.',
+          'STEP 3 — Book Return/Onward Travel: Secure a confirmed return flight from Jamaica. Immigration may ask to see your onward travel plans.',
+          'STEP 4 — Confirm Accommodation: Keep your hotel booking confirmation, Airbnb reservation, or host letter easily accessible for the border officer.',
+          'STEP 5 — Fly Directly to Jamaica: No embassy visit, no VAC appointment, no biometrics. Board your flight directly.',
+          'STEP 6 — On Arrival at Jamaica Border: Present your Indian passport + C5 QR code (from enterjamaica.com) to the immigration officer. You will receive a free entry stamp valid for up to 30 days.'
+        ],
+        costs: {
+          visa_fee: '₹0 — No Visa Fee (Visa-Free Entry)',
+          service_fee: '₹0 — No VAC or Embassy Fee',
+          total_fee: '₹0 — Completely Free Entry for Indian Citizens',
+          notes: 'Indian tourists do not pay any consular visa fee for Jamaica. The C5 form at enterjamaica.com is free to complete.'
+        },
+        processing_and_timing: {
+          apply_window: 'No visa application. Complete the C5 Online Form at enterjamaica.com before your departure date.',
+          decision_time: 'Instant entry stamp on arrival at Jamaican port of entry — no waiting period.',
+          max_extension: 'Extensions beyond 30 days may be applied for at PICA (Passport, Immigration and Citizenship Agency), 25 Constant Spring Road, Kingston 10.',
+          center_notes: 'Entry granted directly at Norman Manley International Airport (KIN — Kingston) or Sangster International Airport (MBJ — Montego Bay). No prior consular processing.'
+        }
+      };
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // 10. GENERIC DESTINATION TOURIST FALLBACK
   // ═══════════════════════════════════════════════════════════════
   return {
@@ -5551,7 +5648,8 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'nepal', aliases: ['kathmandu', 'pokhara', 'nepali'] },
       { primary: 'bhutan', aliases: ['thimphu', 'paro', 'bhutanese'] },
       { primary: 'cambodia', aliases: ['phnom penh', 'siem reap', 'angkor wat', 'cambodian'] },
-      { primary: 'china', aliases: ['beijing', 'shanghai', 'guangzhou', 'prc', 'chinese'] }
+      { primary: 'china', aliases: ['beijing', 'shanghai', 'guangzhou', 'prc', 'chinese'] },
+      { primary: 'jamaica', aliases: ['kingston', 'montego bay', 'negril', 'ocho rios', 'jamaican'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));

@@ -83,8 +83,176 @@ export interface StructuredVisaRequirements {
   };
 }
 
+// ── SOURCE EVIDENCE FOR A SINGLE CLAIM ──────────────────────────────────────
+export interface SourceEvidence {
+  url: string;
+  authority: string;        // e.g. "U.S. Embassy New Delhi"
+  retrieved_at: string;     // ISO timestamp
+  excerpt?: string;         // Relevant quote from the source page
+}
+
+// ── EVIDENCE-FIRST VISA RESULT (extends base with source metadata) ───────────
+export interface EvidenceFirstVisaResult extends StructuredVisaRequirements {
+  verification_status: 'verified' | 'partially_verified' | 'unverified' | 'conflicting_sources' | 'stale' | 'failed';
+  sources: SourceEvidence[];
+  last_verified_at: string | null;
+  source_checked_at: string | null;
+  field_sources?: {
+    visa_fee?: string;
+    processing_time?: string;
+    documents?: string;
+    photo_specs?: string;
+  };
+}
+
+// ── TRUSTED AUTHORITY DOMAIN REGISTRY ────────────────────────────────────────
+// Domains that are considered official/authoritative for visa information.
+// URLs from these domains get verification credit. Travel blogs / aggregators do NOT.
+const AUTHORITY_DOMAIN_REGISTRY: Record<string, string[]> = {
+  // Global
+  global: ['vfsglobal.com', 'blsglobal.net', 'tlscontact.com', 'ivisa.com'],
+  // USA
+  'united states': ['travel.state.gov', 'ustraveldocs.com', 'usembassy.gov', 'cbp.gov', 'dhs.gov'],
+  // UK
+  'united kingdom': ['gov.uk', 'ukvisa.org', 'ukbf.gov.uk'],
+  // Schengen / EU
+  france: ['france-visas.gouv.fr', 'diplomatie.gouv.fr', 'consulfrance.org'],
+  germany: ['auswaertiges-amt.de', 'germany.info', 'diplo.de'],
+  italy: ['esteri.it', 'vistoperitalia.esteri.it'],
+  spain: ['exteriores.gob.es', 'visaforespain.com', 'exteriores.gob.es'],
+  netherlands: ['netherlandsworldwide.nl', 'ind.nl'],
+  greece: ['mfa.gr', 'ggee.gov.gr'],
+  // Asia
+  japan: ['mofa.go.jp', 'japan.go.jp', 'jpvisa.in'],
+  singapore: ['ica.gov.sg', 'mom.gov.sg', 'eservices.ica.gov.sg'],
+  thailand: ['thaievisa.go.th', 'mfa.go.th', 'consular.mfa.go.th'],
+  china: ['cvasc.org.in', 'visaforchina.cn', 'mfa.gov.cn'],
+  'south korea': ['visa.go.kr', 'mofa.go.kr'],
+  india: ['indianvisaonline.gov.in', 'mha.gov.in', 'mea.gov.in'],
+  // GCC
+  'united arab emirates': ['icp.gov.ae', 'uaevisa.ae', 'gdrfad.gov.ae'],
+  'saudi arabia': ['visa.mofa.gov.sa', 'mofa.gov.sa'],
+  oman: ['evisa.rop.gov.om', 'rop.gov.om'],
+  qatar: ['hukoomi.gov.qa', 'moi.gov.qa'],
+  // Others
+  australia: ['immi.homeaffairs.gov.au', 'homeaffairs.gov.au'],
+  canada: ['canada.ca', 'ircc.canada.ca'],
+  'new zealand': ['immigration.govt.nz'],
+  jordan: ['timatic.iata.org', 'moi.gov.jo', 'visitjordan.com'],
+  turkey: ['evisa.gov.tr', 'mfa.gov.tr'],
+  // Middle East
+  egypt: ['consular.mfa.gov.eg', 'mfa.gov.eg'],
+  // Africa
+  kenya: ['evisa.go.ke', 'immigration.go.ke'],
+  'south africa': ['dha.gov.za'],
+  // Americas
+  brazil: ['gov.br', 'vfsglobal.com'],
+  mexico: ['consulmex.sre.gob.mx', 'sre.gob.mx'],
+};
+
+/** Returns true if the URL belongs to a recognized official authority for the given destination. */
+function validateSourceURL(url: string, destination: string): boolean {
+  if (!url || !url.startsWith('http')) return false;
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, '');
+    const destLower = destination.toLowerCase();
+
+    // Check global trusted domains
+    const globalDomains = AUTHORITY_DOMAIN_REGISTRY['global'] || [];
+    if (globalDomains.some(d => host.endsWith(d))) return true;
+
+    // Check destination-specific domains
+    for (const [key, domains] of Object.entries(AUTHORITY_DOMAIN_REGISTRY)) {
+      if (key === 'global') continue;
+      if (destLower.includes(key) || key.includes(destLower.split(' ')[0])) {
+        if (domains.some(d => host.endsWith(d))) return true;
+      }
+    }
+
+    // Allow government TLDs generically: .gov, .gov.XX, .go.XX
+    if (host.includes('.gov') || host.includes('.go.') || host.endsWith('.gov')) return true;
+  } catch (_) {}
+  return false;
+}
+
+// ── NEON CACHE LAYER ─────────────────────────────────────────────────────────
+const CACHE_TTL_DAYS = 7; // Re-fetch after 7 days
+
+async function checkVisaCache(routeKey: string): Promise<EvidenceFirstVisaResult | null> {
+  try {
+    const { getPool } = await import('../../../backend/db');
+    const pool = await getPool();
+    const res = await pool.query(
+      `SELECT payload_json, verification_status, updated_at
+       FROM visa_requirements_cache
+       WHERE route_key = $1 LIMIT 1`,
+      [routeKey]
+    );
+    if (!res.rows.length) return null;
+    const row = res.rows[0];
+    // Check TTL
+    const updatedAt = new Date(row.updated_at);
+    const ageMs = Date.now() - updatedAt.getTime();
+    const ageDays = ageMs / (1000 * 60 * 60 * 24);
+    if (ageDays > CACHE_TTL_DAYS) {
+      // Stale — return null so pipeline re-fetches
+      return null;
+    }
+    const payload = row.payload_json as EvidenceFirstVisaResult;
+    // Mark as stale if approaching TTL (> 5 days)
+    if (ageDays > 5) payload.verification_status = 'stale';
+    return payload;
+  } catch (err) {
+    console.warn('[VisaCache] Cache read failed (non-fatal):', err);
+    return null;
+  }
+}
+
+async function saveVisaCache(
+  routeKey: string,
+  passportCountry: string,
+  destinationCountry: string,
+  purpose: string,
+  data: EvidenceFirstVisaResult
+): Promise<void> {
+  try {
+    const { getPool } = await import('../../../backend/db');
+    const pool = await getPool();
+    const sourceUrls = (data.sources || []).map(s => s.url);
+    const sourceAuthorities = (data.sources || []).map(s => s.authority);
+    await pool.query(
+      `INSERT INTO visa_requirements_cache
+         (route_key, passport_country, destination_country, purpose, verification_status,
+          source_urls, source_authorities, last_verified_at, source_checked_at, payload_json, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW(), $8, NOW())
+       ON CONFLICT (route_key) DO UPDATE SET
+         verification_status = EXCLUDED.verification_status,
+         source_urls = EXCLUDED.source_urls,
+         source_authorities = EXCLUDED.source_authorities,
+         last_verified_at = NOW(),
+         source_checked_at = NOW(),
+         payload_json = EXCLUDED.payload_json,
+         updated_at = NOW()`,
+      [
+        routeKey,
+        passportCountry,
+        destinationCountry,
+        purpose,
+        data.verification_status || 'unverified',
+        sourceUrls,
+        sourceAuthorities,
+        JSON.stringify(data)
+      ]
+    );
+  } catch (err) {
+    console.warn('[VisaCache] Cache write failed (non-fatal):', err);
+  }
+}
+
 export function cleanCountryName(str: string): string {
   if (!str) return 'India';
+
   const s = str.trim();
   const sLow = s.toLowerCase();
   if (sLow === 'indian' || sLow === 'in' || sLow === 'india') return 'India';
@@ -5397,282 +5565,358 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // EVIDENCE-FIRST PIPELINE — 3-Stage: Research → Extract → Validate
+    // The AI is NEVER treated as the source of truth.
+    // Official government/embassy sites are the authoritative source.
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // ── NEON CACHE CHECK ─────────────────────────────────────────────────────
+    const routeKey = `${fromCountry.toLowerCase()}→${toCountry.toLowerCase()}→${purpose.toLowerCase()}`.replace(/\s+/g, '_');
+    const cached = await checkVisaCache(routeKey);
+    if (cached) {
+      console.log(`[VisaEngine] Cache hit for route: ${routeKey}`);
+      return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(cached as any), source: 'neon-cache' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const apiKey = getGeminiApiKey();
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are the Principal Immigration Data Architect & Verification Engine for TravlTik (travltik.com).
+        const CANDIDATE_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash'];
 
-Generate 100% accurate, country-isolated, non-hallucinated visa requirements, fees, document checklists, and application steps for:
-1. Origin / Passport Country: "${fromCountry}"
-2. Destination Country: "${toCountry}"
-3. Purpose of Visit: "${purpose}"
+        // ════════════════════════════════════════════════════════════════════
+        // STAGE 1 — RESEARCH via Google Search Grounding
+        // Goal: Find official embassy / government visa pages for this route.
+        // The AI is a search navigator, NOT the source of truth.
+        // ════════════════════════════════════════════════════════════════════
+        const researchPrompt = `You are a visa research navigator. Your ONLY job is to locate official, authoritative information about visa requirements.
 
-CRITICAL ISOLATION RULE:
-- Adhere strictly and exclusively to the requested Destination Country: "${toCountry}" and Passport Country: "${fromCountry}".
-- Never mix authorities, currencies, forms, fees, or regulations from previous conversational context or other nations.
-- Treat this request as a completely fresh, stateless assessment.
+Search for and summarize official visa requirements for:
+- Passport/Nationality: "${fromCountry}"
+- Destination Country: "${toCountry}"  
+- Purpose of Visit: "${purpose}"
 
-PRE-OUTPUT VERIFICATION GUARDRAIL:
-- Ensure official_source_name, source_url, visa_type, currency, and embassy names exactly belong to "${toCountry}".
+Search specifically for:
+1. The official embassy or consulate website for ${toCountry} relevant to ${fromCountry} citizens
+2. The official visa application portal for ${toCountry}
+3. Official government announcements about current visa fees, processing times, and required documents
 
-STRICT DATA ISOLATION & VERIFICATION MANDATES:
-1. ZERO CROSS-CONTAMINATION (NO HYBRID RULES):
-   - Never apply Schengen rules (€30k insurance, 35x45mm, Type C) to USA, UK, Canada, Australia, Singapore, GCC.
-   - For USA: strictly 2x2 inches (51x51mm) photo, DS-160 barcode, $185 MRV fee, 10-year B1/B2 validity, CBP 180-day stay rule.
-   - For non-US destinations (such as Greece, Schengen, UK, Canada, Australia): NEVER write or mention Form DS-160 anywhere. DS-160 is strictly for US visas only.
-   - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
-   - For GCC (UAE, Saudi, Oman, Qatar, Bahrain, Kuwait): Minimum 6 months passport validity from arrival. Never display 3-month or 10-year Schengen rules.
-   - For Schengen / EU: strictly Harmonised Schengen Visa Application Form, €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
-   - For China: Chinese Visa Application Service Center (CVASC), COVA online form, 33x48mm photos, ₹7,930 total fee (₹3,800 consular + ₹4,130 CVASC fee), 4-7 working days. Biometric fingerprint scanning is officially waived through December 31, 2026 for short-term visas (≤ 180 days). Stay duration is strictly up to 30 days per entry (NEVER use Schengen 90/180 days or US Section 214(b)). Return intent must state: 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'
+STRICT RULES:
+- Only cite official government, embassy, consulate, or authorized visa centre websites
+- Do NOT cite travel blogs, aggregator sites, or unofficial sources
+- If you cannot find official sources with grounded search, explicitly state "Official source not found"
+- Report exactly what the official sources say — do not infer, extrapolate, or fill gaps from training data
 
-2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
-   - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."
+List all official source URLs you find and summarize the key visa facts each source mentions.`;
 
-3. INTERVIEW WAIVER & DROP-BOX CLAUSES:
-   - In 'how_to_apply', include conditional waiver check: "Interview Waiver / Drop-Box Eligibility: Check if applicant qualifies to bypass the in-person Consular Interview based on prior visa issuance history within eligible renewal windows."
+        let groundingSources: SourceEvidence[] = [];
+        let researchContext = '';
 
-4. PRIMARY VS. SECONDARY FINANCIAL PROOFS:
-   - Mandatory primary proofs (Bank Statements, ITRs) marked as is_mandatory: true.
-   - Secondary/supplementary proofs (Fixed Deposits, Property Valuations, Mutual Funds) marked as is_mandatory: false with "(Optional / Solvency Strengthening)".
+        for (const modelName of CANDIDATE_MODELS) {
+          try {
+            const researchResp = await ai.models.generateContent({
+              model: modelName,
+              contents: researchPrompt,
+              config: {
+                temperature: 0.1,
+                tools: [{ googleSearch: {} }]
+              }
+            });
 
-5. CITY-SPECIFIC VAC & CONSULAR LOCATIONS:
-   - Auto-populate in processing_and_timing.center_notes all operational VACs and Consulates in ${fromCountry} for ${toCountry}.
+            // Extract grounding metadata from the response
+            const candidates = (researchResp as any)?.candidates || [];
+            const groundingMeta = candidates[0]?.groundingMetadata;
+            const groundingChunks = groundingMeta?.groundingChunks || [];
+            const webSearchQueries = groundingMeta?.webSearchQueries || [];
+            console.log(`[VisaEngine Stage 1] Model: ${modelName} | Search queries: ${webSearchQueries.join(', ')} | Grounding chunks: ${groundingChunks.length}`);
 
-6. EVISA, VISA-ON-ARRIVAL & VISA-FREE DESTINATIONS (NO FAKE VFS / BIOMETRICS):
-   - For countries offering Visa-Free, Visa on Arrival (VoA), or direct official government e-Visas (such as Thailand, Malaysia, Maldives, Mauritius, Sri Lanka, Indonesia, Jordan, Nepal, Bhutan, Cambodia, Laos, Vietnam, Kazakhstan, Azerbaijan, Georgia, Seychelles, etc.):
-     * NEVER assert that applicants must visit VFS Global, TLS, or BLS in-person or submit physical biometrics.
-     * Accurately reflect the official government channel (online eVisa portal or airport immigration VoA desk).
-     * Provide exact statutory fees in original government currency.
+            // Build source evidence from grounding chunks
+            for (const chunk of groundingChunks) {
+              const web = chunk?.web;
+              if (web?.uri) {
+                groundingSources.push({
+                  url: web.uri,
+                  authority: web.title || web.uri,
+                  retrieved_at: new Date().toISOString(),
+                  excerpt: undefined
+                });
+              }
+            }
 
-7. REALISTIC STAY DURATION (NEVER DEFAULT TO 180 DAYS FOR GENERAL TOURIST VISAS):
-   - Most international tourist permits grant 14 to 30 Days (or 60 to 90 Days).
-   - "Up to 6 Months (180 Days)" is strictly reserved for USA B1/B2, UK Standard Visitor, or Canada Visitor Visas. For all other tourist permits, set realistic stay limits (e.g. 30 Days).
+            // Also parse any URLs from the text response
+            const researchText = researchResp?.text || '';
+            researchContext = researchText;
 
-Return ONLY a valid JSON object matching this exact schema:
+            // Extract any URLs mentioned inline
+            const urlMatches = researchText.match(/https?:\/\/[^\s\)\]"]+/g) || [];
+            for (const urlStr of urlMatches) {
+              if (!groundingSources.some(s => s.url === urlStr)) {
+                groundingSources.push({
+                  url: urlStr,
+                  authority: urlStr,
+                  retrieved_at: new Date().toISOString()
+                });
+              }
+            }
+
+            if (researchText) break; // Success
+          } catch (stageOneErr: any) {
+            console.warn(`[VisaEngine Stage 1] Model ${modelName} failed:`, stageOneErr?.message || stageOneErr);
+          }
+        }
+
+        // Score source authority
+        const verifiedSources = groundingSources.filter(s => validateSourceURL(s.url, toCountry));
+        console.log(`[VisaEngine Stage 1] Total sources: ${groundingSources.length} | Verified official: ${verifiedSources.length}`);
+
+        // ════════════════════════════════════════════════════════════════════
+        // STAGE 2 — EXTRACTION: Structured JSON from grounded sources only
+        // NO hardcoded facts. NULL > GUESS. Source-cited answers only.
+        // ════════════════════════════════════════════════════════════════════
+        const sourceContext = researchContext
+          ? `\n\nOFFICIAL SOURCE RESEARCH RESULTS:\n${researchContext.substring(0, 8000)}`
+          : '';
+
+        const extractionPrompt = `You are a visa data extraction specialist. Extract ONLY what is explicitly stated in official sources.
+
+PASSPORT COUNTRY: "${fromCountry}"
+DESTINATION COUNTRY: "${toCountry}"
+PURPOSE: "${purpose}"
+${sourceContext}
+
+CRITICAL EXTRACTION RULES (MUST FOLLOW — NO EXCEPTIONS):
+1. EXTRACT ONLY — do not infer, estimate, or fill gaps from your training knowledge
+2. NULL > GUESS — if a field is not explicitly mentioned in the official sources above, set it to null or a clearly-labelled "Check official embassy website" string
+3. COUNTRY ISOLATION — every field must apply ONLY to "${toCountry}" for "${fromCountry}" passport holders
+4. NO CROSS-CONTAMINATION — never apply rules from other countries:
+   - DS-160 form is ONLY for USA visa applications — never mention it for any other destination
+   - Schengen 90/180-day rule applies ONLY to Schengen area countries
+   - GCC 6-month passport validity rule applies ONLY to GCC countries
+   - US B1/B2, UK Standard Visitor, Canada Visitor rules are destination-specific — never apply to other countries
+5. PHOTO SIZES — only state the official size for "${toCountry}" — do not assume 35x45mm (Schengen) or 2x2 inch (USA) unless the sources confirm it for this specific country
+6. FEES — only state fees explicitly mentioned in official sources. Convert to INR only if exchange rate is confirmed by an official source. Otherwise state original currency.
+7. SOURCE CITATION — for each major field (visa_fee, processing time, photo specs, documents), include the source URL in field_sources if available
+8. VISA TYPE — use the exact official name from the ${toCountry} government, not a generic label
+
+Return ONLY a valid JSON object:
 {
   "passport_country": "${fromCountry}",
   "destination_country": "${toCountry}",
   "purpose_of_visit": "${purpose}",
-  "visa_type": "Official visa category name",
-  "source_url": "Official embassy / ministerial portal URL",
-  "official_source_name": "Official issuing authority name",
+  "visa_type": "Official visa category name from ${toCountry} government, or null if not found",
+  "source_url": "Primary official embassy/government URL, or null",
+  "official_source_name": "Official issuing authority name, or null",
   "validity_and_stay": {
-    "visa_validity": "e.g. 10 Years Multiple Entry, 90 Days, or 30 Days",
-    "max_stay_per_entry": "e.g. Up to 30 Days or Up to 90 Days (180 Days only for USA/UK/Canada)",
-    "entry_type": "Single Entry / Multiple Entry"
+    "visa_validity": "As stated by official source, or null",
+    "max_stay_per_entry": "As stated by official source, or null",
+    "entry_type": "Single / Multiple / null"
   },
   "documents_required": [
     {
-      "title": "Document title",
-      "description": "Exhaustive specifications, photo millimeter dimensions, form names, or validity rules",
+      "title": "Document name from official source",
+      "description": "Exact specifications from official source",
       "is_mandatory": true
     }
   ],
   "financial_proofs": [
     {
-      "type": "Primary / Secondary Proof Title",
-      "minimum_balance_or_amount": "Amount with currency or null",
-      "time_frame": "Timeframe required",
-      "notes": "Bank stamp, sealing rules, or employer NOC"
+      "type": "Proof type from official source",
+      "minimum_balance_or_amount": "Amount from official source or null",
+      "time_frame": "Timeframe from official source or null",
+      "notes": "Any notes from official source"
     }
   ],
   "other_requirements": [
     {
-      "category": "Category name",
-      "details": "Specific actionable legal and procedural instructions"
+      "category": "Category from official source",
+      "details": "Details from official source"
     }
   ],
   "how_to_apply": [
-    "Check Eligibility: Ensure you meet all specific statutory eligibility rules for ${toCountry} ${purpose} visa.",
-    "Gather Required Documents: Collect original passport, photographs, financial proofs, travel bookings and checklist items.",
-    "Fill Application Form: Complete the official ${toCountry} visa application form accurately online.",
-    "Book Appointment: Schedule mandatory biometric appointment at the nearest designated VAC / Consulate.",
-    "Pay Visa Fees: Pay official consular fee and VAC logistics charge securely.",
-    "Submit Application & Biometrics: Attend appointment to submit physical dossier and record fingerprints.",
-    "Track Application Status: Monitor your visa dossier progress via the official tracking portal.",
-    "Receive Passport & Visa: Collect stamped passport or receive via secure courier dispatch."
+    "Step 1 from official source",
+    "Step 2 from official source"
   ],
   "costs": {
-    "visa_fee": "Fee with currency",
-    "service_fee": "VAC logistics fee",
-    "total_fee": "Total fee",
-    "notes": "Converted at the official consular exchange rate at the time of fee payment challan generation."
+    "visa_fee": "Fee from official source in original currency, or null",
+    "service_fee": "Service/VAC fee from official source, or null",
+    "total_fee": "Total from official source, or null",
+    "notes": "Any fee notes from official source. Converted at the official consular exchange rate at the time of fee payment challan generation."
   },
   "processing_and_timing": {
-    "apply_window": "Application window timeline",
-    "decision_time": "Decision and passport dispatch timeline",
-    "max_extension": "Extension or in-country stay adjustment rules",
-    "center_notes": "Operational VACs and Consulate/Embassy locations across ${fromCountry}"
+    "apply_window": "From official source, or null",
+    "decision_time": "From official source, or null",
+    "max_extension": "From official source, or null",
+    "center_notes": "VAC/Consulate locations for ${fromCountry} citizens from official source, or null"
+  },
+  "verification_status": "verified",
+  "sources": [],
+  "last_verified_at": "${new Date().toISOString()}",
+  "source_checked_at": "${new Date().toISOString()}",
+  "field_sources": {
+    "visa_fee": null,
+    "processing_time": null,
+    "documents": null,
+    "photo_specs": null
   }
 }`;
 
-        const candidateModels = ['gemini-3.6-flash', 'gemini-2.5-flash'];
-        let response: any = null;
-        for (const modelName of candidateModels) {
+        let extractedData: EvidenceFirstVisaResult | null = null;
+
+        for (const modelName of CANDIDATE_MODELS) {
           try {
-            response = await ai.models.generateContent({
+            const extractResp = await ai.models.generateContent({
               model: modelName,
-              contents: prompt,
+              contents: extractionPrompt,
               config: {
                 responseMimeType: 'application/json',
-                temperature: 0.1
+                temperature: 0.05  // Very low — we want extraction, not creativity
               }
             });
-            if (response?.text) break;
-          } catch (modelErr: any) {
-            console.warn(`[AI Requirements API] Model ${modelName} failed:`, modelErr?.message || modelErr);
+            const extractText = extractResp?.text?.trim() || '';
+            if (extractText) {
+              extractedData = JSON.parse(extractText) as EvidenceFirstVisaResult;
+              break;
+            }
+          } catch (stageTwoErr: any) {
+            console.warn(`[VisaEngine Stage 2] Model ${modelName} failed:`, stageTwoErr?.message || stageTwoErr);
           }
         }
 
-        const text = response?.text ? response.text.trim() : '';
-        if (text) {
-          const parsed = JSON.parse(text);
-          parsed.passport_country = cleanCountryName(parsed.passport_country || fromCountry);
-          parsed.destination_country = cleanCountryName(parsed.destination_country || toCountry);
-
-          // Post-generation sanity guard: Never allow 180 Days / 6 Months stay for general tourist visas unless USA/UK/Canada
-          const toLower = parsed.destination_country.toLowerCase();
-          const isLongStayAllowed = toLower.includes('united states') || toLower.includes('usa') || toLower.includes('united kingdom') || toLower.includes('uk') || toLower.includes('canada');
-          if (!isLongStayAllowed && parsed.validity_and_stay?.max_stay_per_entry) {
-            const stay = parsed.validity_and_stay.max_stay_per_entry.toLowerCase();
-            if (stay.includes('180') || stay.includes('6 month')) {
-              parsed.validity_and_stay.max_stay_per_entry = 'Up to 30 Days (Extendable as per destination immigration regulations)';
-            }
-          }
-
-          // Post-generation sanity guard for Schengen destinations:
-          if (isToSchengen) {
-            parsed.processing_time = '15 – 20 Days';
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.decision_time = '15 – 20 Days';
-            }
-            if (Array.isArray(parsed.documents_required)) {
-              parsed.documents_required = parsed.documents_required.map((doc: any) => {
-                if (doc.title?.toLowerCase().includes('ds-160') || doc.description?.toLowerCase().includes('ds-160')) {
-                  doc.title = 'Harmonised Schengen Visa Application Form';
-                  doc.description = doc.description.replace(/ds-160/gi, 'Harmonised Schengen Visa Application Form');
-                }
-                if (doc.description?.includes('2x2')) {
-                  doc.description = doc.description.replace(/2x2\s*inch/gi, '35x45mm');
-                }
-                return doc;
-              });
-            }
-          }
-
-          // Post-generation sanity guard: If destination is Visa-Free or VoA/eVisa, strip false VFS biometrics
-          const isDirectEntry = ['jordan', 'thailand', 'malaysia', 'maldives', 'mauritius', 'indonesia', 'sri lanka', 'nepal', 'bhutan', 'cambodia', 'kazakhstan', 'azerbaijan', 'georgia', 'seychelles'].some(c => toLower.includes(c));
-          if (isDirectEntry) {
-            if (Array.isArray(parsed.other_requirements)) {
-              parsed.other_requirements = parsed.other_requirements.filter((item: any) => {
-                const cat = (item.category || '').toLowerCase();
-                const det = (item.details || '').toLowerCase();
-                return !(cat.includes('vac') && (det.includes('fingerprint') || det.includes('biometric')));
-              });
-            }
-          }
-
-          const fromLower = (parsed.passport_country || fromCountry || '').toLowerCase();
-          const purposeLower = (purpose || '').toLowerCase();
-          const isIndian = fromLower.includes('india') || fromLower.includes('in');
-          const isTourism = !purposeLower.includes('work') && !purposeLower.includes('study') && !purposeLower.includes('pr');
-
-          // Strict Statutory Sanity Overrides for Direct-Entry / Visa-Free Nations
-          if (toLower.includes('mauritius') && isIndian && isTourism) {
-            parsed.visa_type = 'Visa-Free Entry (Granted on Arrival)';
-            parsed.processing_time = 'Instant on Arrival (0 Days)';
-            parsed.stay_duration = 'Up to 60 Days (Extendable to 90 Days)';
-            parsed.validity = '60–90 Days on Arrival';
-            if (parsed.validity_and_stay) {
-              parsed.validity_and_stay.visa_validity = '60–90 Days on Arrival';
-              parsed.validity_and_stay.max_stay_per_entry = 'Up to 60 Days (Extendable)';
-              parsed.validity_and_stay.entry_type = 'Single / Multiple Entry';
-            }
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at SSR International Airport (Mauritius).';
-              parsed.processing_and_timing.apply_window = 'No prior visa application needed. Complete Mauritius All-in-One Digital Form online before flight.';
-            }
-            parsed.costs = {
-              visa_fee: '₹0 (Free / No Consular Fee)',
-              service_fee: '₹0 (No Appointment Needed)',
-              total_fee: '₹0 (Free on Arrival)',
-              notes: 'Indian citizens traveling for tourism are granted a free tourist visa on arrival for up to 60 days.'
-            };
-          } else if (toLower.includes('maldives') && isIndian && isTourism) {
-            parsed.visa_type = 'Free Visa on Arrival (30 Days)';
-            parsed.processing_time = 'Instant on Arrival (0 Days)';
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at Velana International Airport (MLE).';
-              parsed.processing_and_timing.apply_window = 'Complete IMUGA Traveler Declaration online within 96 hours before arrival.';
-            }
-            parsed.costs = {
-              visa_fee: '₹0 (Free / No Consular Fee)',
-              service_fee: '₹0 (No Advance Application)',
-              total_fee: '₹0 (Free on Arrival)',
-              notes: 'Indian citizens traveling to Maldives for tourism receive a free 30-day Visa on Arrival.'
-            };
-          } else if (toLower.includes('seychelles') && isIndian && isTourism) {
-            parsed.visa_type = "Visa-Free / Visitor's Permit on Arrival";
-            parsed.processing_time = 'Instant on Arrival (0 Days)';
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.decision_time = 'Instant on-arrival stamping at Seychelles International Airport (SEZ).';
-              parsed.processing_and_timing.apply_window = 'Submit Seychelles Electronic Border System (SEBS) travel authorization online prior to departure.';
-            }
-            parsed.costs = {
-              visa_fee: '₹0 (Free / No Consular Fee)',
-              service_fee: '₹0 (Free Visitor Permit)',
-              total_fee: '₹0 (Free on Arrival)',
-              notes: 'Seychelles is a visa-free country. A Visitor’s Permit is granted free of charge upon arrival for up to 3 months.'
-            };
-          } else if ((toLower.includes('nepal') || toLower.includes('bhutan')) && isIndian) {
-            parsed.visa_type = 'Freedom of Movement / Entry Permit on Arrival';
-            parsed.processing_time = 'Instant on Arrival (0 Days)';
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.decision_time = 'Instant entry clearance on arrival (Voter ID or Passport).';
-            }
-            parsed.costs = {
-              visa_fee: '₹0 (No Visa Required)',
-              service_fee: '₹0',
-              total_fee: '₹0 (Free)',
-              notes: 'Indian citizens do not require a visa to enter Nepal or Bhutan under bilateral treaties.'
-            };
-          } else if (toLower.includes('china')) {
-            parsed.stay_duration = 'Up to 30 Days per Entry (as determined by consular officer)';
-            if (parsed.validity_and_stay) {
-              parsed.validity_and_stay.max_stay_per_entry = 'Up to 30 Days per Entry (as determined by consular officer)';
-            }
-            if (parsed.processing_and_timing) {
-              parsed.processing_and_timing.max_extension = 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).';
-            }
-            if (Array.isArray(parsed.other_requirements)) {
-              parsed.other_requirements = parsed.other_requirements.map((req: any) => {
-                const cat = (req.category || '').toLowerCase();
-                const det = (req.details || '').toLowerCase();
-                if (cat.includes('biometric') || det.includes('fingerprint')) {
-                  return {
-                    category: 'Biometrics Exemption Policy',
-                    details: 'Fingerprint collection is officially waived through December 31, 2026 for eligible short-term tourist (L) visas with stays ≤ 180 days. Applicants (or their authorized agents) must attend the designated CVASC center for physical dossier handover and passport submission, but fingerprint collection is waived.'
-                  };
-                }
-                if (det.includes('214(b)') || cat.includes('214(b)')) {
-                  return {
-                    category: 'Home Ties & Return Intent',
-                    details: 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'
-                  };
-                }
-                return req;
-              });
-            }
-          }
-
-          return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(parsed), source: 'gemini-ai' }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-          });
+        if (!extractedData) {
+          throw new Error('Stage 2 extraction failed — all models returned empty');
         }
+
+        // ════════════════════════════════════════════════════════════════════
+        // STAGE 3 — VALIDATION: Deterministic guards + verification status
+        // These guards are a SAFETY NET, not the primary data source.
+        // They catch hallucinations that slipped through Stage 1 & 2.
+        // ════════════════════════════════════════════════════════════════════
+
+        // Attach grounded sources to the result
+        extractedData.sources = verifiedSources.length > 0 ? verifiedSources : groundingSources.slice(0, 5);
+        extractedData.last_verified_at = new Date().toISOString();
+        extractedData.source_checked_at = new Date().toISOString();
+
+        // Clean country names
+        extractedData.passport_country = cleanCountryName(extractedData.passport_country || fromCountry);
+        extractedData.destination_country = cleanCountryName(extractedData.destination_country || toCountry);
+
+        const toLower = extractedData.destination_country.toLowerCase();
+        const isToSchengen = ['france', 'germany', 'italy', 'spain', 'netherlands', 'greece', 'portugal',
+          'austria', 'belgium', 'switzerland', 'czech republic', 'denmark', 'finland', 'hungary',
+          'iceland', 'latvia', 'liechtenstein', 'lithuania', 'luxembourg', 'malta', 'norway',
+          'poland', 'slovakia', 'slovenia', 'sweden', 'schengen'].some(c => toLower.includes(c));
+
+        // Guard 1: DS-160 cross-contamination — must NEVER appear for non-US destinations
+        if (!toLower.includes('united states') && !toLower.includes('usa')) {
+          if (Array.isArray(extractedData.documents_required)) {
+            extractedData.documents_required = extractedData.documents_required.map((doc: any) => {
+              if (doc.title?.toLowerCase().includes('ds-160') || doc.description?.toLowerCase().includes('ds-160')) {
+                doc.title = doc.title.replace(/ds-160/gi, 'Visa Application Form');
+                doc.description = doc.description.replace(/ds-160/gi, 'official visa application form');
+                console.warn(`[VisaEngine Stage 3] DS-160 hallucination detected and corrected for ${toLower}`);
+              }
+              return doc;
+            });
+          }
+        }
+
+        // Guard 2: Schengen photo/form cross-contamination for non-Schengen countries
+        if (!isToSchengen) {
+          if (Array.isArray(extractedData.documents_required)) {
+            extractedData.documents_required = extractedData.documents_required.map((doc: any) => {
+              // Never apply Schengen-specific "Harmonised Schengen Visa Application Form" to non-Schengen
+              if (doc.title?.toLowerCase().includes('harmonised schengen') ||
+                  doc.description?.toLowerCase().includes('harmonised schengen')) {
+                doc.title = 'Visa Application Form';
+                doc.description = doc.description
+                  .replace(/harmonised schengen visa application form/gi, 'official visa application form')
+                  .replace(/35x45mm/gi, 'as per official specifications');
+                console.warn(`[VisaEngine Stage 3] Schengen form hallucination corrected for ${toLower}`);
+              }
+              return doc;
+            });
+          }
+        }
+
+        // Guard 3: Stay duration — 180 days / 6 months only for USA / UK / Canada
+        const isLongStayAllowed = toLower.includes('united states') || toLower.includes('usa') ||
+          toLower.includes('united kingdom') || toLower.includes('uk') || toLower.includes('canada');
+        if (!isLongStayAllowed && extractedData.validity_and_stay?.max_stay_per_entry) {
+          const stay = extractedData.validity_and_stay.max_stay_per_entry.toLowerCase();
+          if (stay.includes('180') || stay.includes('6 month')) {
+            extractedData.validity_and_stay.max_stay_per_entry = 'Check official embassy website for current stay limits';
+            console.warn(`[VisaEngine Stage 3] Incorrect 180-day stay corrected for ${toLower}`);
+          }
+        }
+
+        // Guard 4: VoA/eVisa countries — strip fake VFS biometric requirements
+        const isDirectEntry = ['jordan', 'thailand', 'malaysia', 'maldives', 'mauritius',
+          'indonesia', 'sri lanka', 'nepal', 'bhutan', 'cambodia', 'kazakhstan',
+          'azerbaijan', 'georgia', 'seychelles'].some(c => toLower.includes(c));
+        if (isDirectEntry) {
+          if (Array.isArray(extractedData.other_requirements)) {
+            extractedData.other_requirements = extractedData.other_requirements.filter((item: any) => {
+              const cat = (item.category || '').toLowerCase();
+              const det = (item.details || '').toLowerCase();
+              const isFakeVFS = (cat.includes('vac') || det.includes('vfs')) &&
+                (det.includes('fingerprint') || det.includes('biometric'));
+              if (isFakeVFS) console.warn(`[VisaEngine Stage 3] False VFS biometric stripped for direct-entry country: ${toLower}`);
+              return !isFakeVFS;
+            });
+          }
+        }
+
+        // ── Determine verification_status ────────────────────────────────
+        const officialSourceCount = (extractedData.sources || []).filter(s => validateSourceURL(s.url, toCountry)).length;
+        if (officialSourceCount >= 2) {
+          extractedData.verification_status = 'verified';
+        } else if (officialSourceCount === 1) {
+          extractedData.verification_status = 'partially_verified';
+        } else if (groundingSources.length > 0) {
+          extractedData.verification_status = 'unverified';
+        } else {
+          extractedData.verification_status = 'unverified';
+        }
+
+        // Conflict detection: if multiple sources exist and disagree on fee (simple heuristic)
+        const feeTexts = (extractedData.sources || [])
+          .map(s => s.excerpt || '')
+          .filter(Boolean)
+          .join(' ');
+        if (feeTexts && (feeTexts.match(/\$\d+/g) || []).length > 1) {
+          const prices = (feeTexts.match(/\$\d+/g) || []).map(p => parseInt(p.replace('$', '')));
+          const uniquePrices = [...new Set(prices)];
+          if (uniquePrices.length > 1 && Math.max(...uniquePrices) > Math.min(...uniquePrices) * 1.2) {
+            extractedData.verification_status = 'conflicting_sources';
+            console.warn(`[VisaEngine Stage 3] Conflicting fee data detected for ${toLower}: ${uniquePrices.join(', ')}`);
+          }
+        }
+
+        console.log(`[VisaEngine] Route: ${routeKey} | Status: ${extractedData.verification_status} | Sources: ${officialSourceCount} official`);
+
+        // ── Save to Neon cache ─────────────────────────────────────────
+        saveVisaCache(routeKey, fromCountry, toCountry, purpose, extractedData).catch(e =>
+          console.warn('[VisaEngine] Non-fatal cache save error:', e)
+        );
+
+        return new Response(JSON.stringify({
+          success: true,
+          data: sanitizeCurrencyCodes(extractedData as any),
+          source: 'evidence-first-pipeline',
+          verification_status: extractedData.verification_status,
+          sources_count: (extractedData.sources || []).length
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
       } catch (aiErr) {
-        console.warn('[AI Requirements API] Gemini fallback triggered:', aiErr);
+        console.warn('[VisaEngine] Evidence pipeline error — falling back to consular DB:', aiErr);
       }
     }
 

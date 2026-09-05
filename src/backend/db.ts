@@ -699,6 +699,26 @@ export async function runMigrations() {
     CREATE UNIQUE INDEX IF NOT EXISTS idx_vrp_unique_route ON verified_readiness_payloads (origin, destination, purpose);
     CREATE INDEX IF NOT EXISTS idx_vrp_lookup ON verified_readiness_payloads (origin, destination, purpose);
     CREATE INDEX IF NOT EXISTS idx_vrp_route_key ON verified_readiness_payloads (route_key);
+
+    -- ── EVIDENCE-FIRST VISA REQUIREMENTS CACHE ──
+    CREATE TABLE IF NOT EXISTS visa_requirements_cache (
+      id SERIAL PRIMARY KEY,
+      passport_country VARCHAR(100) NOT NULL,
+      destination_country VARCHAR(100) NOT NULL,
+      purpose VARCHAR(100) NOT NULL,
+      route_key VARCHAR(255) NOT NULL,
+      verification_status VARCHAR(50) DEFAULT 'unverified',
+      source_urls TEXT[],
+      source_authorities TEXT[],
+      source_hash VARCHAR(64),
+      last_verified_at TIMESTAMP WITH TIME ZONE,
+      source_checked_at TIMESTAMP WITH TIME ZONE,
+      payload_json JSONB NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_vrc_route_key ON visa_requirements_cache (route_key);
+    CREATE INDEX IF NOT EXISTS idx_vrc_countries ON visa_requirements_cache (passport_country, destination_country, purpose);
   `);
   })();
   return migrationsPromise;

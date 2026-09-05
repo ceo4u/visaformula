@@ -4823,6 +4823,70 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <p className="text-xs text-slate-500 font-medium mt-0.5">
                                                 Mark documents as ready or upload them to calculate your comprehensive consular approval readiness score.
                                             </p>
+
+                                            {/* ── Evidence Verification Badge ── */}
+                                            {aiVisaData && aiVisaData.verification_status && (
+                                                <div className="flex flex-wrap items-center gap-2 mt-2">
+                                                    {aiVisaData.verification_status === 'verified' && (
+                                                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-lg">
+                                                            <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                                            Verified from Official Source
+                                                        </span>
+                                                    )}
+                                                    {aiVisaData.verification_status === 'partially_verified' && (
+                                                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-300 px-2.5 py-1 rounded-lg">
+                                                            <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+                                                            Partially Verified — Cross-check with Embassy
+                                                        </span>
+                                                    )}
+                                                    {(aiVisaData.verification_status === 'unverified' || aiVisaData.verification_status === 'conflicting_sources') && (
+                                                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-rose-800 bg-rose-50 border border-rose-300 px-2.5 py-1 rounded-lg">
+                                                            <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                            Unverified — Cross-check with Official Embassy
+                                                        </span>
+                                                    )}
+                                                    {aiVisaData.verification_status === 'stale' && (
+                                                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-orange-800 bg-orange-50 border border-orange-300 px-2.5 py-1 rounded-lg">
+                                                            <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" /></svg>
+                                                            Data May Be Outdated — Verify with Embassy
+                                                        </span>
+                                                    )}
+                                                    {aiVisaData.sources && aiVisaData.sources.length > 0 && aiVisaData.sources[0]?.url && (
+                                                        <a
+                                                            href={aiVisaData.sources[0].url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1 text-[10px] font-bold text-[#420f79] underline underline-offset-2 hover:text-[#6b21a8] transition-colors"
+                                                        >
+                                                            View Official Source ↗
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* ── Sources Collapsible ── */}
+                                            {aiVisaData?.sources && aiVisaData.sources.length > 0 && (
+                                                <details className="mt-2 group">
+                                                    <summary className="cursor-pointer text-[10px] font-black uppercase tracking-wider text-slate-500 hover:text-slate-700 list-none flex items-center gap-1 select-none">
+                                                        <svg className="w-3 h-3 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                                        {aiVisaData.sources.length} Source{aiVisaData.sources.length > 1 ? 's' : ''} Referenced
+                                                    </summary>
+                                                    <ul className="mt-1.5 space-y-1 pl-4">
+                                                        {aiVisaData.sources.slice(0, 5).map((src: any, i: number) => (
+                                                            <li key={i} className="text-[10px] text-slate-500 font-medium leading-relaxed">
+                                                                {src.url ? (
+                                                                    <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-[#420f79] hover:underline break-all">
+                                                                        {src.authority || src.url}
+                                                                    </a>
+                                                                ) : (
+                                                                    <span>{src.authority || 'Official Source'}</span>
+                                                                )}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </details>
+                                            )}
+
                                         </div>
 
                                         <div className="flex items-center gap-2 shrink-0">

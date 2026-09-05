@@ -6385,7 +6385,7 @@ export function VisaCountryResultPortal({
                               {doc.icon || <FileText className="w-4 h-4" />}
                             </div>
                             <div className="min-w-0">
-                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">{doc.name}</strong>
+                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug">{doc.name}</strong>
                               <span className="text-[12px] font-medium text-teal-700 block mt-0.5">{doc.mandatory ? 'Mandatory' : 'Optional'}</span>
                             </div>
                           </div>
@@ -6599,8 +6599,8 @@ export function VisaCountryResultPortal({
                                   {doc.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <h4 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug truncate">{doc.title}</h4>
-                                  <p className="text-[14px] sm:text-[15px] font-normal text-slate-600 mt-1 leading-relaxed line-clamp-2">{doc.desc}</p>
+                                  <h4 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">{doc.title}</h4>
+                                  <p className="text-[14px] sm:text-[15px] font-normal text-slate-600 mt-1 leading-relaxed">{doc.desc}</p>
                                 </div>
                                 <div className="shrink-0 mt-0.5">
                                   <span className={`w-5 h-5 rounded-lg flex items-center justify-center border text-xs transition-colors ${
@@ -6748,13 +6748,13 @@ export function VisaCountryResultPortal({
                               {doc.icon}
                             </div>
                             <div className="min-w-0">
-                              <strong className="text-[15px] font-semibold text-slate-900 block truncate">{doc.name}</strong>
+                              <strong className="text-[15px] font-semibold text-slate-900 block leading-snug">{doc.name}</strong>
                               <div className="flex items-center gap-1.5 mt-0.5">
                                 <span className={`text-[12px] font-medium ${doc.mandatory ? 'text-rose-700' : 'text-slate-500'}`}>
                                   {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                 </span>
                                 <span className="text-slate-300">•</span>
-                                <span className="text-[12px] font-normal text-slate-500 truncate max-w-[130px]">{doc.conditions[0] || 'Required'}</span>
+                                <span className="text-[12px] font-normal text-slate-500">{doc.conditions[0] || 'Required'}</span>
                               </div>
                             </div>
                           </div>

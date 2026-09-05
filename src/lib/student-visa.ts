@@ -682,11 +682,12 @@ export function getStudentOtherRequirements(country: string): OtherRequirementIt
 // ── 15. STUDENT VISA STEPS — COUNTRY SPECIFIC ──
 // Returns the correct 8 steps for each country, starting with University Admission
 export function getStudentVisaSteps(
-  fromCountry: string,
-  toCountry: string,
+  countryOrFrom: string,
+  maybeCountry?: string,
   visaType: string = 'Student Visa'
 ): string[] {
-  const c = normalizeCountry(toCountry);
+  const targetCountry = maybeCountry || countryOrFrom;
+  const c = normalizeCountry(targetCountry);
 
   // ── AUSTRALIA STUDENT (Subclass 500) ──
   if (c === 'australia') {
@@ -829,26 +830,28 @@ export function getStudentVisaSteps(
   }
 
   // ── DEFAULT STUDENT STEPS ──
+  const dest = maybeCountry || countryOrFrom;
   return [
-    `Step 1: Research & Select University — Research universities and programs in ${toCountry} that match your academic and career goals.`,
+    `Step 1: Research & Select University — Research universities and programs in ${dest} that match your academic and career goals.`,
     `Step 2: Meet Admission Requirements — Check academic qualifications, English language proficiency, and any specific prerequisites.`,
     `Step 3: Apply to University — Submit your application to the university through their official application portal.`,
     `Step 4: Accept Offer & Pay Deposit — Receive your offer letter, accept it, and pay the required tuition deposit.`,
     `Step 5: Receive Official Admission Confirmation — Receive your official admission confirmation (CoE / CAS / I-20 / Acceptance Letter).`,
     `Step 6: Apply for Student Visa — Complete the student visa application with your admission confirmation, financial proofs, and health insurance.`,
     `Step 7: Attend Biometrics (if required) — Complete biometrics at the designated Visa Application Center.`,
-    `Step 8: Receive Visa & Plan Travel — Receive your student visa and plan travel to ${toCountry}.`
+    `Step 8: Receive Visa & Plan Travel — Receive your student visa and plan travel to ${dest}.`
   ];
 }
 
 // ── 16. STUDENT DOCUMENTS — COUNTRY SPECIFIC ──
 // Returns official consular document checklist for each country
 export function getStudentDocuments(
-  fromCountry: string,
-  toCountry: string,
+  countryOrFrom: string,
+  maybeCountry?: string,
   purpose: string = 'Student'
 ): DocumentRequiredItem[] {
-  const c = normalizeCountry(toCountry);
+  const targetCountry = maybeCountry || countryOrFrom;
+  const c = normalizeCountry(targetCountry);
 
   // ── AUSTRALIA STUDENT (Subclass 500) ──
   if (c === 'australia') {
@@ -1231,6 +1234,7 @@ export function getStudentDocuments(
   }
 
   // ── DEFAULT STUDENT DOCUMENTS ──
+  const dest = maybeCountry || countryOrFrom;
   return [
     {
       title: 'Valid Passport',
@@ -1239,7 +1243,7 @@ export function getStudentDocuments(
     },
     {
       title: 'University Offer Letter',
-      description: `Official unconditional admission/acceptance letter from a recognized educational institution in ${toCountry}. This is mandatory for visa application.`,
+      description: `Official unconditional admission/acceptance letter from a recognized educational institution in ${dest}. This is mandatory for visa application.`,
       is_mandatory: true
     },
     {

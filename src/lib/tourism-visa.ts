@@ -973,7 +973,7 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
     'Step 3: Check Visa Requirements — Verify if you need a visa, eVisa, or are eligible for visa-free entry.',
     'Step 4: Gather Required Documents — Compile passport, photographs, flight/hotel bookings, financial proof, and insurance.',
     'Step 5: Complete Application — Submit your visa application online or through the designated Visa Application Center.',
-    'Step 6: Pay Visa Fee — Pay the official consular fee and VAC service charges.',
+    'Step 6: Pay Visa Fee — Pay the applicable consular visa fee and VAC service charges.',
     'Step 7: Submit Biometrics (if required) — Attend appointment for biometric enrollment.',
     'Step 8: Track Application Status — Monitor your visa processing status online.',
     'Step 9: Receive Passport with Visa — Collect your stamped passport or receive via courier.',
@@ -1502,7 +1502,7 @@ export function getTourismValidity(country: string): string {
     'brazil': 'Up to 90 Days'
   };
   
-  return map[c] || 'Per Official Guidelines (30 to 90 Days)';
+  return map[c] || '30 to 90 Days (Subject to Consular Grant)';
 }
 
 // ── 12. TOURISM STAY DURATION — COUNTRY SPECIFIC ──
@@ -1639,8 +1639,8 @@ export function getTourismOfficialSourceName(country: string): string {
     'france': 'Ministry of the Interior & France-Visas Consular Portal',
     'germany': 'Federal Foreign Office (Auswärtiges Amt)',
     'italy': 'Ministry of Foreign Affairs and International Cooperation (Farnesina)',
-    'spain': 'Ministry of Foreign Affairs, European Union and Cooperation (Spain)',
-    'greece': 'Ministry of Foreign Affairs of the Hellenic Republic',
+    'spain': 'Ministry of Foreign Affairs (Spain) / BLS International Spain',
+    'greece': 'Ministry of Foreign Affairs (Greece) / GVCW Greece',
     'netherlands': 'Ministry of Foreign Affairs & Immigration and Naturalisation Service (IND)',
     'switzerland': 'State Secretariat for Migration (SEM) & Federal Department of Foreign Affairs',
     'portugal': 'Ministry of Foreign Affairs (MNE) & AIMA (Portugal)',
@@ -1673,6 +1673,7 @@ export function getTourismVisaData(
   to: string,
   purpose: string = 'Tourism'
 ): StructuredVisaRequirements {
+  const c = normalizeCountry(to);
   const countryName = to;
   const officialSource = getTourismOfficialSourceName(to);
   const procTime = getTourismProcessingTime(to);
@@ -1734,7 +1735,17 @@ export function getTourismVisaData(
       apply_window: 'Apply 3 to 4 weeks prior to planned travel date.',
       decision_time: procTime,
       max_extension: 'Subject to local immigration bureau approval.',
-      center_notes: `VFS Global / ${countryName} Embassy/Consulate. Check appointment availability online.`
+      center_notes: c === 'spain'
+        ? 'BLS International Spain Visa Application Centre (blsspainvisa.com). Spain does NOT use VFS Global.'
+        : c === 'greece'
+        ? 'GVCW Greece (Global Visa Center World - in-gr.gvcworld.eu). Greece does NOT use VFS Global.'
+        : ['thailand', 'malaysia', 'mauritius', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles'].includes(c)
+        ? 'Airport Immigration Checkpoint / On-Arrival Clearance. Zero Embassy or VAC appointments required.'
+        : ['uae', 'singapore', 'turkey', 'egypt', 'kenya', 'tanzania', 'qatar', 'saudi-arabia', 'oman', 'bahrain'].includes(c)
+        ? 'Official Government Electronic Visa Portal. 100% digital application — no physical VAC visit required.'
+        : c === 'usa'
+        ? 'U.S. Embassy / Consulate & VAC (Visa Application Center) for Biometrics and In-person Consular Interview.'
+        : `VFS Global / ${countryName} Embassy/Consulate. Check appointment availability online.`
     }
   };
 }

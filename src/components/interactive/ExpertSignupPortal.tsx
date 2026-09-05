@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   CheckCircle2, ArrowRight, ArrowLeft, Send, 
   Building, Briefcase, MapPin, Clock, Globe, 
   Shield, Plane, Car, Hotel, GraduationCap, 
   Sparkles, Luggage, Umbrella, Check, X, 
-  Search, Eye, EyeOff
+  Search, Eye, EyeOff, ChevronDown
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
@@ -46,6 +46,31 @@ const BUSINESS_TYPES = [
   "Other"
 ];
 
+// ─── Business Operating Countries ─────────────────────────────────────────────
+const BUSINESS_COUNTRIES = [
+  "India",
+  "United States",
+  "Canada",
+  "United Kingdom",
+  "Australia",
+  "UAE",
+  "Germany",
+  "Singapore",
+  "New Zealand",
+  "Other"
+];
+
+// ─── Country Dial Codes ───────────────────────────────────────────────────────
+const COUNTRY_DIAL_CODES = [
+  { value: "+91", label: "+91 (IN)" },
+  { value: "+1", label: "+1 (US/CA)" },
+  { value: "+44", label: "+44 (UK)" },
+  { value: "+971", label: "+971 (UAE)" },
+  { value: "+61", label: "+61 (AU)" },
+  { value: "+49", label: "+49 (DE)" },
+  { value: "+65", label: "+65 (SG)" }
+];
+
 // ─── Years of Experience Options ──────────────────────────────────────────────
 const EXPERIENCE_OPTIONS = [
   "Less than 1 Year",
@@ -57,6 +82,90 @@ const EXPERIENCE_OPTIONS = [
 
 // Generate past years from 2026 down to 1980
 const ESTABLISHED_YEARS = Array.from({ length: 47 }, (_, i) => String(2026 - i));
+
+// ─── Modern Custom Dropdown Component ────────────────────────────────────────
+interface CustomDropdownProps {
+  value: string;
+  onChange: (val: string) => void;
+  options: ({ value: string; label: string } | string)[];
+  placeholder?: string;
+  disabled?: boolean;
+}
+
+function CustomDropdown({ value, onChange, options, placeholder = "Select option", disabled = false }: CustomDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const normalizedOptions = options.map(opt => 
+    typeof opt === "string" ? { value: opt, label: opt } : opt
+  );
+
+  const selectedOption = normalizedOptions.find(o => o.value === value);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <div ref={containerRef} className="relative w-full">
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpen(prev => !prev)}
+        className={`w-full px-3.5 py-2.5 rounded-xl border bg-slate-50/50 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 transition-all cursor-pointer text-left ${
+          isOpen
+            ? "border-[#481268] ring-2 ring-purple-200/70 bg-white shadow-xs"
+            : "border-slate-200 hover:border-slate-300"
+        } ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
+      >
+        <span className={`truncate ${selectedOption && selectedOption.value ? "text-slate-800 font-semibold" : "text-slate-400 font-normal"}`}>
+          {selectedOption && selectedOption.value ? selectedOption.label : placeholder}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+            isOpen ? "rotate-180 text-[#481268]" : ""
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 left-0 right-0 mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-xl py-1.5 max-h-60 overflow-y-auto scrollbar-thin">
+          {normalizedOptions.map(option => {
+            const isSelected = option.value === value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => {
+                  onChange(option.value);
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2.5 text-xs sm:text-sm flex items-center justify-between gap-2 transition-colors cursor-pointer ${
+                  isSelected
+                    ? "bg-purple-50 text-[#481268] font-bold"
+                    : "text-slate-700 hover:bg-purple-50/40 hover:text-slate-900 font-medium"
+                }`}
+              >
+                <span className="truncate">{option.label}</span>
+                {isSelected && <Check className="w-4 h-4 text-[#481268] shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ExpertSignupPortalContent() {
   const { signInWithGoogle } = useAuth();
@@ -76,37 +185,25 @@ function ExpertSignupPortalContent() {
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  // ─── Step 2: Business Details Form ─────────────────────────────────────────
+  // ─── Step 2: Business Details Form (Clean empty initial states - user fills them) ───
   const [businessName, setBusinessName] = useState("");
-  const [businessType, setBusinessType] = useState("Private Limited Company");
-  const [yearEstablished, setYearEstablished] = useState("2020");
+  const [businessType, setBusinessType] = useState("");
+  const [yearEstablished, setYearEstablished] = useState("");
   const [businessEmail, setBusinessEmail] = useState("");
   const [businessPhone, setBusinessPhone] = useState("");
   const [website, setWebsite] = useState("");
-  const [country, setCountry] = useState("India");
+  const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [businessAddress, setBusinessAddress] = useState("");
   const [pinCode, setPinCode] = useState("");
 
-  // ─── Step 3: Services & Expertise Form ─────────────────────────────────────
-  const [selectedServices, setSelectedServices] = useState<string[]>([
-    "Visa Consultant",
-    "Immigration Consultant"
-  ]);
-  const [selectedDestinations, setSelectedDestinations] = useState<string[]>([
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Australia",
-    "UAE"
-  ]);
+  // ─── Step 3: Services & Expertise Form (Clean empty initial states) ────────
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
   const [destinationSearch, setDestinationSearch] = useState("");
-  const [experience, setExperience] = useState("5 - 10 Years");
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([
-    "English",
-    "Hindi"
-  ]);
+  const [experience, setExperience] = useState("");
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   // ─── General Wizard State ──────────────────────────────────────────────────
   const [errorMsg, setErrorMsg] = useState("");
@@ -114,12 +211,11 @@ function ExpertSignupPortalContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
 
-  // Auto-sync email & phone into business fields when Step 1 changes
+  // Auto-sync email & phone into business fields when Step 1 changes (do NOT auto-fill business name)
   useEffect(() => {
     if (!businessEmail && email) setBusinessEmail(email);
     if (!businessPhone && mobileNumber) setBusinessPhone(mobileNumber);
-    if (!businessName && fullName) setBusinessName(`${fullName}'s Immigration`);
-  }, [email, mobileNumber, fullName]);
+  }, [email, mobileNumber]);
 
   // Password validation checklist checks
   const isMinLength = password.length >= 8;
@@ -131,9 +227,7 @@ function ExpertSignupPortalContent() {
   // Toggle service selection
   const toggleService = (serviceName: string) => {
     if (selectedServices.includes(serviceName)) {
-      if (selectedServices.length > 1) {
-        setSelectedServices(selectedServices.filter(s => s !== serviceName));
-      }
+      setSelectedServices(selectedServices.filter(s => s !== serviceName));
     } else {
       setSelectedServices([...selectedServices, serviceName]);
     }
@@ -142,9 +236,7 @@ function ExpertSignupPortalContent() {
   // Toggle destination selection
   const toggleDestination = (dest: string) => {
     if (selectedDestinations.includes(dest)) {
-      if (selectedDestinations.length > 1) {
-        setSelectedDestinations(selectedDestinations.filter(d => d !== dest));
-      }
+      setSelectedDestinations(selectedDestinations.filter(d => d !== dest));
     } else {
       setSelectedDestinations([...selectedDestinations, dest]);
     }
@@ -153,9 +245,7 @@ function ExpertSignupPortalContent() {
   // Toggle language selection
   const toggleLanguage = (lang: string) => {
     if (selectedLanguages.includes(lang)) {
-      if (selectedLanguages.length > 1) {
-        setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
-      }
+      setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
     } else {
       setSelectedLanguages([...selectedLanguages, lang]);
     }
@@ -166,22 +256,12 @@ function ExpertSignupPortalContent() {
     setErrorMsg("");
     setGoogleLoading(true);
     try {
-      const res = await signInWithGoogle('expert', 'signup', turnstileToken);
-      if (res?.user) {
-        const u = res.user;
-        if (u.displayName) setFullName(u.displayName);
-        if (u.email) {
-          setEmail(u.email);
-          setBusinessEmail(u.email);
-        }
-        setBusinessName(u.displayName ? `${u.displayName}'s Advisory` : "Global Visa Advisory");
-        // Smoothly proceed to Step 2
-        setStep(2);
-      }
+      await signInWithGoogle();
+      setStep(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: any) {
-      if (!err?.message?.includes("cancelled") && !err?.message?.includes("closed-by-user")) {
-        setErrorMsg(err?.message || "Google sign-in failed.");
-      }
+      console.error("[ExpertGoogleAuth]", err);
+      setErrorMsg(err.message || "Failed to authenticate with Google.");
     } finally {
       setGoogleLoading(false);
     }
@@ -193,10 +273,10 @@ function ExpertSignupPortalContent() {
     setErrorMsg("");
 
     if (!fullName.trim()) {
-      setErrorMsg("Please enter your full name.");
+      setErrorMsg("Please enter your full legal name.");
       return;
     }
-    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) {
+    if (!email.trim() || !email.includes("@")) {
       setErrorMsg("Please enter a valid email address.");
       return;
     }
@@ -230,8 +310,16 @@ function ExpertSignupPortalContent() {
       setErrorMsg("Please enter your business or company name.");
       return;
     }
+    if (!businessType) {
+      setErrorMsg("Please select your business type.");
+      return;
+    }
     if (!businessEmail.trim()) {
       setErrorMsg("Please enter your business email.");
+      return;
+    }
+    if (!country) {
+      setErrorMsg("Please select your country.");
       return;
     }
     if (!city.trim()) {
@@ -256,6 +344,10 @@ function ExpertSignupPortalContent() {
     }
     if (selectedDestinations.length === 0) {
       setErrorMsg("Please select at least one destination country.");
+      return;
+    }
+    if (!experience) {
+      setErrorMsg("Please select your years of experience.");
       return;
     }
 
@@ -567,17 +659,14 @@ function ExpertSignupPortalContent() {
                   Mobile Number
                 </label>
                 <div className="flex gap-2">
-                  <select
-                    value={mobileCode}
-                    onChange={(e) => setMobileCode(e.target.value)}
-                    className="px-2.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
-                  >
-                    <option value="+91">+91 (IN)</option>
-                    <option value="+1">+1 (US/CA)</option>
-                    <option value="+44">+44 (UK)</option>
-                    <option value="+971">+971 (UAE)</option>
-                    <option value="+61">+61 (AU)</option>
-                  </select>
+                  <div className="w-28 shrink-0">
+                    <CustomDropdown
+                      value={mobileCode}
+                      onChange={setMobileCode}
+                      options={COUNTRY_DIAL_CODES}
+                      placeholder="+91"
+                    />
+                  </div>
                   <input
                     type="tel"
                     required
@@ -728,7 +817,7 @@ function ExpertSignupPortalContent() {
                 required
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
-                placeholder="Enter business name"
+                placeholder="Enter business or company name"
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
               />
             </div>
@@ -738,15 +827,12 @@ function ExpertSignupPortalContent() {
               <label className="block text-xs font-bold text-slate-800 mb-1">
                 Business Type *
               </label>
-              <select
+              <CustomDropdown
                 value={businessType}
-                onChange={(e) => setBusinessType(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
-              >
-                {BUSINESS_TYPES.map(bt => (
-                  <option key={bt} value={bt}>{bt}</option>
-                ))}
-              </select>
+                onChange={setBusinessType}
+                options={BUSINESS_TYPES}
+                placeholder="Select Business Type"
+              />
             </div>
 
             {/* Year Established */}
@@ -754,15 +840,12 @@ function ExpertSignupPortalContent() {
               <label className="block text-xs font-bold text-slate-800 mb-1">
                 Year Established
               </label>
-              <select
+              <CustomDropdown
                 value={yearEstablished}
-                onChange={(e) => setYearEstablished(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
-              >
-                {ESTABLISHED_YEARS.map(yr => (
-                  <option key={yr} value={yr}>{yr}</option>
-                ))}
-              </select>
+                onChange={setYearEstablished}
+                options={ESTABLISHED_YEARS}
+                placeholder="Select Year Established"
+              />
             </div>
 
             {/* Business Email */}
@@ -819,18 +902,12 @@ function ExpertSignupPortalContent() {
                 <label className="block text-xs font-bold text-slate-800 mb-1">
                   Country *
                 </label>
-                <select
+                <CustomDropdown
                   value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
-                >
-                  <option value="India">India</option>
-                  <option value="United States">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Australia">Australia</option>
-                  <option value="UAE">UAE</option>
-                </select>
+                  onChange={setCountry}
+                  options={BUSINESS_COUNTRIES}
+                  placeholder="Select Country"
+                />
               </div>
 
               <div>
@@ -1034,15 +1111,12 @@ function ExpertSignupPortalContent() {
               <label className="block text-xs font-bold text-slate-800 mb-1">
                 Years of Experience
               </label>
-              <select
+              <CustomDropdown
                 value={experience}
-                onChange={(e) => setExperience(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#481268] cursor-pointer"
-              >
-                {EXPERIENCE_OPTIONS.map(exp => (
-                  <option key={exp} value={exp}>{exp}</option>
-                ))}
-              </select>
+                onChange={setExperience}
+                options={EXPERIENCE_OPTIONS}
+                placeholder="Select Years of Experience"
+              />
             </div>
 
             {/* Languages Spoken */}

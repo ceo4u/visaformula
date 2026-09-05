@@ -82,7 +82,7 @@ export const GET: APIRoute = async ({ request, url }) => {
           visaType,
           purpose: purp,
           passport: pass,
-          status: docCount > 0 ? 'Dossier Ingested & AI Verified' : 'Requirements & Eligibility Active',
+          status: docCount > 0 ? 'Required Documents & AI Verified' : 'Requirements & Eligibility Active',
           stage: docCount > 0 ? 'Under AI Concierge Review' : 'Requirements & Document Collection',
           progress: docCount > 0 ? Math.min(35, 15 + docCount * 5) : 10,
           documentsCount: docCount,

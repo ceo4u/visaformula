@@ -83,7 +83,7 @@ export function useApplications({
       visaType,
       purpose: targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism',
       passport: targetPass,
-      status: genuineUploadedDocsCount > 0 ? "Dossier Ingested & AI Verified" : "Requirements & Eligibility Active",
+      status: genuineUploadedDocsCount > 0 ? "Required Documents & AI Verified" : "Requirements & Eligibility Active",
       stage: genuineUploadedDocsCount > 0 ? "Document Vault Verification" : "Requirements & Document Collection",
       progress: genuineUploadedDocsCount > 0 ? Math.min(35, 15 + genuineUploadedDocsCount * 5) : 10,
       documentsCount: genuineUploadedDocsCount,

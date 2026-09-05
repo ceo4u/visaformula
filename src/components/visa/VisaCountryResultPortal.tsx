@@ -4178,7 +4178,7 @@ export function VisaCountryResultPortal({
           tracking_id: trackingId,
           final_dossier_submitted: true,
           submitted_at: submissionDate,
-          status: 'Dossier Ingested & AI Verified'
+          status: 'Required Documents & AI Verified'
         };
         localStorage.setItem('travltik_user_journey', JSON.stringify(journeyPayload));
 
@@ -4239,7 +4239,7 @@ export function VisaCountryResultPortal({
           visaType: visaTypeName,
           purpose: activePurposeTab,
           passport: passportCountry,
-          status: 'Dossier Ingested & OCR Verified',
+          status: 'Required Documents & OCR Verified',
           stage: 'Under AI Concierge Review',
           progress: 35,
           documentsCount: Object.keys(uploadedDocuments).length,

@@ -195,7 +195,7 @@ export const VisaApplications: React.FC<VisaApplicationsProps> = ({
                                                         <Edit2 className="w-3.5 h-3.5" />
                                                     </button>
                                                     <span className="bg-emerald-50 text-[#00A86B] text-[10px] font-black px-2 py-0.5 rounded-md border border-emerald-200">
-                                                        {cItem.status || 'Active'}
+                                                        {(cItem.status || 'Active').replace(/Dossier Ingested/gi, 'Required Documents')}
                                                     </span>
                                                 </div>
                                             )}
@@ -264,7 +264,7 @@ export const VisaApplications: React.FC<VisaApplicationsProps> = ({
                                     </div>
                                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
                                         <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 20 ? 'text-slate-950 font-black' : 'text-indigo-600 font-bold'}`}>
-                                            {(cItem.progress || 10) >= 20 ? <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 text-indigo-600 shrink-0" />} 1. Dossier Ingested
+                                            {(cItem.progress || 10) >= 20 ? <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 text-indigo-600 shrink-0" />} 1. Required Documents
                                         </div>
                                         <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 40 ? 'text-slate-950 font-black' : (cItem.progress || 10) >= 20 ? 'text-indigo-600 font-bold' : 'text-slate-400'}`}>
                                             {(cItem.progress || 10) >= 40 ? <Sparkles className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 shrink-0" />} 2. AI Quality Audit

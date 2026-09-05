@@ -1,5 +1,27 @@
 ---
-// src/pages/dashboard.astro -> Redirect to /traveller/dashboard
-return Astro.redirect('/traveller/dashboard', 301);
+// src/pages/dashboard.astro
+import Layout from '../layouts/Layout.astro';
+import { DashboardClient } from '../components/dashboard/DashboardClient';
 ---
 
+<Layout 
+  title="Traveller Dashboard | TravlTik" 
+  description="Manage your travel and visa journey. Check your visa readiness, upcoming appointments, track applications, and view document checklists online."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <!-- Mount client-only React user dashboard island with instant zero-latency skeleton fallback -->
+  <DashboardClient client:only="react">
+    <div slot="fallback" class="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 text-center">
+      <div class="flex flex-col items-center max-w-sm w-full space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-[#00a896] flex items-center justify-center text-white text-xl font-black shadow-md animate-bounce">
+          ✈️
+        </div>
+        <div class="space-y-1.5 w-full">
+          <div class="h-4 bg-slate-200 rounded-md w-48 mx-auto animate-pulse"></div>
+          <p class="text-xs text-slate-400 font-medium">Loading your visa portal &amp; dashboard...</p>
+        </div>
+      </div>
+    </div>
+  </DashboardClient>
+</Layout>

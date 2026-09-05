@@ -674,11 +674,11 @@ export function VisaApplicationDetailsView({
             {/* Step 1: Check Requirements */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 1 ? 'bg-emerald-500 text-white' : currentStep === 1 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
+                currentStep > 1 ? 'bg-emerald-500 text-white' : currentStep === 1 ? 'bg-[#00a896] text-white ring-[#00a896]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 1 ? <Check className="w-4 h-4 stroke-[3]" /> : '1'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 1 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 1 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
                 1. Requirements
               </span>
             </div>
@@ -686,11 +686,11 @@ export function VisaApplicationDetailsView({
             {/* Step 2: Prepare Documents */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 2 ? 'bg-emerald-500 text-white' : currentStep === 2 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
+                currentStep > 2 ? 'bg-emerald-500 text-white' : currentStep === 2 ? 'bg-[#00a896] text-white ring-[#00a896]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 2 ? <Check className="w-4 h-4 stroke-[3]" /> : '2'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 2 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 2 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
                 2. Documents
               </span>
             </div>
@@ -698,11 +698,11 @@ export function VisaApplicationDetailsView({
             {/* Step 3: Fill Application */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 3 ? 'bg-emerald-500 text-white' : currentStep === 3 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
+                currentStep > 3 ? 'bg-emerald-500 text-white' : currentStep === 3 ? 'bg-[#00a896] text-white ring-[#00a896]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 3 ? <Check className="w-4 h-4 stroke-[3]" /> : '3'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 3 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 3 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
                 3. Application Form
               </span>
             </div>
@@ -710,11 +710,11 @@ export function VisaApplicationDetailsView({
             {/* Step 4: Pay Fees */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 4 ? 'bg-emerald-500 text-white' : currentStep === 4 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
+                currentStep > 4 ? 'bg-emerald-500 text-white' : currentStep === 4 ? 'bg-[#00a896] text-white ring-[#00a896]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 4 ? <Check className="w-4 h-4 stroke-[3]" /> : '4'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 4 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 4 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
                 4. Pay Fees
               </span>
             </div>
@@ -722,11 +722,11 @@ export function VisaApplicationDetailsView({
             {/* Step 5: Submission / Verification */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 5 ? 'bg-emerald-500 text-white' : currentStep === 5 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
+                currentStep > 5 ? 'bg-emerald-500 text-white' : currentStep === 5 ? 'bg-[#00a896] text-white ring-[#00a896]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 5 ? <Check className="w-4 h-4 stroke-[3]" /> : '5'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 5 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 5 ? 'font-black text-[#00a896]' : 'font-bold text-slate-800'}`}>
                 {isOnlineOrOnArrival ? '5. e-Visa Clearance' : '5. Submit & Biometrics'}
               </span>
             </div>
@@ -789,7 +789,7 @@ export function VisaApplicationDetailsView({
                       onClick={() => toggleStep(stepNum)}
                       className={`flex items-center justify-between p-4 transition-colors cursor-pointer ${
                         isStepActive 
-                          ? 'bg-[#420f79]/5 hover:bg-[#420f79]/10' 
+                          ? 'bg-[#00a896]/5 hover:bg-[#00a896]/10' 
                           : 'bg-white hover:bg-slate-50/70'
                       }`}
                     >
@@ -798,7 +798,7 @@ export function VisaApplicationDetailsView({
                           isStepCompleted 
                             ? 'bg-emerald-500 text-white' 
                             : isStepActive 
-                            ? 'bg-[#420f79] text-white' 
+                            ? 'bg-[#00a896] text-white' 
                             : 'border-2 border-slate-300 bg-white'
                         }`}>
                           {isStepCompleted ? (
@@ -808,7 +808,7 @@ export function VisaApplicationDetailsView({
                           ) : null}
                         </div>
                         <div>
-                          <h3 className={`text-xs sm:text-sm font-black ${isStepActive ? 'text-[#420f79]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                          <h3 className={`text-xs sm:text-sm font-black ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
                             {stepNum}. {stepText.split('.')[0]}
                           </h3>
                           <p className="text-[11px] text-slate-500 font-medium">
@@ -822,15 +822,15 @@ export function VisaApplicationDetailsView({
                           isStepCompleted 
                             ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
                             : isStepActive 
-                            ? 'bg-[#420f79]/10 text-[#420f79] border-[#420f79]/30' 
+                            ? 'bg-[#00a896]/10 text-[#00a896] border-[#00a896]/30' 
                             : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}>
                           {isStepCompleted ? 'Completed' : isStepActive ? 'In Progress' : 'Pending'}
                         </span>
                         {isExpanded ? (
-                          <ChevronUp className={`w-4 h-4 ${isStepActive ? 'text-[#420f79]' : 'text-slate-400'}`} />
+                          <ChevronUp className={`w-4 h-4 ${isStepActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
                         ) : (
-                          <ChevronDown className={`w-4 h-4 ${isStepActive ? 'text-[#420f79]' : 'text-slate-400'}`} />
+                          <ChevronDown className={`w-4 h-4 ${isStepActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
                         )}
                       </div>
                     </div>
@@ -856,7 +856,7 @@ export function VisaApplicationDetailsView({
                             <button
                               type="button"
                               onClick={onOpenVault}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
                             >
                               <Upload className="w-3.5 h-3.5" />
                               <span>{readyDocsCount > 0 ? `Manage Vault Documents (${readyDocsCount}/${checklistDocuments.length} Ready) →` : `Upload Required Documents in Vault →`}</span>
@@ -887,7 +887,7 @@ export function VisaApplicationDetailsView({
                 <button
                   type="button"
                   onClick={() => setShowGuidelinesModal(true)}
-                  className="text-xs font-bold text-[#420f79] hover:text-[#521396] hover:underline inline-flex items-center gap-1.5 cursor-pointer"
+                  className="text-xs font-bold text-[#00a896] hover:text-[#009282] hover:underline inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5" />
                   <span>View Document Guidelines</span>
@@ -1038,7 +1038,7 @@ export function VisaApplicationDetailsView({
 
             {/* Dynamic Score Breakdown Bars */}
             <div className="pt-3 border-t border-slate-100 space-y-3 text-left">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Dossier Evaluation</span>
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Evaluation</span>
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-bold">

@@ -3298,7 +3298,17 @@ function cleanShortDocRequirement(title: string, description: string): string {
             title: "GENERAL",
             items: [
                 { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                { id: "visa-readiness", label: "Visa Readiness", icon: ShieldCheck, badge: "11-PT", badgeColor: "bg-indigo-50 text-indigo-700 border border-indigo-200/60" },
+                { 
+                    id: "visa-readiness", 
+                    label: "Visa Readiness", 
+                    icon: ShieldCheck, 
+                    badge: comprehensiveAuditMetrics.isUnselected ? undefined : `${comprehensiveAuditMetrics.score}%`, 
+                    badgeColor: comprehensiveAuditMetrics.score >= 70
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
+                        : comprehensiveAuditMetrics.score >= 40
+                        ? "bg-amber-50 text-amber-700 border border-amber-200/60"
+                        : "bg-rose-50 text-rose-700 border border-rose-200/60"
+                },
                 { id: "cases", label: "Visa Applications", icon: Briefcase, count: visasProcessingState.length > 0 ? visasProcessingState.length : undefined },
                 { id: "predeparture", label: "Pre-Departure", icon: Luggage, badge: "AI", badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
             ]
@@ -3813,46 +3823,24 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     </div>
                                 </div>
 
-                                {/* Category Selector Pill Buttons */}
-                                <div className="bg-slate-100/80 p-1.5 rounded-2xl flex items-center gap-1.5 overflow-x-auto max-w-xl">
-                                    <button
-                                        type="button"
-                                        onClick={() => setReadinessPurpose('study')}
-                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
-                                            readinessPurpose === 'study'
-                                                ? 'bg-slate-900 text-white font-black shadow-sm'
-                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
-                                        }`}
-                                    >
-                                        <GraduationCap className="w-4 h-4" />
-                                        <span>Student Visa</span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => setReadinessPurpose('tourism')}
-                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
-                                            readinessPurpose === 'tourism'
-                                                ? 'bg-slate-900 text-white font-black shadow-sm'
-                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
-                                        }`}
-                                    >
-                                        <Plane className="w-4 h-4" />
-                                        <span>Tourist Visa</span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => setReadinessPurpose('work')}
-                                        className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs transition-all cursor-pointer ${
-                                            readinessPurpose === 'work'
-                                                ? 'bg-slate-900 text-white font-black shadow-sm'
-                                                : 'text-slate-600 hover:text-slate-900 font-bold hover:bg-white/60'
-                                        }`}
-                                    >
-                                        <Briefcase className="w-4 h-4" />
-                                        <span>Work Visa</span>
-                                    </button>
+                                {/* Active Category (Showing only the category selected by the user) */}
+                                <div className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl text-xs bg-slate-900 text-white font-bold shadow-xs">
+                                    {readinessPurpose === 'study' ? (
+                                        <>
+                                            <GraduationCap className="w-4 h-4 text-white" />
+                                            <span>Student Visa</span>
+                                        </>
+                                    ) : readinessPurpose === 'work' ? (
+                                        <>
+                                            <Briefcase className="w-4 h-4 text-white" />
+                                            <span>Work Visa</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Plane className="w-4 h-4 text-white" />
+                                            <span>Tourist Visa</span>
+                                        </>
+                                    )}
                                 </div>
 
                                 {/* Main Two-Column Grid: 11 Statutory Points + Scorecard */}

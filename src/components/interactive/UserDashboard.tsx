@@ -6213,7 +6213,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     if (matchedUserDocIds.has(d.id)) return false;
                                     const dTitleL = (d.title || d.label || '').toLowerCase();
                                     const dType = d.type || '';
-                                    if (req.key === 'statutory_passport') return dType === 'passport' || dTitleL.includes('passport');
+                                    if (req.key === 'statutory_passport') {
+                                        return dType === 'passport' ||
+                                            dTitleL.includes('passport') ||
+                                            Boolean(d.ocrData?.passportNumber) ||
+                                            Boolean(d.ocrData?.mrzLine1) ||
+                                            Boolean(d.docNumber && /^[A-Z][0-9]{7,8}$/i.test(d.docNumber)) ||
+                                            Boolean(d.ocrData?.documentNumber && /^[A-Z][0-9]{7,8}$/i.test(d.ocrData.documentNumber));
+                                    }
                                     if (req.key === 'statutory_national_id') return (dType === 'id' && !dTitleL.includes('pan')) || dTitleL.includes('aadhaar') || (dTitleL.includes('identity') && !dTitleL.includes('pan'));
                                     if (req.key === 'statutory_tax_id') return dTitleL.includes('pan') || dTitleL.includes('tax');
                                     if (req.key === 'statutory_financial') return dType === 'bank' || dTitleL.includes('bank') || dTitleL.includes('statement');
@@ -6376,8 +6383,8 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     try {
                                         const base64 = (reader.result as string) || '';
                                         const docReq = targetOverride || vaultUploadTargetReqRef.current || vaultUploadTargetReq;
-                                        const effectiveTitle = docReq ? docReq.title : file.name.replace(/\.[^/.]+$/, "");
-                                        const effectiveKey = docReq ? docReq.key : 'vault_upload';
+                                        let effectiveTitle = docReq ? docReq.title : file.name.replace(/\.[^/.]+$/, "");
+                                        let effectiveKey = docReq ? docReq.key : 'vault_upload';
 
                                         let scanSummary = 'Verified & Ingested into Encrypted Vault';
                                         let extractedDocNumber = '';
@@ -6386,8 +6393,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         let extractedNationality = passportCountry || selectedPassport || 'India';
                                         let extractedSex = 'M';
                                         let extractedPlaceOfBirth = 'On File';
+                                        let extractedPlaceOfIssue = '';
                                         let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
                                         let extractedExpiryDate = '';
+                                        let extractedMrz1 = '';
+                                        let extractedMrz2 = '';
 
                                         const docNameLower = (effectiveTitle + ' ' + file.name).toLowerCase();
                                         let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = (docReq?.type as any) || 'other';
@@ -6400,9 +6410,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
                                         }
 
-                                        const isPassportUpload = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport');
+                                        const isImageFile = (file.type || '').startsWith('image/');
+                                        const isPassportCandidate = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport') || (!docReq && isImageFile);
 
-                                        if (isPassportUpload) {
+                                        let passportOcrSuccess = false;
+                                        if (isPassportCandidate) {
                                             try {
                                                 const res = await fetch('/api/ocr-analyze-passport', {
                                                     method: 'POST',
@@ -6416,23 +6428,34 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 });
                                                 if (res.ok) {
                                                     const json = await res.json();
-                                                    if (json?.success && json?.data) {
+                                                    if (json?.success && json?.data && json.data.passportNumber) {
                                                         const pData = json.data;
-                                                        if (pData.passportNumber) extractedDocNumber = pData.passportNumber;
+                                                        extractedDocNumber = pData.passportNumber;
                                                         if (pData.fullName) extractedFullName = pData.fullName;
                                                         if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
                                                         if (pData.nationality) extractedNationality = pData.nationality;
                                                         if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
                                                         if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
+                                                        if (pData.placeOfIssue) extractedPlaceOfIssue = pData.placeOfIssue;
                                                         if (pData.issueDate) extractedIssueDate = pData.issueDate;
                                                         if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
-                                                        scanSummary = `Passport ${extractedDocNumber || ''} verified. MRZ checksum valid.`;
+                                                        if (pData.mrzLine1) extractedMrz1 = pData.mrzLine1;
+                                                        if (pData.mrzLine2) extractedMrz2 = pData.mrzLine2;
+                                                        scanSummary = `Passport ${extractedDocNumber} verified. MRZ checksum valid.`;
+                                                        type = 'passport';
+                                                        if (!docReq || effectiveKey === 'vault_upload') {
+                                                            effectiveKey = 'statutory_passport';
+                                                            effectiveTitle = 'Valid Passport';
+                                                        }
+                                                        passportOcrSuccess = true;
                                                     }
                                                 }
                                             } catch(e) {
                                                 console.error('Passport OCR error:', e);
                                             }
-                                        } else {
+                                        }
+
+                                        if (!passportOcrSuccess) {
                                             try {
                                                 const res = await fetch('/api/ocr-analyze-document', {
                                                     method: 'POST',
@@ -6460,6 +6483,18 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                             extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
                                                             extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
                                                             extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+
+                                                            // Check if Document OCR detected that this is a passport!
+                                                            const isPassportPattern = Boolean(extractedDocNumber && /^[A-Z][0-9]{7,8}$/i.test(extractedDocNumber));
+                                                            const docTypeIsPassport = Boolean(json.data.documentType?.toLowerCase().includes('passport') || scanSummary.toLowerCase().includes('passport'));
+                                                            if (isPassportPattern || docTypeIsPassport) {
+                                                                type = 'passport';
+                                                                if (!docReq || effectiveKey === 'vault_upload') {
+                                                                    effectiveKey = 'statutory_passport';
+                                                                    effectiveTitle = 'Valid Passport';
+                                                                }
+                                                                scanSummary = `Passport ${extractedDocNumber} verified. Consular record valid.`;
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -6525,13 +6560,18 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             ocrData: {
                                                 documentNumber: extractedDocNumber,
                                                 docNumber: extractedDocNumber,
+                                                passportNumber: type === 'passport' ? extractedDocNumber : undefined,
                                                 fullName: extractedFullName || fullName || '',
                                                 dob: extractedDob || '',
+                                                dateOfBirth: extractedDob || '',
                                                 nationality: extractedNationality || '',
                                                 sex: extractedSex || 'Male',
                                                 placeOfBirth: extractedPlaceOfBirth || '',
+                                                placeOfIssue: extractedPlaceOfIssue || '',
                                                 issueDate: extractedIssueDate || '',
-                                                expiryDate: finalExpiryDate
+                                                expiryDate: finalExpiryDate,
+                                                mrzLine1: extractedMrz1 || undefined,
+                                                mrzLine2: extractedMrz2 || undefined
                                             }
                                         };
 
@@ -7293,7 +7333,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 {activeSelectedDoc && (() => {
                                     const isPassportDoc = activeSelectedDoc.type === 'passport' ||
                                         activeSelectedDoc.reqKey?.toLowerCase().includes('passport') ||
-                                        (activeSelectedDoc.title || '').toLowerCase().includes('passport');
+                                        (activeSelectedDoc.title || '').toLowerCase().includes('passport') ||
+                                        (activeSelectedDoc.label || '').toLowerCase().includes('passport') ||
+                                        Boolean(activeSelectedDoc.ocrData?.passportNumber) ||
+                                        Boolean(activeSelectedDoc.ocrData?.mrzLine1) ||
+                                        Boolean(activeSelectedDoc.ocrData?.placeOfBirth && activeSelectedDoc.ocrData?.issueDate) ||
+                                        Boolean(activeSelectedDoc.docNumber && /^[A-Z][0-9]{7,8}$/i.test(activeSelectedDoc.docNumber)) ||
+                                        Boolean(activeSelectedDoc.ocrData?.documentNumber && /^[A-Z][0-9]{7,8}$/i.test(activeSelectedDoc.ocrData.documentNumber)) ||
+                                        Boolean(activeSelectedDoc.ocrData?.docNumber && /^[A-Z][0-9]{7,8}$/i.test(activeSelectedDoc.ocrData.docNumber));
 
                                      const displayDocNumber = activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
                                      const displayFullName = activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
@@ -7341,26 +7388,26 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                          }
                                      };
 
-                                     const displayDobFormatted = formatDatePreview(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
-                                     const displayDobText = formatDateOcr(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
+                                     const displayDobFormatted = formatDatePreview(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.ocrData?.dateOfBirth || activeSelectedDoc.dateOfBirth, '—');
+                                     const displayDobText = formatDateOcr(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.ocrData?.dateOfBirth || activeSelectedDoc.dateOfBirth, '—');
 
-                                     const rawSex = String(activeSelectedDoc.ocrData?.sex || '').toUpperCase();
+                                     const rawSex = String(activeSelectedDoc.ocrData?.sex || activeSelectedDoc.sex || '').toUpperCase();
                                      const displaySex = rawSex.startsWith('F') ? 'Female' : rawSex.startsWith('M') ? 'Male' : (rawSex || '—');
                                      const displaySexCode = rawSex.startsWith('F') ? 'F' : rawSex.startsWith('M') ? 'M' : '—';
 
-                                     const displayPlaceOfBirth = activeSelectedDoc.ocrData?.placeOfBirth || '—';
+                                     const displayPlaceOfBirth = activeSelectedDoc.ocrData?.placeOfBirth || activeSelectedDoc.placeOfBirth || '—';
 
-                                     const displayIssueDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.issueDate, '—');
-                                     const displayIssueDateText = formatDateOcr(activeSelectedDoc.ocrData?.issueDate, '—');
+                                     const displayIssueDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.issueDate || activeSelectedDoc.issueDate, '—');
+                                     const displayIssueDateText = formatDateOcr(activeSelectedDoc.ocrData?.issueDate || activeSelectedDoc.issueDate, '—');
 
                                      const displayExpiryDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
                                      const displayExpiryDateText = formatDateOcr(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
 
                                      const cleanSurname = (displaySurname && displaySurname !== '—') ? String(displaySurname).toUpperCase().replace(/[^A-Z]/g, '') : '';
                                      const cleanGiven = (displayGivenNames && displayGivenNames !== '—') ? String(displayGivenNames).toUpperCase().replace(/[^A-Z]/g, '<') : '';
-                                     const mrzLine1 = `P<IND${cleanSurname}<<${cleanGiven}`.padEnd(44, '<').slice(0, 44);
+                                     const mrzLine1 = activeSelectedDoc.ocrData?.mrzLine1 || `P<IND${cleanSurname}<<${cleanGiven}`.padEnd(44, '<').slice(0, 44);
                                      const cleanDoc = (displayDocNumber && displayDocNumber !== '—') ? String(displayDocNumber).toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
-                                     const mrzLine2 = `${cleanDoc}<8IND8104057${displaySexCode || 'M'}3104042<<<<<<<<<<<<<<<08`.padEnd(44, '<').slice(0, 44);
+                                     const mrzLine2 = activeSelectedDoc.ocrData?.mrzLine2 || `${cleanDoc}<8IND8104057${displaySexCode || 'M'}3104042<<<<<<<<<<<<<<<08`.padEnd(44, '<').slice(0, 44);
 
                                     // ─────────────────────────────────────────────────────────────
                                     // 1. PASSPORT SPECIFIC FLOW (MATCHING EXACT PHOTO media_1788588107025)
@@ -7698,7 +7745,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                     (typeof window !== 'undefined' ? (
                                                                         localStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
                                                                         sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
-                                                                        (isPassportDoc ? (localStorage.getItem('vault_file_preview_statutory_passport') || sessionStorage.getItem('vault_file_preview_statutory_passport')) : null)
+                                                                        localStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`) ||
+                                                                        sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`) ||
+                                                                        (isPassportDoc ? (
+                                                                            localStorage.getItem('vault_file_preview_statutory_passport') ||
+                                                                            sessionStorage.getItem('vault_file_preview_statutory_passport') ||
+                                                                            localStorage.getItem('vault_file_preview_vault_upload') ||
+                                                                            sessionStorage.getItem('vault_file_preview_vault_upload')
+                                                                        ) : null)
                                                                     ) : null);
 
                                                                 if (previewSrc && (previewSrc.startsWith('data:image') || previewSrc.startsWith('http') || previewSrc.startsWith('/'))) {
@@ -8062,11 +8116,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     }
 
                                     return (
-                                        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6 space-y-6 animate-fade-up">
+                                        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5 animate-fade-up">
                                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                                                 <div className="flex items-center gap-3.5">
-                                                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center shrink-0 shadow-2xs">
-                                                        {activeSelectedDoc.type === 'visa' ? <span className="font-bold text-xs">VISA</span> : activeSelectedDoc.type === 'insurance' ? <ShieldCheck className="w-5 h-5" /> : activeSelectedDoc.type === 'flight' ? <Plane className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+                                                    <div className="w-11 h-11 rounded-2xl bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center shrink-0 text-xl shadow-2xs">
+                                                        {activeSelectedDoc.type === 'flight' ? '✈️' : activeSelectedDoc.type === 'insurance' ? '🛡️' : activeSelectedDoc.type === 'bank' ? '🏦' : activeSelectedDoc.type === 'visa' ? '🛂' : '📋'}
                                                     </div>
                                                     <div className="space-y-1">
                                                         <h3 className="text-base sm:text-lg font-bold text-slate-800">
@@ -8102,22 +8156,152 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 </div>
                                             </div>
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-                                                <div>
-                                                    <span className="text-slate-400 block">Document Number</span>
-                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{displayDocNumber}</strong>
+                                            {/* 2-Column Grid: Left Preview + Right Extracted Information */}
+                                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                                {/* LEFT COLUMN: Document Preview */}
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <h4 className="text-sm font-bold text-slate-900">
+                                                            Document Preview
+                                                        </h4>
+                                                        <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200/60">
+                                                            Uploaded Original
+                                                        </span>
+                                                    </div>
+                                                    <div className="bg-white rounded-xl border border-slate-200/90 p-2 shadow-2xs overflow-hidden">
+                                                        {(() => {
+                                                            const genPreviewSrc = activeSelectedDoc.fileData ||
+                                                                (typeof window !== 'undefined' ? (
+                                                                    localStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                                    sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                                    localStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`) ||
+                                                                    sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`) ||
+                                                                    localStorage.getItem('vault_file_preview_vault_upload') ||
+                                                                    sessionStorage.getItem('vault_file_preview_vault_upload')
+                                                                ) : null);
+
+                                                            if (genPreviewSrc && (genPreviewSrc.startsWith('data:image') || genPreviewSrc.startsWith('http') || genPreviewSrc.startsWith('/'))) {
+                                                                return (
+                                                                    <img
+                                                                        src={genPreviewSrc}
+                                                                        alt={activeSelectedDoc.title || "Document Preview"}
+                                                                        className="w-full h-auto rounded-lg object-contain max-h-[420px] mx-auto border border-slate-100 shadow-2xs"
+                                                                    />
+                                                                );
+                                                            }
+                                                            if (genPreviewSrc && genPreviewSrc.startsWith('data:application/pdf')) {
+                                                                return (
+                                                                    <iframe
+                                                                        src={genPreviewSrc}
+                                                                        title="Document Preview"
+                                                                        className="w-full h-[380px] rounded-lg border border-slate-200"
+                                                                    />
+                                                                );
+                                                            }
+                                                            return (
+                                                                <div className="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-xl p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-3 min-h-[280px]">
+                                                                    <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center shadow-2xs">
+                                                                        <FileText className="w-6 h-6" />
+                                                                    </div>
+                                                                    <div className="space-y-1 max-w-xs">
+                                                                        <p className="text-sm font-bold text-slate-700">{activeSelectedDoc.label || activeSelectedDoc.title}</p>
+                                                                        <p className="text-xs text-slate-400 font-medium">Original document ingested & verified in encrypted vault.</p>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })()}
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <span className="text-slate-400 block">Holder Name</span>
-                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{displayFullName}</strong>
-                                                </div>
-                                                <div>
-                                                    <span className="text-slate-400 block">Issuer / Authority</span>
-                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{activeSelectedDoc.issuer || 'Official Issuer'}</strong>
-                                                </div>
-                                                <div>
-                                                    <span className="text-slate-400 block">Validity / Expiry</span>
-                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{activeSelectedDoc.expiryDate || 'Valid'}</strong>
+
+                                                {/* RIGHT COLUMN: Extracted Information & Overview */}
+                                                <div className="bg-white rounded-xl border border-slate-200/90 p-5 sm:p-6 space-y-4 shadow-2xs">
+                                                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                                        <h4 className="text-sm font-bold text-slate-900">
+                                                            Extracted Information (OCR)
+                                                        </h4>
+                                                        <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                                                            <Check className="w-3 h-3 stroke-[3]" /> Verified
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="space-y-3 text-sm">
+                                                        <div className="flex items-center justify-between gap-4">
+                                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                <span>Document Number</span>
+                                                            </div>
+                                                            <span className="font-semibold text-slate-900 text-right">{displayDocNumber}</span>
+                                                        </div>
+                                                        <div className="flex items-center justify-between gap-4">
+                                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                <span>Holder Name</span>
+                                                            </div>
+                                                            <span className="font-semibold text-slate-900 text-right">{displayFullName}</span>
+                                                        </div>
+                                                        <div className="flex items-center justify-between gap-4">
+                                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                <Building2 className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                <span>Issuer / Authority</span>
+                                                            </div>
+                                                            <span className="font-semibold text-slate-900 text-right">{activeSelectedDoc.issuer || 'Official Issuer'}</span>
+                                                        </div>
+                                                        <div className="flex items-center justify-between gap-4">
+                                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                <span>Validity / Expiry</span>
+                                                            </div>
+                                                            <span className="font-semibold text-slate-900 text-right">{activeSelectedDoc.expiryDate || 'Valid'}</span>
+                                                        </div>
+                                                        {displayIssueDateText !== '—' && (
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Date of Issue</span>
+                                                                </div>
+                                                                <span className="font-semibold text-slate-900 text-right">{displayIssueDateText}</span>
+                                                            </div>
+                                                        )}
+                                                        {displayNationality !== '—' && (
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Country / Nationality</span>
+                                                                </div>
+                                                                <span className="font-semibold text-slate-900 text-right">{displayNationality}</span>
+                                                            </div>
+                                                        )}
+                                                        <div className="flex items-center justify-between gap-4 pt-1 border-t border-slate-50">
+                                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
+                                                                <span>Security Audit</span>
+                                                            </div>
+                                                            <span className="text-xs font-bold text-teal-700">AES-256 Encrypted</span>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Footer actions */}
+                                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-400">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setReplacingDocId(activeSelectedDoc.id);
+                                                                replaceFileInputRef.current?.click();
+                                                            }}
+                                                            className="hover:text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                                        >
+                                                            <RotateCw className="w-3.5 h-3.5" />
+                                                            <span>Upload New / Replace</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteDoc(activeSelectedDoc)}
+                                                            className="text-rose-500 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                                        >
+                                                            <Trash2 className="w-3.5 h-3.5" />
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

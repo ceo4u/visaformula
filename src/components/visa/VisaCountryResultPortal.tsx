@@ -2131,6 +2131,155 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     };
   }
 
+  // Case 8C: Ireland (Immigration Service Delivery - Department of Justice Ireland)
+  if (isIreland) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Long Stay 'D' Study Visa for Ireland`,
+        verdictSummary: `Unconditional university acceptance on ILEP, minimum €6,000 tuition fees paid, and €10,000 living expense funds required. Stamp 2 permission granted upon arrival.`,
+        entryStatus: "Ireland Study Visa (Long Stay 'D')",
+        entryStatusSubtext: "4–8 Weeks via AVATS / VFS",
+        stayDuration: "Length of Academic Program",
+        stayDurationSubtext: "Includes Stamp 2 work rights (20 hrs/wk)",
+        entryType: "Single Entry (Initial Vignette) / Multiple Entry (via IRP)",
+        entryTypeSubtext: "Irish Residence Permit (IRP Stamp 2)",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "AVATS Study Application Summary",
+        digitalCardDesc: "Official Long Stay 'D' Visa Application Summary Sheet from Department of Justice Ireland.",
+        sources: ["Immigration Service Delivery (ISD) Ireland", "Department of Justice", "VFS Global Ireland", "IATA Timatic 2026"],
+        maxStay: "Full Course Duration (Renewable annually)",
+        conditionsForVisa: [
+          "Unconditional offer letter from an Irish Higher Education Institution (on ILEP list).",
+          "Official receipt showing minimum €6,000 tuition fees paid (or 100% of fees).",
+          "Evidence of at least €10,000 immediately accessible funds for living expenses in Ireland.",
+          "Proof of English language proficiency (IELTS Academic 5.5-6.5+ or PTE Academic).",
+          "Comprehensive private medical health insurance policy covering at least €25,000."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Consular Visa Fee", amount: "€60 Single Entry (~₹5,400) / €100 Multiple Entry (~₹9,000)", note: "Statutory Department of Justice Ireland fee" },
+            { label: "VFS Global Biometric & Service Fee", amount: "approx. ₹2,100", note: "Biometrics enrollment and dossier handling" },
+            { label: "Irish Residence Permit (IRP) Registration", amount: "€300 (approx. ₹27,000)", note: "Payable in Ireland upon arrival at ISD / Garda office" }
+          ],
+          totalEstimatedINR: "€60 + ₹2,100 (approx. ₹7,500 initial submission)",
+          processingTime: "4 to 8 Weeks (ISD Dublin & Embassy New Delhi)",
+          processingSLA: "Online filing via AVATS portal, biometrics at VFS Global, decision by ISD.",
+          applicationWindow: "Apply up to 3 Months before course commencement date",
+          earlyEntryBuffer: "Travel to Ireland permitted up to 30 days before course start"
+        },
+        applicationProcess: {
+          submission: "1. University Enrollment & Fees: Secure unconditional offer on ILEP and pay minimum €6,000 fees.",
+          onlineForm: "2. AVATS Online Filing: Complete official application on visas.inis.gov.ie/avats under Study (D).",
+          appointments: "3. VFS Global Appointment: Attend biometric submission and submit original passport and academic dossier.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 12 months validity and 2 blank pages",
+            "Official Letter of Acceptance from Irish university / college",
+            "Proof of Tuition Fees Paid (college receipt or TransferMate confirmation)",
+            "AVATS Online Application Summary Sheet (signed and dated)",
+            "Evidence of €10,000 immediately accessible living expenses funds",
+            "Proof of English proficiency (IELTS / PTE Academic)",
+            "Private Medical Health Insurance policy",
+            "Comprehensive Statement of Purpose & Academic Certificates"
+          ]
+        }
+      };
+    } else if (isWork) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require an Employment Visa for Ireland`,
+        verdictSummary: `Approved Employment Permit from the Department of Enterprise, Trade and Employment (DETE) required prior to lodging AVATS application.`,
+        entryStatus: "Ireland Employment Visa (Long Stay 'D')",
+        entryStatusSubtext: "4–8 Weeks Processing",
+        stayDuration: "Duration of Employment Contract",
+        stayDurationSubtext: "Stamp 1 Permission (Path to Stamp 4 PR)",
+        entryType: "Single Entry (Initial Vignette) / Multiple Entry (via IRP)",
+        entryTypeSubtext: "Irish Residence Permit (IRP Stamp 1)",
+        visaPillTag: "EMPLOYMENT PERMIT & VISA REQUIRED",
+        digitalCardName: "AVATS Employment Visa Summary",
+        digitalCardDesc: "Official Long Stay Employment Visa Summary from Immigration Service Delivery Ireland.",
+        sources: ["Department of Enterprise, Trade and Employment (DETE)", "Immigration Service Delivery (ISD)", "VFS Global Ireland"],
+        maxStay: "1 to 2 Years (Renewable)",
+        conditionsForVisa: [
+          "Approved Critical Skills or General Employment Permit from DETE Ireland.",
+          "Signed employment contract with registered Irish corporate sponsor.",
+          "Relevant degree qualifications and professional CV.",
+          "Sufficient initial settlement funds in bank account."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Consular Visa Fee", amount: "€60 Single Entry (~₹5,400) / €100 Multiple Entry (~₹9,000)", note: "Statutory consular visa fee" },
+            { label: "VFS Global Service Fee", amount: "approx. ₹2,100", note: "Biometrics and handling" },
+            { label: "IRP Stamp 1 Card Registration", amount: "€300 (approx. ₹27,000)", note: "Payable in Ireland upon arrival" }
+          ],
+          totalEstimatedINR: "€60 + ₹2,100 (approx. ₹7,500 initial submission)",
+          processingTime: "4 to 8 Weeks",
+          processingSLA: "Consular processing following DETE employment permit issuance.",
+          applicationWindow: "Apply up to 3 Months before job start date",
+          earlyEntryBuffer: "Entry permitted up to 14 days before contract start"
+        },
+        applicationProcess: {
+          submission: "1. DETE Permit: Sponsoring enterprise secures Employment Permit from DETE in Ireland.",
+          onlineForm: "2. AVATS Submission: Complete application online under Employment (D).",
+          appointments: "3. VFS Biometrics: Attend appointment and submit original documents.",
+          documentsAndBiometrics: [
+            "Valid Passport with 12+ months validity",
+            "Original or copy of approved DETE Employment Permit",
+            "Signed Employment Contract & Job Offer Letter",
+            "AVATS Application Summary Sheet with 2 photos",
+            "Recent 6 months bank statements"
+          ]
+        }
+      };
+    } else {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Visit Visa for Ireland`,
+        verdictSummary: `Short Stay 'C' Visit Visa required for tourism, family visits, or short business. Ireland is NOT in the Schengen zone.`,
+        entryStatus: "Ireland Visit Visa (Short Stay 'C')",
+        entryStatusSubtext: "6–8 Weeks via AVATS / VFS",
+        stayDuration: "Up to 90 Days",
+        stayDurationSubtext: "Strictly non-extendable",
+        entryType: "Single Entry / Multiple Entry",
+        entryTypeSubtext: "Consular Vignette Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "AVATS Tourist Application Summary",
+        digitalCardDesc: "Official Short Stay 'C' Visa Summary Sheet from Department of Justice Ireland.",
+        sources: ["Immigration Service Delivery (ISD)", "Embassy of Ireland New Delhi", "VFS Global Ireland"],
+        maxStay: "90 Days per Visit",
+        conditionsForVisa: [
+          "Original Passport valid for 6+ months with 2 blank pages.",
+          "Confirmed flight itinerary and accommodation reservations (do NOT buy tickets).",
+          "6 months bank statements showing regular income (approx. €500/week).",
+          "Comprehensive travel health insurance with minimum €30,000 coverage."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Consular Visa Fee", amount: "€60 Single Entry (~₹5,400) / €100 Multiple Entry (~₹9,000)", note: "Department of Justice Ireland fee" },
+            { label: "VFS Global Service Fee", amount: "approx. ₹2,100", note: "VAC service charge" }
+          ],
+          totalEstimatedINR: "€60 + ₹2,100 (approx. ₹7,500)",
+          processingTime: "6 to 8 Weeks (20 to 25 Working Days)",
+          processingSLA: "Processed via Embassy of Ireland, New Delhi.",
+          applicationWindow: "Apply up to 3 Months before travel",
+          earlyEntryBuffer: "Valid for travel dates specified"
+        },
+        applicationProcess: {
+          submission: "1. AVATS Form: Fill application on visas.inis.gov.ie/avats.",
+          onlineForm: "2. Fee Payment: Pay consular fee online or at VAC.",
+          appointments: "3. VFS Appointment: Submit passport and biometric data at VFS Global.",
+          documentsAndBiometrics: [
+            "Valid Passport with 2 blank pages",
+            "Signed AVATS Summary Sheet with 2 photos",
+            "Cover Letter with travel itinerary & proof of return obligations",
+            "6 Months Bank Statements & 3 Years ITR-V",
+            "Confirmed accommodation proof & travel medical insurance"
+          ]
+        }
+      };
+    }
+  }
+
   // Case 9: Generic / Other Destinations
   return {
     isExempt: false,
@@ -3478,10 +3627,10 @@ export function VisaCountryResultPortal({
     });
   }, [aiData, countryName, purposeLabel, userCheckedSteps, isSchengen]);
 
-  const stepsCompleted = dynamicSteps.filter(s => s.status === 'completed').length;
-  const stepsInProgress = dynamicSteps.filter(s => s.status === 'in_progress').length;
-  const stepsPending = dynamicSteps.filter(s => s.status === 'pending').length;
-  const stepsNotStarted = dynamicSteps.filter(s => s.status === 'not_started').length;
+  const stepsCompleted = dynamicSteps.filter(s => (s.status as string) === 'completed').length;
+  const stepsInProgress = dynamicSteps.filter(s => (s.status as string) === 'in_progress').length;
+  const stepsPending = dynamicSteps.filter(s => (s.status as string) === 'pending').length;
+  const stepsNotStarted = dynamicSteps.filter(s => (s.status as string) === 'not_started').length;
 
   const getResolvedProcessingTime = () => {
     const cLow = (countryName || '').toLowerCase().trim();
@@ -3518,6 +3667,25 @@ export function VisaCountryResultPortal({
 
     return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : 'Per Official Regulations';
   };
+
+  const isStudyTab = activePurposeTab === 'study' || initialPurpose === 'study';
+  const isWorkTab = activePurposeTab === 'work' || initialPurpose === 'work';
+
+  const resolvedOverview = useMemo(() => {
+    if (aiData?.overview) {
+      const oLow = aiData.overview.toLowerCase();
+      // Guard against tourist overview leaking into study tab
+      if (isStudyTab && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
+        return `The ${countryName} Student Visa allows international students to reside in ${countryName} for the full duration of their academic program to undertake full-time higher education, university degrees, or approved vocational training.`;
+      }
+      // Guard against tourist overview leaking into work tab
+      if (isWorkTab && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
+        return `The ${countryName} Work Visa permits foreign professionals to reside and work legally in ${countryName} under approved employer sponsorship or official employment permits.`;
+      }
+      return aiData.overview;
+    }
+    return `Travel to ${countryName} for ${isStudyTab ? 'higher education, university enrollment and academic research' : isWorkTab ? 'professional employment, corporate engagements and work assignments' : 'tourism, leisure, visiting family or friends, or attending short term events'}.`;
+  }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab]);
 
   useEffect(() => {
     let mounted = true;
@@ -4018,7 +4186,7 @@ export function VisaCountryResultPortal({
           status: 'Dossier Ingested & OCR Verified',
           stage: 'Under AI Concierge Review',
           progress: 35,
-          documentsCount: uploadedCount,
+          documentsCount: Object.keys(uploadedDocuments).length,
           addonsCount: selectedConciergeAddons.length,
           submittedAt: submissionDate,
           targetDate: formatTargetDate(isStudyPurpose ? 15 : isWorkPurpose ? 20 : 15)
@@ -4564,6 +4732,7 @@ export function VisaCountryResultPortal({
   const [selectedVariantId, setSelectedVariantId] = useState<string>(variants[0].id);
   const [travellerCount, setTravellerCount] = useState<number>(1);
   const [pincode, setPincode] = useState<string>('');
+  const [pincodeStatus, setPincodeStatus] = useState<'idle' | 'validating' | 'supported' | 'unsupported'>('idle');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [activeTimelineTab, setActiveTimelineTab] = useState<'travltik' | 'diy'>('travltik');
   const [activeSubNav, setActiveSubNav] = useState('section-visa-info');
@@ -5871,7 +6040,7 @@ export function VisaCountryResultPortal({
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
-                {aiData?.overview || `Travel to ${countryName} for ${activePurposeTab === 'study' ? 'higher education, university enrollment and academic research' : activePurposeTab === 'work' ? 'professional employment, corporate engagements and work assignments' : 'tourism, leisure, visiting family or friends, or attending short term events'}.`}
+                {resolvedOverview}
               </p>
 
               {/* Bottom Action Buttons */}
@@ -6050,7 +6219,7 @@ export function VisaCountryResultPortal({
                   <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
                     <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal">
-                      {aiData?.overview || `The ${isSchengen ? 'Schengen Tourist Visa' : `${countryName} ${purposeLabel} Visa`} allows you to travel to ${countryName} ${isSchengen ? 'and other Schengen countries ' : ''}for tourism, leisure, short visits, or attending events.`}
+                      {resolvedOverview}
                     </p>
 
                     {/* 4 Feature Cards */}
@@ -6858,11 +7027,11 @@ export function VisaCountryResultPortal({
                       {/* Right Badge & Chevron */}
                       <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                         <span className={`inline-block text-[12px] font-medium px-2.5 py-0.5 rounded-full ${
-                          s.status === 'completed'
+                          (s.status as string) === 'completed'
                             ? 'bg-emerald-50 text-emerald-700'
-                            : s.status === 'in_progress'
+                            : (s.status as string) === 'in_progress'
                             ? 'bg-indigo-50 text-indigo-700'
-                            : s.status === 'pending'
+                            : (s.status as string) === 'pending'
                             ? 'bg-amber-50 text-amber-700'
                             : 'bg-slate-100 text-slate-600'
                         }`}>

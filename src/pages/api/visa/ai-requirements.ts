@@ -378,6 +378,135 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   // IRELAND PATHWAYS (Department of Justice / Immigration Service Delivery - ISD)
   // ═══════════════════════════════════════════════════════════════
   if (isIreland) {
+    const isStudy = purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education') || purposeLower.includes('higher');
+    const isWork = purposeLower.includes('work') || purposeLower.includes('employment') || purposeLower.includes('job');
+
+    // ── 1. IRELAND STUDENT VISA (LONG STAY 'D' - STAMP 2) ──
+    if (isStudy) {
+      return {
+        passport_country: from,
+        destination_country: 'Ireland',
+        purpose_of_visit: 'Higher Studies / Student Visa',
+        visa_type: "Long Stay 'D' Study Visa (Stamp 2 Permission)",
+        source_url: 'https://www.irishimmigration.ie/coming-to-study-in-ireland/what-are-my-study-visa-options/how-to-apply-for-long-stay-study-visa/',
+        official_source_name: 'Immigration Service Delivery (ISD), Department of Justice Ireland',
+        processing_time: '4 to 8 weeks (Peak intake: Apply 8-12 weeks in advance)',
+        processing_time_details: 'Processed by ISD Study Visa Section & Embassy of Ireland New Delhi',
+        validity: 'Full Course Duration (Initial 90-day travel vignette to register for IRP Stamp 2)',
+        validity_details: 'Upon arrival in Ireland, students register for an Irish Residence Permit (IRP) Stamp 2 card',
+        stay_duration: 'Length of Academic Program (Renewable annually)',
+        stay_duration_details: 'Includes part-time work rights: up to 20 hours/week during semester and 40 hours/week during holidays',
+        entry_type: 'Single Entry (Initial Vignette) / Multiple Entry (Once IRP card is issued in Ireland)',
+        entry_type_details: 'Students obtain Irish Residence Permit (IRP) in Ireland allowing multiple entries',
+        overview: "The Long Stay 'D' Study Visa allows Indian citizens to pursue full-time higher education degrees or approved training programs in Ireland. Holders are granted Stamp 2 permission upon arrival, permitting part-time work of up to 20 hours/week during semester.",
+        consular_directives: [
+          'Ireland is not part of the Schengen zone; a Schengen visa does NOT grant study permission or entry.',
+          'Students must register with Immigration Service Delivery (ISD) / Burgh Quay for an Irish Residence Permit (IRP Stamp 2) within 90 days of arrival.',
+          'Stamp 2 permission allows part-time work up to 20 hours/week during academic term and up to 40 hours/week during scheduled vacations.',
+          'Tuition fees of at least €6,000 must be paid to the Irish college/university before lodging the visa application.',
+          'Proof of at least €10,000 immediately accessible funds for living expenses in Ireland is strictly required.'
+        ],
+        documents_required: [
+          { title: 'Current Valid Passport', description: 'Original passport valid for at least 12 months after intended arrival date in Ireland with at least 2 blank visa pages, plus all previous passports.', is_mandatory: true },
+          { title: 'Official Letter of Acceptance', description: 'Unconditional acceptance letter from an Irish Higher Education Institution / University confirming enrolment in a full-time course on the ILEP.', is_mandatory: true },
+          { title: 'Proof of Tuition Fees Paid', description: 'Official receipt from university or Pay to Study / TransferMate confirmation showing payment of minimum €6,000 or 100% of fees.', is_mandatory: true },
+          { title: 'AVATS Online Application Summary Sheet', description: 'Signed and dated summary sheet printed upon completing the official AVATS online visa application.', is_mandatory: true },
+          { title: 'Two Passport Sized Photographs', description: 'Meeting Irish visa photo standards (35x45mm, white background, taken in last 6 months, name and AVATS number on reverse).', is_mandatory: true },
+          { title: 'Comprehensive Statement of Purpose', description: 'Detailed study plan explaining why you chose Ireland, the institution, career goals, and commitment to return to India upon graduation.', is_mandatory: true },
+          { title: 'Academic Transcripts & Certificates', description: 'All official educational certificates, mark sheets (10th, 12th, degree), and documentation explaining any study gaps.', is_mandatory: true },
+          { title: 'Proof of English Language Proficiency', description: 'Valid IELTS Academic (overall 5.5-6.5+), PTE Academic, or Cambridge English test certificate not older than 2 years.', is_mandatory: true },
+          { title: 'Private Medical Insurance Policy', description: 'Comprehensive medical insurance covering at least €25,000 for hospital stays and medical repatriation (often arranged via college group scheme).', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Living Expenses Funds (€10,000)', minimum_balance_or_amount: 'Minimum €10,000 immediately accessible funds in bank account for living expenses in Ireland', time_frame: 'Past 6 consecutive months', notes: 'Must be on official bank letterhead or stamped/signed by issuing branch.' },
+          { type: 'Sponsorship Letter & Financial Documentation', minimum_balance_or_amount: 'Affidavit of financial support from sponsor(s), 3 years ITR-V, 6 months bank statements, and employment proof', time_frame: 'Last 3 years ITR & 6 months bank statements', notes: 'Demonstrates financial capacity to support living costs and course fees for duration of study.' },
+          { type: 'Educational Loan Sanction Letter (if applicable)', minimum_balance_or_amount: 'Official bank loan sanction letter confirming loan amount and disbursement terms', time_frame: 'Current academic year', notes: 'Accepted from nationalized or recognized private financial institutions.' }
+        ],
+        other_requirements: [
+          { category: 'IRP Stamp 2 Registration', details: 'Within 90 days of arriving in Ireland, students must book an appointment with ISD (Dublin) or local Garda immigration office and register for the Irish Residence Permit (€300 fee).' },
+          { category: 'Biometrics at VFS Global', details: 'Mandatory in-person appointment at an authorized VFS Global Ireland Visa Application Centre in India for fingerprint biometrics and file submission.' }
+        ],
+        how_to_apply: [
+          'Complete Online AVATS Application: Submit application on official AVATS portal (visas.inis.gov.ie/avats), select "Study" and "Long Stay (D)".',
+          'Pay Consular Visa Fee: Pay official statutory consular visa fee (€60 Single Entry / €100 Multiple Entry) online or at VFS.',
+          'Schedule VFS Appointment: Book a biometric submission and document submission slot at nearest VFS Global Ireland VAC in India.',
+          'Submit File & Biometrics: Attend appointment with original passport, educational dossiers, and financial affidavits.',
+          'Track Visa Decision: Monitor weekly ISD Dublin decision reports or Embassy New Delhi processing.',
+          'Travel & Register for IRP Stamp 2: Arrive in Ireland on the 90-day vignette and register with immigration for your Irish Residence Permit (Stamp 2).'
+        ],
+        costs: {
+          visa_fee: '€60 (~₹5,400) Single Entry / €100 (~₹9,000) Multiple Entry',
+          service_fee: 'VFS Global service fee approx. ₹2,100',
+          total_fee: '€60 (~₹5,400) Statutory Consular Fee',
+          notes: 'Statutory consular fee paid to ISD Ireland. In Ireland, a separate €300 fee applies for registration of the Irish Residence Permit (IRP Stamp 2).'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply up to 3 months prior to course commencement date.',
+          decision_time: '4 to 8 weeks (ISD Dublin & Embassy of Ireland New Delhi).',
+          max_extension: 'Renewable annually up to maximum 7 years for degree-level higher education courses.'
+        }
+      };
+    }
+
+    // ── 2. IRELAND WORK / EMPLOYMENT VISA (LONG STAY 'D' - STAMP 1) ──
+    if (isWork) {
+      return {
+        passport_country: from,
+        destination_country: 'Ireland',
+        purpose_of_visit: 'Employment / Work',
+        visa_type: "Long Stay 'D' Employment Visa (Stamp 1 Permission)",
+        source_url: 'https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/',
+        official_source_name: 'Immigration Service Delivery (ISD), Department of Justice Ireland',
+        processing_time: '4 to 8 weeks (Requires prior DETE Employment Permit)',
+        processing_time_details: 'Employment Permit issued by DETE Ireland prior to consular visa filing',
+        validity: 'Up to 2 Years (Renewable / Stamp 1 Permission)',
+        validity_details: 'Single entry 90-day vignette to travel and register for IRP Stamp 1',
+        stay_duration: 'Duration of Employment Contract (Up to 2 years renewable)',
+        stay_duration_details: 'Critical Skills Employment Permit holders eligible for Stamp 4 PR pathway after 2 years',
+        entry_type: 'Single Entry (Initial Vignette) / Multiple Entry (Once IRP card is issued)',
+        entry_type_details: 'Foreign workers register in Ireland for an Irish Residence Permit (IRP) allowing multiple entries',
+        overview: "The Long Stay 'D' Employment Visa allows Indian professionals to work in Ireland with an approved Employment Permit issued by the Department of Enterprise, Trade and Employment (DETE). Holders receive Stamp 1 permission upon arrival.",
+        consular_directives: [
+          'Must hold an approved Critical Skills or General Employment Permit from DETE Ireland before applying.',
+          'Ireland is NOT part of the Schengen zone; a Schengen visa does not grant work or entry permission.',
+          'Must register with ISD / Garda for an Irish Residence Permit (IRP Stamp 1) within 90 days of arrival.'
+        ],
+        documents_required: [
+          { title: 'Current Valid Passport', description: 'Original passport valid for at least 12 months with 2 blank pages, plus all previous passports.', is_mandatory: true },
+          { title: 'DETE Employment Permit', description: 'Original or copy of approved Employment Permit from Department of Enterprise, Trade and Employment.', is_mandatory: true },
+          { title: 'Employment Contract & Offer Letter', description: 'Signed employment contract stating job title, annual salary, and duration of contract.', is_mandatory: true },
+          { title: 'AVATS Online Application Summary Sheet', description: 'Signed and dated summary sheet printed upon completing the official AVATS form.', is_mandatory: true },
+          { title: 'Two Passport Sized Photographs', description: 'Meeting Irish visa photo standards (35x45mm, white background, taken in last 6 months).', is_mandatory: true },
+          { title: 'Professional Qualifications & CV', description: 'Updated curriculum vitae, degree certificates, and experience letters proving qualifications for the role.', is_mandatory: true }
+        ],
+        financial_proofs: [
+          { type: 'Bank Statements & Salary Proof', minimum_balance_or_amount: '6 months bank statements demonstrating financial solvency prior to relocation', time_frame: 'Past 6 months', notes: 'Demonstrates funds for initial settlement in Ireland.' }
+        ],
+        other_requirements: [
+          { category: 'IRP Stamp 1 Registration', details: 'Register with immigration in Ireland within 90 days for IRP card (€300 fee).' }
+        ],
+        how_to_apply: [
+          'Employer Secures DETE Permit: Sponsoring enterprise obtains Employment Permit from DETE.',
+          'Complete Online AVATS Application: Submit application on official AVATS portal under Employment (D).',
+          'Pay Consular Fee: Pay €60 Single / €100 Multiple consular fee.',
+          'Book VFS Appointment & Submit Biometrics: Attend appointment at VFS Global Ireland VAC in India.',
+          'Collect Visa & Travel: Receive stamped passport, travel to Ireland, and register for IRP Stamp 1.'
+        ],
+        costs: {
+          visa_fee: '€60 (~₹5,400) Single Entry / €100 (~₹9,000) Multiple Entry',
+          service_fee: 'VFS Global service fee approx. ₹2,100',
+          total_fee: '€60 (~₹5,400) Statutory Consular Fee',
+          notes: 'Excludes DETE employment permit fees (€1,000) usually paid by the employer and €300 IRP card fee.'
+        },
+        processing_and_timing: {
+          apply_window: 'Apply up to 3 months prior to employment start date.',
+          decision_time: '4 to 8 weeks consular processing.',
+          max_extension: 'Renewable into Stamp 4 permanent residence after 2 years on Critical Skills permit.'
+        }
+      };
+    }
+
+    // ── 3. IRELAND TOURISM / VISIT (SHORT STAY 'C') ──
     return {
       passport_country: from,
       destination_country: 'Ireland',

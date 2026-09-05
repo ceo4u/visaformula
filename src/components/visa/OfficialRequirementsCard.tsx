@@ -922,7 +922,18 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               </div>
               {data.overview && (
                 <p className="text-xs sm:text-sm text-slate-600 break-words whitespace-normal leading-relaxed">
-                  {data.overview}
+                  {(() => {
+                    const isStudy = (purpose || '').toLowerCase().includes('stud') || (purpose || '').toLowerCase().includes('higher');
+                    const isWork = (purpose || '').toLowerCase().includes('work') || (purpose || '').toLowerCase().includes('employ');
+                    const oLow = data.overview.toLowerCase();
+                    if (isStudy && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
+                      return `The Student Visa allows international students to reside in ${cleanTo} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`;
+                    }
+                    if (isWork && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
+                      return `The Work Visa allows foreign professionals to live and work legally in ${cleanTo} under an authorized employer sponsorship or employment permit.`;
+                    }
+                    return data.overview;
+                  })()}
                 </p>
               )}
               {(data as any).consular_directives && Array.isArray((data as any).consular_directives) && (data as any).consular_directives.length > 0 && (

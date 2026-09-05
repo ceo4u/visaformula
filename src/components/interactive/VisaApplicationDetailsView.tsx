@@ -872,15 +872,30 @@ export function VisaApplicationDetailsView({
           <span>Visa Overview & Travel Guidelines</span>
         </div>
         <p className="text-xs sm:text-sm text-slate-600 break-words whitespace-normal leading-relaxed">
-          {routeData?.overview || (
-            purpose.toLowerCase().includes('stud') || purpose.toLowerCase().includes('higher')
-              ? `The Student Visa allows international students to reside in ${destination} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`
-              : purpose.toLowerCase().includes('pr') || purpose.toLowerCase().includes('immigrat')
-              ? `The Permanent Residency / Skilled Migration visa allows applicants and eligible family members to live, work, and study indefinitely in ${destination}.`
-              : isVisaFree
-              ? `Indian passport holders enjoy visa-free entry to ${destination}. No prior consular visa is required before departure; border clearance and entry stamps are issued upon arrival.`
-              : `The Visitor / Tourist route allows travelers to enter ${destination} for tourism, leisure, family visits, or short business meetings.`
-          )}
+          {(() => {
+            const isStudy = purpose.toLowerCase().includes('stud') || purpose.toLowerCase().includes('higher');
+            const isWork = purpose.toLowerCase().includes('work') || purpose.toLowerCase().includes('employ');
+            if (routeData?.overview) {
+              const oLow = routeData.overview.toLowerCase();
+              if (isStudy && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
+                return `The Student Visa allows international students to reside in ${destination} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`;
+              }
+              if (isWork && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
+                return `The Work Visa allows foreign professionals to live and work legally in ${destination} under an authorized employer sponsorship or employment permit.`;
+              }
+              return routeData.overview;
+            }
+            if (isStudy) {
+              return `The Student Visa allows international students to reside in ${destination} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`;
+            }
+            if (purpose.toLowerCase().includes('pr') || purpose.toLowerCase().includes('immigrat')) {
+              return `The Permanent Residency / Skilled Migration visa allows applicants and eligible family members to live, work, and study indefinitely in ${destination}.`;
+            }
+            if (isVisaFree) {
+              return `Indian passport holders enjoy visa-free entry to ${destination}. No prior consular visa is required before departure; border clearance and entry stamps are issued upon arrival.`;
+            }
+            return `The Visitor / Tourist route allows travelers to enter ${destination} for tourism, leisure, family visits, or short business meetings.`;
+          })()}
         </p>
         {routeData?.consular_directives && Array.isArray(routeData.consular_directives) && routeData.consular_directives.length > 0 && (
           <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">

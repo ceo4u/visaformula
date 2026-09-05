@@ -46,6 +46,24 @@ import {
   getTourismOfficialSourceName,
   getTourismVisaData
 } from '../../../lib/tourism-visa';
+import {
+  getWorkOverview,
+  getWorkHighlights,
+  getWorkDocuments,
+  getWorkSteps,
+  getWorkVisaSteps,
+  getWorkFees,
+  getWorkProcessingTime,
+  getWorkProcessingDetails,
+  getWorkRequirements,
+  getWorkFinancialProofs,
+  getWorkFAQ,
+  getWorkValidity,
+  getWorkStayDuration,
+  getWorkEntryType,
+  getWorkOfficialSourceName,
+  getWorkVisaData
+} from '../../../lib/work-visa';
 
 export {
   normalizeCountry,
@@ -81,7 +99,23 @@ export {
   getTourismStayDuration,
   getTourismEntryType,
   getTourismOfficialSourceName,
-  getTourismVisaData
+  getTourismVisaData,
+  getWorkOverview,
+  getWorkHighlights,
+  getWorkDocuments,
+  getWorkSteps,
+  getWorkVisaSteps,
+  getWorkFees,
+  getWorkProcessingTime,
+  getWorkProcessingDetails,
+  getWorkRequirements,
+  getWorkFinancialProofs,
+  getWorkFAQ,
+  getWorkValidity,
+  getWorkStayDuration,
+  getWorkEntryType,
+  getWorkOfficialSourceName,
+  getWorkVisaData
 };
 
 export const prerender = false;
@@ -6186,6 +6220,22 @@ export const POST: APIRoute = async ({ request }) => {
         success: true,
         data: sanitizeCurrencyCodes(studentData as any),
         source: 'consular-student-pipeline',
+        verification_status: 'verified',
+        is_v3_verified: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const isWork = purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('skilled') || purposeLower.includes('h-1b') || purposeLower.includes('h1b') || purposeLower.includes('blue card') || purposeLower.includes('tss');
+
+    if (isWork) {
+      const workData = getWorkVisaData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(workData as any),
+        source: 'consular-work-pipeline',
         verification_status: 'verified',
         is_v3_verified: true
       }), {

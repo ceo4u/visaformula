@@ -36,6 +36,23 @@ import {
   getTourismRequirements,
   getTourismOfficialSourceName
 } from '../../lib/tourism-visa';
+import {
+  getWorkSteps,
+  getWorkVisaSteps,
+  getWorkDocuments,
+  getWorkOverview,
+  getWorkHighlights,
+  getWorkFees,
+  getWorkProcessingTime,
+  getWorkProcessingDetails,
+  getWorkValidity,
+  getWorkStayDuration,
+  getWorkEntryType,
+  getWorkFAQ,
+  getWorkFinancialProofs,
+  getWorkRequirements,
+  getWorkOfficialSourceName
+} from '../../lib/work-visa';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -174,7 +191,8 @@ import {
   Heart,
   Download,
   FileDown,
-  Sun
+  Sun,
+  TrendingUp
 } from 'lucide-react';
 import { downloadVisaChecklistPDF, openPrintableChecklist, type VisaChecklistPDFData } from '../../utils/generateVisaChecklistPDF';
 
@@ -3444,7 +3462,36 @@ export function VisaCountryResultPortal({
     ];
 
     const isStudentPathway = activePurposeTab === 'study' || initialPurpose === 'study';
+    const isWorkPathway = activePurposeTab === 'work' || activePurposeTab === 'employment' || initialPurpose === 'work' || initialPurpose === 'employment' || (initialPurpose || '').toLowerCase().includes('work');
+
     const student8Steps = getStudentVisaSteps(passportCountry, countryName, 'Student Visa').map((s, i) => {
+      const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
+      let title = '';
+      let desc = '';
+      if (clean.includes('—')) {
+        const parts = clean.split('—');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('—').trim();
+      } else if (clean.includes('–')) {
+        const parts = clean.split('–');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('–').trim();
+      } else if (clean.includes(':')) {
+        const parts = clean.split(':');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(':').trim();
+      } else if (clean.includes(' - ')) {
+        const parts = clean.split(' - ');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(' - ').trim();
+      } else {
+        title = `Step ${i + 1}`;
+        desc = clean;
+      }
+      return { title, desc };
+    });
+
+    const workSteps = getWorkSteps(countryName).map((s, i) => {
       const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
       let title = '';
       let desc = '';
@@ -3498,7 +3545,7 @@ export function VisaCountryResultPortal({
       return { title, desc };
     });
 
-    const default8Steps = isStudentPathway ? student8Steps : (tourismSteps && tourismSteps.length >= 4) ? tourismSteps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
+    const default8Steps = isStudentPathway ? student8Steps : isWorkPathway ? workSteps : (tourismSteps && tourismSteps.length >= 4) ? tourismSteps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3750,6 +3797,13 @@ export function VisaCountryResultPortal({
       return getStudentProcessingTime(countryName);
     }
 
+    // Work pathway processing time
+    if (isWorkTab) {
+      if (aiData?.processing_time) return aiData.processing_time;
+      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
+      return getWorkProcessingTime(countryName);
+    }
+
     // Always prefer verified AI requirements data if available
     if (aiData?.processing_time) {
       return aiData.processing_time;
@@ -3770,7 +3824,7 @@ export function VisaCountryResultPortal({
       }
       // Guard against tourist overview leaking into work tab
       if (isWorkTab && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
-        return `The ${countryName} Work Visa permits foreign professionals to reside and work legally in ${countryName} under approved employer sponsorship or official employment permits.`;
+        return getWorkOverview(countryName);
       }
       return aiData.overview;
     }
@@ -3778,7 +3832,7 @@ export function VisaCountryResultPortal({
       return getStudentOverview(countryName);
     }
     if (isWorkTab) {
-      return `The ${countryName} Work Visa permits foreign professionals to reside and work legally in ${countryName} under approved employer sponsorship or official employment permits.`;
+      return getWorkOverview(countryName);
     }
     return getTourismOverview(countryName);
   }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab]);
@@ -3989,13 +4043,13 @@ export function VisaCountryResultPortal({
         : isPR
         ? 'Permanent Residency'
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
-      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || getTourismProcessingTime(countryName);
-      const consularFeeVal = aiData?.costs?.visa_fee || (isStudy ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
-      const serviceFeeVal = aiData?.costs?.service_fee || (isStudy ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee);
+      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isStudy ? getStudentProcessingTime(countryName) : isWork ? getWorkProcessingTime(countryName) : getTourismProcessingTime(countryName));
+      const consularFeeVal = aiData?.costs?.visa_fee || (isStudy ? getStudentFees(countryName).visa_fee : isWork ? getWorkFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
+      const serviceFeeVal = aiData?.costs?.service_fee || (isStudy ? getStudentFees(countryName).service_fee : isWork ? getWorkFees(countryName).service_fee : getTourismFees(countryName).service_fee);
       const stayDurationVal = isStudy 
         ? getStudentStayDuration(countryName) 
         : isWork 
-        ? '1 to 5 Years' 
+        ? getWorkStayDuration(countryName) 
         : getTourismStayDuration(countryName);
 
       // Compile Documents List from AI data or defaults
@@ -4007,6 +4061,12 @@ export function VisaCountryResultPortal({
           }))
         : isStudy
         ? getStudentDocuments(passportCountry, countryName, 'Student').map(d => ({
+            title: d.title,
+            description: d.description,
+            isMandatory: d.is_mandatory !== false
+          }))
+        : isWork
+        ? getWorkDocuments(passportCountry, countryName, 'Work').map(d => ({
             title: d.title,
             description: d.description,
             isMandatory: d.is_mandatory !== false
@@ -4062,6 +4122,16 @@ export function VisaCountryResultPortal({
               desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
             };
           })
+        : isWork
+        ? getWorkVisaSteps(passportCountry, countryName, 'Work Visa').map((s, idx) => {
+            const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
+            const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
+            return {
+              step: idx + 1,
+              title: parts[0]?.trim() || `Step ${idx + 1}`,
+              desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
+            };
+          })
         : [
             { step: 1, title: 'Check Eligibility & Jurisdiction', desc: 'Confirm entry requirements and consular jurisdiction for your passport.' },
             { step: 2, title: 'Gather Supporting Documents', desc: 'Collect valid passport, photo, hotel, flight, and financial proof.' },
@@ -4104,12 +4174,12 @@ export function VisaCountryResultPortal({
         embassyFee: consularFeeVal,
         childFee: isSchengen ? '45 EUR (under 6: Free)' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
         serviceFee: serviceFeeVal,
-        totalFee: aiData?.costs?.total_fee || (isStudy ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee),
+        totalFee: aiData?.costs?.total_fee || (isStudy ? getStudentFees(countryName).total_fee : isWork ? getWorkFees(countryName).total_fee : getTourismFees(countryName).total_fee),
         feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
         stayDuration: stayDurationVal,
-        validity: isStudy ? getStudentValidity(countryName) : getTourismValidity(countryName),
-        entryType: isStudy ? getStudentEntryType(countryName) : getTourismEntryType(countryName),
-        applyWindow: isStudy ? 'Apply 3 to 4 months prior to program intake' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
+        validity: isStudy ? getStudentValidity(countryName) : isWork ? getWorkValidity(countryName) : getTourismValidity(countryName),
+        entryType: isStudy ? getStudentEntryType(countryName) : isWork ? getWorkEntryType(countryName) : getTourismEntryType(countryName),
+        applyWindow: isStudy ? 'Apply 3 to 4 months prior to program intake' : isWork ? 'Apply 3 to 6 months prior to employment start date' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
         profileScore: currentProfileScore,
         profileDetails: profileDetailsList,
         documents: rawDocs,
@@ -4119,6 +4189,11 @@ export function VisaCountryResultPortal({
           { title: 'Financial Solvency Benchmark', desc: getStudentFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Sufficient verified educational funds.' },
           { title: 'Academic Progression & Intent', desc: 'Documented course justification, SOP, and certified academic credentials.' },
           { title: 'Biometrics & Security Mandates', desc: getStudentOtherRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'VAC Biometrics and medical clearance.' }
+        ] : isWork ? [
+          { title: 'Passport Validity Requirement', desc: 'Valid for at least 6 months beyond intended employment period with minimum 2 blank pages.' },
+          { title: 'Financial Solvency Benchmark', desc: getWorkFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Verified employer sponsorship and maintenance funds.' },
+          { title: 'Employer Sponsorship & Role Eligibility', desc: 'Valid Certificate of Sponsorship/LMIA/Petition and professional qualifications.' },
+          { title: 'Biometrics & Security Mandates', desc: getWorkRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'Biometrics, police clearance, and immigration compliance.' }
         ] : getTourismRequirements(countryName).map(r => ({ title: r.category, desc: r.details })),
         faqs: resolvedFaqs.slice(0, 5),
         trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://travltik.com/traveller/dashboard',
@@ -5782,9 +5857,13 @@ export function VisaCountryResultPortal({
       if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
       return getStudentFAQ(countryName);
     }
+    if (isWorkTab) {
+      if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
+      return getWorkFAQ(countryName);
+    }
     if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
     return getTourismFAQ(countryName);
-  }, [isStudyTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
+  }, [isStudyTab, isWorkTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
 
     // Dynamic Official Checklist populated directly from live AI / Consular Registry
   const portalDocItems = useMemo(() => {
@@ -5870,6 +5949,53 @@ export function VisaCountryResultPortal({
         const sentences = doc.description
           ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
           : ['Official consular requirement for student visa'];
+
+        return {
+          key,
+          name: doc.title,
+          mandatory: doc.is_mandatory !== false,
+          iconBg,
+          icon,
+          conditions: sentences.slice(0, 3)
+        };
+      });
+    }
+
+    // Work visa fallback if AI is still fetching
+    if (activePurposeTab === 'work' || activePurposeTab === 'employment' || initialPurpose === 'work' || initialPurpose === 'employment') {
+      const workDocs = getWorkDocuments(passportCountry, countryName, 'Work');
+      return workDocs.map((doc, idx) => {
+        const key = `doc_wrk_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const titleLower = doc.title.toLowerCase();
+        let icon = <FileText className="w-4 h-4" />;
+        let iconBg = 'bg-purple-100 text-purple-700';
+
+        if (titleLower.includes('passport')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-purple-100 text-purple-700';
+        } else if (titleLower.includes('photo')) {
+          icon = <Camera className="w-4 h-4" />;
+          iconBg = 'bg-amber-100 text-amber-700';
+        } else if (titleLower.includes('contract') || titleLower.includes('offer') || titleLower.includes('cos') || titleLower.includes('lmia') || titleLower.includes('i-797') || titleLower.includes('permit') || titleLower.includes('coe')) {
+          icon = <Building2 className="w-4 h-4" />;
+          iconBg = 'bg-indigo-100 text-indigo-700';
+        } else if (titleLower.includes('insurance') || titleLower.includes('medical') || titleLower.includes('health') || titleLower.includes('tb') || titleLower.includes('fitness')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-rose-100 text-rose-700';
+        } else if (titleLower.includes('fund') || titleLower.includes('financial') || titleLower.includes('salary') || titleLower.includes('maintenance') || titleLower.includes('tax') || titleLower.includes('fee')) {
+          icon = <CreditCard className="w-4 h-4" />;
+          iconBg = 'bg-teal-100 text-teal-700';
+        } else if (titleLower.includes('police') || titleLower.includes('pcc') || titleLower.includes('clearance')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-blue-100 text-blue-700';
+        } else if (titleLower.includes('qualification') || titleLower.includes('degree') || titleLower.includes('zab') || titleLower.includes('assessment') || titleLower.includes('english')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-emerald-100 text-emerald-700';
+        }
+
+        const sentences = doc.description
+          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
+          : ['Official consular requirement for employment visa'];
 
         return {
           key,
@@ -6115,11 +6241,11 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : getTourismValidity(countryName)))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : getTourismValidity(countryName)))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
               </div>
             </div>
           </div>
@@ -6278,7 +6404,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : getTourismValidity(countryName)))}
+                      {cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : getTourismValidity(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6290,7 +6416,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.stay_duration || (isStudyTab ? getStudentStayDuration(countryName) : getTourismStayDuration(countryName)))}
+                      {cleanStatValue(aiData?.stay_duration || (isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : getTourismStayDuration(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6302,7 +6428,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : getTourismEntryType(countryName)))}
+                      {cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : getTourismEntryType(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6475,6 +6601,8 @@ export function VisaCountryResultPortal({
                         {(() => {
                           const highlights = (aiData?.highlights && aiData.highlights.length > 0)
                             ? aiData.highlights
+                            : isWorkTab
+                            ? getWorkHighlights(countryName)
                             : getTourismHighlights(countryName);
 
                           const themes = [
@@ -6486,6 +6614,9 @@ export function VisaCountryResultPortal({
 
                           const renderIcon = (iconName: string, idx: number) => {
                             const i = (iconName || '').toLowerCase();
+                            if (i.includes('briefcase') || i.includes('work') || i.includes('job')) return <Briefcase className="w-4 h-4" />;
+                            if (i.includes('trending') || i.includes('chart')) return <TrendingUp className="w-4 h-4" />;
+                            if (i.includes('dollar') || i.includes('money')) return <CreditCard className="w-4 h-4" />;
                             if (i.includes('sun')) return <Sun className="w-4 h-4" />;
                             if (i.includes('plane')) return <Plane className="w-4 h-4" />;
                             if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
@@ -6496,6 +6627,12 @@ export function VisaCountryResultPortal({
                             if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
                             if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
                             if (i.includes('globe')) return <Globe className="w-4 h-4" />;
+                            if (isWorkTab) {
+                              if (idx === 0) return <Briefcase className="w-4 h-4" />;
+                              if (idx === 1) return <Award className="w-4 h-4" />;
+                              if (idx === 2) return <TrendingUp className="w-4 h-4" />;
+                              return <ShieldCheck className="w-4 h-4" />;
+                            }
                             if (idx === 0) return <Sun className="w-4 h-4" />;
                             if (idx === 1) return <Users className="w-4 h-4" />;
                             if (idx === 2) return <Calendar className="w-4 h-4" />;
@@ -6511,7 +6648,7 @@ export function VisaCountryResultPortal({
                                 </div>
                                 <div className="min-w-0">
                                   <strong className={`text-[15px] sm:text-[16px] font-semibold ${theme.text} block`}>{h.title}</strong>
-                                  <span className={`text-[13px] sm:text-[14px] ${theme.sub} font-normal leading-snug block`}>{h.desc}</span>
+                                  <span className={`text-[13px] sm:text-[14px] ${theme.sub} font-normal leading-snug block`}>{h.desc || h.description}</span>
                                 </div>
                               </div>
                             );
@@ -6931,16 +7068,21 @@ export function VisaCountryResultPortal({
                     <ul className="space-y-2.5">
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isStudyTab ? '6 months beyond intended program duration' : isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isStudyTab ? '6 months beyond intended program duration' : isWorkTab ? '6 months beyond intended employment period' : isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : (aiData?.stay_duration || getTourismStayDuration(countryName))}</span>
+                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : isWorkTab ? (aiData?.stay_duration || getWorkStayDuration(countryName)) : (aiData?.stay_duration || getTourismStayDuration(countryName))}</span>
                       </li>
                       {isStudyTab ? (
                         <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                           <span className="text-slate-400 select-none">•</span>
                           <span><strong className="font-semibold text-slate-900">Student Work Rights:</strong> Permitted to work part-time during academic terms (e.g. 20 hrs/week or 48 hrs/fortnight) and full-time during official semester vacations and scheduled course breaks.</span>
+                        </li>
+                      ) : isWorkTab ? (
+                        <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                          <span className="text-slate-400 select-none">•</span>
+                          <span><strong className="font-semibold text-slate-900">Employment Authorization:</strong> Work is strictly authorized only with the licensed sponsoring employer or under approved permit conditions. Unauthorized secondary employment is prohibited.</span>
                         </li>
                       ) : (
                         <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
@@ -6965,6 +7107,8 @@ export function VisaCountryResultPortal({
                           ? aiData.financial_proofs
                           : isStudyTab
                           ? getStudentFinancialProofs(countryName)
+                          : isWorkTab
+                          ? getWorkFinancialProofs(countryName)
                           : getTourismFinancialProofs(countryName);
                         if (fpList && fpList.length > 0) {
                           return fpList.slice(0, 3).map((fp: any, i: number) => (
@@ -6994,7 +7138,7 @@ export function VisaCountryResultPortal({
                     </ul>
                   </div>
 
-                  {/* Pillar 3: Home Ties / Academic Progression */}
+                  {/* Pillar 3: Home Ties / Academic Progression / Employer Sponsorship */}
                   <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
                     {isStudyTab ? (
                       <>
@@ -7016,6 +7160,29 @@ export function VisaCountryResultPortal({
                           <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                             <span className="text-slate-400 select-none">•</span>
                             <span><strong className="font-semibold text-slate-900">Immigration Compliance:</strong> Maintain satisfactory full-time course progression and adhere to national student visa parameters.</span>
+                          </li>
+                        </ul>
+                      </>
+                    ) : isWorkTab ? (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                            <Briefcase className="w-4 h-4" />
+                          </div>
+                          <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Employer Sponsorship &amp; Qualifications</h3>
+                        </div>
+                        <ul className="space-y-2.5">
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Valid Job Sponsorship:</strong> Formal petition, Certificate of Sponsorship (CoS), LMIA approval, or registered employment contract from an authorized entity.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Professional Qualifications:</strong> Degree certificates, professional licenses, and certified work experience credentials matching the occupation code.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Salary &amp; Labor Standards:</strong> Sponsoring remuneration must satisfy statutory prevailing wage and relevant national labor market thresholds.</span>
                           </li>
                         </ul>
                       </>
@@ -7059,6 +7226,8 @@ export function VisaCountryResultPortal({
                           ? aiData.other_requirements
                           : isStudyTab
                           ? getStudentOtherRequirements(countryName)
+                          : isWorkTab
+                          ? getWorkRequirements(countryName)
                           : getTourismRequirements(countryName);
                         if (otherList && otherList.length > 0) {
                           return otherList.slice(0, 3).map((orq: any, i: number) => (
@@ -7247,7 +7416,7 @@ export function VisaCountryResultPortal({
                 <div>
                   <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Fees &amp; Payment Details</h2>
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5">
-                    Official statutory fees verified from {aiData?.official_source_name || (isStudyTab ? getStudentOfficialSourceName(countryName) : getTourismOfficialSourceName(countryName))}.
+                    Official statutory fees verified from {aiData?.official_source_name || (isStudyTab ? getStudentOfficialSourceName(countryName) : isWorkTab ? getWorkOfficialSourceName(countryName) : getTourismOfficialSourceName(countryName))}.
                   </p>
                 </div>
 
@@ -7255,25 +7424,25 @@ export function VisaCountryResultPortal({
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">Consular Visa Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
+                      {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                     </strong>
                   </div>
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
+                      {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
                     <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Total Official Fee</span>
                     <strong className="text-[20px] sm:text-[22px] font-semibold text-teal-700">
-                      {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
+                      {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                     </strong>
                   </div>
                 </div>
-                {(aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : getTourismFees(countryName).notes)) && (
+                {(aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : getTourismFees(countryName).notes)) && (
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                    ℹ️ {aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : getTourismFees(countryName).notes)}
+                    ℹ️ {aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : getTourismFees(countryName).notes)}
                   </p>
                 )}
                 <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal">
@@ -7292,19 +7461,19 @@ export function VisaCountryResultPortal({
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isStudyTab ? getStudentProcessingTime(countryName) : getTourismProcessingTime(countryName))}
+                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isStudyTab ? getStudentProcessingTime(countryName) : isWorkTab ? getWorkProcessingTime(countryName) : getTourismProcessingTime(countryName))}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isStudyTab ? getStudentProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
+                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isStudyTab ? getStudentProcessingDetails(countryName) : isWorkTab ? getWorkProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Recommended Filing Window</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.apply_window || (isStudyTab ? 'Apply 3 to 4 months prior to program intake' : countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
+                      {aiData?.processing_and_timing?.apply_window || (isStudyTab ? 'Apply 3 to 4 months prior to program intake' : isWorkTab ? 'Apply 3 to 6 months prior to planned employment start date' : countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.max_extension || (isStudyTab ? 'Renewable annually based on ongoing academic standing.' : countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
+                      {aiData?.processing_and_timing?.max_extension || (isStudyTab ? 'Renewable annually based on ongoing academic standing.' : isWorkTab ? 'Extendable with employer sponsorship and continued employment eligibility.' : countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
                     </p>
                   </div>
                 </div>
@@ -7448,19 +7617,19 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Adult)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
+                    {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Child 6-12 yrs)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.child_fee || (isStudyTab ? 'N/A (Primary Applicant)' : isSchengen ? '€45' : '$95 USD')}
+                    {aiData?.costs?.child_fee || (isStudyTab ? 'N/A (Primary Applicant)' : isWorkTab ? 'N/A (Individual Worker)' : isSchengen ? '€45' : '$95 USD')}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Service Fee</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
+                    {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                   </strong>
                 </div>
 
@@ -7469,7 +7638,7 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-slate-900 text-[14px]">Total</span>
                   <strong className="text-[16px] font-semibold text-slate-900">
-                    {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
+                    {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                   </strong>
                 </div>
 

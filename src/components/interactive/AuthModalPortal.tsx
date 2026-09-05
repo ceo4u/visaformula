@@ -421,6 +421,9 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     {/* Google SSO Button */}
                     <button
                         onClick={handleGoogleLogin}
+                        onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                        onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                        onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
                         disabled={googleLoading}
                         className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl border border-slate-300 transition-all flex items-center justify-center gap-3 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
                     >

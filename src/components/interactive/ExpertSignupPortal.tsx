@@ -563,6 +563,9 @@ function ExpertSignupPortalContent() {
                 {/* Google Button */}
                 <button
                   onClick={handleGoogleSignup}
+                  onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                  onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                  onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
                   disabled={googleLoading}
                   className="w-full py-3.5 px-5 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl font-semibold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-sm cursor-pointer text-sm"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -686,6 +689,9 @@ function ExpertSignupPortalContent() {
                 <button
                   type="button"
                   onClick={handleGoogleSignup}
+                  onMouseEnter={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                  onTouchStart={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
+                  onFocus={() => import("../../lib/firebase").then(m => m.preloadFirebase?.()).catch(() => {})}
                   disabled={googleLoading}
                   className="w-full bg-white hover:bg-slate-50 text-slate-900 font-bold py-3.5 px-4 rounded-2xl border border-slate-300 transition-all flex items-center justify-center gap-3 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99]"
                 >

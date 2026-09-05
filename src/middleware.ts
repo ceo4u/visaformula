@@ -21,8 +21,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  // Allow Firebase popup to post message back to opener window (required for Google Sign-In popup flow)
-  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  // Must be 'unsafe-none' to permit seamless cross-origin communication with Google OAuth / Firebase popups without latency or window.closed blocks
+  response.headers.set('Cross-Origin-Opener-Policy', 'unsafe-none');
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self'; " +

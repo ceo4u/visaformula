@@ -48,25 +48,29 @@ export async function initFirebase() {
 
 let _currentAuthPopup: Window | null = null;
 
-// Function to bring the Google sign-in window to the front
+// Function to bring the Google sign-in window to the front if requested
 export function focusAuthPopup(): boolean {
-    if (_currentAuthPopup && !_currentAuthPopup.closed) {
+    if (_currentAuthPopup) {
         try {
-            _currentAuthPopup.focus();
-            return true;
+            if (!_currentAuthPopup.closed) {
+                _currentAuthPopup.focus();
+                return true;
+            }
         } catch (_) {
-            return false;
+            try {
+                _currentAuthPopup.focus();
+                return true;
+            } catch (e) {}
         }
     }
     return false;
 }
 
-// Popup-based sign in (instant response, preserves user gesture & auto-refocuses if hidden)
+// Popup-based sign in (instant response, preserves user gesture & eliminates COOP polling lockups)
 export async function loginWithGooglePopup() {
     const { auth, googleProvider } = await initFirebase();
     const signInFn = _signInWithPopupFn || (await import("firebase/auth")).signInWithPopup;
 
-    let cleanupRefocus: (() => void) | null = null;
     let origOpen: any = null;
 
     if (typeof window !== "undefined") {
@@ -75,42 +79,6 @@ export async function loginWithGooglePopup() {
             const popup = origOpen.apply(window, args as any);
             if (popup) {
                 _currentAuthPopup = popup;
-
-                const bringToFront = () => {
-                    if (_currentAuthPopup && !_currentAuthPopup.closed) {
-                        try {
-                            _currentAuthPopup.focus();
-                        } catch (_) {}
-                    }
-                };
-
-                const onWindowFocus = () => {
-                    // When main window gets focus, re-focus popup immediately
-                    setTimeout(bringToFront, 50);
-                };
-
-                const onWindowClick = () => {
-                    bringToFront();
-                };
-
-                window.addEventListener("focus", onWindowFocus);
-                window.addEventListener("click", onWindowClick, true);
-
-                const intervalId = setInterval(() => {
-                    if (!_currentAuthPopup || _currentAuthPopup.closed) {
-                        cleanup();
-                    } else if (document.hasFocus()) {
-                        bringToFront();
-                    }
-                }, 800);
-
-                const cleanup = () => {
-                    window.removeEventListener("focus", onWindowFocus);
-                    window.removeEventListener("click", onWindowClick, true);
-                    clearInterval(intervalId);
-                };
-
-                cleanupRefocus = cleanup;
             }
             return popup;
         };
@@ -123,7 +91,7 @@ export async function loginWithGooglePopup() {
         if (origOpen && typeof window !== "undefined") {
             window.open = origOpen;
         }
-        if (cleanupRefocus) cleanupRefocus();
+        _currentAuthPopup = null;
     }
 }
 

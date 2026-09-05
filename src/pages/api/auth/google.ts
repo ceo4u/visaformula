@@ -21,15 +21,9 @@ export const POST: APIRoute = async ({ request }) => {
     const tokenHeader = request.headers.get('x-turnstile-token');
     const turnstileToken = body.turnstileToken || tokenHeader;
 
+    // Non-blocking turnstile verification (Google OAuth identity is already cryptographically human-verified)
     if (turnstileToken) {
-      try {
-        const isHuman = await verifyTurnstileToken(turnstileToken, request);
-        if (!isHuman) {
-          console.warn('[API /api/auth/google] Turnstile notice: token unverified, continuing with verified Google identity.');
-        }
-      } catch (tErr) {
-        console.warn('[API /api/auth/google] Turnstile check caught:', tErr);
-      }
+      verifyTurnstileToken(turnstileToken, request).catch(() => {});
     }
 
     const { idToken, googleProfile, role: requestedRole = 'seeker', mode = 'login' } = body;
@@ -76,10 +70,11 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    await runMigrations();
     const pool = getPool();
+    // Non-blocking background migration assurance (avoids running 30+ DDL statements on every Google auth request)
+    runMigrations().catch(err => console.warn('[API /api/auth/google] Background migration:', err));
 
-    // Query database for existing records in BOTH tables
+    // Query database for existing records in BOTH tables in parallel
     const [seekerRes, expertRes] = await Promise.all([
       pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
       pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [email]),

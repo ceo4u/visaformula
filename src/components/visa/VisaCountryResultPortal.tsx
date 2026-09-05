@@ -6454,69 +6454,6 @@ export function VisaCountryResultPortal({
                   </p>
                 </div>
 
-                {/* Mobile 3 Metric Cards (Matching media_1788533524572.png) */}
-                <div className="grid grid-cols-3 gap-2 md:hidden text-center">
-                  <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Total</span>
-                    <strong className="text-[18px] font-semibold text-slate-900 block mt-0.5">{totalDocsCount}</strong>
-                  </div>
-                  <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Completed</span>
-                    <strong className="text-[18px] font-semibold text-emerald-700 block mt-0.5">{completedDocsCount}</strong>
-                  </div>
-                  <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Pending</span>
-                    <strong className="text-[18px] font-semibold text-amber-600 block mt-0.5">{notStartedDocsCount + pendingDocsCount}</strong>
-                  </div>
-                </div>
-
-                {/* 4 Metric Stat Cards (Desktop) */}
-                <div className="hidden md:grid md:grid-cols-4 gap-3 text-left">
-                  {/* Total Documents */}
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 border border-purple-200/70 flex items-center justify-center shrink-0">
-                      <FileText className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Total</span>
-                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{totalDocsCount}</strong>
-                    </div>
-                  </div>
-
-                  {/* Mandatory */}
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 border border-rose-200/70 flex items-center justify-center shrink-0">
-                      <Shield className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Mandatory</span>
-                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{mandatoryDocsCount}</strong>
-                    </div>
-                  </div>
-
-                  {/* Completed */}
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/70 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Completed</span>
-                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{completedDocsCount}</strong>
-                    </div>
-                  </div>
-
-                  {/* Pending / Not Started */}
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 shadow-2xs flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-orange-50 text-orange-700 border border-orange-200/70 flex items-center justify-center shrink-0">
-                      <Clock className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Pending</span>
-                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{notStartedDocsCount + pendingDocsCount}</strong>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Soft Purple Notice Alert */}
                 <div className="p-3.5 sm:p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-3 text-[14px] sm:text-[15px] text-purple-950 font-normal text-left shadow-2xs">
                   <Info className="w-4 h-4 text-purple-600 shrink-0" />

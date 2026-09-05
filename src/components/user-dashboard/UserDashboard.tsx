@@ -23,6 +23,7 @@ export const UserDashboard: React.FC = () => {
             <DashboardHeader
                 dashboardSearch={state.dashboardSearch}
                 setDashboardSearch={state.setDashboardSearch}
+                fullName={state.fullName}
                 userDisplayName={state.userDisplayName}
                 profilePhoto={state.profilePhoto}
                 setIsMobileSidebarOpen={state.setIsMobileSidebarOpen}
@@ -73,7 +74,9 @@ export const UserDashboard: React.FC = () => {
                             selectedPassport={state.selectedPassport}
                             readiness={state.readiness}
                             vaultChecklistState={state.documents.vaultChecklistState}
-                            toggleReadinessDoc={state.documents.toggleReadinessDoc}
+                            toggleReadinessDoc={state.readiness.toggleReadinessDoc}
+                            setActiveTab={state.setActiveTab}
+                            handleVaultDocScan={state.documents.handleVaultDocScan}
                         />
                     )}
 

@@ -15,7 +15,9 @@ export interface VisaReadinessScoreProps {
   selectedPassport: string;
   readiness: ReturnType<typeof useReadinessAudit>;
   vaultChecklistState?: Record<string, VaultDocChecklistEntry>;
-  toggleReadinessDoc: (docKey: string, docTitle: string) => void;
+  toggleReadinessDoc?: (docKey: string, docTitle: string) => void;
+  setActiveTab?: (tab: string) => void;
+  handleVaultDocScan?: (file: File, docKey: string, docTitle: string) => Promise<any> | void;
 }
 
 export function VisaReadinessScore({
@@ -23,7 +25,9 @@ export function VisaReadinessScore({
   selectedPassport,
   readiness,
   vaultChecklistState = {},
-  toggleReadinessDoc
+  toggleReadinessDoc,
+  setActiveTab = () => {},
+  handleVaultDocScan = () => {}
 }: VisaReadinessScoreProps) {
   const {
     aiVisaData,

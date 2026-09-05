@@ -91,7 +91,7 @@ interface DocumentVaultProps {
     handleDownloadDoc: (doc: any) => void;
     handleDeleteDoc: (doc: any) => void;
     handleStartEditOcr: (doc: any) => void;
-    handleSaveEditOcr: () => void;
+    handleSaveEditOcr: (activeSelectedDoc?: any) => void;
     handleTriggerUploadForReq: (target: { key: string; title: string; type: string }) => void;
     handleSubmitStagedPassport: () => void;
 }
@@ -1568,12 +1568,13 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                                     e.stopPropagation();
                                     const f = e.dataTransfer.files?.[0];
                                     if (f) {
-                                        setVaultUploadTargetReq({
+                                        const targetReq = {
                                             key: activeSelectedDoc.reqKey || activeSelectedDoc.id,
                                             title: activeSelectedDoc.title,
                                             type: activeSelectedDoc.type
-                                        });
-                                        handleUploadVaultDocument(f);
+                                        };
+                                        if (vaultUploadTargetReqRef) vaultUploadTargetReqRef.current = targetReq;
+                                        handleUploadVaultDocument(f, targetReq);
                                     }
                                 }}
                                 className="group border-2 border-dashed border-[#00a896]/30 hover:border-[#00a896] bg-gradient-to-b from-[#00a896]/5 to-slate-50/50 hover:bg-[#00a896]/10 rounded-2xl p-6 sm:p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center space-y-4 shadow-2xs"

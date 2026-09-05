@@ -5,6 +5,9 @@ export interface VaultDocItem {
   icon: string;
   mandatory: boolean;
   hint: string;
+  isUploaded?: boolean;
+  isRealUpload?: boolean;
+  [key: string]: any;
 }
 
 export interface VaultDocChecklistEntry {
@@ -98,6 +101,8 @@ export interface LuggageItem {
   id: string;
   category: 'cabin' | 'checked' | 'predeparture';
   title: string;
+  hint?: string;
+  icon?: string;
 }
 
 export interface CountryOption {

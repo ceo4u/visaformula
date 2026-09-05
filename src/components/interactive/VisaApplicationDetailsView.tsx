@@ -485,12 +485,23 @@ export function VisaApplicationDetailsView({
   const mandatoryDocs = checklistDocuments.filter(d => d.mandatory);
   const mandatoryReadyCount = checklistDocuments.filter(d => d.mandatory && d.isReady).length;
   const allMandatoryReady = mandatoryDocs.length > 0 ? (mandatoryReadyCount >= mandatoryDocs.length) : (readyDocsCount > 0);
+  const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0;
 
   // Check genuine vault documents count
   const genuineVaultDocs = (vaultDocuments || []).filter(
     (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
   );
   const genuineVaultDocsCount = genuineVaultDocs.length;
+
+  const calculatedReadinessScore = typeof readinessScore === 'number' && readinessScore > 0
+    ? readinessScore
+    : (application?.readinessScore || application?.score || Math.max(45, Math.min(100, Math.round(docsRatio * 50 + (allMandatoryReady ? 35 : 15) + (genuineVaultDocsCount > 0 ? 15 : 0)))));
+
+  const scoreLevel = calculatedReadinessScore >= 80 
+    ? 'High Approval Probability' 
+    : calculatedReadinessScore >= 60 
+    ? 'Good Readiness' 
+    : 'Action Required';
 
   // Pipeline Statuses
   const appStatus = (application?.status || '').toLowerCase();

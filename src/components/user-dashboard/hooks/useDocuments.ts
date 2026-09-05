@@ -380,6 +380,17 @@ export function useDocuments({
     }
   };
 
+  const handleSubmitStagedPassport = async () => {
+    if (!stagedPassportFile) return;
+    await handleUploadVaultDocument(stagedPassportFile, {
+      key: 'passport',
+      title: 'Passport (Bio-Page)',
+      type: 'identification'
+    });
+    setStagedPassportFile(null);
+    setStagedPassportPreview(null);
+  };
+
   const handleDownloadDoc = (doc: any) => {
     if (!doc) return;
     if (doc.fileData && doc.fileData.startsWith('data:')) {
@@ -686,6 +697,7 @@ export function useDocuments({
     handleSaveEditOcr,
     handleAutoImportMatchingDocs,
     handleImportSingleDoc,
-    handleVaultDocScan
+    handleVaultDocScan,
+    handleSubmitStagedPassport
   };
 }

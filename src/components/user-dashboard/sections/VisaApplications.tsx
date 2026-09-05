@@ -24,8 +24,8 @@ interface VisaApplicationsProps {
     setEditingAppId: (id: string | null) => void;
     editingAppName: string;
     setEditingAppName: (name: string) => void;
-    handleRenameApplication: (id: string, name: string) => Promise<void>;
-    handleDeleteApplication: (id: string) => Promise<void>;
+    handleRenameApplication: (id: string, name: string) => Promise<void> | void;
+    handleDeleteApplication: (id: string) => Promise<void> | void;
     handleCopyTrackingId: (trackingId: string) => void;
     copiedTrackingId: string | null;
     setShowNewAppModal: (show: boolean) => void;
@@ -34,7 +34,7 @@ interface VisaApplicationsProps {
     userDisplayName: string;
     setActiveTab: (tab: string) => void;
     readinessScore: number;
-    documents: VaultDocItem[];
+    documents: any[];
 }
 
 export const VisaApplications: React.FC<VisaApplicationsProps> = ({

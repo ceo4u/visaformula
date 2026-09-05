@@ -16,7 +16,7 @@ interface ProfileSettingsProps {
     setModalResidentOf: (v: string) => void;
     modalDestinations: string;
     setModalDestinations: (v: string) => void;
-    handleSaveProfileModal: (e?: React.FormEvent) => Promise<void>;
+    handleSaveProfileModal: (e?: React.FormEvent) => Promise<void> | void;
     userDisplayName: string;
     email: string;
     showProfileModal: boolean;

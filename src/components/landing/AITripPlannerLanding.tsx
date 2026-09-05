@@ -3757,6 +3757,45 @@ return (
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
+            {/* Quick Search Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center text-[#00a896] shadow-2xs shrink-0">
+                  <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.3]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight leading-none">
+                      Quick Search
+                    </h3>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-teal-50 text-[#00a896] border border-teal-200/60 uppercase tracking-wide">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00a896] animate-pulse" />
+                      Live
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-[13px] text-slate-500 font-medium mt-1">
+                    Find verified visa consultants, global universities, overseas jobs & travel services
+                  </p>
+                </div>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="hidden lg:flex items-center gap-4 text-xs font-semibold text-slate-500">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                  Verified Experts
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                  Global Coverage
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                  Instant Match
+                </span>
+              </div>
+            </div>
+
             {/* Top Horizontal Tabs Row - Exact Match to media_1788574993846 */}
             <div className="w-full flex items-center justify-start lg:justify-start gap-1.5 sm:gap-4 md:gap-6 pb-3 sm:pb-4 mb-5 sm:mb-6 border-b border-slate-100 overflow-x-auto scrollbar-none">
               {/* Tab 1: All Services */}

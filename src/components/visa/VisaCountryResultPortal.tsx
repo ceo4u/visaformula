@@ -5888,17 +5888,6 @@ export function VisaCountryResultPortal({
                   <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-600 text-rose-600' : 'text-slate-400'}`} />
                   <span>{isSaved ? 'Saved' : 'Add to Saved'}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSidebarTab('documents');
-                    const el = document.getElementById('documents-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md flex items-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
-                >
-                  <span>Apply Now</span>
-                </button>
               </div>
             </div>
           </div>

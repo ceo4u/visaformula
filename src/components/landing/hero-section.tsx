@@ -650,6 +650,45 @@ export function HeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 relative z-10">
         <div id="search-panel" className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/90" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           
+          {/* Quick Search Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center text-[#00a896] shadow-2xs shrink-0">
+                <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.3]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight leading-none">
+                    Quick Search
+                  </h3>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-teal-50 text-[#00a896] border border-teal-200/60 uppercase tracking-wide">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00a896] animate-pulse" />
+                    Live
+                  </span>
+                </div>
+                <p className="text-xs sm:text-[13px] text-slate-500 font-medium mt-1">
+                  Find verified visa consultants, global universities, overseas jobs & travel services
+                </p>
+              </div>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="hidden lg:flex items-center gap-4 text-xs font-semibold text-slate-500">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                Verified Experts
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                Global Coverage
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
+                Instant Match
+              </span>
+            </div>
+          </div>
+
           {/* Top Category Tabs Bar (Exact match to Reference Image) */}
           <div className="flex items-center gap-4 sm:gap-6 border-b border-slate-100 pb-4 mb-6 overflow-x-auto scrollbar-none">
             <button

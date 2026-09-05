@@ -869,6 +869,39 @@ select {
     mask-composite: exclude;
     pointer-events: none;
   }
+
+  /* ── VISA DATA NO-TRUNCATION UTILITIES ── */
+  .visa-data-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .visa-stat-card {
+    min-height: 80px;
+    height: auto;
+  }
+
+  .visa-description {
+    display: block;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    overflow: visible !important;
+  }
+
+  .no-truncate {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    display: block !important;
+  }
+
+  .break-words-all {
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
+  }
 }
 
 

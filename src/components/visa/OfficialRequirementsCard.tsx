@@ -913,36 +913,80 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
       ) : data ? (
         <div className="space-y-6">
           
+          {/* ── VISA OVERVIEW & CONSULAR DIRECTIVES ── */}
+          {(data.overview || (data as any).consular_directives) && (
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs space-y-3 text-left">
+              <div className="flex items-center gap-2 text-slate-900 font-bold text-sm sm:text-base">
+                <Info className="w-4 h-4 text-[#00a896]" />
+                <span>Visa Overview & Travel Guidelines</span>
+              </div>
+              {data.overview && (
+                <p className="text-xs sm:text-sm text-slate-600 break-words whitespace-normal leading-relaxed">
+                  {data.overview}
+                </p>
+              )}
+              {(data as any).consular_directives && Array.isArray((data as any).consular_directives) && (data as any).consular_directives.length > 0 && (
+                <div className="pt-2 border-t border-slate-100 space-y-1.5">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Official Consular Directives:</span>
+                  <ul className="space-y-1">
+                    {(data as any).consular_directives.map((dir: string, idx: number) => (
+                      <li key={idx} className="text-xs text-slate-600 flex items-start gap-2 break-words whitespace-normal">
+                        <span className="text-[#00a896] font-bold">•</span>
+                        <span>{dir}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* ── KEY VISA TIMING & VALIDITY OVERVIEW (4-CARD GRID MATCHING PHOTO EXACTLY) ── */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-left">
             {/* Card 1: Processing Time */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
-              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2.5 min-h-[90px] flex flex-col justify-between">
               <div>
-                <span className="text-xs font-semibold text-slate-500 block">Processing Time</span>
-                <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-1 leading-snug">
+                <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+                  <Clock className="w-4 h-4 text-[#00a896] stroke-[1.75]" />
+                  <span>Processing Time</span>
+                </div>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-relaxed break-words whitespace-normal">
                   {data.processing_time || data.processing_and_timing?.decision_time || (['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'netherlands', 'austria', 'portugal', 'schengen'].some(c => cleanTo.toLowerCase().includes(c)) ? '15 Calendar Days (Standard)' : '5–7 Working Days')}
                 </h4>
               </div>
+              {((data as any).processing_time_details || (data.processing_time && data.processing_time.includes('('))) && (
+                <span className="text-[11px] text-slate-500 font-medium break-words whitespace-normal block mt-1">
+                  {(data as any).processing_time_details || data.processing_time?.match(/\(([^)]+)\)/)?.[1] || ''}
+                </span>
+              )}
             </div>
 
             {/* Card 2: Validity */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
-              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2.5 min-h-[90px] flex flex-col justify-between">
               <div>
-                <span className="text-xs font-semibold text-slate-500 block">Validity</span>
-                <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-1 leading-snug">
+                <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+                  <Calendar className="w-4 h-4 text-[#00a896] stroke-[1.75]" />
+                  <span>Validity</span>
+                </div>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-relaxed break-words whitespace-normal">
                   {data.validity || data.validity_and_stay?.visa_validity || (cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai') ? '60 Days' : cleanTo.toLowerCase().includes('jordan') ? '30 Days' : '90 days')}
                 </h4>
               </div>
+              {((data as any).validity_details || (data.validity && data.validity.toLowerCase().includes('plus'))) && (
+                <span className="text-[11px] text-slate-500 font-medium break-words whitespace-normal block mt-1">
+                  {(data as any).validity_details || 'Includes post-study buffer period'}
+                </span>
+              )}
             </div>
 
             {/* Card 3: Length of stay */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
-              <Clock className="w-5 h-5 text-slate-700 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2.5 min-h-[90px] flex flex-col justify-between">
               <div>
-                <span className="text-xs font-semibold text-slate-500 block">Length of stay</span>
-                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-snug">
+                <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+                  <Compass className="w-4 h-4 text-[#00a896] stroke-[1.75]" />
+                  <span>Stay Period</span>
+                </div>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-relaxed break-words whitespace-normal">
                   {data.stay_duration || data.validity_and_stay?.max_stay_per_entry || (
                     cleanTo.toLowerCase().includes('emirates') || cleanTo.toLowerCase().includes('uae') || cleanTo.toLowerCase().includes('dubai')
                       ? 'Up to 30 Days or 60 Days (depending on selected e-Visa tier)'
@@ -958,20 +1002,39 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   )}
                 </h4>
               </div>
+              {((data as any).stay_duration_details || (data.stay_duration && data.stay_duration.toLowerCase().includes('full duration'))) && (
+                <span className="text-[11px] text-emerald-700 font-medium break-words whitespace-normal block mt-1">
+                  {(data as any).stay_duration_details || '✅ Entire academic program'}
+                </span>
+              )}
             </div>
 
             {/* Card 4: Entry */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs text-left space-y-2.5">
-              <ShieldCheck className="w-5 h-5 text-slate-700 stroke-[1.75]" />
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2.5 min-h-[90px] flex flex-col justify-between">
               <div>
-                <span className="text-xs font-semibold text-slate-500 block">Entry</span>
-                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-snug">
-                  Single or Multiple Entry (both options available)
+                <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+                  <ShieldCheck className="w-4 h-4 text-[#00a896] stroke-[1.75]" />
+                  <span>Entry</span>
+                </div>
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-relaxed break-words whitespace-normal">
+                  {(data as any).entry_type || 'Single or Multiple Entry (both options available)'}
                 </h4>
-                <p className="text-[11px] text-slate-500 font-medium leading-tight mt-1">
-                  (Approval depends on sole discretion of embassy and filed application purpose)
-                </p>
               </div>
+              {((data as any).entry_type_details || (data as any).entry_type) && (
+                <span className="text-[11px] font-medium break-words whitespace-normal block mt-1">
+                  {(data as any).entry_type_details ? (
+                    <span className="text-slate-500">{(data as any).entry_type_details}</span>
+                  ) : ((data as any).entry_type || '').toLowerCase().includes('multiple') ? (
+                    <span className="text-blue-600">🔄 Multiple entries allowed during validity</span>
+                  ) : ((data as any).entry_type || '').toLowerCase().includes('single') ? (
+                    <span className="text-amber-600">⚠️ Single entry only</span>
+                  ) : ((data as any).entry_type || '').toLowerCase().includes('visa-free') ? (
+                    <span className="text-emerald-600">✅ No prior visa required</span>
+                  ) : (
+                    <span className="text-slate-500">(Approval subject to consular discretion)</span>
+                  )}
+                </span>
+              )}
             </div>
           </div>
 
@@ -1146,12 +1209,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                     </div>
                                     <div className="min-w-0">
                                       <div className="flex items-center gap-2 flex-wrap">
-                                        <span className="text-xs font-black text-slate-900 truncate">{uploadedDocDetails[docKey].fileName}</span>
+                                        <span className="text-xs font-black text-slate-900 break-words whitespace-normal">{uploadedDocDetails[docKey].fileName}</span>
                                         <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
                                           OCR Verified ({uploadedDocDetails[docKey].score || 95}%)
                                         </span>
                                       </div>
-                                      <p className="text-[11px] text-emerald-800/90 font-medium mt-0.5 line-clamp-1">
+                                      <p className="text-[11px] text-emerald-800/90 font-medium mt-0.5 break-words whitespace-normal leading-relaxed">
                                         {uploadedDocDetails[docKey].summary}
                                       </p>
                                     </div>

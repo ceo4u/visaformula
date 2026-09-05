@@ -4,7 +4,7 @@ import {
   CreditCard, ShieldCheck, AlertCircle, ExternalLink, MessageSquare, 
   Phone, ChevronDown, ChevronUp, Check, FileText, Plus, Info, 
   Sparkles, CheckSquare, XCircle, Shield, RefreshCw, Upload,
-  X, Camera, Plane, Building2, Landmark, Briefcase, CircleDollarSign
+  X, Camera, Plane, Building2, Landmark, Briefcase, CircleDollarSign, Compass
 } from 'lucide-react';
 
 export interface VisaApplicationDetailsProps {
@@ -658,7 +658,7 @@ export function VisaApplicationDetailsView({
             <div className="flex flex-wrap items-center gap-6 sm:gap-8">
               <div>
                 <span className="text-xs text-slate-400 font-normal block">Name</span>
-                <strong className="text-xs sm:text-sm font-bold text-slate-900 block truncate max-w-[170px] mt-1">
+                <strong className="text-xs sm:text-sm font-bold text-slate-900 block break-words whitespace-normal mt-1">
                   {applicantName || 'Applicant'}
                 </strong>
               </div>
@@ -854,6 +854,123 @@ export function VisaApplicationDetailsView({
         </div>
       </div>
 
+      {/* ── OVERVIEW / CONSULAR DIRECTIVE SUMMARY ── */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-2 text-left">
+        <div className="flex items-center gap-2 text-slate-900 font-bold text-sm sm:text-base">
+          <Info className="w-4 h-4 text-[#00a896]" />
+          <span>Visa Overview & Travel Guidelines</span>
+        </div>
+        <p className="text-xs sm:text-sm text-slate-600 break-words whitespace-normal leading-relaxed">
+          {routeData?.overview || (
+            purpose.toLowerCase().includes('stud') || purpose.toLowerCase().includes('higher')
+              ? `The Student Visa allows international students to reside in ${destination} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`
+              : purpose.toLowerCase().includes('pr') || purpose.toLowerCase().includes('immigrat')
+              ? `The Permanent Residency / Skilled Migration visa allows applicants and eligible family members to live, work, and study indefinitely in ${destination}.`
+              : isVisaFree
+              ? `Indian passport holders enjoy visa-free entry to ${destination}. No prior consular visa is required before departure; border clearance and entry stamps are issued upon arrival.`
+              : `The Visitor / Tourist route allows travelers to enter ${destination} for tourism, leisure, family visits, or short business meetings.`
+          )}
+        </p>
+        {routeData?.consular_directives && Array.isArray(routeData.consular_directives) && routeData.consular_directives.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Consular Directives:</span>
+            <ul className="space-y-1">
+              {routeData.consular_directives.map((dir: string, dIdx: number) => (
+                <li key={dIdx} className="text-xs text-slate-600 flex items-start gap-2 break-words whitespace-normal">
+                  <span className="text-[#00a896] font-bold">•</span>
+                  <span>{dir}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* ── 4 STAT CARDS (FULL WIDTH, NO TRUNCATION, CONTEXTUAL BADGES) ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-left">
+        
+        {/* 1. Processing Time */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2 min-h-[90px] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+              <Clock className="w-4 h-4 text-[#00a896]" />
+              <span>Processing Time</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-slate-900 break-words whitespace-normal leading-relaxed">
+              {routeData?.processing_time || routeData?.processing_and_timing?.decision_time || processingTimeDisplay || 'Not specified'}
+            </p>
+          </div>
+          {(routeData?.processing_time_details || (routeData?.processing_time && routeData.processing_time.includes('('))) && (
+            <span className="text-[11px] text-slate-500 font-medium break-words whitespace-normal block mt-1">
+              {routeData?.processing_time_details || routeData.processing_time.match(/\(([^)]+)\)/)?.[1] || ''}
+            </span>
+          )}
+        </div>
+
+        {/* 2. Validity */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2 min-h-[90px] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+              <Calendar className="w-4 h-4 text-[#00a896]" />
+              <span>Validity</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-slate-900 break-words whitespace-normal leading-relaxed">
+              {routeData?.validity || routeData?.validity_and_stay?.visa_validity || (isVisaFree ? 'Up to 90 Days' : 'Not specified')}
+            </p>
+          </div>
+          {(routeData?.validity_details || (routeData?.validity && routeData.validity.toLowerCase().includes('plus'))) && (
+            <span className="text-[11px] text-slate-500 font-medium break-words whitespace-normal block mt-1">
+              {routeData?.validity_details || 'Includes post-study buffer period'}
+            </span>
+          )}
+        </div>
+
+        {/* 3. Stay Period */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2 min-h-[90px] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+              <Compass className="w-4 h-4 text-[#00a896]" />
+              <span>Stay Period</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-slate-900 break-words whitespace-normal leading-relaxed">
+              {routeData?.stay_duration || routeData?.validity_and_stay?.max_stay_per_entry || (isVisaFree ? 'Up to 60 Days on Arrival' : 'Not specified')}
+            </p>
+          </div>
+          {(routeData?.stay_duration_details || (routeData?.stay_duration && routeData.stay_duration.toLowerCase().includes('full duration'))) && (
+            <span className="text-[11px] text-emerald-700 font-medium break-words whitespace-normal block mt-1">
+              {routeData?.stay_duration_details || '✅ Entire academic program'}
+            </span>
+          )}
+        </div>
+
+        {/* 4. Entry Type */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2 min-h-[90px] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-1">
+              <ShieldCheck className="w-4 h-4 text-[#00a896]" />
+              <span>Entry</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-slate-900 break-words whitespace-normal leading-relaxed">
+              {routeData?.entry_type || entries || (isVisaFree ? 'Visa-Free Entry' : 'Single or Multiple Entry')}
+            </p>
+          </div>
+          {(routeData?.entry_type_details || routeData?.entry_type || entries || isVisaFree) && (
+            <span className="text-[11px] font-medium break-words whitespace-normal block mt-1">
+              {routeData?.entry_type_details ? (
+                <span className="text-slate-500">{routeData.entry_type_details}</span>
+              ) : (routeData?.entry_type || entries || '').toLowerCase().includes('multiple') ? (
+                <span className="text-blue-600">🔄 Multiple entries allowed during validity</span>
+              ) : (routeData?.entry_type || entries || '').toLowerCase().includes('single') ? (
+                <span className="text-amber-600">⚠️ Single entry only</span>
+              ) : isVisaFree ? (
+                <span className="text-emerald-600">✅ No prior visa required</span>
+              ) : null}
+            </span>
+          )}
+        </div>
+
+      </div>
+
       {/* ── 3. MAIN CONTENT: 2-COLUMN GRID (LEFT ACCORDIONS + TABLE, RIGHT STATS CARDS) ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* ── LEFT COLUMN (8 COLS) ── */}
@@ -916,12 +1033,12 @@ export function VisaApplicationDetailsView({
                             <CheckSquare className="w-3.5 h-3.5 stroke-[2.5]" />
                           ) : null}
                         </div>
-                        <div className="min-w-0">
-                          <h3 className={`text-xs sm:text-sm font-black truncate ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                        <div className="min-w-0 flex-1">
+                          <h3 className={`text-xs sm:text-sm font-black break-words whitespace-normal ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
                             {stepNum}. {stepTitle}
                           </h3>
                           {stepDesc && (
-                            <p className="text-[11px] text-slate-500 font-medium line-clamp-1 mt-0.5" title={stepDesc}>
+                            <p className="text-[11px] text-slate-500 font-medium break-words whitespace-normal leading-relaxed mt-0.5">
                               {stepDesc}
                             </p>
                           )}
@@ -1024,20 +1141,28 @@ export function VisaApplicationDetailsView({
                   {checklistDocuments.map((doc, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                       {/* 1. DOCUMENT */}
-                      <td className="py-2.5 px-3">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          {getDocumentChecklistIcon(doc.name)}
-                          <span className="font-bold text-slate-900 text-xs sm:text-sm truncate" title={doc.name}>
-                            {doc.name}
+                      <td className="py-3 px-3.5 align-top">
+                        <div className="flex items-start gap-2.5 min-w-0">
+                          <span className="mt-0.5 shrink-0">
+                            {getDocumentChecklistIcon(doc.name)}
                           </span>
+                          <div className="flex-1 min-w-0">
+                            <span className="font-bold text-slate-900 text-xs sm:text-sm break-words whitespace-normal block">
+                              {doc.name}
+                            </span>
+                            {/* Mobile-visible requirement description */}
+                            <p className="text-xs text-slate-600 break-words whitespace-normal leading-relaxed mt-1 md:hidden">
+                              {doc.req}
+                            </p>
+                          </div>
                         </div>
                       </td>
 
-                      {/* 2. REQUIREMENT (Hidden on mobile) */}
-                      <td className="py-2.5 px-3 text-slate-600 font-medium text-xs hidden md:table-cell">
-                        <span className="block max-w-xs sm:max-w-md line-clamp-2 text-slate-600 font-medium text-xs" title={doc.req}>
+                      {/* 2. REQUIREMENT (Desktop / Tablet) */}
+                      <td className="py-3 px-3.5 text-slate-600 font-medium text-xs hidden md:table-cell align-top">
+                        <p className="break-words whitespace-normal leading-relaxed text-slate-600 text-xs">
                           {doc.req}
-                        </span>
+                        </p>
                       </td>
 
                       {/* 3. READY TO USE (Square format checkbox) */}
@@ -1275,7 +1400,7 @@ export function VisaApplicationDetailsView({
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100">
                 <span className="text-slate-500 font-medium">Visa Category</span>
-                <span className="font-bold text-slate-900 truncate max-w-[170px] text-right">{resolvedVisaType}</span>
+                <span className="font-bold text-slate-900 break-words whitespace-normal text-right max-w-[200px]">{resolvedVisaType}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100">
                 <span className="text-slate-500 font-medium">Route</span>

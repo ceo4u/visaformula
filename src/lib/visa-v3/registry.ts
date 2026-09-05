@@ -356,6 +356,26 @@ export const INITIAL_20_COUNTRIES_REGISTRY: SourceRegistryEntry[] = [
     source_url: 'https://www.immigration.govt.nz',
     visa_path: '/new-zealand-visas/apply-for-a-visa/about-visa/visitor-visa',
     priority: 1
+  },
+
+  // 21. Ireland
+  {
+    destination_country: 'Ireland',
+    exact_hostname: 'irishimmigration.ie',
+    source_type: 'government',
+    source_name: 'Immigration Service Delivery (ISD), Department of Justice Ireland',
+    source_url: 'https://www.irishimmigration.ie',
+    visa_path: '/coming-to-visit-ireland/how-to-apply-for-a-short-stay-c-visit-tourist-visa/',
+    priority: 1
+  },
+  {
+    destination_country: 'Ireland',
+    exact_hostname: 'vfsglobal.com',
+    source_type: 'vac',
+    source_name: 'VFS Global Ireland Visa Application Centre',
+    source_url: 'https://visa.vfsglobal.com',
+    visa_path: '/ind/en/irl',
+    priority: 2
   }
 ];
 

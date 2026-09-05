@@ -67,7 +67,25 @@ export interface StructuredVisaRequirements {
   visa_type: string;
   source_url: string;
   official_source_name: string;
+  overview?: string;
+  consular_directives?: string[];
+  application_portal?: string;
+  vac_provider?: string;
+  processing_time?: string;
+  validity?: string;
+  stay_duration?: string;
+  entry_type?: string;
+  processing_time_details?: string;
+  validity_details?: string;
+  stay_duration_details?: string;
+  entry_type_details?: string;
+  validity_and_stay?: {
+    visa_validity?: string;
+    max_stay_per_entry?: string;
+    entry_type?: string;
+  };
   documents_required: DocumentRequiredItem[];
+  supportingDocuments?: any[];
   financial_proofs: FinancialProofItem[];
   other_requirements: OtherRequirementItem[];
   how_to_apply: string[];
@@ -354,6 +372,73 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
   const isCambodia = isDestination(toLower, 'cambodia', ['phnom penh', 'siem reap', 'angkor wat', 'cambodian']);
   const isChina = isDestination(toLower, 'china', ['beijing', 'shanghai', 'guangzhou', 'prc', "people's republic of china", 'chinese']);
   const isJamaica = isDestination(toLower, 'jamaica', ['kingston', 'montego bay', 'negril', 'ocho rios', 'jamaican']);
+  const isIreland = isDestination(toLower, 'ireland', ['republic of ireland', 'dublin', 'cork', 'galway', 'irish']);
+
+  // ═══════════════════════════════════════════════════════════════
+  // IRELAND PATHWAYS (Department of Justice / Immigration Service Delivery - ISD)
+  // ═══════════════════════════════════════════════════════════════
+  if (isIreland) {
+    return {
+      passport_country: from,
+      destination_country: 'Ireland',
+      purpose_of_visit: 'Tourism / Visit',
+      visa_type: "Short Stay 'C' Visit (Tourist) Visa",
+      source_url: 'https://www.irishimmigration.ie/coming-to-visit-ireland/how-to-apply-for-a-short-stay-c-visit-tourist-visa/',
+      official_source_name: 'Immigration Service Delivery (ISD), Department of Justice Ireland',
+      processing_time: '6 to 8 weeks (20 to 25 working days)',
+      processing_time_details: 'Standard consular processing via Embassy of Ireland, New Delhi',
+      validity: 'Typically issued for travel dates (up to 90 days)',
+      validity_details: 'Single or multiple entry valid for specified travel window',
+      stay_duration: 'Up to 90 Days (Strictly non-extendable)',
+      stay_duration_details: 'Duration determined by immigration officer at port of entry',
+      entry_type: 'Single Entry (Standard) / Multiple Entry (Subject to consular justification)',
+      entry_type_details: 'Multiple entries require proven travel history and strong justification',
+      overview: "The Short Stay 'C' Visit Visa allows Indian citizens to visit Ireland for tourism, visiting family/friends, or short business meetings. Ireland is NOT part of the Schengen zone.",
+      consular_directives: [
+        'Ireland is not part of the Schengen zone; a Schengen visa does NOT grant entry.',
+        'Do NOT purchase paid airline tickets until visa is issued - use itinerary/reservation only.',
+        'BIVS: If you hold a UK Standard Visitor Visa with BIVS endorsement, you can visit Ireland without a separate visa (enter UK first).',
+        'Short-stay visas are strictly non-extendable within Ireland.'
+      ],
+      documents_required: [
+        { title: 'Current Valid Passport', description: 'Original passport valid for at least 6 months after intended departure from Ireland with 2 blank pages, plus all previous passports.', is_mandatory: true },
+        { title: 'AVATS Online Application Summary Sheet', description: 'Signed and dated summary sheet generated upon completing the online AVATS form.', is_mandatory: true },
+        { title: 'Two Passport Sized Photographs', description: 'Meeting Irish visa photo standards (35x45mm, white background, taken in last 6 months, name and AVATS number on reverse).', is_mandatory: true },
+        { title: 'Comprehensive Letter of Application', description: 'Detailed cover letter outlining full travel itinerary, reason for visit, commitment to observe visa conditions and exit before expiry.', is_mandatory: true },
+        { title: 'Proof of Accommodation & Itinerary', description: 'Confirmed hotel/Airbnb reservation or letter of invitation with host proof of legal residence and address in Ireland.', is_mandatory: true },
+        { title: 'Detailed Flight Itinerary / Reservation', description: 'Round-trip flight booking showing entry and exit dates. Do NOT purchase actual tickets before visa grant.', is_mandatory: true },
+        { title: 'Proof of Obligations to Return to India', description: 'Letter from current employer approving leave and confirming ongoing job, or student proof, or property/asset ownership documents.', is_mandatory: true },
+        { title: 'Travel Medical Insurance', description: 'Comprehensive travel health insurance with minimum €30,000 medical coverage valid across Ireland.', is_mandatory: true }
+      ],
+      financial_proofs: [
+        { type: 'Personal Bank Statements', minimum_balance_or_amount: 'Original 6 months bank statements showing regular income and sufficient funds (approx. €500 per week of stay)', time_frame: 'Past 6 consecutive months', notes: 'Must be on bank letterhead or stamped/signed by issuing bank.' },
+        { type: 'Proof of Income & Taxes', minimum_balance_or_amount: 'Last 3 months salary payslips and last 3 years Income Tax Returns (ITR-V) / Form 16', time_frame: 'Last 3 years', notes: 'Demonstrates stable financial standing and continuous employment.' }
+      ],
+      other_requirements: [
+        { category: 'British-Irish Visa Scheme (BIVS)', details: 'Eligible Indian nationals with a valid UK Standard Visitor Visa stamped with BIVS can travel to Ireland without a separate Irish visa, provided they enter the UK first.' },
+        { category: 'Biometrics Enrollment', details: 'Indian applicants must schedule and attend an in-person biometric appointment at an authorized VFS Global Ireland VAC.' }
+      ],
+      how_to_apply: [
+        'Complete Online AVATS Application: Submit application on official AVATS portal (visas.inis.gov.ie/avats) and print summary sheet.',
+        'Pay Application Fee: Pay official statutory consular visa fee (€60 Single / €100 Multiple) online or at VAC.',
+        'Book VFS Appointment: Schedule biometric and document submission appointment at nearest VFS Global Ireland Visa Application Centre.',
+        'Submit Passport & Documents: Attend appointment, provide 10-digit fingerprint biometrics, and submit physical file.',
+        'Track Application Online: Monitor processing status via ISD Dublin weekly visa decision reports.',
+        'Collect Passport: Receive passport with Irish Visa Vignette stamped upon consular approval.'
+      ],
+      costs: {
+        visa_fee: '€60 (~₹5,400) Single Entry / €100 (~₹9,000) Multiple Entry',
+        service_fee: 'VFS Global service fee approx. ₹2,100',
+        total_fee: '€60 (~₹5,400) Single Entry Statutory Fee',
+        notes: 'Statutory consular fee paid to Department of Justice Ireland. Excludes VFS processing and optional courier.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply up to 3 months prior to intended travel date.',
+        decision_time: '6 to 8 weeks (20 to 25 working days from receipt at Embassy New Delhi).',
+        max_extension: 'Strictly non-extendable for Short Stay C Tourist visits.'
+      }
+    };
+  }
 
   // ═══════════════════════════════════════════════════════════════
   // MAURITIUS PATHWAYS (100% Verified Official Immigration Data)
@@ -5051,10 +5136,15 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         visa_type: 'Student Visa (Subclass 500)',
         source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500',
         official_source_name: 'Australian Department of Home Affairs (ImmiAccount)',
+        overview: 'The Student Visa (Subclass 500) allows international students to reside in Australia for the full duration of their registered CRICOS academic program to undertake full-time higher education, vocational training, or postgraduate research.',
         processing_time: 'Higher Education Sector: 30 to 60 calendar days (Peak intake: up to 10 weeks)',
+        processing_time_details: 'Standard Higher Education Sector processing on ImmiAccount',
         validity: 'Duration of enrolled CRICOS course plus 1 to 2 months post-study buffer',
+        validity_details: 'Includes post-study buffer period',
         stay_duration: 'Full duration of registered academic program (up to 5 years)',
+        stay_duration_details: 'Entire academic program with full continuous residence rights',
         entry_type: 'Multiple Entry',
+        entry_type_details: 'Multiple entries allowed during validity',
         validity_and_stay: {
           visa_validity: 'Duration of enrolled CRICOS academic program + 2 months post-study buffer',
           max_stay_per_entry: 'Full course duration with continuous residence rights',
@@ -5835,6 +5925,15 @@ function convertV3ToStructuredRequirements(
       max_extension: fallbackData?.processing_and_timing?.max_extension || 'Subject to local immigration authority',
       center_notes: v3.source_authority ? `Authority: ${v3.source_authority.toUpperCase()}` : undefined
     },
+    entry_type: d.entry_type?.value || fallbackData?.entry_type || 'Single or Multiple Entry',
+    overview: fallbackData?.overview,
+    consular_directives: fallbackData?.consular_directives,
+    application_portal: fallbackData?.application_portal,
+    vac_provider: fallbackData?.vac_provider,
+    processing_time_details: fallbackData?.processing_time_details,
+    validity_details: fallbackData?.validity_details,
+    stay_duration_details: fallbackData?.stay_duration_details,
+    entry_type_details: fallbackData?.entry_type_details,
     verification_status: v3.status.toLowerCase(),
     source_hash: v3.source_hash,
     source_content_hash: v3.source_hash,
@@ -5931,7 +6030,8 @@ export const POST: APIRoute = async ({ request }) => {
       { primary: 'bhutan', aliases: ['thimphu', 'paro', 'bhutanese'] },
       { primary: 'cambodia', aliases: ['phnom penh', 'siem reap', 'angkor wat', 'cambodian'] },
       { primary: 'china', aliases: ['beijing', 'shanghai', 'guangzhou', 'prc', 'chinese'] },
-      { primary: 'jamaica', aliases: ['kingston', 'montego bay', 'negril', 'ocho rios', 'jamaican'] }
+      { primary: 'jamaica', aliases: ['kingston', 'montego bay', 'negril', 'ocho rios', 'jamaican'] },
+      { primary: 'ireland', aliases: ['republic of ireland', 'dublin', 'cork', 'galway', 'irish'] }
     ];
 
     const isVerifiedCountry = VERIFIED_DESTINATIONS.some(d => isDestination(toCountry, d.primary, d.aliases || [], d.exclusions || []));

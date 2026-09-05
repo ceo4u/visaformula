@@ -9,25 +9,47 @@ import type { V3EngineResult } from '../../../lib/visa-v3/types';
 import fs from 'fs';
 import path from 'path';
 import {
+  normalizeCountry,
+  getStudentOverview,
   getStudentVisaData,
   getStudentVisaSteps,
   getStudentDocuments,
   getOfficialSourceName,
+  getStudentOfficialSourceName,
   getStudentProcessingTime,
+  getStudentProcessingDetails,
+  getStudentEntryType,
+  getStudentEntryDetails,
   getStudentValidity,
+  getStudentValidityDetails,
   getStudentStayDuration,
-  getStudentFees
+  getStudentStayDetails,
+  getStudentFees,
+  getStudentFAQ,
+  getStudentFinancialProofs,
+  getStudentOtherRequirements
 } from '../../../lib/student-visa';
 
 export {
+  normalizeCountry,
+  getStudentOverview,
   getStudentVisaData,
   getStudentVisaSteps,
   getStudentDocuments,
   getOfficialSourceName,
+  getStudentOfficialSourceName,
   getStudentProcessingTime,
+  getStudentProcessingDetails,
+  getStudentEntryType,
+  getStudentEntryDetails,
   getStudentValidity,
+  getStudentValidityDetails,
   getStudentStayDuration,
-  getStudentFees
+  getStudentStayDetails,
+  getStudentFees,
+  getStudentFAQ,
+  getStudentFinancialProofs,
+  getStudentOtherRequirements
 };
 
 export const prerender = false;

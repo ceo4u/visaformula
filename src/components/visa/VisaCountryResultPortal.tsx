@@ -1,7 +1,24 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
 import { ConsularMockPrepCard } from './ConsularMockPrepCard';
-import { getStudentVisaSteps, getStudentDocuments } from '../../lib/student-visa';
+import {
+  getStudentVisaSteps,
+  getStudentDocuments,
+  getStudentOverview,
+  getStudentFees,
+  getStudentProcessingTime,
+  getStudentProcessingDetails,
+  getStudentValidity,
+  getStudentValidityDetails,
+  getStudentStayDuration,
+  getStudentStayDetails,
+  getStudentEntryType,
+  getStudentEntryDetails,
+  getStudentFAQ,
+  getStudentFinancialProofs,
+  getStudentOtherRequirements,
+  getStudentOfficialSourceName
+} from '../../lib/student-visa';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3673,11 +3690,21 @@ export function VisaCountryResultPortal({
   const stepsPending = dynamicSteps.filter(s => (s.status as string) === 'pending').length;
   const stepsNotStarted = dynamicSteps.filter(s => (s.status as string) === 'not_started').length;
 
+  const isStudyTab = activePurposeTab === 'study' || initialPurpose === 'study';
+  const isWorkTab = activePurposeTab === 'work' || initialPurpose === 'work';
+
   const getResolvedProcessingTime = () => {
     const cLow = (countryName || '').toLowerCase().trim();
     const pLow = (passportCountry || '').toLowerCase().trim();
     const isIndian = pLow.includes('india') || pLow.includes('in');
     const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
+
+    // Student pathway processing time
+    if (isStudyTab) {
+      if (aiData?.processing_time) return aiData.processing_time;
+      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
+      return getStudentProcessingTime(countryName);
+    }
 
     // Instant / VoA / Direct Visa-Free destinations
     if (cLow.includes('mauritius') || cLow.includes('jamaica')) return 'Instant on Arrival (0 Days)';
@@ -3709,21 +3736,21 @@ export function VisaCountryResultPortal({
     return typeof baseData?.processingDays === 'number' && baseData.processingDays > 0 ? `${baseData.processingDays} Days` : 'Per Official Regulations';
   };
 
-  const isStudyTab = activePurposeTab === 'study' || initialPurpose === 'study';
-  const isWorkTab = activePurposeTab === 'work' || initialPurpose === 'work';
-
   const resolvedOverview = useMemo(() => {
     if (aiData?.overview) {
       const oLow = aiData.overview.toLowerCase();
       // Guard against tourist overview leaking into study tab
       if (isStudyTab && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
-        return `The ${countryName} Student Visa allows international students to reside in ${countryName} for the full duration of their academic program to undertake full-time higher education, university degrees, or approved vocational training.`;
+        return getStudentOverview(countryName);
       }
       // Guard against tourist overview leaking into work tab
       if (isWorkTab && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
         return `The ${countryName} Work Visa permits foreign professionals to reside and work legally in ${countryName} under approved employer sponsorship or official employment permits.`;
       }
       return aiData.overview;
+    }
+    if (isStudyTab) {
+      return getStudentOverview(countryName);
     }
     return `Travel to ${countryName} for ${isStudyTab ? 'higher education, university enrollment and academic research' : isWorkTab ? 'professional employment, corporate engagements and work assignments' : 'tourism, leisure, visiting family or friends, or attending short term events'}.`;
   }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab]);
@@ -3935,10 +3962,10 @@ export function VisaCountryResultPortal({
         ? 'Permanent Residency'
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
       const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isSchengen ? '15 Calendar Days' : 'Per Official Consular SLA');
-      const consularFeeVal = aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? 'EUR 90' : 'Official Consular Fee');
-      const serviceFeeVal = aiData?.costs?.service_fee || 'Rs. 2,200 (TravlTik Fast-Track Concierge)';
+      const consularFeeVal = aiData?.costs?.visa_fee || (isStudy ? getStudentFees(countryName).visa_fee : countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? 'EUR 90' : 'Official Consular Fee');
+      const serviceFeeVal = aiData?.costs?.service_fee || (isStudy ? getStudentFees(countryName).service_fee : 'Rs. 2,200 (TravlTik Fast-Track Concierge)');
       const stayDurationVal = isStudy 
-        ? 'Duration of Course (1-4 Yrs)' 
+        ? getStudentStayDuration(countryName) 
         : isWork 
         ? '1 to 5 Years' 
         : (isSchengen ? 'Up to 90 Days within 180 Days' : 'Up to 6 Months (180 Days)');
@@ -4065,26 +4092,26 @@ export function VisaCountryResultPortal({
         totalFee: isSchengen ? (countryName.toLowerCase().includes('spain') ? '107 EUR' : '120 EUR') : (aiData?.costs?.total_fee || consularFeeVal),
         feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
         stayDuration: stayDurationVal,
-        validity: isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days',
-        entryType: 'Single / Multiple Entry',
-        applyWindow: 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
+        validity: isStudy ? getStudentValidity(countryName) : (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days'),
+        entryType: isStudy ? getStudentEntryType(countryName) : 'Single / Multiple Entry',
+        applyWindow: isStudy ? 'Apply 3 to 4 months prior to program intake' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
         profileScore: currentProfileScore,
         profileDetails: profileDetailsList,
         documents: rawDocs,
         steps: rawSteps,
-        requirements: [
+        requirements: isStudy ? [
+          { title: 'Passport Validity Requirement', desc: 'Valid for at least 6 months beyond intended program duration with minimum 2 blank pages.' },
+          { title: 'Financial Solvency Benchmark', desc: getStudentFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Sufficient verified educational funds.' },
+          { title: 'Academic Progression & Intent', desc: 'Documented course justification, SOP, and certified academic credentials.' },
+          { title: 'Biometrics & Security Mandates', desc: getStudentOtherRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'VAC Biometrics and medical clearance.' }
+        ] : [
           { title: 'Passport Validity Requirement', desc: 'Original passport must be valid for min. 6 months beyond travel date with 2 blank pages.' },
           { title: 'Sufficient Financial Solvency', desc: 'Proof of liquid funds, bank statements, or approved sponsorship meeting immigration thresholds.' },
           { title: 'Confirmed Travel & Lodging', desc: 'Verifiable round-trip air ticket reservations and hotel booking or host invitation.' },
           { title: 'Overseas Medical Travel Insurance', desc: 'Medical insurance policy covering minimum EUR 30,000 / USD 50,000 including emergency evacuation.' },
           { title: 'Consular & Biometric Compliance', desc: 'Attendance at VAC for biometric capture or digital declaration submission before arrival.' }
         ],
-        faqs: [
-          { question: `Can this ${countryName} visa or entry permit be extended?`, answer: 'Extensions are at the discretion of the destination immigration department and must be requested prior to expiry.' },
-          { question: 'Is biometric submission or an interview mandatory?', answer: 'First-time consular applicants typically submit biometrics at the VAC; online e-Visas/VoA require digital documentation.' },
-          { question: 'What if my passport expires in less than 6 months?', answer: 'Airlines and border control strictly enforce 6-month validity; please renew your passport before lodging.' },
-          { question: 'Are visa application and VAC fees refundable?', answer: 'Consular fees cover administrative adjudication and are strictly non-refundable regardless of outcome.' }
-        ],
+        faqs: resolvedFaqs.slice(0, 5),
         trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://travltik.com/traveller/dashboard',
         timestamp: submissionDate
       };
@@ -5741,6 +5768,15 @@ export function VisaCountryResultPortal({
     }
   ];
 
+  const resolvedFaqs = useMemo(() => {
+    if (isStudyTab) {
+      if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
+      return getStudentFAQ(countryName);
+    }
+    if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
+    return faqs;
+  }, [isStudyTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
+
     // Dynamic Official Checklist populated directly from live AI / Consular Registry
   const portalDocItems = useMemo(() => {
     if (aiData?.documents_required && aiData.documents_required.length > 0) {
@@ -6023,11 +6059,11 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : (baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : (baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))))}</strong>
               </div>
             </div>
           </div>
@@ -6186,7 +6222,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))}
+                      {cleanStatValue(aiData?.validity || (isStudyTab ? getStudentValidity(countryName) : (baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Guidelines'))))}
                     </strong>
                   </div>
                 </div>
@@ -6198,7 +6234,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.stay_duration || baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))}
+                      {cleanStatValue(aiData?.stay_duration || (isStudyTab ? getStudentStayDuration(countryName) : (baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days' : 'Per Official Guidelines'))))}
                     </strong>
                   </div>
                 </div>
@@ -6210,7 +6246,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.entry_type || baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))}
+                      {cleanStatValue(aiData?.entry_type || (isStudyTab ? getStudentEntryType(countryName) : (baseData.entryType || (isSchengen ? 'Short Stay' : 'Multiple / Single'))))}
                     </strong>
                   </div>
                 </div>
@@ -6284,101 +6320,33 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="space-y-2.5">
-                    {/* 1. Original Passport */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 shadow-2xs">
-                          <FileText className="w-4 h-4" />
+                    {portalDocItems.slice(0, 4).map((doc, idx) => {
+                      const isUploaded = portalUploadedDocs[doc.key]?.status === 'completed';
+                      return (
+                        <div key={doc.key || idx} className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className={`w-10 h-10 rounded-xl ${doc.iconBg || 'bg-teal-50 text-teal-600'} flex items-center justify-center shrink-0 shadow-2xs`}>
+                              {doc.icon || <FileText className="w-4 h-4" />}
+                            </div>
+                            <div className="min-w-0">
+                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">{doc.name}</strong>
+                              <span className="text-[12px] font-medium text-teal-700 block mt-0.5">{doc.mandatory ? 'Mandatory' : 'Optional'}</span>
+                            </div>
+                          </div>
+                          {isUploaded ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
+                              <Check className="w-3 h-3 stroke-[3]" />
+                              <span>Uploaded</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
+                              <Clock className="w-3 h-3" />
+                              <span>Pending</span>
+                            </span>
+                          )}
                         </div>
-                        <div className="min-w-0">
-                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Original Passport</strong>
-                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
-                        </div>
-                      </div>
-                      {portalUploadedDocs['passport']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                          <span>Uploaded</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
-                          <Clock className="w-3 h-3" />
-                          <span>Pending</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* 2. Bank Statements (3 Months) */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 shadow-2xs">
-                          <CreditCard className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Bank Statements (3 Months)</strong>
-                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
-                        </div>
-                      </div>
-                      {portalUploadedDocs['bank_statements']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                          <span>Uploaded</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
-                          <Clock className="w-3 h-3" />
-                          <span>Pending</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* 3. Flight Reservation */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 shadow-2xs">
-                          <Plane className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Flight Reservation</strong>
-                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
-                        </div>
-                      </div>
-                      {portalUploadedDocs['flight_reservation']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                          <span>Uploaded</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
-                          <Clock className="w-3 h-3" />
-                          <span>Pending</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* 4. Hotel Accommodation */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs">
-                          <Building2 className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Hotel Accommodation</strong>
-                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
-                        </div>
-                      </div>
-                      {portalUploadedDocs['hotel_booking']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                          <span>Uploaded</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
-                          <Clock className="w-3 h-3" />
-                          <span>Pending</span>
-                        </span>
-                      )}
-                    </div>
+                      );
+                    })}
                   </div>
 
                   <button
@@ -6402,51 +6370,99 @@ export function VisaCountryResultPortal({
 
                     {/* 4 Feature Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                        <Sun className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Tourism</strong>
-                        <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Holiday or leisure trip</span>
-                      </div>
-                    </div>
+                    {isStudyTab ? (
+                      <>
+                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                            <GraduationCap className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Higher Education</strong>
+                            <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Full-time degree or accredited course</span>
+                          </div>
+                        </div>
 
-                    <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                        <Users className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Visit Family/ Friends</strong>
-                        <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Meet family or friends</span>
-                      </div>
-                    </div>
+                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                            <Briefcase className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Part-Time Work Rights</strong>
+                            <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Work during terms &amp; full-time in breaks</span>
+                          </div>
+                        </div>
 
-                    <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                        <Calendar className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Events</strong>
-                        <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Attend events or meetings</span>
-                      </div>
-                    </div>
+                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                            <Award className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Post-Study Work</strong>
+                            <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Graduate job search &amp; post-study permits</span>
+                          </div>
+                        </div>
 
-                    <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                        <ShieldCheck className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Short Term Stay</strong>
-                        <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
-                          {countryName.toLowerCase().includes('china')
-                            ? 'Up to 30 Days per Entry (as determined by consular officer)'
-                            : isSchengen
-                            ? 'Up to 90 days within 180 days'
-                            : (aiData?.validity_and_stay?.max_stay_per_entry || aiData?.stay_duration || 'Up to 30 Days per Entry')}
-                        </span>
-                      </div>
-                    </div>
+                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <Calendar className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Academic Duration</strong>
+                            <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
+                              Full course duration + post-study buffer
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                            <Sun className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Tourism</strong>
+                            <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Holiday or leisure trip</span>
+                          </div>
+                        </div>
+
+                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                            <Users className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Visit Family/ Friends</strong>
+                            <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Meet family or friends</span>
+                          </div>
+                        </div>
+
+                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                            <Calendar className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Events</strong>
+                            <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Attend events or meetings</span>
+                          </div>
+                        </div>
+
+                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <ShieldCheck className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Short Term Stay</strong>
+                            <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
+                              {countryName.toLowerCase().includes('china')
+                                ? 'Up to 30 Days per Entry (as determined by consular officer)'
+                                : isSchengen
+                                ? 'Up to 90 days within 180 days'
+                                : (aiData?.validity_and_stay?.max_stay_per_entry || aiData?.stay_duration || 'Up to 30 Days per Entry')}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -6859,16 +6875,23 @@ export function VisaCountryResultPortal({
                     <ul className="space-y-2.5">
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isStudyTab ? '6 months beyond intended program duration' : isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {countryName.toLowerCase().includes('china') ? 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).' : (aiData?.processing_and_timing?.max_extension || aiData?.validity_and_stay?.max_stay_per_entry || 'Maximum authorized stay determined at port of entry.')}</span>
+                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : countryName.toLowerCase().includes('china') ? 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).' : (aiData?.processing_and_timing?.max_extension || aiData?.validity_and_stay?.max_stay_per_entry || 'Maximum authorized stay determined at port of entry.')}</span>
                       </li>
-                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                        <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
-                      </li>
+                      {isStudyTab ? (
+                        <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                          <span className="text-slate-400 select-none">•</span>
+                          <span><strong className="font-semibold text-slate-900">Student Work Rights:</strong> Permitted to work part-time during academic terms (e.g. 20 hrs/week or 48 hrs/fortnight) and full-time during official semester vacations and scheduled course breaks.</span>
+                        </li>
+                      ) : (
+                        <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                          <span className="text-slate-400 select-none">•</span>
+                          <span><strong className="font-semibold text-slate-900">No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
+                        </li>
+                      )}
                     </ul>
                   </div>
 
@@ -6881,54 +6904,89 @@ export function VisaCountryResultPortal({
                       <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Financial Solvency Benchmarks</h3>
                     </div>
                     <ul className="space-y-2.5">
-                      {aiData?.financial_proofs && aiData.financial_proofs.length > 0 ? (
-                        aiData.financial_proofs.slice(0, 3).map((fp: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
-                          </li>
-                        ))
-                      ) : (
-                        <>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
-                          </li>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
-                          </li>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
-                          </li>
-                        </>
-                      )}
+                      {(() => {
+                        const fpList = (aiData?.financial_proofs && aiData.financial_proofs.length > 0)
+                          ? aiData.financial_proofs
+                          : isStudyTab
+                          ? getStudentFinancialProofs(countryName)
+                          : null;
+                        if (fpList && fpList.length > 0) {
+                          return fpList.slice(0, 3).map((fp: any, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the program.'}</span>
+                            </li>
+                          ));
+                        }
+                        return (
+                          <>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
+                            </li>
+                          </>
+                        );
+                      })()}
                     </ul>
                   </div>
 
-                  {/* Pillar 3: Home Ties & Return Intent */}
+                  {/* Pillar 3: Home Ties / Academic Progression */}
                   <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                        <Briefcase className="w-4 h-4" />
-                      </div>
-                      <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Home Ties &amp; Return Intent</h3>
-                    </div>
-                    <ul className="space-y-2.5">
-                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                        <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                        <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Return Intent:</strong> {(countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa')) ? 'Applicant must demonstrate strong economic and residential roots to overcome INA Section 214(b) presumption.' : 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'}</span>
-                      </li>
-                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                        <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
-                      </li>
-                    </ul>
+                    {isStudyTab ? (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                            <GraduationCap className="w-4 h-4" />
+                          </div>
+                          <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Academic Intent &amp; Progression</h3>
+                        </div>
+                        <ul className="space-y-2.5">
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Genuine Student Intent:</strong> Documented course justification, statement of purpose (SOP), and academic progression rationale.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Academic Credentials:</strong> Certified copies of graduation degrees, transcripts, and standardized language proficiency scores.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Immigration Compliance:</strong> Maintain satisfactory full-time course progression and adhere to national student visa parameters.</span>
+                          </li>
+                        </ul>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                            <Briefcase className="w-4 h-4" />
+                          </div>
+                          <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Home Ties &amp; Return Intent</h3>
+                        </div>
+                        <ul className="space-y-2.5">
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Return Intent:</strong> {(countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa')) ? 'Applicant must demonstrate strong economic and residential roots to overcome INA Section 214(b) presumption.' : 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'}</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
+                          </li>
+                        </ul>
+                      </>
+                    )}
                   </div>
 
                   {/* Pillar 4: Biometrics & Security Protocols */}
@@ -6940,29 +6998,37 @@ export function VisaCountryResultPortal({
                       <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Biometrics &amp; Security Mandates</h3>
                     </div>
                     <ul className="space-y-2.5">
-                      {aiData?.other_requirements && aiData.other_requirements.length > 0 ? (
-                        aiData.other_requirements.slice(0, 3).map((orq: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">{orq.category}:</strong> {orq.details}</span>
-                          </li>
-                        ))
-                      ) : (
-                        <>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
-                          </li>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
-                          </li>
-                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
-                            <span className="text-slate-400 select-none">•</span>
-                            <span><strong className="font-semibold text-slate-900">Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
-                          </li>
-                        </>
-                      )}
+                      {(() => {
+                        const otherList = (aiData?.other_requirements && aiData.other_requirements.length > 0)
+                          ? aiData.other_requirements
+                          : isStudyTab
+                          ? getStudentOtherRequirements(countryName)
+                          : null;
+                        if (otherList && otherList.length > 0) {
+                          return otherList.slice(0, 3).map((orq: any, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">{orq.category}:</strong> {orq.details}</span>
+                            </li>
+                          ));
+                        }
+                        return (
+                          <>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                              <span className="text-slate-400 select-none">•</span>
+                              <span><strong className="font-semibold text-slate-900">Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
+                            </li>
+                          </>
+                        );
+                      })()}
                     </ul>
                   </div>
                 </div>
@@ -7125,7 +7191,7 @@ export function VisaCountryResultPortal({
                 <div>
                   <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Fees &amp; Payment Details</h2>
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5">
-                    Official statutory fees verified from {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
+                    Official statutory fees verified from {aiData?.official_source_name || (isStudyTab ? getStudentOfficialSourceName(countryName) : ('the Embassy of ' + countryName))}.
                   </p>
                 </div>
 
@@ -7133,25 +7199,25 @@ export function VisaCountryResultPortal({
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">Consular Visa Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
+                      {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
                     </strong>
                   </div>
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (No Appointment Needed)' : countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
+                      {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : countryName.toLowerCase().includes('mauritius') ? '₹0 (No Appointment Needed)' : countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
                     <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Total Official Fee</span>
                     <strong className="text-[20px] sm:text-[22px] font-semibold text-teal-700">
-                      {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (Free on Arrival)' : countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
+                      {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : countryName.toLowerCase().includes('mauritius') ? '₹0 (Free on Arrival)' : countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
                     </strong>
                   </div>
                 </div>
-                {aiData?.costs?.notes && (
+                {(aiData?.costs?.notes || (isStudyTab && getStudentFees(countryName).notes)) && (
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                    ℹ️ {aiData.costs.notes}
+                    ℹ️ {aiData?.costs?.notes || (isStudyTab ? getStudentFees(countryName).notes : '')}
                   </p>
                 )}
                 <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal">
@@ -7170,19 +7236,19 @@ export function VisaCountryResultPortal({
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || (countryName.toLowerCase().includes('mauritius') ? 'Instant on Arrival (0 Days)' : isSchengen ? '15 – 20 Days' : '5 – 10 Days')}
+                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isStudyTab ? getStudentProcessingTime(countryName) : countryName.toLowerCase().includes('mauritius') ? 'Instant on Arrival (0 Days)' : isSchengen ? '15 – 20 Days' : '5 – 10 Days')}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || (countryName.toLowerCase().includes('mauritius') ? 'Granted directly upon landing at SSR International Airport (Mauritius).' : 'Calculated from the date biometric submission is completed at the consular center.')}
+                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isStudyTab ? getStudentProcessingDetails(countryName) : countryName.toLowerCase().includes('mauritius') ? 'Granted directly upon landing at SSR International Airport (Mauritius).' : 'Calculated from the date biometric submission is completed at the consular center.')}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Recommended Filing Window</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.apply_window || (countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
+                      {aiData?.processing_and_timing?.apply_window || (isStudyTab ? 'Apply 3 to 4 months prior to program intake' : countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.max_extension || (countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
+                      {aiData?.processing_and_timing?.max_extension || (isStudyTab ? 'Renewable annually based on ongoing academic standing.' : countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
                     </p>
                   </div>
                 </div>
@@ -7218,7 +7284,7 @@ export function VisaCountryResultPortal({
               <div className="space-y-4 text-left animate-fade-up">
                 <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 px-1 tracking-tight">Frequently Asked Questions</h2>
                 <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
-                  {faqs.map((faq, idx) => {
+                  {resolvedFaqs.map((faq, idx) => {
                     const isOpen = Boolean(openFaqs[idx]);
                     return (
                       <div key={idx} className="transition-colors">
@@ -7326,19 +7392,19 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Adult)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {isSchengen ? '€80' : (aiData?.costs?.visa_fee || '$185 USD')}
+                    {aiData?.costs?.visa_fee || (isStudyTab ? getStudentFees(countryName).visa_fee : isSchengen ? '€80' : '$185 USD')}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Child 6-12 yrs)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {isSchengen ? '€40' : (aiData?.costs?.child_fee || '$95 USD')}
+                    {aiData?.costs?.child_fee || (isStudyTab ? 'N/A (Primary Applicant)' : isSchengen ? '€40' : '$95 USD')}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Service Fee</span>
                   <strong className="text-slate-900 font-semibold">
-                    {isSchengen ? '€25' : (aiData?.costs?.service_fee || '$25 USD')}
+                    {aiData?.costs?.service_fee || (isStudyTab ? getStudentFees(countryName).service_fee : isSchengen ? '€25' : '$25 USD')}
                   </strong>
                 </div>
 
@@ -7347,7 +7413,7 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-slate-900 text-[14px]">Total</span>
                   <strong className="text-[16px] font-semibold text-slate-900">
-                    {isSchengen ? '€105' : (aiData?.costs?.total_fee || '$210 USD')}
+                    {aiData?.costs?.total_fee || (isStudyTab ? getStudentFees(countryName).total_fee : isSchengen ? '€105' : '$210 USD')}
                   </strong>
                 </div>
 
@@ -10091,7 +10157,7 @@ export function VisaCountryResultPortal({
               </div>
 
               <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
-                {faqs.map((faq, idx) => {
+                {resolvedFaqs.map((faq, idx) => {
                   const isOpen = activeFaq === idx;
                   return (
                     <div key={idx} className="bg-white">

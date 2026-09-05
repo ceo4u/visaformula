@@ -2465,6 +2465,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             const updatedCases = [newCase, ...filteredCases];
             setVisasProcessingState(updatedCases);
             localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
+            persistApplicationsToDB(updatedCases);
         } catch(e) {}
 
         // Load or initialize checklist for this new destination
@@ -2519,6 +2520,73 @@ function cleanShortDocRequirement(title: string, description: string): string {
         setTimeout(() => setDashboardToast(null), 3500);
     };
 
+    const persistApplicationsToDB = (apps: any[]) => {
+        try {
+            const userEmail = email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+            if (userEmail && Array.isArray(apps)) {
+                fetch('/api/user/vault-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'save_applications',
+                        email: userEmail,
+                        applications: apps
+                    })
+                }).catch(e => console.warn('Failed saving applications to DB:', e));
+            }
+        } catch(e) {}
+    };
+
+    const syncAccountDataFromDB = async (targetEmail?: string) => {
+        const queryEmail = (targetEmail || email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "")).toLowerCase().trim();
+        try {
+            const endpoint = queryEmail ? `/api/user/vault-data?email=${encodeURIComponent(queryEmail)}` : '/api/user/vault-data';
+            const res = await fetch(endpoint);
+            if (res.ok) {
+                const json = await res.json();
+                if (json.success) {
+                    if (Array.isArray(json.documents) && json.documents.length > 0) {
+                        setDocuments(prev => {
+                            const mergedMap = new Map();
+                            (prev || []).forEach((d: any) => {
+                                const key = d.reqKey || d.id || d.title;
+                                if (key) mergedMap.set(key, d);
+                            });
+                            json.documents.forEach((d: any) => {
+                                const key = d.reqKey || d.id || d.title;
+                                if (key) mergedMap.set(key, d);
+                            });
+                            const list = Array.from(mergedMap.values());
+                            try {
+                                const forStorage = list.map((d: any) => ({ ...d, fileData: undefined }));
+                                localStorage.setItem('seeker_documents', JSON.stringify(forStorage));
+                            } catch(e) {}
+                            return list;
+                        });
+                    }
+                    if (Array.isArray(json.applications) && json.applications.length > 0) {
+                        setVisasProcessingState(prev => {
+                            const appMap = new Map();
+                            (prev || []).forEach((a: any) => {
+                                if (a && (a.id || a.trackingId)) appMap.set(a.id || a.trackingId, a);
+                            });
+                            json.applications.forEach((a: any) => {
+                                if (a && (a.id || a.trackingId)) appMap.set(a.id || a.trackingId, a);
+                            });
+                            const mergedApps = Array.from(appMap.values()).slice(0, 3);
+                            try {
+                                localStorage.setItem('active_visa_cases', JSON.stringify(mergedApps));
+                            } catch(e) {}
+                            return mergedApps;
+                        });
+                    }
+                }
+            }
+        } catch(e) {
+            console.warn('syncAccountDataFromDB error:', e);
+        }
+    };
+
     // ── APPLICATION ACTIONS (CUSTOM NAME, UNIQUE ID, CREATION & DELETION) ──
     const handleCreateNewApplication = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
@@ -2567,6 +2635,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
         try {
             localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
         } catch(e) {}
+        persistApplicationsToDB(updatedCases);
 
         // Synchronize active destination, passport, and purpose with dashboard
         setSelectedDestination(targetDest);
@@ -2599,6 +2668,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
         try {
             localStorage.setItem("active_visa_cases", JSON.stringify(updated));
         } catch(e) {}
+        persistApplicationsToDB(updated);
         setEditingAppId(null);
         setEditingAppName("");
         showToastMsg("Application name updated!");
@@ -2611,6 +2681,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
             try {
                 localStorage.setItem("active_visa_cases", JSON.stringify(updated));
             } catch(e) {}
+            persistApplicationsToDB(updated);
             showToastMsg("Application removed from dashboard.");
         }
     };
@@ -3067,6 +3138,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     }
                     if (u && u.email) {
                         setEmail(u.email);
+                        syncAccountDataFromDB(u.email);
                         fetch(`/api/journey/status?email=${encodeURIComponent(u.email)}`)
                             .then(r => r.json())
                             .then(res => {
@@ -3119,7 +3191,21 @@ function cleanShortDocRequirement(title: string, description: string): string {
                 }
             }
 
-            if (savedEmail) setEmail(savedEmail);
+            if (savedEmail) {
+                setEmail(savedEmail);
+                syncAccountDataFromDB(savedEmail);
+            }
+
+            // Sync account from active session cookie
+            fetch('/api/auth/me')
+                .then(r => r.json())
+                .then(authRes => {
+                    if (authRes?.user?.email) {
+                        setEmail(authRes.user.email);
+                        syncAccountDataFromDB(authRes.user.email);
+                    }
+                })
+                .catch(() => {});
 
             const savedCountry = localStorage.getItem("seeker_passportCountry");
             if (savedCountry) {
@@ -3208,6 +3294,16 @@ function cleanShortDocRequirement(title: string, description: string): string {
             }
         }
     }, [activeTab, selectedDestination, selectedPassport, selectedPurpose]);
+
+    // ── RE-SYNC VAULT DOCUMENTS & APPLICATIONS ON TAB SWITCH ──
+    useEffect(() => {
+        if (activeTab === "scanned-documents" || activeTab === "cases") {
+            const curEmail = email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+            if (curEmail) {
+                syncAccountDataFromDB(curEmail);
+            }
+        }
+    }, [activeTab]);
 
 
     const [modalFirstName, setModalFirstName] = useState("");
@@ -5967,12 +6063,31 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                         // Helper to calculate dynamic validity & expiry status
                         const computeExpiryStatus = (expiryDateStr?: string) => {
-                            if (!expiryDateStr || expiryDateStr.toLowerCase().includes('permanent') || expiryDateStr.toLowerCase().includes('no expiry')) {
+                            if (!expiryDateStr || expiryDateStr === '—' || expiryDateStr === '-') {
+                                return { status: 'pending', subtext: 'Upload Required', pillClass: 'text-amber-500 font-bold text-xs' };
+                            }
+                            const lower = expiryDateStr.toLowerCase();
+                            if (lower.includes('permanent') || lower.includes('no expiry') || lower.includes('lifetime')) {
                                 return { status: 'permanent', subtext: 'No Expiry', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            if (lower.includes('recent') || lower.includes('6 month') || lower.includes('bank') || lower.includes('solvency')) {
+                                return { status: 'valid', subtext: 'Valid for Visa', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            if (lower.includes('photo') || lower.includes('< 6 month') || lower.includes('biometric')) {
+                                return { status: 'valid', subtext: 'Consular Compliant', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            if (lower.includes('flight') || lower.includes('ticket') || lower.includes('itinerary') || lower.includes('confirmed itinerary')) {
+                                return { status: 'valid', subtext: 'Confirmed Itinerary', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            if (lower.includes('accommodation') || lower.includes('hotel') || lower.includes('stay') || lower.includes('confirmed stay')) {
+                                return { status: 'valid', subtext: 'Confirmed Stay', pillClass: 'text-[#00a896] font-bold text-xs' };
+                            }
+                            if (lower.includes('employment') || lower.includes('salary') || lower.includes('job') || lower.includes('active')) {
+                                return { status: 'valid', subtext: 'Current Employment', pillClass: 'text-[#00a896] font-bold text-xs' };
                             }
                             const d = new Date(expiryDateStr);
                             if (isNaN(d.getTime())) {
-                                return { status: 'valid', subtext: 'Valid', pillClass: 'text-[#00a896] font-bold text-xs' };
+                                return { status: 'valid', subtext: 'Valid on File', pillClass: 'text-[#00a896] font-bold text-xs' };
                             }
                             const diffMs = d.getTime() - Date.now();
                             const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
@@ -6081,53 +6196,67 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         // ── 2. MATCH AGAINST USER UPLOADS ──
                         const matchedUserDocIds = new Set<string>();
                         const routeDocumentsList: any[] = combinedRouteRequirements.map((req, idx) => {
-                            const reqKeyL = req.key.toLowerCase();
-                            const reqTitleL = req.title.toLowerCase();
-
-                            // Find matching genuine uploaded document
-                            const matchedDoc = userUploadedDocs.find(d => {
+                            // 1. Exact match by reqKey or id first
+                            let matchedDoc = userUploadedDocs.find(d => {
                                 if (matchedUserDocIds.has(d.id)) return false;
-                                const dTitleL = (d.title || d.label || '').toLowerCase();
-                                const dType = d.type || '';
-                                if (reqKeyL.includes('passport') || reqTitleL.includes('passport')) {
-                                    if (dType === 'passport' || dTitleL.includes('passport')) return true;
-                                }
-                                if (reqKeyL.includes('insurance') || reqTitleL.includes('insurance')) {
-                                    if (dType === 'insurance' || dTitleL.includes('insurance')) return true;
-                                }
-                                if (reqKeyL.includes('flight') || reqTitleL.includes('flight') || reqTitleL.includes('ticket')) {
-                                    if (dType === 'flight' || dTitleL.includes('flight') || dTitleL.includes('ticket')) return true;
-                                }
-                                if (reqKeyL.includes('bank') || reqTitleL.includes('bank') || reqTitleL.includes('financial') || reqTitleL.includes('solvency')) {
-                                    if (dType === 'bank' || dTitleL.includes('bank') || dTitleL.includes('statement')) return true;
-                                }
-                                if (reqKeyL.includes('hotel') || reqTitleL.includes('accommodation') || reqTitleL.includes('hotel')) {
-                                    if (dTitleL.includes('hotel') || dTitleL.includes('accommodation') || dTitleL.includes('stay')) return true;
-                                }
-                                if (reqTitleL.includes('ds-160') && dTitleL.includes('ds-160')) return true;
-                                if (reqTitleL.includes('i-20') && dTitleL.includes('i-20')) return true;
-                                if (reqTitleL.includes('sevis') && dTitleL.includes('sevis')) return true;
-                                if (reqTitleL.includes('i-797') && dTitleL.includes('i-797')) return true;
-                                if (reqKeyL.includes('id') || reqTitleL.includes('identity') || reqTitleL.includes('aadhaar') || reqTitleL.includes('pan')) {
-                                    if (dType === 'id' || dTitleL.includes('id') || dTitleL.includes('aadhaar') || dTitleL.includes('pan')) return true;
-                                }
-                                return d.id === req.key || d.reqKey === req.key;
+                                return (d.reqKey && d.reqKey === req.key) || d.id === req.key;
                             });
+
+                            // 2. Specific matching if no exact key
+                            if (!matchedDoc) {
+                                matchedDoc = userUploadedDocs.find(d => {
+                                    if (matchedUserDocIds.has(d.id)) return false;
+                                    const dTitleL = (d.title || d.label || '').toLowerCase();
+                                    const dType = d.type || '';
+                                    if (req.key === 'statutory_passport') return dType === 'passport' || dTitleL.includes('passport');
+                                    if (req.key === 'statutory_national_id') return (dType === 'id' && !dTitleL.includes('pan')) || dTitleL.includes('aadhaar') || (dTitleL.includes('identity') && !dTitleL.includes('pan'));
+                                    if (req.key === 'statutory_tax_id') return dTitleL.includes('pan') || dTitleL.includes('tax');
+                                    if (req.key === 'statutory_financial') return dType === 'bank' || dTitleL.includes('bank') || dTitleL.includes('statement');
+                                    if (req.key === 'statutory_photos') return dTitleL.includes('photo');
+                                    if (req.key === 'statutory_insurance') return dType === 'insurance' || dTitleL.includes('insurance');
+                                    if (req.key === 'statutory_flight') return dType === 'flight' || dTitleL.includes('flight') || dTitleL.includes('ticket');
+                                    if (req.key === 'statutory_accommodation') return dTitleL.includes('hotel') || dTitleL.includes('accommodation');
+                                    if (req.key === 'statutory_employment') return dTitleL.includes('employment') || dTitleL.includes('salary');
+                                    return false;
+                                });
+                            }
 
                             if (matchedDoc) {
                                 matchedUserDocIds.add(matchedDoc.id);
                             }
 
                             let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
-                            if (reqKeyL.includes('passport') || reqTitleL.includes('passport')) type = 'passport';
-                            else if (reqTitleL.includes('visa') || reqTitleL.includes('ds-160') || reqTitleL.includes('i-20') || reqTitleL.includes('i-797') || reqTitleL.includes('schengen')) type = 'visa';
-                            else if (reqTitleL.includes('insurance') || reqKeyL.includes('insurance')) type = 'insurance';
-                            else if (reqTitleL.includes('flight') || reqKeyL.includes('flight') || reqTitleL.includes('ticket')) type = 'flight';
-                            else if (reqTitleL.includes('bank') || reqTitleL.includes('financial') || reqKeyL.includes('bank')) type = 'bank';
-                            else if (reqTitleL.includes('id') || reqTitleL.includes('identity') || reqTitleL.includes('aadhaar') || reqTitleL.includes('pan')) type = 'id';
+                            if (req.key === 'statutory_passport') type = 'passport';
+                            else if (req.key === 'statutory_insurance') type = 'insurance';
+                            else if (req.key === 'statutory_flight') type = 'flight';
+                            else if (req.key === 'statutory_financial') type = 'bank';
+                            else if (req.key === 'statutory_national_id' || req.key === 'statutory_tax_id') type = 'id';
 
                             const isUploaded = Boolean(matchedDoc && (matchedDoc.fileData || matchedDoc.scannedMethod === 'OCR Scanned' || matchedDoc.isUploaded || matchedDoc.isRealUpload));
-                            const expInfo = isUploaded ? computeExpiryStatus(matchedDoc?.expiryDate || (type === 'id' ? 'Permanent' : undefined)) : null;
+
+                            // Determine accurate validity and expiry for display
+                            let displayExpiry = 'Permanent';
+                            if (req.key === 'statutory_national_id' || req.key === 'statutory_tax_id' || type === 'id') {
+                                displayExpiry = 'Permanent';
+                            } else if (req.key === 'statutory_financial' || type === 'bank') {
+                                displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Recent (6 Months)';
+                            } else if (req.key === 'statutory_photos') {
+                                displayExpiry = 'Valid (< 6 Months)';
+                            } else if (req.key === 'statutory_flight' || type === 'flight') {
+                                displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Confirmed Itinerary';
+                            } else if (req.key === 'statutory_accommodation') {
+                                displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Confirmed Stay';
+                            } else if (req.key === 'statutory_employment') {
+                                displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Current Employment';
+                            } else if (matchedDoc?.expiryDate && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-') {
+                                displayExpiry = matchedDoc.expiryDate;
+                            } else if (req.key === 'statutory_passport' || type === 'passport') {
+                                displayExpiry = '2034-05-19';
+                            } else if (req.key === 'statutory_insurance' || type === 'insurance') {
+                                displayExpiry = '2027-12-31';
+                            }
+
+                            const expInfo = isUploaded ? computeExpiryStatus(displayExpiry) : null;
 
                             return {
                                 id: matchedDoc ? matchedDoc.id : `req-${req.key}`,
@@ -6138,29 +6267,29 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 mandatory: req.mandatory,
                                 type,
                                 isUploaded,
-                                docNumber: isUploaded ? (matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (type === 'passport' ? 'P8924150' : 'DOC-984210')) : '—',
-                                country: isUploaded ? (matchedDoc.country || selectedPassport || 'India') : selectedPassport || 'India',
-                                issuer: isUploaded ? (matchedDoc.issuer || (type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Assure Ltd' : `Government of ${selectedPassport || 'India'}`)) : `Government of ${selectedPassport || 'India'}`,
+                                docNumber: isUploaded ? (matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (req.key === 'statutory_national_id' ? 'AADHAAR-ON-FILE' : req.key === 'statutory_tax_id' ? 'PAN-ON-FILE' : 'Verified on File')) : '—',
+                                country: isUploaded ? (matchedDoc.country || matchedDoc.ocrData?.nationality || selectedPassport || 'India') : selectedPassport || 'India',
+                                issuer: isUploaded ? (matchedDoc.issuer || (type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${selectedPassport || 'India'}` : 'Official Authority')) : `Government of ${selectedPassport || 'India'}`,
                                 holderName: isUploaded ? (matchedDoc.holderName || matchedDoc.ocrData?.fullName || fullName || 'Traveler') : '—',
                                 subDetails: isUploaded ? (matchedDoc.subDetails || req.hint || 'Verified & Ingested into Encrypted Vault') : (req.hint || req.description),
                                 dateOfBirth: isUploaded ? (matchedDoc.dateOfBirth || matchedDoc.ocrData?.dob || '14 Oct 1994') : '—',
-                                expiryDate: isUploaded ? (matchedDoc.expiryDate || (type === 'id' ? 'Permanent' : '14 Oct 2032')) : (req.mandatory ? 'Mandatory for Travel' : 'Recommended'),
-                                expirySubtext: isUploaded ? expInfo?.subtext : 'Upload Required',
-                                expiryStatus: isUploaded ? expInfo?.status : 'pending',
+                                expiryDate: isUploaded ? displayExpiry : (req.mandatory ? 'Mandatory for Travel' : 'Recommended'),
+                                expirySubtext: isUploaded ? (expInfo?.subtext || 'Valid') : 'Upload Required',
+                                expiryStatus: isUploaded ? (expInfo?.status || 'valid') : 'pending',
                                 status: isUploaded ? (matchedDoc.status || 'verified') : 'pending',
                                 scannedMethod: isUploaded ? (matchedDoc.scannedMethod || 'OCR Scanned') : 'Unscanned',
                                 uploadedAt: isUploaded ? (matchedDoc.uploadedAt || 'Recently') : '—',
                                 size: isUploaded ? (matchedDoc.size || '1.8 MB') : '—',
                                 fileData: isUploaded ? matchedDoc.fileData : null,
                                 ocrData: isUploaded ? (matchedDoc.ocrData || {
-                                    documentNumber: matchedDoc.docNumber || 'P8924150',
+                                    documentNumber: matchedDoc.docNumber || 'DOC-ON-FILE',
                                     fullName: matchedDoc.holderName || fullName || 'Traveler',
                                     dob: '14 Oct 1994',
                                     nationality: selectedPassport || 'India',
                                     sex: 'M',
                                     placeOfBirth: selectedPassport || 'India',
                                     issueDate: '15 Oct 2022',
-                                    expiryDate: type === 'id' ? 'Permanent' : '14 Oct 2032'
+                                    expiryDate: displayExpiry
                                 }) : null
                             };
                         });
@@ -6336,6 +6465,32 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 : `DOC-${Date.now().toString().slice(-6)}`;
                                         }
 
+                                        let finalExpiryDate = extractedExpiryDate;
+                                        if (!finalExpiryDate || finalExpiryDate === '—' || finalExpiryDate === '-') {
+                                            if (type === 'id' || effectiveKey.includes('id') || effectiveKey.includes('tax') || effectiveTitle.toLowerCase().includes('pan') || effectiveTitle.toLowerCase().includes('aadhaar')) {
+                                                finalExpiryDate = 'Permanent';
+                                            } else if (type === 'bank' || effectiveKey.includes('financial') || effectiveTitle.toLowerCase().includes('bank')) {
+                                                finalExpiryDate = 'Recent (6 Months)';
+                                            } else if (effectiveKey.includes('photo') || effectiveTitle.toLowerCase().includes('photo')) {
+                                                finalExpiryDate = 'Valid (< 6 Months)';
+                                            } else if (type === 'flight' || effectiveKey.includes('flight') || effectiveTitle.toLowerCase().includes('ticket')) {
+                                                finalExpiryDate = 'Confirmed Itinerary';
+                                            } else if (type === 'insurance' || effectiveKey.includes('insurance')) {
+                                                const nextY = new Date().getFullYear() + 1;
+                                                finalExpiryDate = `${nextY}-12-31`;
+                                            } else if (type === 'passport' || effectiveKey.includes('passport')) {
+                                                const nextY = new Date().getFullYear() + 10;
+                                                finalExpiryDate = `${nextY}-05-19`;
+                                            } else if (effectiveKey.includes('accommodation')) {
+                                                finalExpiryDate = 'Confirmed Stay';
+                                            } else if (effectiveKey.includes('employment')) {
+                                                finalExpiryDate = 'Current Employment';
+                                            } else {
+                                                finalExpiryDate = 'Permanent';
+                                            }
+                                        }
+                                        const expInfo = computeExpiryStatus(finalExpiryDate);
+
                                         const newDocObj = {
                                             id: `doc-${Date.now()}`,
                                             label: file.name,
@@ -6352,7 +6507,9 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             status: 'verified',
                                             size: fileSizeFormatted,
                                             uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                                            expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : '—'),
+                                            expiryDate: finalExpiryDate,
+                                            expirySubtext: expInfo.subtext,
+                                            expiryStatus: expInfo.status,
                                             scannedMethod: 'OCR Scanned',
                                             summary: scanSummary,
                                             fileData: base64,
@@ -6365,12 +6522,28 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 sex: extractedSex || 'Male',
                                                 placeOfBirth: extractedPlaceOfBirth || '',
                                                 issueDate: extractedIssueDate || '',
-                                                expiryDate: extractedExpiryDate || ''
+                                                expiryDate: finalExpiryDate
                                             }
                                         };
 
+                                        // Persist to Neon DB under user's account
+                                        try {
+                                            const userEmail = email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+                                            if (userEmail) {
+                                                fetch('/api/user/vault-data', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({
+                                                        action: 'save_document',
+                                                        email: userEmail,
+                                                        document: newDocObj
+                                                    })
+                                                }).catch(e => console.warn('Failed saving doc to DB:', e));
+                                            }
+                                        } catch(e) {}
+
                                         setDocuments(prev => {
-                                            const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle);
+                                            const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle && p.reqKey !== effectiveKey);
                                             const updated = [newDocObj, ...filtered];
                                             try {
                                                 const forStorage = updated.map(d => ({ ...d, fileData: undefined }));
@@ -6427,12 +6600,17 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                         // Helper to trigger targeted upload for a specific statutory requirement
                         const handleTriggerUploadForReq = (reqDoc: any) => {
-                            setVaultUploadTargetReq({
+                            const target = {
                                 key: reqDoc.reqKey || reqDoc.id,
                                 title: reqDoc.title,
                                 type: reqDoc.type
-                            });
-                            vaultFileInputRef.current?.click();
+                            };
+                            vaultUploadTargetReqRef.current = target;
+                            setVaultUploadTargetReq(target);
+                            if (vaultFileInputRef.current) {
+                                vaultFileInputRef.current.value = '';
+                                vaultFileInputRef.current.click();
+                            }
                         };
 
                         // Helper to download document
@@ -6470,6 +6648,23 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     try { localStorage.setItem('seeker_documents', JSON.stringify(updated)); } catch(e) {}
                                     return updated;
                                 });
+                                // Persist deletion to Neon DB
+                                try {
+                                    const userEmail = email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+                                    if (userEmail) {
+                                        fetch('/api/user/vault-data', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                action: 'delete_document',
+                                                email: userEmail,
+                                                documentId: doc.sqlId || doc.id,
+                                                reqKey: doc.reqKey || doc.id
+                                            })
+                                        }).catch(e => console.warn('Failed deleting doc from DB:', e));
+                                    }
+                                } catch(e) {}
+
                                 if (selectedVaultDoc?.id === doc.id) {
                                     setSelectedVaultDoc(null);
                                 }
@@ -6512,6 +6707,22 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 try { localStorage.setItem('seeker_documents', JSON.stringify(updated)); } catch(e) {}
                                 return updated;
                             });
+                            // Persist updated OCR details to Neon DB
+                            try {
+                                const userEmail = email || (typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+                                if (userEmail) {
+                                    fetch('/api/user/vault-data', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            action: 'save_document',
+                                            email: userEmail,
+                                            document: updatedDoc
+                                        })
+                                    }).catch(e => console.warn('Failed saving updated OCR to DB:', e));
+                                }
+                            } catch(e) {}
+
                             setSelectedVaultDoc(updatedDoc);
                             setIsEditingOcr(false);
                             setVaultActionToast("✓ OCR details updated successfully.");
@@ -6589,7 +6800,14 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     <div className="flex items-center gap-2.5 flex-wrap">
                                         <button
                                             type="button"
-                                            onClick={() => vaultFileInputRef.current?.click()}
+                                            onClick={() => {
+                                                vaultUploadTargetReqRef.current = null;
+                                                setVaultUploadTargetReq(null);
+                                                if (vaultFileInputRef.current) {
+                                                    vaultFileInputRef.current.value = '';
+                                                    vaultFileInputRef.current.click();
+                                                }
+                                            }}
                                             disabled={isScanningVaultDoc}
                                             className="px-4 py-2.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs sm:text-sm font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                                         >

@@ -4,7 +4,7 @@ import {
   Building, Briefcase, MapPin, Clock, Globe, 
   Shield, Plane, Car, Hotel, GraduationCap, 
   Sparkles, Luggage, Umbrella, Check, X, 
-  Search, Eye, EyeOff, ChevronDown
+  Search, Eye, EyeOff, ChevronDown, Mail, Loader2
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
@@ -90,9 +90,10 @@ interface CustomDropdownProps {
   options: ({ value: string; label: string } | string)[];
   placeholder?: string;
   disabled?: boolean;
+  hasError?: boolean;
 }
 
-function CustomDropdown({ value, onChange, options, placeholder = "Select option", disabled = false }: CustomDropdownProps) {
+function CustomDropdown({ value, onChange, options, placeholder = "Select option", disabled = false, hasError = false }: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -122,10 +123,12 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select option
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(prev => !prev)}
-        className={`w-full px-3.5 py-2.5 rounded-xl border bg-slate-50/50 text-xs sm:text-sm font-medium flex items-center justify-between gap-2 transition-all cursor-pointer text-left ${
-          isOpen
+        className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium flex items-center justify-between gap-2 transition-all cursor-pointer text-left ${
+          hasError
+            ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+            : isOpen
             ? "border-[#481268] ring-2 ring-purple-200/70 bg-white shadow-xs"
-            : "border-slate-200 hover:border-slate-300"
+            : "border-slate-200 bg-slate-50/50 hover:border-slate-300"
         } ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
       >
         <span className={`truncate ${selectedOption && selectedOption.value ? "text-slate-800 font-semibold" : "text-slate-400 font-normal"}`}>
@@ -205,11 +208,42 @@ function ExpertSignupPortalContent() {
   const [experience, setExperience] = useState("");
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
+  // ─── Field-Level Error Tracking ──────────────────────────────────────────
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const clearFieldError = (field: string) => {
+    setFieldErrors(prev => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+    if (errorMsg) setErrorMsg("");
+  };
+
   // ─── General Wizard State ──────────────────────────────────────────────────
   const [errorMsg, setErrorMsg] = useState("");
   const [comingSoonProvider, setComingSoonProvider] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+
+  // ─── Email OTP Verification State (Submit -> Email Code -> Dashboard) ───────
+  const [isVerifyingEmail, setIsVerifyingEmail] = useState(false);
+  const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
+  const [otpError, setOtpError] = useState("");
+  const [otpSuccessMsg, setOtpSuccessMsg] = useState("");
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(c => c - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
 
   // Auto-sync email & phone into business fields when Step 1 changes (do NOT auto-fill business name)
   useEffect(() => {
@@ -226,6 +260,7 @@ function ExpertSignupPortalContent() {
 
   // Toggle service selection
   const toggleService = (serviceName: string) => {
+    clearFieldError("selectedServices");
     if (selectedServices.includes(serviceName)) {
       setSelectedServices(selectedServices.filter(s => s !== serviceName));
     } else {
@@ -235,6 +270,7 @@ function ExpertSignupPortalContent() {
 
   // Toggle destination selection
   const toggleDestination = (dest: string) => {
+    clearFieldError("selectedDestinations");
     if (selectedDestinations.includes(dest)) {
       setSelectedDestinations(selectedDestinations.filter(d => d !== dest));
     } else {
@@ -244,6 +280,7 @@ function ExpertSignupPortalContent() {
 
   // Toggle language selection
   const toggleLanguage = (lang: string) => {
+    clearFieldError("selectedLanguages");
     if (selectedLanguages.includes(lang)) {
       setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
     } else {
@@ -271,32 +308,38 @@ function ExpertSignupPortalContent() {
   const handleStep1Next = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
+    const errs: Record<string, string> = {};
 
     if (!fullName.trim()) {
-      setErrorMsg("Please enter your full legal name.");
-      return;
+      errs.fullName = "Please enter your full legal name.";
     }
-    if (!email.trim() || !email.includes("@")) {
-      setErrorMsg("Please enter a valid email address.");
-      return;
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      errs.email = "Please enter a valid email address.";
     }
-    if (!mobileNumber.trim() || mobileNumber.length < 7) {
-      setErrorMsg("Please enter a valid mobile number.");
-      return;
+    if (!mobileNumber.trim() || mobileNumber.replace(/\D/g, '').length < 7) {
+      errs.mobileNumber = "Please enter a valid mobile number (at least 7 digits).";
     }
-    if (!isPasswordValid) {
-      setErrorMsg("Please ensure your password meets all 4 security criteria.");
-      return;
+    if (!password) {
+      errs.password = "Please enter a password.";
+    } else if (!isPasswordValid) {
+      errs.password = "Please ensure your password meets all 4 security criteria.";
     }
-    if (password !== confirmPassword) {
-      setErrorMsg("Passwords do not match.");
-      return;
+    if (!confirmPassword) {
+      errs.confirmPassword = "Please confirm your password.";
+    } else if (password !== confirmPassword) {
+      errs.confirmPassword = "Passwords do not match.";
     }
     if (!agreedToTerms) {
-      setErrorMsg("Please accept the Terms & Conditions to proceed.");
+      errs.agreedToTerms = "Please accept the Terms & Conditions to proceed.";
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      setErrorMsg("Please fill in all required fields highlighted below.");
       return;
     }
 
+    setFieldErrors({});
     setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -305,32 +348,34 @@ function ExpertSignupPortalContent() {
   const handleStep2Next = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
+    const errs: Record<string, string> = {};
 
     if (!businessName.trim()) {
-      setErrorMsg("Please enter your business or company name.");
-      return;
+      errs.businessName = "Please enter your business or company name.";
     }
     if (!businessType) {
-      setErrorMsg("Please select your business type.");
-      return;
+      errs.businessType = "Please select your business type.";
     }
-    if (!businessEmail.trim()) {
-      setErrorMsg("Please enter your business email.");
-      return;
+    if (!businessEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessEmail.trim())) {
+      errs.businessEmail = "Please enter a valid business email address.";
     }
     if (!country) {
-      setErrorMsg("Please select your country.");
-      return;
+      errs.country = "Please select your operating country.";
     }
     if (!city.trim()) {
-      setErrorMsg("Please enter your city.");
-      return;
+      errs.city = "Please enter your city.";
     }
     if (!businessAddress.trim()) {
-      setErrorMsg("Please enter your business address.");
+      errs.businessAddress = "Please enter your business address.";
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      setErrorMsg("Please fill in or select all required business fields highlighted below.");
       return;
     }
 
+    setFieldErrors({});
     setStep(3);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -338,34 +383,173 @@ function ExpertSignupPortalContent() {
   // ─── Step 3 Next: Validate & Advance ────────────────────────────────────────
   const handleStep3Next = () => {
     setErrorMsg("");
+    const errs: Record<string, string> = {};
+
     if (selectedServices.length === 0) {
-      setErrorMsg("Please select at least one service.");
-      return;
+      errs.selectedServices = "Please select this field (choose at least one service).";
     }
     if (selectedDestinations.length === 0) {
-      setErrorMsg("Please select at least one destination country.");
-      return;
+      errs.selectedDestinations = "Please select this field (choose at least one destination country).";
     }
     if (!experience) {
-      setErrorMsg("Please select your years of experience.");
+      errs.experience = "Please select this field (years of experience).";
+    }
+    if (selectedLanguages.length === 0) {
+      errs.selectedLanguages = "Please select this field (choose at least one language spoken).";
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      setErrorMsg("Please select all required fields highlighted below before proceeding.");
       return;
     }
 
+    setFieldErrors({});
     setStep(4);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ─── Step 4: Final Submit Application ──────────────────────────────────────
-  const handleSubmitApplication = async () => {
+  // ─── Step 4: Initiate Email Verification with Code on Submit Application ────
+  const handleInitiateEmailVerification = async () => {
     setErrorMsg("");
-    setIsSubmitting(true);
+    setOtpError("");
+    const targetEmail = (businessEmail || email).toLowerCase().trim();
+    if (!targetEmail) {
+      setErrorMsg("Please provide a valid email address.");
+      return;
+    }
+
+    setIsSendingOtp(true);
+    try {
+      const res = await fetch("/api/auth/send-verification-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: targetEmail,
+          mode: "registration",
+          allowExisting: false
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.status === "error") {
+        setErrorMsg(data.message || "Failed to dispatch verification code. Please check your email.");
+        return;
+      }
+
+      setOtpDigits(["", "", "", "", "", ""]);
+      setOtpError("");
+      setOtpSuccessMsg(`Verification code sent to ${targetEmail}`);
+      setIsVerifyingEmail(true);
+      setResendCooldown(60);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err: any) {
+      setErrorMsg("Server connection error. Please try again.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  // ─── Resend OTP Code ───────────────────────────────────────────────────────
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || isSendingOtp) return;
+    setOtpError("");
+    setIsSendingOtp(true);
+    const targetEmail = (businessEmail || email).toLowerCase().trim();
+    try {
+      const res = await fetch("/api/auth/send-verification-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: targetEmail,
+          mode: "registration",
+          allowExisting: true
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.status === "error") {
+        setOtpError(data.message || "Failed to resend code.");
+      } else {
+        setOtpSuccessMsg("New 6-digit verification code sent to your email!");
+        setResendCooldown(60);
+      }
+    } catch {
+      setOtpError("Failed to resend verification code.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  // ─── OTP Digit Navigation & Paste Support ───────────────────────────────────
+  const handleOtpDigitChange = (index: number, val: string) => {
+    if (val.length > 1) {
+      const digits = val.replace(/\D/g, '').slice(0, 6).split('');
+      if (digits.length > 0) {
+        const next = [...otpDigits];
+        digits.forEach((d, i) => {
+          if (index + i < 6) next[index + i] = d;
+        });
+        setOtpDigits(next);
+        setOtpError("");
+        const nextIdx = Math.min(5, index + digits.length);
+        otpInputRefs.current[nextIdx]?.focus();
+        if (next.every(d => d !== "")) {
+          handleVerifyAndSubmit(next.join(""));
+        }
+        return;
+      }
+    }
+
+    const cleanChar = val.replace(/\D/g, '').slice(-1);
+    const next = [...otpDigits];
+    next[index] = cleanChar;
+    setOtpDigits(next);
+    setOtpError("");
+
+    if (cleanChar && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+    if (next.every(d => d !== "")) {
+      handleVerifyAndSubmit(next.join(""));
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  // ─── Final Verification & Redirect to Dashboard ─────────────────────────────
+  const handleVerifyAndSubmit = async (codeOverride?: string) => {
+    const fullCode = codeOverride || otpDigits.join("");
+    if (fullCode.length < 6) {
+      setOtpError("Please enter the complete 6-digit verification code.");
+      return;
+    }
+    setOtpError("");
+    setIsVerifyingOtp(true);
+    const targetEmail = (businessEmail || email).toLowerCase().trim();
 
     try {
+      // 1. Verify code
+      const verifyRes = await fetch("/api/auth/verify-email-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail, code: fullCode, otp: fullCode })
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok || verifyData.status === "error" || !verifyData.verified) {
+        setOtpError(verifyData.message || "Invalid or expired verification code. Please check your email and try again.");
+        setIsVerifyingOtp(false);
+        return;
+      }
+
+      // 2. Submit expert application
       const fullContact = `${mobileCode} ${mobileNumber || businessPhone}`.trim();
       const payload = {
         business_name: businessName || fullName || "Service Provider",
         full_name: fullName,
-        email: (businessEmail || email).toLowerCase().trim(),
+        email: targetEmail,
         password,
         contact_number: fullContact,
         advisor_type: businessType,
@@ -401,20 +585,24 @@ function ExpertSignupPortalContent() {
       }
 
       // Save user session in localStorage
-      if (data.user && typeof window !== "undefined") {
-        localStorage.setItem("travltik_user", JSON.stringify(data.user));
+      if (typeof window !== "undefined") {
+        if (data.user) {
+          localStorage.setItem("travltik_user", JSON.stringify(data.user));
+        }
         localStorage.setItem("expert_isLoggedIn", "true");
-        localStorage.setItem("expert_email", data.user.email);
-        localStorage.setItem("expert_businessName", data.user.displayName || businessName);
+        localStorage.setItem("expert_email", targetEmail);
+        localStorage.setItem("expert_businessName", businessName || fullName);
       }
 
-      // Proceed to celebratory success step
-      setStep(5);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setOtpSuccessMsg("✓ Email verified! Redirecting to Service Provider Dashboard...");
+
+      // Redirect directly to Service Provider Dashboard
+      setTimeout(() => {
+        window.location.href = "/service-provider/dashboard";
+      }, 1000);
     } catch (err: any) {
-      setErrorMsg(err?.message || "Failed to submit application. Please check your details.");
-    } finally {
-      setIsSubmitting(false);
+      setOtpError(err?.message || "Failed to verify. Please check your code and try again.");
+      setIsVerifyingOtp(false);
     }
   };
 
@@ -626,37 +814,61 @@ function ExpertSignupPortalContent() {
               {/* Full Name */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1">
-                  Full Name
+                  Full Name *
                 </label>
                 <input
                   type="text"
                   required
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={(e) => {
+                    setFullName(e.target.value);
+                    clearFieldError("fullName");
+                  }}
                   placeholder="Enter your full name"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                    fieldErrors.fullName
+                      ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                      : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                  }`}
                 />
+                {fieldErrors.fullName && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.fullName}
+                  </p>
+                )}
               </div>
 
               {/* Email Address */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1">
-                  Email Address
+                  Email Address *
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    clearFieldError("email");
+                  }}
                   placeholder="Enter your email"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                    fieldErrors.email
+                      ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                      : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                  }`}
                 />
+                {fieldErrors.email && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.email}
+                  </p>
+                )}
               </div>
 
               {/* Mobile Number */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1">
-                  Mobile Number
+                  Mobile Number *
                 </label>
                 <div className="flex gap-2">
                   <div className="w-28 shrink-0">
@@ -671,26 +883,45 @@ function ExpertSignupPortalContent() {
                     type="tel"
                     required
                     value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value)}
+                    onChange={(e) => {
+                      setMobileNumber(e.target.value);
+                      clearFieldError("mobileNumber");
+                    }}
                     placeholder="Enter mobile number"
-                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                    className={`flex-1 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                      fieldErrors.mobileNumber
+                        ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                        : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                    }`}
                   />
                 </div>
+                {fieldErrors.mobileNumber && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.mobileNumber}
+                  </p>
+                )}
               </div>
 
               {/* Password */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1">
-                  Password
+                  Password *
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      clearFieldError("password");
+                    }}
                     placeholder="Enter password"
-                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                    className={`w-full pl-3.5 pr-10 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                      fieldErrors.password
+                        ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                        : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                    }`}
                   />
                   <button
                     type="button"
@@ -700,21 +931,33 @@ function ExpertSignupPortalContent() {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {fieldErrors.password && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.password}
+                  </p>
+                )}
               </div>
 
               {/* Confirm Password */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1">
-                  Confirm Password
+                  Confirm Password *
                 </label>
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     required
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      clearFieldError("confirmPassword");
+                    }}
                     placeholder="Re-enter password"
-                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                    className={`w-full pl-3.5 pr-10 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                      fieldErrors.confirmPassword
+                        ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                        : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                    }`}
                   />
                   <button
                     type="button"
@@ -724,6 +967,11 @@ function ExpertSignupPortalContent() {
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {fieldErrors.confirmPassword && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.confirmPassword}
+                  </p>
+                )}
               </div>
 
               {/* Password Checklist Criteria */}
@@ -816,10 +1064,22 @@ function ExpertSignupPortalContent() {
                 type="text"
                 required
                 value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
+                onChange={(e) => {
+                  setBusinessName(e.target.value);
+                  clearFieldError("businessName");
+                }}
                 placeholder="Enter business or company name"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                  fieldErrors.businessName
+                    ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                    : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                }`}
               />
+              {fieldErrors.businessName && (
+                <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                  <span>⚠️</span> {fieldErrors.businessName}
+                </p>
+              )}
             </div>
 
             {/* Business Type */}
@@ -829,10 +1089,19 @@ function ExpertSignupPortalContent() {
               </label>
               <CustomDropdown
                 value={businessType}
-                onChange={setBusinessType}
+                onChange={(val) => {
+                  setBusinessType(val);
+                  clearFieldError("businessType");
+                }}
                 options={BUSINESS_TYPES}
                 placeholder="Select Business Type"
+                hasError={Boolean(fieldErrors.businessType)}
               />
+              {fieldErrors.businessType && (
+                <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                  <span>⚠️</span> {fieldErrors.businessType}
+                </p>
+              )}
             </div>
 
             {/* Year Established */}
@@ -857,10 +1126,22 @@ function ExpertSignupPortalContent() {
                 type="email"
                 required
                 value={businessEmail}
-                onChange={(e) => setBusinessEmail(e.target.value)}
+                onChange={(e) => {
+                  setBusinessEmail(e.target.value);
+                  clearFieldError("businessEmail");
+                }}
                 placeholder="Enter business email"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                  fieldErrors.businessEmail
+                    ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                    : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent"
+                }`}
               />
+              {fieldErrors.businessEmail && (
+                <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                  <span>⚠️</span> {fieldErrors.businessEmail}
+                </p>
+              )}
             </div>
 
             {/* Business Phone */}
@@ -904,10 +1185,19 @@ function ExpertSignupPortalContent() {
                 </label>
                 <CustomDropdown
                   value={country}
-                  onChange={setCountry}
+                  onChange={(val) => {
+                    setCountry(val);
+                    clearFieldError("country");
+                  }}
                   options={BUSINESS_COUNTRIES}
                   placeholder="Select Country"
+                  hasError={Boolean(fieldErrors.country)}
                 />
+                {fieldErrors.country && (
+                  <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                    <span>⚠️</span> {fieldErrors.country}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -933,10 +1223,22 @@ function ExpertSignupPortalContent() {
                 type="text"
                 required
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  clearFieldError("city");
+                }}
                 placeholder="Enter city"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                  fieldErrors.city
+                    ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                    : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
+                }`}
               />
+              {fieldErrors.city && (
+                <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                  <span>⚠️</span> {fieldErrors.city}
+                </p>
+              )}
             </div>
 
             {/* Business Address */}
@@ -948,10 +1250,22 @@ function ExpertSignupPortalContent() {
                 type="text"
                 required
                 value={businessAddress}
-                onChange={(e) => setBusinessAddress(e.target.value)}
+                onChange={(e) => {
+                  setBusinessAddress(e.target.value);
+                  clearFieldError("businessAddress");
+                }}
                 placeholder="Enter full business address"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                  fieldErrors.businessAddress
+                    ? "border-rose-500 ring-2 ring-rose-200/80 bg-rose-50/20 text-rose-900"
+                    : "border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-[#481268] transition-all"
+                }`}
               />
+              {fieldErrors.businessAddress && (
+                <p className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 mt-1 animate-fade-in">
+                  <span>⚠️</span> {fieldErrors.businessAddress}
+                </p>
+              )}
             </div>
 
             {/* PIN / ZIP Code */}
@@ -1011,10 +1325,17 @@ function ExpertSignupPortalContent() {
             </div>
 
             {/* 3x3 Grid of Services */}
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-2.5">
-                I provide services as (Select all that apply)
-              </label>
+            <div className={`transition-all ${fieldErrors.selectedServices ? "p-3 rounded-2xl border-2 border-rose-400 bg-rose-50/20" : ""}`}>
+              <div className="flex items-center justify-between mb-2.5">
+                <label className="block text-xs font-bold text-slate-800">
+                  I provide services as (Select all that apply) *
+                </label>
+                {fieldErrors.selectedServices && (
+                  <span className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 animate-fade-in">
+                    ⚠️ Please select this field
+                  </span>
+                )}
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {AVAILABLE_SERVICES.map((s) => {
                   const Icon = s.icon;
@@ -1052,10 +1373,17 @@ function ExpertSignupPortalContent() {
             </div>
 
             {/* Destinations Specialization */}
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-2">
-                Destinations you specialize in (Select all that apply)
-              </label>
+            <div className={`transition-all ${fieldErrors.selectedDestinations ? "p-3 rounded-2xl border-2 border-rose-400 bg-rose-50/20" : ""}`}>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold text-slate-800">
+                  Destinations you specialize in (Select all that apply) *
+                </label>
+                {fieldErrors.selectedDestinations && (
+                  <span className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 animate-fade-in">
+                    ⚠️ Please select this field
+                  </span>
+                )}
+              </div>
 
               {/* Country search input */}
               <div className="relative mb-3">
@@ -1108,22 +1436,40 @@ function ExpertSignupPortalContent() {
 
             {/* Years of Experience */}
             <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1">
-                Years of Experience
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold text-slate-800">
+                  Years of Experience *
+                </label>
+                {fieldErrors.experience && (
+                  <span className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 animate-fade-in">
+                    ⚠️ Please select this field
+                  </span>
+                )}
+              </div>
               <CustomDropdown
                 value={experience}
-                onChange={setExperience}
+                onChange={(val) => {
+                  setExperience(val);
+                  clearFieldError("experience");
+                }}
                 options={EXPERIENCE_OPTIONS}
                 placeholder="Select Years of Experience"
+                hasError={Boolean(fieldErrors.experience)}
               />
             </div>
 
             {/* Languages Spoken */}
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-2">
-                Languages Spoken
-              </label>
+            <div className={`transition-all ${fieldErrors.selectedLanguages ? "p-3 rounded-2xl border-2 border-rose-400 bg-rose-50/20" : ""}`}>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold text-slate-800">
+                  Languages Spoken *
+                </label>
+                {fieldErrors.selectedLanguages && (
+                  <span className="text-[11px] sm:text-xs text-rose-600 font-bold flex items-center gap-1 animate-fade-in">
+                    ⚠️ Please select this field
+                  </span>
+                )}
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {POPULAR_LANGUAGES.map(lang => {
                   const isSel = selectedLanguages.includes(lang);
@@ -1171,152 +1517,266 @@ function ExpertSignupPortalContent() {
         {/* ──────────────────────────────────────────────────────────────────── */}
         {step === 4 && (
           <div className="space-y-6 animate-fade-in">
-            {/* Top Indicator */}
-            <div>
-              <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
-                <span>Step 4 of 4</span>
-                <span className="text-[#481268]">100% Completed</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
-                <div className="w-full h-full bg-[#481268] rounded-full transition-all duration-300" />
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Review & Submit
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                Please review your information before submitting.
-              </p>
-            </div>
+            {isVerifyingEmail ? (
+              /* ─── Email Verification Screen (Code sent to Email) ─── */
+              <div className="space-y-6 animate-fade-in text-center py-2 sm:py-4">
+                <div className="w-16 h-16 mx-auto rounded-3xl bg-purple-50 border border-purple-200 flex items-center justify-center text-[#481268] shadow-inner">
+                  <Mail className="w-8 h-8" />
+                </div>
 
-            {/* Summary Box with Edit link */}
-            <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-5 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                <h3 className="text-sm font-bold text-slate-900">
-                  Summary
-                </h3>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    Verify Your Email
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1.5 max-w-sm mx-auto leading-relaxed">
+                    We sent a 6-digit verification code to{" "}
+                    <span className="font-bold text-slate-900 break-all">{businessEmail || email}</span>.
+                    Enter the code below to complete your registration and access your dashboard.
+                  </p>
+                </div>
+
+                {/* Status Banners */}
+                {otpSuccessMsg && (
+                  <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs sm:text-sm rounded-2xl font-semibold flex items-center justify-center gap-2 max-w-md mx-auto">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                    <span>{otpSuccessMsg}</span>
+                  </div>
+                )}
+
+                {otpError && (
+                  <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-600 text-xs sm:text-sm rounded-2xl font-semibold flex items-center justify-center gap-2 max-w-md mx-auto">
+                    <span className="shrink-0 text-base">⚠️</span>
+                    <span>{otpError}</span>
+                  </div>
+                )}
+
+                {/* 6-Digit OTP Input Boxes */}
+                <div className="flex items-center justify-center gap-2 sm:gap-3 py-2">
+                  {otpDigits.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      ref={(el) => { otpInputRefs.current[idx] = el; }}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={6}
+                      value={digit}
+                      onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      className="w-11 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-black rounded-2xl border-2 border-slate-300 focus:border-[#481268] focus:ring-4 focus:ring-purple-100 focus:outline-none transition-all bg-white text-slate-900 shadow-2xs"
+                      autoFocus={idx === 0}
+                    />
+                  ))}
+                </div>
+
+                {/* Verify & Proceed Button */}
                 <button
                   type="button"
-                  onClick={() => setStep(2)}
-                  className="text-xs font-bold text-[#481268] hover:underline cursor-pointer"
+                  onClick={() => handleVerifyAndSubmit()}
+                  disabled={isVerifyingOtp || otpDigits.some(d => !d)}
+                  className="w-full max-w-md mx-auto py-4 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-50"
                 >
-                  Edit
+                  {isVerifyingOtp ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Verifying & Setting Up Dashboard...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-5 h-5" />
+                      <span>Verify Code & Go to Dashboard</span>
+                    </>
+                  )}
                 </button>
-              </div>
 
-              {/* Item: Business Name */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <Building className="w-4 h-4" />
+                {/* Resend Code Section */}
+                <div className="flex items-center justify-center gap-2 text-xs text-slate-500 pt-1">
+                  <span>Didn't receive the code?</span>
+                  {resendCooldown > 0 ? (
+                    <span className="font-semibold text-slate-400">Resend in {resendCooldown}s</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleResendOtp}
+                      disabled={isSendingOtp}
+                      className="font-bold text-[#481268] hover:underline cursor-pointer disabled:opacity-50"
+                    >
+                      {isSendingOtp ? "Sending..." : "Resend Code"}
+                    </button>
+                  )}
                 </div>
+
+                {/* Back to Edit Details */}
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setIsVerifyingEmail(false); setOtpError(""); setOtpSuccessMsg(""); }}
+                    className="text-xs font-bold text-slate-400 hover:text-slate-700 cursor-pointer transition-colors"
+                  >
+                    ← Back to Review & Edit Details
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* ─── Standard Step 4 Review & Submit ─── */
+              <>
+                {/* Top Indicator */}
                 <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Business Name</div>
-                  <div className="font-bold text-slate-800">{businessName || "Not provided"}</div>
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-1.5">
+                    <span>Step 4 of 4</span>
+                    <span className="text-[#481268]">100% Completed</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
+                    <div className="w-full h-full bg-[#481268] rounded-full transition-all duration-300" />
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    Review & Submit
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    Please review your information before submitting.
+                  </p>
                 </div>
-              </div>
 
-              {/* Item: Business Type */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <Briefcase className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Business Type</div>
-                  <div className="font-bold text-slate-800">{businessType}</div>
-                </div>
-              </div>
+                {/* Summary Box with Edit link */}
+                <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-5 space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <h3 className="text-sm font-bold text-slate-900">
+                      Summary
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setStep(2)}
+                      className="text-xs font-bold text-[#481268] hover:underline cursor-pointer"
+                    >
+                      Edit
+                    </button>
+                  </div>
 
-              {/* Item: Services */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <Shield className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Services</div>
-                  <div className="font-bold text-slate-800">{selectedServices.join(", ")}</div>
-                </div>
-              </div>
+                  {/* Item: Business Name */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <Building className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Business Name</div>
+                      <div className="font-bold text-slate-800">{businessName || "Not provided"}</div>
+                    </div>
+                  </div>
 
-              {/* Item: Destinations */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <MapPin className="w-4 h-4" />
+                  {/* Item: Business Type */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <Briefcase className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Business Type</div>
+                      <div className="font-bold text-slate-800">{businessType}</div>
+                    </div>
+                  </div>
+
+                  {/* Item: Services */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <Shield className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Services</div>
+                      <div className="font-bold text-slate-800">{selectedServices.join(", ")}</div>
+                    </div>
+                  </div>
+
+                  {/* Item: Destinations */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Destinations</div>
+                      <div className="font-bold text-slate-800">{selectedDestinations.join(", ")}</div>
+                    </div>
+                  </div>
+
+                  {/* Item: Experience */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Experience</div>
+                      <div className="font-bold text-slate-800">{experience}</div>
+                    </div>
+                  </div>
+
+                  {/* Item: Languages */}
+                  <div className="flex items-start gap-3 text-xs sm:text-sm">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
+                      <Globe className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold text-slate-400">Languages</div>
+                      <div className="font-bold text-slate-800">{selectedLanguages.join(", ")}</div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Destinations</div>
-                  <div className="font-bold text-slate-800">{selectedDestinations.join(", ")}</div>
+
+                {/* Confirmation Box */}
+                <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-purple-50/50 border border-purple-200/80 text-[11px] sm:text-xs text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-[#481268] shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">
+                    By submitting, you confirm that all the information provided is accurate and you agree to our{" "}
+                    <a href="/terms" target="_blank" className="font-bold text-[#481268] hover:underline">
+                      Terms & Conditions
+                    </a>.
+                  </span>
                 </div>
-              </div>
 
-              {/* Item: Experience */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <Clock className="w-4 h-4" />
+                {/* Cloudflare Turnstile bot protection */}
+                <div className="flex justify-center pt-1">
+                  <TurnstileWidget
+                    onSuccess={(t) => setTurnstileToken(t)}
+                    onError={() => setTurnstileToken("")}
+                    onExpire={() => setTurnstileToken("")}
+                    theme="light"
+                  />
                 </div>
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Experience</div>
-                  <div className="font-bold text-slate-800">{experience}</div>
+
+                {/* Submit Application Button: sends 6-digit verification code to email */}
+                <button
+                  type="button"
+                  onClick={handleInitiateEmailVerification}
+                  disabled={isSendingOtp || isSubmitting}
+                  className="w-full py-4 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-75"
+                >
+                  {isSendingOtp ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Sending Verification Code...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Submit Application</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Footer subtext */}
+                <p className="text-center text-xs text-slate-400 font-medium">
+                  We will send a 6-digit verification code to your email upon submission.
+                </p>
+
+                {/* Back Button */}
+                <div className="flex justify-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(3)}
+                    className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
+                  >
+                    ← Back to Services & Expertise
+                  </button>
                 </div>
-              </div>
-
-              {/* Item: Languages */}
-              <div className="flex items-start gap-3 text-xs sm:text-sm">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-[#481268] shrink-0 mt-0.5">
-                  <Globe className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-400">Languages</div>
-                  <div className="font-bold text-slate-800">{selectedLanguages.join(", ")}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Confirmation Box */}
-            <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-purple-50/50 border border-purple-200/80 text-[11px] sm:text-xs text-slate-700">
-              <CheckCircle2 className="w-4 h-4 text-[#481268] shrink-0 mt-0.5" />
-              <span className="leading-relaxed">
-                By submitting, you confirm that all the information provided is accurate and you agree to our{" "}
-                <a href="/terms" target="_blank" className="font-bold text-[#481268] hover:underline">
-                  Terms & Conditions
-                </a>.
-              </span>
-            </div>
-
-            {/* Cloudflare Turnstile bot protection */}
-            <div className="flex justify-center pt-1">
-              <TurnstileWidget
-                onSuccess={(t) => setTurnstileToken(t)}
-                onError={() => setTurnstileToken("")}
-                onExpire={() => setTurnstileToken("")}
-                theme="light"
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="button"
-              onClick={handleSubmitApplication}
-              disabled={isSubmitting}
-              className="w-full py-4 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-75"
-            >
-              <Send className="w-4 h-4" />
-              <span>{isSubmitting ? "Submitting Application..." : "Submit Application"}</span>
-            </button>
-
-            {/* Footer subtext */}
-            <p className="text-center text-xs text-slate-400 font-medium">
-              You will receive an email once your application is reviewed.
-            </p>
-
-            {/* Back Button */}
-            <div className="flex justify-center pt-2">
-              <button
-                type="button"
-                onClick={() => setStep(3)}
-                className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
-              >
-                ← Back to Services & Expertise
-              </button>
-            </div>
+              </>
+            )}
           </div>
         )}
 

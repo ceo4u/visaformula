@@ -240,6 +240,16 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_size VARCHAR(50);`);
   await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS mime_type VARCHAR(100);`);
   await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS notes TEXT;`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS user_email VARCHAR(255);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS ocr_data TEXT;`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS expiry_date VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS doc_number VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS req_key VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS holder_name VARCHAR(150);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_data TEXT;`);
+  await p.query(`ALTER TABLE documents ALTER COLUMN user_id DROP NOT NULL;`);
+  await p.query(`ALTER TABLE documents ALTER COLUMN user_type DROP NOT NULL;`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_documents_user_email ON documents (user_email);`);
 
   // 6. Email Verifications Table
   await p.query(`

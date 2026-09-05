@@ -35,7 +35,7 @@ const faqs = [
     },
     {
         question: "What is your refund policy?",
-        answer: "We offer a 100% satisfaction guarantee. If your initial consultation doesn't meet expectations, request a full refund within 48 hours of the scheduled call.",
+        answer: "We offer a 100% satisfaction commitment. If your initial consultation doesn't meet expectations, request a full refund within 48 hours of the scheduled call.",
     },
     {
         question: "How are lawyers verified?",

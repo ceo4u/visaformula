@@ -39,7 +39,9 @@ export default defineConfig({
       include: [
         'react',
         'react-dom',
+        'react-dom/client',
         'react/jsx-runtime',
+        'react/jsx-dev-runtime',
         'lucide-react',
         'firebase/app',
         'firebase/auth',

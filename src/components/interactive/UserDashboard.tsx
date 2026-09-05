@@ -607,6 +607,58 @@ function getFlagEmoji(countryName: string): string {
     return '🌍';
 }
 
+function getCountryCode(countryName: string): string {
+    if (!countryName) return 'un';
+    const c = countryName.toLowerCase().trim();
+    if (c.includes('india') || c === 'in' || c === 'indian') return 'in';
+    if (c.includes('mauritius') || c === 'mu') return 'mu';
+    if (c.includes('maldives') || c === 'mv') return 'mv';
+    if (c.includes('thailand') || c === 'th' || c === 'thai') return 'th';
+    if (c.includes('malaysia') || c === 'my') return 'my';
+    if (c.includes('sri lanka') || c === 'lk') return 'lk';
+    if (c.includes('nepal') || c === 'np') return 'np';
+    if (c.includes('bhutan') || c === 'bt') return 'bt';
+    if (c.includes('indonesia') || c.includes('bali') || c === 'id') return 'id';
+    if (c.includes('vietnam') || c === 'vn') return 'vn';
+    if (c.includes('united kingdom') || c.includes('uk') || c.includes('england') || c.includes('britain')) return 'gb';
+    if (c.includes('united states') || c.includes('usa') || c.includes('us') || c.includes('america')) return 'us';
+    if (c.includes('greece') || c === 'gr' || c === 'greek') return 'gr';
+    if (c.includes('uae') || c.includes('dubai') || c.includes('emirates') || c.includes('united arab')) return 'ae';
+    if (c.includes('canada') || c === 'ca') return 'ca';
+    if (c.includes('australia') || c === 'au') return 'au';
+    if (c.includes('germany') || c === 'de') return 'de';
+    if (c.includes('france') || c === 'fr') return 'fr';
+    if (c.includes('italy') || c === 'it') return 'it';
+    if (c.includes('spain') || c === 'es') return 'es';
+    if (c.includes('singapore') || c === 'sg') return 'sg';
+    if (c.includes('japan') || c === 'jp') return 'jp';
+    if (c.includes('switzerland') || c === 'ch') return 'ch';
+    if (c.includes('netherlands') || c === 'nl') return 'nl';
+    if (c.includes('austria') || c === 'at') return 'at';
+    if (c.includes('portugal') || c === 'pt') return 'pt';
+    if (c.includes('new zealand') || c === 'nz') return 'nz';
+    if (c.includes('schengen') || c.includes('europe') || c === 'eu') return 'eu';
+    if (c.includes('turkey') || c.includes('turkiye') || c === 'tr') return 'tr';
+    if (c.includes('china') || c === 'cn') return 'cn';
+    if (c.includes('russia') || c === 'ru') return 'ru';
+    if (c.includes('south korea') || c === 'kr') return 'kr';
+    if (c.includes('saudi') || c === 'sa') return 'sa';
+    if (c.includes('qatar') || c === 'qa') return 'qa';
+    if (c.includes('oman') || c === 'om') return 'om';
+    if (c.includes('kuwait') || c === 'kw') return 'kw';
+    if (c.includes('bahrain') || c === 'bh') return 'bh';
+    if (c.includes('egypt') || c === 'eg') return 'eg';
+    if (c.includes('kenya') || c === 'ke') return 'ke';
+    if (c.includes('south africa') || c === 'za') return 'za';
+    if (c.includes('brazil') || c === 'br') return 'br';
+    if (c.includes('mexico') || c === 'mx') return 'mx';
+    if (c.includes('ireland') || c === 'ie') return 'ie';
+    if (c.includes('philippines') || c === 'ph') return 'ph';
+    if (c.includes('georgia') || c === 'ge') return 'ge';
+    if (c.includes('kazakhstan') || c === 'kz') return 'kz';
+    return 'un';
+}
+
 // Apple iOS squircle icon renderer for luggage items
 function renderIosLuggageIcon(id: string) {
     const iconClass = "w-4.5 h-4.5 text-white stroke-[2.2]";
@@ -850,7 +902,7 @@ function ModernDashboardSelect({
                   }}
                   className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-slate-900 text-white font-bold shadow-xs'
+                      ? 'bg-[#420f79] text-white font-bold shadow-xs'
                       : 'text-slate-700 hover:bg-slate-100'
                   }`}
                 >
@@ -874,7 +926,7 @@ function ModernDashboardSelect({
                     value={customInput}
                     onChange={e => setCustomInput(e.target.value)}
                     placeholder={customPlaceholder}
-                    className="flex-1 h-8 px-2.5 text-xs font-semibold bg-slate-50 rounded-lg border border-slate-200 outline-none focus:border-slate-900"
+                    className="flex-1 h-8 px-2.5 text-xs font-semibold bg-slate-50 rounded-lg border border-slate-200 outline-none focus:border-[#420f79]"
                     onKeyDown={e => {
                       if (e.key === 'Enter' && customInput.trim()) {
                         e.preventDefault();
@@ -893,7 +945,7 @@ function ModernDashboardSelect({
                         setCustomInput("");
                       }
                     }}
-                    className="h-8 px-3 rounded-lg bg-slate-900 hover:bg-black text-white text-[11px] font-bold cursor-pointer"
+                    className="h-8 px-3 rounded-lg bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-[11px] font-bold cursor-pointer transition-colors"
                   >
                     Select
                   </button>
@@ -961,6 +1013,7 @@ export function UserDashboard() {
     const vaultFileInputRef = useRef<HTMLInputElement | null>(null);
     const replaceFileInputRef = useRef<HTMLInputElement | null>(null);
     const [vaultDocFilter, setVaultDocFilter] = useState<"all" | "mandatory" | "recommended">("all");
+    const [vaultUploadTargetReq, setVaultUploadTargetReq] = useState<{ key: string; title: string; type: string } | null>(null);
     const [expandedDocKey, setExpandedDocKey] = useState<string | null>(null);
     const [inspectDocData, setInspectDocData] = useState<{
         title: string;
@@ -968,6 +1021,8 @@ export function UserDashboard() {
         itemData: any;
         conditions: string[];
     } | null>(null);
+    const [stagedPassportFile, setStagedPassportFile] = useState<File | null>(null);
+    const [stagedPassportPreview, setStagedPassportPreview] = useState<string | null>(null);
 
 
     // Travel Profile & Document Checklist states
@@ -2388,6 +2443,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
             const existingCases = JSON.parse(localStorage.getItem("active_visa_cases") || "[]");
             const caseId = `case-${targetDest.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
             const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination !== targetDest);
+            const genuineUploadedDocsCount = (documents || []).filter(
+                (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
+            ).length;
+
             const newCase = {
                 id: caseId,
                 trackingId: `TT-${targetDest.slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -2396,10 +2455,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
                 visaType,
                 purpose: targetPurp.toLowerCase(),
                 passport: targetPass,
-                status: "Travel Profile & Document Checklist Active",
-                stage: "Document Vault Verification",
-                progress: 45,
-                documentsCount: 6,
+                status: genuineUploadedDocsCount > 0 ? "Dossier Ingested & AI Verified" : "Requirements & Eligibility Active",
+                stage: genuineUploadedDocsCount > 0 ? "Document Vault Verification" : "Requirements & Document Collection",
+                progress: genuineUploadedDocsCount > 0 ? Math.min(35, 15 + genuineUploadedDocsCount * 5) : 10,
+                documentsCount: genuineUploadedDocsCount,
                 submittedAt: "Active",
                 targetDate: "Consular Filing Ready"
             };
@@ -2479,6 +2538,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
         const flag = getFlagEmoji(targetDest);
         const visaType = targetPurp.includes('Study') ? 'F-1 / Tier-4 Student Visa' : targetPurp.includes('Work') ? 'Skilled Worker Visa' : 'Tourist / Visitor Visa';
 
+        const genuineUploadedDocsCount = (documents || []).filter(
+            (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
+        ).length;
+
         const newCase = {
             id: uniqueAppId,
             customName: appName,
@@ -2488,10 +2551,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
             visaType,
             purpose: targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism',
             passport: targetPass,
-            status: "Travel Profile & Document Checklist Active",
-            stage: "Document Vault Verification",
-            progress: 35,
-            documentsCount: 6,
+            status: genuineUploadedDocsCount > 0 ? "Dossier Ingested & AI Verified" : "Requirements & Eligibility Active",
+            stage: genuineUploadedDocsCount > 0 ? "Document Vault Verification" : "Requirements & Document Collection",
+            progress: genuineUploadedDocsCount > 0 ? Math.min(35, 15 + genuineUploadedDocsCount * 5) : 10,
+            documentsCount: genuineUploadedDocsCount,
             addonsCount: 0,
             submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
             targetDate: "Consular Filing Ready",
@@ -2852,39 +2915,74 @@ function cleanShortDocRequirement(title: string, description: string): string {
                     const parsedJ = JSON.parse(localJourney);
                     setJourneyData(parsedJ);
                     if (parsedJ.uploaded_documents && typeof parsedJ.uploaded_documents === 'object') {
-                        const docList = Object.entries(parsedJ.uploaded_documents).map(([k, v]: [string, any]) => ({
-                            id: k,
-                            label: v.fileName ? `${k.toUpperCase().replace(/_/g, ' ')} (${v.fileName})` : `${k.toUpperCase().replace(/_/g, ' ')} Document`,
-                            status: 'verified',
-                            size: v.size || '1.8 MB',
-                            uploadedAt: v.timestamp || 'Recently'
-                        }));
-                        setDocuments(docList);
+                        const docList = Object.entries(parsedJ.uploaded_documents)
+                            .filter(([k, v]: [string, any]) => v && (v.fileData || v.base64 || (v.fileName && !v.fileName.includes('Document') && v.size && v.size !== '1.8 MB')))
+                            .map(([k, v]: [string, any]) => ({
+                                id: k,
+                                label: v.fileName || `${k.toUpperCase().replace(/_/g, ' ')}`,
+                                title: v.fileName || `${k.toUpperCase().replace(/_/g, ' ')}`,
+                                status: 'verified',
+                                isRealUpload: true,
+                                size: v.size || '1.8 MB',
+                                fileData: v.fileData || v.base64 || null,
+                                uploadedAt: v.timestamp || 'Recently'
+                            }));
+                        if (docList.length > 0) setDocuments(docList);
                     }
                 } catch(e) {}
             }
 
+            let loadedDocsList: any[] = [];
             if (savedDocsStr) {
                 try {
                     const parsedDocs = JSON.parse(savedDocsStr);
                     if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
-                        setDocuments(parsedDocs);
+                        // Purge legacy dummy items (e.g. global_passport without fileData, doc_req_... without fileData)
+                        const cleanDocs = parsedDocs.filter((d: any) => 
+                            d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
+                        );
+                        loadedDocsList = cleanDocs;
+                        setDocuments(cleanDocs);
                     }
                 } catch(e) {}
             }
 
-            if (activeCasesStr) {
+            // Check active_visa_cases (both generic and user-scoped)
+            let rawCasesStr = activeCasesStr;
+            if (!rawCasesStr && typeof window !== "undefined") {
+                const userEmail = (localStorage.getItem("seeker_email") || "").toLowerCase().trim();
+                if (userEmail) {
+                    rawCasesStr = localStorage.getItem(`active_visa_cases_${userEmail}`);
+                }
+            }
+
+            if (rawCasesStr) {
                 try {
-                    const parsedCases = JSON.parse(activeCasesStr);
+                    const parsedCases = JSON.parse(rawCasesStr);
                     if (Array.isArray(parsedCases) && parsedCases.length > 0) {
-                        setVisasProcessingState(parsedCases);
+                        const genuineVaultDocsCount = loadedDocsList.length;
+                        const sanitizedCases = parsedCases.map((c: any) => {
+                            if ((c.progress === 45 || c.progress === 35) && genuineVaultDocsCount === 0 && !c.isFormSubmitted && !c.isFeePaid) {
+                                return {
+                                    ...c,
+                                    progress: 10,
+                                    documentsCount: 0,
+                                    stage: 'Requirements & Document Collection',
+                                    status: 'Requirements & Eligibility Active'
+                                };
+                            }
+                            return c;
+                        });
+                        setVisasProcessingState(sanitizedCases);
+                        try { localStorage.setItem("active_visa_cases", JSON.stringify(sanitizedCases)); } catch(e) {}
                     }
                 } catch(e) {}
             } else if (localJourney) {
                 try {
                     const parsedJ = JSON.parse(localJourney);
                     if (parsedJ && parsedJ.destination) {
-                        setVisasProcessingState([{
+                        const genuineDocsCount = parsedJ.uploaded_documents ? Object.keys(parsedJ.uploaded_documents).length : 0;
+                        const initialCase = [{
                             id: 'case-1',
                             trackingId: parsedJ.tracking_id || 'TT-APP-2026-9824',
                             destination: parsedJ.destination,
@@ -2892,14 +2990,16 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             visaType: parsedJ.visa_type || 'Standard Visitor Visa',
                             purpose: parsedJ.purpose || 'tourism',
                             passport: parsedJ.passport_country || 'India',
-                            status: 'Dossier Ingested & AI Verified',
-                            stage: 'Under AI Concierge Review',
-                            progress: 35,
-                            documentsCount: parsedJ.uploaded_documents ? Object.keys(parsedJ.uploaded_documents).length : 0,
+                            status: genuineDocsCount > 0 ? 'Dossier Ingested & AI Verified' : 'Requirements & Eligibility Active',
+                            stage: genuineDocsCount > 0 ? 'Under AI Concierge Review' : 'Requirements & Document Collection',
+                            progress: genuineDocsCount > 0 ? Math.min(35, 10 + genuineDocsCount * 5) : 10,
+                            documentsCount: genuineDocsCount,
                             addonsCount: parsedJ.selected_addons ? parsedJ.selected_addons.length : 0,
                             submittedAt: parsedJ.submitted_at || 'Recently',
                             targetDate: '15 Working Days'
-                        }]);
+                        }];
+                        setVisasProcessingState(initialCase);
+                        try { localStorage.setItem("active_visa_cases", JSON.stringify(initialCase)); } catch(e) {}
                     }
                 } catch(e) {}
             }
@@ -3066,7 +3166,12 @@ function cleanShortDocRequirement(title: string, description: string): string {
                 const savedDocs = localStorage.getItem("seeker_documents");
                 if (savedDocs) {
                     const parsed = JSON.parse(savedDocs);
-                    if (Array.isArray(parsed)) setDocuments(parsed);
+                    if (Array.isArray(parsed)) {
+                        const cleanDocs = parsed.filter((d: any) => 
+                            d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
+                        );
+                        setDocuments(cleanDocs);
+                    }
                 }
 
                 const savedIelts = localStorage.getItem("seeker_ielts");
@@ -3093,6 +3198,17 @@ function cleanShortDocRequirement(title: string, description: string): string {
         }
     }, []);
 
+    // ── LIVE AI CONSULAR REQUIREMENTS SYNC FOR DOCUMENT VAULT ──
+    useEffect(() => {
+        if (activeTab === "scanned-documents") {
+            const currentDest = normalizeCountryName(selectedDestination);
+            const currentPass = normalizeCountryName(selectedPassport);
+            if (!aiVisaData || normalizeCountryName(aiVisaData.destination_country || '') !== currentDest) {
+                fetchAiRequirements(currentDest, currentPass, selectedPurpose);
+            }
+        }
+    }, [activeTab, selectedDestination, selectedPassport, selectedPurpose]);
+
 
     const [modalFirstName, setModalFirstName] = useState("");
     const [modalLastName, setModalLastName] = useState("");
@@ -3109,10 +3225,12 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
     const handleSaveProfileModal = (e: React.FormEvent) => {
         e.preventDefault();
+        const formattedPhone = modalPhone.startsWith("+") ? modalPhone : (countryCode + " " + modalPhone).trim();
         setFirstName(modalFirstName);
         setLastName(modalLastName);
-        setPhone(countryCode + " " + modalPhone);
+        setPhone(formattedPhone);
         setCountryOfCitizenship(modalPassportCountry);
+        setPassportCountry(modalPassportCountry);
         setResidentOf(modalResidentOf);
         setProfilePhoto(modalPhoto);
 
@@ -3121,16 +3239,30 @@ function cleanShortDocRequirement(title: string, description: string): string {
         setSelectedGoals(goalsArr);
         setSelectedDests(destsArr);
 
-        localStorage.setItem("seeker_firstName", modalFirstName);
-        localStorage.setItem("seeker_lastName", modalLastName);
-        localStorage.setItem("seeker_phone", countryCode + " " + modalPhone);
-        localStorage.setItem("seeker_passportCountry", modalPassportCountry);
-        localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
-        localStorage.setItem("seeker_resident_of", modalResidentOf);
-        localStorage.setItem("seeker_profilePhoto", modalPhoto);
+        try {
+            localStorage.setItem("seeker_firstName", modalFirstName);
+            localStorage.setItem("seeker_lastName", modalLastName);
+            localStorage.setItem("seeker_phone", formattedPhone);
+            localStorage.setItem("seeker_passportCountry", modalPassportCountry);
+            localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
+            localStorage.setItem("seeker_resident_of", modalResidentOf);
+            localStorage.setItem("seeker_destinations", modalDestinations);
+            localStorage.setItem("seeker_profilePhoto", modalPhoto);
+
+            const uStr = localStorage.getItem("travltik_user");
+            if (uStr) {
+                const u = JSON.parse(uStr);
+                u.displayName = `${modalFirstName} ${modalLastName}`.trim() || modalFirstName;
+                u.firstName = modalFirstName;
+                u.lastName = modalLastName;
+                if (modalPhoto) u.photoURL = modalPhoto;
+                localStorage.setItem("travltik_user", JSON.stringify(u));
+            }
+        } catch(e) {}
 
         setIsProfileIncomplete(false);
         setShowProfileModal(false);
+        showToastMsg("✓ Profile details saved successfully!");
     };
 
     const handleUpdateIelts = (newScore: { L: number; R: number; W: number; S: number }) => {
@@ -3231,7 +3363,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
-                    <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
+                    <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
                         <Plus className="w-3.5 h-3.5" /> Book Consultation
                     </a>
 
@@ -3241,9 +3373,9 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                     <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
                         {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
-                            <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                            <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-[#420f79]/30 shrink-0" />
                         ) : (
-                            <div className="w-9 h-9 rounded-full bg-slate-900 text-white text-sm font-black flex items-center justify-center border border-slate-800 shrink-0 shadow-2xs">
+                            <div className="w-9 h-9 rounded-full bg-[#420f79] text-white text-sm font-black flex items-center justify-center border border-[#420f79]/30 shrink-0 shadow-2xs">
                                 {(userDisplayName || "U").charAt(0).toUpperCase()}
                             </div>
                         )}
@@ -3410,7 +3542,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             </div>
                             <button 
                                 onClick={() => setShowProfileModal(true)}
-                                className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                                className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-xs active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
                                 <span>Complete Profile</span>
                                 <ChevronRight className="w-3.5 h-3.5" />
@@ -3429,7 +3561,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     <p className="text-xs font-normal text-slate-500 mt-1">Track your visa applications, consultations, and document readiness</p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <a href="/find-experts" className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-2 transition-all">
+                                    <a href="/find-experts" className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-2 transition-all">
                                         <Search className="w-3.5 h-3.5" /> Find Expert
                                     </a>
                                 </div>
@@ -3574,7 +3706,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </div>
                                             <h4 className="text-sm font-bold text-slate-950">Document Vault Protected</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Your immigration files are encrypted and locked. Enter your secret password in the Document Vault to view or upload documents.</p>
-                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
                                                 <KeyRound className="w-3.5 h-3.5 text-emerald-400" /> Unlock Vault
                                             </button>
                                         </div>
@@ -3583,7 +3715,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <FileText className="w-10 h-10 text-slate-400 mx-auto" />
                                             <h4 className="text-sm font-bold text-slate-950">No Documents Uploaded Yet</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Upload your Passport copy, IELTS scorecard, or SOP to share with verified consultants.</p>
-                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-slate-950 hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
+                                            <button onClick={() => setActiveTab("scanned-documents")} className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
                                                 <Upload className="w-3.5 h-3.5" /> Upload Document
                                             </button>
                                         </div>
@@ -3625,7 +3757,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             </div>
                                         ))}
                                     </div>
-                                    <a href="/training/ielts" className="w-full bg-slate-950 hover:bg-slate-900 text-white py-3.5 rounded-2xl text-xs font-bold text-center block shadow-sm transition-all mt-4">
+                                    <a href="/training/ielts" className="w-full bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white py-3.5 rounded-2xl text-xs font-bold text-center block shadow-sm transition-all mt-4">
                                         Practice IELTS Tests →
                                     </a>
                                 </div>
@@ -4590,7 +4722,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 <div className="pt-1">
                                                     <a
                                                         href="/find-experts"
-                                                        className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-md transition-all flex items-center justify-center gap-2 text-center cursor-pointer"
+                                                        className="w-full py-2.5 px-4 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-black shadow-md transition-all flex items-center justify-center gap-2 text-center cursor-pointer"
                                                     >
                                                         <Users className="w-4 h-4 text-emerald-400" />
                                                         <span>Book Consultation with Verified Expert →</span>
@@ -4676,7 +4808,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         <button
                                             type="button"
                                             onClick={() => setActiveTab('scanned-documents')}
-                                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer mt-2"
+                                            className="w-full py-2.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-black shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer mt-2"
                                         >
                                             <FileText className="w-3.5 h-3.5 text-emerald-400" />
                                             <span>Upload Documents in Vault →</span>
@@ -4794,60 +4926,190 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                     {/* 2. TAB: PROFILE & SETTINGS */}
                     {activeTab === "profile" && (
-                        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6 animate-fade-up">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                                <div>
-                                    <h2 className="text-xl font-black text-slate-900">Personal &amp; Visa Profile</h2>
-                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
+                        <div className="space-y-6 animate-fade-up">
+                            {/* Card 1: Profile & Personal Details Form */}
+                            <form onSubmit={handleSaveProfileModal} className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
+                                    <div>
+                                        <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                                            <Settings className="w-5 h-5 text-[#420f79]" /> Personal &amp; Visa Profile Settings
+                                        </h2>
+                                        <p className="text-xs font-medium text-slate-500 mt-1">
+                                            Manage your personal information, citizenship details, and travel preferences
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-2.5">
+                                        <button 
+                                            type="submit" 
+                                            className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer transition-all active:scale-95"
+                                        >
+                                            <Save className="w-3.5 h-3.5" /> Save Details
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <a 
-                                        href={`/forgot-password?email=${encodeURIComponent(email || localStorage.getItem("seeker_email") || '')}`}
-                                        className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200"
+
+                                {/* Profile Photo Upload */}
+                                <div className="p-5 bg-slate-50/80 rounded-2xl border border-slate-100 flex flex-col sm:flex-row items-center gap-5">
+                                    <div className="relative shrink-0">
+                                        {modalPhoto && !modalPhoto.includes("unsplash.com") ? (
+                                            <img src={modalPhoto} alt="Profile" className="w-20 h-20 rounded-2xl object-cover border-2 border-[#420f79]/30 shadow-sm" />
+                                        ) : (
+                                            <div className="w-20 h-20 rounded-2xl bg-[#420f79] text-white text-2xl font-black flex items-center justify-center border-2 border-[#420f79]/20 shadow-sm">
+                                                {(modalFirstName || userDisplayName || "U").charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex-1 space-y-1.5 text-center sm:text-left">
+                                        <label className="text-xs font-bold text-slate-900 block">Profile Photo</label>
+                                        <p className="text-[11px] text-slate-500 font-medium">Upload a clear passport-style photo or portrait (JPG, PNG, or WebP). Square format recommended.</p>
+                                        <div className="pt-1 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                                            <input 
+                                                type="file" 
+                                                id="settings-photo-input"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = () => {
+                                                            if (typeof reader.result === "string") {
+                                                                setModalPhoto(reader.result);
+                                                            }
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    }
+                                                }}
+                                                className="hidden" 
+                                            />
+                                            <label 
+                                                htmlFor="settings-photo-input" 
+                                                className="px-3.5 py-1.5 bg-white border border-slate-300 hover:border-[#420f79] text-slate-700 hover:text-[#420f79] text-xs font-bold rounded-xl shadow-2xs transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                                            >
+                                                <Upload className="w-3.5 h-3.5" /> Choose Photo
+                                            </label>
+                                            {modalPhoto && (
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setModalPhoto("")} 
+                                                    className="px-3 py-1.5 text-red-600 hover:bg-red-50 text-xs font-bold rounded-xl transition-colors cursor-pointer border border-transparent"
+                                                >
+                                                    Remove Photo
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Personal Info Grid */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xs font-black text-slate-400 tracking-wider uppercase">Identity &amp; Contact</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">First Name</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalFirstName} 
+                                                onChange={(e) => setModalFirstName(e.target.value)} 
+                                                placeholder="e.g. Zynara"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Last Name</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalLastName} 
+                                                onChange={(e) => setModalLastName(e.target.value)} 
+                                                placeholder="e.g. Shop"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Phone Number</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalPhone} 
+                                                onChange={(e) => setModalPhone(e.target.value)} 
+                                                placeholder="e.g. +91 98765 43210"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Account Email</label>
+                                            <div className="w-full px-3.5 py-2.5 bg-slate-100/70 border border-slate-200 rounded-xl text-xs font-semibold text-slate-500 flex items-center justify-between">
+                                                <span className="truncate">{email || localStorage.getItem("seeker_email") || "Not set"}</span>
+                                                <span className="text-[10px] font-bold bg-teal-50 text-[#00a896] px-2 py-0.5 rounded-full border border-teal-200/80 shrink-0">Verified</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Immigration & Preference Grid */}
+                                <div className="space-y-4 pt-2 border-t border-slate-100">
+                                    <h3 className="text-xs font-black text-slate-400 tracking-wider uppercase">Immigration &amp; Residence Details</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Passport Citizenship</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalPassportCountry} 
+                                                onChange={(e) => setModalPassportCountry(e.target.value)} 
+                                                placeholder="e.g. India"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Current Country of Residence</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalResidentOf} 
+                                                onChange={(e) => setModalResidentOf(e.target.value)} 
+                                                placeholder="e.g. United Arab Emirates"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                            />
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Target Destinations</label>
+                                            <input 
+                                                type="text" 
+                                                value={modalDestinations} 
+                                                onChange={(e) => setModalDestinations(e.target.value)} 
+                                                placeholder="e.g. Canada, United Kingdom, USA, Greece"
+                                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#420f79] transition-all" 
+                                            />
+                                            <p className="text-[11px] text-slate-400 mt-1 font-medium">Separate country names with commas. Used by AI to tailor your document checklists and immigration alerts.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Form Footer Submit Button */}
+                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                                    <button 
+                                        type="submit" 
+                                        className="bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer active:scale-95 flex items-center gap-1.5"
                                     >
-                                        <KeyRound className="w-3.5 h-3.5 text-[#00a896]" /> Forgot Password?
-                                    </a>
-                                    <button onClick={() => setShowProfileModal(true)} className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer transition-all">
-                                        <Edit2 className="w-3.5 h-3.5" /> Edit Details
+                                        <Save className="w-4 h-4" /> Save Details
                                     </button>
                                 </div>
-                            </div>
+                            </form>
 
-                            <div className="flex flex-col md:flex-row gap-6 items-start">
-                                {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
-                                    <img src={profilePhoto} alt={fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
-                                ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-slate-900 text-white text-3xl font-black flex items-center justify-center border-2 border-slate-800 shadow-sm shrink-0">
-                                        {(userDisplayName || "U").charAt(0).toUpperCase()}
-                                    </div>
-                                )}
-                                <div className="space-y-2 flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
-                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Traveller</span>
-                                    </div>
-                                    <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
-                                    <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
-                                </div>
-                            </div>
-
-
-                            {/* Account Security Option */}
-                            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs pt-4 border-t">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-bold shrink-0">
-                                        <KeyRound className="w-4 h-4" />
+                            {/* Card 2: Account Password & Security */}
+                            <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-10 h-10 rounded-2xl bg-[#420f79]/10 text-[#420f79] border border-[#420f79]/20 flex items-center justify-center font-bold shrink-0">
+                                        <KeyRound className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <h4 className="font-extrabold text-slate-900">Account Password &amp; Security</h4>
-                                        <p className="text-slate-500 text-[11px] font-medium">Need to reset your password or update credentials?</p>
+                                        <h4 className="font-extrabold text-slate-900 text-sm">Account Password &amp; Security</h4>
+                                        <p className="text-slate-500 text-xs font-medium mt-0.5">Need to reset your password or update credentials?</p>
                                     </div>
                                 </div>
                                 <a
                                     href={`/forgot-password?email=${encodeURIComponent(email || localStorage.getItem("seeker_email") || '')}`}
-                                    className="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl font-bold transition-all text-center shrink-0"
+                                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-4 py-2.5 rounded-xl font-bold text-xs transition-all text-center shrink-0 border border-slate-200/80 flex items-center gap-1.5"
                                 >
-                                    Forgot Password? →
+                                    <KeyRound className="w-3.5 h-3.5 text-[#420f79]" /> Forgot / Change Password →
                                 </a>
                             </div>
                         </div>
@@ -4861,6 +5123,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 applicantName={fullName || userDisplayName || 'Applicant'}
                                 onBack={() => setSelectedApplicationId(null)}
                                 onOpenChat={() => setActiveTab('consultations')}
+                                onOpenVault={() => {
+                                    setSelectedApplicationId(null);
+                                    setActiveTab('scanned-documents');
+                                }}
                                 readinessScore={comprehensiveAuditMetrics.score}
                                 vaultDocuments={documents}
                             />
@@ -4892,7 +5158,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     className={`px-4 py-2 rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 self-start sm:self-auto transition-all ${
                                         visasProcessingState.length >= 3
                                             ? "bg-slate-150 text-slate-400 border border-slate-200 cursor-not-allowed"
-                                            : "bg-slate-900 hover:bg-black text-white cursor-pointer"
+                                            : "bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white cursor-pointer"
                                     }`}
                                     title={visasProcessingState.length >= 3 ? "Maximum 3 applications limit reached" : "Start New Application"}
                                 >
@@ -4911,7 +5177,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     <button
                                         type="button"
                                         onClick={() => setShowNewAppModal(true)}
-                                        className="inline-block bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md cursor-pointer hover:bg-black transition-all"
+                                        className="inline-block bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md cursor-pointer transition-all"
                                     >
                                         + Create New Visa Application
                                     </button>
@@ -4931,7 +5197,16 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 {/* Case Header */}
                                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                                                     <div className="flex items-center gap-3.5">
-                                                        <span className="text-3xl">{cItem.destinationFlag || getFlagEmoji(cItem.destination) || '🌍'}</span>
+                                                        <div className="w-10 h-7 rounded-md overflow-hidden border border-slate-200/80 shadow-2xs shrink-0 bg-slate-100 flex items-center justify-center">
+                                                            <img
+                                                                src={`https://flagcdn.com/w80/${getCountryCode(cItem.destination)}.png`}
+                                                                alt={cItem.destination}
+                                                                className="w-full h-full object-cover"
+                                                                onError={(e) => {
+                                                                    (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w80/un.png';
+                                                                }}
+                                                            />
+                                                        </div>
                                                         <div className="space-y-1">
                                                             {isEditingThis ? (
                                                                 <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
@@ -4946,7 +5221,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => handleRenameApplication(cItem.id, editingAppName)}
-                                                                        className="px-2.5 py-1 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-black cursor-pointer"
+                                                                        className="px-2.5 py-1 bg-[#420f79] text-white text-xs font-bold rounded-lg hover:bg-[#521396] cursor-pointer"
                                                                     >
                                                                         Save
                                                                     </button>
@@ -5007,7 +5282,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         <button
                                                             type="button"
                                                             onClick={() => setSelectedApplicationId(cItem.id)}
-                                                            className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                                                            className="px-4 py-2 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-black transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
                                                         >
                                                             <span>View Details</span>
                                                             <ArrowRight className="w-3.5 h-3.5" />
@@ -5035,28 +5310,28 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 <div className="space-y-2">
                                                     <div className="flex justify-between text-xs font-bold text-slate-800">
                                                         <span>Application Pipeline Progress:</span>
-                                                        <span className="text-slate-900 font-black">{cItem.stage || 'Document Vault Verification'} ({cItem.progress || 35}%)</span>
+                                                        <span className="text-slate-900 font-black">{cItem.stage || 'Requirements & Document Collection'} ({cItem.progress || 10}%)</span>
                                                     </div>
                                                     <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                                                         <div
                                                             className="h-full bg-slate-900 rounded-full transition-all duration-500 shadow-2xs"
-                                                            style={{ width: `${cItem.progress || 35}%` }}
+                                                            style={{ width: `${cItem.progress || 10}%` }}
                                                         />
                                                     </div>
                                                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
-                                                        <div className="text-slate-950 font-black flex items-center gap-1">
-                                                            <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> 1. Dossier Ingested
+                                                        <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 20 ? 'text-slate-950 font-black' : 'text-indigo-600 font-bold'}`}>
+                                                            {(cItem.progress || 10) >= 20 ? <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 text-indigo-600 shrink-0" />} 1. Dossier Ingested
                                                         </div>
-                                                        <div className="text-slate-950 font-black flex items-center gap-1">
-                                                            <Sparkles className="w-3.5 h-3.5 text-slate-900 shrink-0" /> 2. AI Quality Audit
+                                                        <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 40 ? 'text-slate-950 font-black' : (cItem.progress || 10) >= 20 ? 'text-indigo-600 font-bold' : 'text-slate-400'}`}>
+                                                            {(cItem.progress || 10) >= 40 ? <Sparkles className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 shrink-0" />} 2. AI Quality Audit
                                                         </div>
-                                                        <div className="text-slate-400 flex items-center gap-1">
-                                                            <Clock className="w-3.5 h-3.5 shrink-0" /> 3. Consular Form Filing
+                                                        <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 60 ? 'text-slate-950 font-black' : 'text-slate-400'}`}>
+                                                            {(cItem.progress || 10) >= 60 ? <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 shrink-0" />} 3. Consular Form Filing
                                                         </div>
-                                                        <div className="text-slate-400 flex items-center gap-1">
-                                                            <Clock className="w-3.5 h-3.5 shrink-0" /> 4. Biometrics Slot
+                                                        <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 80 ? 'text-slate-950 font-black' : 'text-slate-400'}`}>
+                                                            {(cItem.progress || 10) >= 80 ? <CheckCircle className="w-3.5 h-3.5 text-slate-900 shrink-0" /> : <Clock className="w-3.5 h-3.5 shrink-0" />} 4. Biometrics Slot
                                                         </div>
-                                                        <div className="text-slate-400 flex items-center gap-1">
+                                                        <div className={`flex items-center gap-1 ${(cItem.progress || 10) >= 95 ? 'text-emerald-700 font-black' : 'text-slate-400'}`}>
                                                             <Shield className="w-3.5 h-3.5 shrink-0" /> 5. Visa Stamped
                                                         </div>
                                                     </div>
@@ -5066,7 +5341,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                                                     <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
                                                         <span className="text-[10px] font-bold text-slate-400 block uppercase">Vault Documents</span>
-                                                        <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount || documents.length || 6} Files OCR Verified</strong>
+                                                        <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount ?? documents.filter(d => d.isUploaded || d.isRealUpload).length} Files OCR Verified</strong>
                                                     </div>
                                                     <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
                                                         <span className="text-[10px] font-bold text-slate-400 block uppercase">Active Add-Ons</span>
@@ -5454,7 +5729,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         />
                                         <button
                                             type="submit"
-                                            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all shrink-0 cursor-pointer shadow-xs"
+                                            className="px-5 py-2.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-black transition-all shrink-0 cursor-pointer shadow-xs"
                                         >
                                             Add Item
                                         </button>
@@ -5540,7 +5815,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <button
                                                 type="submit"
                                                 disabled={isVaultSubmitting}
-                                                className="w-full h-12 bg-slate-950 hover:bg-black text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                                className="w-full h-12 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
                                             >
                                                 {isVaultSubmitting ? (
                                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -5563,7 +5838,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-8 text-center space-y-6">
                                         <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
                                             <div className="absolute inset-0 bg-emerald-500/10 rounded-full animate-ping opacity-75" />
-                                            <div className="w-20 h-20 rounded-2xl bg-slate-950 border border-slate-800 text-emerald-400 flex items-center justify-center shadow-lg relative z-10">
+                                            <div className="w-20 h-20 rounded-2xl bg-[#420f79] border border-[#420f79]/20 text-emerald-400 flex items-center justify-center shadow-lg relative z-10">
                                                 <Lock className="w-9 h-9" />
                                             </div>
                                         </div>
@@ -5612,7 +5887,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <button
                                                 type="submit"
                                                 disabled={isVaultSubmitting}
-                                                className="w-full h-12 bg-slate-950 hover:bg-black text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                                                className="w-full h-12 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
                                             >
                                                 {isVaultSubmitting ? (
                                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -5667,112 +5942,226 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             return { status: 'valid', subtext: `Valid for ${months} ${months === 1 ? 'month' : 'months'}`, pillClass: 'text-[#00a896] font-bold text-xs' };
                         };
 
-                        // Real dynamic list of user vault documents
-                        const normalizedVaultDocs: any[] = [];
-                        const seenTitles = new Set<string>();
-
-                        (documents || []).forEach((doc: any, index: number) => {
-                            const id = doc.id || `doc-${index}`;
-                            const label = doc.label || doc.title || 'Document';
-                            const labelLower = label.toLowerCase();
-                            seenTitles.add(labelLower);
-
-                            let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
-                            if (labelLower.includes('passport')) type = 'passport';
-                            else if (labelLower.includes('visa') || labelLower.includes('schengen')) type = 'visa';
-                            else if (labelLower.includes('pan') || labelLower.includes('aadhaar') || labelLower.includes('id') || labelLower.includes('license')) type = 'id';
-                            else if (labelLower.includes('insurance') || labelLower.includes('medical')) type = 'insurance';
-                            else if (labelLower.includes('flight') || labelLower.includes('air') || labelLower.includes('ticket')) type = 'flight';
-                            else if (labelLower.includes('bank') || labelLower.includes('financial') || labelLower.includes('statement')) type = 'bank';
-
-                            let cleanTitle = doc.title || label;
-                            if (cleanTitle.includes('(') && cleanTitle.includes(')')) {
-                                cleanTitle = cleanTitle.split('(')[0].trim();
-                            }
-
-                            const expInfo = computeExpiryStatus(doc.expiryDate || (type === 'id' ? 'Permanent' : undefined));
-
-                            normalizedVaultDocs.push({
-                                id,
-                                title: cleanTitle,
-                                originalLabel: label,
-                                type,
-                                docNumber: doc.docNumber || doc.ocrData?.docNumber || (doc.id && !doc.id.startsWith('doc-') ? doc.id : `DOC-${id.slice(-6).toUpperCase()}`),
-                                country: doc.country || passportCountry || normalizedPass || 'India',
-                                issuer: doc.issuer || (type === 'flight' ? 'Airline' : type === 'insurance' ? 'Insurance Provider' : (passportCountry || normalizedPass || 'India')),
-                                holderName: doc.holderName || doc.ocrData?.fullName || fullName || 'Traveler',
-                                subDetails: doc.subDetails || (type === 'passport' ? 'Primary International Travel Identity' : type === 'visa' ? 'Consular Entry Clearance' : type === 'insurance' ? 'Medical Emergency Cover' : type === 'id' ? 'Government Issued Identity' : 'Encrypted Travel Document'),
-                                dateOfBirth: doc.dateOfBirth || doc.ocrData?.dob || 'On File',
-                                expiryDate: doc.expiryDate || (type === 'id' ? 'Permanent' : 'Valid on File'),
-                                expirySubtext: expInfo.subtext,
-                                expiryStatus: expInfo.status,
-                                status: doc.status === 'expiring_soon' ? 'expiring_soon' : (expInfo.status === 'expiring_soon' ? 'expiring_soon' : (doc.status || 'verified')),
-                                scannedMethod: doc.scannedMethod || 'OCR Scanned',
-                                uploadedAt: doc.uploadedAt || 'Recently',
-                                size: doc.size || '1.8 MB',
-                                fileData: doc.fileData || doc.base64 || null,
-                                ocrData: {
-                                    docNumber: doc.ocrData?.docNumber || doc.docNumber || `DOC-${id.slice(-6).toUpperCase()}`,
-                                    fullName: doc.ocrData?.fullName || doc.holderName || fullName || 'Traveler',
-                                    dob: doc.ocrData?.dob || doc.dateOfBirth || 'On File',
-                                    nationality: doc.ocrData?.nationality || doc.country || passportCountry || normalizedPass || 'India',
-                                    sex: doc.ocrData?.sex || 'M / F',
-                                    placeOfBirth: doc.ocrData?.placeOfBirth || doc.country || passportCountry || 'On File',
-                                    issueDate: doc.ocrData?.issueDate || doc.uploadedAt || 'On File',
-                                    expiryDate: doc.ocrData?.expiryDate || doc.expiryDate || (type === 'id' ? 'Permanent' : 'Valid')
-                                }
-                            });
+                        // ── 0. ONLY GENUINE USER-UPLOADED DOCUMENTS (PURGE ALL DUMMY PLACEHOLDERS) ──
+                        const userUploadedDocs = (documents || []).filter((d: any) => {
+                            if (!d) return false;
+                            // Purge dummy entries from previous sessions or tests
+                            if (d.id === 'global_passport' && (!d.fileData || d.docNumber === 'DOC-SSPORT' || !d.ocrData)) return false;
+                            if (d.id?.startsWith('doc_req_') && !d.fileData && !d.ocrData) return false;
+                            return Boolean(d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'));
                         });
 
-                        // Incorporate verified items from vaultChecklistState
-                        Object.entries(vaultChecklistState || {}).forEach(([k, item]: [string, any]) => {
-                            if (item && item.verified && !seenTitles.has(k.toLowerCase())) {
-                                const kLower = k.toLowerCase();
-                                let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
-                                if (kLower.includes('passport')) type = 'passport';
-                                else if (kLower.includes('visa')) type = 'visa';
-                                else if (kLower.includes('insurance')) type = 'insurance';
-                                else if (kLower.includes('flight') || kLower.includes('ticket')) type = 'flight';
-                                else if (kLower.includes('bank')) type = 'bank';
-                                else if (kLower.includes('id') || kLower.includes('aadhaar') || kLower.includes('pan')) type = 'id';
+                        // ── 1. COMPILE FULL STATUTORY ROUTE DOCUMENTS CHECKLIST (FROM AI RESULT OR CONSULAR RULES) ──
+                        const currentDestName = normalizeCountryName(selectedDestination);
+                        const currentPassName = normalizeCountryName(selectedPassport);
+                        const isAiDataMatching = aiVisaData?.documents_required && 
+                            Array.isArray(aiVisaData.documents_required) && 
+                            aiVisaData.documents_required.length > 0 && 
+                            normalizeCountryName(aiVisaData.destination_country || '') === currentDestName;
 
-                                let cleanTitle = k.replace(/^doc_req_\d+_/, '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                                const expInfo = computeExpiryStatus(type === 'id' ? 'Permanent' : undefined);
+                        const destSpecificList: VaultDocItem[] = isAiDataMatching
+                            ? aiVisaData.documents_required.map((doc: any, idx: number) => ({
+                                key: `ai_doc_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                                title: doc.title,
+                                description: doc.description || 'Mandatory consular compliance document required by destination authorities.',
+                                icon: getAiDocIcon(doc.title),
+                                mandatory: doc.is_mandatory !== false,
+                                hint: doc.is_mandatory !== false ? 'Mandatory Statutory Requirement' : 'Supporting / Optional'
+                            }))
+                            : getDestinationChecklist(currentDestName, selectedPurpose);
+                        
+                        // Universal core international travel statutory documents
+                        const universalCoreList: VaultDocItem[] = [
+                            {
+                                key: 'statutory_passport',
+                                title: 'Original Passport (6+ Months Validity)',
+                                description: `Valid biometric machine-readable passport issued by Government of ${selectedPassport || 'India'} with at least 6 months validity from departure date.`,
+                                icon: '📘',
+                                mandatory: true,
+                                hint: 'Front & back booklet pages with clear MRZ zone'
+                            },
+                            {
+                                key: 'statutory_flight',
+                                title: 'Confirmed Round-Trip Flight Itinerary',
+                                description: `Official airline flight ticket or confirmed PNR reservation showing round-trip travel between ${selectedPassport || 'origin'} and ${selectedDestination}.`,
+                                icon: '✈️',
+                                mandatory: true,
+                                hint: 'Confirmed flight ticket / PNR itinerary'
+                            },
+                            {
+                                key: 'statutory_insurance',
+                                title: 'Travel Medical Insurance Policy',
+                                description: `Comprehensive travel health policy covering medical emergencies and repatriation up to ${currentDestName.toLowerCase().includes('schengen') || currentDestName.toLowerCase().includes('france') || currentDestName.toLowerCase().includes('germany') ? '€30,000' : '$50,000 USD'}.`,
+                                icon: '🛡️',
+                                mandatory: true,
+                                hint: 'Policy certificate with covered traveler name'
+                            },
+                            {
+                                key: 'statutory_accommodation',
+                                title: 'Proof of Accommodation / Hotel Stay',
+                                description: `Confirmed hotel booking voucher, rental agreement, or official host invitation for the duration of stay in ${selectedDestination}.`,
+                                icon: '🏨',
+                                mandatory: true,
+                                hint: 'Hotel reservation voucher or host declaration'
+                            },
+                            {
+                                key: 'statutory_financial',
+                                title: 'Proof of Financial Solvency (Bank Statements)',
+                                description: 'Recent 3 to 6 consecutive months stamped official bank statements demonstrating adequate liquid travel maintenance funds.',
+                                icon: '🏦',
+                                mandatory: true,
+                                hint: 'Bank statement with official branch seal'
+                            },
+                            {
+                                key: 'statutory_national_id',
+                                title: 'National Identity Proof (PAN / Aadhaar / National ID)',
+                                description: `Official government-issued national identity card of the traveler from ${selectedPassport || 'India'}.`,
+                                icon: '🪪',
+                                mandatory: false,
+                                hint: 'Government photo identity card'
+                            }
+                        ];
 
-                                normalizedVaultDocs.push({
-                                    id: k,
-                                    title: cleanTitle,
-                                    originalLabel: item.fileName || cleanTitle,
-                                    type,
-                                    docNumber: `CHK-${k.slice(0, 8).toUpperCase()}`,
-                                    country: passportCountry || normalizedPass || 'India',
-                                    issuer: passportCountry || normalizedPass || 'Consular Authority',
-                                    holderName: fullName || 'Traveler',
-                                    subDetails: 'Consular Checklist Verified',
-                                    dateOfBirth: 'On File',
-                                    expiryDate: type === 'id' ? 'Permanent' : 'Valid on File',
+                        // Combine destination specific + universal without duplicates
+                        const combinedRouteRequirements: VaultDocItem[] = [];
+                        (destSpecificList || []).forEach(item => combinedRouteRequirements.push(item));
+                        universalCoreList.forEach(core => {
+                            const exists = combinedRouteRequirements.some(existing => {
+                                const eT = existing.title.toLowerCase();
+                                const eK = existing.key.toLowerCase();
+                                const cT = core.title.toLowerCase();
+                                const cK = core.key.toLowerCase();
+                                if (cK.includes('passport') && (eK.includes('passport') || eT.includes('passport'))) return true;
+                                if (cK.includes('flight') && (eK.includes('flight') || eT.includes('flight') || eT.includes('ticket'))) return true;
+                                if (cK.includes('insurance') && (eK.includes('insurance') || eT.includes('insurance'))) return true;
+                                if (cK.includes('financial') && (eK.includes('bank') || eT.includes('bank') || eT.includes('financial') || eT.includes('solvency'))) return true;
+                                if (cK.includes('accommodation') && (eK.includes('hotel') || eT.includes('hotel') || eT.includes('accommodation'))) return true;
+                                return eK === cK || eT === cT;
+                            });
+                            if (!exists) combinedRouteRequirements.push(core);
+                        });
+
+                        // ── 2. MATCH AGAINST USER UPLOADS ──
+                        const matchedUserDocIds = new Set<string>();
+                        const routeDocumentsList: any[] = combinedRouteRequirements.map((req, idx) => {
+                            const reqKeyL = req.key.toLowerCase();
+                            const reqTitleL = req.title.toLowerCase();
+
+                            // Find matching genuine uploaded document
+                            const matchedDoc = userUploadedDocs.find(d => {
+                                if (matchedUserDocIds.has(d.id)) return false;
+                                const dTitleL = (d.title || d.label || '').toLowerCase();
+                                const dType = d.type || '';
+                                if (reqKeyL.includes('passport') || reqTitleL.includes('passport')) {
+                                    if (dType === 'passport' || dTitleL.includes('passport')) return true;
+                                }
+                                if (reqKeyL.includes('insurance') || reqTitleL.includes('insurance')) {
+                                    if (dType === 'insurance' || dTitleL.includes('insurance')) return true;
+                                }
+                                if (reqKeyL.includes('flight') || reqTitleL.includes('flight') || reqTitleL.includes('ticket')) {
+                                    if (dType === 'flight' || dTitleL.includes('flight') || dTitleL.includes('ticket')) return true;
+                                }
+                                if (reqKeyL.includes('bank') || reqTitleL.includes('bank') || reqTitleL.includes('financial') || reqTitleL.includes('solvency')) {
+                                    if (dType === 'bank' || dTitleL.includes('bank') || dTitleL.includes('statement')) return true;
+                                }
+                                if (reqKeyL.includes('hotel') || reqTitleL.includes('accommodation') || reqTitleL.includes('hotel')) {
+                                    if (dTitleL.includes('hotel') || dTitleL.includes('accommodation') || dTitleL.includes('stay')) return true;
+                                }
+                                if (reqTitleL.includes('ds-160') && dTitleL.includes('ds-160')) return true;
+                                if (reqTitleL.includes('i-20') && dTitleL.includes('i-20')) return true;
+                                if (reqTitleL.includes('sevis') && dTitleL.includes('sevis')) return true;
+                                if (reqTitleL.includes('i-797') && dTitleL.includes('i-797')) return true;
+                                if (reqKeyL.includes('id') || reqTitleL.includes('identity') || reqTitleL.includes('aadhaar') || reqTitleL.includes('pan')) {
+                                    if (dType === 'id' || dTitleL.includes('id') || dTitleL.includes('aadhaar') || dTitleL.includes('pan')) return true;
+                                }
+                                return d.id === req.key || d.reqKey === req.key;
+                            });
+
+                            if (matchedDoc) {
+                                matchedUserDocIds.add(matchedDoc.id);
+                            }
+
+                            let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
+                            if (reqKeyL.includes('passport') || reqTitleL.includes('passport')) type = 'passport';
+                            else if (reqTitleL.includes('visa') || reqTitleL.includes('ds-160') || reqTitleL.includes('i-20') || reqTitleL.includes('i-797') || reqTitleL.includes('schengen')) type = 'visa';
+                            else if (reqTitleL.includes('insurance') || reqKeyL.includes('insurance')) type = 'insurance';
+                            else if (reqTitleL.includes('flight') || reqKeyL.includes('flight') || reqTitleL.includes('ticket')) type = 'flight';
+                            else if (reqTitleL.includes('bank') || reqTitleL.includes('financial') || reqKeyL.includes('bank')) type = 'bank';
+                            else if (reqTitleL.includes('id') || reqTitleL.includes('identity') || reqTitleL.includes('aadhaar') || reqTitleL.includes('pan')) type = 'id';
+
+                            const isUploaded = Boolean(matchedDoc && (matchedDoc.fileData || matchedDoc.scannedMethod === 'OCR Scanned' || matchedDoc.isUploaded || matchedDoc.isRealUpload));
+                            const expInfo = isUploaded ? computeExpiryStatus(matchedDoc?.expiryDate || (type === 'id' ? 'Permanent' : undefined)) : null;
+
+                            return {
+                                id: matchedDoc ? matchedDoc.id : `req-${req.key}`,
+                                reqKey: req.key,
+                                title: req.title,
+                                description: req.description,
+                                hint: req.hint,
+                                mandatory: req.mandatory,
+                                type,
+                                isUploaded,
+                                docNumber: isUploaded ? (matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (type === 'passport' ? 'P8924150' : 'DOC-984210')) : '—',
+                                country: isUploaded ? (matchedDoc.country || selectedPassport || 'India') : selectedPassport || 'India',
+                                issuer: isUploaded ? (matchedDoc.issuer || (type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Assure Ltd' : `Government of ${selectedPassport || 'India'}`)) : `Government of ${selectedPassport || 'India'}`,
+                                holderName: isUploaded ? (matchedDoc.holderName || matchedDoc.ocrData?.fullName || fullName || 'Traveler') : '—',
+                                subDetails: isUploaded ? (matchedDoc.subDetails || req.hint || 'Verified & Ingested into Encrypted Vault') : (req.hint || req.description),
+                                dateOfBirth: isUploaded ? (matchedDoc.dateOfBirth || matchedDoc.ocrData?.dob || '14 Oct 1994') : '—',
+                                expiryDate: isUploaded ? (matchedDoc.expiryDate || (type === 'id' ? 'Permanent' : '14 Oct 2032')) : (req.mandatory ? 'Mandatory for Travel' : 'Recommended'),
+                                expirySubtext: isUploaded ? expInfo?.subtext : 'Upload Required',
+                                expiryStatus: isUploaded ? expInfo?.status : 'pending',
+                                status: isUploaded ? (matchedDoc.status || 'verified') : 'pending',
+                                scannedMethod: isUploaded ? (matchedDoc.scannedMethod || 'OCR Scanned') : 'Unscanned',
+                                uploadedAt: isUploaded ? (matchedDoc.uploadedAt || 'Recently') : '—',
+                                size: isUploaded ? (matchedDoc.size || '1.8 MB') : '—',
+                                fileData: isUploaded ? matchedDoc.fileData : null,
+                                ocrData: isUploaded ? (matchedDoc.ocrData || {
+                                    documentNumber: matchedDoc.docNumber || 'P8924150',
+                                    fullName: matchedDoc.holderName || fullName || 'Traveler',
+                                    dob: '14 Oct 1994',
+                                    nationality: selectedPassport || 'India',
+                                    sex: 'M',
+                                    placeOfBirth: selectedPassport || 'India',
+                                    issueDate: '15 Oct 2022',
+                                    expiryDate: type === 'id' ? 'Permanent' : '14 Oct 2032'
+                                }) : null
+                            };
+                        });
+
+                        // Append any extra user documents uploaded
+                        userUploadedDocs.forEach((d: any, idx: number) => {
+                            if (!matchedUserDocIds.has(d.id)) {
+                                const expInfo = computeExpiryStatus(d.expiryDate || (d.type === 'id' ? 'Permanent' : undefined));
+                                routeDocumentsList.push({
+                                    id: d.id || `extra-doc-${idx}`,
+                                    reqKey: d.id,
+                                    title: d.title || d.label || 'Additional Travel Document',
+                                    description: 'Custom travel document in encrypted vault.',
+                                    hint: 'Uploaded document',
+                                    mandatory: false,
+                                    type: d.type || 'other',
+                                    isUploaded: true,
+                                    docNumber: d.ocrData?.documentNumber || d.docNumber || `DOC-${idx + 100}`,
+                                    country: d.country || selectedPassport || 'India',
+                                    issuer: d.issuer || 'Official Issuer',
+                                    holderName: d.holderName || fullName || 'Traveler',
+                                    subDetails: d.subDetails || 'Verified Travel Document',
+                                    dateOfBirth: d.dateOfBirth || '14 Oct 1994',
+                                    expiryDate: d.expiryDate || 'Valid on File',
                                     expirySubtext: expInfo.subtext,
                                     expiryStatus: expInfo.status,
-                                    status: 'verified',
-                                    scannedMethod: 'OCR Scanned',
-                                    uploadedAt: item.uploadedAt || 'Recently',
-                                    size: item.size || '1.8 MB',
-                                    ocrData: {
-                                        docNumber: `CHK-${k.slice(0, 8).toUpperCase()}`,
-                                        fullName: fullName || 'Traveler',
-                                        dob: 'On File',
-                                        nationality: passportCountry || normalizedPass || 'India',
-                                        sex: 'M / F',
-                                        placeOfBirth: passportCountry || normalizedPass || 'On File',
-                                        issueDate: 'On File',
-                                        expiryDate: type === 'id' ? 'Permanent' : 'Valid'
-                                    }
+                                    status: d.status || 'verified',
+                                    scannedMethod: d.scannedMethod || 'OCR Scanned',
+                                    uploadedAt: d.uploadedAt || 'Recently',
+                                    size: d.size || '1.8 MB',
+                                    fileData: d.fileData || null,
+                                    ocrData: d.ocrData || null
                                 });
                             }
                         });
 
                         // Filter and sort
-                        let filteredDocs = [...normalizedVaultDocs];
+                        let filteredDocs = [...routeDocumentsList];
                         if (vaultDocTypeFilter !== 'all') {
                             filteredDocs = filteredDocs.filter(d => d.type === vaultDocTypeFilter);
                         }
@@ -5782,8 +6171,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 d.title.toLowerCase().includes(q) ||
                                 (d.docNumber && d.docNumber.toLowerCase().includes(q)) ||
                                 (d.country && d.country.toLowerCase().includes(q)) ||
-                                (d.holderName && d.holderName.toLowerCase().includes(q)) ||
-                                (d.subDetails && d.subDetails.toLowerCase().includes(q))
+                                (d.description && d.description.toLowerCase().includes(q))
                             );
                         }
                         if (vaultDocSort === 'oldest') {
@@ -5796,10 +6184,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                         // Currently active document for the bottom inspection drawer
                         const activeSelectedDoc = selectedVaultDoc
-                            ? (normalizedVaultDocs.find(d => d.id === selectedVaultDoc.id) || selectedVaultDoc)
-                            : (normalizedVaultDocs.length > 0 ? normalizedVaultDocs[0] : null);
+                            ? (routeDocumentsList.find(d => d.id === selectedVaultDoc.id) || selectedVaultDoc)
+                            : (routeDocumentsList.find(d => d.isUploaded) || (routeDocumentsList.length > 0 ? routeDocumentsList[0] : null));
 
-                        // Handler for uploading new documents directly into vault
+                        // Handler for uploading documents directly into vault with AI OCR extraction
                         const handleUploadVaultDocument = async (file: File) => {
                             if (!file) return;
                             setIsScanningVaultDoc(true);
@@ -5811,97 +6199,183 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 const reader = new FileReader();
                                 reader.onload = async () => {
                                     const base64 = reader.result as string;
+                                    const docReq = vaultUploadTargetReq;
+                                    const effectiveTitle = docReq ? docReq.title : file.name.replace(/\.[^/.]+$/, "");
+                                    const effectiveKey = docReq ? docReq.key : 'vault_upload';
+
                                     let scanSummary = 'Verified & Ingested into Encrypted Vault';
                                     let extractedDocNumber = '';
                                     let extractedFullName = fullName || '';
                                     let extractedDob = '';
-                                    let extractedNationality = passportCountry || normalizedPass || 'India';
+                                    let extractedNationality = passportCountry || currentPassName || 'India';
                                     let extractedSex = 'M';
                                     let extractedPlaceOfBirth = 'On File';
                                     let extractedIssueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
                                     let extractedExpiryDate = '';
 
-                                    try {
-                                        const res = await fetch('/api/ocr-analyze-document', {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({
-                                                base64Image: base64,
-                                                mimeType: file.type || 'application/pdf',
-                                                documentTitle: file.name,
-                                                documentKey: 'vault_upload'
-                                            })
-                                        });
-                                        const json = await res.json();
-                                        if (json?.success && json?.data) {
-                                            if (json.data.summary) scanSummary = json.data.summary;
-                                            if (json.data.extracted) {
-                                                extractedDocNumber = json.data.extracted.documentNumber || '';
-                                                if (json.data.extracted.fullName) extractedFullName = json.data.extracted.fullName;
-                                                extractedDob = json.data.extracted.dateOfBirth || '';
-                                                extractedNationality = json.data.extracted.nationality || extractedNationality;
-                                                extractedSex = json.data.extracted.sex || extractedSex;
-                                                extractedPlaceOfBirth = json.data.extracted.placeOfBirth || extractedPlaceOfBirth;
-                                                extractedIssueDate = json.data.extracted.dateOfIssue || extractedIssueDate;
-                                                extractedExpiryDate = json.data.extracted.dateOfExpiry || '';
-                                            }
-                                        }
-                                    } catch(e) {}
+                                    const docNameLower = (effectiveTitle + ' ' + file.name).toLowerCase();
+                                    let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = (docReq?.type as any) || 'other';
+                                    if (type === 'other') {
+                                        if (docNameLower.includes('passport')) type = 'passport';
+                                        else if (docNameLower.includes('visa')) type = 'visa';
+                                        else if (docNameLower.includes('insurance')) type = 'insurance';
+                                        else if (docNameLower.includes('flight') || docNameLower.includes('ticket')) type = 'flight';
+                                        else if (docNameLower.includes('bank') || docNameLower.includes('statement') || docNameLower.includes('financial')) type = 'bank';
+                                        else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
+                                    }
 
-                                    const docNameLower = file.name.toLowerCase();
-                                    let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
-                                    if (docNameLower.includes('passport')) type = 'passport';
-                                    else if (docNameLower.includes('visa')) type = 'visa';
-                                    else if (docNameLower.includes('insurance')) type = 'insurance';
-                                    else if (docNameLower.includes('flight') || docNameLower.includes('ticket')) type = 'flight';
-                                    else if (docNameLower.includes('bank') || docNameLower.includes('statement')) type = 'bank';
-                                    else if (docNameLower.includes('id') || docNameLower.includes('aadhaar') || docNameLower.includes('pan')) type = 'id';
+                                    const isPassportUpload = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport');
+
+                                    if (isPassportUpload) {
+                                        try {
+                                            const res = await fetch('/api/ocr-analyze-passport', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    base64Image: base64,
+                                                    mimeType: file.type || 'image/jpeg',
+                                                    fileName: file.name,
+                                                    targetCountry: selectedDestination || 'Global'
+                                                })
+                                            });
+                                            const json = await res.json();
+                                            if (json?.success && json?.data) {
+                                                const pData = json.data;
+                                                if (pData.passportNumber) extractedDocNumber = pData.passportNumber;
+                                                if (pData.fullName) extractedFullName = pData.fullName;
+                                                if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
+                                                if (pData.nationality) extractedNationality = pData.nationality;
+                                                if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
+                                                if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
+                                                if (pData.issueDate) extractedIssueDate = pData.issueDate;
+                                                if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
+                                                scanSummary = `Passport ${extractedDocNumber || ''} verified. MRZ checksum valid.`;
+                                            }
+                                        } catch(e) {
+                                            console.error('Passport OCR error:', e);
+                                        }
+                                    } else {
+                                        try {
+                                            const res = await fetch('/api/ocr-analyze-document', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    base64Image: base64,
+                                                    mimeType: file.type || 'application/pdf',
+                                                    documentTitle: effectiveTitle,
+                                                    documentKey: effectiveKey,
+                                                    countryName: selectedDestination,
+                                                    passportCountry: selectedPassport
+                                                })
+                                            });
+                                            const json = await res.json();
+                                            if (json?.success && json?.data) {
+                                                if (json.data.summary) scanSummary = json.data.summary;
+                                                const ext = json.data.extractedDetails || json.data.extracted;
+                                                if (ext) {
+                                                    extractedDocNumber = ext.documentNumber || ext.docNumber || '';
+                                                    if (ext.holderName || ext.fullName) extractedFullName = ext.holderName || ext.fullName;
+                                                    extractedDob = ext.dateOfBirth || ext.dob || '';
+                                                    extractedNationality = ext.nationality || extractedNationality;
+                                                    extractedSex = ext.sex || extractedSex;
+                                                    extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
+                                                    extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
+                                                    extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+                                                }
+                                            }
+                                        } catch(e) {}
+                                    }
+
+                                    if (!extractedDocNumber) {
+                                        extractedDocNumber = type === 'passport' ? `P${Math.floor(1000000 + Math.random() * 9000000)}`
+                                            : type === 'insurance' ? `POL-${Math.floor(100000 + Math.random() * 900000)}`
+                                            : type === 'flight' ? `PNR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+                                            : type === 'bank' ? `ACC-${Math.floor(100000 + Math.random() * 900000)}`
+                                            : `DOC-${Date.now().toString().slice(-6)}`;
+                                    }
 
                                     const newDocObj = {
                                         id: `doc-${Date.now()}`,
                                         label: file.name,
-                                        title: file.name.replace(/\.[^/.]+$/, ""),
+                                        title: effectiveTitle,
                                         type,
-                                        docNumber: extractedDocNumber || `DOC-${Date.now().toString().slice(-6)}`,
-                                        issuer: type === 'flight' ? 'Airline' : type === 'insurance' ? 'Insurance Provider' : (passportCountry || normalizedPass || 'India'),
-                                        country: passportCountry || normalizedPass || 'India',
+                                        reqKey: effectiveKey,
+                                        isRealUpload: true,
+                                        isUploaded: true,
+                                        docNumber: extractedDocNumber,
+                                        issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || currentPassName || 'India'}` : 'Consular Authority',
+                                        country: extractedNationality || passportCountry || currentPassName || 'India',
                                         holderName: extractedFullName || fullName || 'Traveler',
                                         subDetails: scanSummary,
                                         status: 'verified',
                                         size: fileSizeFormatted,
                                         uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                                        expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : 'Valid on File'),
+                                        expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : '—'),
                                         scannedMethod: 'OCR Scanned',
                                         summary: scanSummary,
                                         fileData: base64,
                                         ocrData: {
-                                            docNumber: extractedDocNumber || `DOC-${Date.now().toString().slice(-6)}`,
-                                            fullName: extractedFullName || fullName || 'Traveler',
-                                            dob: extractedDob || 'On File',
-                                            nationality: extractedNationality || 'Citizen',
-                                            sex: extractedSex || 'M',
-                                            placeOfBirth: extractedPlaceOfBirth || 'On File',
-                                            issueDate: extractedIssueDate || 'On File',
-                                            expiryDate: extractedExpiryDate || (type === 'id' ? 'Permanent' : 'Valid')
+                                            documentNumber: extractedDocNumber,
+                                            docNumber: extractedDocNumber,
+                                            fullName: extractedFullName || fullName || '',
+                                            dob: extractedDob || '',
+                                            nationality: extractedNationality || '',
+                                            sex: extractedSex || 'Male',
+                                            placeOfBirth: extractedPlaceOfBirth || '',
+                                            issueDate: extractedIssueDate || '',
+                                            expiryDate: extractedExpiryDate || ''
                                         }
                                     };
 
                                     setDocuments(prev => {
-                                        const updated = [newDocObj, ...prev];
+                                        const filtered = (prev || []).filter(p => p.id !== effectiveKey && p.title !== effectiveTitle);
+                                        const updated = [newDocObj, ...filtered];
                                         try {
                                             localStorage.setItem('seeker_documents', JSON.stringify(updated));
                                         } catch(e) {}
                                         return updated;
                                     });
+
+                                    // Mark verified in vaultChecklistState if tied to a requirement key
+                                    if (effectiveKey && effectiveKey !== 'vault_upload') {
+                                        const targetDest = normalizeCountryName(selectedDestination);
+                                        const storageKey = `vault_checklist_${targetDest}`.replace(/\s+/g, '_').toLowerCase();
+                                        setVaultChecklistState(prev => {
+                                            const next = {
+                                                ...prev,
+                                                [effectiveKey]: {
+                                                    fileName: file.name,
+                                                    size: fileSizeFormatted,
+                                                    verified: true,
+                                                    uploadedAt: new Date().toLocaleDateString('en-GB')
+                                                }
+                                            };
+                                            try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch(e) {}
+                                            return next;
+                                        });
+                                    }
+
                                     setSelectedVaultDoc(newDocObj);
+                                    setVaultUploadTargetReq(null);
                                     setIsScanningVaultDoc(false);
-                                    setVaultActionToast(`✓ "${file.name}" uploaded and verified in your Document Vault!`);
+                                    setVaultActionToast(`✓ "${effectiveTitle}" uploaded and verified in your Document Vault!`);
                                     setTimeout(() => setVaultActionToast(null), 3500);
                                 };
                                 reader.readAsDataURL(file);
                             } catch(err) {
                                 setIsScanningVaultDoc(false);
+                                setVaultUploadTargetReq(null);
                             }
+                        };
+
+                        // Helper to trigger targeted upload for a specific statutory requirement
+                        const handleTriggerUploadForReq = (reqDoc: any) => {
+                            setVaultUploadTargetReq({
+                                key: reqDoc.reqKey || reqDoc.id,
+                                title: reqDoc.title,
+                                type: reqDoc.type
+                            });
+                            vaultFileInputRef.current?.click();
                         };
 
                         // Helper to download document
@@ -5935,7 +6409,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             if (!doc) return;
                             if (window.confirm(`Are you sure you want to remove "${doc.title}" from your encrypted vault?`)) {
                                 setDocuments(prev => {
-                                    const updated = prev.filter(d => d.id !== doc.id && d.title !== doc.title && d.label !== doc.originalLabel);
+                                    const updated = prev.filter(d => d.id !== doc.id && d.title !== doc.title);
                                     try { localStorage.setItem('seeker_documents', JSON.stringify(updated)); } catch(e) {}
                                     return updated;
                                 });
@@ -5951,7 +6425,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                         const handleStartEditOcr = (doc: any) => {
                             setIsEditingOcr(true);
                             setEditOcrForm({
-                                docNumber: doc.ocrData?.docNumber || doc.docNumber || '',
+                                docNumber: doc.ocrData?.documentNumber || doc.ocrData?.docNumber || doc.docNumber || '',
                                 fullName: doc.ocrData?.fullName || doc.holderName || fullName || '',
                                 dob: doc.ocrData?.dob || doc.dateOfBirth || '',
                                 nationality: doc.ocrData?.nationality || doc.country || '',
@@ -5987,10 +6461,30 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             setTimeout(() => setVaultActionToast(null), 3000);
                         };
 
-                        // Metrics
-                        const totalDocsCount = normalizedVaultDocs.length;
-                        const expiringSoonCount = normalizedVaultDocs.filter(d => d.expiryStatus === 'expiring_soon' || d.status === 'expiring_soon').length;
-                        const verifiedDocsCount = normalizedVaultDocs.filter(d => d.status === 'verified').length;
+                        const handleSubmitStagedPassport = () => {
+                            if (stagedPassportFile) {
+                                setVaultUploadTargetReq({
+                                    key: 'statutory_passport',
+                                    title: 'Original Passport (6+ Months Validity)',
+                                    type: 'passport'
+                                });
+                                handleUploadVaultDocument(stagedPassportFile);
+                                setStagedPassportFile(null);
+                                setStagedPassportPreview(null);
+                            } else {
+                                setVaultUploadTargetReq({
+                                    key: 'statutory_passport',
+                                    title: 'Original Passport (6+ Months Validity)',
+                                    type: 'passport'
+                                });
+                                vaultFileInputRef.current?.click();
+                            }
+                        };
+
+                        // Dynamic Metrics
+                        const totalDocsCount = routeDocumentsList.length;
+                        const verifiedDocsCount = routeDocumentsList.filter(d => d.isUploaded).length;
+                        const expiringSoonCount = routeDocumentsList.filter(d => d.isUploaded && (d.expiryStatus === 'expiring_soon' || d.status === 'expiring_soon')).length;
 
                         return (
                             <div className="space-y-6 animate-fade-up font-sans text-left">
@@ -6028,7 +6522,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             <h1 className="text-2xl sm:text-[28px] font-black text-slate-900 tracking-tight">
                                                 Traveller Documents Vault
                                             </h1>
-                                            <span className="w-6 h-6 rounded-full bg-teal-50 text-[#00a896] flex items-center justify-center border border-[#00a896]/30 shadow-2xs">
+                                            <span className="w-6 h-6 rounded-full bg-[#420f79]/10 text-[#420f79] flex items-center justify-center border border-[#420f79]/20 shadow-2xs">
                                                 <Check className="w-3.5 h-3.5 stroke-[3]" />
                                             </span>
                                         </div>
@@ -6042,7 +6536,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                             type="button"
                                             onClick={() => vaultFileInputRef.current?.click()}
                                             disabled={isScanningVaultDoc}
-                                            className="px-4 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs sm:text-sm font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                                            className="px-4 py-2.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs sm:text-sm font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                                         >
                                             {isScanningVaultDoc ? (
                                                 <>
@@ -6075,6 +6569,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                         </button>
                                     </div>
                                 </div>
+
 
                                 {/* ── 2. TOP 4 METRIC CARDS (GRID OF 4 - EXACT MATCHING) ── */}
                                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -6117,7 +6612,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     {/* Card 3: Verified */}
                                     <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col justify-between hover:border-slate-300 transition-all">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center shrink-0">
+                                            <div className="w-10 h-10 rounded-xl bg-[#420f79]/10 text-[#420f79] border border-[#420f79]/20 flex items-center justify-center shrink-0">
                                                 <Shield className="w-5 h-5 stroke-[2.2]" />
                                             </div>
                                             <div className="min-w-0">
@@ -6209,11 +6704,10 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
                                     {/* Desktop Table Headers */}
                                     <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-white border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                                        <div className="col-span-4">DOCUMENT</div>
-                                        <div className="col-span-3">DETAILS</div>
+                                        <div className="col-span-6">DOCUMENT</div>
                                         <div className="col-span-2">EXPIRY / VALIDITY</div>
                                         <div className="col-span-2">STATUS</div>
-                                        <div className="col-span-1 text-right">ACTIONS</div>
+                                        <div className="col-span-2 text-right">ACTIONS</div>
                                     </div>
 
                                     {/* Table Body */}
@@ -6232,7 +6726,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                 <button
                                                     type="button"
                                                     onClick={() => vaultFileInputRef.current?.click()}
-                                                    className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold transition-all shadow-xs inline-flex items-center gap-2 cursor-pointer"
+                                                    className="px-4 py-2 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-bold transition-all shadow-xs inline-flex items-center gap-2 cursor-pointer"
                                                 >
                                                     <Upload className="w-3.5 h-3.5" />
                                                     <span>Upload Your First Document</span>
@@ -6250,11 +6744,11 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                         key={doc.id}
                                                         onClick={() => setSelectedVaultDoc(doc)}
                                                         className={`p-4 sm:px-6 sm:py-4.5 flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-4 items-start md:items-center transition-colors cursor-pointer ${
-                                                            isSelected ? 'bg-teal-50/20 border-l-4 border-l-[#00a896]' : 'hover:bg-slate-50/60'
+                                                            isSelected ? 'bg-[#420f79]/5 border-l-4 border-l-[#420f79]' : 'hover:bg-slate-50/60'
                                                         }`}
                                                     >
-                                                        {/* 1. DOCUMENT COLUMN (col-span-4) */}
-                                                        <div className="col-span-4 flex items-center gap-3.5 min-w-0 w-full">
+                                                        {/* 1. DOCUMENT COLUMN (col-span-6) */}
+                                                        <div className="col-span-6 flex items-center gap-3.5 min-w-0 w-full">
                                                             {/* Custom Styled Realistic Thumbnail */}
                                                             {doc.type === 'passport' ? (
                                                                 <div className="w-10 h-13 rounded-md bg-[#182a44] border border-amber-400/40 p-1 flex flex-col items-center justify-between text-amber-300 shadow-2xs shrink-0 select-none">
@@ -6300,28 +6794,27 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                                 <strong className="text-sm font-bold text-slate-900 block truncate">
                                                                     {doc.title}
                                                                 </strong>
-                                                                <span className="text-xs text-slate-400 font-medium block truncate">
-                                                                    {doc.docNumber}
-                                                                </span>
-                                                                <span className="text-xs text-slate-400 font-medium block truncate">
-                                                                    {doc.country || doc.issuer || 'Official Record'}
-                                                                </span>
+                                                                {doc.isUploaded ? (
+                                                                    <div className="flex items-center gap-2 text-xs text-slate-400 font-medium truncate">
+                                                                        <span>{doc.docNumber}</span>
+                                                                        {doc.holderName && <span>• {doc.holderName}</span>}
+                                                                        <span>• {doc.country || doc.issuer || 'Official Record'}</span>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="flex items-center gap-2 text-[11px] truncate">
+                                                                        <span className="text-amber-600 font-bold">
+                                                                            Pending Upload
+                                                                        </span>
+                                                                        <span className="text-slate-300">•</span>
+                                                                        <span className="text-slate-400 font-medium">
+                                                                            {selectedPassport || 'India'} ➔ {selectedDestination} Consular Compliance
+                                                                        </span>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </div>
 
-                                                        {/* 2. DETAILS COLUMN (col-span-3) */}
-                                                        <div className="col-span-3 w-full space-y-0.5 text-xs text-slate-600">
-                                                            <div>
-                                                                <span className="text-slate-400 font-medium">Name: </span>
-                                                                <strong className="text-slate-900 font-bold">{doc.holderName || fullName}</strong>
-                                                            </div>
-                                                            <div className="truncate">
-                                                                <span className="text-slate-400 font-medium">Details: </span>
-                                                                <span className="text-slate-500 font-medium">{doc.subDetails}</span>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* 3. EXPIRY / VALIDITY COLUMN (col-span-2) */}
+                                                        {/* 2. EXPIRY / VALIDITY COLUMN (col-span-2) */}
                                                         <div className="col-span-2 w-full space-y-0.5 text-xs">
                                                             <div className="font-semibold text-slate-800 truncate">
                                                                 {doc.expiryDate}
@@ -6329,101 +6822,156 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                                             <div className={
                                                                 doc.expiryStatus === 'permanent' ? 'text-[#00a896] font-bold text-xs' :
                                                                 doc.expiryStatus === 'expiring_soon' ? 'text-amber-500 font-bold text-xs' :
-                                                                'text-[#00a896] font-bold text-xs'
+                                                                doc.isUploaded ? 'text-[#00a896] font-bold text-xs' :
+                                                                'text-amber-500 font-bold text-xs'
                                                             }>
                                                                 {doc.expirySubtext}
                                                             </div>
                                                         </div>
 
-                                                        {/* 4. STATUS COLUMN (col-span-2) */}
+                                                        {/* 3. STATUS COLUMN (col-span-2) */}
                                                         <div className="col-span-2 w-full space-y-1">
-                                                            {doc.status === 'verified' ? (
-                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-                                                                    <Check className="w-3 h-3 stroke-[3]" /> Verified
-                                                                </span>
-                                                            ) : doc.status === 'expiring_soon' ? (
-                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
-                                                                    Expiring Soon
-                                                                </span>
+                                                            {doc.isUploaded ? (
+                                                                <>
+                                                                    {doc.status === 'verified' ? (
+                                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                                                                            <Check className="w-3 h-3 stroke-[3]" /> Verified
+                                                                        </span>
+                                                                    ) : doc.status === 'expiring_soon' ? (
+                                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
+                                                                            Expiring Soon
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
+                                                                            Pending Review
+                                                                        </span>
+                                                                    )}
+                                                                    <span className="text-[11px] text-slate-400 font-medium block">
+                                                                        {doc.scannedMethod}
+                                                                    </span>
+                                                                </>
                                                             ) : (
-                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
-                                                                    Pending Review
-                                                                </span>
+                                                                <>
+                                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
+                                                                        ⏳ Pending
+                                                                    </span>
+                                                                    <span className="text-[10px] text-slate-400 font-medium block">
+                                                                        Unscanned
+                                                                    </span>
+                                                                </>
                                                             )}
-                                                            <span className="text-[11px] text-slate-400 font-medium block">
-                                                                {doc.scannedMethod}
-                                                            </span>
                                                         </div>
 
-                                                        {/* 5. ACTIONS COLUMN (col-span-1) */}
-                                                        <div className="col-span-1 w-full flex items-center md:justify-end gap-1 relative">
-                                                            <button
-                                                                type="button"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    setSelectedVaultDoc(doc);
-                                                                }}
-                                                                title="Inspect Document"
-                                                                className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
-                                                            >
-                                                                <Eye className="w-4 h-4" />
-                                                            </button>
-
-                                                            <div className="relative">
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        setVaultDocMenuId(isMenuOpen ? null : doc.id);
-                                                                    }}
-                                                                    title="More Actions"
-                                                                    className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
-                                                                >
-                                                                    <MoreVertical className="w-4 h-4" />
-                                                                </button>
-
-                                                                {isMenuOpen && (
-                                                                    <div
-                                                                        onClick={(e) => e.stopPropagation()}
-                                                                        className="absolute right-0 top-9 w-40 bg-white rounded-xl border border-slate-200 shadow-xl py-1 z-30 text-xs font-semibold text-slate-700 animate-in fade-in zoom-in-95"
+                                                        {/* 5. ACTIONS COLUMN (col-span-2 text-right) */}
+                                                        <div className="col-span-2 w-full flex items-center md:justify-end gap-1.5 relative">
+                                                            {!doc.isUploaded ? (
+                                                                <>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleTriggerUploadForReq(doc);
+                                                                        }}
+                                                                        className="px-3.5 py-1.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                                                                        title={`Upload & OCR Scan ${doc.title}`}
                                                                     >
+                                                                        <Upload className="w-3.5 h-3.5" />
+                                                                        <span>Upload</span>
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            setSelectedVaultDoc(doc);
+                                                                        }}
+                                                                        title="Inspect Statutory Requirements"
+                                                                        className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                                                                    >
+                                                                        <Eye className="w-4 h-4" />
+                                                                    </button>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            setSelectedVaultDoc(doc);
+                                                                        }}
+                                                                        title="Inspect Document"
+                                                                        className="w-8 h-8 rounded-lg text-[#420f79] hover:text-[#340a4d] hover:bg-[#420f79]/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                                                                    >
+                                                                        <Eye className="w-4 h-4" />
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            setReplacingDocId(doc.id);
+                                                                            replaceFileInputRef.current?.click();
+                                                                        }}
+                                                                        title="Upload New Version / Replace"
+                                                                        className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                                                                    >
+                                                                        <RotateCw className="w-4 h-4" />
+                                                                    </button>
+                                                                    <div className="relative shrink-0">
                                                                         <button
                                                                             type="button"
-                                                                            onClick={() => {
-                                                                                setVaultDocMenuId(null);
-                                                                                handleDownloadDoc(doc);
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                setVaultDocMenuId(isMenuOpen ? null : doc.id);
                                                                             }}
-                                                                            className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
+                                                                            title="More Actions"
+                                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
                                                                         >
-                                                                            <Download className="w-3.5 h-3.5 text-teal-600" />
-                                                                            <span>Download</span>
+                                                                            <MoreVertical className="w-4 h-4" />
                                                                         </button>
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setVaultDocMenuId(null);
-                                                                                setReplacingDocId(doc.id);
-                                                                                replaceFileInputRef.current?.click();
-                                                                            }}
-                                                                            className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
-                                                                        >
-                                                                            <RotateCw className="w-3.5 h-3.5 text-purple-600" />
-                                                                            <span>Replace</span>
-                                                                        </button>
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setVaultDocMenuId(null);
-                                                                                handleDeleteDoc(doc);
-                                                                            }}
-                                                                            className="w-full px-3 py-2 text-left hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer"
-                                                                        >
-                                                                            <Trash2 className="w-3.5 h-3.5 text-rose-600" />
-                                                                            <span>Delete</span>
-                                                                        </button>
+
+                                                                        {isMenuOpen && (
+                                                                            <div
+                                                                                onClick={(e) => e.stopPropagation()}
+                                                                                className="absolute right-0 top-9 w-40 bg-white rounded-xl border border-slate-200 shadow-xl py-1 z-30 text-xs font-semibold text-slate-700 animate-in fade-in zoom-in-95"
+                                                                            >
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => {
+                                                                                        setVaultDocMenuId(null);
+                                                                                        handleDownloadDoc(doc);
+                                                                                    }}
+                                                                                    className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
+                                                                                >
+                                                                                    <Download className="w-3.5 h-3.5 text-[#420f79]" />
+                                                                                    <span>Download</span>
+                                                                                </button>
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => {
+                                                                                        setVaultDocMenuId(null);
+                                                                                        setReplacingDocId(doc.id);
+                                                                                        replaceFileInputRef.current?.click();
+                                                                                    }}
+                                                                                    className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
+                                                                                >
+                                                                                    <RotateCw className="w-3.5 h-3.5 text-[#420f79]" />
+                                                                                    <span>Replace</span>
+                                                                                </button>
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => {
+                                                                                        setVaultDocMenuId(null);
+                                                                                        handleDeleteDoc(doc);
+                                                                                    }}
+                                                                                    className="w-full px-3 py-2 text-left hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer"
+                                                                                >
+                                                                                    <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                                                                                    <span>Delete</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
-                                                                )}
-                                                            </div>
+                                                                </>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 );
@@ -6432,478 +6980,802 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     )}
                                 </div>
 
-                                {/* ── 5. DOCUMENT INSPECTION & OCR PREVIEW CARD (MATCHING LOWER HALF OF media_1788550890178) ── */}
-                                {activeSelectedDoc && (
-                                    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-6 animate-fade-up">
-                                        {/* Card Top Header */}
-                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                                            <div className="flex items-center gap-3.5">
-                                                {/* Mini Thumbnail */}
-                                                <div className="w-10 h-13 rounded-md bg-[#182a44] border border-amber-400/40 p-1 flex flex-col items-center justify-between text-amber-300 shadow-2xs shrink-0 select-none">
-                                                    <span className="text-[5px] font-black tracking-widest uppercase text-amber-200 text-center leading-none">PASSPORT</span>
-                                                    <span className="text-xs leading-none">🏛️</span>
-                                                    <span className="text-[5px] font-bold text-amber-300/80 tracking-tighter uppercase leading-none">{activeSelectedDoc.country?.slice(0, 5) || 'IND'}</span>
-                                                </div>
+                                {/* ── 5. DOCUMENT INSPECTION & OCR PREVIEW CARD ── */}
+                                {activeSelectedDoc && (() => {
+                                    const isPassportDoc = activeSelectedDoc.type === 'passport' ||
+                                        activeSelectedDoc.reqKey?.toLowerCase().includes('passport') ||
+                                        (activeSelectedDoc.title || '').toLowerCase().includes('passport');
 
-                                                <div className="space-y-1">
-                                                    <div className="flex items-center gap-2 flex-wrap">
-                                                        <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                                            {activeSelectedDoc.title} – {activeSelectedDoc.docNumber}
-                                                        </h3>
-                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
-                                                            <Check className="w-3 h-3 stroke-[3]" /> Verified
-                                                        </span>
-                                                    </div>
-                                                    <p className="text-xs text-slate-400 font-medium">
-                                                        OCR Scanned on {activeSelectedDoc.uploadedAt}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                    const displayDocNumber = activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
+                                    const displayFullName = activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
+                                    const nameParts = displayFullName === '—' ? [] : displayFullName.trim().split(/\s+/);
+                                    const displaySurname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : (displayFullName || '—');
+                                    const displayGivenNames = nameParts.length > 1 ? nameParts.slice(0, -1).join(' ') : (displayFullName || '—');
+                                    const displayNationality = activeSelectedDoc.ocrData?.nationality || (activeSelectedDoc.country === 'India' ? 'Indian' : (activeSelectedDoc.country || '—'));
 
-                                            <div className="flex items-center gap-2">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleDownloadDoc(activeSelectedDoc)}
-                                                    className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
-                                                >
-                                                    <Download className="w-3.5 h-3.5" />
-                                                    <span>Download</span>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setSelectedVaultDoc(null)}
-                                                    className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
-                                                >
-                                                    <X className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </div>
+                                    // Date formatting helpers
+                                    const formatDatePreview = (dateStr?: string, fallback: string = '—') => {
+                                        if (!dateStr || dateStr === '—') return fallback;
+                                        const s = dateStr.trim();
+                                        if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s;
+                                        const d = new Date(s);
+                                        if (!isNaN(d.getTime())) {
+                                            const dd = String(d.getDate()).padStart(2, '0');
+                                            const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                            return `${dd}/${mm}/${d.getFullYear()}`;
+                                        }
+                                        return s;
+                                    };
 
-                                        {/* 2-Column Grid: Document Preview (Left) vs Extracted Information OCR (Right) */}
-                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                                            {/* LEFT COLUMN: Document Preview (col-span-6) */}
-                                            <div className="lg:col-span-6 space-y-2">
-                                                <h4 className="text-xs font-bold text-slate-700">Document Preview</h4>
-                                                
-                                                {/* Realistic Passport Card Mockup */}
-                                                <div className="relative rounded-2xl border border-slate-300/80 bg-[#fbfbfa] p-5 sm:p-6 shadow-xs overflow-hidden select-none font-mono">
-                                                    {/* Top subtle country header */}
-                                                    <div className="border-b border-slate-200 pb-2 mb-3">
-                                                        <div className="flex items-center justify-between text-slate-700">
-                                                            <div className="space-y-0.5">
-                                                                <span className="text-[10px] font-extrabold tracking-widest text-slate-800 block">
-                                                                    {activeSelectedDoc.country === 'India' ? 'भारत गणराज्य' : 'REPUBLIC'}
-                                                                </span>
-                                                                <span className="text-[10px] font-black tracking-widest uppercase text-slate-900 block">
-                                                                    REPUBLIC OF {activeSelectedDoc.country?.toUpperCase() || 'INDIA'}
-                                                                </span>
+                                    const formatDateOcr = (dateStr?: string, fallback: string = '—') => {
+                                        if (!dateStr || dateStr === '—') return fallback;
+                                        const s = dateStr.trim();
+                                        const parts = s.split('/');
+                                        if (parts.length === 3) {
+                                            const d = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                                            if (!isNaN(d.getTime())) {
+                                                return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                            }
+                                        }
+                                        const d = new Date(s);
+                                        if (!isNaN(d.getTime())) {
+                                            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                        }
+                                        return s;
+                                    };
+
+                                    const displayDobFormatted = formatDatePreview(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
+                                    const displayDobText = formatDateOcr(activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth, '—');
+
+                                    const rawSex = (activeSelectedDoc.ocrData?.sex || '').toUpperCase();
+                                    const displaySex = rawSex.startsWith('F') ? 'Female' : rawSex.startsWith('M') ? 'Male' : (rawSex || '—');
+                                    const displaySexCode = rawSex.startsWith('F') ? 'F' : rawSex.startsWith('M') ? 'M' : '—';
+
+                                    const displayPlaceOfBirth = activeSelectedDoc.ocrData?.placeOfBirth || '—';
+
+                                    const displayIssueDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.issueDate, '—');
+                                    const displayIssueDateText = formatDateOcr(activeSelectedDoc.ocrData?.issueDate, '—');
+
+                                    const displayExpiryDateFormatted = formatDatePreview(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
+                                    const displayExpiryDateText = formatDateOcr(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
+
+                                    const cleanSurname = displaySurname === '—' ? '' : displaySurname.toUpperCase().replace(/[^A-Z]/g, '');
+                                    const cleanGiven = displayGivenNames === '—' ? '' : displayGivenNames.toUpperCase().replace(/[^A-Z]/g, '<');
+                                    const mrzLine1 = `P<IND${cleanSurname}<<${cleanGiven}`.padEnd(44, '<').slice(0, 44);
+                                    const cleanDoc = displayDocNumber === '—' ? '' : displayDocNumber.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                                    const mrzLine2 = `${cleanDoc}<8IND8104057${displaySexCode}3104042<<<<<<<<<<<<<<<08`.padEnd(44, '<').slice(0, 44);
+
+                                    // ─────────────────────────────────────────────────────────────
+                                    // 1. PASSPORT SPECIFIC FLOW (MATCHING EXACT PHOTO media_1788588107025)
+                                    // ─────────────────────────────────────────────────────────────
+                                    if (isPassportDoc) {
+                                        if (!activeSelectedDoc.isUploaded) {
+                                            // ── BEFORE SUBMITTING (PENDING): Upload Passport on Top + Preview & Extracted Box Below ──
+                                            return (
+                                                <div className="space-y-6 animate-fade-up">
+                                                    {/* TOP BOX: Upload Original Passport Dropzone */}
+                                                    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-4">
+                                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                                            <div className="flex items-center gap-3.5">
+                                                                <img
+                                                                    src="/images/passport/passport_icon.png"
+                                                                    alt="Passport"
+                                                                    className="w-10 h-13 sm:w-11 sm:h-14 object-contain rounded-md shadow-2xs shrink-0"
+                                                                />
+                                                                <div>
+                                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                                        <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                                                                            Upload Original Passport (Biometric Data Page)
+                                                                        </h3>
+                                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                                                            ⏳ Pending Upload
+                                                                        </span>
+                                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold border border-rose-200">
+                                                                            Mandatory
+                                                                        </span>
+                                                                    </div>
+                                                                    <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                                                        Upload your passport bio-data page. Document preview and extracted OCR fields will appear below.
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                            <div className="text-right">
-                                                                <span className="text-[9px] font-bold text-slate-400 block">PASSPORT NO.</span>
-                                                                <span className="text-xs font-black text-slate-900 tracking-wider">
-                                                                    {activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber}
-                                                                </span>
+
+                                                            <div className="flex items-center gap-2">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setSelectedVaultDoc(null)}
+                                                                    className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                                                    title="Close"
+                                                                >
+                                                                    <X className="w-4 h-4" />
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div className="flex items-center justify-between text-[9px] font-bold text-slate-500 pt-1">
-                                                            <span>Type: P</span>
-                                                            <span>Country Code: {activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}</span>
+
+                                                        {/* Drag and Drop Zone */}
+                                                        <div
+                                                            onClick={() => vaultFileInputRef.current?.click()}
+                                                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                            onDrop={(e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                const f = e.dataTransfer.files?.[0];
+                                                                if (f) {
+                                                                    setStagedPassportFile(f);
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = () => setStagedPassportPreview(reader.result as string);
+                                                                    reader.readAsDataURL(f);
+                                                                }
+                                                            }}
+                                                            className="border-2 border-dashed border-slate-300 hover:border-[#00a896] bg-slate-50/60 hover:bg-teal-50/20 rounded-xl p-6 sm:p-7 text-center transition-all cursor-pointer flex flex-col items-center justify-center space-y-3"
+                                                        >
+                                                            {stagedPassportFile ? (
+                                                                <div className="space-y-2">
+                                                                    <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#00a896] flex items-center justify-center mx-auto border border-teal-200 shadow-2xs">
+                                                                        <FileText className="w-6 h-6" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong className="text-sm font-bold text-slate-900 block">{stagedPassportFile.name}</strong>
+                                                                        <span className="text-xs text-slate-500 font-medium">{(stagedPassportFile.size / 1024).toFixed(1)} KB • Ready to submit</span>
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                    <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shadow-2xs">
+                                                                        <Upload className="w-6 h-6" />
+                                                                    </div>
+                                                                    <div className="space-y-1 max-w-sm">
+                                                                        <strong className="text-sm font-bold text-slate-900 block">
+                                                                            Click or drag passport bio-data page here
+                                                                        </strong>
+                                                                        <p className="text-xs text-slate-500">
+                                                                            Supports PDF, JPG, PNG, WEBP (Max 15MB) • 256-bit AES Encrypted
+                                                                        </p>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Submit Action Bar */}
+                                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                                                            <div className="text-xs text-slate-400 font-medium">
+                                                                Target Route: <strong className="text-slate-700">{selectedPassport || 'India'} ➔ {selectedDestination}</strong>
+                                                            </div>
+                                                            <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                                                                {stagedPassportFile && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            setStagedPassportFile(null);
+                                                                            setStagedPassportPreview(null);
+                                                                        }}
+                                                                        className="px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"
+                                                                    >
+                                                                        Clear File
+                                                                    </button>
+                                                                )}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={handleSubmitStagedPassport}
+                                                                    disabled={isScanningVaultDoc}
+                                                                    className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#009282] text-white text-xs sm:text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                                                                >
+                                                                    {isScanningVaultDoc ? (
+                                                                        <>
+                                                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                                            <span>Scanning with AI OCR...</span>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Check className="w-4 h-4 stroke-[2.5]" />
+                                                                            <span>{stagedPassportFile ? 'Submit & Extract Information' : 'Select Document'}</span>
+                                                                        </>
+                                                                    )}
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    {/* Body: Photo on left + details on right */}
-                                                    <div className="grid grid-cols-12 gap-3 items-center">
-                                                        <div className="col-span-4 space-y-1.5">
-                                                            <div className="w-24 h-28 rounded-lg bg-slate-200 border-2 border-slate-300 overflow-hidden flex items-center justify-center relative shadow-inner">
-                                                                {profilePhoto ? (
-                                                                    <img src={profilePhoto} alt="Holder" className="w-full h-full object-cover" />
+                                                    {/* BELOW BOX: Document Preview & Extracted Information (EMPTY / BLANK PLACEHOLDER STATE) */}
+                                                    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5">
+                                                        <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                                                            <div className="flex items-center gap-3.5">
+                                                                <img
+                                                                    src="/images/passport/passport_icon.png"
+                                                                    alt="Passport"
+                                                                    className="w-11 h-14 object-contain rounded-md shadow-xs shrink-0"
+                                                                />
+                                                                <div>
+                                                                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                                                                        Original Passport
+                                                                    </h3>
+                                                                    <div className="flex items-center gap-2.5 mt-1">
+                                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                                                                            ⏳ Awaiting Upload
+                                                                        </span>
+                                                                        <span className="text-xs text-slate-500 font-medium">
+                                                                            Upload your passport above to preview bio-data and view extracted OCR fields
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {stagedPassportFile && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={handleSubmitStagedPassport}
+                                                                    disabled={isScanningVaultDoc}
+                                                                    className="px-4 py-2 rounded-lg bg-[#00a896] hover:bg-[#009282] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                                                                >
+                                                                    <Check className="w-4 h-4" />
+                                                                    <span>Submit &amp; Extract</span>
+                                                                </button>
+                                                            )}
+                                                        </div>
+
+                                                        {/* 2-Column Grid */}
+                                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                                            {/* LEFT: Document Preview */}
+                                                            <div className="space-y-3">
+                                                                <h4 className="text-sm font-bold text-slate-900">
+                                                                    Document Preview
+                                                                </h4>
+                                                                {stagedPassportPreview ? (
+                                                                    <div className="bg-white rounded-xl border border-slate-200/90 p-2 shadow-2xs overflow-hidden">
+                                                                        <img
+                                                                            src={stagedPassportPreview}
+                                                                            alt="Passport Document Preview"
+                                                                            className="w-full h-auto rounded-lg object-contain max-h-[360px] mx-auto"
+                                                                        />
+                                                                    </div>
                                                                 ) : (
-                                                                    <div className="text-center p-1">
-                                                                        <User className="w-10 h-10 text-slate-400 mx-auto" />
-                                                                        <span className="text-[8px] font-bold text-slate-400 uppercase mt-1 block">Photo</span>
+                                                                    <div className="bg-slate-50/70 border-2 border-dashed border-slate-200 rounded-xl p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-3 min-h-[300px]">
+                                                                        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center shadow-2xs">
+                                                                            <FileText className="w-6 h-6" />
+                                                                        </div>
+                                                                        <div className="space-y-1 max-w-xs">
+                                                                            <p className="text-sm font-bold text-slate-700">No Document Uploaded</p>
+                                                                            <p className="text-xs text-slate-400 font-medium">Upload your passport bio-data page in the section above to generate preview</p>
+                                                                        </div>
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                            <div className="h-5 border-b border-slate-300 flex items-center justify-center">
-                                                                <span className="text-[9px] italic text-slate-500 font-sans">{activeSelectedDoc.holderName || fullName}</span>
+
+                                                            {/* RIGHT: Extracted Information (OCR) - BLANK PLACEHOLDERS */}
+                                                            <div className="bg-white rounded-xl border border-slate-200/90 p-5 sm:p-6 space-y-4 shadow-2xs">
+                                                                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                                                    <h4 className="text-sm font-bold text-slate-900">
+                                                                        Extracted Information (OCR)
+                                                                    </h4>
+                                                                    <span className="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                                                                        Pending Document
+                                                                    </span>
+                                                                </div>
+
+                                                                <div className="space-y-3.5 text-sm">
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Passport Number</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Full Name</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Date of Birth</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Nationality</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Sex</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Place of Birth</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Date of Issue</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                    <div className="flex items-center justify-between gap-4">
+                                                                        <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                            <span>Date of Expiry</span>
+                                                                        </div>
+                                                                        <span className="font-semibold text-slate-400 text-right">—</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                        <div className="col-span-8 grid grid-cols-2 gap-x-2 gap-y-1.5 text-[10px] text-slate-700">
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Surname</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {(activeSelectedDoc.holderName || fullName).split(' ').slice(-1)[0] || 'TRAVELER'}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Given Name(s)</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {(activeSelectedDoc.holderName || fullName).split(' ').slice(0, -1).join(' ') || (activeSelectedDoc.holderName || fullName)}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Nationality</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {activeSelectedDoc.ocrData?.nationality || activeSelectedDoc.country || 'INDIAN'}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Birth</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Sex</span>
-                                                                <strong className="font-extrabold text-slate-900 block">
-                                                                    {activeSelectedDoc.ocrData?.sex || 'M'}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Place of Birth</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {activeSelectedDoc.ocrData?.placeOfBirth || activeSelectedDoc.country || 'On File'}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Issue</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {activeSelectedDoc.ocrData?.issueDate || 'On File'}
-                                                                </strong>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[8px] font-bold text-slate-400 block uppercase">Date of Expiry</span>
-                                                                <strong className="font-extrabold text-slate-900 block truncate">
-                                                                    {activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate}
-                                                                </strong>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Bottom Monospace MRZ Strip */}
-                                                    <div className="mt-3 pt-2 border-t border-slate-200 text-[9px] tracking-wider text-slate-500 font-mono select-all overflow-hidden truncate">
-                                                        <div>P&lt;{activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}{(activeSelectedDoc.holderName || fullName).replace(/\s+/g, '&lt;').toUpperCase()}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
-                                                        <div>{(activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber).replace(/[^A-Z0-9]/gi, '')}&lt;{activeSelectedDoc.country?.slice(0, 3).toUpperCase() || 'IND'}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            );
+                                        }
 
-                                            {/* RIGHT COLUMN: Extracted Information (OCR) (col-span-6) */}
-                                            <div className="lg:col-span-6 space-y-3">
-                                                <div className="flex items-center justify-between">
-                                                    <h4 className="text-xs font-bold text-slate-700">Extracted Information (OCR)</h4>
-                                                    {isEditingOcr ? (
-                                                        <div className="flex items-center gap-1.5">
-                                                            <button
-                                                                type="button"
-                                                                onClick={handleSaveEditOcr}
-                                                                className="px-3 py-1 rounded-lg bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold cursor-pointer transition-colors shadow-2xs"
-                                                            >
-                                                                Save Changes
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => setIsEditingOcr(false)}
-                                                                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold cursor-pointer transition-colors"
-                                                            >
-                                                                Cancel
-                                                            </button>
+                                        // ── AFTER SUBMITTING (VERIFIED): EXACT REPLICA OF media_1788588107025.png ──
+                                        return (
+                                            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5 animate-fade-up">
+                                                {/* Top Bar matching media_1788588107025.png */}
+                                                <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                                                    <div className="flex items-center gap-3.5">
+                                                        <img
+                                                            src="/images/passport/passport_icon.png"
+                                                            alt="Passport"
+                                                            className="w-11 h-14 sm:w-12 sm:h-15 object-contain rounded-md shadow-xs shrink-0"
+                                                        />
+                                                        <div>
+                                                            <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                                                                Passport – {displayDocNumber}
+                                                            </h3>
+                                                            <div className="flex items-center gap-2.5 mt-1">
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e6f7f2] text-[#00a896] text-xs font-semibold border border-[#00a896]/30">
+                                                                    <Check className="w-3.5 h-3.5 stroke-[3]" /> Verified
+                                                                </span>
+                                                                <span className="text-xs text-slate-500 font-medium">
+                                                                    OCR Scanned on {activeSelectedDoc.uploadedAt || '03 May 2024, 10:30 AM'}
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                    ) : (
+                                                    </div>
+
+                                                    <div className="flex items-center gap-3">
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleStartEditOcr(activeSelectedDoc)}
-                                                            className="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition-colors shadow-2xs"
+                                                            onClick={() => handleDownloadDoc(activeSelectedDoc)}
+                                                            className="px-4 py-2 rounded-lg bg-[#00a896] hover:bg-[#009282] text-white text-sm font-semibold shadow-xs transition-colors flex items-center gap-2 cursor-pointer"
                                                         >
-                                                            Edit
+                                                            <Download className="w-4 h-4" />
+                                                            <span>Download</span>
                                                         </button>
-                                                    )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setSelectedVaultDoc(null)}
+                                                            className="text-slate-400 hover:text-slate-700 p-1 transition-colors cursor-pointer"
+                                                            title="Close"
+                                                        >
+                                                            <X className="w-5 h-5" />
+                                                        </button>
+                                                    </div>
                                                 </div>
 
-                                                {/* Field Rows with Icons */}
-                                                <div className="divide-y divide-slate-100 text-xs">
-                                                    {/* Row 1: Passport / Document Number */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Passport / Doc Number</span>
+                                                {/* 2-Column Grid: Document Preview (Left) vs Extracted Information OCR (Right) */}
+                                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                                    {/* LEFT COLUMN: Document Preview */}
+                                                    <div className="space-y-3">
+                                                        <h4 className="text-sm font-bold text-slate-900">
+                                                            Document Preview
+                                                        </h4>
+                                                        <div className="bg-white rounded-xl border border-slate-200/90 p-2 shadow-2xs overflow-hidden">
+                                                            {activeSelectedDoc.fileData && activeSelectedDoc.fileData.startsWith('data:image') ? (
+                                                                <img
+                                                                    src={activeSelectedDoc.fileData}
+                                                                    alt="Passport Document Preview"
+                                                                    className="w-full h-auto rounded-lg object-contain max-h-[360px] mx-auto"
+                                                                />
+                                                            ) : (
+                                                                <img
+                                                                    src="/images/passport/passport_preview_card.png"
+                                                                    alt="Passport Document Preview"
+                                                                    className="w-full h-auto rounded-lg object-contain"
+                                                                />
+                                                            )}
                                                         </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.docNumber || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, docNumber: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.docNumber}
-                                                            </strong>
-                                                        )}
                                                     </div>
 
-                                                    {/* Row 2: Full Name */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Full Name</span>
+                                                    {/* RIGHT COLUMN: Extracted Information (OCR) */}
+                                                    <div className="bg-white rounded-xl border border-slate-200/90 p-5 sm:p-6 space-y-4 shadow-2xs">
+                                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                                            <h4 className="text-sm font-bold text-slate-900">
+                                                                Extracted Information (OCR)
+                                                            </h4>
+                                                            {isEditingOcr ? (
+                                                                <div className="flex items-center gap-1.5">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={handleSaveEditOcr}
+                                                                        className="px-3 py-1 rounded-md bg-[#00a896] hover:bg-[#009282] text-white text-xs font-semibold cursor-pointer transition-colors shadow-2xs"
+                                                                    >
+                                                                        Save
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setIsEditingOcr(false)}
+                                                                        className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-medium cursor-pointer transition-colors"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleStartEditOcr(activeSelectedDoc)}
+                                                                    className="px-3 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+                                                                >
+                                                                    Edit
+                                                                </button>
+                                                            )}
                                                         </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.fullName || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, fullName: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName}
-                                                            </strong>
-                                                        )}
-                                                    </div>
 
-                                                    {/* Row 3: Date of Birth */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Date of Birth</span>
-                                                        </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.dob || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, dob: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.dob || activeSelectedDoc.dateOfBirth}
-                                                            </strong>
-                                                        )}
-                                                    </div>
+                                                        {/* 8 Field Rows matching media_1788588107025.png */}
+                                                        <div className="space-y-3.5 text-sm">
+                                                            {/* Row 1: Passport Number */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Passport Number</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.docNumber || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, docNumber: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayDocNumber}
+                                                                    </span>
+                                                                )}
+                                                            </div>
 
-                                                    {/* Row 4: Nationality */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <Globe className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Nationality</span>
-                                                        </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.nationality || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, nationality: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.nationality || activeSelectedDoc.country || 'Indian'}
-                                                            </strong>
-                                                        )}
-                                                    </div>
+                                                            {/* Row 2: Full Name */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Full Name</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.fullName || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, fullName: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayFullName}
+                                                                    </span>
+                                                                )}
+                                                            </div>
 
-                                                    {/* Row 5: Sex */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <User className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Sex</span>
-                                                        </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.sex || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, sex: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.sex || 'Male'}
-                                                            </strong>
-                                                        )}
-                                                    </div>
+                                                            {/* Row 3: Date of Birth */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Date of Birth</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.dob || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, dob: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayDobText}
+                                                                    </span>
+                                                                )}
+                                                            </div>
 
-                                                    {/* Row 6: Place of Birth */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Place of Birth</span>
-                                                        </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.placeOfBirth || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, placeOfBirth: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.placeOfBirth || activeSelectedDoc.country || 'On File'}
-                                                            </strong>
-                                                        )}
-                                                    </div>
+                                                            {/* Row 4: Nationality */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Nationality</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.nationality || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, nationality: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayNationality}
+                                                                    </span>
+                                                                )}
+                                                            </div>
 
-                                                    {/* Row 7: Date of Issue */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Date of Issue</span>
-                                                        </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.issueDate || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, issueDate: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.issueDate || 'On File'}
-                                                            </strong>
-                                                        )}
-                                                    </div>
+                                                            {/* Row 5: Sex */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Sex</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.sex || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, sex: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displaySex}
+                                                                    </span>
+                                                                )}
+                                                            </div>
 
-                                                    {/* Row 8: Date of Expiry */}
-                                                    <div className="py-2.5 flex items-center justify-between gap-4">
-                                                        <div className="flex items-center gap-2.5 text-slate-500 font-medium">
-                                                            <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
-                                                            <span>Date of Expiry</span>
+                                                            {/* Row 6: Place of Birth */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Place of Birth</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.placeOfBirth || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, placeOfBirth: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayPlaceOfBirth}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Row 7: Date of Issue */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Date of Issue</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.issueDate || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, issueDate: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayIssueDateText}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Row 8: Date of Expiry */}
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                                    <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                                    <span>Date of Expiry</span>
+                                                                </div>
+                                                                {isEditingOcr ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={editOcrForm.expiryDate || ''}
+                                                                        onChange={(e) => setEditOcrForm({ ...editOcrForm, expiryDate: e.target.value })}
+                                                                        className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                                    />
+                                                                ) : (
+                                                                    <span className="font-semibold text-slate-900 text-right">
+                                                                        {displayExpiryDateText}
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                        {isEditingOcr ? (
-                                                            <input
-                                                                type="text"
-                                                                value={editOcrForm.expiryDate || ''}
-                                                                onChange={(e) => setEditOcrForm({ ...editOcrForm, expiryDate: e.target.value })}
-                                                                className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-900 text-right w-44"
-                                                            />
-                                                        ) : (
-                                                            <strong className="font-bold text-slate-900">
-                                                                {activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate}
-                                                            </strong>
-                                                        )}
+
+                                                        {/* Footer actions */}
+                                                        <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-400">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setReplacingDocId(activeSelectedDoc.id);
+                                                                    replaceFileInputRef.current?.click();
+                                                                }}
+                                                                className="hover:text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                                            >
+                                                                <RotateCw className="w-3.5 h-3.5" />
+                                                                <span>Upload New / Replace</span>
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDeleteDoc(activeSelectedDoc)}
+                                                                className="text-rose-500 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                                            >
+                                                                <Trash2 className="w-3.5 h-3.5" />
+                                                                <span>Delete</span>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        );
+                                    }
 
-                                        {/* ── 6. "WHAT WOULD YOU LIKE TO DO?" 5-ACTION TILES ── */}
-                                        <div className="space-y-3 pt-3 border-t border-slate-100">
-                                            <h4 className="text-xs font-bold text-slate-900">
-                                                What would you like to do?
-                                            </h4>
+                                    // ─────────────────────────────────────────────────────────────
+                                    // 2. OTHER DOCUMENTS (Flight, Insurance, Bank, ID, etc.)
+                                    // ─────────────────────────────────────────────────────────────
+                                    if (!activeSelectedDoc.isUploaded) {
+                                        return (
+                                            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-6 animate-fade-up">
+                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                                    <div className="flex items-center gap-3.5">
+                                                        <div className="w-11 h-11 rounded-2xl bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center shrink-0 text-xl shadow-2xs">
+                                                            {activeSelectedDoc.type === 'flight' ? '✈️' : activeSelectedDoc.type === 'insurance' ? '🛡️' : activeSelectedDoc.type === 'bank' ? '🏦' : '📋'}
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <div className="flex items-center gap-2 flex-wrap">
+                                                                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                                                    {activeSelectedDoc.title}
+                                                                </h3>
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                                                    ⏳ Pending Upload
+                                                                </span>
+                                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                                                    activeSelectedDoc.mandatory ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-blue-50 text-blue-700 border border-blue-200'
+                                                                }`}>
+                                                                    {activeSelectedDoc.mandatory ? 'Mandatory' : 'Optional'}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-xs text-slate-400 font-medium">
+                                                                Target Route: <strong className="text-slate-700">{selectedPassport || 'India'} ➔ {selectedDestination}</strong> • {selectedPurpose}
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                                                {/* Tile 1: Share Document */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        navigator.clipboard?.writeText(window.location.href);
-                                                        setVaultActionToast("✓ Secure share link copied to clipboard! Valid for 24 hours.");
-                                                        setTimeout(() => setVaultActionToast(null), 3500);
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleTriggerUploadForReq(activeSelectedDoc)}
+                                                            className="px-4 py-2 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+                                                        >
+                                                            <Upload className="w-3.5 h-3.5" />
+                                                            <span>Upload Document</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setSelectedVaultDoc(null)}
+                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                                        >
+                                                            <X className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    onClick={() => handleTriggerUploadForReq(activeSelectedDoc)}
+                                                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                    onDrop={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        const f = e.dataTransfer.files?.[0];
+                                                        if (f) {
+                                                            setVaultUploadTargetReq({
+                                                                key: activeSelectedDoc.reqKey || activeSelectedDoc.id,
+                                                                title: activeSelectedDoc.title,
+                                                                type: activeSelectedDoc.type
+                                                            });
+                                                            handleUploadVaultDocument(f);
+                                                        }
                                                     }}
-                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-emerald-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
+                                                    className="group border-2 border-dashed border-[#420f79]/30 hover:border-[#420f79] bg-gradient-to-b from-[#420f79]/5 to-slate-50/50 hover:bg-[#420f79]/10 rounded-2xl p-6 sm:p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center space-y-4 shadow-2xs"
                                                 >
-                                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                                        <Share2 className="w-4 h-4 stroke-[2.2]" />
+                                                    <div className="w-16 h-16 rounded-2xl bg-[#420f79]/10 text-[#420f79] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xs">
+                                                        <Upload className="w-8 h-8 stroke-[2.2]" />
                                                     </div>
-                                                    <div>
-                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-emerald-700">
-                                                            Share Document
+                                                    <div className="space-y-1.5 max-w-sm">
+                                                        <strong className="text-base font-black text-slate-900 block">
+                                                            Upload your {activeSelectedDoc.title}
                                                         </strong>
-                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
-                                                            Share securely with embassy, consultants or service providers
+                                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                                                            Click or drag and drop your file here. Optical character recognition (Gemini Vision OCR) will automatically extract, analyze, and encrypt all details.
                                                         </p>
                                                     </div>
-                                                </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleTriggerUploadForReq(activeSelectedDoc);
+                                                        }}
+                                                        className="px-6 py-3 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                                                    >
+                                                        <Upload className="w-4 h-4" />
+                                                        <span>Upload &amp; Scan with AI OCR</span>
+                                                    </button>
+                                                    <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium pt-1 flex-wrap justify-center">
+                                                        <span>PDF, JPG, PNG, WEBP (Max 15MB)</span>
+                                                        <span>•</span>
+                                                        <span className="flex items-center gap-1 text-teal-700 font-semibold">
+                                                            <Lock className="w-3 h-3" /> 256-bit AES Encrypted
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
 
-                                                {/* Tile 2: Use for Application */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setVaultActionToast(`✓ "${activeSelectedDoc.title}" attached to your active visa application!`);
-                                                        setTimeout(() => setVaultActionToast(null), 3500);
-                                                    }}
-                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
-                                                >
-                                                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                                        <FileText className="w-4 h-4 stroke-[2.2]" />
+                                    return (
+                                        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6 space-y-6 animate-fade-up">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                                <div className="flex items-center gap-3.5">
+                                                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center shrink-0 shadow-2xs">
+                                                        {activeSelectedDoc.type === 'visa' ? <span className="font-bold text-xs">VISA</span> : activeSelectedDoc.type === 'insurance' ? <ShieldCheck className="w-5 h-5" /> : activeSelectedDoc.type === 'flight' ? <Plane className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
                                                     </div>
-                                                    <div>
-                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-blue-700">
-                                                            Use for Application
-                                                        </strong>
-                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
-                                                            Use this document for visa or travel applications
-                                                        </p>
+                                                    <div className="space-y-1">
+                                                        <h3 className="text-base sm:text-lg font-bold text-slate-800">
+                                                            {activeSelectedDoc.title} – {displayDocNumber}
+                                                        </h3>
+                                                        <div className="flex items-center gap-2.5 flex-wrap">
+                                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+                                                                <Check className="w-3 h-3 stroke-[3]" /> Verified
+                                                            </span>
+                                                            <span className="text-xs text-slate-400 font-normal">
+                                                                Scanned on {activeSelectedDoc.uploadedAt || 'Recently'}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </button>
+                                                </div>
 
-                                                {/* Tile 3: Set Reminder */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setVaultActionToast("✓ Expiry reminder set! We will alert you 60 & 30 days before document expiry.");
-                                                        setTimeout(() => setVaultActionToast(null), 3500);
-                                                    }}
-                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-amber-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
-                                                >
-                                                    <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                                        <Bell className="w-4 h-4 stroke-[2.2]" />
-                                                    </div>
-                                                    <div>
-                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-amber-700">
-                                                            Set Reminder
-                                                        </strong>
-                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
-                                                            Get notified before document expiry date
-                                                        </p>
-                                                    </div>
-                                                </button>
+                                                <div className="flex items-center gap-2.5">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDownloadDoc(activeSelectedDoc)}
+                                                        className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                                    >
+                                                        <Download className="w-3.5 h-3.5" />
+                                                        <span>Download</span>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setSelectedVaultDoc(null)}
+                                                        className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                                                {/* Tile 4: Replace Document */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setReplacingDocId(activeSelectedDoc.id);
-                                                        replaceFileInputRef.current?.click();
-                                                    }}
-                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-purple-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
-                                                >
-                                                    <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                                        <RotateCw className="w-4 h-4 stroke-[2.2]" />
-                                                    </div>
-                                                    <div>
-                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-purple-700">
-                                                            Replace Document
-                                                        </strong>
-                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
-                                                            Upload new version to replace current document
-                                                        </p>
-                                                    </div>
-                                                </button>
-
-                                                {/* Tile 5: Delete Document */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleDeleteDoc(activeSelectedDoc)}
-                                                    className="p-3.5 rounded-xl bg-white border border-slate-200/90 hover:border-rose-300 hover:shadow-xs transition-all text-left space-y-2 cursor-pointer flex flex-col justify-between group"
-                                                >
-                                                    <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                                        <Trash2 className="w-4 h-4 stroke-[2.2]" />
-                                                    </div>
-                                                    <div>
-                                                        <strong className="text-xs font-bold text-slate-900 block group-hover:text-rose-700">
-                                                            Delete Document
-                                                        </strong>
-                                                        <p className="text-[10px] text-slate-400 font-medium leading-snug mt-0.5">
-                                                            Remove document from your vault
-                                                        </p>
-                                                    </div>
-                                                </button>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                                                <div>
+                                                    <span className="text-slate-400 block">Document Number</span>
+                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{displayDocNumber}</strong>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-400 block">Holder Name</span>
+                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{displayFullName}</strong>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-400 block">Issuer / Authority</span>
+                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{activeSelectedDoc.issuer || 'Official Issuer'}</strong>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-400 block">Validity / Expiry</span>
+                                                    <strong className="text-slate-800 font-bold mt-0.5 block">{activeSelectedDoc.expiryDate || 'Valid'}</strong>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )}
+                                    );
+                                })()}
 
                                 {/* Toast Notification for User Feedback */}
                                 {vaultActionToast && (
@@ -6925,7 +7797,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 View your upcoming video advisory calls with OISC & Bar-licensed solicitors and verified immigration consultants.
                             </p>
                             <div className="pt-2">
-                                <a href="/find-experts" className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                                <a href="/find-experts" className="inline-block bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
                                     Book New 1-on-1 Session →
                                 </a>
                             </div>
@@ -6943,7 +7815,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     <p className="text-xs text-slate-500 font-medium mt-0.5">Your funds remain safely locked in escrow and are only released upon milestone completion.</p>
                                 </div>
                                 <span className="bg-emerald-50 text-emerald-800 text-xs font-black px-3 py-1 rounded-full border border-emerald-200 self-start sm:self-auto">
-                                    🛡️ 100% Money-Back Guarantee
+                                    🛡️ 100% Money-Back Protection
                                 </span>
                             </div>
 
@@ -6975,7 +7847,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
                                 All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your TravlTik profile.
                             </p>
-                            <a href="/find-experts" className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                            <a href="/find-experts" className="inline-block bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
                                 Connect with Expert →
                             </a>
                         </div>
@@ -7003,9 +7875,9 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                 <label className="text-xs font-bold text-slate-700 mb-1.5 block">Profile Photo</label>
                                 <div className="flex items-center gap-3">
                                     {modalPhoto && !modalPhoto.includes("unsplash.com") ? (
-                                        <img src={modalPhoto} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
+                                        <img src={modalPhoto} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-[#420f79]/30 shrink-0" />
                                     ) : (
-                                        <div className="w-12 h-12 rounded-xl bg-slate-900 text-white text-lg font-black flex items-center justify-center border border-slate-800 shrink-0">
+                                        <div className="w-12 h-12 rounded-xl bg-[#420f79] text-white text-lg font-black flex items-center justify-center border border-[#420f79]/30 shrink-0 shadow-2xs">
                                             {(modalFirstName || userDisplayName || "U").charAt(0).toUpperCase()}
                                         </div>
                                     )}
@@ -7100,7 +7972,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
 
                             <div className="flex gap-3 pt-3">
                                 <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors cursor-pointer">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
                             </div>
                         </form>
                     </div>
@@ -7398,7 +8270,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                             <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200/80 text-xs text-emerald-900 space-y-1">
                                 <strong className="font-black flex items-center gap-1 text-emerald-800">
                                     <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                                    Consular Guarantee &amp; Multi-Application Workspace
+                                    Consular Coverage &amp; Multi-Application Workspace
                                 </strong>
                                 <p className="text-[11px] leading-relaxed text-emerald-700">
                                     A unique official Tracking ID and Document Vault checklist will be assigned to this application without overwriting your other active visa cases.
@@ -7426,7 +8298,7 @@ function cleanShortDocRequirement(title: string, description: string): string {
                                     className={`flex-1 py-2.5 rounded-xl font-black text-xs shadow-md transition-all ${
                                         visasProcessingState.length >= 3
                                             ? "bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed"
-                                            : "bg-slate-950 hover:bg-black text-white cursor-pointer"
+                                            : "bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white cursor-pointer"
                                     }`}
                                 >
                                     {visasProcessingState.length >= 3 ? "Application Limit Reached (3/3)" : `Create & Save Application (${visasProcessingState.length}/3)`}

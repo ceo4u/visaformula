@@ -251,7 +251,7 @@ const cruiseTours = [
 
 // 4. Entertainment Events
 const eventTours = [
-    { id: "e1", name: "Coldplay — Music of the Spheres World Tour", type: "concert", country: "uk", month: "Jun 2025", price: 68000, originalPrice: 85000, rating: 4.9, reviews: 215, date: "14", monthName: "Jun", venue: "Wembley Stadium, London", meta: "UK Tourist Visa included", tags: ["UK Visa", "Hotel 3 nights", "Concert tickets"], badge: "Limited", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=500&fit=crop", description: "Sing along to Coldplay live in London! Package includes guaranteed concert tickets, premium hotel stay, and UK visa." },
+    { id: "e1", name: "Coldplay — Music of the Spheres World Tour", type: "concert", country: "uk", month: "Jun 2025", price: 68000, originalPrice: 85000, rating: 4.9, reviews: 215, date: "14", monthName: "Jun", venue: "Wembley Stadium, London", meta: "UK Tourist Visa included", tags: ["UK Visa", "Hotel 3 nights", "Concert tickets"], badge: "Limited", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=500&fit=crop", description: "Sing along to Coldplay live in London! Package includes confirmed concert tickets, premium hotel stay, and UK visa." },
     { id: "e2", name: "Coachella Valley Music & Arts Festival 2026", type: "festival", country: "usa", month: "Apr 2026", price: 135000, originalPrice: 170000, rating: 4.8, reviews: 98, date: "18", monthName: "Apr", venue: "Palm Springs, California", meta: "USA B-2 Visa Assistance", tags: ["USA Visa", "Festival tickets", "Hotel 5 nights"], badge: "Popular", image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&h=500&fit=crop", description: "Join the world's most glamorous music festival in California. Complete USA visa application filing included." },
     { id: "e3", name: "West End Theatre — London Exclusive", type: "theatre", country: "uk", month: "Jul 2025", price: 82000, originalPrice: 105000, rating: 4.8, reviews: 76, date: "22", monthName: "Jul", venue: "West End, London", meta: "UK Tourist Visa · 3 shows included", tags: ["UK Visa", "3 show tickets", "Hotel 4 nights"], badge: "Available", image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&h=500&fit=crop", description: "Enjoy the pinnacle of live theater in London. Includes tickets to 3 top-rated West End musicals and UK tourist visa." }
 ];
@@ -531,7 +531,7 @@ export function ToursPortal() {
                                 </div>
                                 <div>
                                     <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
-                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% GUARANTEED</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% VERIFIED</span>
                                 </div>
                             </div>
 
@@ -739,7 +739,7 @@ export function ToursPortal() {
                                 </div>
                                 <div>
                                     <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
-                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">GUARANTEED</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">CONFIRMED</span>
                                 </div>
                             </div>
 

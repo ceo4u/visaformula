@@ -25,7 +25,8 @@ export const POST: APIRoute = async ({ request }) => {
       forex_ordered = false,
       customs_checklist = {},
       settlement_checklist = {},
-      uploaded_documents = {}
+      uploaded_documents = {},
+      active_applications = null
     } = body;
 
     const email = (user_email || '').trim().toLowerCase();
@@ -44,6 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
     const customsChecklistStr = JSON.stringify(typeof customs_checklist === 'object' ? customs_checklist : {});
     const settlementChecklistStr = JSON.stringify(typeof settlement_checklist === 'object' ? settlement_checklist : {});
     const uploadedDocsStr = JSON.stringify(typeof uploaded_documents === 'object' ? uploaded_documents : {});
+    const activeAppsStr = active_applications ? JSON.stringify(active_applications) : null;
 
     await p.query(
       `INSERT INTO user_journey_checklists (
@@ -65,8 +67,9 @@ export const POST: APIRoute = async ({ request }) => {
         customs_checklist,
         settlement_checklist,
         uploaded_documents,
+        active_applications,
         updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, CURRENT_TIMESTAMP)
       ON CONFLICT (user_email) DO UPDATE SET
         passport_country = EXCLUDED.passport_country,
         destination = EXCLUDED.destination,
@@ -85,6 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
         customs_checklist = EXCLUDED.customs_checklist,
         settlement_checklist = EXCLUDED.settlement_checklist,
         uploaded_documents = EXCLUDED.uploaded_documents,
+        active_applications = COALESCE(EXCLUDED.active_applications, user_journey_checklists.active_applications),
         updated_at = CURRENT_TIMESTAMP`,
       [
         email,
@@ -104,7 +108,8 @@ export const POST: APIRoute = async ({ request }) => {
         Boolean(forex_ordered),
         customsChecklistStr,
         settlementChecklistStr,
-        uploadedDocsStr
+        uploadedDocsStr,
+        activeAppsStr
       ]
     );
 

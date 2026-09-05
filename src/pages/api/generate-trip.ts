@@ -38,7 +38,7 @@ const destinationSecurityKnowledge: Record<string, { image: string; fallbackDays
       { title: 'Stage 2: DLI Acceptance, CAQ & PAL Letter Issuance', morning: 'Designated Learning Institution (DLI) unconditional acceptance letter', afternoon: 'Provincial Attestation Letter (PAL) or Quebec CAQ certificate processing', evening: 'Pre-submission document notarization & identity check' },
       { title: 'Stage 3: Upfront Medical Clearance & VFS Biometrics', morning: 'IRCC panel physician Immigration Medical Examination (IME)', afternoon: 'Digital IRCC portal application filing & fee payment', evening: 'VFS Global biometrics capture & digital photo appointment' },
       { title: 'Stage 4: Visa Grant POE Letter & Flight Transit Verification', morning: 'Receive official IRCC Study / Work Permit Letter of Introduction (POE)', afternoon: 'Book student flight ticket & verify direct airside transit exemptions', evening: 'Enroll in mandatory international health insurance cover' },
-      { title: 'Stage 5: Housing Escrow, Multi-Currency Forex & Airport Pickup', morning: 'Confirm verified student housing / rental contract with escrow guarantee', afternoon: 'Activate Zero-Markup Forex Card & load CAD funds + get Canadian 5G eSIM', evening: 'Book verified airport driver pickup & CBSA border interview prep' }
+      { title: 'Stage 5: Housing Escrow, Multi-Currency Forex & Airport Pickup', morning: 'Confirm verified student housing / rental contract with escrow protection', afternoon: 'Activate Zero-Markup Forex Card & load CAD funds + get Canadian 5G eSIM', evening: 'Book verified airport driver pickup & CBSA border interview prep' }
     ]
   },
   usa: {

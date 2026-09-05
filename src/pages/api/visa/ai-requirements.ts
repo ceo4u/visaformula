@@ -247,11 +247,14 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
           }
         ],
         how_to_apply: [
-          'Verify your passport has at least 6 months validity from planned departure date and 2 blank pages.',
-          'Book confirmed return flight ticket and hotel accommodation voucher in Mauritius.',
-          'Complete the official Mauritius All-in-One Digital Travel / Health Form online at safetravel.govmu.org prior to departure.',
-          'Carry passport, return ticket, hotel voucher, and digital entry QR code in your carry-on bag.',
-          'Present documents at SSR International Airport (Mauritius) immigration counter for free, instant visa-on-arrival entry stamping.'
+          'Check Passport Validity: Verify your passport has at least 6 months validity from departure date and min 2 blank pages.',
+          'Book Return Flights: Secure confirmed round-trip or onward air ticket departing Mauritius within the 60-day permitted stay.',
+          'Confirm Accommodation: Keep verified hotel/resort booking voucher or official resident host invitation in Mauritius ready.',
+          'Verify Travel Funds: Ensure access to sufficient funds (minimum $100 USD/day or international credit/forex cards).',
+          'Fill All-in-One Digital Form: Complete the official online Mauritius All-in-One Digital Travel Form at safetravel.govmu.org before departure.',
+          'Save All-in-One QR Code: Download and save the generated All-in-One Travel Declaration PDF and QR code on your smartphone.',
+          'Fly Directly to Mauritius: Board your flight directly to Sir Seewoosagur Ramgoolam (SSR) International Airport with zero advance visa.',
+          'Instant On-Arrival Stamping: Present passport, return ticket, hotel voucher & QR code at airport immigration for a free 60-day entry stamp (₹0 fee).'
         ],
         costs: {
           visa_fee: '₹0 (Free / No Consular Fee)',
@@ -1098,7 +1101,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         },
         {
           category: 'Hayya Portal Option',
-          details: 'You can also obtain a guaranteed entry permit online in advance via the official Hayya Portal (hayya.qa) for QAR 100.'
+          details: 'You can also obtain a confirmed entry permit online in advance via the official Hayya Portal (hayya.qa) for QAR 100.'
         }
       ],
       how_to_apply: [
@@ -1840,11 +1843,11 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       official_source_name: 'Chinese Visa Application Service Center (CVASC) / Embassy of the PRC',
       processing_time: '4 – 7 Working Days',
       validity: '3 Months (Single Entry) / 6 Months (Double Entry)',
-      stay_duration: 'Up to 30 Days per Entry',
+      stay_duration: 'Up to 30 Days per Entry (as determined by consular officer)',
       entry_type: 'Single / Double Entry',
       validity_and_stay: {
         visa_validity: '3 Months / 6 Months',
-        max_stay_per_entry: 'Up to 30 Days',
+        max_stay_per_entry: 'Up to 30 Days per Entry (as determined by consular officer)',
         entry_type: 'Single / Double Entry'
       },
       documents_required: [
@@ -1899,12 +1902,16 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       ],
       other_requirements: [
         {
-          category: 'Biometric Ten-Fingerprint Collection',
-          details: 'Mandatory in-person biometric fingerprint scanning at the Chinese Visa Application Service Center (CVASC).'
+          category: 'Biometrics Exemption Policy',
+          details: 'Fingerprint collection is officially waived through December 31, 2026 for eligible short-term tourist (L) visas with stays ≤ 180 days. Applicants (or their authorized agents) must attend the designated CVASC center for physical dossier handover and passport submission, but fingerprint collection is waived.'
         },
         {
-          category: 'Jurisdiction Rule',
+          category: 'Consular Jurisdiction Rule',
           details: 'Applicants must apply through the CVASC center corresponding to their consular jurisdiction (New Delhi, Mumbai, or Kolkata).'
+        },
+        {
+          category: 'Home Ties & Return Intent',
+          details: 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'
         }
       ],
       how_to_apply: [
@@ -1913,7 +1920,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         'Fill Application Form: Complete the official China Online Visa Application (COVA) form accurately online.',
         'Book Appointment: Schedule appointment for physical submission at the Chinese Visa Application Service Center (CVASC).',
         'Pay Visa Fees: Pay the official consular fee (₹3,800) and CVASC service charges (₹4,130) at the center counter.',
-        'Submit Application & Biometrics: Attend CVASC appointment to submit original passport, dossier, and enroll ten-fingerprints.',
+        'Submit Physical Dossier: Attend CVASC appointment (personally or through an authorized representative) to submit original passport, dossier, and fee payment. Note: Biometric fingerprint collection is officially waived through December 31, 2026.',
         'Track Application Status: Track your visa dossier progress online using the CVASC application tracking portal.',
         'Receive Passport & Visa: Collect your passport with stamped Chinese visa from CVASC or receive via express courier.'
       ],
@@ -1926,7 +1933,7 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
       processing_and_timing: {
         apply_window: 'Submit 1 month prior to departure date.',
         decision_time: '4 – 7 Working Days (Standard)',
-        max_extension: 'Apply at Exit-Entry Administration Bureau in China before current visa expires.',
+        max_extension: 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).',
         center_notes: 'CVASC Centers: New Delhi (Shivaji Stadium Metro), Mumbai (Nariman Point), Kolkata (Bidhannagar).'
       }
     };
@@ -5417,6 +5424,7 @@ STRICT DATA ISOLATION & VERIFICATION MANDATES:
    - For UK: CAS 14-digit code (students), 28-day financial holding rule, IHS surcharge, 35x45mm photo.
    - For GCC (UAE, Saudi, Oman, Qatar, Bahrain, Kuwait): Minimum 6 months passport validity from arrival. Never display 3-month or 10-year Schengen rules.
    - For Schengen / EU: strictly Harmonised Schengen Visa Application Form, €90 consular fee, €30 VAC service charge (€120 total), €30,000 travel medical insurance, 35x45mm photo (NEVER 2x2 inch), 90/180-day rule. Include all mandatory documents: Passport (min 3 months beyond return / 6 months recommended, 2 blank pages), Harmonised Application Form, 2 Photos (35x45mm), Travel Insurance (€30k), Flight Reservation (with PNR), Hotel Bookings / Host Letter, Day-by-Day Itinerary, Stamped 3-6 Month Bank Statements (€50-€70/day), 3 Years ITR-V, and Employment Proof (NOC + salary slips / GST + business ITR).
+   - For China: Chinese Visa Application Service Center (CVASC), COVA online form, 33x48mm photos, ₹7,930 total fee (₹3,800 consular + ₹4,130 CVASC fee), 4-7 working days. Biometric fingerprint scanning is officially waived through December 31, 2026 for short-term visas (≤ 180 days). Stay duration is strictly up to 30 days per entry (NEVER use Schengen 90/180 days or US Section 214(b)). Return intent must state: 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'
 
 2. DYNAMIC CONSULAR EXCHANGE RATE FORMULA:
    - Always include in costs.notes: "Converted at the official consular exchange rate at the time of fee payment challan generation."
@@ -5629,6 +5637,33 @@ Return ONLY a valid JSON object matching this exact schema:
               total_fee: '₹0 (Free)',
               notes: 'Indian citizens do not require a visa to enter Nepal or Bhutan under bilateral treaties.'
             };
+          } else if (toLower.includes('china')) {
+            parsed.stay_duration = 'Up to 30 Days per Entry (as determined by consular officer)';
+            if (parsed.validity_and_stay) {
+              parsed.validity_and_stay.max_stay_per_entry = 'Up to 30 Days per Entry (as determined by consular officer)';
+            }
+            if (parsed.processing_and_timing) {
+              parsed.processing_and_timing.max_extension = 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).';
+            }
+            if (Array.isArray(parsed.other_requirements)) {
+              parsed.other_requirements = parsed.other_requirements.map((req: any) => {
+                const cat = (req.category || '').toLowerCase();
+                const det = (req.details || '').toLowerCase();
+                if (cat.includes('biometric') || det.includes('fingerprint')) {
+                  return {
+                    category: 'Biometrics Exemption Policy',
+                    details: 'Fingerprint collection is officially waived through December 31, 2026 for eligible short-term tourist (L) visas with stays ≤ 180 days. Applicants (or their authorized agents) must attend the designated CVASC center for physical dossier handover and passport submission, but fingerprint collection is waived.'
+                  };
+                }
+                if (det.includes('214(b)') || cat.includes('214(b)')) {
+                  return {
+                    category: 'Home Ties & Return Intent',
+                    details: 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'
+                  };
+                }
+                return req;
+              });
+            }
           }
 
           return new Response(JSON.stringify({ success: true, data: sanitizeCurrencyCodes(parsed), source: 'gemini-ai' }), {

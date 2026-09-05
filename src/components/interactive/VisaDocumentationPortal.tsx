@@ -136,7 +136,7 @@ export function VisaDocumentationPortal() {
           <div className="lg:col-span-5 hidden lg:block">
             <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
               <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
-                <span>🛡️</span> Free Redo Guarantee
+                <span>🛡️</span> Free Redo Protection
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
                 If your visa is rejected due to any documentation error made by our experts, we will redo the entire filing service completely free of charge.
@@ -403,7 +403,7 @@ export function VisaDocumentationPortal() {
               <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex gap-3 items-start">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Free Redo Guarantee</h4>
+                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Free Redo Protection</h4>
                   <p className="text-[11px] text-emerald-700 leading-relaxed">
                     If visa is rejected due to our documentation error, we will redo the entire service completely free.
                   </p>

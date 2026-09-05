@@ -79,7 +79,7 @@ export function AIAssistantPortal() {
                             { text: "Proof of Funds (GIC CAD 20,635)", status: "warning" },
                             { text: "Medical & Police Clearances", status: "pending" }
                         ],
-                        insight: "Your educational qualifications and test scores give you a strong profile. To guarantee your approval, ensure you open a Canadian GIC account early with the required CAD 20,635 deposit."
+                        insight: "Your educational qualifications and test scores give you a strong profile. To maximize your approval chances, ensure you open a Canadian GIC account early with the required CAD 20,635 deposit."
                     }
                 };
             } else {

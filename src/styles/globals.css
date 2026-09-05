@@ -12,6 +12,7 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   body, button, input, select, textarea {
@@ -19,21 +20,172 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 400;
+    color: #1e293b;
+  }
+  @media (min-width: 1024px) {
+    body {
+      font-size: 15px;
+    }
   }
 
-  h1, h2, h3, h4, h5, h6, .font-heading, .font-display {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* ── 1. Page Title (Desktop: 28–32px / 600 | Mobile: 22–26px / 600) ── */
+  h1, .page-title, .tt-page-title {
+    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 600 !important;
     letter-spacing: -0.02em;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    h1, .page-title, .tt-page-title {
+      font-size: 26px;
+    }
+  }
+  @media (min-width: 1024px) {
+    h1, .page-title, .tt-page-title {
+      font-size: 30px;
+      line-height: 1.2;
+    }
+  }
+
+  /* ── 2. Section Heading (Desktop: 18–20px / 600 | Mobile: 17–18px / 600) ── */
+  h2, .section-heading, .tt-section-heading {
+    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.35;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    h2, .section-heading, .tt-section-heading {
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 1024px) {
+    h2, .section-heading, .tt-section-heading {
+      font-size: 20px;
+    }
+  }
+
+  /* ── 3. Card Heading (15–16px / 600) ── */
+  h3, .card-heading, .tt-card-heading {
+    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 1024px) {
+    h3, .card-heading, .tt-card-heading {
+      font-size: 16px;
+    }
+  }
+
+  h4, h5, h6 {
+    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3 {
-    font-weight: 600;
+  /* ── 4. Body Text (Desktop: 14–15px / 400 | Mobile: 14–15px / 400 - Min 14px!) ── */
+  p, .body-text, .tt-body {
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 400;
+    color: #334155;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 1024px) {
+    p, .body-text, .tt-body {
+      font-size: 15px;
+    }
   }
 
-  h4, h5, h6 {
-    font-weight: 500;
+  /* ── 5. Important Visa / Document Instructions (14-15px / 400, pref 15px) ── */
+  .visa-instruction, .doc-instruction, .tt-instruction {
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 400;
+    color: #334155;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    .visa-instruction, .doc-instruction, .tt-instruction {
+      font-size: 15px;
+    }
+  }
+
+  /* ── 6. Secondary Information (Desktop: 13–14px / 400 | Mobile: 13–14px / 400) ── */
+  .secondary-text, .tt-secondary {
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 400;
+    color: #64748b;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 1024px) {
+    .secondary-text, .tt-secondary {
+      font-size: 14px;
+    }
+  }
+
+  /* ── 7. Small Metadata (Desktop: 12–13px / 400 | Mobile: 12–13px / 400) ── */
+  .meta-text, .small-info, .tt-small-meta {
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 400;
+    color: #64748b;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 1024px) {
+    .meta-text, .small-info, .tt-small-meta {
+      font-size: 13px;
+    }
+  }
+
+  /* ── 8. Prevent blurry sub-12px micro-fonts at 100% zoom across the whole site ── */
+  .text-\[9px\], .text-\[10px\], .text-\[10\.5px\], .text-\[11px\] {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+  @media (min-width: 640px) {
+    .text-\[9px\], .text-\[10px\], .text-\[10\.5px\], .text-\[11px\] {
+      font-size: 12.5px !important;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-\[9px\], .text-\[10px\], .text-\[10\.5px\], .text-\[11px\] {
+      font-size: 13px !important;
+    }
+  }
+
+  /* Refined balanced typography: avoid blurry/heavy 800/900 bold at 100% zoom */
+  .font-black, .font-extrabold {
+    font-weight: 600 !important;
+  }
+  .font-bold {
+    font-weight: 600 !important;
+  }
+  .font-thin, .font-extralight, .font-light {
+    font-weight: 400 !important;
   }
 
   /* iOS Native Spring Touch Targets & Crisp Click Feel */
@@ -56,14 +208,6 @@
   .lucide {
     shape-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
-  }
-
-  /* Refined balanced typography across the site: avoid heavy bold & ultra-thin */
-  .font-black, .font-extrabold {
-    font-weight: 700 !important;
-  }
-  .font-thin, .font-extralight, .font-light {
-    font-weight: 400 !important;
   }
 }
 

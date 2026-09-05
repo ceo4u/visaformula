@@ -152,7 +152,7 @@ const defaultSchema = {
   </main>
   {!hideFooter && <Footer />}
 
-  {!shouldHideWidgets && <VisaMatchWidget client:only="react" />}
-  {!shouldHideWidgets && <TalkToUs client:only="react" />}
+  {!shouldHideWidgets && <VisaMatchWidget client:idle />}
+  {!shouldHideWidgets && <TalkToUs client:idle />}
 </body>
 </html>

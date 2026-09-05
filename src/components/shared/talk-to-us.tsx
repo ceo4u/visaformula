@@ -222,3 +222,5 @@ export function TalkToUs() {
     </>
   );
 }
+
+export default TalkToUs;

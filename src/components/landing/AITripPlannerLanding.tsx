@@ -2,7 +2,7 @@ import { ALL_COUNTRIES, getCountryCodeByName } from '../../data/countries';
 'use client';
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload,
+import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload, Landmark, LocateFixed, SlidersHorizontal, MoreHorizontal,
   RefreshCw,
   Sparkles,
   ArrowRight,
@@ -1381,9 +1381,64 @@ export function AITripPlannerLanding() {
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const [leadSubmittedSuccess, setLeadSubmittedSuccess] = useState(false);
 
-  // Global Multi-Tab Search Widget State
-  const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
+  // Global Multi-Tab Search Widget State (Default 'all' matching media_1788574993846)
+  const [activeSearchTab, setActiveSearchTab] = useState<'all' | 'consultants' | 'universities' | 'jobs' | 'insurance' | 'lawyers' | 'more'>('all');
   
+  // --- Dedicated 4-Column Hero Search States (Exact match to media_1788574993846) ---
+  const [allSearchQuery, setAllSearchQuery] = useState('');
+  const [allSelectedCountry, setAllSelectedCountry] = useState('Select country');
+  const [allCountryOpen, setAllCountryOpen] = useState(false);
+  const [allLocation, setAllLocation] = useState('');
+  const [allSelectedCategory, setAllSelectedCategory] = useState('Select visa type');
+  const [allCategoryOpen, setAllCategoryOpen] = useState(false);
+
+  // GPS Auto-detect handler
+  const handleDetectLocation = () => {
+    if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+            const data = await res.json();
+            const city = data.address?.city || data.address?.town || data.address?.state || data.address?.county || 'Current Location';
+            setAllLocation(city);
+          } catch {
+            setAllLocation('Delhi, India');
+          }
+        },
+        () => {
+          setAllLocation('Delhi, India');
+        },
+        { timeout: 5000 }
+      );
+    } else {
+      setAllLocation('Delhi, India');
+    }
+  };
+
+  // Unified Search submit handler
+  const handleUnifiedSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    if (allSearchQuery.trim()) params.set('q', allSearchQuery.trim());
+    if (allSelectedCountry && allSelectedCountry !== 'Select country' && allSelectedCountry !== 'All Countries') {
+      params.set('country', allSelectedCountry);
+    }
+    if (allLocation.trim()) params.set('city', allLocation.trim());
+    if (allSelectedCategory && allSelectedCategory !== 'Select visa type' && allSelectedCategory !== 'All Visa Types') {
+      params.set('category', allSelectedCategory);
+    }
+    
+    const qLower = allSearchQuery.toLowerCase();
+    if (qLower.includes('universit') || qLower.includes('college') || qLower.includes('study') || qLower.includes('degree') || qLower.includes('masters') || qLower.includes('bachelor')) {
+      window.location.href = `/universities?${params.toString()}`;
+    } else if (qLower.includes('job') || qLower.includes('work in') || qLower.includes('career')) {
+      window.location.href = `/jobs?${params.toString()}`;
+    } else {
+      window.location.href = `/find-experts?${params.toString()}`;
+    }
+  };
+
   // --- Dedicated Universities & Study Abroad Consultants Search States ---
   const [homeCourseLevel, setHomeCourseLevel] = useState('Select Course Level');
   const [homeUniCountry, setHomeUniCountry] = useState('Select Country');
@@ -3161,11 +3216,11 @@ return (
               {
                 day: 5,
                 title: `Scenic Departure & Sweet Memories`,
-                subtitle: `Breakfast, checkout & guaranteed on-time transit drop`,
+                subtitle: `Breakfast, checkout & scheduled on-time transit drop`,
                 image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=85',
-                badge: 'Guaranteed Departure Transfer',
+                badge: 'Confirmed Departure Transfer',
                 morning: `Buffet breakfast at resort and seamless contactless express check-out.`,
-                afternoon: `Dedicated cab transfer back to departure terminal with on-time departure guarantee.`,
+                afternoon: `Dedicated cab transfer back to departure terminal with on-time departure commitment.`,
                 evening: `Safe return journey with 24/7 post-trip assistance.`
               }
             ];
@@ -3702,60 +3757,284 @@ return (
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
-            {/* Categories Tabs - Perfectly Arranged Across Full Card */}
-            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 pt-1 pb-4 sm:pb-5 mb-6 sm:mb-7 border-b border-slate-100">
+            {/* Top Horizontal Tabs Row - Exact Match to media_1788574993846 */}
+            <div className="w-full flex items-center justify-start lg:justify-start gap-1.5 sm:gap-4 md:gap-6 pb-3 sm:pb-4 mb-5 sm:mb-6 border-b border-slate-100 overflow-x-auto scrollbar-none">
+              {/* Tab 1: All Services */}
               <button
                 type="button"
-                onClick={() => setActiveSearchTab('universities')}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
-                  activeSearchTab === 'universities'
-                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
+                onClick={() => setActiveSearchTab('all')}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
+                  activeSearchTab === 'all'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <GraduationCap className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
-                <span className="truncate">Explore Universities</span>
+                <LayoutGrid className="w-4 h-4 stroke-[2.2] shrink-0 text-[#00a896]" />
+                <span>All Services</span>
+                {activeSearchTab === 'all' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
               </button>
 
+              {/* Tab 2: Consultant */}
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('consultants')}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
                   activeSearchTab === 'consultants'
-                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <UserCheck className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
-                <span className="truncate">Find Consultants</span>
+                <UserCheck className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'consultants' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>Consultant</span>
+                {activeSearchTab === 'consultants' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
               </button>
 
+              {/* Tab 3: Universities */}
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('universities')}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
+                  activeSearchTab === 'universities'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Landmark className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'universities' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>Universities</span>
+                {activeSearchTab === 'universities' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
+              </button>
+
+              {/* Tab 4: Jobs Abroad */}
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('jobs')}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
                   activeSearchTab === 'jobs'
-                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Briefcase className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
-                <span className="truncate">Job Abroad</span>
+                <Briefcase className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'jobs' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>Jobs Abroad</span>
+                {activeSearchTab === 'jobs' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
               </button>
 
+              {/* Tab 5: Insurance */}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveSearchTab('insurance');
+                  setAllSelectedCategory('Travel Insurance');
+                }}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
+                  activeSearchTab === 'insurance'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <ShieldCheck className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'insurance' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>Insurance</span>
+                {activeSearchTab === 'insurance' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
+              </button>
+
+              {/* Tab 6: Lawyers */}
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('lawyers')}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold px-3 sm:px-4 py-3 sm:py-3.5 rounded-2xl transition-all cursor-pointer text-center ${
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
                   activeSearchTab === 'lawyers'
-                    ? 'bg-teal-50/90 border border-teal-300/80 text-[#00a896] shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 bg-slate-50/90 hover:bg-slate-100 border border-slate-200/80'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Scale className="w-4.5 h-4.5 stroke-[2.2] shrink-0" />
-                <span className="truncate">Visa Appeal</span>
+                <Scale className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'lawyers' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>Lawyers</span>
+                {activeSearchTab === 'lawyers' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
+              </button>
+
+              {/* Tab 7: More */}
+              <button
+                type="button"
+                onClick={() => setActiveSearchTab('more')}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer relative ${
+                  activeSearchTab === 'more'
+                    ? 'text-[#00a896]'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <MoreHorizontal className={`w-4 h-4 stroke-[2.2] shrink-0 ${activeSearchTab === 'more' ? 'text-[#00a896]' : 'text-slate-500'}`} />
+                <span>More</span>
+                {activeSearchTab === 'more' && (
+                  <span className="absolute -bottom-3 sm:-bottom-4 left-0 right-0 h-[2.5px] bg-[#00a896] rounded-full" />
+                )}
               </button>
             </div>
+
+            {/* TAB 0: All Services & Consultants Unified 4-Column Search (Exact match to media_1788574993846) */}
+            {(activeSearchTab === 'all' || activeSearchTab === 'consultants' || activeSearchTab === 'insurance' || activeSearchTab === 'more') && (
+              <div className="space-y-5 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Col 1: What are you looking for? */}
+                  <div>
+                    <label className="text-xs sm:text-[13px] font-bold text-slate-800 leading-none mb-2.5 block">
+                      What are you looking for?
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] focus-within:ring-2 focus-within:ring-[#00a896]/10 hover:border-slate-300 rounded-xl sm:rounded-2xl px-3.5 h-[50px] flex items-center gap-2.5 transition-all shadow-2xs">
+                      <Search className="w-4 h-4 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={allSearchQuery}
+                        onChange={(e) => setAllSearchQuery(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleUnifiedSearch(); }}
+                        placeholder={
+                          activeSearchTab === 'consultants'
+                            ? "e.g., Canada student visa consultant"
+                            : activeSearchTab === 'insurance'
+                            ? "e.g., Schengen travel medical insurance"
+                            : "e.g., Canada student visa consultant"
+                        }
+                        className="w-full text-xs sm:text-[13px] font-medium text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Col 2: Destination Country */}
+                  <div className="relative">
+                    <label className="text-xs sm:text-[13px] font-bold text-slate-800 leading-none mb-2.5 block">
+                      Destination Country
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setAllCountryOpen(!allCountryOpen); setAllCategoryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-xl sm:rounded-2xl px-3.5 h-[50px] flex items-center justify-between gap-2 cursor-pointer transition-all shadow-2xs"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <Globe className="w-4 h-4 text-slate-500 shrink-0" />
+                        <span className={`text-xs sm:text-[13px] font-medium truncate ${allSelectedCountry !== 'Select country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {allSelectedCountry}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${allCountryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {allCountryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); setAllSelectedCountry('Select country'); setAllCountryOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${allSelectedCountry === 'Select country' ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                        >
+                          All Countries
+                        </button>
+                        {homeCountriesList.map((c) => (
+                          <button key={c} type="button"
+                            onClick={(e) => { e.stopPropagation(); setAllSelectedCountry(c); setAllCountryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${allSelectedCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Col 3: Your Location ˅ */}
+                  <div>
+                    <label className="text-xs sm:text-[13px] font-bold text-slate-800 leading-none mb-2.5 flex items-center gap-1">
+                      <span>Your Location</span>
+                      <ChevronDown className="w-3 h-3 text-slate-400" />
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] focus-within:ring-2 focus-within:ring-[#00a896]/10 hover:border-slate-300 rounded-xl sm:rounded-2xl px-3.5 h-[50px] flex items-center justify-between gap-2 transition-all shadow-2xs">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <MapPin className="w-4 h-4 text-slate-500 shrink-0" />
+                        <input
+                          type="text"
+                          value={allLocation}
+                          onChange={(e) => setAllLocation(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === 'Enter') handleUnifiedSearch(); }}
+                          placeholder="State / City"
+                          className="w-full text-xs sm:text-[13px] font-medium text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleDetectLocation}
+                        title="Detect My Current Location"
+                        className="text-[#00a896] hover:text-[#008f80] hover:scale-110 active:scale-95 transition-all p-1 cursor-pointer shrink-0"
+                      >
+                        <LocateFixed className="w-4 h-4 stroke-[2.2]" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Col 4: Visa Category (Optional) */}
+                  <div className="relative">
+                    <label className="text-xs sm:text-[13px] font-bold text-slate-800 leading-none mb-2.5 block">
+                      Visa Category <span className="font-normal text-slate-400">(Optional)</span>
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setAllCategoryOpen(!allCategoryOpen); setAllCountryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-xl sm:rounded-2xl px-3.5 h-[50px] flex items-center justify-between gap-2 cursor-pointer transition-all shadow-2xs"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <FileText className="w-4 h-4 text-slate-500 shrink-0" />
+                        <span className={`text-xs sm:text-[13px] font-medium truncate ${allSelectedCategory !== 'Select visa type' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {allSelectedCategory}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${allCategoryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {allCategoryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); setAllSelectedCategory('Select visa type'); setAllCategoryOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${allSelectedCategory === 'Select visa type' ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                        >
+                          All Visa Types
+                        </button>
+                        {homeCategoriesList.map((cat) => (
+                          <button key={cat} type="button"
+                            onClick={(e) => { e.stopPropagation(); setAllSelectedCategory(cat); setAllCategoryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${allSelectedCategory === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{cat}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Row: Centered Teal Pill Button + Right Advanced Search */}
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center relative">
+                  <button
+                    type="button"
+                    onClick={handleUnifiedSearch}
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
+                  >
+                    <Search className="w-4.5 h-4.5 stroke-[2.5]" />
+                    <span>Search</span>
+                  </button>
+
+                  <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
+                    <a
+                      href="/find-experts"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00a896] hover:text-[#008072] transition-colors"
+                    >
+                      <SlidersHorizontal className="w-4 h-4 stroke-[2.2]" />
+                      <span>Advanced Search</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* TAB 1: Universities Search */}
             {activeSearchTab === 'universities' && (
@@ -3838,122 +4117,26 @@ return (
                   </div>
                 </div>
 
-                {/* Universities Action Button */}
-                <div className="pt-2 flex items-center justify-center">
+                {/* Universities Action Button + Advanced Search */}
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center relative">
                   <button
                     type="button"
                     onClick={handleHomeFindUniversities}
-                    className="w-full sm:w-auto min-w-[240px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Building2 className="w-4 h-4" />
+                    <Building2 className="w-4.5 h-4.5" />
                     <span>Find Universities</span>
                   </button>
-                </div>
-              </div>
-            )}
 
-            {/* TAB 2: Consultant Search */}
-            {activeSearchTab === 'consultants' && (
-              <div className="space-y-5 animate-fadeIn">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {/* Name or Keyword */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
-                      Search Consultant / Agency
-                    </label>
-                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
-                      <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                      <input
-                        type="text"
-                        value={homeSearchQuery}
-                        onChange={(e) => setHomeSearchQuery(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeConsultantSearch(); }}
-                        placeholder="e.g. Can-Am, Global Ed, IDP"
-                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Visa Category */}
-                  <div className="relative">
-                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
-                      Category
-                    </label>
-                    <div
-                      onClick={(e) => { e.stopPropagation(); setHomeCategoryOpen(!homeCategoryOpen); setHomeCountryOpen(false); }}
-                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                  <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
+                    <a
+                      href="/universities"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00a896] hover:text-[#008072] transition-colors"
                     >
-                      <span className={`text-xs font-semibold truncate ${homeSelectedCategory !== 'Select Category' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
-                        {homeSelectedCategory}
-                      </span>
-                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeCategoryOpen ? 'rotate-180' : ''}`} />
-                    </div>
-                    {homeCategoryOpen && (
-                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                        {homeCategoriesList.map((cat) => (
-                          <button key={cat} type="button"
-                            onClick={(e) => { e.stopPropagation(); setHomeSelectedCategory(cat); setHomeCategoryOpen(false); }}
-                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeSelectedCategory === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
-                          >{cat}</button>
-                        ))}
-                      </div>
-                    )}
+                      <SlidersHorizontal className="w-4 h-4 stroke-[2.2]" />
+                      <span>Advanced Search</span>
+                    </a>
                   </div>
-
-                  {/* Country */}
-                  <div className="relative">
-                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
-                      Country Specialty
-                    </label>
-                    <div
-                      onClick={(e) => { e.stopPropagation(); setHomeCountryOpen(!homeCountryOpen); setHomeCategoryOpen(false); }}
-                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
-                    >
-                      <span className={`text-xs font-semibold truncate ${homeSelectedCountry !== 'Select Country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
-                        {homeSelectedCountry !== 'Select Country' ? homeSelectedCountry : 'Select Country'}
-                      </span>
-                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeCountryOpen ? 'rotate-180' : ''}`} />
-                    </div>
-                    {homeCountryOpen && (
-                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
-                        {homeCountriesList.map((c) => (
-                          <button key={c} type="button"
-                            onClick={(e) => { e.stopPropagation(); setHomeSelectedCountry(c); setHomeCountryOpen(false); }}
-                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeSelectedCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
-                          >{c}</button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* City / Location */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
-                      City / Location
-                    </label>
-                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
-                      <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                      <input
-                        type="text"
-                        value={homeLocation}
-                        onChange={(e) => setHomeLocation(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeConsultantSearch(); }}
-                        placeholder="e.g. Hyderabad, Delhi, Remote"
-                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2 flex items-center justify-center">
-                  <button
-                    type="button"
-                    onClick={handleHomeConsultantSearch}
-                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
-                  >
-                    <Search className="w-4 h-4" />
-                    <span>Search Verified Consultants</span>
-                  </button>
                 </div>
               </div>
             )}
@@ -4039,16 +4222,26 @@ return (
                   </div>
                 </div>
 
-                {/* Jobs Action Button */}
-                <div className="pt-2 flex items-center justify-center">
+                {/* Jobs Action Button + Advanced Search */}
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center relative">
                   <button
                     type="button"
                     onClick={handleHomeJobSearch}
-                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Briefcase className="w-4 h-4" />
+                    <Briefcase className="w-4.5 h-4.5" />
                     <span>Search Jobs Abroad</span>
                   </button>
+
+                  <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
+                    <a
+                      href="/jobs"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00a896] hover:text-[#008072] transition-colors"
+                    >
+                      <SlidersHorizontal className="w-4 h-4 stroke-[2.2]" />
+                      <span>Advanced Search</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
@@ -4146,16 +4339,26 @@ return (
                   </div>
                 </div>
 
-                {/* Lawyers Action Button */}
-                <div className="pt-2 flex items-center justify-center">
+                {/* Lawyers Action Button + Advanced Search */}
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center relative">
                   <button
                     type="button"
                     onClick={handleHomeLawyerSearch}
-                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Scale className="w-4 h-4" />
+                    <Scale className="w-4.5 h-4.5" />
                     <span>Find Appeal Lawyers</span>
                   </button>
+
+                  <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
+                    <a
+                      href="/find-experts?category=Visa+Appeals"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00a896] hover:text-[#008072] transition-colors"
+                    >
+                      <SlidersHorizontal className="w-4 h-4 stroke-[2.2]" />
+                      <span>Advanced Search</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             )}

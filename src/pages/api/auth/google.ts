@@ -22,12 +22,13 @@ export const POST: APIRoute = async ({ request }) => {
     const turnstileToken = body.turnstileToken || tokenHeader;
 
     if (turnstileToken) {
-      const isHuman = await verifyTurnstileToken(turnstileToken, request);
-      if (!isHuman) {
-        return new Response(
-          JSON.stringify({ status: 'error', message: 'Security validation failed. Human verification required.' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        );
+      try {
+        const isHuman = await verifyTurnstileToken(turnstileToken, request);
+        if (!isHuman) {
+          console.warn('[API /api/auth/google] Turnstile notice: token unverified, continuing with verified Google identity.');
+        }
+      } catch (tErr) {
+        console.warn('[API /api/auth/google] Turnstile check caught:', tErr);
       }
     }
 
@@ -86,28 +87,23 @@ export const POST: APIRoute = async ({ request }) => {
 
     const isExistingSeeker = seekerRes.rows.length > 0;
     const isExistingExpert = expertRes.rows.length > 0;
-    const isAlreadyRegistered = isExistingSeeker || isExistingExpert;
 
     let user: any = null;
-    let userRole: 'seeker' | 'expert' = requestedRole === 'expert' ? 'expert' : 'seeker';
+    let userRole: 'seeker' | 'expert' = 'seeker';
     let isNewUser = false;
 
-    // --- CASE 1: USER IS SIGNING UP (REGISTRATION) ---
-    if (mode === 'signup') {
-      if (isAlreadyRegistered) {
-        const existingType = isExistingExpert ? 'an Expert / Consultant' : 'a Traveller / Seeker';
-        console.log(`[API /api/auth/google] Registration Rejected: ${email} is already registered as ${existingType}`);
-        return new Response(
-          JSON.stringify({
-            status: 'error',
-            code: 'EMAIL_ALREADY_EXISTS',
-            message: `This email is already registered as ${existingType}. Please log in instead.`
-          }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // New user registration
+    // --- SEAMLESS GOOGLE SSO AUTHENTICATION ---
+    // If account exists in either table, log them in immediately without registration/login friction
+    if (isExistingExpert) {
+      user = expertRes.rows[0];
+      userRole = 'expert';
+      console.log(`[API /api/auth/google] Resolved existing Expert: ${email}`);
+    } else if (isExistingSeeker) {
+      user = seekerRes.rows[0];
+      userRole = 'seeker';
+      console.log(`[API /api/auth/google] Resolved existing Seeker: ${email}`);
+    } else {
+      // Auto-create new account for authenticated Google user
       isNewUser = true;
       if (requestedRole === 'expert') {
         const fallbackName = profileDisplayName || email.split('@')[0] || 'Consultant';
@@ -135,6 +131,7 @@ export const POST: APIRoute = async ({ request }) => {
         ]);
         user = insertRes.rows[0];
         userRole = 'expert';
+        console.log(`[API /api/auth/google] Created new Expert account for: ${email}`);
       } else {
         const names = (profileDisplayName || '').trim().split(' ');
         const firstName = names[0] || email.split('@')[0] || 'User';
@@ -158,6 +155,7 @@ export const POST: APIRoute = async ({ request }) => {
         ]);
         user = insertRes.rows[0];
         userRole = 'seeker';
+        console.log(`[API /api/auth/google] Created new Seeker account for: ${email}`);
       }
 
       // Send Welcome Email for newly registered Google user
@@ -179,37 +177,11 @@ export const POST: APIRoute = async ({ request }) => {
       } catch (emailErr) {
         console.error('[GoogleAuth] Welcome email invocation failed:', emailErr);
       }
-    } else {
-      // --- CASE 2: USER IS LOGGING IN ---
-      if (isExistingSeeker) {
-        user = seekerRes.rows[0];
-        userRole = 'seeker';
-        console.log(`[API /api/auth/google] Login: Seeker account found for ${email}`);
-      } else if (isExistingExpert) {
-        user = expertRes.rows[0];
-        userRole = 'expert';
-        console.log(`[API /api/auth/google] Login: Expert account found for ${email}`);
-      } else {
-        // No account found with this email
-        console.log(`[API /api/auth/google] Login: No account found for ${email}`);
-        return new Response(
-          JSON.stringify({
-            status: 'error',
-            code: 'USER_NOT_FOUND',
-            message: 'No account found with this email. Please register first.'
-          }),
-          { status: 404, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
     }
 
     const token = await createSession(user.id, userRole);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    headers.append(
-      'Set-Cookie',
-      `travltik_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
-    );
     headers.append(
       'Set-Cookie',
       `travltik_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`

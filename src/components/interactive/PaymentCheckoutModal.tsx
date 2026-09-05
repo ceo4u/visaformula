@@ -299,7 +299,7 @@ export function PaymentCheckoutModal({
               {/* Trust Badge */}
               <div className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 font-medium">
                 <ShieldCheck className="w-4 h-4 text-[#00a896] shrink-0" />
-                <span>256-bit SSL encrypted checkout. 100% money-back guarantee if session does not take place.</span>
+                <span>256-bit SSL encrypted checkout. 100% money-back protection if session does not take place.</span>
               </div>
 
               {/* Action Buttons */}

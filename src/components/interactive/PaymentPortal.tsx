@@ -321,7 +321,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                             <div className="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3.5 text-center">
                                 <p className="text-xs text-emerald-800 font-bold flex items-center justify-center gap-1.5">
                                     <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                                    <span>Money-Back Escrow Guarantee</span>
+                                    <span>Money-Back Escrow Protection</span>
                                 </p>
                             </div>
                         </div>

@@ -1170,7 +1170,7 @@ export function UniversitiesPortal() {
                 <h4 className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-wider mb-2">Key Highlights & Admissions Perks:</h4>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
                   {[
-                    "100% Visa Approval Guarantee",
+                    "End-to-End Visa Application Guidance",
                     "Zero Apostille & Documentation Charges",
                     "Part-Time Work Allowed While Studying",
                     "Affordable Tuition & Living Costs",

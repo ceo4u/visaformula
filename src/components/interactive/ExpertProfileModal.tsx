@@ -336,7 +336,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
             <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 flex items-center gap-3 text-slate-600 text-xs font-sans">
               <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
               <p className="text-[11px] font-medium leading-snug font-sans">
-                <strong>Privacy Guaranteed:</strong> Direct contact details (phone, email &amp; address) are kept confidential until your consultation is booked.
+                <strong>Privacy Protected:</strong> Direct contact details (phone, email &amp; address) are kept confidential until your consultation is booked.
               </p>
             </div>
 

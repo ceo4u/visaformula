@@ -10,7 +10,7 @@ const steps = [
 
 const protections = [
     { title: "No-Show Protection", desc: "If the expert doesn't show up, you get a full refund automatically.", icon: Clock, color: "bg-yellow-50 text-amber-600 border-yellow-100" },
-    { title: "Quality Guarantee", desc: "If the service doesn't meet promised standards, raise a dispute.", icon: Shield, color: "bg-amber-50 text-amber-600 border-amber-100" },
+    { title: "Quality Assurance", desc: "If the service doesn't meet promised standards, raise a dispute.", icon: Shield, color: "bg-amber-50 text-amber-600 border-amber-100" },
     { title: "Fraud Prevention", desc: "Funds are never directly accessible to the expert until you confirm.", icon: Lock, color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
     { title: "Dispute Resolution", desc: "Our team reviews disputes within 48 hours with fair mediation.", icon: AlertTriangle, color: "bg-yellow-50 text-amber-600 border-yellow-100" },
 ];

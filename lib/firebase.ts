@@ -17,12 +17,12 @@ const getEnv = (key: string): string => {
 
 // Firebase config with fallback values
 const firebaseConfig = {
-    apiKey: getEnv("NEXT_PUBLIC_FIREBASE_API_KEY") || "dev-api-key",
-    authDomain: getEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN") || "localhost",
-    projectId: getEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID") || "visaformula-dev",
-    storageBucket: getEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET") || "visaformula-dev.appspot.com",
-    messagingSenderId: getEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID") || "123456789",
-    appId: getEnv("NEXT_PUBLIC_FIREBASE_APP_ID") || "dev-app-id",
+    apiKey: getEnv("PUBLIC_FIREBASE_API_KEY") || getEnv("NEXT_PUBLIC_FIREBASE_API_KEY") || "dev-api-key",
+    authDomain: getEnv("PUBLIC_FIREBASE_AUTH_DOMAIN") || getEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN") || "localhost",
+    projectId: getEnv("PUBLIC_FIREBASE_PROJECT_ID") || getEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID") || "visaformula-dev",
+    storageBucket: getEnv("PUBLIC_FIREBASE_STORAGE_BUCKET") || getEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET") || "visaformula-dev.appspot.com",
+    messagingSenderId: getEnv("PUBLIC_FIREBASE_MESSAGING_SENDER_ID") || getEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID") || "123456789",
+    appId: getEnv("PUBLIC_FIREBASE_APP_ID") || getEnv("NEXT_PUBLIC_FIREBASE_APP_ID") || "dev-app-id",
 };
 
 // Check if we have valid Firebase keys (i.e. not the default dummy fallbacks)

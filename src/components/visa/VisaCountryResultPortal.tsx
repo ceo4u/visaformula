@@ -138,8 +138,10 @@ import {
   Info,
   Heart,
   Download,
+  FileDown,
   Sun
 } from 'lucide-react';
+import { downloadVisaChecklistPDF, openPrintableChecklist, type VisaChecklistPDFData } from '../../utils/generateVisaChecklistPDF';
 
 // Custom sleek datepicker component matching Atlys / TravlTik aesthetics
 function PortalCustomDatePicker({
@@ -1492,7 +1494,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       feesAndProcessing: {
         costItems: [
           { label: "Government Consular Fee", amount: "AED 290 (₹6,500)", note: "Official visa issuance fee" },
-          { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200", note: "Document verification, photo formatting & guarantee" }
+          { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200", note: "Document verification, photo formatting & assurance" }
         ],
         totalEstimatedINR: "₹8,700 Total Package",
         processingTime: "24 to 72 Hours (Express 12h Available)",
@@ -2128,7 +2130,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     feesAndProcessing: {
       costItems: [
         { label: "Government Consular Fee", amount: "₹3,500 – ₹7,800", note: "Official visa issuance fee" },
-        { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & guarantee" }
+        { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & assurance" }
       ],
       totalEstimatedINR: "₹5,700 – ₹10,400 Total",
       processingTime: "3 to 5 Business Days (Express 24-48h Available)",
@@ -3057,7 +3059,8 @@ export function VisaCountryResultPortal({
           const cLow = (countryName || '').toLowerCase();
           if (cLow.includes('mauritius')) {
             const pt = String(parsed.processing_time || '');
-            if (/15\s*[-–—to]+\s*20/i.test(pt)) {
+            const hasStaleEmbassySteps = (parsed.how_to_apply || []).some((s: string) => /appointment|vfs|cvasc|biometric fingerprint/i.test(s));
+            if (/15\s*[-–—to]+\s*20/i.test(pt) || hasStaleEmbassySteps) {
               localStorage.removeItem(cacheKey);
               return null;
             }
@@ -3086,8 +3089,92 @@ export function VisaCountryResultPortal({
     const isChina = cLow.includes('china');
     const isUS = cLow.includes('united states') || cLow.includes('usa');
     const isUK = cLow.includes('united kingdom') || cLow.includes('uk');
+    const isMauritius = cLow.includes('mauritius');
+    const isVisaOnArrivalOrFree = isMauritius || 
+      cLow.includes('maldives') || 
+      cLow.includes('seychelles') || 
+      cLow.includes('thailand') || 
+      cLow.includes('malaysia') || 
+      cLow.includes('nepal') || 
+      cLow.includes('bhutan') ||
+      baseData.entryType?.toLowerCase().includes('free') ||
+      baseData.entryType?.toLowerCase().includes('arrival') ||
+      baseData.entryType?.toLowerCase().includes('exempt') ||
+      baseData.visaType?.toLowerCase().includes('free') ||
+      baseData.visaType?.toLowerCase().includes('arrival') ||
+      baseData.visaType?.toLowerCase().includes('exempt');
 
-    const default8Steps = isChina ? [
+    const mauritiusVoASteps = [
+      {
+        title: 'Check Passport Validity',
+        desc: 'Ensure your original passport has at least 6 months validity from planned departure date and min 2 blank pages.'
+      },
+      {
+        title: 'Book Return / Onward Flights',
+        desc: 'Keep confirmed round-trip air tickets departing Mauritius within the permitted 60-day stay period.'
+      },
+      {
+        title: 'Confirm Accommodation Voucher',
+        desc: 'Have a verified hotel/resort booking voucher or an official host sponsorship letter in Mauritius ready.'
+      },
+      {
+        title: 'Ensure Sufficient Travel Funds',
+        desc: 'Maintain adequate funds (minimum $100 USD per day of stay or valid international credit cards/forex).'
+      },
+      {
+        title: 'Fill Mauritius All-in-One Digital Form',
+        desc: 'Fill out the mandatory official online Mauritius All-in-One Digital Travel Form at safetravel.govmu.org prior to boarding.'
+      },
+      {
+        title: 'Download & Save Digital Entry QR Code',
+        desc: 'Save the generated All-in-One Travel Declaration PDF and QR code on your smartphone (carry a printout as well).'
+      },
+      {
+        title: 'Fly Directly to SSR International Airport (MRU)',
+        desc: 'Board your flight directly to Mauritius with zero embassy visits, zero biometrics, and zero advance visa fees.'
+      },
+      {
+        title: 'Receive Instant Entry Permit Stamp on Arrival (Free)',
+        desc: 'Present passport, return ticket, hotel voucher & QR code at airport immigration to receive your free 60-day tourist visa stamp.'
+      }
+    ];
+
+    const generalVoASteps = [
+      {
+        title: 'Check Passport Validity',
+        desc: `Ensure your original passport is valid for at least 6 months beyond travel dates with minimum 2 blank pages.`
+      },
+      {
+        title: 'Book Round-Trip Flights',
+        desc: `Secure confirmed return or onward flight reservations departing ${countryName} within the permissible stay.`
+      },
+      {
+        title: 'Confirm Accommodation Booking',
+        desc: `Prepare verified hotel reservation vouchers or an official host accommodation invitation letter in ${countryName}.`
+      },
+      {
+        title: 'Ensure Financial Solvency',
+        desc: 'Carry proof of adequate maintenance funds (international cards, forex currency, or liquid bank funds).'
+      },
+      {
+        title: 'Complete Digital Arrival / Landing Card',
+        desc: `Fill the official electronic arrival card (e-Arrival Card / Disembarkation form) online before boarding your flight.`
+      },
+      {
+        title: 'Save Entry Authorization / QR Code',
+        desc: 'Download the generated arrival acknowledgment / QR code on your mobile phone for check-in and boarding.'
+      },
+      {
+        title: `Board Flight to ${countryName}`,
+        desc: `Travel directly to ${countryName} with carry-on documents; zero embassy appointments or biometrics required.`
+      },
+      {
+        title: 'Instant On-Arrival Visa Stamping',
+        desc: `Present your passport, return ticket, and accommodation proof at airport immigration for instant clearance.`
+      }
+    ];
+
+    const default8Steps = isMauritius ? mauritiusVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3222,7 +3309,12 @@ export function VisaCountryResultPortal({
     ];
 
     let rawSteps = default8Steps;
-    if (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 7) {
+    const hasGenericEmbassyMistake = (aiData?.how_to_apply || []).some((item: any) => {
+      const txt = typeof item === 'string' ? item.toLowerCase() : JSON.stringify(item).toLowerCase();
+      return txt.includes('vfs') || txt.includes('cvasc') || txt.includes('visa center') || txt.includes('visa fee online');
+    });
+
+    if (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4 && (!isMauritius && !isVisaOnArrivalOrFree || !hasGenericEmbassyMistake)) {
       const parsed = aiData.how_to_apply.map((item: any, idx: number) => {
         let title = '';
         let desc = '';
@@ -3248,8 +3340,8 @@ export function VisaCountryResultPortal({
           desc: (desc || default8Steps[idx]?.desc || '').replace(/\s*\([^)]*\)/g, '').trim()
         };
       });
-      if (parsed.length >= 7) {
-        rawSteps = parsed.slice(0, 8);
+      if (parsed.length >= 4) {
+        rawSteps = parsed.length >= 8 ? parsed.slice(0, 8) : [...parsed, ...default8Steps.slice(parsed.length, 8)];
       }
     }
 
@@ -3467,33 +3559,252 @@ export function VisaCountryResultPortal({
     } catch(e) {}
   };
 
-  const handleDownloadChecklist = () => {
-    const txt = `OFFICIAL VISA DOCUMENT CHECKLIST: ${countryName.toUpperCase()}
-Nationality: ${passportCountry}
-Purpose: ${activePurposeTab.toUpperCase()}
-Generated by TravlTik Consular Registry
+  const [checklistSyncedToast, setChecklistSyncedToast] = useState<{ show: boolean; msg: string; trackingId: string } | null>(null);
 
-MANDATORY STATUTORY DOCUMENTS:
-1. Valid Passport (valid at least 3-6 months beyond departure, min 2 blank pages)
-2. Visa Application Form (fully filled & signed)
-3. Biometric Photographs (recent 35x45mm, white background)
-4. Confirmed Flight Reservations (round-trip with PNR)
-5. Accommodation Proof (hotel booking or invitation letter)
-6. Travel Medical Insurance (minimum coverage of €30,000 / $50,000)
-7. Bank Statements & Solvency Proof (last 3-6 months, bank-stamped)
-8. Cover Letter (purpose of visit, stay details, and return intent)
+  const handleDownloadAndSyncChecklist = () => {
+    try {
+      const trackingId = `TT-${(countryName || 'VI').slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+      const submissionDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const isStudy = activePurposeTab === 'study';
+      const isWork = activePurposeTab === 'work';
+      const isBusiness = activePurposeTab === 'business';
+      const isPR = activePurposeTab === 'pr';
+      const visaTypeName = isStudy 
+        ? 'Student Visa' 
+        : isWork 
+        ? 'Skilled Worker Visa' 
+        : isBusiness 
+        ? 'Business Visa' 
+        : isPR
+        ? 'Permanent Residency'
+        : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
+      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || '15 - 20 Days';
+      const consularFeeVal = aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? 'EUR 90' : 'Official Consular Fee');
+      const serviceFeeVal = aiData?.costs?.service_fee || 'Rs. 2,200 (TravlTik Fast-Track Concierge)';
+      const stayDurationVal = isStudy 
+        ? 'Duration of Course (1-4 Yrs)' 
+        : isWork 
+        ? '1 to 5 Years' 
+        : (isSchengen ? 'Up to 90 Days within 180 Days' : 'Up to 6 Months (180 Days)');
 
-COMPLIANCE DIRECTIVE:
-All documents must be genuine, valid and meet official consular standards to avoid delays or rejection.`;
+      // Compile Documents List from AI data or defaults
+      const rawDocs = (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
+        ? aiData.documents_required.map((d: any) => ({
+            title: d.title || d.name || 'Document Requirement',
+            description: d.description || d.hint || 'Must comply with official consular specifications.',
+            isMandatory: d.is_mandatory !== false
+          }))
+        : [
+            { title: 'Valid Passport', description: 'Original passport valid at least 3-6 months beyond departure with min 2 blank pages.', isMandatory: true },
+            { title: 'Visa Application Form', description: 'Duly completed and signed official consular application form.', isMandatory: true },
+            { title: 'Biometric Photographs', description: 'Recent 35x45mm passport photos on white background with 80% face coverage.', isMandatory: true },
+            { title: 'Confirmed Flight Reservations', description: 'Round-trip air ticket reservations with verifiable airline PNR.', isMandatory: true },
+            { title: 'Proof of Accommodation', description: 'Confirmed hotel reservation vouchers or official host invitation letter.', isMandatory: true },
+            { title: 'Travel Medical Insurance', description: 'Overseas medical insurance covering min. €30,000 / $50,000 emergency evacuation.', isMandatory: true },
+            { title: 'Bank Statements (3-6 Months)', description: 'Original stamped and signed bank statements showing sufficient funds.', isMandatory: true },
+            { title: 'Cover Letter & Travel Plan', description: 'Detailed itinerary explaining purpose of visit and ties to home country.', isMandatory: true },
+            { title: 'Employment / Income Proof', description: 'Employer leave NOC letter, last 3 months salary slips, or ITR acknowledgment.', isMandatory: false }
+          ];
 
-    const blob = new Blob([txt], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${slugClean}-official-visa-checklist.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+      // Compile Procedural Steps
+      const rawSteps = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4)
+        ? aiData.how_to_apply.map((s: any, idx: number) => {
+            const raw = typeof s === 'string' ? s : (s.title || s.step || `Step ${idx + 1}`);
+            const clean = raw.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
+            const parts = clean.split(':');
+            return {
+              step: idx + 1,
+              title: parts[0].trim() || clean,
+              desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
+            };
+          })
+        : (dynamicSteps && dynamicSteps.length > 0)
+        ? dynamicSteps.map(s => ({ step: s.step, title: s.title, desc: s.desc }))
+        : [
+            { step: 1, title: 'Check Eligibility & Jurisdiction', desc: 'Confirm entry requirements and consular jurisdiction for your passport.' },
+            { step: 2, title: 'Gather Supporting Documents', desc: 'Collect valid passport, photo, hotel, flight, and financial proof.' },
+            { step: 3, title: 'Complete Visa Application Form', desc: 'Accurately complete the official visa application form.' },
+            { step: 4, title: 'Schedule Biometrics Appointment', desc: 'Book submission appointment at the authorized Visa Application Center.' },
+            { step: 5, title: 'Pay Consular Statutory Fees', desc: 'Pay non-refundable consular processing and biometric fees.' },
+            { step: 6, title: 'Submit Dossier & Track Adjudication', desc: 'Enroll biometrics, submit passport, and track application online.' }
+          ];
+
+      // Compile Profile Specific Details for Dossier
+      const profileDetailsList: Array<{ label: string; value: string }> = [];
+      try {
+        if (isStudy) {
+          if (typeof studyQual !== 'undefined' && studyQual) profileDetailsList.push({ label: 'Qualification', value: studyQual });
+          if (typeof studyTarget !== 'undefined' && studyTarget) profileDetailsList.push({ label: 'Target Degree', value: studyTarget });
+          if (typeof studyIntake !== 'undefined' && studyIntake) profileDetailsList.push({ label: 'Intake Session', value: studyIntake });
+          if (typeof studyBudget !== 'undefined' && studyBudget) profileDetailsList.push({ label: 'Funding Source', value: studyBudget });
+        } else if (isWork) {
+          if (typeof workExp !== 'undefined' && workExp) profileDetailsList.push({ label: 'Experience', value: workExp });
+          if (typeof workOffer !== 'undefined' && workOffer) profileDetailsList.push({ label: 'Job Offer', value: workOffer });
+          if (typeof workDomain !== 'undefined' && workDomain) profileDetailsList.push({ label: 'Domain', value: workDomain });
+        } else {
+          if (typeof visitPlanStatus !== 'undefined' && visitPlanStatus) profileDetailsList.push({ label: 'Trip Status', value: visitPlanStatus });
+          if (typeof visitTiming !== 'undefined' && visitTiming) profileDetailsList.push({ label: 'Departure Date', value: visitTiming });
+          if (typeof visitReturnDate !== 'undefined' && visitReturnDate) profileDetailsList.push({ label: 'Return Date', value: visitReturnDate });
+          if (typeof tripDurationDays !== 'undefined' && tripDurationDays > 0) profileDetailsList.push({ label: 'Trip Duration', value: `${tripDurationDays} Days` });
+          if (typeof visitStay !== 'undefined' && visitStay) profileDetailsList.push({ label: 'Accommodation', value: visitStay });
+        }
+      } catch (_) {}
+
+      // 1. GENERATE & DOWNLOAD COMPREHENSIVE 8-SECTION PDF
+      const currentProfileScore = (typeof profileScore !== 'undefined' && profileScore) ? profileScore : 45;
+      const pdfPayload: VisaChecklistPDFData = {
+        countryName,
+        passportCountry,
+        purpose: activePurposeTab,
+        visaType: visaTypeName,
+        trackingId,
+        processingTime: processingTimeVal,
+        embassyFee: consularFeeVal,
+        childFee: isSchengen ? 'EUR 40' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
+        serviceFee: serviceFeeVal,
+        totalFee: isSchengen ? 'EUR 105' : (aiData?.costs?.total_fee || consularFeeVal),
+        feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
+        stayDuration: stayDurationVal,
+        validity: isSchengen ? 'Up to 90 Days' : '180 Days',
+        entryType: 'Single / Multiple Entry',
+        applyWindow: 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
+        profileScore: currentProfileScore,
+        profileDetails: profileDetailsList,
+        documents: rawDocs,
+        steps: rawSteps,
+        requirements: [
+          { title: 'Passport Validity Requirement', desc: 'Original passport must be valid for min. 6 months beyond travel date with 2 blank pages.' },
+          { title: 'Sufficient Financial Solvency', desc: 'Proof of liquid funds, bank statements, or approved sponsorship meeting immigration thresholds.' },
+          { title: 'Confirmed Travel & Lodging', desc: 'Verifiable round-trip air ticket reservations and hotel booking or host invitation.' },
+          { title: 'Overseas Medical Travel Insurance', desc: 'Medical insurance policy covering minimum EUR 30,000 / USD 50,000 including emergency evacuation.' },
+          { title: 'Consular & Biometric Compliance', desc: 'Attendance at VAC for biometric capture or digital declaration submission before arrival.' }
+        ],
+        faqs: [
+          { question: `Can this ${countryName} visa or entry permit be extended?`, answer: 'Extensions are at the discretion of the destination immigration department and must be requested prior to expiry.' },
+          { question: 'Is biometric submission or an interview mandatory?', answer: 'First-time consular applicants typically submit biometrics at the VAC; online e-Visas/VoA require digital documentation.' },
+          { question: 'What if my passport expires in less than 6 months?', answer: 'Airlines and border control strictly enforce 6-month validity; please renew your passport before lodging.' },
+          { question: 'Are visa application and VAC fees refundable?', answer: 'Consular fees cover administrative adjudication and are strictly non-refundable regardless of outcome.' }
+        ],
+        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : 'https://travltik.com/dashboard',
+        timestamp: submissionDate
+      };
+      downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
+
+      // 2. SYNC APPLICATION INTO DASHBOARD "ACTIVE VISA CASES"
+      if (typeof window !== 'undefined') {
+        const caseId = `case-${slugClean}`;
+        const existingCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
+        const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination?.toLowerCase() !== countryName.toLowerCase());
+
+        const newCase = {
+          id: caseId,
+          trackingId,
+          destination: countryName,
+          destinationFlag: flagEmoji,
+          visaType: visaTypeName,
+          purpose: activePurposeTab.toLowerCase(),
+          passport: passportCountry,
+          status: 'AI Verified & Checklist Synced',
+          stage: 'Document Vault Verification',
+          progress: 25,
+          documentsCount: rawDocs.length,
+          submittedAt: submissionDate,
+          targetDate: processingTimeVal,
+          validity: isSchengen ? 'Up to 90 Days' : '180 Days',
+          entryType: 'Single / Multiple Entry',
+          consularFee: consularFeeVal,
+          serviceFee: serviceFeeVal,
+          createdAt: new Date().toISOString(),
+          checklist: rawDocs.map(d => ({
+            id: d.title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+            title: d.title,
+            description: d.description,
+            mandatory: d.isMandatory !== false,
+            status: 'pending'
+          }))
+        };
+
+        const updatedCases = [newCase, ...filteredCases];
+        localStorage.setItem('active_visa_cases', JSON.stringify(updatedCases));
+
+        // Also sync user-scoped cases if email is present
+        const userEmail = localStorage.getItem('seeker_email') || (JSON.parse(localStorage.getItem('travltik_user') || '{}'))?.email;
+        if (userEmail) {
+          localStorage.setItem(`active_visa_cases_${userEmail}`, JSON.stringify(updatedCases));
+        }
+
+        // 3. PRE-POPULATE DOCUMENT VAULT CHECKLIST STATE FOR THIS DESTINATION
+        const storageKey = `vault_checklist_${countryName}`.replace(/\s+/g, '_').toLowerCase();
+        const existingVault = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        rawDocs.forEach((d) => {
+          const docKey = d.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
+          if (!existingVault[docKey]) {
+            existingVault[docKey] = {
+              title: d.title,
+              description: d.description,
+              is_mandatory: d.isMandatory !== false,
+              status: 'pending',
+              verified: false,
+              category: d.isMandatory !== false ? 'Mandatory Consular Document' : 'Supporting Evidence'
+            };
+          }
+        });
+        localStorage.setItem(storageKey, JSON.stringify(existingVault));
+
+        // 4. SYNC ACTIVE TRAVEL PROFILE & USER JOURNEY
+        localStorage.setItem('active_travel_profile', JSON.stringify({
+          destination: countryName,
+          destinationFlag: flagEmoji,
+          passport: passportCountry,
+          purpose: activePurposeTab,
+          visaType: visaTypeName,
+          trackingId,
+          createdAt: submissionDate
+        }));
+
+        localStorage.setItem('travltik_user_journey', JSON.stringify({
+          destination: countryName,
+          destination_flag: flagEmoji,
+          passport_country: passportCountry,
+          purpose: activePurposeTab,
+          visa_type: visaTypeName,
+          tracking_id: trackingId,
+          stay_duration: stayDurationVal,
+          readiness_score: 95,
+          documents: rawDocs,
+          status: 'AI Verified & Checklist Synced',
+          submitted_at: submissionDate
+        }));
+
+        // Ensure seeker basic identity exists for direct dashboard viewing
+        if (!localStorage.getItem('seeker_email') && !(localStorage.getItem('travltik_user'))) {
+          localStorage.setItem('seeker_email', 'seeker@travltik.com');
+          localStorage.setItem('seeker_firstName', 'TravlTik');
+          localStorage.setItem('seeker_lastName', 'Seeker');
+        }
+
+        // Trigger storage event so dashboard tabs reactively update
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('travltik_visa_synced', { detail: newCase }));
+      }
+
+      // 5. SHOW CONFIRMATION TOAST
+      setChecklistSyncedToast({
+        show: true,
+        msg: `Official ${countryName} Checklist PDF downloaded & application synced to your Dashboard!`,
+        trackingId
+      });
+
+      setTimeout(() => {
+        setChecklistSyncedToast(null);
+      }, 8000);
+
+    } catch (err) {
+      console.error('[DownloadAndSyncChecklist]', err);
+    }
   };
+
+  const handleDownloadChecklist = handleDownloadAndSyncChecklist;
 
   const [bookingModalConsultant, setBookingModalConsultant] = useState<StudyConsultantItem | null>(null);
   const [consultantBookedToast, setConsultantBookedToast] = useState<string | null>(null);
@@ -4749,7 +5060,7 @@ All documents must be genuine, valid and meet official consular standards to avo
     },
     {
       num: 3,
-      badge: 'Guaranteed',
+      badge: 'Fast-Track Ready',
       title: 'Receive your stamped e-Visa on WhatsApp & Email',
       desc: `Download your official electronic visa sent directly to your WhatsApp & Email by ${guaranteedDate}.`
     }
@@ -5019,8 +5330,8 @@ All documents must be genuine, valid and meet official consular standards to avo
       answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. TravlTik handles end-to-end online processing with instant verification and a 99.4% approval rate.`
     },
     {
-      question: `What is the guaranteed delivery date?`,
-      answer: `We guarantee that your approved ${countryName} e-Visa will be sent to your WhatsApp and Email by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
+      question: `What is the estimated delivery date?`,
+      answer: `Your verified ${countryName} e-Visa is scheduled for delivery to your WhatsApp and Email by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
     },
     {
       question: `How does online visa filing with TravlTik work?`,
@@ -5254,13 +5565,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-extrabold border border-emerald-200/60 mb-1">
-                  Tourist Visa
+                <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[12px] font-medium border border-emerald-200/60 mb-1">
+                  {purposeLabel} Visa
                 </span>
-                <h1 className="text-base font-black text-slate-950 tracking-tight leading-snug truncate">
-                  {countryName} Tourist Visa
+                <h1 className="text-[22px] sm:text-[24px] font-semibold text-slate-900 tracking-tight leading-snug">
+                  {countryName} {purposeLabel} Visa
                 </h1>
-                <span className="text-xs font-semibold text-slate-500 block mt-0.5">
+                <span className="text-[13px] font-normal text-slate-500 block mt-0.5">
                   {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || 'Official Consular Registry')}
                 </span>
               </div>
@@ -5269,16 +5580,16 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* 3 Quick Stats Row */}
             <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-slate-100 text-center">
               <div>
-                <span className="text-[10px] font-semibold text-slate-400 block">Processing Time</span>
-                <strong className="text-xs font-black text-slate-900 block mt-0.5">{getResolvedProcessingTime()}</strong>
+                <span className="text-[12px] font-normal text-slate-500 block">Processing Time</span>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{getResolvedProcessingTime()}</strong>
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-slate-400 block">Validity</span>
-                <strong className="text-xs font-black text-slate-900 block mt-0.5">Up to 90 Days</strong>
+                <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">Up to 90 Days</strong>
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-slate-400 block">Entry Type</span>
-                <strong className="text-xs font-black text-slate-900 block mt-0.5">Single Entry</strong>
+                <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">Single Entry</strong>
               </div>
             </div>
           </div>
@@ -5375,14 +5686,14 @@ All documents must be genuine, valid and meet official consular standards to avo
                   onClick={() => setSidebarTab(tab.id as any)}
                   className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-white text-slate-950 font-bold shadow-2xs'
+                      ? 'bg-white text-slate-950 font-semibold shadow-2xs'
                       : 'text-slate-500 hover:text-slate-900 font-medium'
                   }`}
                 >
                   <div className={`mb-1 ${isActive ? 'text-slate-950' : 'text-slate-400'}`}>
                     {tab.icon}
                   </div>
-                  <span className="text-[10px] leading-none truncate max-w-full">{tab.label}</span>
+                  <span className="text-[12px] font-medium leading-tight truncate max-w-full">{tab.label}</span>
                 </button>
               );
             })}
@@ -5403,64 +5714,64 @@ All documents must be genuine, valid and meet official consular standards to avo
 
             {/* Right: Visa Details */}
             <div className="flex-1 min-w-0 space-y-3.5 text-left w-full">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-extrabold border border-emerald-200/70">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[12px] sm:text-[13px] font-medium border border-emerald-200/70">
                 {purposeLabel} Visa
               </span>
 
               <div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-950 tracking-tight leading-tight">
+                <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
                   {countryName} {purposeLabel} Visa
                 </h1>
-                <span className="text-xs sm:text-sm font-semibold text-slate-500 mt-1 block">
+                <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 mt-1 block">
                   {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || 'Official Consular Registry')}
                 </span>
               </div>
 
               {/* 4 Quick Stat Badges Strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-2xl bg-slate-50/80 border border-slate-200/70 text-left">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                    <Clock className="w-3.5 h-3.5" />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/70 text-left">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-slate-400 block truncate">Processing Time</span>
-                    <strong className="text-xs font-black text-slate-900 truncate block">
+                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Processing Time</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
                       {getResolvedProcessingTime()}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Calendar className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <Calendar className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-slate-400 block truncate">Validity</span>
-                    <strong className="text-xs font-black text-slate-900 truncate block">
+                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
                       {cleanStatValue(aiData?.validity || validity) || 'Up to 90 Days'}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-                    <Compass className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                    <Compass className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-slate-400 block truncate">Stay Period</span>
-                    <strong className="text-xs font-black text-slate-900 truncate block">
+                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
                       {cleanStatValue(aiData?.stay_duration || stayPeriod) || 'Up to 90 Days'}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                    <Plane className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <Plane className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-slate-400 block truncate">Entry Type</span>
-                    <strong className="text-xs font-black text-slate-900 truncate block">
+                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
                       {cleanStatValue(aiData?.entry_type || entryType) || 'Short Stay'}
                     </strong>
                   </div>
@@ -5468,7 +5779,7 @@ All documents must be genuine, valid and meet official consular standards to avo
               </div>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+              <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
                 {aiData?.overview || `Travel to ${countryName} for ${activePurposeTab === 'study' ? 'higher education, university enrollment and academic research' : activePurposeTab === 'work' ? 'professional employment, corporate engagements and work assignments' : 'tourism, leisure, visiting family or friends, or attending short term events'}.`}
               </p>
 
@@ -5524,9 +5835,9 @@ All documents must be genuine, valid and meet official consular standards to avo
                   key={tab.id}
                   type="button"
                   onClick={() => setSidebarTab(tab.id)}
-                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap relative ${
+                  className={`px-3.5 py-2 rounded-xl text-[13px] sm:text-[14px] font-semibold transition-all cursor-pointer whitespace-nowrap relative ${
                     sidebarTab === tab.id
-                      ? 'text-blue-600 font-extrabold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2.5px] after:bg-blue-600 after:rounded-full'
+                      ? 'text-blue-600 font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2.5px] after:bg-blue-600 after:rounded-full'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
@@ -5541,8 +5852,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                 {/* ── MOBILE OVERVIEW: DOCUMENTS REQUIRED PREVIEW (MATCHING media_1788533487648.png) ── */}
                 <div className="md:hidden bg-white rounded-2xl border border-slate-100 p-4 shadow-2xs space-y-3.5 text-left">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-slate-950">Documents Required</h3>
-                    <span className="text-xs font-semibold text-slate-400">{completedDocsCount} of {totalDocsCount} completed</span>
+                    <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Documents Required</h3>
+                    <span className="text-[12px] sm:text-[13px] font-medium text-slate-500">{completedDocsCount} of {totalDocsCount} completed</span>
                   </div>
 
                   <div className="space-y-2.5">
@@ -5553,17 +5864,17 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <FileText className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <strong className="text-xs font-bold text-slate-950 block truncate">Original Passport</strong>
-                          <span className="text-[11px] font-bold text-teal-600 block mt-0.5">Mandatory</span>
+                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Original Passport</strong>
+                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
                         </div>
                       </div>
                       {portalUploadedDocs['passport']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
                           <Check className="w-3 h-3 stroke-[3]" />
                           <span>Uploaded</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
                           <Clock className="w-3 h-3" />
                           <span>Pending</span>
                         </span>
@@ -5577,17 +5888,17 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <CreditCard className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <strong className="text-xs font-bold text-slate-950 block truncate">Bank Statements (3 Months)</strong>
-                          <span className="text-[11px] font-bold text-teal-600 block mt-0.5">Mandatory</span>
+                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Bank Statements (3 Months)</strong>
+                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
                         </div>
                       </div>
                       {portalUploadedDocs['bank_statements']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
                           <Check className="w-3 h-3 stroke-[3]" />
                           <span>Uploaded</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
                           <Clock className="w-3 h-3" />
                           <span>Pending</span>
                         </span>
@@ -5601,17 +5912,17 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <Plane className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <strong className="text-xs font-bold text-slate-950 block truncate">Flight Reservation</strong>
-                          <span className="text-[11px] font-bold text-teal-600 block mt-0.5">Mandatory</span>
+                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Flight Reservation</strong>
+                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
                         </div>
                       </div>
                       {portalUploadedDocs['flight_reservation']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
                           <Check className="w-3 h-3 stroke-[3]" />
                           <span>Uploaded</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
                           <Clock className="w-3 h-3" />
                           <span>Pending</span>
                         </span>
@@ -5625,17 +5936,17 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <Building2 className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <strong className="text-xs font-bold text-slate-950 block truncate">Hotel Accommodation</strong>
-                          <span className="text-[11px] font-bold text-teal-600 block mt-0.5">Mandatory</span>
+                          <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block truncate">Hotel Accommodation</strong>
+                          <span className="text-[12px] font-medium text-teal-700 block mt-0.5">Mandatory</span>
                         </div>
                       </div>
                       {portalUploadedDocs['hotel_booking']?.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium shrink-0">
                           <Check className="w-3 h-3 stroke-[3]" />
                           <span>Uploaded</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium shrink-0">
                           <Clock className="w-3 h-3" />
                           <span>Pending</span>
                         </span>
@@ -5646,9 +5957,9 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <button
                     type="button"
                     onClick={() => setSidebarTab('documents')}
-                    className="w-full py-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+                    className="w-full py-3 rounded-xl bg-slate-900 hover:bg-black text-white text-[13px] sm:text-[14px] font-semibold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
                   >
-                    <span>View All Documents (12)</span>
+                    <span>View All Documents ({totalDocsCount || 12})</span>
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -5657,8 +5968,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                 <div className="hidden md:block space-y-6">
                   {/* 1. Overview Card */}
                   <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
-                    <h2 className="text-lg sm:text-xl font-extrabold text-slate-950">Overview</h2>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                    <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
+                    <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal">
                       {aiData?.overview || `The ${isSchengen ? 'Schengen Tourist Visa' : `${countryName} ${purposeLabel} Visa`} allows you to travel to ${countryName} ${isSchengen ? 'and other Schengen countries ' : ''}for tourism, leisure, short visits, or attending events.`}
                     </p>
 
@@ -5669,8 +5980,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Sun className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs font-black text-blue-950 block">Tourism</strong>
-                        <span className="text-[11px] text-blue-700/80 font-semibold leading-tight block">Holiday or leisure trip</span>
+                        <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Tourism</strong>
+                        <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Holiday or leisure trip</span>
                       </div>
                     </div>
 
@@ -5679,8 +5990,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Users className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs font-black text-purple-950 block">Visit Family/ Friends</strong>
-                        <span className="text-[11px] text-purple-700/80 font-semibold leading-tight block">Meet family or friends</span>
+                        <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Visit Family/ Friends</strong>
+                        <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Meet family or friends</span>
                       </div>
                     </div>
 
@@ -5689,8 +6000,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <Calendar className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs font-black text-rose-950 block">Events</strong>
-                        <span className="text-[11px] text-rose-700/80 font-semibold leading-tight block">Attend events or meetings</span>
+                        <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Events</strong>
+                        <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Attend events or meetings</span>
                       </div>
                     </div>
 
@@ -5699,8 +6010,14 @@ All documents must be genuine, valid and meet official consular standards to avo
                         <ShieldCheck className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs font-black text-emerald-950 block">Short Term Stay</strong>
-                        <span className="text-[11px] text-emerald-700/80 font-semibold leading-tight block">Up to 90 days within 180 days</span>
+                        <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Short Term Stay</strong>
+                        <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
+                          {countryName.toLowerCase().includes('china')
+                            ? 'Up to 30 Days per Entry (as determined by consular officer)'
+                            : isSchengen
+                            ? 'Up to 90 days within 180 days'
+                            : (aiData?.validity_and_stay?.max_stay_per_entry || aiData?.stay_duration || 'Up to 30 Days per Entry')}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -5728,26 +6045,10 @@ All documents must be genuine, valid and meet official consular standards to avo
                       }))
                     : defaultPortalOverviewDocs;
 
-                  const defaultPortalOverviewSteps = [
-                    { title: 'Check Eligibility', desc: 'Ensure you meet all the requirements' },
-                    { title: 'Gather Documents', desc: 'Collect and verify all required documents' },
-                    { title: 'Fill Application', desc: 'Complete the application form accurately' },
-                    { title: 'Book Appointment', desc: 'Schedule an appointment at the visa center' },
-                    { title: 'Attend and Submit', desc: 'Attend the appointment and submit documents' },
-                    { title: 'Track Application', desc: 'Track your application status online' },
-                  ];
-
-                  const overviewStepsList = (aiData?.how_to_apply && Array.isArray(aiData.how_to_apply) && aiData.how_to_apply.length >= 4)
-                    ? aiData.how_to_apply.slice(0, 6).map((step: any, idx: number) => {
-                        const raw = typeof step === 'string' ? step : (step.title || step.step || defaultPortalOverviewSteps[idx % 6].title);
-                        const clean = raw
-                          .replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '')
-                          .replace(/^\[?step\s*\d+\]?\s*/i, '')
-                          .trim();
-                        const title = clean.split(':')[0].trim() || clean;
-                        return { title, desc: defaultPortalOverviewSteps[idx % 6]?.desc || 'Follow official guidelines' };
-                      })
-                    : defaultPortalOverviewSteps;
+                  const overviewStepsList = dynamicSteps.slice(0, 6).map(s => ({
+                    title: s.title,
+                    desc: s.desc
+                  }));
 
                   return (
                     <>
@@ -5755,16 +6056,16 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <div id="documents-section" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                           <div>
-                            <h3 className="text-lg font-bold text-slate-950 tracking-tight">Documents Required</h3>
-                            <p className="text-xs text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
+                            <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Documents Required</h3>
+                            <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
                           </div>
                           <button
                             type="button"
-                            onClick={handleDownloadChecklist}
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer self-start sm:self-auto"
+                            onClick={handleDownloadAndSyncChecklist}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-[12px] sm:text-[13px] font-medium text-indigo-700 transition-all cursor-pointer shadow-2xs self-start sm:self-auto"
                           >
                             <Download className="w-3.5 h-3.5" />
-                            <span>Download Checklist</span>
+                            <span>Download &amp; Sync Checklist (PDF)</span>
                           </button>
                         </div>
 
@@ -5776,18 +6077,18 @@ All documents must be genuine, valid and meet official consular standards to avo
                               <div
                                 key={idx}
                                 onClick={() => toggleDocReady(doc.title)}
-                                className={`flex items-start gap-3.5 p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                                className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer ${
                                   isReady
                                     ? 'bg-emerald-50/40 border-emerald-300 shadow-2xs'
                                     : 'bg-white border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80'
                                 }`}
                               >
-                                <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-bold text-sm shadow-2xs`}>
+                                <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-semibold text-sm shadow-2xs`}>
                                   {doc.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <h4 className="text-xs font-bold text-slate-950 leading-snug truncate">{doc.title}</h4>
-                                  <p className="text-[11px] font-normal text-slate-500 mt-0.5 leading-relaxed line-clamp-2">{doc.desc}</p>
+                                  <h4 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug truncate">{doc.title}</h4>
+                                  <p className="text-[14px] sm:text-[15px] font-normal text-slate-600 mt-1 leading-relaxed line-clamp-2">{doc.desc}</p>
                                 </div>
                                 <div className="shrink-0 mt-0.5">
                                   <span className={`w-5 h-5 rounded-lg flex items-center justify-center border text-xs transition-colors ${
@@ -5807,7 +6108,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <button
                             type="button"
                             onClick={() => setSidebarTab('documents')}
-                            className="px-6 py-2.5 rounded-xl border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50/50 text-xs font-bold shadow-2xs transition-all cursor-pointer"
+                            className="px-6 py-2.5 rounded-xl border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50/50 text-[13px] sm:text-[14px] font-medium shadow-2xs transition-all cursor-pointer"
                           >
                             View Full Document Checklist
                           </button>
@@ -5817,8 +6118,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                       {/* 3. Steps to Follow Card */}
                       <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-6 text-left">
                         <div>
-                          <h3 className="text-lg font-bold text-slate-950 tracking-tight">Steps to Follow</h3>
-                          <p className="text-xs text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
+                          <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Steps to Follow</h3>
+                          <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
                         </div>
 
                         <div className="relative pt-3 pb-2">
@@ -5828,11 +6129,11 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-4 relative z-10">
                             {overviewStepsList.map((step: any, idx: number) => (
                               <div key={idx} className="flex flex-col items-center text-center px-1">
-                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-bold shadow-xs ring-4 ring-white z-10 shrink-0">
+                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-semibold shadow-xs ring-4 ring-white z-10 shrink-0">
                                   {idx + 1}
                                 </div>
-                                <h4 className="text-xs font-bold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
-                                <p className="text-[10px] text-slate-400 font-medium mt-1 leading-tight">{step.desc}</p>
+                                <h4 className="text-[14px] sm:text-[15px] font-semibold text-slate-900 mt-2.5 leading-snug">{step.title}</h4>
+                                <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-1 leading-normal">{step.desc}</p>
                               </div>
                             ))}
                           </div>
@@ -5852,10 +6153,10 @@ All documents must be genuine, valid and meet official consular standards to avo
                 
                 {/* Header Title & Description */}
                 <div className="space-y-1 text-left">
-                  <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+                  <h1 className="text-[22px] sm:text-[24px] lg:text-[28px] font-semibold text-slate-900 tracking-tight leading-tight">
                     Documents Required
                   </h1>
-                  <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                  <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
                     Upload and verify all documents as per official requirements of {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
                   </p>
                 </div>
@@ -5863,16 +6164,16 @@ All documents must be genuine, valid and meet official consular standards to avo
                 {/* Mobile 3 Metric Cards (Matching media_1788533524572.png) */}
                 <div className="grid grid-cols-3 gap-2 md:hidden text-center">
                   <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Total</span>
-                    <strong className="text-base font-black text-slate-950 block mt-0.5">{totalDocsCount}</strong>
+                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Total</span>
+                    <strong className="text-[18px] font-semibold text-slate-900 block mt-0.5">{totalDocsCount}</strong>
                   </div>
                   <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Completed</span>
-                    <strong className="text-base font-black text-emerald-700 block mt-0.5">{completedDocsCount}</strong>
+                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Completed</span>
+                    <strong className="text-[18px] font-semibold text-emerald-700 block mt-0.5">{completedDocsCount}</strong>
                   </div>
                   <div className="bg-white rounded-2xl border border-slate-100 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Pending</span>
-                    <strong className="text-base font-black text-amber-600 block mt-0.5">{notStartedDocsCount + pendingDocsCount}</strong>
+                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Pending</span>
+                    <strong className="text-[18px] font-semibold text-amber-600 block mt-0.5">{notStartedDocsCount + pendingDocsCount}</strong>
                   </div>
                 </div>
 
@@ -5884,8 +6185,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Total</span>
-                      <strong className="text-lg font-black text-slate-950">{totalDocsCount}</strong>
+                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Total</span>
+                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{totalDocsCount}</strong>
                     </div>
                   </div>
 
@@ -5895,8 +6196,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <Shield className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Mandatory</span>
-                      <strong className="text-lg font-black text-slate-950">{mandatoryDocsCount}</strong>
+                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Mandatory</span>
+                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{mandatoryDocsCount}</strong>
                     </div>
                   </div>
 
@@ -5906,8 +6207,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <CheckCircle2 className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Completed</span>
-                      <strong className="text-lg font-black text-slate-950">{completedDocsCount}</strong>
+                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Completed</span>
+                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{completedDocsCount}</strong>
                     </div>
                   </div>
 
@@ -5917,14 +6218,14 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Pending</span>
-                      <strong className="text-lg font-black text-slate-950">{notStartedDocsCount + pendingDocsCount}</strong>
+                      <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Pending</span>
+                      <strong className="text-[18px] sm:text-[20px] font-semibold text-slate-900">{notStartedDocsCount + pendingDocsCount}</strong>
                     </div>
                   </div>
                 </div>
 
                 {/* Soft Purple Notice Alert */}
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-3 text-xs text-purple-950 font-medium text-left shadow-2xs">
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-3 text-[14px] sm:text-[15px] text-purple-950 font-normal text-left shadow-2xs">
                   <Info className="w-4 h-4 text-purple-600 shrink-0" />
                   <span>
                     All documents must be genuine, valid and meet official consular standards to avoid rejection.
@@ -5941,7 +6242,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         value={portalDocSearch}
                         onChange={(e) => setPortalDocSearch(e.target.value)}
                         placeholder="Search documents..."
-                        className="w-full pl-9 pr-4 py-2 sm:py-2.5 rounded-xl bg-white border border-slate-200/90 text-xs font-semibold text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-900 shadow-2xs"
+                        className="w-full pl-9 pr-4 py-2 sm:py-2.5 rounded-xl bg-white border border-slate-200/90 text-[13px] sm:text-[14px] font-normal text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-900 shadow-2xs"
                       />
                     </div>
                     <button
@@ -5963,9 +6264,9 @@ All documents must be genuine, valid and meet official consular standards to avo
                         key={flt.id}
                         type="button"
                         onClick={() => setPortalDocFilter(flt.id as any)}
-                        className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all cursor-pointer whitespace-nowrap ${
                           portalDocFilter === flt.id
-                            ? 'bg-slate-950 text-white font-bold shadow-xs'
+                            ? 'bg-slate-950 text-white font-semibold shadow-xs'
                             : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                         }`}
                       >
@@ -5998,20 +6299,20 @@ All documents must be genuine, valid and meet official consular standards to avo
                               {doc.icon}
                             </div>
                             <div className="min-w-0">
-                              <strong className="text-xs sm:text-sm font-bold text-slate-950 block truncate">{doc.name}</strong>
+                              <strong className="text-[15px] font-semibold text-slate-900 block truncate">{doc.name}</strong>
                               <div className="flex items-center gap-1.5 mt-0.5">
-                                <span className={`text-[11px] font-bold ${doc.mandatory ? 'text-teal-600' : 'text-slate-500'}`}>
+                                <span className={`text-[12px] font-medium ${doc.mandatory ? 'text-teal-700' : 'text-slate-500'}`}>
                                   {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                 </span>
                                 {uploaded?.validDate ? (
                                   <>
                                     <span className="text-slate-300">•</span>
-                                    <span className="text-[10px] font-medium text-slate-500 truncate">{uploaded.validDate}</span>
+                                    <span className="text-[12px] font-normal text-slate-500 truncate">{uploaded.validDate}</span>
                                   </>
                                 ) : (
                                   <>
                                     <span className="text-slate-300">•</span>
-                                    <span className="text-[10px] font-medium text-slate-400 truncate max-w-[120px]">{doc.conditions[0] || 'Required'}</span>
+                                    <span className="text-[12px] font-normal text-slate-500 truncate max-w-[120px]">{doc.conditions[0] || 'Required'}</span>
                                   </>
                                 )}
                               </div>
@@ -6020,17 +6321,17 @@ All documents must be genuine, valid and meet official consular standards to avo
 
                           <div className="shrink-0 flex items-center gap-1.5">
                             {isCompleted ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[12px] font-medium">
                                 <Check className="w-3 h-3 stroke-[3]" />
                                 <span>Completed</span>
                               </span>
                             ) : isInProgress ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-bold">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[12px] font-medium">
                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
                                 <span>In Progress</span>
                               </span>
                             ) : (
-                              <label className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold cursor-pointer hover:bg-amber-100 transition-colors">
+                              <label className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[12px] font-medium cursor-pointer hover:bg-amber-100 transition-colors">
                                 <Clock className="w-3 h-3" />
                                 <span>Pending</span>
                                 <input
@@ -6051,7 +6352,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
                           <th className="py-3 px-4 text-left">Document Name</th>
                           <th className="py-3 px-4 text-left">Validity &amp; Conditions</th>
                           <th className="py-3 px-4 text-left">Your Document</th>
@@ -6059,7 +6360,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                           <th className="py-3 px-4 text-right">Action</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 text-xs font-medium">
+                      <tbody className="divide-y divide-slate-100">
                         {portalDocItems
                         .filter(item => {
                           if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
@@ -6079,9 +6380,9 @@ All documents must be genuine, valid and meet official consular standards to avo
                                     {doc.icon}
                                   </div>
                                   <div>
-                                    <strong className="text-slate-950 font-bold block">{doc.name}</strong>
-                                    <span className={`text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-                                      doc.mandatory ? 'text-rose-600 bg-rose-50' : 'text-slate-500 bg-slate-100'
+                                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 block leading-snug">{doc.name}</strong>
+                                    <span className={`inline-block mt-1 text-[12px] font-medium uppercase px-2 py-0.5 rounded-md ${
+                                      doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
                                     }`}>
                                       {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                     </span>
@@ -6089,12 +6390,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                                 </div>
                               </td>
 
-                              {/* Validity & Conditions */}
-                              <td className="py-4 px-4 align-top text-slate-600">
-                                <ul className="space-y-1">
+                              {/* Validity & Conditions - Important Document Instructions (14-15px / 400) */}
+                              <td className="py-4 px-4 align-top">
+                                <ul className="space-y-1.5">
                                   {doc.conditions.map((cond, cIdx) => (
-                                    <li key={cIdx} className="flex items-start gap-1.5 leading-snug text-xs">
-                                      <span className="text-slate-400">•</span>
+                                    <li key={cIdx} className="flex items-start gap-1.5 text-[14px] sm:text-[15px] font-normal text-slate-700 leading-relaxed">
+                                      <span className="text-slate-400 select-none">•</span>
                                       <span>{cond}</span>
                                     </li>
                                   ))}
@@ -6105,7 +6406,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                               <td className="py-4 px-4 align-top">
                                 {uploaded ? (
                                   <div className="space-y-1">
-                                    <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-black ${
+                                    <span className={`inline-block px-2 py-0.5 rounded-md text-[12px] font-medium ${
                                       uploaded.status === 'completed'
                                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                                         : uploaded.status === 'pending'
@@ -6115,20 +6416,20 @@ All documents must be genuine, valid and meet official consular standards to avo
                                       {uploaded.status === 'completed' ? (uploaded.validDate ? 'Valid' : 'Uploaded') : uploaded.status === 'pending' ? 'Expired' : 'Uploaded'}
                                     </span>
                                     {uploaded.validDate && (
-                                      <span className="block text-[10px] font-bold text-slate-500">{uploaded.validDate}</span>
+                                      <span className="block text-[12px] sm:text-[13px] font-normal text-slate-600">{uploaded.validDate}</span>
                                     )}
                                     {uploaded.docNumber && (
-                                      <span className="block text-[10px] font-bold text-slate-400">{uploaded.docNumber}</span>
+                                      <span className="block text-[12px] sm:text-[13px] font-normal text-slate-500">{uploaded.docNumber}</span>
                                     )}
-                                    <span className="block text-[11px] font-semibold text-slate-700 truncate max-w-[140px]">
+                                    <span className="block text-[13px] font-medium text-slate-800 truncate max-w-[150px]">
                                       {uploaded.fileName}
                                     </span>
                                   </div>
                                 ) : (
                                   <div className="space-y-1.5">
-                                    <span className="text-slate-400 text-xs font-semibold block">Not Uploaded</span>
-                                    <label className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-[11px] font-bold text-slate-700 cursor-pointer transition-colors shadow-2xs">
-                                      <Upload className="w-3 h-3 text-slate-500" />
+                                    <span className="text-slate-500 text-[13px] font-normal block">Not Uploaded</span>
+                                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-[12px] sm:text-[13px] font-semibold text-slate-700 cursor-pointer transition-colors shadow-2xs">
+                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
                                       <span>Upload Document</span>
                                       <input
                                         type="file"
@@ -6143,22 +6444,22 @@ All documents must be genuine, valid and meet official consular standards to avo
                               {/* Status */}
                               <td className="py-4 px-4 align-top">
                                 {uploaded?.status === 'completed' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-emerald-700">
                                     <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                                     <span>Completed</span>
                                   </span>
                                 ) : uploaded?.status === 'in_progress' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700">
+                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-amber-700">
                                     <Clock className="w-4 h-4" />
                                     <span>In Progress</span>
                                   </span>
                                 ) : uploaded?.status === 'pending' ? (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600">
+                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-rose-600">
                                     <AlertCircle className="w-4 h-4" />
                                     <span>Pending</span>
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400">
+                                  <span className="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-medium text-slate-400">
                                     <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-300" />
                                     <span>Not Started</span>
                                   </span>
@@ -6173,11 +6474,11 @@ All documents must be genuine, valid and meet official consular standards to avo
                                       <button
                                         type="button"
                                         onClick={() => setInspectDocItem({ ...doc, ...uploaded })}
-                                        className="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-bold text-slate-700 cursor-pointer shadow-2xs"
+                                        className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-[13px] font-semibold text-slate-700 cursor-pointer shadow-2xs"
                                       >
                                         View
                                       </button>
-                                      <label className="px-3 py-1 rounded-lg border border-teal-200 text-teal-700 hover:bg-teal-50 text-xs font-bold cursor-pointer shadow-2xs">
+                                      <label className="px-3 py-1.5 rounded-xl border border-teal-200 text-teal-700 hover:bg-teal-50 text-[13px] font-semibold cursor-pointer shadow-2xs">
                                         Update
                                         <input
                                           type="file"
@@ -6187,7 +6488,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                                       </label>
                                     </>
                                   ) : (
-                                    <label className="px-3 py-1 rounded-lg bg-slate-900 hover:bg-black text-white text-xs font-bold cursor-pointer shadow-2xs">
+                                    <label className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[13px] font-semibold cursor-pointer shadow-2xs">
                                       Upload
                                       <input
                                         type="file"
@@ -6215,11 +6516,11 @@ All documents must be genuine, valid and meet official consular standards to avo
 
 
             {/* TAB: CONDITIONS & REQUIREMENTS */}
-                        {sidebarTab === 'requirements' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+            {sidebarTab === 'requirements' && (
+              <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-5 sm:space-y-6 text-left animate-fade-up">
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Conditions &amp; Requirements</h2>
-                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                  <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Conditions &amp; Requirements</h2>
+                  <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-1">
                     Official statutory entry rules, financial benchmarks, and compliance mandates for {countryName}.
                   </p>
                 </div>
@@ -6232,20 +6533,20 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
                         <Clock className="w-4 h-4" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-950">Entry &amp; Stay Conditions</h3>
+                      <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Entry &amp; Stay Conditions</h3>
                     </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                    <ul className="space-y-2.5">
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Stay Duration:</strong> {aiData?.processing_and_timing?.max_extension || 'Maximum authorized stay determined at port of entry (typically up to 180 days per visit).'}</span>
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {countryName.toLowerCase().includes('china') ? 'Up to 30 Days per entry (Extensions must be filed at the local Public Security Bureau Exit-Entry Administration in China before expiry).' : (aiData?.processing_and_timing?.max_extension || aiData?.validity_and_stay?.max_stay_per_entry || 'Maximum authorized stay determined at port of entry.')}</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">No Local Employment:</strong> Paid local employment or commercial work is strictly prohibited on visitor visa status.</span>
                       </li>
                     </ul>
                   </div>
@@ -6256,29 +6557,29 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
                         <CreditCard className="w-4 h-4" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-950">Financial Solvency Benchmarks</h3>
+                      <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Financial Solvency Benchmarks</h3>
                     </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                    <ul className="space-y-2.5">
                       {aiData?.financial_proofs && aiData.financial_proofs.length > 0 ? (
                         aiData.financial_proofs.slice(0, 3).map((fp: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
+                          <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">{fp.type}:</strong> {fp.minimum_balance_or_amount || fp.notes || 'Demonstrate self-sufficient liquid funds covering the trip.'}</span>
                           </li>
                         ))
                       ) : (
                         <>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Bank Statements:</strong> Stamped official statements for last 3 to 6 months showing steady closing balance.</span>
                           </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Income Verification:</strong> Last 2–3 years Income Tax Returns (ITR) / Form 16 and monthly salary slips.</span>
                           </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Sponsorship (if applicable):</strong> Formal Affidavit of Support with sponsor's tax returns and income verification.</span>
                           </li>
                         </>
                       )}
@@ -6291,20 +6592,20 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
                         <Briefcase className="w-4 h-4" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-950">Home Ties &amp; Return Intent</h3>
+                      <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Home Ties &amp; Return Intent</h3>
                     </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
+                    <ul className="space-y-2.5">
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">Employment Proof:</strong> Employer introduction letter with leave clearance (NOC) or business registration documents.</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Non-Immigrant Intent:</strong> Applicant must demonstrate strong economic and residential roots to overcome Section 214(b) presumption.</span>
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">Return Intent:</strong> {isUSA ? 'Applicant must demonstrate strong economic and residential roots to overcome INA Section 214(b) presumption.' : 'Applicant must demonstrate genuine tourist intent and stable socio-economic ties to India ensuring timely departure.'}</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-slate-900 font-black">•</span>
-                        <span><strong>Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
+                      <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                        <span className="text-slate-400 select-none">•</span>
+                        <span><strong className="font-semibold text-slate-900">Family &amp; Property Ties:</strong> Family dependents and immovable property documentation establishing permanent home ties.</span>
                       </li>
                     </ul>
                   </div>
@@ -6315,29 +6616,29 @@ All documents must be genuine, valid and meet official consular standards to avo
                       <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
                         <ShieldCheck className="w-4 h-4" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-950">Biometrics &amp; Security Mandates</h3>
+                      <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Biometrics &amp; Security Mandates</h3>
                     </div>
-                    <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                    <ul className="space-y-2.5">
                       {aiData?.other_requirements && aiData.other_requirements.length > 0 ? (
                         aiData.other_requirements.slice(0, 3).map((orq: any, i: number) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>{orq.category}:</strong> {orq.details}</span>
+                          <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">{orq.category}:</strong> {orq.details}</span>
                           </li>
                         ))
                       ) : (
                         <>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">VAC Biometrics:</strong> Mandatory in-person digital 10-fingerprint scan and compliant biometric photograph.</span>
                           </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Consular Interview:</strong> Attend scheduled in-person interview with printed DS-160 confirmation barcode.</span>
                           </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-slate-900 font-black">•</span>
-                            <span><strong>Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Clearance:</strong> Clear immigration record with zero unlawful presence or visa violations.</span>
                           </li>
                         </>
                       )}
@@ -6346,7 +6647,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                 </div>
 
                 {/* Statutory Compliance Footer Banner */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3 text-xs text-slate-600 font-medium">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3 text-[13px] sm:text-[14px] text-slate-600 font-normal">
                   <Lock className="w-4 h-4 text-slate-700 shrink-0" />
                   <span>
                     Adjudication is subject to the sole discretion of the consular visa officer. Ensuring every condition is met minimizes administrative processing delays.
@@ -6358,20 +6659,20 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* TAB: STEPS TO FOLLOW (MATCHING EXACT PHOTO media_1788488551302.png) */}
 
             {/* TAB: STEPS TO FOLLOW */}
-                        {sidebarTab === 'steps' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+            {sidebarTab === 'steps' && (
+              <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-4 sm:space-y-6 text-left animate-fade-up">
                 {/* Header with Track Progress button */}
-                <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100">
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Steps to Follow</h2>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200/80">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Steps to Follow</h2>
+                    <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5 sm:mt-1 leading-snug">
                       Follow these simple steps to complete your {countryName} {activePurposeTab === 'study' ? 'Student' : activePurposeTab === 'work' ? 'Work' : 'Tourist'} Visa application successfully.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setSidebarTab('track')}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50/60 text-emerald-800 text-xs font-bold hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50/70 text-emerald-800 text-[12px] sm:text-[13px] font-semibold hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs shrink-0"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Track Progress</span>
@@ -6379,91 +6680,91 @@ All documents must be genuine, valid and meet official consular standards to avo
                 </div>
 
                 {/* Top Milestone Card (Matching media_1788533504535.png) */}
-                <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-3.5">
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs space-y-3">
                   {/* 4 Status Boxes Arranged Horizontally in a Single Row */}
-                  <div className="grid grid-cols-4 gap-2 sm:gap-3">
-                    <div className="px-2 sm:px-3 py-2.5 rounded-2xl bg-white border border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left min-w-0">
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-3">
+                    <div className="px-1.5 sm:px-3 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-50/70 sm:bg-white border border-slate-100/90 sm:border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsCompleted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Completed</span>
+                        <strong className="text-[14px] sm:text-[16px] font-semibold text-slate-900 block leading-none">{stepsCompleted}</strong>
+                        <span className="text-[12px] font-medium text-slate-500 block truncate mt-0.5">Completed</span>
                       </div>
                     </div>
 
-                    <div className="px-2 sm:px-3 py-2.5 rounded-2xl bg-white border border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left min-w-0">
+                    <div className="px-1.5 sm:px-3 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-50/70 sm:bg-white border border-slate-100/90 sm:border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
                         <RotateCw className="w-3.5 h-3.5" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsInProgress}</strong>
-                        <span className="text-[10px] font-semibold text-slate-500 block truncate mt-0.5">In Progress</span>
+                        <strong className="text-[14px] sm:text-[16px] font-semibold text-slate-900 block leading-none">{stepsInProgress}</strong>
+                        <span className="text-[12px] font-medium text-slate-500 block truncate mt-0.5">In Progress</span>
                       </div>
                     </div>
 
-                    <div className="px-2 sm:px-3 py-2.5 rounded-2xl bg-white border border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left min-w-0">
+                    <div className="px-1.5 sm:px-3 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-50/70 sm:bg-white border border-slate-100/90 sm:border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
                         <Star className="w-3.5 h-3.5" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsPending}</strong>
-                        <span className="text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Pending</span>
+                        <strong className="text-[14px] sm:text-[16px] font-semibold text-slate-900 block leading-none">{stepsPending}</strong>
+                        <span className="text-[12px] font-medium text-slate-500 block truncate mt-0.5">Pending</span>
                       </div>
                     </div>
 
-                    <div className="px-2 sm:px-3 py-2.5 rounded-2xl bg-white border border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left min-w-0">
+                    <div className="px-1.5 sm:px-3 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-slate-50/70 sm:bg-white border border-slate-100/90 sm:border-slate-100 shadow-2xs flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 text-center sm:text-left min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
                         <Circle className="w-3.5 h-3.5" />
                       </div>
                       <div className="min-w-0">
-                        <strong className="text-xs sm:text-sm font-black text-slate-900 block leading-none">{stepsNotStarted}</strong>
-                        <span className="text-[10px] font-semibold text-slate-500 block truncate mt-0.5">Not Started</span>
+                        <strong className="text-[14px] sm:text-[16px] font-semibold text-slate-900 block leading-none">{stepsNotStarted}</strong>
+                        <span className="text-[12px] font-medium text-slate-500 block truncate mt-0.5">Not Started</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-2 pt-1 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                  <div className="flex items-center justify-center gap-2 pt-1 border-t border-slate-100 text-[13px] font-normal text-slate-600">
                     <span>Est. Total Time:</span>
-                    <strong className="text-slate-950 font-black">{getResolvedProcessingTime()}</strong>
+                    <strong className="text-slate-900 font-semibold">{getResolvedProcessingTime()}</strong>
                     <span className="text-slate-300">•</span>
                     <span>{dynamicSteps.length} Total Steps</span>
                   </div>
                 </div>
 
                 {/* Vertical Timeline of 8 Steps (Connecting vertical line on left) */}
-                <div className="relative pl-8 space-y-3 pt-2">
-                  <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-slate-200" />
+                <div className="relative pl-7 sm:pl-8 space-y-2.5 sm:space-y-3 pt-1">
+                  <div className="absolute left-[13px] sm:left-[15px] top-5 bottom-5 w-0.5 bg-slate-200" />
 
                   {dynamicSteps.map((s) => (
                     <div
                       key={s.step}
                       onClick={() => toggleStepChecked(s.step)}
-                      className="relative bg-white rounded-2xl border border-slate-100 p-3.5 sm:p-4 shadow-2xs flex items-center justify-between gap-3 hover:border-slate-300 transition-all cursor-pointer active:scale-[0.99]"
+                      className="relative bg-white rounded-2xl border border-slate-200/80 p-3 sm:p-4 shadow-xs flex items-center justify-between gap-2.5 sm:gap-3 hover:border-slate-300 transition-all cursor-pointer active:scale-[0.99]"
                     >
                       {/* Left Numbered Circle on Timeline */}
-                      <span className={`absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full ${s.numBg} text-xs font-black flex items-center justify-center shadow-xs ring-4 ring-white z-10`}>
+                      <span className={`absolute -left-7 sm:-left-8 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full ${s.numBg} text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-white z-10`}>
                         {s.step}
                       </span>
 
                       {/* Squircle Icon */}
-                      <div className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
+                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl ${s.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
                         {s.icon}
                       </div>
 
                       {/* Step Details */}
                       <div className="flex-1 min-w-0 text-left">
-                        <strong className="text-xs sm:text-sm font-bold text-slate-950 block truncate">
+                        <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 block truncate">
                           {s.title}
                         </strong>
-                        <p className="text-[11px] text-slate-500 font-normal leading-relaxed mt-0.5 line-clamp-2">
+                        <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal leading-relaxed mt-0.5 line-clamp-2">
                           {s.desc}
                         </p>
                       </div>
 
                       {/* Right Badge & Chevron */}
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className={`inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                        <span className={`inline-block text-[12px] font-medium px-2.5 py-0.5 rounded-full ${
                           s.status === 'completed'
                             ? 'bg-emerald-50 text-emerald-700'
                             : s.status === 'in_progress'
@@ -6474,7 +6775,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                         }`}>
                           {s.statusLabel}
                         </span>
-                        <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                        <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -6486,8 +6787,8 @@ All documents must be genuine, valid and meet official consular standards to avo
                     <Sparkles className="w-4 h-4 text-emerald-700" />
                   </div>
                   <div className="space-y-0.5 text-left">
-                    <strong className="text-xs sm:text-sm font-black text-slate-900 block">Important Tip</strong>
-                    <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                    <strong className="text-[15px] font-semibold text-slate-900 block">Important Tip</strong>
+                    <p className="text-[14px] text-slate-700 font-normal leading-relaxed">
                       Complete each step carefully and on time to avoid delays or rejection of your application.
                     </p>
                   </div>
@@ -6498,41 +6799,41 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* TAB: FEES & PAYMENT (LIVE AI / CONSULAR VERIFIED) */}
 
             {/* TAB: FEES & PAYMENT */}
-                        {sidebarTab === 'fees' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-6 text-left animate-fade-up">
+            {sidebarTab === 'fees' && (
+              <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-5 sm:space-y-6 text-left animate-fade-up">
                 <div>
-                  <h2 className="text-xl font-black text-slate-950">Fees &amp; Payment Details</h2>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">
+                  <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Fees &amp; Payment Details</h2>
+                  <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5">
                     Official statutory fees verified from {aiData?.official_source_name || ('the Embassy of ' + countryName)}.
                   </p>
                 </div>
 
                 <div className="max-w-xl space-y-3">
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">Consular Visa Fee</span>
-                    <strong className="text-slate-950 text-sm">
+                  <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
+                    <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">Consular Visa Fee</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
                       {aiData?.costs?.visa_fee || (countryName.toLowerCase().includes('united states') ? '185 USD' : isSchengen ? '€90 EUR' : 'Statutory Fee')}
                     </strong>
                   </div>
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold">
-                    <span className="text-slate-600">VAC Biometrics &amp; Service Fee</span>
-                    <strong className="text-slate-950 text-sm">
+                  <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
+                    <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">VAC Biometrics &amp; Service Fee</span>
+                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
                       {aiData?.costs?.service_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (No Appointment Needed)' : countryName.toLowerCase().includes('united states') ? '0 USD (Included)' : isSchengen ? '€28 EUR' : 'Official Service Fee')}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
-                    <span className="font-black text-slate-950 text-sm">Total Official Fee</span>
-                    <strong className="text-xl font-black text-teal-700">
+                    <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Total Official Fee</span>
+                    <strong className="text-[20px] sm:text-[22px] font-semibold text-teal-700">
                       {aiData?.costs?.total_fee || (countryName.toLowerCase().includes('mauritius') ? '₹0 (Free on Arrival)' : countryName.toLowerCase().includes('united states') ? '185 USD Total' : isSchengen ? '€118 EUR' : 'Official Total')}
                     </strong>
                   </div>
                 </div>
                 {aiData?.costs?.notes && (
-                  <p className="text-xs text-slate-600 font-medium p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
                     ℹ️ {aiData.costs.notes}
                   </p>
                 )}
-                <p className="text-[11px] text-slate-400 font-semibold">
+                <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal">
                   Fees are non-refundable and subject to official consular exchange rates.
                 </p>
               </div>
@@ -6541,25 +6842,25 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* TAB: PROCESSING TIME (LIVE AI / CONSULAR VERIFIED) */}
 
             {/* TAB: PROCESSING TIME */}
-                        {sidebarTab === 'processing' && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950">Processing Time &amp; Turnaround</h2>
+            {sidebarTab === 'processing' && (
+              <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-4 sm:space-y-5 text-left animate-fade-up">
+                <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Processing Time &amp; Turnaround</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Official Decision Time</span>
-                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
+                    <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
                       {aiData?.processing_and_timing?.decision_time || (countryName.toLowerCase().includes('mauritius') ? 'Instant on Arrival (0 Days)' : isSchengen ? '15 – 20 Days' : '5 – 10 Days')}
                     </h3>
-                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
+                    <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
                       {aiData?.processing_and_timing?.center_notes || (countryName.toLowerCase().includes('mauritius') ? 'Granted directly upon landing at SSR International Airport (Mauritius).' : 'Calculated from the date biometric submission is completed at the consular center.')}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Recommended Filing Window</span>
-                    <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                    <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Recommended Filing Window</span>
+                    <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
                       {aiData?.processing_and_timing?.apply_window || (countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
                     </h3>
-                    <p className="text-xs text-slate-500 font-normal leading-relaxed pt-1">
+                    <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
                       {aiData?.processing_and_timing?.max_extension || (countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
                     </p>
                   </div>
@@ -6570,19 +6871,19 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* TAB: TRACK APPLICATION */}
 
             {/* TAB: RESOURCES / TRACK */}
-                        {(sidebarTab === 'track' || sidebarTab === 'resources') && (
-              <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xs space-y-5 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950">Track Your Application</h2>
-                <p className="text-xs text-slate-500 font-medium">
+            {(sidebarTab === 'track' || sidebarTab === 'resources') && (
+              <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-4 sm:space-y-5 text-left animate-fade-up">
+                <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Track Your Application</h2>
+                <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal">
                   Enter your TravlTik tracking reference or consular passport number to view live status.
                 </p>
                 <div className="flex gap-2 max-w-md">
                   <input
                     type="text"
                     placeholder="e.g. TRK-US-89241"
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold outline-none focus:border-slate-900"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] sm:text-[14px] font-normal outline-none focus:border-slate-900"
                   />
-                  <button className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black shadow-xs cursor-pointer">
+                  <button className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[13px] sm:text-[14px] font-semibold shadow-xs cursor-pointer">
                     Track
                   </button>
                 </div>
@@ -6594,7 +6895,7 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* TAB: FAQ */}
                         {sidebarTab === 'faq' && (
               <div className="space-y-4 text-left animate-fade-up">
-                <h2 className="text-xl font-black text-slate-950 px-1">Frequently Asked Questions</h2>
+                <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 px-1 tracking-tight">Frequently Asked Questions</h2>
                 <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
                   {faqs.map((faq, idx) => {
                     const isOpen = Boolean(openFaqs[idx]);
@@ -6605,13 +6906,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                           onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
                           className="w-full px-6 py-4.5 sm:px-8 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
                         >
-                          <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                          <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
                             {faq.question}
                           </span>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
                         </button>
                         {isOpen && (
-                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed animate-fadeIn">
+                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed animate-fadeIn">
                             {faq.answer}
                           </div>
                         )}
@@ -6630,7 +6931,7 @@ All documents must be genuine, valid and meet official consular standards to avo
             
             {/* Card 1: Visa Readiness */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4 text-left">
-              <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Visa Readiness</h3>
+              <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Visa Readiness</h3>
               
               <div className="flex flex-col items-center justify-center py-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
@@ -6653,44 +6954,44 @@ All documents must be genuine, valid and meet official consular standards to avo
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-xl font-black text-slate-950">{readinessPercent || 72}%</span>
+                    <span className="text-xl font-semibold text-slate-950">{readinessPercent || 72}%</span>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-slate-700 mt-2">Good Progress</span>
+                <span className="text-[13px] font-semibold text-slate-700 mt-2">Good Progress</span>
               </div>
 
               {/* Status Breakdown Rows */}
-              <div className="space-y-2 text-xs font-semibold pt-1 border-t border-slate-100">
+              <div className="space-y-2 text-[13px] sm:text-[14px] font-medium pt-1 border-t border-slate-100">
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-emerald-600 font-bold">
+                  <span className="flex items-center gap-1.5 text-emerald-600 font-medium">
                     <Check className="w-3.5 h-3.5 stroke-[3]" /> Completed
                   </span>
-                  <strong className="text-slate-950 font-black">{completedDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{completedDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-amber-600 font-bold">
+                  <span className="flex items-center gap-1.5 text-amber-600 font-medium">
                     <Clock className="w-3.5 h-3.5" /> In Progress
                   </span>
-                  <strong className="text-slate-950 font-black">{inProgressDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{inProgressDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-rose-600 font-bold">
+                  <span className="flex items-center gap-1.5 text-rose-600 font-medium">
                     <AlertCircle className="w-3.5 h-3.5" /> Pending
                   </span>
-                  <strong className="text-slate-950 font-black">{pendingDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{pendingDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-slate-400 font-bold">
+                  <span className="flex items-center gap-1.5 text-slate-400 font-medium">
                     <Circle className="w-3.5 h-3.5 text-slate-300" /> Not Started
                   </span>
-                  <strong className="text-slate-950 font-black">{notStartedDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{notStartedDocsCount}</strong>
                 </div>
               </div>
 
               <button
                 type="button"
                 onClick={() => setSidebarTab('documents')}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-sm hover:shadow-md text-xs font-bold transition-all active:scale-[0.98] cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-sm hover:shadow-md text-[13px] font-semibold transition-all active:scale-[0.98] cursor-pointer"
               >
                 Continue Checklist
               </button>
@@ -6698,24 +6999,24 @@ All documents must be genuine, valid and meet official consular standards to avo
 
             {/* Card 2: Fees Details */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-3.5 text-left">
-              <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Fees Details</h3>
+              <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Fees Details</h3>
 
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center justify-between text-slate-600 font-medium">
+              <div className="space-y-2 text-[13px] sm:text-[14px]">
+                <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Adult)</span>
-                  <strong className="text-slate-950 font-bold">
+                  <strong className="text-slate-900 font-semibold">
                     {isSchengen ? '€80' : (aiData?.costs?.visa_fee || '$185 USD')}
                   </strong>
                 </div>
-                <div className="flex items-center justify-between text-slate-600 font-medium">
+                <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Child 6-12 yrs)</span>
-                  <strong className="text-slate-950 font-bold">
+                  <strong className="text-slate-900 font-semibold">
                     {isSchengen ? '€40' : (aiData?.costs?.child_fee || '$95 USD')}
                   </strong>
                 </div>
-                <div className="flex items-center justify-between text-slate-600 font-medium">
+                <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Service Fee</span>
-                  <strong className="text-slate-950 font-bold">
+                  <strong className="text-slate-900 font-semibold">
                     {isSchengen ? '€25' : (aiData?.costs?.service_fee || '$25 USD')}
                   </strong>
                 </div>
@@ -6723,13 +7024,13 @@ All documents must be genuine, valid and meet official consular standards to avo
                 <div className="border-t border-slate-100 my-2" />
 
                 <div className="flex items-center justify-between">
-                  <span className="font-extrabold text-slate-950 text-xs">Total</span>
-                  <strong className="text-base font-black text-slate-950">
+                  <span className="font-semibold text-slate-900 text-[14px]">Total</span>
+                  <strong className="text-[16px] font-semibold text-slate-900">
                     {isSchengen ? '€105' : (aiData?.costs?.total_fee || '$210 USD')}
                   </strong>
                 </div>
 
-                <p className="text-[11px] text-slate-400 font-medium pt-1">
+                <p className="text-[12px] text-slate-500 font-normal pt-1">
                   Fees are non-refundable and may vary.
                 </p>
               </div>
@@ -6738,8 +7039,8 @@ All documents must be genuine, valid and meet official consular standards to avo
             {/* Card 3: Need Help? */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-3.5 text-left">
               <div>
-                <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Need Help?</h3>
-                <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Need Help?</h3>
+                <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-1 leading-relaxed">
                   Connect with our visa experts for a smooth application process.
                 </p>
               </div>
@@ -6751,7 +7052,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   if (defaultCons) setBookingModalConsultant(defaultCons);
                   else window.location.href = `/find-experts?country=${encodeURIComponent(countryName)}&category=${encodeURIComponent(purposeLabel)}`;
                 }}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[13px] sm:text-[14px] flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
               >
                 <Users className="w-4 h-4" />
                 <span>Consult an Expert</span>
@@ -6764,29 +7065,29 @@ All documents must be genuine, valid and meet official consular standards to avo
                   <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
                   <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
                 </div>
-                <span className="text-[11px] font-bold text-slate-600">4.8/5 (2.4k+ reviews)</span>
+                <span className="text-[12px] sm:text-[13px] font-medium text-slate-600">4.8/5 (2.4k+ reviews)</span>
               </div>
             </div>
 
             {/* Card 4: Important Notes */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-3.5 text-left">
-              <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Important Notes</h3>
+              <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Important Notes</h3>
 
-              <ul className="space-y-2.5 text-xs text-slate-600 font-medium">
+              <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
                 <li className="flex items-start gap-2">
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
+                  <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <span>Apply at least 15 days before your travel date.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
+                  <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                   <span>Ensure all documents are genuine and valid.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                   <span>Biometric is mandatory for all applicants.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <MessageSquare className="w-3.5 h-3.5 text-purple-500 shrink-0 mt-0.5" />
+                  <MessageSquare className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
                   <span>You may be called for an interview.</span>
                 </li>
               </ul>
@@ -6794,21 +7095,33 @@ All documents must be genuine, valid and meet official consular standards to avo
 
           </div>
         </div>
-        {/* ── APPLICATION PROFILE DETAILS (CENTERED ON PAGE - MATCHING EXACT PHOTO media_1788470844697.png) ── */}
-        {sidebarTab === 'overview' && (
-          <div className="max-w-5xl mx-auto mt-6 mb-8 text-left animate-fadeIn">
+        {/* ── APPLICATION PROFILE DETAILS & DOWNLOAD/SYNC (ALWAYS VISIBLE ACROSS ALL TABS - MATCHING EXACT USER REQUEST media_1788583909662.png) ── */}
+        <div className="max-w-5xl mx-auto mt-6 mb-8 text-left animate-fadeIn space-y-5">
+            {/* ── DOWNLOAD & SYNC ACTION BUTTON (CENTERED & PROMINENT SIZE - MATCHING USER REQUEST) ── */}
+            <div className="flex items-center justify-center pt-2 pb-1">
+              <button
+                type="button"
+                onClick={handleDownloadAndSyncChecklist}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-4 sm:py-4.5 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl hover:shadow-emerald-500/25 transition-all active:scale-[0.98] cursor-pointer"
+              >
+                <Download className="w-5 h-5 stroke-[2.5]" />
+                <span className="tracking-wide">Download &amp; Sync</span>
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+
             {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
                 <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-2xs space-y-4 text-left">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-100 pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950">
+                      <span className="text-[15px] sm:text-[16px] font-semibold uppercase tracking-wider text-slate-900">
                         Application Profile Details
                       </span>
-                      <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-slate-900 text-white shadow-2xs">
+                      <span className="text-[12px] sm:text-[13px] font-medium px-2.5 py-0.5 rounded-full bg-slate-900 text-white shadow-2xs">
                         +{profileScore}/50 pts Profile Score
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-semibold">
+                    <span className="text-[13px] sm:text-[14px] text-slate-500 font-normal">
                       Pre-fills visa petition &amp; consular dossier
                     </span>
                   </div>
@@ -7101,7 +7414,6 @@ All documents must be genuine, valid and meet official consular standards to avo
                   )}
                 </div>
           </div>
-        )}
 
 
         {/* DOCUMENT INSPECTION MODAL */}
@@ -7186,35 +7498,35 @@ All documents must be genuine, valid and meet official consular standards to avo
       </section>
 
       {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") POSITIONED DIRECTLY AFTER SECTION 2 ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-10 flex items-center justify-center relative z-0">
-        <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2 sm:py-3.5 px-4 sm:px-10 shadow-xs sm:shadow-md hover:shadow-lg flex items-center justify-between sm:justify-center gap-2.5 sm:gap-8 transition-all duration-300">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-3 sm:mt-6 flex items-center justify-center relative z-0">
+        <div className="inline-flex items-center justify-center gap-2 sm:gap-4 bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 px-3 sm:px-5 shadow-2xs hover:shadow-xs transition-all duration-300">
           
-          <span className="text-xs sm:text-base md:text-lg font-heading font-black text-slate-950 tracking-tight whitespace-nowrap flex items-center gap-1.5 sm:gap-2">
-            <span>Have Visa Already?</span>
+          <span className="text-[11px] sm:text-xs font-heading font-black text-slate-900 tracking-tight whitespace-nowrap">
+            Have Visa Already?
           </span>
 
           {/* Toggle Capsule Track */}
-          <div className="bg-slate-100/90 rounded-full p-1 sm:p-1.5 inline-flex items-center gap-1 sm:gap-1.5 border border-slate-200/80 shrink-0 shadow-inner">
+          <div className="bg-slate-100 rounded-full p-0.5 sm:p-1 inline-flex items-center gap-0.5 sm:gap-1 border border-slate-200/80 shrink-0 shadow-inner">
             
             {/* NO button */}
             <button
               type="button"
               onClick={() => handleToggleVisaAlready('no')}
-              className={`px-3.5 sm:px-6 py-1.5 sm:py-2.5 rounded-full text-[11px] sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-1.5 sm:gap-2 select-none active:scale-95 ${
+              className={`px-2.5 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-extrabold transition-all cursor-pointer flex items-center gap-1 select-none active:scale-95 ${
                 hasVisaAlready === 'no'
-                  ? 'bg-slate-950 text-white shadow-xs sm:shadow-md scale-[1.02] sm:scale-[1.03]'
+                  ? 'bg-slate-950 text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
               }`}
             >
               {hasVisaAlready === 'no' ? (
                 <>
-                  <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
                   <span className="tracking-wide">NO</span>
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-[#00E599] stroke-[3]" />
+                  <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#00E599] stroke-[3]" />
                 </>
               ) : (
                 <>
-                  <span className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="w-2 h-2 rounded-full border border-slate-400 shrink-0" />
                   <span className="tracking-wide">NO</span>
                 </>
               )}
@@ -7224,21 +7536,21 @@ All documents must be genuine, valid and meet official consular standards to avo
             <button
               type="button"
               onClick={() => handleToggleVisaAlready('yes')}
-              className={`px-3.5 sm:px-6 py-1.5 sm:py-2.5 rounded-full text-[11px] sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-1.5 sm:gap-2 select-none active:scale-95 ${
+              className={`px-2.5 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-extrabold transition-all cursor-pointer flex items-center gap-1 select-none active:scale-95 ${
                 hasVisaAlready === 'yes'
-                  ? 'bg-slate-950 text-white shadow-xs sm:shadow-md scale-[1.02] sm:scale-[1.03]'
+                  ? 'bg-slate-950 text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
               }`}
             >
               {hasVisaAlready === 'yes' ? (
                 <>
-                  <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
                   <span className="tracking-wide">YES</span>
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-[#00E599] stroke-[3]" />
+                  <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#00E599] stroke-[3]" />
                 </>
               ) : (
                 <>
-                  <span className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="w-2 h-2 rounded-full border border-slate-400 shrink-0" />
                   <span className="tracking-wide">YES</span>
                 </>
               )}
@@ -9240,70 +9552,73 @@ All documents must be genuine, valid and meet official consular standards to avo
             <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
               
               {/* SECTION A: DOING IT WITH TRAVLTIK */}
-              <div className="space-y-4 min-w-[640px]">
-                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4F46E5] font-heading">
+              <div className="space-y-4 min-w-[760px]">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold uppercase tracking-wider text-[#4F46E5] font-heading">
                   DOING IT WITH TRAVLTIK
                 </h3>
 
-                <div className="relative pt-10 pb-12">
+                <div className="relative pt-6 pb-8">
                   {/* Connecting Solid Bar */}
-                  <div className="absolute top-[84px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
+                  <div className="absolute top-[128px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
 
                   {/* 4 Nodes */}
                   <div className="grid grid-cols-4 relative z-10 antialiased">
                     
                     {/* Node 1: Top text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
+                      <div className="h-[110px] flex flex-col items-center justify-end pb-2">
+                        <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[160px]">
                           Submit documents online on TravlTik
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-semibold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         1
                       </div>
-                      <div className="h-16" />
+                      <div className="h-[110px]" />
                     </div>
 
                     {/* Node 2: Bottom text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16" />
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                      <div className="h-[110px]" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-semibold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         2
                       </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                      <div className="h-[110px] flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
-                          AI &amp; Concierge pre-screen application
+                        <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[170px]">
+                          AI ver &amp; self verify tools
+                        </span>
+                        <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal leading-snug mt-1 max-w-[175px]">
+                          (Checklists help you gather and prepare a visa file as accurately as required for submission)
                         </span>
                       </div>
                     </div>
 
                     {/* Node 3: Top text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
-                          Real-time updates &amp; reliable ETA
+                      <div className="h-[110px] flex flex-col items-center justify-end pb-2">
+                        <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[175px]">
+                          Find best service providers and resources on TravlTik to complete missing documents
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-semibold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         3
                       </div>
-                      <div className="h-16" />
+                      <div className="h-[110px]" />
                     </div>
 
                     {/* Node 4: Bottom text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16" />
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                      <div className="h-[110px]" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-semibold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         4
                       </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                      <div className="h-[110px] flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
-                          Approved e-Visa on WhatsApp &amp; Email
+                        <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[180px]">
+                          Book appointment and submit your application with confidence or contact a top consultant and apply through them
                         </span>
                       </div>
                     </div>
@@ -9314,7 +9629,7 @@ All documents must be genuine, valid and meet official consular standards to avo
 
               {/* SECTION B: DOING IT YOURSELF */}
               <div className="space-y-4 min-w-[740px] pt-6 border-t border-slate-100">
-                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-black font-heading">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold uppercase tracking-wider text-black font-heading">
                   DOING IT YOURSELF
                 </h3>
 
@@ -9328,12 +9643,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 1: Top */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Gather all your documents at home
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         1
                       </div>
                       <div className="h-16" />
@@ -9342,12 +9657,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 2: Bottom */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         2
                       </div>
                       <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Get your documents printed at a print shop
                         </span>
                       </div>
@@ -9356,12 +9671,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 3: Top */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Get stuck in traffic driving to the embassy
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         3
                       </div>
                       <div className="h-16" />
@@ -9370,12 +9685,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 4: Bottom */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         4
                       </div>
                       <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Spend 3+ hours at the embassy
                         </span>
                       </div>
@@ -9384,12 +9699,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 5: Top */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Get stuck in traffic on the way back home
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         5
                       </div>
                       <div className="h-16" />
@@ -9398,12 +9713,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 6: Bottom */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         6
                       </div>
                       <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Wait anxiously for your visa approval
                         </span>
                       </div>
@@ -9412,12 +9727,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 7: Top */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Go back to embassy to pick up passport
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         7
                       </div>
                       <div className="h-16" />
@@ -9426,12 +9741,12 @@ All documents must be genuine, valid and meet official consular standards to avo
                     {/* Node 8: Bottom */}
                     <div className="flex flex-col items-center text-center px-1">
                       <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-semibold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
                         8
                       </div>
                       <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                        <span className="text-[12px] sm:text-[13px] font-medium text-slate-800 leading-snug">
                           Drive back home
                         </span>
                       </div>
@@ -9518,7 +9833,7 @@ All documents must be genuine, valid and meet official consular standards to avo
                   {countryName} • {currentVariant.label}
                 </span>
                 <span className="text-[11px] text-slate-500 font-semibold block">
-                  {travellerCount} Applicant{travellerCount > 1 ? 's' : ''} • Guaranteed {guaranteedDate}
+                  {travellerCount} Applicant{travellerCount > 1 ? 's' : ''} • Est. Delivery: {guaranteedDate}
                 </span>
               </div>
               <div className="text-right">
@@ -9655,7 +9970,7 @@ All documents must be genuine, valid and meet official consular standards to avo
               {/* Trust Badge */}
               <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3 flex items-center gap-2.5 text-xs text-emerald-800 font-bold">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Your passport &amp; payment are 100% protected under TravlTik Escrow &amp; Insurance Guarantee.</span>
+                <span>Your passport &amp; payment are 100% protected under TravlTik Escrow &amp; Buyer Protection.</span>
               </div>
 
               {/* Submit to Razorpay Button */}
@@ -9833,6 +10148,27 @@ All documents must be genuine, valid and meet official consular standards to avo
         <div className="fixed bottom-6 right-6 z-50 bg-slate-950 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-800 text-xs font-bold flex items-center gap-2.5 animate-in slide-in-from-bottom-5">
           <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{consultantBookedToast}</span>
+        </div>
+      )}
+
+      {/* ── CHECKLIST SYNCED & PDF DOWNLOADED TOAST NOTIFICATION ── */}
+      {checklistSyncedToast && (
+        <div className="fixed bottom-6 right-4 sm:right-6 z-50 max-w-md bg-slate-950 text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/40 text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in slide-in-from-bottom-5">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center shrink-0">
+              <Check className="w-4 h-4 stroke-[3]" />
+            </div>
+            <div className="min-w-0 text-left">
+              <span className="block text-white font-extrabold truncate">{checklistSyncedToast.msg}</span>
+              <span className="block text-[10px] text-emerald-400 font-medium">Tracking Ref: {checklistSyncedToast.trackingId}</span>
+            </div>
+          </div>
+          <a
+            href="/dashboard?tab=cases"
+            className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs text-center shrink-0 transition-colors shadow-xs"
+          >
+            View Applications →
+          </a>
         </div>
       )}
 

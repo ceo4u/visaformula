@@ -243,7 +243,7 @@ export function ApplyVisaPortal() {
               <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-extrabold text-black tracking-tight leading-tight mb-4">
                   Apply for Visa Online.<br/>
-                  <span className="text-slate-800">Fast. Simple. Guaranteed.</span>
+                  <span className="text-slate-800">Fast. Simple. Verified.</span>
                 </h1>
                 <p className="text-slate-500 text-base md:text-lg mb-6 max-w-2xl mx-auto font-semibold leading-relaxed">Select your destination, fill the form — we get your visa on time. Expert support included.</p>
               </div>
@@ -574,7 +574,7 @@ export function ApplyVisaPortal() {
                         Express Visa Processing
                         <span className="text-[9px] bg-slate-900 text-white font-bold px-2 py-0.5 rounded-full tracking-wider">Popular</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-0.5">Embassy response in 6-12 hours. Guaranteed fast track.</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Embassy response in 6-12 hours. Fast-track priority filing.</p>
                     </div>
                     <div className="text-right shrink-0">
                       <div className="font-black text-slate-950 text-sm">₹1,500</div>

@@ -166,7 +166,7 @@ const isHome = pathname === '/' || pathname === '';
             <!-- Desktop Profile Dropdown (hydrated dynamically on client) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta" aria-hidden="true">
                 <button id="nav-profile-trigger" class="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 border rounded-full transition-all focus:outline-none shadow-2xs bg-slate-50 hover:bg-slate-100 text-slate-900 border-slate-200">
-                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-slate-950 text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
+                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#420f79] text-white shadow-2xs shrink-0 border border-[#420f79]/30" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-xs" id="nav-profile-avatar-letters"></span>
                     </div>
@@ -181,12 +181,12 @@ const isHome = pathname === '/' || pathname === '';
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name"></div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/70 transition-all group/item">
-                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#00A86B] transition-colors" />
+                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#420f79] hover:bg-[#420f79]/5 transition-all group/item">
+                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#420f79] transition-colors" />
                             <span>My Dashboard</span>
                         </a>
-                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/70 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
-                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-[#00A86B] transition-colors" />
+                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#420f79] hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
+                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-[#420f79] transition-colors" />
                             <span>Log Out</span>
                         </button>
                     </div>
@@ -199,9 +199,9 @@ const isHome = pathname === '/' || pathname === '';
             <a href="/signup" id="mobile-top-signup-btn" class="bg-slate-900 hover:bg-slate-800 text-white !text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-slate-950 text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#420f79]/30 bg-[#420f79] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                <span class="font-black text-xs sm:text-sm text-white bg-slate-950 w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters"></span>
+                <span class="font-black text-xs sm:text-sm text-white bg-[#420f79] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters"></span>
             </a>
         </div>
     </div>
@@ -290,14 +290,20 @@ const isHome = pathname === '/' || pathname === '';
             </div>
             <!-- Mobile Profile Actions (Hydrated dynamically on client) -->
             <div id="mobile-nav-profile-block" class="hidden py-4 border-t border-slate-200/60 flex flex-col gap-2 font-sans" aria-hidden="true">
-                <div class="px-2 py-1">
-                    <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
-                    <div class="text-sm font-extrabold text-black truncate mt-0.5" id="mobile-nav-profile-name"></div>
+                <div class="px-2 py-1 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-[#420f79] text-white shadow-2xs shrink-0 border border-[#420f79]/30">
+                        <img id="mobile-drawer-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
+                        <span class="font-bold text-sm" id="mobile-drawer-avatar-letters"></span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
+                        <div class="text-sm font-extrabold text-black truncate mt-0.5" id="mobile-nav-profile-name"></div>
+                    </div>
                 </div>
-                <a id="mobile-nav-profile-dashboard-link" href="/dashboard" class="block text-center py-2.5 bg-black text-white font-bold text-sm rounded-xl shadow-md">
+                <a id="mobile-nav-profile-dashboard-link" href="/dashboard" class="block text-center py-2.5 bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white font-bold text-sm rounded-xl shadow-md transition-colors">
                     My Dashboard
                 </a>
-                <button id="mobile-nav-profile-logout-btn" class="block text-center py-2.5 border border-slate-250 text-red-650 font-bold text-sm rounded-xl hover:bg-red-50 transition-colors w-full cursor-pointer bg-white">
+                <button id="mobile-nav-profile-logout-btn" class="block text-center py-2.5 border border-slate-200 text-red-600 font-bold text-sm rounded-xl hover:bg-red-50 transition-colors w-full cursor-pointer bg-white">
                     Log Out
                 </button>
             </div>
@@ -520,9 +526,21 @@ const isHome = pathname === '/' || pathname === '';
                 mobileProfileBlock.style.display = "flex";
                 const mobileProfileName = document.getElementById("mobile-nav-profile-name");
                 const mobileDashboardLink = document.getElementById("mobile-nav-profile-dashboard-link");
+                const drawerAvatarLetters = document.getElementById("mobile-drawer-avatar-letters");
+                const drawerAvatarImg = document.getElementById("mobile-drawer-avatar-img");
 
                 if (mobileProfileName) mobileProfileName.textContent = displayName;
                 if (mobileDashboardLink) mobileDashboardLink.setAttribute("href", dashboardHref);
+
+                if (displayPhoto && drawerAvatarImg) {
+                    drawerAvatarImg.setAttribute("src", displayPhoto);
+                    drawerAvatarImg.classList.remove("hidden");
+                    if (drawerAvatarLetters) drawerAvatarLetters.classList.add("hidden");
+                } else {
+                    if (drawerAvatarLetters) drawerAvatarLetters.textContent = displayLetters;
+                    if (drawerAvatarLetters) drawerAvatarLetters.classList.remove("hidden");
+                    if (drawerAvatarImg) drawerAvatarImg.classList.add("hidden");
+                }
             }
         } else {
             // NOT logged in: Ensure Auth buttons are visible, profile blocks are hidden

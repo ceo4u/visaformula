@@ -90,7 +90,7 @@ export function VisaFormFilingPortal() {
               <div className="h-px bg-slate-100 my-4" />
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">✓</div>
-                <div className="text-xs text-gray-500">Rapid processing guaranteed</div>
+                <div className="text-xs text-gray-500">Rapid priority processing</div>
               </div>
             </div>
           </div>
@@ -415,7 +415,7 @@ export function VisaFormFilingPortal() {
               <div className="bg-emerald-50 border border-emerald-150 rounded-3xl p-6 flex gap-3 items-start">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Guaranteed Accuracy</h4>
+                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Verified Accuracy</h4>
                   <p className="text-[11px] text-emerald-700 leading-relaxed">
                     If your visa is rejected due to a form-filling error made by our experts, we will refund the service fee 100%.
                   </p>

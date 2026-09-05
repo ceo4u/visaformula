@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   ArrowLeft, ArrowRight, Copy, CheckCircle2, CheckCircle, Clock, Calendar, 
   CreditCard, ShieldCheck, AlertCircle, ExternalLink, MessageSquare, 
   Phone, ChevronDown, ChevronUp, Check, FileText, Plus, Info, 
-  Sparkles, CheckSquare, XCircle, Shield, RefreshCw
+  Sparkles, CheckSquare, XCircle, Shield, RefreshCw, Upload,
+  X, Camera, Plane, Building2, Landmark, Briefcase, CircleDollarSign
 } from 'lucide-react';
 
 export interface VisaApplicationDetailsProps {
@@ -14,6 +15,77 @@ export interface VisaApplicationDetailsProps {
   onOpenVault?: () => void;
   readinessScore?: number;
   vaultDocuments?: any[];
+}
+
+import { ALL_COUNTRIES } from '../../data/countries';
+
+function getCountryCode(country: string): string {
+  if (!country) return 'un';
+  const c = country.toLowerCase().trim();
+  if (c.includes('india') || c === 'in' || c === 'indian') return 'in';
+  if (c.includes('mauritius') || c === 'mu') return 'mu';
+  if (c.includes('maldives') || c === 'mv') return 'mv';
+  if (c.includes('thailand') || c === 'th' || c === 'thai') return 'th';
+  if (c.includes('malaysia') || c === 'my') return 'my';
+  if (c.includes('sri lanka') || c === 'lk') return 'lk';
+  if (c.includes('nepal') || c === 'np') return 'np';
+  if (c.includes('bhutan') || c === 'bt') return 'bt';
+  if (c.includes('indonesia') || c.includes('bali') || c === 'id') return 'id';
+  if (c.includes('vietnam') || c === 'vn') return 'vn';
+  if (c.includes('united kingdom') || c.includes('uk') || c.includes('england') || c.includes('britain')) return 'gb';
+  if (c.includes('united states') || c.includes('usa') || c.includes('us') || c.includes('america')) return 'us';
+  if (c.includes('greece') || c === 'gr' || c === 'greek') return 'gr';
+  if (c.includes('uae') || c.includes('dubai') || c.includes('emirates') || c.includes('united arab')) return 'ae';
+  if (c.includes('canada') || c === 'ca') return 'ca';
+  if (c.includes('australia') || c === 'au') return 'au';
+  if (c.includes('germany') || c === 'de') return 'de';
+  if (c.includes('france') || c === 'fr') return 'fr';
+  if (c.includes('italy') || c === 'it') return 'it';
+  if (c.includes('spain') || c === 'es') return 'es';
+  if (c.includes('singapore') || c === 'sg') return 'sg';
+  if (c.includes('japan') || c === 'jp') return 'jp';
+  if (c.includes('switzerland') || c === 'ch') return 'ch';
+  if (c.includes('netherlands') || c === 'nl') return 'nl';
+  if (c.includes('austria') || c === 'at') return 'at';
+  if (c.includes('portugal') || c === 'pt') return 'pt';
+  if (c.includes('new zealand') || c === 'nz') return 'nz';
+  if (c.includes('schengen') || c.includes('europe') || c === 'eu') return 'eu';
+  if (c.includes('turkey') || c.includes('turkiye') || c === 'tr') return 'tr';
+  if (c.includes('china') || c === 'cn') return 'cn';
+  if (c.includes('russia') || c === 'ru') return 'ru';
+  if (c.includes('south korea') || c === 'kr') return 'kr';
+  if (c.includes('saudi') || c === 'sa') return 'sa';
+  if (c.includes('qatar') || c === 'qa') return 'qa';
+  if (c.includes('oman') || c === 'om') return 'om';
+  if (c.includes('kuwait') || c === 'kw') return 'kw';
+  if (c.includes('bahrain') || c === 'bh') return 'bh';
+  if (c.includes('egypt') || c === 'eg') return 'eg';
+  if (c.includes('kenya') || c === 'ke') return 'ke';
+  if (c.includes('south africa') || c === 'za') return 'za';
+  if (c.includes('brazil') || c === 'br') return 'br';
+  if (c.includes('mexico') || c === 'mx') return 'mx';
+  if (c.includes('ireland') || c === 'ie') return 'ie';
+  if (c.includes('philippines') || c === 'ph') return 'ph';
+  if (c.includes('georgia') || c === 'ge') return 'ge';
+  if (c.includes('kazakhstan') || c === 'kz') return 'kz';
+
+  const match = ALL_COUNTRIES.find(item => item.name.toLowerCase() === c || item.code.toLowerCase() === c);
+  if (match) return match.code.toLowerCase();
+  return 'un';
+}
+
+function CountryFlag({ country, className = "w-5 h-3.5 object-cover rounded-xs border border-slate-200/80 shadow-2xs shrink-0" }: { country: string; className?: string }) {
+  const code = getCountryCode(country);
+  return (
+    <img
+      src={`https://flagcdn.com/w80/${code}.png`}
+      alt={country || 'Country Flag'}
+      className={className}
+      onError={(e) => {
+        (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w80/un.png';
+      }}
+    />
+  );
 }
 
 function getCountryFlag(name: string): string {
@@ -64,16 +136,86 @@ function getRouteStatutoryTime(dest: string): string {
   return '5 to 15 Business Days';
 }
 
+function getCleanShortTitle(title: string): string {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport') && (t.includes('bio') || t.includes('scan') || t.includes('page') || t.includes('last'))) return 'Passport';
+  if (t.includes('passport') && !t.includes('photo')) return 'Passport';
+  if (t.includes('photo') || t.includes('picture')) return 'Photograph';
+  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) return 'Travel Itinerary';
+  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) return 'Hotel Booking';
+  if (t.includes('insurance') || t.includes('medical')) return 'Travel Insurance';
+  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) return 'Bank Statements';
+  if (t.includes('cover') || t.includes('letter')) return 'Cover Letter';
+  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) return 'Employment Proof';
+  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) return 'ID Proof';
+  if (t.includes('form') || t.includes('application')) return 'Visa Application Form';
+  return title;
+}
+
+function getCleanShortRequirement(req: string, title: string): string {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport') && !t.includes('photo')) {
+    return 'Valid for at least 6 months beyond return date';
+  }
+  if (t.includes('photo') || t.includes('picture')) {
+    return 'Recent photo, 35mm x 45mm, white background';
+  }
+  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) {
+    return 'Confirmed flight tickets (round trip)';
+  }
+  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) {
+    return 'Confirmed hotel reservations';
+  }
+  if (t.includes('insurance') || t.includes('medical')) {
+    return 'Minimum coverage of €30,000';
+  }
+  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) {
+    return 'Last 3 months bank statements';
+  }
+  if (t.includes('cover') || t.includes('letter')) {
+    return 'Purpose of visit and travel details';
+  }
+  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) {
+    return 'Salary slips / Leave approval / NOC';
+  }
+  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) {
+    return 'Aadhaar Card / PAN Card copy';
+  }
+  if (t.includes('form') || t.includes('application')) {
+    return 'Complete and signed application form';
+  }
+  if (req && req.length > 55) {
+    return req.slice(0, 52).trim() + '...';
+  }
+  return req || 'Official consular document';
+}
+
+function getDocumentChecklistIcon(title: string) {
+  const t = (title || '').toLowerCase();
+  if (t.includes('passport') && !t.includes('photo')) return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('form') || t.includes('application')) return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('photo') || t.includes('picture')) return <Camera className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('flight') || t.includes('air') || t.includes('ticket') || t.includes('itinerary')) return <Plane className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('hotel') || t.includes('accommodation') || t.includes('host') || t.includes('stay')) return <Building2 className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('insurance') || t.includes('medical')) return <ShieldCheck className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('bank') || t.includes('solvency') || t.includes('financial') || t.includes('statement')) return <Landmark className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('employment') || t.includes('salary') || t.includes('job') || t.includes('noc')) return <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />;
+  if (t.includes('identity') || t.includes('residence') || t.includes('aadhaar') || t.includes('pan') || t.includes('id proof')) return <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />;
+  return <FileText className="w-4 h-4 text-slate-400 shrink-0" />;
+}
+
 export function VisaApplicationDetailsView({
   application,
   applicantName,
   onBack,
   onOpenChat,
+  onOpenVault,
   readinessScore,
   vaultDocuments = []
 }: VisaApplicationDetailsProps) {
   const [copiedId, setCopiedId] = useState(false);
   const [confirmedDeclaration, setConfirmedDeclaration] = useState(true);
+  const [showGuidelinesModal, setShowGuidelinesModal] = useState(false);
   const [routeData, setRouteData] = useState<any>(null);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
 
@@ -141,14 +283,50 @@ export function VisaApplicationDetailsView({
         : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
   
   const lastUpdated = application?.updatedAt || 'Today';
-  const travelDate = application?.travelDate || 'Flexible / To be confirmed';
-  const returnDate = application?.returnDate || 'Flexible / Open Return';
-  const entries = application?.entries || (destination.toLowerCase().includes('emirates') ? 'Single / 30-Day Multiple' : 'Single / Multiple (As Granted)');
+  const travelDate = application?.travelDate || '15 Jun 2024';
+  const returnDate = application?.returnDate || '30 Jun 2024';
+  const returnDateWithDuration = useMemo(() => {
+    if (!returnDate || returnDate.toLowerCase().includes('flexible') || returnDate.toLowerCase().includes('open')) {
+      return returnDate || 'Flexible / Open Return';
+    }
+    if (returnDate.includes('(') && returnDate.includes('Days')) {
+      return returnDate;
+    }
+    try {
+      const d1 = new Date(travelDate);
+      const d2 = new Date(returnDate);
+      if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+        const diffTime = Math.abs(d2.getTime() - d1.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 0) {
+          return `${returnDate} (${diffDays} Days)`;
+        }
+      }
+    } catch (_) {}
+    return returnDate;
+  }, [travelDate, returnDate]);
+  const entries = application?.entries || (destination.toLowerCase().includes('emirates') ? 'Single / 30-Day Multiple' : 'Single Entry');
   
   // Fee and Processing Time
   const feeDisplay = routeData?.costs?.total_fee || routeData?.costs?.visa_fee || application?.feePaid || getRouteStatutoryFee(destination);
   const feeNotes = routeData?.costs?.notes || '';
   const processingTimeDisplay = routeData?.processing_time || routeData?.processing_and_timing?.decision_time || application?.processingTime || getRouteStatutoryTime(destination);
+
+  const cleanProcessingTime = useMemo(() => {
+    if (!processingTimeDisplay) return '15 - 20 Working Days';
+    const s = processingTimeDisplay.trim();
+    if (s.toLowerCase().includes('15') && s.toLowerCase().includes('45')) {
+      return '15 - 45 Calendar Days';
+    }
+    return s
+      .replace(/\s*\(Standard Consular SLA\)/gi, '')
+      .replace(/\s*\(Standard Consular Period\)/gi, '')
+      .replace(/\s*\(Standard\)/gi, '')
+      .replace(/\s*\(Peak\)/gi, '')
+      .replace(/\s*\(Priority Available\)/gi, '')
+      .replace(/\s*\(Instant on Arrival\)/gi, '')
+      .trim();
+  }, [processingTimeDisplay]);
 
   // Route type checks
   const isOnlineOrOnArrival = 
@@ -167,48 +345,6 @@ export function VisaApplicationDetailsView({
   const appointmentDisplay = appointmentRequired
     ? (application?.appointmentDate || 'To be scheduled upon document review')
     : 'Not Required (100% Online e-Visa Process)';
-
-  // Calculate dynamic current step from application progress
-  const progressPercent = typeof application?.progress === 'number' ? application.progress : 35;
-  const currentStep = progressPercent >= 95 ? 6 
-    : progressPercent >= 75 ? 5 
-    : progressPercent >= 55 ? 4 
-    : progressPercent >= 35 ? 3 
-    : progressPercent >= 15 ? 2 
-    : 1;
-
-  const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({
-    [currentStep]: true
-  });
-  const [allExpanded, setAllExpanded] = useState(false);
-
-  const handleCopyId = () => {
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(trackingId);
-      setCopiedId(true);
-      setTimeout(() => setCopiedId(false), 2000);
-    }
-  };
-
-  const toggleStep = (stepNumber: number) => {
-    setExpandedSteps(prev => ({
-      ...prev,
-      [stepNumber]: !prev[stepNumber]
-    }));
-  };
-
-  const toggleAllSteps = () => {
-    const nextState = !allExpanded;
-    setAllExpanded(nextState);
-    setExpandedSteps({
-      1: nextState,
-      2: nextState,
-      3: nextState,
-      4: nextState,
-      5: nextState,
-      6: nextState
-    });
-  };
 
   // Compile route-accurate document checklist
   const isSchengen = ['france', 'germany', 'italy', 'spain', 'switzerland', 'netherlands', 'austria', 'greece', 'portugal', 'belgium', 'sweden', 'schengen'].some(c => destination.toLowerCase().includes(c));
@@ -265,9 +401,13 @@ export function VisaApplicationDetailsView({
   const checklistDocuments = rawDocs.map((docItem) => {
     const t = docItem.title.toLowerCase();
     
-    // Check if matching document exists in user's actual vault
+    // Check if matching genuine uploaded document exists in user's vault
     const matchedVaultDoc = (vaultDocuments || []).find((v: any) => {
+      if (!v) return false;
       const vName = (v.name || v.title || v.label || v.fileName || '').toLowerCase();
+      const hasRealFile = Boolean(v.fileData || v.isRealUpload || (v.scannedMethod === 'OCR Scanned' && v.id && !v.id.startsWith('doc_req_') && v.id !== 'global_passport'));
+      if (!hasRealFile) return false;
+
       if (t.includes('passport') && vName.includes('passport')) return true;
       if ((t.includes('photo') || t.includes('picture')) && (vName.includes('photo') || vName.includes('picture'))) return true;
       if ((t.includes('flight') || t.includes('ticket') || t.includes('air')) && (vName.includes('flight') || vName.includes('ticket'))) return true;
@@ -297,10 +437,94 @@ export function VisaApplicationDetailsView({
 
   // Calculate live dynamic readiness score
   const readyDocsCount = checklistDocuments.filter(d => d.isReady).length;
-  const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0.6;
+  const mandatoryDocs = checklistDocuments.filter(d => d.mandatory);
+  const mandatoryReadyCount = checklistDocuments.filter(d => d.mandatory && d.isReady).length;
+  const allMandatoryReady = mandatoryDocs.length > 0 ? (mandatoryReadyCount >= mandatoryDocs.length) : (readyDocsCount > 0);
+
+  // Check genuine vault documents count
+  const genuineVaultDocs = (vaultDocuments || []).filter(
+    (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
+  );
+  const genuineVaultDocsCount = genuineVaultDocs.length;
+
+  // Pipeline Statuses
+  const appStatus = (application?.status || '').toLowerCase();
+  const isApproved = appStatus.includes('approved') || appStatus.includes('granted');
+  const isFeePaid = Boolean(application?.isFeePaid) || appStatus.includes('fee paid') || appStatus.includes('submitted to embassy');
+  const isFormSubmitted = Boolean(application?.isFormSubmitted) || appStatus.includes('form submitted') || appStatus.includes('in review');
+
+  // Dynamic step calculation based on genuine documents & application pipeline state
+  let currentStep = 1;
+  let dynamicProgress = 10;
+
+  if (isApproved) {
+    currentStep = 6;
+    dynamicProgress = 100;
+  } else if (isFeePaid) {
+    currentStep = 5;
+    dynamicProgress = 85;
+  } else if (isFormSubmitted) {
+    currentStep = 4;
+    dynamicProgress = 65;
+  } else if (allMandatoryReady && mandatoryDocs.length > 0) {
+    currentStep = 3;
+    dynamicProgress = 45;
+  } else if (readyDocsCount > 0 || genuineVaultDocsCount > 0) {
+    // User has uploaded at least 1 document: Step 1 (Requirements) is checked, Step 2 (Documents) is in progress!
+    currentStep = 2;
+    dynamicProgress = Math.min(40, 15 + Math.round((readyDocsCount / Math.max(1, checklistDocuments.length)) * 25));
+  } else {
+    // Fresh start: 0 documents uploaded, fresh case: Step 1 (Requirements) is in progress, 0 completed!
+    currentStep = 1;
+    dynamicProgress = 10;
+  }
+
+  const progressPercent = typeof application?.progress === 'number' && application.progress > dynamicProgress && (genuineVaultDocsCount > 0 || isFormSubmitted)
+    ? application.progress
+    : dynamicProgress;
+
+  const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({
+    [currentStep]: true
+  });
+  const [allExpanded, setAllExpanded] = useState(false);
+
+  // Sync expanded steps whenever currentStep changes
+  useEffect(() => {
+    setExpandedSteps(prev => ({ ...prev, [currentStep]: true }));
+  }, [currentStep]);
+
+  const handleCopyId = () => {
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(trackingId);
+      setCopiedId(true);
+      setTimeout(() => setCopiedId(false), 2000);
+    }
+  };
+
+  const toggleStep = (stepNumber: number) => {
+    setExpandedSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber]
+    }));
+  };
+
+  const toggleAllSteps = () => {
+    const nextState = !allExpanded;
+    setAllExpanded(nextState);
+    setExpandedSteps({
+      1: nextState,
+      2: nextState,
+      3: nextState,
+      4: nextState,
+      5: nextState,
+      6: nextState
+    });
+  };
+
+  const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0;
   const calculatedReadinessScore = typeof readinessScore === 'number' && readinessScore > 0
     ? readinessScore
-    : Math.min(100, Math.round((progressPercent * 0.4) + (docsRatio * 50) + 10));
+    : Math.min(100, Math.round((progressPercent * 0.4) + (docsRatio * 50) + (genuineVaultDocsCount > 0 ? 10 : 0)));
 
   const scoreLevel = calculatedReadinessScore >= 75 ? 'Consular Benchmark Met' : calculatedReadinessScore >= 50 ? 'Good Readiness' : 'In Preparation';
 
@@ -330,102 +554,106 @@ export function VisaApplicationDetailsView({
       {/* ── TOP HEADER WITH BACK BUTTON ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Visa Application Details</h1>
-            {isLoadingRoute && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold animate-pulse">
-                <RefreshCw className="w-3 h-3 animate-spin" />
-                <span>Verifying route standards...</span>
-              </span>
-            )}
-          </div>
-          <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
-            Real-time status, checklist requirements, and consular timeline for <strong className="text-slate-800">{destination}</strong>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Visa Application Details</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Track and manage your visa application progress
           </p>
         </div>
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-slate-950 hover:bg-slate-50 text-xs font-bold shadow-2xs transition-all self-start sm:self-auto cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs self-start sm:self-auto cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5 text-slate-600" />
           <span>Back to Applications</span>
         </button>
       </div>
 
-      {/* ── 1. APPLICATION METADATA HERO CARD ── */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-          {/* Col 1: Application ID */}
-          <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Application ID</span>
-            <div className="flex items-center gap-2">
-              <span className="text-lg sm:text-xl font-black text-emerald-600 font-mono tracking-tight">
+      {/* ── 1. APPLICATION METADATA HERO CARD (EXACT SLEEK LAYOUT MATCHING USER DESIGN) ── */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+          
+          {/* Section 1: Application ID */}
+          <div className="lg:col-span-4 space-y-1">
+            <span className="text-xs text-slate-400 font-normal block">Application ID</span>
+            <div className="flex items-center gap-2 pt-0.5">
+              <span className="text-base sm:text-lg font-bold text-[#009b68] font-mono tracking-tight">
                 {trackingId}
               </span>
               <button
                 type="button"
                 onClick={handleCopyId}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-600 text-xs font-medium transition-all shadow-2xs cursor-pointer"
                 title="Copy Application ID"
               >
                 <Copy className="w-3 h-3 text-slate-500" />
-                <span>{copiedId ? 'Copied ✓' : 'Copy'}</span>
+                <span>{copiedId ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
-            <span className="text-[11px] text-slate-400 font-medium block pt-1">
-              Applied on: <strong className="text-slate-700 font-bold">{appliedDate}</strong> • Last Updated: <strong className="text-slate-700 font-bold">{lastUpdated}</strong>
-            </span>
-          </div>
-
-          {/* Col 2: Name & Visa Type */}
-          <div className="space-y-3">
-            <div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Applicant / Contact</span>
-              <span className="text-sm font-black text-slate-900 block mt-0.5 truncate">{applicantName || 'Applicant'}</span>
-            </div>
-            <div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Visa Type</span>
-              <span className="text-xs font-bold text-slate-800 block mt-0.5 leading-snug">{resolvedVisaType}</span>
+            <div className="text-[11px] text-slate-400 font-normal pt-3">
+              Applied on: {appliedDate} &nbsp;·&nbsp; Last Updated: {lastUpdated}
             </div>
           </div>
 
-          {/* Col 3: From -> To & Entries */}
-          <div className="space-y-3">
-            <div>
-              <div className="flex items-center gap-3">
-                <div>
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">From (Passport)</span>
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5 mt-0.5">
-                    <span className="text-base leading-none">{passportFlag}</span> {passport}
-                  </span>
+          {/* Section 2: Name & Route & Visa Type */}
+          <div className="lg:col-span-5 space-y-4">
+            {/* Top Row: Name, From -> To */}
+            <div className="flex flex-wrap items-center gap-6 sm:gap-8">
+              <div>
+                <span className="text-xs text-slate-400 font-normal block">Name</span>
+                <strong className="text-xs sm:text-sm font-bold text-slate-900 block truncate max-w-[170px] mt-1">
+                  {applicantName || 'Applicant'}
+                </strong>
+              </div>
+
+              <div>
+                <span className="text-xs text-slate-400 font-normal block">From</span>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <CountryFlag country={passport} />
+                  <strong className="text-xs sm:text-sm font-bold text-slate-900">{passport}</strong>
                 </div>
-                <span className="text-slate-300 font-black pt-3">➔</span>
-                <div>
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">To (Destination)</span>
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5 mt-0.5">
-                    <span className="text-base leading-none">{destinationFlag}</span> {destination}
-                  </span>
+              </div>
+
+              <span className="text-slate-400 text-sm mt-5 inline-block select-none">→</span>
+
+              <div>
+                <span className="text-xs text-slate-400 font-normal block">To</span>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <CountryFlag country={destination} />
+                  <strong className="text-xs sm:text-sm font-bold text-slate-900">{destination}</strong>
                 </div>
               </div>
             </div>
-            <div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Permitted Entries</span>
-              <span className="text-xs font-bold text-slate-800 block mt-0.5">{entries}</span>
+
+            {/* Bottom Row: Visa Type & Entries */}
+            <div className="flex flex-wrap items-center gap-8 sm:gap-12 text-xs">
+              <div>
+                <span className="text-slate-400 font-normal">Visa Type: </span>
+                <strong className="font-semibold text-slate-800">{resolvedVisaType}</strong>
+              </div>
+              <div>
+                <span className="text-slate-400 font-normal">Entries: </span>
+                <strong className="font-semibold text-slate-800">{entries}</strong>
+              </div>
             </div>
           </div>
 
-          {/* Col 4: Travel & Return Date */}
-          <div className="space-y-3">
+          {/* Section 3: Travel & Return Dates */}
+          <div className="lg:col-span-3 border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6 space-y-3">
             <div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Travel Date</span>
-              <span className="text-xs font-black text-slate-900 block mt-0.5">{travelDate}</span>
+              <span className="text-xs text-slate-400 font-normal block">Travel Date</span>
+              <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">
+                {travelDate}
+              </strong>
             </div>
             <div>
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Return Date</span>
-              <span className="text-xs font-black text-slate-900 block mt-0.5">{returnDate}</span>
+              <span className="text-xs text-slate-400 font-normal block">Return Date</span>
+              <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">
+                {returnDateWithDuration}
+              </strong>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -446,11 +674,11 @@ export function VisaApplicationDetailsView({
             {/* Step 1: Check Requirements */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 1 ? 'bg-emerald-500 text-white' : currentStep === 1 ? 'bg-indigo-600 text-white ring-indigo-100' : 'bg-slate-200 text-slate-600'
+                currentStep > 1 ? 'bg-emerald-500 text-white' : currentStep === 1 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 1 ? <Check className="w-4 h-4 stroke-[3]" /> : '1'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 1 ? 'font-black text-indigo-700' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 1 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
                 1. Requirements
               </span>
             </div>
@@ -458,11 +686,11 @@ export function VisaApplicationDetailsView({
             {/* Step 2: Prepare Documents */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 2 ? 'bg-emerald-500 text-white' : currentStep === 2 ? 'bg-indigo-600 text-white ring-indigo-100' : 'bg-slate-200 text-slate-600'
+                currentStep > 2 ? 'bg-emerald-500 text-white' : currentStep === 2 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 2 ? <Check className="w-4 h-4 stroke-[3]" /> : '2'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 2 ? 'font-black text-indigo-700' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 2 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
                 2. Documents
               </span>
             </div>
@@ -470,11 +698,11 @@ export function VisaApplicationDetailsView({
             {/* Step 3: Fill Application */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 3 ? 'bg-emerald-500 text-white' : currentStep === 3 ? 'bg-indigo-600 text-white ring-indigo-100' : 'bg-slate-200 text-slate-600'
+                currentStep > 3 ? 'bg-emerald-500 text-white' : currentStep === 3 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 3 ? <Check className="w-4 h-4 stroke-[3]" /> : '3'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 3 ? 'font-black text-indigo-700' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 3 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
                 3. Application Form
               </span>
             </div>
@@ -482,11 +710,11 @@ export function VisaApplicationDetailsView({
             {/* Step 4: Pay Fees */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 4 ? 'bg-emerald-500 text-white' : currentStep === 4 ? 'bg-indigo-600 text-white ring-indigo-100' : 'bg-slate-200 text-slate-600'
+                currentStep > 4 ? 'bg-emerald-500 text-white' : currentStep === 4 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 4 ? <Check className="w-4 h-4 stroke-[3]" /> : '4'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 4 ? 'font-black text-indigo-700' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 4 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
                 4. Pay Fees
               </span>
             </div>
@@ -494,11 +722,11 @@ export function VisaApplicationDetailsView({
             {/* Step 5: Submission / Verification */}
             <div className="flex flex-col items-center relative z-10">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white ${
-                currentStep > 5 ? 'bg-emerald-500 text-white' : currentStep === 5 ? 'bg-indigo-600 text-white ring-indigo-100' : 'bg-slate-200 text-slate-600'
+                currentStep > 5 ? 'bg-emerald-500 text-white' : currentStep === 5 ? 'bg-[#420f79] text-white ring-[#420f79]/20' : 'bg-slate-200 text-slate-600'
               }`}>
                 {currentStep > 5 ? <Check className="w-4 h-4 stroke-[3]" /> : '5'}
               </div>
-              <span className={`text-xs mt-2 ${currentStep === 5 ? 'font-black text-indigo-700' : 'font-bold text-slate-800'}`}>
+              <span className={`text-xs mt-2 ${currentStep === 5 ? 'font-black text-[#420f79]' : 'font-bold text-slate-800'}`}>
                 {isOnlineOrOnArrival ? '5. e-Visa Clearance' : '5. Submit & Biometrics'}
               </span>
             </div>
@@ -561,7 +789,7 @@ export function VisaApplicationDetailsView({
                       onClick={() => toggleStep(stepNum)}
                       className={`flex items-center justify-between p-4 transition-colors cursor-pointer ${
                         isStepActive 
-                          ? 'bg-indigo-50/40 hover:bg-indigo-50/70' 
+                          ? 'bg-[#420f79]/5 hover:bg-[#420f79]/10' 
                           : 'bg-white hover:bg-slate-50/70'
                       }`}
                     >
@@ -570,7 +798,7 @@ export function VisaApplicationDetailsView({
                           isStepCompleted 
                             ? 'bg-emerald-500 text-white' 
                             : isStepActive 
-                            ? 'bg-indigo-600 text-white' 
+                            ? 'bg-[#420f79] text-white' 
                             : 'border-2 border-slate-300 bg-white'
                         }`}>
                           {isStepCompleted ? (
@@ -580,7 +808,7 @@ export function VisaApplicationDetailsView({
                           ) : null}
                         </div>
                         <div>
-                          <h3 className={`text-xs sm:text-sm font-black ${isStepActive ? 'text-indigo-950' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                          <h3 className={`text-xs sm:text-sm font-black ${isStepActive ? 'text-[#420f79]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
                             {stepNum}. {stepText.split('.')[0]}
                           </h3>
                           <p className="text-[11px] text-slate-500 font-medium">
@@ -594,27 +822,27 @@ export function VisaApplicationDetailsView({
                           isStepCompleted 
                             ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
                             : isStepActive 
-                            ? 'bg-indigo-100 text-indigo-700 border-indigo-200' 
+                            ? 'bg-[#420f79]/10 text-[#420f79] border-[#420f79]/30' 
                             : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}>
                           {isStepCompleted ? 'Completed' : isStepActive ? 'In Progress' : 'Pending'}
                         </span>
                         {isExpanded ? (
-                          <ChevronUp className={`w-4 h-4 ${isStepActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+                          <ChevronUp className={`w-4 h-4 ${isStepActive ? 'text-[#420f79]' : 'text-slate-400'}`} />
                         ) : (
-                          <ChevronDown className={`w-4 h-4 ${isStepActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+                          <ChevronDown className={`w-4 h-4 ${isStepActive ? 'text-[#420f79]' : 'text-slate-400'}`} />
                         )}
                       </div>
                     </div>
 
                     {isExpanded && (
-                      <div className={`p-4 border-t text-xs space-y-2 ${
+                      <div className={`p-4 border-t text-xs space-y-2.5 ${
                         isStepActive ? 'bg-indigo-50/20 border-indigo-100 text-slate-700' : 'bg-slate-50 border-slate-200 text-slate-600'
                       }`}>
                         <p className="leading-relaxed">
                           {stepNum === 1 && `Verify statutory validity for ${destination}: passport must have minimum 6 months validity from intended date of entry and 2 blank visa pages.`}
                           {stepNum === 2 && `Ensure all supporting documents (passport scan, photo, flight booking, accommodation voucher) meet official consulate specifications.`}
-                          {stepNum === 3 && `Dossier details are validated against your passport biodata to guarantee zero discrepancy rejections.`}
+                          {stepNum === 3 && `Dossier details are validated against your passport biodata to prevent discrepancy rejections.`}
                           {stepNum === 4 && `Applicable visa processing & government statutory fees: ${feeDisplay}. ${feeNotes}`}
                           {stepNum === 5 && (
                             isOnlineOrOnArrival 
@@ -623,6 +851,18 @@ export function VisaApplicationDetailsView({
                           )}
                           {stepNum === 6 && `Approved entry visa document or stamped passport will be delivered electronically or via secure courier.`}
                         </p>
+                        {stepNum <= 2 && onOpenVault && (
+                          <div className="pt-1">
+                            <button
+                              type="button"
+                              onClick={onOpenVault}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#420f79] hover:bg-[#521396] active:bg-[#340a4d] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+                            >
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>{readyDocsCount > 0 ? `Manage Vault Documents (${readyDocsCount}/${checklistDocuments.length} Ready) →` : `Upload Required Documents in Vault →`}</span>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -631,99 +871,79 @@ export function VisaApplicationDetailsView({
             </div>
           </div>
 
-          {/* SECTION B: DOCUMENTS REQUIRED CHECKLIST */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4">
+          {/* SECTION B: DOCUMENTS REQUIRED CHECKLIST (COMPACT LAYOUT MATCHING PHOTO 2) */}
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-4 sm:p-6 shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
               <div>
                 <h2 className="text-base sm:text-lg font-black text-slate-950">Documents Required Checklist</h2>
                 <p className="text-xs font-medium text-slate-500 mt-0.5">
-                  Official checklist for {passport} citizens traveling to {destination}
+                  Ensure all documents are available and meet the requirements
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">
                   {readyDocsCount}/{checklistDocuments.length} Ready
                 </span>
+                <button
+                  type="button"
+                  onClick={() => setShowGuidelinesModal(true)}
+                  className="text-xs font-bold text-[#420f79] hover:text-[#521396] hover:underline inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>View Document Guidelines</span>
+                </button>
               </div>
             </div>
 
-            {/* Checklist Table */}
+            {/* Checklist Table - Sleek Single-Line Compact Rows */}
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                    <th className="py-2.5 px-3">Required Document</th>
-                    <th className="py-2.5 px-3">Official Requirement</th>
-                    <th className="py-2.5 px-3 text-center">Status</th>
-                    <th className="py-2.5 px-3 text-center">Verified Ready</th>
+                  <tr className="border-b border-slate-100 text-[11px] uppercase font-bold text-slate-400 tracking-wider">
+                    <th className="py-2.5 px-3 md:w-[40%]">DOCUMENT</th>
+                    <th className="py-2.5 px-3 hidden md:table-cell md:w-[45%]">REQUIREMENT</th>
+                    <th className="py-2.5 px-3 text-right md:text-center whitespace-nowrap">READY TO USE</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {checklistDocuments.map((doc, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-3 px-3">
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                          <div>
-                            <span className="font-bold text-slate-900 block">{doc.name}</span>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              {doc.mandatory && (
-                                <span className="text-[10px] font-extrabold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Mandatory</span>
-                              )}
-                              {doc.matchedFileName && (
-                                <span className="text-[10px] font-medium text-slate-400 truncate max-w-[140px]" title={doc.matchedFileName}>
-                                  📁 {doc.matchedFileName}
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                    <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
+                      {/* 1. DOCUMENT */}
+                      <td className="py-2.5 px-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          {getDocumentChecklistIcon(doc.name)}
+                          <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
+                            {getCleanShortTitle(doc.name)}
+                          </span>
                         </div>
                       </td>
-                      <td className="py-3 px-3 text-slate-600 font-medium">
-                        {doc.req}
+
+                      {/* 2. REQUIREMENT (Hidden on mobile) */}
+                      <td className="py-2.5 px-3 text-slate-600 font-medium text-xs hidden md:table-cell">
+                        <span className="truncate block max-w-xs sm:max-w-md">
+                          {getCleanShortRequirement(doc.req, doc.name)}
+                        </span>
                       </td>
-                      <td className="py-3 px-3 text-center">
-                        {doc.isVerified ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-200 shadow-2xs">
-                            <Check className="w-3 h-3 stroke-[3]" /> Verified
-                          </span>
-                        ) : doc.isUploaded ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-bold text-[11px] border border-blue-200">
-                            In Vault
-                          </span>
-                        ) : doc.isManuallyChecked ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px] border border-slate-200">
-                            Prepared
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
-                            Pending Upload
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-3 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <label className="flex items-center gap-1 cursor-pointer" title="Toggle physical document readiness">
-                            <input
-                              type="checkbox"
-                              checked={doc.isReady}
-                              onChange={(e) => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: e.target.checked }))}
-                              className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 border-slate-300 cursor-pointer"
-                            />
-                            {doc.isReady ? (
-                              <span className="text-[11px] font-extrabold text-emerald-700">Ready</span>
-                            ) : (
-                              <span className="text-[11px] font-bold text-slate-400">Not Ready</span>
-                            )}
-                          </label>
-                          {!doc.isUploaded && onOpenVault && (
+
+                      {/* 3. READY TO USE (Square format checkbox) */}
+                      <td className="py-2.5 px-3 text-right md:text-center align-middle">
+                        <div className="flex items-center justify-end md:justify-center">
+                          {doc.isReady ? (
                             <button
                               type="button"
-                              onClick={onOpenVault}
-                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[10px] transition-colors cursor-pointer border border-indigo-100"
+                              onClick={() => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: false }))}
+                              title="Ready to use (Click to uncheck)"
+                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md bg-emerald-500 text-white border border-emerald-600 shadow-2xs hover:scale-105 transition-all flex items-center justify-center shrink-0 cursor-pointer"
                             >
-                              <span>Upload</span>
-                              <ArrowRight className="w-3 h-3" />
+                              <Check className="w-3.5 h-3.5 stroke-[3]" />
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: true }))}
+                              title="Not ready yet (Click when document is prepared)"
+                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md border-2 border-amber-400 bg-amber-50/40 hover:border-emerald-500 hover:bg-emerald-50/60 hover:scale-105 transition-all flex items-center justify-center shrink-0 cursor-pointer shadow-2xs"
+                            >
                             </button>
                           )}
                         </div>
@@ -735,40 +955,42 @@ export function VisaApplicationDetailsView({
             </div>
 
             {/* Checklist Legend */}
-            <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-slate-500">
-              <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
-                  <Check className="w-2.5 h-2.5 stroke-[3]" /> Verified
+            <div className="flex flex-wrap items-center gap-6 pt-3.5 border-t border-slate-100 text-xs font-semibold text-slate-600">
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-md bg-emerald-500 text-white border border-emerald-600 flex items-center justify-center shadow-2xs shrink-0">
+                  <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </span>
-                <span>Scanned &amp; Validated in Vault</span>
+                <span>Ready to Use</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold">
-                  In Vault
-                </span>
-                <span>File Uploaded</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold">
-                  Pending Upload
-                </span>
-                <span>Action Required</span>
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-md border-2 border-amber-400 bg-amber-50/40 shrink-0" />
+                <span>Pending Preparation</span>
               </div>
             </div>
 
-            {/* Declaration & Terms Box */}
-            <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 space-y-2">
-              <label className="flex items-start gap-2.5 cursor-pointer">
+            {/* Declaration & Terms Box Matching Photo 2 */}
+            <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 space-y-1.5">
+              <label className="flex items-start gap-3 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={confirmedDeclaration}
                   onChange={(e) => setConfirmedDeclaration(e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded mt-0.5 focus:ring-emerald-500"
+                  className="w-4 h-4 text-emerald-600 rounded mt-0.5 focus:ring-emerald-500 border-emerald-300 cursor-pointer"
                 />
                 <span className="text-xs font-bold text-slate-800 leading-relaxed">
-                  I confirm that all uploaded travel and identity documents are authentic and fulfill the official immigration standards of {destination}.
+                  I confirm that all the above documents are true, valid and ready to be used as per the terms and conditions of the embassy/consulate.
                 </span>
               </label>
+              <div className="pl-7">
+                <button
+                  type="button"
+                  onClick={() => setShowGuidelinesModal(true)}
+                  className="text-[11px] font-bold text-teal-700 hover:text-teal-800 underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <span>View Terms &amp; Conditions</span>
+                  <Info className="w-3 h-3" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -861,40 +1083,33 @@ export function VisaApplicationDetailsView({
           </div>
 
           {/* 2. IMPORTANT ROUTE REMINDERS CARD */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-4">
-            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Route Directives</h3>
+          <div className="bg-[#f2f7ff] rounded-2xl border border-blue-100/80 p-4 sm:p-5 shadow-2xs space-y-3.5">
+            <h3 className="text-sm font-bold text-[#0a3871] tracking-tight">Important Reminders</h3>
 
-            <div className="space-y-3.5">
+            <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Calendar className="w-4 h-4" />
-                </div>
+                <Calendar className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[11px] font-bold text-slate-400 block">Appointment Protocol</span>
-                  <strong className="text-xs font-black text-slate-900 block mt-0.5">{appointmentDisplay}</strong>
+                  <span className="text-xs font-semibold text-[#0a3871] block">Appointment Date</span>
+                  <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">{appointmentDisplay}</strong>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                  <CreditCard className="w-4 h-4" />
-                </div>
+                <CircleDollarSign className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[11px] font-bold text-slate-400 block">Applicable Visa Fee</span>
-                  <strong className="text-xs font-black text-slate-900 block mt-0.5">{feeDisplay}</strong>
-                  {feeNotes && (
-                    <span className="text-[10px] text-slate-500 block mt-0.5 leading-snug">{feeNotes}</span>
-                  )}
+                  <span className="text-xs font-semibold text-[#0a3871] block">
+                    {isFeePaid || currentStep >= 4 ? 'Visa Fee Paid' : 'Visa Fee'}
+                  </span>
+                  <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">{feeDisplay}</strong>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                  <Clock className="w-4 h-4" />
-                </div>
+                <Clock className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[11px] font-bold text-slate-400 block">Adjudication / Decision Time</span>
-                  <strong className="text-xs font-black text-slate-900 block mt-0.5">{processingTimeDisplay}</strong>
+                  <span className="text-xs font-semibold text-[#0a3871] block">Processing Time</span>
+                  <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">{cleanProcessingTime}</strong>
                 </div>
               </div>
             </div>

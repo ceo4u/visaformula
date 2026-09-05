@@ -46,7 +46,7 @@ export function CTASection() {
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 sm:flex-shrink-0">
             {[
               { Icon: Lock, label: 'Secure &\nEncrypted' },
-              { Icon: Shield, label: 'Privacy\nGuaranteed' },
+              { Icon: Shield, label: 'Privacy\nProtected' },
               { Icon: CheckCircle, label: '100% Confidential\nConsultations' },
             ].map(({ Icon, label }, i) => (
               <div key={i} className="flex flex-col items-center gap-2 border border-white/30 rounded-xl px-4 sm:px-5 py-3 text-center flex-1 min-w-[90px]">

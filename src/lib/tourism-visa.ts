@@ -639,15 +639,11 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'mauritius': [
-      { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended stay with 2 blank pages.', is_mandatory: true },
-      { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Mauritius within 60 days.', is_mandatory: true },
-      { title: 'Proof of Accommodation', description: 'Hotel booking voucher or host invitation letter.', is_mandatory: true },
-      { title: 'Mauritius All-in-One Digital Form', description: 'Mandatory online entry form at safetravel.govmu.org prior to departure.', is_mandatory: true },
-      { title: 'Sufficient Funds Proof', description: 'Minimum USD $100 / EUR €100 / MUR 4,000 per day of stay.', is_mandatory: false },
-      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
-      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
-      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
-      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
+      { title: 'Original Valid Passport', description: 'Original passport valid for at least 6 months beyond travel dates with minimum 2 blank pages.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip airline ticket departing Mauritius within 60 days.', is_mandatory: true },
+      { title: 'Confirmed Hotel Booking / Accommodation', description: 'Verified hotel reservation voucher or official host invitation letter in Mauritius.', is_mandatory: true },
+      { title: 'Mauritius All-in-One Digital Travel Form', description: 'Mandatory online entry form filled at safetravel.govmu.org before departure (save the generated QR code).', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Access to funds (cash, credit cards, or bank statements showing minimum USD $100 per day of stay).', is_mandatory: false }
     ],
     'maldives': [
       { title: 'Valid Passport', description: 'Valid for at least 1 month (recommended 6 months) with machine-readable zone.', is_mandatory: true },
@@ -3070,7 +3066,9 @@ export function getTourismVisaData(
     passport_country: from,
     destination_country: countryName,
     purpose_of_visit: 'Tourism / Vacation',
-    visa_type: `${countryName} Tourist Visa`,
+    visa_type: ['mauritius', 'thailand', 'malaysia', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles'].includes(c)
+      ? `${countryName} Visa-Free Entry (On-Arrival Permit)`
+      : `${countryName} Tourist Visa`,
     source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' tourist visa official consular requirements')}`,
     official_source_name: officialSource,
 

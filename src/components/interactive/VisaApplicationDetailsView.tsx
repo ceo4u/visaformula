@@ -149,6 +149,15 @@ function parseStepText(text: string, index: number): { title: string; descriptio
     url = `https://${url}`;
   }
 
+  if (clean.includes(' — ')) {
+    const parts = clean.split(' — ');
+    return {
+      title: parts[0].trim() || `Step ${index + 1}`,
+      description: parts.slice(1).join(' — ').trim() || clean,
+      url
+    };
+  }
+
   if (clean.includes(':')) {
     const colonIdx = clean.indexOf(':');
     const title = clean.substring(0, colonIdx).trim();
@@ -260,8 +269,36 @@ export function VisaApplicationDetailsView({
     return () => { isMounted = false; };
   }, [destination, passport, purpose]);
 
+  const isVisaFree = useMemo(() => {
+    const dest = (destination || '').toLowerCase();
+    const pass = (passport || '').toLowerCase();
+    const isInd = pass.includes('india') || pass.includes('indian');
+    return (
+      (application?.visaType || '').toLowerCase().includes('free') ||
+      (routeData?.visa_type || '').toLowerCase().includes('free') ||
+      (isInd && (
+        dest.includes('mauritius') ||
+        dest.includes('maldives') ||
+        dest.includes('thailand') ||
+        dest.includes('malaysia') ||
+        dest.includes('nepal') ||
+        dest.includes('bhutan') ||
+        dest.includes('seychelles') ||
+        dest.includes('jamaica')
+      ))
+    );
+  }, [destination, passport, application?.visaType, routeData?.visa_type]);
+
   // Derived real details
-  const resolvedVisaType = routeData?.visa_type || application?.visaType || `${destination} Tourist / Visitor Visa`;
+  const resolvedVisaType = useMemo(() => {
+    if (isVisaFree) {
+      if (destination.toLowerCase().includes('mauritius')) {
+        return 'Mauritius Visa-Free Entry (60-Day Permit on Arrival)';
+      }
+      return `${destination} Visa-Free Entry (On-Arrival Permit)`;
+    }
+    return routeData?.visa_type || application?.visaType || `${destination} Tourist / Visitor Visa`;
+  }, [isVisaFree, destination, routeData?.visa_type, application?.visaType]);
   
   // Real dates without hardcoded dummy values
   const appliedDate = (application?.submittedAt && application.submittedAt !== 'Active' && application.submittedAt !== 'Recently')
@@ -293,14 +330,28 @@ export function VisaApplicationDetailsView({
     } catch (_) {}
     return returnDate;
   }, [travelDate, returnDate]);
-  const entries = application?.entries || (destination.toLowerCase().includes('emirates') ? 'Single / 30-Day Multiple' : 'Single Entry');
+
+  const entries = useMemo(() => {
+    if (isVisaFree) {
+      if (destination.toLowerCase().includes('mauritius')) {
+        return 'Visa-Free on Arrival (60 Days Free Entry)';
+      }
+      return 'Visa-Free Entry on Arrival';
+    }
+    return application?.entries || routeData?.entry_type || (destination.toLowerCase().includes('emirates') ? 'Single / 30-Day Multiple' : 'Single Entry');
+  }, [isVisaFree, destination, application?.entries, routeData?.entry_type]);
   
   // Fee and Processing Time
-  const feeDisplay = routeData?.costs?.total_fee || routeData?.costs?.visa_fee || application?.feePaid || getRouteStatutoryFee(destination);
-  const feeNotes = routeData?.costs?.notes || '';
-  const processingTimeDisplay = routeData?.processing_time || routeData?.processing_and_timing?.decision_time || application?.processingTime || getRouteStatutoryTime(destination);
+  const feeDisplay = isVisaFree
+    ? '₹0 (Free / No Consular Fee)'
+    : (routeData?.costs?.total_fee || routeData?.costs?.visa_fee || application?.feePaid || getRouteStatutoryFee(destination));
+  const feeNotes = isVisaFree ? 'Zero consular fees for Indian citizens on arrival' : (routeData?.costs?.notes || '');
+  const processingTimeDisplay = isVisaFree
+    ? 'Instant on Arrival (0 Days)'
+    : (routeData?.processing_time || routeData?.processing_and_timing?.decision_time || application?.processingTime || getRouteStatutoryTime(destination));
 
   const cleanProcessingTime = useMemo(() => {
+    if (isVisaFree) return 'Instant on Arrival (0 Days)';
     if (!processingTimeDisplay) return '15 - 20 Working Days';
     const s = processingTimeDisplay.trim();
     if (s.toLowerCase().includes('15') && s.toLowerCase().includes('45')) {
@@ -314,10 +365,11 @@ export function VisaApplicationDetailsView({
       .replace(/\s*\(Priority Available\)/gi, '')
       .replace(/\s*\(Instant on Arrival\)/gi, '')
       .trim();
-  }, [processingTimeDisplay]);
+  }, [isVisaFree, processingTimeDisplay]);
 
   // Route type checks
   const isOnlineOrOnArrival = 
+    isVisaFree ||
     (resolvedVisaType || destination || '').toLowerCase().includes('e-visa') ||
     (resolvedVisaType || destination || '').toLowerCase().includes('evisa') ||
     (resolvedVisaType || destination || '').toLowerCase().includes('free') ||
@@ -328,14 +380,6 @@ export function VisaApplicationDetailsView({
     destination.toLowerCase().includes('mauritius') ||
     destination.toLowerCase().includes('maldives') ||
     destination.toLowerCase().includes('singapore');
-
-  const isVisaFree = 
-    (resolvedVisaType || '').toLowerCase().includes('free') ||
-    (destination.toLowerCase().includes('mauritius') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
-    (destination.toLowerCase().includes('maldives') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
-    (destination.toLowerCase().includes('thailand') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
-    (destination.toLowerCase().includes('nepal') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian'))) ||
-    (destination.toLowerCase().includes('bhutan') && (passport.toLowerCase().includes('india') || passport.toLowerCase().includes('indian')));
 
   const appointmentRequired = !isOnlineOrOnArrival && !isVisaFree;
   const appointmentDisplay = isVisaFree

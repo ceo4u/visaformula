@@ -4171,7 +4171,7 @@ export function VisaCountryResultPortal({
     } catch(e) {}
   };
 
-  const [checklistSyncedToast, setChecklistSyncedToast] = useState<{ show: boolean; msg: string; trackingId: string } | null>(null);
+  const [checklistSyncedToast, setChecklistSyncedToast] = useState<{ show: boolean; msg: string; trackingId: string; caseId?: string } | null>(null);
   const [showLoginRequiredModal, setShowLoginRequiredModal] = useState(false);
 
   const checkIsUserLoggedIn = () => {
@@ -4495,25 +4495,7 @@ export function VisaCountryResultPortal({
           localStorage.setItem(`active_visa_cases_${userEmail}`, JSON.stringify(updatedCases));
         }
 
-        // 3. PRE-POPULATE DOCUMENT VAULT CHECKLIST STATE FOR THIS DESTINATION
-        const storageKey = `vault_checklist_${countryName}`.replace(/\s+/g, '_').toLowerCase();
-        const existingVault = JSON.parse(localStorage.getItem(storageKey) || '{}');
-        rawDocs.forEach((d: any) => {
-          const docKey = d.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
-          if (!existingVault[docKey]) {
-            existingVault[docKey] = {
-              title: d.title,
-              description: d.description,
-              is_mandatory: d.isMandatory !== false,
-              status: 'pending',
-              verified: false,
-              category: d.isMandatory !== false ? 'Mandatory Consular Document' : 'Supporting Evidence'
-            };
-          }
-        });
-        localStorage.setItem(storageKey, JSON.stringify(existingVault));
-
-        // 4. SYNC ACTIVE TRAVEL PROFILE & USER JOURNEY
+        // 3. SYNC ACTIVE TRAVEL PROFILE & USER JOURNEY
         localStorage.setItem('active_travel_profile', JSON.stringify({
           destination: countryName,
           destinationFlag: flagEmoji,
@@ -4541,13 +4523,19 @@ export function VisaCountryResultPortal({
         // Trigger storage event so dashboard tabs reactively update
         window.dispatchEvent(new Event('storage'));
         window.dispatchEvent(new CustomEvent('travltik_visa_synced', { detail: newCase }));
+
+        // 4. AUTOMATICALLY REDIRECT TO DOCUMENTS REQUIRED UNDER VISA APPLICATIONS
+        setTimeout(() => {
+          window.location.href = `/traveller/dashboard?tab=cases&appId=${caseId}#documents-required-section`;
+        }, 700);
       }
 
       // 5. SHOW CONFIRMATION TOAST
       setChecklistSyncedToast({
         show: true,
         msg: `Official ${countryName} Checklist PDF downloaded & application synced to your Dashboard!`,
-        trackingId
+        trackingId,
+        caseId: caseId
       });
 
       setTimeout(() => {
@@ -11281,10 +11269,10 @@ export function VisaCountryResultPortal({
             </div>
           </div>
           <a
-            href="/traveller/dashboard?tab=cases"
+            href={checklistSyncedToast.caseId ? `/traveller/dashboard?tab=cases&appId=${checklistSyncedToast.caseId}#documents-required-section` : "/traveller/dashboard?tab=cases"}
             className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs text-center shrink-0 transition-colors shadow-xs"
           >
-            View Applications →
+            View Required Documents →
           </a>
         </div>
       )}

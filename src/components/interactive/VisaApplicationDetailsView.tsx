@@ -269,6 +269,21 @@ export function VisaApplicationDetailsView({
     return () => { isMounted = false; };
   }, [destination, passport, purpose]);
 
+  // Smooth scroll to Documents Required Checklist if targeted via navigation
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isTargeted = window.location.hash === '#documents-required-section' || window.location.search.includes('appId=');
+      if (isTargeted) {
+        setTimeout(() => {
+          const el = document.getElementById('documents-required-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 400);
+      }
+    }
+  }, [application?.id]);
+
   const isVisaFree = useMemo(() => {
     const dest = (destination || '').toLowerCase();
     const pass = (passport || '').toLowerCase();
@@ -1042,7 +1057,7 @@ export function VisaApplicationDetailsView({
           </div>
 
           {/* SECTION B: DOCUMENTS REQUIRED CHECKLIST (COMPACT LAYOUT MATCHING PHOTO 2) */}
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-4 sm:p-6 shadow-xs space-y-4">
+          <div id="documents-required-section" className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-4 sm:p-6 shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
               <div>
                 <h2 className="text-base sm:text-lg font-black text-slate-950">Documents Required Checklist</h2>

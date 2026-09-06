@@ -50,7 +50,7 @@ const STAGES = [
 ];
 
 export const MyApplications: React.FC<MyApplicationsProps> = ({
-  applications = [defaultDemoCase],
+  applications = [],
   onViewAll,
   onSelectApplication,
   onApplyNew,
@@ -58,8 +58,23 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
   const hasApps = applications && applications.length > 0;
   const activeApp = hasApps ? applications[0] : null;
 
-  // Determine current active step (default to step 2 for in-progress demo)
-  const currentStep = 2; // Step 1 and 2 completed, step 3 next
+  // Determine current active step dynamically based on application progress or status
+  const currentStep = React.useMemo(() => {
+    if (!activeApp) return 1;
+    if (typeof activeApp.progress === 'number') {
+      if (activeApp.progress >= 90) return 5;
+      if (activeApp.progress >= 70) return 4;
+      if (activeApp.progress >= 50) return 3;
+      if (activeApp.progress >= 25) return 2;
+      return 1;
+    }
+    const st = (activeApp.stage || activeApp.status || '').toLowerCase();
+    if (st.includes('decision') || st.includes('approved') || st.includes('issued')) return 5;
+    if (st.includes('appointment') || st.includes('scheduled')) return 4;
+    if (st.includes('payment') || st.includes('paid')) return 3;
+    if (st.includes('verification') || st.includes('vault') || st.includes('review') || st.includes('synced')) return 2;
+    return 1;
+  }, [activeApp]);
 
   return (
     <section id="my-applications" className="space-y-3.5">
@@ -131,7 +146,7 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium flex-wrap">
                   <span>Application ID: <strong className="text-slate-700">{activeApp.trackingId}</strong></span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-slate-400">Applied on: {activeApp.submittedAt || activeApp.appliedDate || '10 May 2025'}</span>
+                  <span className="text-slate-400">Applied on: {activeApp.submittedAt || activeApp.appliedDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </div>
               </div>
             </div>

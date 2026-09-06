@@ -233,8 +233,24 @@ export function useDashboardState() {
           const parsedCases = JSON.parse(activeCasesStr);
           if (Array.isArray(parsedCases) && parsedCases.length > 0) {
             appHook.setVisasProcessingState(parsedCases);
+            const params = new URLSearchParams(window.location.search);
+            const targetAppId = params.get("appId");
+            if (targetAppId) {
+              const matched = parsedCases.find((c: any) => c.id === targetAppId);
+              if (matched) {
+                appHook.setSelectedApplicationId(matched.id);
+              } else {
+                appHook.setSelectedApplicationId(targetAppId);
+              }
+            }
           }
         } catch(e) {}
+      } else {
+        const params = new URLSearchParams(window.location.search);
+        const targetAppId = params.get("appId");
+        if (targetAppId) {
+          appHook.setSelectedApplicationId(targetAppId);
+        }
       }
 
       const savedProfileStr = localStorage.getItem("active_travel_profile");

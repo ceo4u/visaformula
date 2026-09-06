@@ -32,6 +32,20 @@ export default function RegisterStart() {
 
       // Save user session in localStorage for frontend continuity
       if (typeof window !== "undefined") {
+        // Clean slate for newly registered user
+        localStorage.removeItem("active_visa_cases");
+        localStorage.removeItem("seeker_documents");
+        localStorage.removeItem("visa_readiness_assessment");
+        localStorage.removeItem("travltik_user_journey");
+        localStorage.removeItem("booked_consultations");
+        try {
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith("vault_checklist_") || key.startsWith("audit_") || key.startsWith("active_visa_cases_")) {
+              localStorage.removeItem(key);
+            }
+          });
+        } catch(e) {}
+
         if (data.user) {
           localStorage.setItem("travltik_user", JSON.stringify(data.user));
         }

@@ -53,20 +53,16 @@ export function DashboardOverview({
     ? visasProcessingState.map((v: any, idx: number) => ({
         id: v.id || `case-${idx}`,
         trackingId: v.trackingId || `TT${Math.floor(100000 + Math.random() * 900000)}`,
-        destination: v.destination || 'France',
-        destinationFlag: v.destinationFlag || '🇫🇷',
-        visaType: v.visaType || `${v.destination || 'Schengen'} Tourist Visa`,
+        destination: v.destination || 'Destination',
+        destinationFlag: v.destinationFlag || '✈️',
+        visaType: v.visaType || `${v.destination || ''} Visa`,
         status: v.status || 'In Progress',
         stage: v.stage || 'Document Verification',
-        progress: typeof v.progress === 'number' ? v.progress : 40,
-        submittedAt: v.submittedAt || v.appliedDate || '10 May 2025',
-        thumbnailUrl:
-          v.thumbnailUrl ||
-          (v.destination?.toLowerCase().includes('france') || v.visaType?.toLowerCase().includes('schengen')
-            ? 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=400&q=80'
-            : 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=80')
+        progress: typeof v.progress === 'number' ? v.progress : 25,
+        submittedAt: v.submittedAt || v.appliedDate || 'Recently',
+        thumbnailUrl: v.thumbnailUrl || ''
       }))
-    : [defaultDemoCase];
+    : [];
 
   // Quick Access navigation router
   const handleQuickAccessClick = (item: QuickAccessItem) => {
@@ -83,7 +79,46 @@ export function DashboardOverview({
     }
   };
 
-  const calculatedScore = comprehensiveAuditMetrics?.score ? comprehensiveAuditMetrics.score : 72;
+  const isUnselected = comprehensiveAuditMetrics?.isUnselected ?? true;
+  const calculatedScore = (!isUnselected && comprehensiveAuditMetrics?.score) ? comprehensiveAuditMetrics.score : 0;
+
+  const pillars = (comprehensiveAuditMetrics as any)?.pillars || [];
+  let completedSteps = 0;
+  let inProgressCount = 0;
+  let notStartedCount = 0;
+
+  if (isUnselected || pillars.length === 0) {
+    completedSteps = 0;
+    inProgressCount = 0;
+    notStartedCount = 11;
+  } else {
+    pillars.forEach((p: any) => {
+      if (p.score === p.max && p.score > 0) {
+        completedSteps++;
+      } else if (p.score > 0) {
+        inProgressCount++;
+      } else {
+        notStartedCount++;
+      }
+    });
+  }
+  const pendingCount = (comprehensiveAuditMetrics?.missingProofs?.length && !isUnselected)
+    ? Math.min(comprehensiveAuditMetrics.missingProofs.length, Math.max(0, 11 - completedSteps - inProgressCount))
+    : 0;
+
+  // Check for real booked consultation in localStorage
+  const upcomingConsultation = typeof window !== 'undefined' ? (() => {
+    try {
+      const saved = localStorage.getItem('travltik_consultations') || localStorage.getItem('booked_consultations') || localStorage.getItem('user_consultations');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0];
+        }
+      }
+    } catch (_) {}
+    return null;
+  })() : null;
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-up">
@@ -93,21 +128,22 @@ export function DashboardOverview({
         <div className="lg:col-span-8">
           <VisaReadinessCard
             score={calculatedScore}
-            completedSteps={8}
+            completedSteps={completedSteps}
             totalSteps={11}
-            inProgressCount={2}
-            pendingCount={1}
-            notStartedCount={0}
+            inProgressCount={inProgressCount}
+            pendingCount={pendingCount}
+            notStartedCount={notStartedCount}
             onViewDetails={() => setActiveTab('readiness')}
-            onContinueChecklist={() => setActiveTab('vault')}
+            onContinueChecklist={() => setActiveTab(formattedApps.length > 0 ? 'cases' : 'readiness')}
           />
         </div>
 
         {/* Upcoming Appointment Card (4 cols) */}
         <div className="lg:col-span-4">
           <UpcomingAppointment
-            title="Document Verification with Visa Expert"
-            dateTime="24 May 2025, 11:00 AM"
+            hasAppointment={Boolean(upcomingConsultation)}
+            title={upcomingConsultation?.serviceName || upcomingConsultation?.title || "No Consultations Scheduled"}
+            dateTime={upcomingConsultation?.dateTime || upcomingConsultation?.date || ""}
             onViewAppointment={() => setActiveTab('consultations')}
           />
         </div>

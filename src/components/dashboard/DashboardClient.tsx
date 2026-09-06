@@ -17,20 +17,20 @@ import { Home, Briefcase, FileText, MessageSquare, User, X, CheckCircle2, Calend
 
 export const DashboardClient: React.FC = () => {
   // ── 1. USER PROFILE STATE ──
-  const [userName, setUserName] = useState<string>('Arjun Sharma');
+  const [userName, setUserName] = useState<string>('Traveler');
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPhoto, setUserPhoto] = useState<string | null>(null);
-  const [unreadNotifications, setUnreadNotifications] = useState<number>(3);
+  const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // ── 2. DATA SYNCHRONIZATION STATE ──
-  const [applications, setApplications] = useState<ApplicationCase[]>([defaultDemoCase]);
-  const [readinessScore, setReadinessScore] = useState<number>(72);
-  const [completedSteps, setCompletedSteps] = useState<number>(8);
+  const [applications, setApplications] = useState<ApplicationCase[]>([]);
+  const [readinessScore, setReadinessScore] = useState<number>(0);
+  const [completedSteps, setCompletedSteps] = useState<number>(0);
   const [totalSteps, setTotalSteps] = useState<number>(11);
-  const [inProgressSteps, setInProgressSteps] = useState<number>(2);
-  const [pendingSteps, setPendingSteps] = useState<number>(1);
-  const [notStartedSteps, setNotStartedSteps] = useState<number>(0);
+  const [inProgressSteps, setInProgressSteps] = useState<number>(0);
+  const [pendingSteps, setPendingSteps] = useState<number>(0);
+  const [notStartedSteps, setNotStartedSteps] = useState<number>(11);
 
   // ── 3. MODALS & ACTIVE DRAWER STATE ──
   const [showAppointmentModal, setShowAppointmentModal] = useState<boolean>(false);
@@ -88,7 +88,7 @@ export const DashboardClient: React.FC = () => {
             status: c.status || 'In Progress',
             stage: c.stage || 'Document Verification',
             progress: typeof c.progress === 'number' ? c.progress : 40,
-            submittedAt: c.submittedAt || c.appliedDate || '10 May 2025',
+            submittedAt: c.submittedAt || c.appliedDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
             thumbnailUrl:
               c.thumbnailUrl ||
               (c.destination?.toLowerCase().includes('france') || c.visaType?.toLowerCase().includes('schengen')
@@ -96,7 +96,11 @@ export const DashboardClient: React.FC = () => {
                 : 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=80'),
           }));
           setApplications(formattedCases);
+        } else {
+          setApplications([]);
         }
+      } else {
+        setApplications([]);
       }
 
       // Compute readiness from checklists if available

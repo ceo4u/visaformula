@@ -94,35 +94,35 @@ export const globalTravelDocuments: VaultDocItem[] = [
 export const defaultVaultList: VaultDocItem[] = [
   {
     key: 'statutory_passport',
-    title: 'Valid Passport',
-    description: 'Valid biometric machine-readable passport with at least 6 months validity from departure date.',
+    title: 'Passport',
+    description: 'Current valid passport bio-data page (front & back) with clear machine-readable MRZ zone and minimum 6 months validity.',
     icon: '📘',
     mandatory: true,
     hint: 'Front & back booklet pages with clear MRZ zone'
   },
   {
-    key: 'statutory_photos',
-    title: 'Biometric Passport Photos (35×45mm)',
-    description: 'Recent color biometric photographs conforming to international travel standards.',
-    icon: '📸',
+    key: 'statutory_national_id',
+    title: 'National ID Card',
+    description: 'Government-issued national identity card (Aadhaar Card, Citizen ID, State ID, or PAN Card) verifying citizenship and identity.',
+    icon: '🪪',
     mandatory: false,
-    hint: 'White background, neutral facial expression'
+    hint: 'Aadhaar, Citizen ID, State ID or National ID'
   },
   {
-    key: 'statutory_accommodation',
-    title: 'Proof of Accommodation / Hotel Stay',
-    description: 'Confirmed hotel booking voucher, rental agreement, or official host invitation.',
-    icon: '🏨',
+    key: 'statutory_education',
+    title: 'Educational Documents',
+    description: 'Official university degrees, high school marksheets, college diplomas, or certified academic transcripts.',
+    icon: '🎓',
     mandatory: false,
-    hint: 'Hotel reservation voucher or host declaration'
+    hint: 'Degree certificates, marksheets & transcripts'
   },
   {
-    key: 'statutory_employment',
-    title: 'Employment Proof / Salary Slips',
-    description: 'Official employer letter, salary slips, or business registration certificate.',
+    key: 'statutory_income',
+    title: 'Income Proofs',
+    description: 'Certified 6-month bank statements, latest salary payslips, Form 16, Income Tax Returns (ITR), or business financial records.',
     icon: '💼',
     mandatory: false,
-    hint: 'Proof of occupation or business'
+    hint: 'Bank statements, salary slips & ITR tax filings'
   }
 ];
 

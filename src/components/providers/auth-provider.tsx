@@ -291,6 +291,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(realUser);
 
         if (typeof window !== "undefined") {
+            if (mode === 'signup' || data.isNewUser) {
+                localStorage.removeItem("active_visa_cases");
+                localStorage.removeItem("seeker_documents");
+                localStorage.removeItem("visa_readiness_assessment");
+                localStorage.removeItem("travltik_user_journey");
+                localStorage.removeItem("booked_consultations");
+                try {
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith("vault_checklist_") || key.startsWith("audit_") || key.startsWith("active_visa_cases_")) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                } catch(e) {}
+            }
             localStorage.setItem('travltik_user', JSON.stringify(realUser));
             if (realUser.type === 'expert') {
                 localStorage.setItem('expert_isLoggedIn', 'true');

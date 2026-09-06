@@ -21,7 +21,13 @@ export function useApplications({
   showToastMsg?: (msg: string) => void;
 }) {
   const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
-  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
+  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("appId") || null;
+    }
+    return null;
+  });
 
   // Application naming & creation modal states
   const [showNewAppModal, setShowNewAppModal] = useState(false);

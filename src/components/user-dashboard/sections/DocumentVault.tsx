@@ -360,14 +360,47 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                         Boolean(d.docNumber && /^[A-Z][0-9]{7,8}$/i.test(d.docNumber)) ||
                         Boolean(d.ocrData?.documentNumber && /^[A-Z][0-9]{7,8}$/i.test(d.ocrData.documentNumber));
                 }
-                if (req.key === 'statutory_national_id') return (dType === 'id' && !dTitleL.includes('pan')) || dTitleL.includes('aadhaar') || (dTitleL.includes('identity') && !dTitleL.includes('pan'));
-                if (req.key === 'statutory_tax_id') return dTitleL.includes('pan') || dTitleL.includes('tax');
-                if (req.key === 'statutory_financial') return dType === 'bank' || dTitleL.includes('bank') || dTitleL.includes('statement');
-                if (req.key === 'statutory_photos') return dTitleL.includes('photo');
-                if (req.key === 'statutory_insurance') return dType === 'insurance' || dTitleL.includes('insurance');
-                if (req.key === 'statutory_flight') return dType === 'flight' || dTitleL.includes('flight') || dTitleL.includes('ticket');
-                if (req.key === 'statutory_accommodation') return dTitleL.includes('hotel') || dTitleL.includes('accommodation');
-                if (req.key === 'statutory_employment') return dTitleL.includes('employment') || dTitleL.includes('salary');
+                if (req.key === 'statutory_national_id') {
+                    return dType === 'id' ||
+                        dTitleL.includes('aadhaar') ||
+                        dTitleL.includes('aadhar') ||
+                        dTitleL.includes('national id') ||
+                        dTitleL.includes('national_id') ||
+                        dTitleL.includes('citizen') ||
+                        dTitleL.includes('state id') ||
+                        dTitleL.includes('identity') ||
+                        dTitleL.includes('id card') ||
+                        dTitleL.includes('pan card') ||
+                        dTitleL.includes('pan');
+                }
+                if (req.key === 'statutory_education') {
+                    return dType === 'education' ||
+                        dTitleL.includes('degree') ||
+                        dTitleL.includes('transcript') ||
+                        dTitleL.includes('marksheet') ||
+                        dTitleL.includes('diploma') ||
+                        dTitleL.includes('education') ||
+                        dTitleL.includes('certificate') ||
+                        dTitleL.includes('academic') ||
+                        dTitleL.includes('school') ||
+                        dTitleL.includes('college') ||
+                        dTitleL.includes('university');
+                }
+                if (req.key === 'statutory_income' || req.key === 'statutory_financial') {
+                    return dType === 'bank' ||
+                        dType === 'income' ||
+                        dTitleL.includes('bank') ||
+                        dTitleL.includes('statement') ||
+                        dTitleL.includes('salary') ||
+                        dTitleL.includes('payslip') ||
+                        dTitleL.includes('pay slip') ||
+                        dTitleL.includes('itr') ||
+                        dTitleL.includes('tax') ||
+                        dTitleL.includes('income') ||
+                        dTitleL.includes('form 16') ||
+                        dTitleL.includes('financial') ||
+                        dTitleL.includes('solvency');
+                }
                 return false;
             });
         }
@@ -378,32 +411,21 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
 
         let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
         if (req.key === 'statutory_passport') type = 'passport';
-        else if (req.key === 'statutory_insurance') type = 'insurance';
-        else if (req.key === 'statutory_flight') type = 'flight';
-        else if (req.key === 'statutory_financial') type = 'bank';
-        else if (req.key === 'statutory_national_id' || req.key === 'statutory_tax_id') type = 'id';
+        else if (req.key === 'statutory_national_id') type = 'id';
+        else if (req.key === 'statutory_education') type = 'other';
+        else if (req.key === 'statutory_income' || req.key === 'statutory_financial') type = 'bank';
 
         const isUploaded = Boolean(matchedDoc && (matchedDoc.fileData || matchedDoc.scannedMethod === 'OCR Scanned' || matchedDoc.isUploaded || matchedDoc.isRealUpload));
 
         let displayExpiry = 'Permanent';
-        if (req.key === 'statutory_national_id' || req.key === 'statutory_tax_id' || type === 'id') {
+        if (req.key === 'statutory_education' || req.key === 'statutory_national_id') {
             displayExpiry = 'Permanent';
-        } else if (req.key === 'statutory_financial' || type === 'bank') {
+        } else if (req.key === 'statutory_income' || type === 'bank') {
             displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Recent (6 Months)';
-        } else if (req.key === 'statutory_photos') {
-            displayExpiry = 'Valid (< 6 Months)';
-        } else if (req.key === 'statutory_flight' || type === 'flight') {
-            displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Confirmed Itinerary';
-        } else if (req.key === 'statutory_accommodation') {
-            displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Confirmed Stay';
-        } else if (req.key === 'statutory_employment') {
-            displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Current Employment';
         } else if (matchedDoc?.expiryDate && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-') {
             displayExpiry = matchedDoc.expiryDate;
         } else if (req.key === 'statutory_passport' || type === 'passport') {
             displayExpiry = '2034-05-19';
-        } else if (req.key === 'statutory_insurance' || type === 'insurance') {
-            displayExpiry = '2027-12-31';
         }
 
         const expInfo = isUploaded ? computeExpiryStatus(displayExpiry) : null;
@@ -693,13 +715,11 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                         onChange={(e) => setVaultDocTypeFilter(e.target.value)}
                         className="h-11 px-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#00a896]/20 focus:border-[#00a896] shadow-2xs cursor-pointer"
                     >
-                        <option value="all">All Types</option>
+                        <option value="all">All Documents</option>
                         <option value="passport">Passport</option>
-                        <option value="visa">Visa</option>
-                        <option value="id">National ID / Aadhaar / PAN</option>
-                        <option value="insurance">Travel Insurance</option>
-                        <option value="flight">Flight Ticket</option>
-                        <option value="bank">Financial Statement</option>
+                        <option value="id">National ID Card</option>
+                        <option value="education">Educational Documents</option>
+                        <option value="bank">Income Proofs</option>
                         <option value="other">Other Documents</option>
                     </select>
 
@@ -1116,10 +1136,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                                     </div>
 
                                     {/* Action Bar */}
-                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-                                        <div className="text-xs text-slate-400 font-medium">
-                                            Target Route: <strong className="text-slate-700">{selectedPassport || 'India'} ➔ {selectedDestination}</strong>
-                                        </div>
+                                    <div className="flex items-center justify-end gap-2.5 pt-1">
                                         <div className="flex items-center gap-2.5 w-full sm:w-auto">
                                             {stagedPassportFile && (
                                                 <button
@@ -1546,7 +1563,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                                             </span>
                                         </div>
                                         <p className="text-xs text-slate-400 font-medium">
-                                            Target Route: <strong className="text-slate-700">{selectedPassport || 'India'} ➔ {selectedDestination}</strong> • {selectedPurpose}
+                                            Personal Vault Document • 256-bit Encrypted Storage
                                         </p>
                                     </div>
                                 </div>

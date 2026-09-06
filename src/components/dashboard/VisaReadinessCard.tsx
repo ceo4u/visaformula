@@ -17,12 +17,12 @@ export interface VisaReadinessCardProps {
 }
 
 export const VisaReadinessCard: React.FC<VisaReadinessCardProps> = ({
-  score = 72,
-  completedSteps = 8,
+  score = 0,
+  completedSteps = 0,
   totalSteps = 11,
-  inProgressCount = 2,
-  pendingCount = 1,
-  notStartedCount = 0,
+  inProgressCount = 0,
+  pendingCount = 0,
+  notStartedCount = 11,
   onViewDetails,
   onContinueChecklist,
 }) => {
@@ -82,13 +82,13 @@ export const VisaReadinessCard: React.FC<VisaReadinessCardProps> = ({
         <div className="flex-1 w-full space-y-4 sm:space-y-5 text-center md:text-left">
           <div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Good progress!{' '}
+              {score > 0 ? 'Good progress! ' : 'Assessment Ready: '}
               <span className="text-[#00a896] font-bold">
                 {completedSteps} of {totalSteps} steps completed.
               </span>
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              Keep going, you're almost there!
+              {score > 0 ? "Keep going, you're almost there!" : "Start your 11-point audit to calculate official visa readiness."}
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export const VisaReadinessCard: React.FC<VisaReadinessCardProps> = ({
           <div className="w-full bg-slate-100 rounded-full h-2 sm:h-2.5 overflow-hidden">
             <div
               className="bg-[#00a896] h-full rounded-full transition-all duration-700 ease-out"
-              style={{ width: `${Math.min(Math.max(score, 5), 100)}%` }}
+              style={{ width: score > 0 ? `${Math.min(Math.max(score, 5), 100)}%` : '0%' }}
             />
           </div>
 

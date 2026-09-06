@@ -592,6 +592,22 @@ function ExpertSignupPortalContent() {
         localStorage.setItem("expert_isLoggedIn", "true");
         localStorage.setItem("expert_email", targetEmail);
         localStorage.setItem("expert_businessName", businessName || fullName);
+        localStorage.setItem("expert_fullName", fullName);
+        if (fullName) {
+          const parts = fullName.trim().split(" ");
+          localStorage.setItem("expert_firstName", parts[0] || "");
+          localStorage.setItem("expert_lastName", parts.slice(1).join(" ") || "");
+        }
+        if (businessType) localStorage.setItem("expert_advisorType", businessType);
+        if (city) localStorage.setItem("expert_city", city);
+        if (state) localStorage.setItem("expert_state", state);
+        if (country) localStorage.setItem("expert_country", country);
+        if (phone) localStorage.setItem("expert_phone", `${dialCode} ${phone}`);
+        if (website) localStorage.setItem("expert_website", website);
+        if (selectedServices.length > 0) localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
+        if (selectedDestinations.length > 0) localStorage.setItem("expert_countriesExpertise", selectedDestinations.join(", "));
+        if (experience) localStorage.setItem("expert_experience", experience);
+        if (selectedLanguages.length > 0) localStorage.setItem("expert_languages", JSON.stringify(selectedLanguages));
       }
 
       setOtpSuccessMsg("✓ Email verified! Redirecting to Service Provider Dashboard...");

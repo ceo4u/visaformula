@@ -1290,3 +1290,6 @@ export function getPRVisaData(
     is_v3_verified: true
   };
 }
+
+export const getPRVisaSteps = getPRSteps;
+

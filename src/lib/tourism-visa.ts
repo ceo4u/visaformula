@@ -2320,20 +2320,6 @@ export function getTourismFAQ(country: string): FAQItem[] {
       { question: 'Can Indian citizens get visa on arrival in Bahrain?', answer: 'Indian citizens holding valid GCC residence permits or specific visas may be eligible for visa on arrival; others must obtain an eVisa in advance.' },
       { question: 'Can a Bahrain tourist visa be extended?', answer: 'Yes, tourist e-Visas can be extended inside Bahrain at the Nationality, Passports and Residence Affairs (NPRA) office.' }
     ],
-    'new-zealand': [
-      { question: 'How do Indian passport holders apply for a New Zealand visitor visa?', answer: 'Applications are submitted online through Immigration New Zealand\'s official portal (immigration.govt.nz) using a RealMe account.' },
-      { question: 'What is the processing time for a New Zealand visitor visa?', answer: 'Current processing times average 4 to 6 weeks. It is strongly recommended to apply at least 8 weeks prior to departure.' },
-      { question: 'What is the total cost of a New Zealand visitor visa?', answer: 'The total fee is NZD $341 (approx. ₹17,500), which includes the base application fee and the statutory International Visitor Conservation and Tourism Levy (IVL).' },
-      { question: 'Do I need to submit physical passport for New Zealand visa?', answer: 'No, New Zealand visitor visas are completely digital (eVisa). You receive an electronic Visa Approval Notification PDF.' },
-      { question: 'Can family members be included in one New Zealand visa application?', answer: 'Yes, a principal applicant can include a partner and dependent children aged 19 and under in a single online application and fee.' }
-    ],
-    'south-africa': [
-      { question: 'Is the South Africa consular visa fee really free for Indian citizens?', answer: 'Yes! Under bilateral agreements, the official consular visa fee is completely waived (₹0) for Indian passport holders. Only the VFS Global logistics service charge (₹2,040) applies.' },
-      { question: 'Where do I submit my South Africa visa application in India?', answer: 'Applications are submitted in person at VFS Global South Africa application centers in Mumbai, New Delhi, Bengaluru, Chennai, Kolkata, etc.' },
-      { question: 'What is the processing time for a South Africa tourist visa?', answer: 'Consular processing takes approximately 10 to 15 working days from submission at VFS.' },
-      { question: 'What bank balance is required for South Africa?', answer: 'You must provide 3 months original stamped bank statements with a minimum balance of ₹1,00,000 to ₹1,50,000, plus last 3 years ITR-V.' },
-      { question: 'Is yellow fever vaccination required for South Africa?', answer: 'A yellow fever vaccination certificate is required ONLY if traveling from or transiting through a yellow fever endemic country in Africa or South America.' }
-    ],
     'brazil': [
       { question: 'How do Indian citizens apply for a Brazil visitor visa (VIVIS)?', answer: 'Applications are registered online via the official E-Consular system (ec-novadelhi.itamaraty.gov.br) before submitting physical documents to the Embassy in New Delhi.' },
       { question: 'What is the consular visa fee for Brazil?', answer: 'The consular fee for an Indian passport holder applying for a Visitor Visa (VIVIS) is $80 USD (approx. ₹6,800), paid via bank draft.' },

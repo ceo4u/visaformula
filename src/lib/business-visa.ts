@@ -1274,3 +1274,6 @@ export function getBusinessVisaData(
     is_v3_verified: true
   };
 }
+
+export const getBusinessVisaSteps = getBusinessSteps;
+

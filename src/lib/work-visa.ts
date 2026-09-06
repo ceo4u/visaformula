@@ -1683,3 +1683,6 @@ export function getWorkVisaData(
     is_v3_verified: true
   };
 }
+
+export const getWorkVisaSteps = getWorkSteps;
+

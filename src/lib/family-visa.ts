@@ -1289,3 +1289,6 @@ export function getFamilyVisaData(
     is_v3_verified: true
   };
 }
+
+export const getFamilyVisaSteps = getFamilySteps;
+

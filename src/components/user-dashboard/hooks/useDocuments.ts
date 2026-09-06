@@ -108,10 +108,12 @@ export function useDocuments({
           }
 
           const isImageFile = (file.type || '').startsWith('image/');
-          const isPassportCandidate = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport') || (!docReq && isImageFile);
+          const isPdfFile = (file.type || '').includes('pdf');
+          const isPassportCandidate = type === 'passport' || effectiveKey === 'statutory_passport' || docNameLower.includes('passport') || (!docReq && isImageFile && !docNameLower.includes('visa'));
+          const isVisaCandidate = type === 'visa' || effectiveKey === 'statutory_visa' || docNameLower.includes('visa') || docNameLower.includes('evisa') || docNameLower.includes('permit') || docNameLower.includes('grant');
 
           let passportOcrSuccess = false;
-          if (isPassportCandidate) {
+          if (isPassportCandidate && !isVisaCandidate) {
             try {
               const res = await fetch('/api/ocr-analyze-passport', {
                 method: 'POST',
@@ -152,7 +154,47 @@ export function useDocuments({
             }
           }
 
-          if (!passportOcrSuccess) {
+          let visaOcrSuccess = false;
+          let visaOcrDetails: any = null;
+          if (isVisaCandidate && !passportOcrSuccess) {
+            try {
+              const res = await fetch('/api/ocr-analyze-visa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  base64Image: base64,
+                  mimeType: file.type || 'image/jpeg',
+                  fileName: file.name,
+                  currentPassport: passportCountry || selectedPassport || 'India',
+                  currentDestination: selectedDestination || 'United States',
+                  currentPurpose: 'tourism'
+                })
+              });
+              if (res.ok) {
+                const json = await res.json();
+                if (json?.success && json?.data) {
+                  const vData = json.data;
+                  visaOcrDetails = vData;
+                  if (vData.visaNumber) extractedDocNumber = vData.visaNumber;
+                  if (vData.bearerName) extractedFullName = vData.bearerName;
+                  if (vData.grantDate) extractedIssueDate = vData.grantDate;
+                  if (vData.expiryDate) extractedExpiryDate = vData.expiryDate;
+                  if (vData.passportCountry) extractedNationality = vData.passportCountry;
+                  scanSummary = `${vData.visaType || 'Visa'} (${extractedDocNumber || 'Verified'}) • ${vData.issuingAuthority || vData.issuingCountry || 'Consular Approved'}`;
+                  type = 'visa';
+                  if (!docReq || effectiveKey === 'vault_upload') {
+                    effectiveKey = 'statutory_visa';
+                    effectiveTitle = vData.visaType ? `${vData.issuingCountry ? vData.issuingCountry + ' ' : ''}${vData.visaType}`.trim() : 'Visa Document';
+                  }
+                  visaOcrSuccess = true;
+                }
+              }
+            } catch(e) {
+              console.error('Visa OCR error:', e);
+            }
+          }
+
+          if (!passportOcrSuccess && !visaOcrSuccess) {
             try {
               const res = await fetch('/api/ocr-analyze-document', {
                 method: 'POST',
@@ -199,6 +241,7 @@ export function useDocuments({
 
           if (!extractedDocNumber) {
             extractedDocNumber = type === 'passport' ? `P${Math.floor(1000000 + Math.random() * 9000000)}`
+              : type === 'visa' ? `V${Math.random().toString(36).substring(2, 9).toUpperCase()}`
               : type === 'insurance' ? `POL-${Math.floor(100000 + Math.random() * 900000)}`
               : type === 'flight' ? `PNR-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
               : type === 'bank' ? `ACC-${Math.floor(100000 + Math.random() * 900000)}`
@@ -209,6 +252,9 @@ export function useDocuments({
           if (!finalExpiryDate || finalExpiryDate === '—' || finalExpiryDate === '-') {
             if (type === 'id' || effectiveKey.includes('id') || effectiveKey.includes('tax') || effectiveTitle.toLowerCase().includes('pan') || effectiveTitle.toLowerCase().includes('aadhaar')) {
               finalExpiryDate = 'Permanent';
+            } else if (type === 'visa' || effectiveKey.includes('visa')) {
+              const nextY = new Date().getFullYear() + 2;
+              finalExpiryDate = `${nextY}-06-30`;
             } else if (type === 'bank' || effectiveKey.includes('financial') || effectiveTitle.toLowerCase().includes('bank')) {
               finalExpiryDate = 'Recent (6 Months)';
             } else if (effectiveKey.includes('photo') || effectiveTitle.toLowerCase().includes('photo')) {
@@ -240,8 +286,8 @@ export function useDocuments({
             isRealUpload: true,
             isUploaded: true,
             docNumber: extractedDocNumber,
-            issuer: type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || selectedPassport || 'India'}` : 'Consular Authority',
-            country: extractedNationality || passportCountry || selectedPassport || 'India',
+            issuer: type === 'visa' ? (visaOcrDetails?.issuingAuthority || `Government of ${visaOcrDetails?.issuingCountry || visaOcrDetails?.destination || selectedDestination}`) : type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${extractedNationality || passportCountry || selectedPassport || 'India'}` : 'Consular Authority',
+            country: type === 'visa' ? (visaOcrDetails?.issuingCountry || visaOcrDetails?.destination || selectedDestination) : (extractedNationality || passportCountry || selectedPassport || 'India'),
             holderName: extractedFullName || fullName || 'Traveler',
             subDetails: scanSummary,
             status: 'verified',
@@ -256,7 +302,16 @@ export function useDocuments({
             ocrData: {
               documentNumber: extractedDocNumber,
               docNumber: extractedDocNumber,
-              passportNumber: type === 'passport' ? extractedDocNumber : undefined,
+              visaNumber: type === 'visa' ? extractedDocNumber : undefined,
+              visaType: visaOcrDetails?.visaType || (type === 'visa' ? 'Consular Visa / eVisa' : undefined),
+              issuingCountry: visaOcrDetails?.issuingCountry || visaOcrDetails?.destination || (type === 'visa' ? selectedDestination : undefined),
+              destination: visaOcrDetails?.destination || (type === 'visa' ? selectedDestination : undefined),
+              entries: visaOcrDetails?.entries || (type === 'visa' ? 'Single Entry' : undefined),
+              issuingAuthority: visaOcrDetails?.issuingAuthority || (type === 'visa' ? `Consulate / Embassy of ${visaOcrDetails?.issuingCountry || selectedDestination}` : undefined),
+              workRights: visaOcrDetails?.workRights || undefined,
+              conditions: visaOcrDetails?.conditions || undefined,
+              healthCover: visaOcrDetails?.healthCover || undefined,
+              passportNumber: type === 'passport' ? extractedDocNumber : (visaOcrDetails?.passportNumber || undefined),
               fullName: extractedFullName || fullName || '',
               dob: extractedDob || '',
               dateOfBirth: extractedDob || '',
@@ -265,6 +320,7 @@ export function useDocuments({
               placeOfBirth: extractedPlaceOfBirth || '',
               placeOfIssue: extractedPlaceOfIssue || '',
               issueDate: extractedIssueDate || '',
+              grantDate: extractedIssueDate || '',
               expiryDate: finalExpiryDate,
               mrzLine1: extractedMrz1 || undefined,
               mrzLine2: extractedMrz2 || undefined
@@ -298,17 +354,25 @@ export function useDocuments({
                 localStorage.setItem('vault_file_preview_statutory_passport', base64);
                 sessionStorage.setItem('vault_file_preview_statutory_passport', base64);
               }
+              if (effectiveKey === 'statutory_visa' || type === 'visa') {
+                localStorage.setItem('vault_file_preview_statutory_visa', base64);
+                sessionStorage.setItem('vault_file_preview_statutory_visa', base64);
+              }
             }
           } catch(e) {}
 
           setDocuments(prev => {
             const isPass = effectiveKey === 'statutory_passport' || type === 'passport';
+            const isVisa = effectiveKey === 'statutory_visa' || type === 'visa';
             const filtered = (prev || []).filter(p => {
               if (p.id === effectiveKey || p.title === effectiveTitle || p.reqKey === effectiveKey) return false;
               if (isPass) {
                 const pTitleL = (p.title || p.label || '').toLowerCase();
                 const pKey = (p.reqKey || p.id || '').toLowerCase();
                 if (p.type === 'passport' || pKey.includes('passport') || pTitleL.includes('passport')) return false;
+              }
+              if (isVisa && (effectiveKey === 'statutory_visa' || p.reqKey === 'statutory_visa')) {
+                return false;
               }
               return true;
             });
@@ -452,12 +516,17 @@ export function useDocuments({
     setIsEditingOcr(true);
     setEditOcrForm({
       docNumber: doc.ocrData?.documentNumber || doc.ocrData?.docNumber || doc.docNumber || '',
+      visaNumber: doc.ocrData?.visaNumber || doc.ocrData?.documentNumber || doc.docNumber || '',
+      visaType: doc.ocrData?.visaType || '',
+      issuingCountry: doc.ocrData?.issuingCountry || doc.country || '',
+      entries: doc.ocrData?.entries || 'Single Entry',
+      issuingAuthority: doc.ocrData?.issuingAuthority || doc.issuer || '',
       fullName: doc.ocrData?.fullName || doc.holderName || fullName || '',
       dob: doc.ocrData?.dob || doc.dateOfBirth || '',
       nationality: doc.ocrData?.nationality || doc.country || '',
       sex: doc.ocrData?.sex || '',
       placeOfBirth: doc.ocrData?.placeOfBirth || '',
-      issueDate: doc.ocrData?.issueDate || '',
+      issueDate: doc.ocrData?.issueDate || doc.ocrData?.grantDate || '',
       expiryDate: doc.ocrData?.expiryDate || doc.expiryDate || ''
     });
   };
@@ -466,9 +535,10 @@ export function useDocuments({
     if (!activeSelectedDoc) return;
     const updatedDoc = {
       ...activeSelectedDoc,
-      docNumber: editOcrForm.docNumber || activeSelectedDoc.docNumber,
+      docNumber: editOcrForm.visaNumber || editOcrForm.docNumber || activeSelectedDoc.docNumber,
       holderName: editOcrForm.fullName || activeSelectedDoc.holderName,
-      country: editOcrForm.nationality || activeSelectedDoc.country,
+      country: editOcrForm.issuingCountry || editOcrForm.nationality || activeSelectedDoc.country,
+      issuer: editOcrForm.issuingAuthority || activeSelectedDoc.issuer,
       expiryDate: editOcrForm.expiryDate || activeSelectedDoc.expiryDate,
       ocrData: {
         ...activeSelectedDoc.ocrData,

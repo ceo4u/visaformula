@@ -109,6 +109,14 @@ export const defaultVaultList: VaultDocItem[] = [
     hint: 'Aadhaar, Citizen ID, State ID or National ID'
   },
   {
+    key: 'statutory_visa',
+    title: 'Visa Document',
+    description: 'Valid consular visa sticker, electronic visa (eVisa PDF), entry permit, or official visa grant letter.',
+    icon: '🛂',
+    mandatory: false,
+    hint: 'eVisa, Visa sticker, entry permit or visa grant letter'
+  },
+  {
     key: 'statutory_education',
     title: 'Educational Documents',
     description: 'Official university degrees, high school marksheets, college diplomas, or certified academic transcripts.',

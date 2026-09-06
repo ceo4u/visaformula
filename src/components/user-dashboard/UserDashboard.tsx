@@ -28,6 +28,8 @@ export const UserDashboard: React.FC = () => {
                 profilePhoto={state.profilePhoto}
                 setIsMobileSidebarOpen={state.setIsMobileSidebarOpen}
                 setActiveTab={state.setActiveTab}
+                handleLogout={state.handleLogout}
+                email={state.email}
             />
 
             <div className="flex">

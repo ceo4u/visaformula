@@ -146,7 +146,7 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium flex-wrap">
                   <span>Application ID: <strong className="text-slate-700">{activeApp.trackingId}</strong></span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-slate-400">Applied on: {activeApp.submittedAt || activeApp.appliedDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span className="text-slate-400">Created on: {activeApp.submittedAt || activeApp.appliedDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </div>
               </div>
             </div>

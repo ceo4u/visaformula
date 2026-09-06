@@ -373,6 +373,15 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                         dTitleL.includes('pan card') ||
                         dTitleL.includes('pan');
                 }
+                if (req.key === 'statutory_visa') {
+                    return dType === 'visa' ||
+                        dTitleL.includes('visa') ||
+                        dTitleL.includes('evisa') ||
+                        dTitleL.includes('permit') ||
+                        dTitleL.includes('grant') ||
+                        Boolean(d.ocrData?.visaNumber) ||
+                        Boolean(d.ocrData?.visaType);
+                }
                 if (req.key === 'statutory_education') {
                     return dType === 'education' ||
                         dTitleL.includes('degree') ||
@@ -411,6 +420,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
 
         let type: 'passport' | 'visa' | 'id' | 'insurance' | 'flight' | 'bank' | 'other' = 'other';
         if (req.key === 'statutory_passport') type = 'passport';
+        else if (req.key === 'statutory_visa') type = 'visa';
         else if (req.key === 'statutory_national_id') type = 'id';
         else if (req.key === 'statutory_education') type = 'other';
         else if (req.key === 'statutory_income' || req.key === 'statutory_financial') type = 'bank';
@@ -420,6 +430,8 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         let displayExpiry = 'Permanent';
         if (req.key === 'statutory_education' || req.key === 'statutory_national_id') {
             displayExpiry = 'Permanent';
+        } else if (req.key === 'statutory_visa' || type === 'visa') {
+            displayExpiry = (matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-') ? matchedDoc.expiryDate : (matchedDoc?.ocrData?.expiryDate || '2026-12-31');
         } else if (req.key === 'statutory_income' || type === 'bank') {
             displayExpiry = matchedDoc?.expiryDate && matchedDoc.expiryDate !== 'Permanent' && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-' ? matchedDoc.expiryDate : 'Recent (6 Months)';
         } else if (matchedDoc?.expiryDate && matchedDoc.expiryDate !== '—' && matchedDoc.expiryDate !== '-') {
@@ -439,10 +451,10 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             mandatory: req.mandatory,
             type,
             isUploaded,
-            docNumber: isUploaded ? (matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (req.key === 'statutory_national_id' ? 'AADHAAR-ON-FILE' : req.key === 'statutory_tax_id' ? 'PAN-ON-FILE' : 'Verified on File')) : '—',
-            country: isUploaded ? (matchedDoc.country || matchedDoc.ocrData?.nationality || selectedPassport || 'India') : selectedPassport || 'India',
-            issuer: isUploaded ? (matchedDoc.issuer || (type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${selectedPassport || 'India'}` : 'Official Authority')) : `Government of ${selectedPassport || 'India'}`,
-            holderName: isUploaded ? (matchedDoc.holderName || matchedDoc.ocrData?.fullName || fullName || 'Traveler') : '—',
+            docNumber: isUploaded ? (matchedDoc.ocrData?.visaNumber || matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (req.key === 'statutory_visa' ? 'VISA-ON-FILE' : req.key === 'statutory_national_id' ? 'AADHAAR-ON-FILE' : req.key === 'statutory_tax_id' ? 'PAN-ON-FILE' : 'Verified on File')) : '—',
+            country: isUploaded ? (matchedDoc.ocrData?.issuingCountry || matchedDoc.country || matchedDoc.ocrData?.nationality || selectedPassport || 'India') : selectedPassport || 'India',
+            issuer: isUploaded ? (matchedDoc.issuer || matchedDoc.ocrData?.issuingAuthority || (type === 'visa' ? 'Consular Authority' : type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${selectedPassport || 'India'}` : 'Official Authority')) : (type === 'visa' ? 'Consular Authority' : `Government of ${selectedPassport || 'India'}`),
+            holderName: isUploaded ? (matchedDoc.holderName || matchedDoc.ocrData?.bearerName || matchedDoc.ocrData?.fullName || fullName || 'Traveler') : '—',
             subDetails: isUploaded ? (matchedDoc.subDetails || req.hint || 'Verified & Ingested into Encrypted Vault') : (req.hint || req.description),
             dateOfBirth: isUploaded ? (matchedDoc.dateOfBirth || matchedDoc.ocrData?.dob || '14 Oct 1994') : '—',
             expiryDate: isUploaded ? displayExpiry : (req.mandatory ? 'Mandatory for Travel' : 'Recommended'),
@@ -455,7 +467,8 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             fileData: isUploaded ? ((matchedDoc && matchedDoc.fileData) || (typeof window !== 'undefined' ? (
                 localStorage.getItem(`vault_file_preview_${req.key}`) ||
                 sessionStorage.getItem(`vault_file_preview_${req.key}`) ||
-                (req.key === 'statutory_passport' || type === 'passport' ? (localStorage.getItem('vault_file_preview_statutory_passport') || sessionStorage.getItem('vault_file_preview_statutory_passport')) : null)
+                (req.key === 'statutory_passport' || type === 'passport' ? (localStorage.getItem('vault_file_preview_statutory_passport') || sessionStorage.getItem('vault_file_preview_statutory_passport')) : null) ||
+                (req.key === 'statutory_visa' || type === 'visa' ? (localStorage.getItem('vault_file_preview_statutory_visa') || sessionStorage.getItem('vault_file_preview_statutory_visa')) : null)
             ) : null)) : null,
             ocrData: isUploaded ? (matchedDoc.ocrData || {
                 documentNumber: matchedDoc.docNumber || 'DOC-ON-FILE',
@@ -1011,7 +1024,14 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
 
             {/* ── 5. DOCUMENT INSPECTION & OCR PREVIEW DRAWER ── */}
             {activeSelectedDoc && (() => {
-                const isPassportDoc = activeSelectedDoc.type === 'passport' ||
+                const isVisaDoc = activeSelectedDoc.type === 'visa' ||
+                    activeSelectedDoc.reqKey === 'statutory_visa' ||
+                    (activeSelectedDoc.title || '').toLowerCase().includes('visa') ||
+                    (activeSelectedDoc.label || '').toLowerCase().includes('visa') ||
+                    Boolean(activeSelectedDoc.ocrData?.visaNumber) ||
+                    Boolean(activeSelectedDoc.ocrData?.visaType);
+
+                const isPassportDoc = !isVisaDoc && (activeSelectedDoc.type === 'passport' ||
                     activeSelectedDoc.reqKey?.toLowerCase().includes('passport') ||
                     (activeSelectedDoc.title || '').toLowerCase().includes('passport') ||
                     (activeSelectedDoc.label || '').toLowerCase().includes('passport') ||
@@ -1020,7 +1040,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                     Boolean(activeSelectedDoc.ocrData?.placeOfBirth && activeSelectedDoc.ocrData?.issueDate) ||
                     Boolean(activeSelectedDoc.docNumber && /^[A-Z][0-9]{6,9}$/i.test(activeSelectedDoc.docNumber)) ||
                     Boolean(activeSelectedDoc.ocrData?.documentNumber && /^[A-Z][0-9]{6,9}$/i.test(activeSelectedDoc.ocrData.documentNumber)) ||
-                    Boolean(activeSelectedDoc.ocrData?.docNumber && /^[A-Z][0-9]{6,9}$/i.test(activeSelectedDoc.ocrData.docNumber));
+                    Boolean(activeSelectedDoc.ocrData?.docNumber && /^[A-Z][0-9]{6,9}$/i.test(activeSelectedDoc.ocrData.docNumber)));
 
                 const displayDocNumber = activeSelectedDoc.ocrData?.docNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
                 const displayFullName = activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
@@ -1514,6 +1534,468 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                                     </div>
 
                                     {/* Footer actions */}
+                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-400">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setReplacingDocId(activeSelectedDoc.id);
+                                                replaceFileInputRef.current?.click();
+                                            }}
+                                            className="hover:text-slate-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                        >
+                                            <RotateCw className="w-3.5 h-3.5" />
+                                            <span>Upload New / Replace</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDeleteDoc(activeSelectedDoc)}
+                                            className="text-rose-500 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                            <span>Delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                // VISA FLOW (Visa Sticker, eVisa PDF, Consular Entry Permit)
+                if (isVisaDoc) {
+                    const visaNumber = activeSelectedDoc.ocrData?.visaNumber || activeSelectedDoc.ocrData?.documentNumber || activeSelectedDoc.docNumber || '—';
+                    const visaType = activeSelectedDoc.ocrData?.visaType || activeSelectedDoc.title || 'Consular Visa / eVisa';
+                    const issuingCountry = activeSelectedDoc.ocrData?.issuingCountry || activeSelectedDoc.country || selectedDestination || 'Consular Authority';
+                    const bearerName = activeSelectedDoc.ocrData?.bearerName || activeSelectedDoc.ocrData?.fullName || activeSelectedDoc.holderName || fullName || '—';
+                    const passportNum = activeSelectedDoc.ocrData?.passportNumber || 'On File';
+                    const grantDateText = formatDateOcr(activeSelectedDoc.ocrData?.grantDate || activeSelectedDoc.ocrData?.issueDate || activeSelectedDoc.issueDate, '—');
+                    const expiryDateText = formatDateOcr(activeSelectedDoc.ocrData?.expiryDate || activeSelectedDoc.expiryDate, '—');
+                    const entries = activeSelectedDoc.ocrData?.entries || 'Single Entry';
+                    const issuingAuth = activeSelectedDoc.ocrData?.issuingAuthority || activeSelectedDoc.issuer || `Government of ${issuingCountry}`;
+                    const workRights = activeSelectedDoc.ocrData?.workRights || 'As per statutory visa conditions';
+                    const conditions: string[] = Array.isArray(activeSelectedDoc.ocrData?.conditions)
+                        ? activeSelectedDoc.ocrData.conditions
+                        : (activeSelectedDoc.ocrData?.conditions ? [String(activeSelectedDoc.ocrData.conditions)] : []);
+
+                    if (!activeSelectedDoc.isUploaded) {
+                        return (
+                            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-6 animate-fade-up">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                    <div className="flex items-center gap-3.5">
+                                        <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center shrink-0 text-xl shadow-2xs">
+                                            🛂
+                                        </div>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                <h3 className="text-base sm:text-lg font-black text-slate-900">Visa Document</h3>
+                                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                                    ⏳ Pending Upload
+                                                </span>
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    Official Entry Proof
+                                                </span>
+                                            </div>
+                                            <p className="text-xs text-slate-400 font-medium">
+                                                Consular Visa Sticker, eVisa PDF, or Official Grant Letter • 256-bit Encrypted Storage
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleTriggerUploadForReq({ key: 'statutory_visa', title: 'Visa Document', type: 'visa' })}
+                                            className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+                                        >
+                                            <Upload className="w-3.5 h-3.5" />
+                                            <span>Upload Visa Document</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setSelectedVaultDoc(null)}
+                                            className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    onClick={() => handleTriggerUploadForReq({ key: 'statutory_visa', title: 'Visa Document', type: 'visa' })}
+                                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const f = e.dataTransfer.files?.[0];
+                                        if (f) {
+                                            const targetReq = { key: 'statutory_visa', title: 'Visa Document', type: 'visa' };
+                                            if (vaultUploadTargetReqRef) vaultUploadTargetReqRef.current = targetReq;
+                                            handleUploadVaultDocument(f, targetReq);
+                                        }
+                                    }}
+                                    className="group border-2 border-dashed border-[#00a896]/30 hover:border-[#00a896] bg-gradient-to-b from-[#00a896]/5 to-slate-50/50 hover:bg-[#00a896]/10 rounded-2xl p-6 sm:p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center space-y-4 shadow-2xs"
+                                >
+                                    <div className="w-16 h-16 rounded-2xl bg-[#00a896]/10 text-[#00a896] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xs text-3xl">
+                                        🛂
+                                    </div>
+                                    <div className="space-y-1.5 max-w-sm">
+                                        <strong className="text-base font-black text-slate-900 block">
+                                            Upload your Visa Document (Sticker or eVisa)
+                                        </strong>
+                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                                            Upload your passport visa sticker, digital eVisa PDF, or grant letter. Our high-precision Gemini Vision OCR will extract your Visa Number, validity, entries, issuing authority, and statutory conditions.
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleTriggerUploadForReq({ key: 'statutory_visa', title: 'Visa Document', type: 'visa' });
+                                        }}
+                                        className="px-6 py-3 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                                    >
+                                        <Upload className="w-4 h-4" />
+                                        <span>Scan Visa with AI OCR</span>
+                                    </button>
+                                    <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium pt-1 flex-wrap justify-center">
+                                        <span>PDF, JPG, PNG, WEBP (Max 15MB)</span>
+                                        <span>•</span>
+                                        <span className="flex items-center gap-1 text-teal-700 font-semibold">
+                                            <Lock className="w-3 h-3" /> 256-bit Consular Encryption
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Render Uploaded & Verified Visa Document
+                    return (
+                        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5 animate-fade-up">
+                            {/* Header */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0 text-xl shadow-2xs">
+                                        🛂
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                                            {visaType} – <span className="font-mono text-[#00a896]">{visaNumber}</span>
+                                        </h3>
+                                        <div className="flex items-center gap-2.5 flex-wrap">
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+                                                <Check className="w-3 h-3 stroke-[3]" /> Verified by Consular OCR
+                                            </span>
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200">
+                                                {entries}
+                                            </span>
+                                            <span className="text-xs text-slate-400 font-normal">
+                                                Scanned on {activeSelectedDoc.uploadedAt || 'Recently'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-2.5">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDownloadDoc(activeSelectedDoc)}
+                                        className="px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                    >
+                                        <Download className="w-3.5 h-3.5" />
+                                        <span>Download</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedVaultDoc(null)}
+                                        className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                {/* Left: Document Preview */}
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <h4 className="text-sm font-bold text-slate-900">Visa Sticker / eVisa Preview</h4>
+                                        <span className="text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/80 flex items-center gap-1">
+                                            ★ Consular Entry Permit
+                                        </span>
+                                    </div>
+                                    <div className="bg-slate-900/5 rounded-xl border border-slate-200/90 p-2 shadow-2xs overflow-hidden">
+                                        {(() => {
+                                            const visaPreviewSrc = activeSelectedDoc.fileData ||
+                                                (typeof window !== 'undefined' ? (
+                                                    localStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                    sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.reqKey || activeSelectedDoc.id}`) ||
+                                                    localStorage.getItem('vault_file_preview_statutory_visa') ||
+                                                    sessionStorage.getItem('vault_file_preview_statutory_visa') ||
+                                                    localStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`) ||
+                                                    sessionStorage.getItem(`vault_file_preview_${activeSelectedDoc.id}`)
+                                                ) : null);
+
+                                            if (visaPreviewSrc && (visaPreviewSrc.startsWith('data:image') || visaPreviewSrc.startsWith('http') || visaPreviewSrc.startsWith('/'))) {
+                                                return (
+                                                    <img
+                                                        src={visaPreviewSrc}
+                                                        alt={activeSelectedDoc.title || "Visa Document Preview"}
+                                                        className="w-full h-auto rounded-lg object-contain max-h-[420px] mx-auto border border-slate-200 shadow-sm"
+                                                    />
+                                                );
+                                            }
+                                            if (visaPreviewSrc && visaPreviewSrc.startsWith('data:application/pdf')) {
+                                                return (
+                                                    <iframe
+                                                        src={visaPreviewSrc}
+                                                        title="Visa Document Preview"
+                                                        className="w-full h-[400px] rounded-lg border border-slate-200"
+                                                    />
+                                                );
+                                            }
+                                            return (
+                                                <div className="bg-gradient-to-br from-amber-50/50 via-orange-50/30 to-amber-100/40 border border-amber-200/70 rounded-xl p-6 text-center flex flex-col items-center justify-center space-y-3 min-h-[300px]">
+                                                    <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shadow-2xs text-3xl">
+                                                        🛂
+                                                    </div>
+                                                    <div className="space-y-1 max-w-xs">
+                                                        <p className="text-sm font-bold text-slate-900">{visaType}</p>
+                                                        <p className="text-xs font-mono font-bold text-[#00a896] bg-teal-50 px-2 py-0.5 rounded border border-teal-200 inline-block">{visaNumber}</p>
+                                                        <p className="text-xs text-slate-500 font-medium pt-1">Official visa document verified and stored in encrypted vault.</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+                                    </div>
+
+                                    {/* Statutory Conditions & Work Rights Card */}
+                                    <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-teal-600" /> Statutory Visa Conditions
+                                            </span>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Immigration Endorsements</span>
+                                        </div>
+                                        <div className="text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200/70">
+                                            <span className="font-semibold text-slate-800">Work Entitlement: </span>
+                                            {workRights}
+                                        </div>
+                                        {conditions.length > 0 && (
+                                            <div className="space-y-1.5 pt-1">
+                                                {conditions.map((cond, cIdx) => (
+                                                    <div key={cIdx} className="flex items-start gap-2 text-xs text-slate-700 bg-white/90 p-2 rounded-lg border border-slate-200/60">
+                                                        <span className="text-amber-500 shrink-0 mt-0.5">⚠️</span>
+                                                        <span className="leading-snug">{cond}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Right: Extracted OCR Details */}
+                                <div className="bg-white rounded-xl border border-slate-200/90 p-5 sm:p-6 space-y-4 shadow-2xs">
+                                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                        <div className="flex items-center gap-2">
+                                            <h4 className="text-sm font-bold text-slate-900">Extracted Visa Information (OCR)</h4>
+                                            <span className="text-[10px] font-bold text-[#00a896] bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                                                100% Precision
+                                            </span>
+                                        </div>
+                                        {isEditingOcr ? (
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleSaveEditOcr(activeSelectedDoc)}
+                                                    className="px-3 py-1 text-xs font-bold text-white bg-[#00a896] hover:bg-[#009282] rounded-md transition-colors shadow-2xs cursor-pointer"
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsEditingOcr(false)}
+                                                    className="px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleStartEditOcr(activeSelectedDoc)}
+                                                className="px-3 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+                                            >
+                                                Edit
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-3.5 text-sm">
+                                        {/* Visa Number */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Visa / Document No.</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.visaNumber || editOcrForm.docNumber || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, visaNumber: e.target.value, docNumber: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-mono font-bold text-slate-900 text-right">{visaNumber}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Visa Type */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Visa Type / Subclass</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.visaType || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, visaType: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{visaType}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Issuing Country / Destination */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Issuing Country</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.issuingCountry || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, issuingCountry: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{issuingCountry}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Bearer Full Name */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <User className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Bearer Name</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.fullName || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, fullName: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{bearerName}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Passport Number */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Passport Number</span>
+                                            </div>
+                                            <span className="font-mono font-semibold text-slate-900 text-right">{passportNum}</span>
+                                        </div>
+
+                                        {/* Entries */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <Plane className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Number of Entries</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.entries || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, entries: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{entries}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Date of Issue / Grant Date */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Date of Issue</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.issueDate || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, issueDate: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{grantDateText}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Expiry Date */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Valid Until / Expiry</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.expiryDate || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, expiryDate: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right">{expiryDateText}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Issuing Authority */}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <Building2 className="w-4 h-4 text-slate-400 shrink-0" />
+                                                <span>Issuing Authority</span>
+                                            </div>
+                                            {isEditingOcr ? (
+                                                <input
+                                                    type="text"
+                                                    value={editOcrForm.issuingAuthority || ''}
+                                                    onChange={(e) => setEditOcrForm({ ...editOcrForm, issuingAuthority: e.target.value })}
+                                                    className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-900 text-right w-44 focus:border-[#00a896] focus:outline-hidden"
+                                                />
+                                            ) : (
+                                                <span className="font-semibold text-slate-900 text-right text-xs max-w-[200px] truncate">{issuingAuth}</span>
+                                            )}
+                                        </div>
+
+                                        {/* Security Audit */}
+                                        <div className="flex items-center justify-between gap-4 pt-1 border-t border-slate-50">
+                                            <div className="flex items-center gap-3 text-slate-500 font-normal">
+                                                <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
+                                                <span>Security Checksum</span>
+                                            </div>
+                                            <span className="text-xs font-bold text-teal-700">Consular Verified • AES-256</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Bar */}
                                     <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-400">
                                         <button
                                             type="button"

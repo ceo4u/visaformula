@@ -718,12 +718,12 @@ export function VisaApplicationDetailsView({
               </button>
             </div>
             <div className="text-[11px] text-slate-400 font-normal pt-3">
-              Applied on: {appliedDate} &nbsp;·&nbsp; Last Updated: {lastUpdated}
+              Created on: {appliedDate} &nbsp;·&nbsp; Last Updated: {lastUpdated}
             </div>
           </div>
 
           {/* Section 2: Name & Route & Visa Type */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-7 space-y-4 pl-0 lg:pl-4">
             {/* Top Row: Name, From -> To */}
             <div className="flex flex-wrap items-center gap-6 sm:gap-8">
               <div>
@@ -814,22 +814,6 @@ export function VisaApplicationDetailsView({
                 )}
               </div>
             )}
-          </div>
-
-          {/* Section 3: Travel & Return Dates */}
-          <div className="lg:col-span-3 border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6 space-y-3">
-            <div>
-              <span className="text-xs text-slate-400 font-normal block">Travel Date</span>
-              <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">
-                {travelDate}
-              </strong>
-            </div>
-            <div>
-              <span className="text-xs text-slate-400 font-normal block">Return Date</span>
-              <strong className="text-xs sm:text-sm font-bold text-slate-900 block mt-0.5">
-                {returnDateWithDuration}
-              </strong>
-            </div>
           </div>
 
         </div>
@@ -1362,15 +1346,7 @@ export function VisaApplicationDetailsView({
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-500 font-medium">Travel Date</span>
-                <span className="font-bold text-slate-900">{travelDate}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-500 font-medium">Return Date</span>
-                <span className="font-bold text-slate-900">{returnDate}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-500 font-medium">Filing Date</span>
+                <span className="text-slate-500 font-medium">Created On</span>
                 <span className="font-bold text-slate-900">{appliedDate}</span>
               </div>
               <div className="flex justify-between items-center py-1">

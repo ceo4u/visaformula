@@ -36,35 +36,24 @@ export const POST: APIRoute = async ({ request }) => {
     const rl = checkRateLimit(rlKey, RATE_LIMITS.SEND_OTP);
     if (!rl.allowed) return rateLimitErrorResponse(rl.resetAt);
 
-    // ── Check if already registered (only for exclusive registration) ───
+    // ── Check if already registered (Security: block duplicate registration) ───
     if (!allowExisting) {
       try {
         await runMigrations();
         const pool = getPool();
-        if (mode === 'expert_registration' || mode === 'expert') {
-          const expertCheck = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
-          if (expertCheck.rows.length > 0) {
-            return new Response(JSON.stringify({
-              status: 'error',
-              code: 'EMAIL_ALREADY_EXISTS',
-              message: 'This email is already registered as a service provider. Please log in.'
-            }), {
-              status: 400,
-              headers: { 'Content-Type': 'application/json' },
-            });
-          }
-        } else if (mode === 'registration' || mode === 'seeker') {
-          const seekerCheck = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
-          if (seekerCheck.rows.length > 0) {
-            return new Response(JSON.stringify({
-              status: 'error',
-              code: 'EMAIL_ALREADY_EXISTS',
-              message: 'This email is already registered. Please log in.'
-            }), {
-              status: 400,
-              headers: { 'Content-Type': 'application/json' },
-            });
-          }
+        const [seekerCheck, expertCheck] = await Promise.all([
+          pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [normalizedEmail]),
+          pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [normalizedEmail]),
+        ]);
+        if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
+          return new Response(JSON.stringify({
+            status: 'error',
+            code: 'EMAIL_ALREADY_EXISTS',
+            message: 'This email is already registered. Please log in instead.'
+          }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          });
         }
       } catch (dbErr) {
         console.warn('[send-verification-code] DB check fallback during high load:', dbErr);

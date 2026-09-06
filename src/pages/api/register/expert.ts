@@ -36,7 +36,24 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const pool = getPool();
-    runMigrations().catch(err => console.warn('[RegisterExpert] Migration check:', err));
+    await runMigrations().catch(err => console.warn('[RegisterExpert] Migration check:', err));
+
+    // ── Security Check: Block duplicate registrations ───
+    const cleanEmail = email.toLowerCase().trim();
+    const [seekerCheck, expertCheck] = await Promise.all([
+      pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [cleanEmail]),
+      pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [cleanEmail]),
+    ]);
+    if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
+      return new Response(JSON.stringify({
+        status: 'error',
+        code: 'EMAIL_ALREADY_EXISTS',
+        message: 'This email is already registered. Please log in instead.'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     // Hash password with bcrypt (12 salt rounds)
     const hashedPassword = password ? await bcrypt.hash(password, 12) : '';

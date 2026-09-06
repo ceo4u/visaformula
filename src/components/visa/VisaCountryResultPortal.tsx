@@ -104,6 +104,7 @@ import {
   getFamilyRequirements,
   getFamilyOfficialSourceName
 } from '../../lib/family-visa';
+import { getStaticCountryHeroImage } from '../../lib/country-hero-images';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3025,55 +3026,9 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
   }
 ];
 
-// Curated 4K Retina Landmark Photography
-function getCountry4kLandmark(cName: string, cSlug: string): string {
-  const norm = (cName + ' ' + cSlug).toLowerCase();
-  if (norm.includes('greece') || norm.includes('athens') || norm.includes('santorini')) {
-    return 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&auto=format&fit=crop&q=90'; // Oia, Santorini
-  }
-  if (norm.includes('united states') || norm.includes('usa') || norm.includes('america')) {
-    return 'https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?w=1200&auto=format&fit=crop&q=90'; // New York & Statue of Liberty
-  }
-  if (norm.includes('united kingdom') || norm.includes('uk') || norm.includes('england') || norm.includes('london')) {
-    return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&auto=format&fit=crop&q=90'; // London Big Ben
-  }
-  if (norm.includes('france') || norm.includes('paris')) {
-    return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&auto=format&fit=crop&q=90'; // Eiffel Tower
-  }
-  if (norm.includes('italy') || norm.includes('rome')) {
-    return 'https://images.unsplash.com/photo-1529260830199-42c24126f198?w=1200&auto=format&fit=crop&q=90'; // Colosseum, Rome
-  }
-  if (norm.includes('spain') || norm.includes('madrid') || norm.includes('barcelona')) {
-    return 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=1200&auto=format&fit=crop&q=90'; // Seville, Spain
-  }
-  if (norm.includes('germany') || norm.includes('berlin') || norm.includes('munich')) {
-    return 'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1200&auto=format&fit=crop&q=90'; // Brandenburg Gate
-  }
-  if (norm.includes('switzerland') || norm.includes('swiss') || norm.includes('zurich')) {
-    return 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=1200&auto=format&fit=crop&q=90'; // Zermatt Matterhorn
-  }
-  if (norm.includes('emirates') || norm.includes('uae') || norm.includes('dubai')) {
-    return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&auto=format&fit=crop&q=90'; // Burj Khalifa
-  }
-  if (norm.includes('japan') || norm.includes('tokyo') || norm.includes('kyoto')) {
-    return 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&auto=format&fit=crop&q=90'; // Mount Fuji
-  }
-  if (norm.includes('singapore')) {
-    return 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&auto=format&fit=crop&q=90'; // Marina Bay
-  }
-  if (norm.includes('australia') || norm.includes('sydney')) {
-    return 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&auto=format&fit=crop&q=90'; // Sydney Opera House
-  }
-  if (norm.includes('canada') || norm.includes('toronto')) {
-    return 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1200&auto=format&fit=crop&q=90'; // Canadian Rockies
-  }
-  if (norm.includes('thailand') || norm.includes('bangkok')) {
-    return 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=1200&auto=format&fit=crop&q=90'; // Bangkok
-  }
-  if (norm.includes('turkey') || norm.includes('istanbul')) {
-    return 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200&auto=format&fit=crop&q=90'; // Istanbul
-  }
-  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&auto=format&fit=crop&q=90';
+// Curated 4K Retina Landmark Photography covering all 195+ sovereign countries
+function getCountry4kLandmark(cName: string, cSlug: string, purpose: string = 'tourism'): string {
+  return getStaticCountryHeroImage(cSlug || cName, purpose).url;
 }
 
 // Helper to resolve 4K vector flag for any destination country
@@ -3134,7 +3089,6 @@ export function VisaCountryResultPortal({
 
   const countryName = baseData.countryName || slugClean.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const flagEmoji = baseData.flagEmoji || '🌍';
-  const heroImage = getCountry4kLandmark(countryName, slugClean);
   const isSchengen = SCHENGEN_COUNTRIES.some(sc => slugClean.includes(sc) || countryName.toLowerCase().includes(sc));
   const lengthOfStay = baseData.lengthOfStay || (isSchengen ? 'Up to 90 Days within 180 Days' : 'Per Official Regulations');
   const validity = baseData.validity || (isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : 'Per Official Regulations');
@@ -3208,6 +3162,82 @@ export function VisaCountryResultPortal({
     : activePurposeTab === 'pr'
     ? 'PR / Settlement'
     : 'Tourist';
+
+  // ── DYNAMIC AI & CURATED LUXURY HERO IMAGE STATE ──
+  const initialHero = useMemo(() => {
+    return getStaticCountryHeroImage(slugClean, activePurposeTab);
+  }, [slugClean, activePurposeTab]);
+
+  const [heroImage, setHeroImage] = useState<string>(() => initialHero.url);
+  const [heroImageAlt, setHeroImageAlt] = useState<string>(() => initialHero.alt);
+  const [isHeroLoading, setIsHeroLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const staticInfo = getStaticCountryHeroImage(slugClean, activePurposeTab);
+    const cacheKey = `travltik_hero_img_${slugClean}_${activePurposeTab}`.toLowerCase();
+
+    // 1. Instant Cache Retrieval
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.imageUrl) {
+            setHeroImage(parsed.imageUrl);
+            if (parsed.alt) setHeroImageAlt(parsed.alt);
+            return;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 2. Immediate curated static fallback (zero blank flash)
+    setHeroImage(staticInfo.url);
+    setHeroImageAlt(staticInfo.alt);
+    setIsHeroLoading(true);
+
+    let isMounted = true;
+    const fetchDynamicHeroImage = async () => {
+      try {
+        const res = await fetch(`/api/visa/image?country=${encodeURIComponent(slugClean)}&purpose=${encodeURIComponent(activePurposeTab)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.imageUrl && isMounted) {
+            // Verify & preload image in background before swapping
+            const img = new Image();
+            img.src = data.imageUrl;
+            img.onload = () => {
+              if (!isMounted) return;
+              setHeroImage(data.imageUrl);
+              if (data.alt) setHeroImageAlt(data.alt);
+              setIsHeroLoading(false);
+              try {
+                localStorage.setItem(cacheKey, JSON.stringify({
+                  imageUrl: data.imageUrl,
+                  alt: data.alt,
+                  source: data.source,
+                  timestamp: Date.now()
+                }));
+              } catch (e) {}
+            };
+            img.onerror = () => {
+              if (isMounted) setIsHeroLoading(false);
+            };
+          }
+        }
+      } catch (err) {
+        // Preserves static fallback on network fail
+      } finally {
+        if (isMounted) setIsHeroLoading(false);
+      }
+    };
+
+    fetchDynamicHeroImage();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slugClean, activePurposeTab]);
 
   const [passportCountry, setPassportCountry] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -6653,8 +6683,14 @@ export function VisaCountryResultPortal({
               <div className="w-[72px] h-[72px] rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-2xs relative bg-slate-100">
                 <img
                   src={heroImage}
-                  alt={`${countryName} Visa`}
-                  className="w-full h-full object-cover object-center"
+                  alt={heroImageAlt || `${countryName} Visa`}
+                  className={`w-full h-full object-cover object-center transition-opacity duration-300 ${isHeroLoading ? 'opacity-70' : 'opacity-100'}`}
+                  onError={(e) => {
+                    const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
+                    if (e.currentTarget.src !== fallback) {
+                      e.currentTarget.src = fallback;
+                    }
+                  }}
                 />
               </div>
               <div className="min-w-0 flex-1">
@@ -6815,12 +6851,22 @@ export function VisaCountryResultPortal({
         <div className="hidden md:block bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-7 shadow-xs">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             {/* Left: Country Landmark Photo */}
-            <div className="w-full md:w-64 lg:w-72 h-56 sm:h-64 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100">
+            <div className="w-full md:w-64 lg:w-72 h-56 sm:h-64 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100 group">
               <img
                 src={heroImage}
-                alt={`${countryName} Visa`}
-                className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                alt={heroImageAlt || `${countryName} Visa`}
+                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ${isHeroLoading ? 'opacity-70 blur-[1px]' : 'opacity-100'}`}
+                onError={(e) => {
+                  const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
+                  if (e.currentTarget.src !== fallback) {
+                    e.currentTarget.src = fallback;
+                  }
+                }}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              <span className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-semibold text-white tracking-wide uppercase border border-white/20">
+                Official 4K View
+              </span>
             </div>
 
             {/* Right: Visa Details */}

@@ -3075,6 +3075,149 @@ function get4kCountryFlag(countryName: string, slug: string): string {
   return (slug || 'un').replace(/[^a-z]/g, '').slice(0, 2) || 'un';
 }
 
+function parseDocumentConditions(title: string, description: string, rawConditions?: string[]): string[] {
+  if (Array.isArray(rawConditions) && rawConditions.length > 1) {
+    return rawConditions.map(s => String(s).trim()).filter(Boolean);
+  }
+
+  const tLow = (title || '').toLowerCase();
+  const desc = (description || '').trim();
+
+  // 1. Specific tailored condition breakdowns for common visa document types
+  if (tLow.includes('passport')) {
+    return [
+      'Original passport valid for at least 6-12 months beyond intended stay with minimum 2 blank visa pages',
+      'Must be in undamaged physical condition with machine-readable bio-data page intact',
+      'Accompanied by copies of all previous visas and international entry/exit stamps'
+    ];
+  }
+
+  if (tLow.includes('enrolment') || tLow.includes('coe') || tLow.includes('admission') || tLow.includes('acceptance') || tLow.includes('cas') || tLow.includes('i-20') || tLow.includes('loa') || tLow.includes('pal')) {
+    return [
+      desc || 'Official Confirmation of Enrolment (CoE) / Unconditional admission letter from accredited institution',
+      'Must confirm registered course name, CRICOS/DLI provider code, study start and end dates',
+      'Must verify valid electronic tracking number (PRISMS / SEVIS / CAS reference) matching passport details'
+    ];
+  }
+
+  if (tLow.includes('academic') || tLow.includes('certificate') || tLow.includes('transcript') || tLow.includes('degree') || tLow.includes('mark sheet')) {
+    return [
+      'Original degree certificates and consolidated mark sheets (Class 10th, 12th, Bachelor\'s / Master\'s)',
+      'Official provisional passing certificate and university transcripts in sealed institutional envelope',
+      'Certified English translations for any academic certificates issued in regional languages'
+    ];
+  }
+
+  if (tLow.includes('english') || tLow.includes('language') || tLow.includes('proficiency') || tLow.includes('score') || tLow.includes('ielts') || tLow.includes('pte') || tLow.includes('toefl')) {
+    return [
+      'Official standardized score report (IELTS Academic, TOEFL iBT, PTE Academic, or Cambridge English)',
+      'Score report must meet designated consular cutoff across all individual sub-bands',
+      'Test date must be within 2 years of visa application submission date'
+    ];
+  }
+
+  if (tLow.includes('financial') || tLow.includes('maintenance') || tLow.includes('fund') || tLow.includes('bank') || tLow.includes('solvency') || tLow.includes('blocked') || tLow.includes('gic')) {
+    return [
+      desc || 'Verifiable evidence of tuition fees + annual living maintenance + return travel allowance',
+      'Official original bank statements for the past 3 to 6 months bearing official bank stamp and branch seal',
+      'Approved education loan sanction letter or government blocked deposit certificate with verified source of funds'
+    ];
+  }
+
+  if (tLow.includes('tuition') || tLow.includes('fee receipt') || tLow.includes('payment receipt')) {
+    return [
+      'Official university fee payment receipt or electronic international SWIFT wire transfer confirmation',
+      'Receipt must clearly show applicant student ID, university bank details, and paid currency amount',
+      'Confirms 1st semester or full academic year tuition fee settlement'
+    ];
+  }
+
+  if (tLow.includes('sop') || tLow.includes('purpose') || tLow.includes('motivation') || tLow.includes('statement')) {
+    return [
+      'Comprehensive personal statement explaining course selection, academic background, and future career plans',
+      'Clear justification of genuine student or visitor intent with ties demonstrating intent to return home',
+      'Original self-authored statement signed and dated by the applicant'
+    ];
+  }
+
+  if (tLow.includes('recommendation') || tLow.includes('lor') || tLow.includes('cv') || tLow.includes('resume')) {
+    return [
+      'Two formal academic or professional recommendation letters printed on official institutional letterhead',
+      'Must contain recommender\'s full name, designation, official email, and contact phone number',
+      'Updated academic curriculum vitae (CV) detailing full educational history without unexplainable gaps'
+    ];
+  }
+
+  if (tLow.includes('insurance') || tLow.includes('medical') || tLow.includes('health') || tLow.includes('oshc')) {
+    return [
+      'Valid international travel or student health insurance policy covering emergency medical care and hospitalization',
+      'Policy must be active from departure date and cover the entire duration of stay in destination country',
+      'Must include repatriation of remains and emergency medical evacuation with zero or minimal deductible'
+    ];
+  }
+
+  if (tLow.includes('photo') || tLow.includes('picture')) {
+    return [
+      'Recent identical color photographs taken within the last 6 months',
+      'Consular biometric standard (35x45mm or 2x2 inches) on plain white or light neutral background',
+      'Full face neutral expression with 80% face coverage and eyes clearly visible with no tinted glasses'
+    ];
+  }
+
+  if (tLow.includes('flight') || tLow.includes('ticket') || tLow.includes('itinerary')) {
+    return [
+      'Confirmed round-trip flight booking or verifiable travel itinerary showing passenger name and PNR',
+      'Must match planned travel dates, entry port, and departure within approved visa validity',
+      'Include all domestic and international transit flight legs if applicable'
+    ];
+  }
+
+  if (tLow.includes('hotel') || tLow.includes('accommodation') || tLow.includes('stay')) {
+    return [
+      'Confirmed hotel reservations, host invitation letter, or university hall accommodation confirmation',
+      'Must cover the entire duration of stay showing applicant name and full property contact details'
+    ];
+  }
+
+  if (tLow.includes('employment') || tLow.includes('job') || tLow.includes('salary') || tLow.includes('work') || tLow.includes('offer')) {
+    return [
+      'Official employment offer letter or sponsorship certificate on corporate letterhead',
+      'Past 3 to 6 months original stamped salary slips and Form 16 / ITR tax returns',
+      'No Objection Certificate (NOC) from employer granting approved leave of absence'
+    ];
+  }
+
+  // 2. Generic fallback if none matched: split description into distinct sentences / conditions
+  if (desc) {
+    const parts = desc
+      .split(/(?<=[.!?])\s+(?=[A-Z0-9])|;\s*|\n+/)
+      .map(s => s.trim().replace(/^[-•*]\s*/, ''))
+      .filter(s => s.length > 5);
+
+    if (parts.length > 1) {
+      return parts.slice(0, 3);
+    }
+
+    if (desc.includes(' with at least ')) {
+      const sub = desc.split(' with at least ');
+      return [
+        sub[0].trim(),
+        'Must have at least ' + sub[1].trim()
+      ];
+    }
+    if (desc.includes('; and ')) {
+      const sub = desc.split('; and ');
+      return sub.map(s => s.trim()).filter(Boolean);
+    }
+    return [
+      desc,
+      'Must be fully authentic, legible, and verified in accordance with consular requirements'
+    ];
+  }
+
+  return ['Official consular requirement for visa application'];
+}
+
 export function VisaCountryResultPortal({ 
   countrySlug, 
   initialPassport = 'India', 
@@ -4140,6 +4283,73 @@ export function VisaCountryResultPortal({
     });
   };
 
+  // Dynamic condition checks state per document (docKey -> condIdx -> boolean)
+  const [portalCheckedConditions, setPortalCheckedConditions] = useState<Record<string, Record<number, boolean>>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`portal_conds_${slugClean}`);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  const handleToggleConditionCheck = (docKey: string, condIdx: number, totalConditions: number) => {
+    setPortalCheckedConditions(prev => {
+      const docConds = { ...(prev[docKey] || {}) };
+      const isDocAlreadyCompleted = portalUploadedDocs[docKey]?.status === 'completed';
+      const currentVal = docConds[condIdx] ?? isDocAlreadyCompleted;
+      docConds[condIdx] = !currentVal;
+
+      const nextState = {
+        ...prev,
+        [docKey]: docConds
+      };
+
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`portal_conds_${slugClean}`, JSON.stringify(nextState));
+        } catch(e) {}
+      }
+
+      // Check if all conditions for this document are satisfied
+      let allChecked = true;
+      for (let i = 0; i < totalConditions; i++) {
+        const val = docConds[i] ?? isDocAlreadyCompleted;
+        if (!val) {
+          allChecked = false;
+          break;
+        }
+      }
+
+      // Auto-sync overall document readiness in portalUploadedDocs
+      setPortalUploadedDocs(prevDocs => {
+        const currentDoc = prevDocs[docKey];
+        const newStatus: 'completed' | 'pending' = allChecked ? 'completed' : 'pending';
+        if (currentDoc?.status === newStatus) return prevDocs;
+
+        const updated = {
+          ...prevDocs,
+          [docKey]: {
+            fileName: allChecked ? 'Checklist Verified (Ready)' : (currentDoc?.fileName || 'Checklist Item'),
+            fileSize: currentDoc?.fileSize || '',
+            uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            status: newStatus
+          }
+        };
+
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem(`portal_docs_${slugClean}`, JSON.stringify(updated));
+          } catch (e) {}
+        }
+        return updated;
+      });
+
+      return nextState;
+    });
+  };
+
   const handleToggleDocChecklist = (docKey: string, choice?: 'yes' | 'no') => {
     setPortalUploadedDocs(prev => {
       const current = prev[docKey];
@@ -4167,6 +4377,26 @@ export function VisaCountryResultPortal({
         } catch (err) {}
       }
       return updated;
+    });
+
+    // Also synchronize condition checkboxes for this document
+    setPortalCheckedConditions(prev => {
+      const isCurrentlyYes = portalUploadedDocs[docKey]?.status === 'completed';
+      const willBeYes = !isCurrentlyYes;
+      const docConds: Record<number, boolean> = {};
+      for (let i = 0; i < 6; i++) {
+        docConds[i] = willBeYes;
+      }
+      const next = {
+        ...prev,
+        [docKey]: docConds
+      };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`portal_conds_${slugClean}`, JSON.stringify(next));
+        } catch(e) {}
+      }
+      return next;
     });
   };
 
@@ -6183,9 +6413,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-pink-100 text-pink-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Statutory consular requirement for official entry'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', doc.conditions);
 
         return {
           key,
@@ -6193,7 +6421,7 @@ export function VisaCountryResultPortal({
           mandatory: isMandatory,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6227,9 +6455,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-emerald-100 text-emerald-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Official consular requirement for student visa'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6237,7 +6463,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6274,9 +6500,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-emerald-100 text-emerald-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Official consular requirement for employment visa'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6284,7 +6508,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6321,9 +6545,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-emerald-100 text-emerald-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Official consular requirement for business visa'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6331,7 +6553,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6371,9 +6593,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-pink-100 text-pink-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Official consular requirement for permanent residency application'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6381,7 +6601,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6421,9 +6641,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-emerald-100 text-emerald-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Official consular requirement for family and spouse visa application'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6431,7 +6649,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -6468,9 +6686,7 @@ export function VisaCountryResultPortal({
           iconBg = 'bg-emerald-100 text-emerald-700';
         }
 
-        const sentences = doc.description
-          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
-          : ['Statutory consular requirement for official entry'];
+        const conditions = parseDocumentConditions(doc.title, doc.description || '', (doc as any).conditions);
 
         return {
           key,
@@ -6478,7 +6694,7 @@ export function VisaCountryResultPortal({
           mandatory: doc.is_mandatory !== false,
           iconBg,
           icon,
-          conditions: sentences.slice(0, 3)
+          conditions
         };
       });
     }
@@ -7390,7 +7606,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Mobile Compact Document Cards List */}
-                <div className="md:hidden space-y-2.5 text-left">
+                <div className="md:hidden space-y-3 text-left">
                   {portalDocItems
                     .filter((item: any) => {
                       if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
@@ -7404,38 +7620,32 @@ export function VisaCountryResultPortal({
                       return (
                         <div
                           key={doc.key}
-                          onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
-                          className={`bg-white rounded-2xl border p-3.5 shadow-2xs flex items-center justify-between gap-3 text-left transition-all cursor-pointer select-none ${
-                            isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200/90 hover:border-slate-300'
+                          className={`bg-white rounded-2xl border p-4 shadow-2xs space-y-3 text-left transition-all select-none ${
+                            isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200/90'
                           }`}
                         >
-                          <div className="flex items-start gap-3 min-w-0 flex-1">
-                            <div className={`w-10 h-10 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
-                              {doc.icon}
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">{doc.name}</strong>
-                              <div className="flex items-center gap-1.5 mt-0.5">
-                                <span className={`text-[11px] font-medium ${doc.mandatory ? 'text-rose-700' : 'text-slate-500'}`}>
+                          {/* Card Header: Doc Info & Ready Button */}
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex items-start gap-3 min-w-0 flex-1">
+                              <div className={`w-9 h-9 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
+                                {doc.icon}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
+                                  {doc.name}
+                                </strong>
+                                <span className={`inline-block mt-0.5 text-[11px] font-medium uppercase px-2 py-0.5 rounded-md ${
+                                  doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
+                                }`}>
                                   {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                 </span>
                               </div>
-                              {doc.conditions && doc.conditions[0] && (
-                                <p className="text-[12px] font-normal text-slate-500 mt-1 leading-relaxed break-words line-clamp-2">
-                                  {doc.conditions[0]}
-                                </p>
-                              )}
                             </div>
-                          </div>
 
-                          <div className="shrink-0 flex items-center pl-1">
                             <button
                               type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleToggleDocChecklist(doc.key, 'yes');
-                              }}
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
+                              onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
+                              className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
                                 isCompleted
                                   ? 'bg-emerald-500 border-emerald-600 text-white shadow-xs'
                                   : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700 shadow-2xs'
@@ -7448,6 +7658,48 @@ export function VisaCountryResultPortal({
                               <span>Ready</span>
                             </button>
                           </div>
+
+                          {/* Numbered Conditions with Immediate Checkbox */}
+                          {doc.conditions && doc.conditions.length > 0 && (
+                            <ol className="pt-2.5 border-t border-slate-100/90 space-y-2 list-none">
+                              {doc.conditions.map((cond: string, cIdx: number) => {
+                                const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isCompleted;
+                                return (
+                                  <li key={cIdx} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-700 leading-snug">
+                                    <span className="font-bold text-slate-900 shrink-0 select-none mt-0.5 min-w-[16px]">
+                                      {cIdx + 1}.
+                                    </span>
+                                    <button
+                                      type="button"
+                                      role="checkbox"
+                                      aria-checked={isCondChecked}
+                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                      className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
+                                        isCondChecked
+                                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                          : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                      }`}
+                                      title={isCondChecked ? 'Marked as satisfied' : 'Tick condition'}
+                                    >
+                                      {isCondChecked ? (
+                                        <Check className="w-2.5 h-2.5 stroke-[3] text-white" />
+                                      ) : (
+                                        <span className="w-1.5 h-1.5 rounded-[2px] bg-transparent" />
+                                      )}
+                                    </button>
+                                    <span
+                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                      className={`cursor-pointer select-none transition-colors ${
+                                        isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                      }`}
+                                    >
+                                      {cond}
+                                    </span>
+                                  </li>
+                                );
+                              })}
+                            </ol>
+                          )}
                         </div>
                       );
                     })}
@@ -7496,15 +7748,50 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Validity & Conditions - Numbered Format */}
+                              {/* Validity & Conditions - Numbered Format with Immediate Checkbox */}
                               <td className="py-4 px-4 align-top">
-                                <ol className="space-y-2 list-none">
-                                  {doc.conditions.map((cond: any, cIdx: number) => (
-                                    <li key={cIdx} className="flex items-start gap-2 text-[14px] sm:text-[15px] font-normal text-slate-700 leading-relaxed">
-                                      <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5">{cIdx + 1}.</span>
-                                      <span>{cond}</span>
-                                    </li>
-                                  ))}
+                                <ol className="space-y-2.5 list-none">
+                                  {doc.conditions.map((cond: string, cIdx: number) => {
+                                    const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
+                                    return (
+                                      <li key={cIdx} className="flex items-start gap-2 text-[13px] sm:text-[14px] text-slate-700 leading-relaxed group">
+                                        {/* 1. Number */}
+                                        <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
+                                          {cIdx + 1}.
+                                        </span>
+
+                                        {/* 2. Immediate check box next to it */}
+                                        <button
+                                          type="button"
+                                          role="checkbox"
+                                          aria-checked={isCondChecked}
+                                          onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                          className={`w-4 h-4 sm:w-[18px] sm:h-[18px] rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
+                                            isCondChecked
+                                              ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                              : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                          }`}
+                                          title={isCondChecked ? 'Marked as satisfied (Click to uncheck)' : 'Click to tick this condition'}
+                                        >
+                                          {isCondChecked ? (
+                                            <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3] text-white" />
+                                          ) : (
+                                            <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                          )}
+                                        </button>
+
+                                        {/* 3. Condition text */}
+                                        <span
+                                          onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                          className={`cursor-pointer transition-colors select-none ${
+                                            isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                          }`}
+                                        >
+                                          {cond}
+                                        </span>
+                                      </li>
+                                    );
+                                  })}
                                 </ol>
                               </td>
 

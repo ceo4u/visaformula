@@ -37,19 +37,34 @@ export const POST: APIRoute = async ({ request }) => {
     if (!rl.allowed) return rateLimitErrorResponse(rl.resetAt);
 
     // ── Check if already registered (only for exclusive registration) ───
-    if (mode === 'registration' && !allowExisting) {
+    if (!allowExisting) {
       try {
         await runMigrations();
         const pool = getPool();
-        const [seekerCheck, expertCheck] = await Promise.all([
-          pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
-          pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
-        ]);
-        if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
-          return new Response(JSON.stringify({ status: 'error', code: 'EMAIL_ALREADY_EXISTS', message: 'This email is already registered.' }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          });
+        if (mode === 'expert_registration' || mode === 'expert') {
+          const expertCheck = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
+          if (expertCheck.rows.length > 0) {
+            return new Response(JSON.stringify({
+              status: 'error',
+              code: 'EMAIL_ALREADY_EXISTS',
+              message: 'This email is already registered as a service provider. Please log in.'
+            }), {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+        } else if (mode === 'registration' || mode === 'seeker') {
+          const seekerCheck = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+          if (seekerCheck.rows.length > 0) {
+            return new Response(JSON.stringify({
+              status: 'error',
+              code: 'EMAIL_ALREADY_EXISTS',
+              message: 'This email is already registered. Please log in.'
+            }), {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
         }
       } catch (dbErr) {
         console.warn('[send-verification-code] DB check fallback during high load:', dbErr);

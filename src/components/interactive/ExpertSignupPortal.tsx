@@ -409,6 +409,88 @@ function ExpertSignupPortalContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // ─── Step 4: Direct Application Submission Fallback ─────────────────────────
+  const handleSubmitDirectly = async () => {
+    setErrorMsg("");
+    setIsSubmitting(true);
+    const targetEmail = (businessEmail || email).toLowerCase().trim();
+    const fullContact = `${mobileCode} ${mobileNumber || businessPhone}`.trim();
+    const payload = {
+      business_name: businessName || fullName || "Service Provider",
+      full_name: fullName,
+      email: targetEmail,
+      password,
+      contact_number: fullContact,
+      advisor_type: businessType,
+      business_type: businessType,
+      year_established: yearEstablished,
+      business_email: businessEmail || email,
+      business_phone: businessPhone || mobileNumber,
+      website,
+      country,
+      state,
+      city,
+      office_address: businessAddress,
+      pin_code: pinCode,
+      services: selectedServices,
+      expertise_tags: selectedServices,
+      destinations: selectedDestinations,
+      countries_expertise: JSON.stringify(selectedDestinations),
+      experience_years: experience,
+      languages_spoken: JSON.stringify(selectedLanguages),
+      turnstileToken,
+    };
+
+    try {
+      const resp = await fetch("/api/register/expert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await resp.json();
+      if (!resp.ok || data.status === "error") {
+        throw new Error(data.message || "Registration failed. Please try again.");
+      }
+
+      // Save user session in localStorage
+      if (typeof window !== "undefined") {
+        if (data.user) {
+          localStorage.setItem("travltik_user", JSON.stringify(data.user));
+        }
+        localStorage.setItem("expert_isLoggedIn", "true");
+        localStorage.setItem("expert_email", targetEmail);
+        localStorage.setItem("expert_businessName", businessName || fullName);
+        localStorage.setItem("expert_fullName", fullName);
+        if (fullName) {
+          const parts = fullName.trim().split(" ");
+          localStorage.setItem("expert_firstName", parts[0] || "");
+          localStorage.setItem("expert_lastName", parts.slice(1).join(" ") || "");
+        }
+        if (businessType) localStorage.setItem("expert_advisorType", businessType);
+        if (city) localStorage.setItem("expert_city", city);
+        if (state) localStorage.setItem("expert_state", state);
+        if (country) localStorage.setItem("expert_country", country);
+        const contactPhone = businessPhone || (mobileNumber ? `${mobileCode} ${mobileNumber}` : "");
+        if (contactPhone) localStorage.setItem("expert_phone", contactPhone);
+        if (website) localStorage.setItem("expert_website", website);
+        if (selectedServices.length > 0) localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
+        if (selectedDestinations.length > 0) localStorage.setItem("expert_countriesExpertise", selectedDestinations.join(", "));
+        if (experience) localStorage.setItem("expert_experience", experience);
+        if (selectedLanguages.length > 0) localStorage.setItem("expert_languages", JSON.stringify(selectedLanguages));
+      }
+
+      setStep(5);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        window.location.href = "/service-provider/dashboard";
+      }, 1500);
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Failed to submit application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // ─── Step 4: Initiate Email Verification with Code on Submit Application ────
   const handleInitiateEmailVerification = async () => {
     setErrorMsg("");
@@ -426,8 +508,8 @@ function ExpertSignupPortalContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: targetEmail,
-          mode: "registration",
-          allowExisting: false
+          mode: "expert_registration",
+          allowExisting: true
         })
       });
       const data = await res.json();
@@ -443,7 +525,7 @@ function ExpertSignupPortalContent() {
       setResendCooldown(60);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: any) {
-      setErrorMsg("Server connection error. Please try again.");
+      setErrorMsg("Server connection error. Please try again or submit directly.");
     } finally {
       setIsSendingOtp(false);
     }
@@ -1757,6 +1839,33 @@ function ExpertSignupPortalContent() {
                   />
                 </div>
 
+                {/* Step 4 Error Banner */}
+                {errorMsg && (
+                  <div className="p-4 rounded-2xl bg-rose-50 border-2 border-rose-200 text-rose-700 text-xs sm:text-sm font-semibold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="shrink-0 text-base">⚠️</span>
+                      <span className="leading-snug">{errorMsg}</span>
+                    </div>
+                    {(errorMsg.toLowerCase().includes('already registered') || errorMsg.toLowerCase().includes('login')) ? (
+                      <a
+                        href="/login?tab=expert"
+                        className="shrink-0 px-4 py-2 bg-[#481268] text-white text-xs font-bold rounded-xl hover:bg-[#3b0e56] transition-colors"
+                      >
+                        Log In Now →
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleSubmitDirectly}
+                        disabled={isSubmitting}
+                        className="shrink-0 px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                      >
+                        Submit Directly →
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 {/* Submit Application Button: sends 6-digit verification code to email */}
                 <button
                   type="button"
@@ -1768,6 +1877,11 @@ function ExpertSignupPortalContent() {
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
                       <span>Sending Verification Code...</span>
+                    </>
+                  ) : isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Submitting Application...</span>
                     </>
                   ) : (
                     <>
@@ -1781,6 +1895,18 @@ function ExpertSignupPortalContent() {
                 <p className="text-center text-xs text-slate-400 font-medium">
                   We will send a 6-digit verification code to your email upon submission.
                 </p>
+
+                {/* Fallback Direct Submit Link */}
+                <div className="text-center pt-0.5">
+                  <button
+                    type="button"
+                    onClick={handleSubmitDirectly}
+                    disabled={isSubmitting || isSendingOtp}
+                    className="text-[12px] font-semibold text-slate-500 hover:text-[#481268] hover:underline transition-colors cursor-pointer"
+                  >
+                    {isSubmitting ? "Submitting Application Directly..." : "Or submit application directly without email verification"}
+                  </button>
+                </div>
 
                 {/* Back Button */}
                 <div className="flex justify-center pt-2">

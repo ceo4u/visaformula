@@ -70,188 +70,253 @@ export interface StructuredVisaRequirements {
 }
 
 // ── COUNTRY NORMALIZATION HELPER ──
-export function normalizeCountry(country: string): string {
-  const c = (country || '').toLowerCase().trim().replace(/[-_]/g, ' ');
+export function normalizeCountry(str: string): string {
+  if (!str) return '';
+  const s = str.toLowerCase().trim();
+  const c = s.replace(/[-_]/g, ' ');
 
-  // ── TOP 20 ORIGINS ALIASES ──
-  if (c.includes('usa') || c.includes('united states') || c === 'us' || c.includes('america') || c.includes('american')) return 'usa';
-  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('great britain') || c.includes('britain') || c.includes('british') || c === 'gb') return 'uk';
-  if (c.includes('canada') || c === 'ca' || c.includes('canadian')) return 'canada';
-  if (c.includes('australia') || c === 'au' || c.includes('australian') || c.includes('aussie')) return 'australia';
-  if (c.includes('germany') || c === 'de' || c.includes('deutschland') || c.includes('german')) return 'germany';
-  if (c.includes('france') || c === 'fr' || c.includes('french')) return 'france';
-  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi') || c.includes('emirates') || c.includes('emirati')) return 'uae';
-  if (c.includes('singapore') || c === 'sg' || c.includes('singaporean')) return 'singapore';
-  if (c.includes('netherlands') || c === 'nl' || c.includes('holland') || c.includes('dutch')) return 'netherlands';
-  if (c.includes('switzerland') || c === 'ch' || c.includes('swiss')) return 'switzerland';
-  if (c.includes('spain') || c === 'es' || c.includes('españa') || c.includes('spanish')) return 'spain';
-  if (c.includes('italy') || c === 'it' || c.includes('italian')) return 'italy';
-  if (c.includes('japan') || c === 'jp' || c.includes('japanese')) return 'japan';
-  if (c.includes('south korea') || c === 'kr' || c.includes('korea') || c.includes('korean')) return 'south-korea';
-  if (c.includes('china') || c === 'cn' || c.includes('chinese') || c.includes('prc')) return 'china';
-  if (c.includes('india') || c === 'in' || c.includes('indian')) return 'india';
-  if (c.includes('brazil') || c === 'br' || c.includes('brazilian')) return 'brazil';
-  if (c.includes('south africa') || c === 'za' || c.includes('south african')) return 'south-africa';
-  if (c.includes('mexico') || c === 'mx' || c.includes('mexican')) return 'mexico';
-  if (c.includes('russia') || c === 'ru' || c.includes('russian')) return 'russia';
-  if (c.includes('new zealand') || c === 'nz' || c.includes('kiwi')) return 'new-zealand';
+  // ── 1. COMPOUND & MULTI-WORD OVERRIDES FIRST ──
+  if (c.includes('north korea') || c.includes('dprk') || s === 'kp') return 'north-korea';
+  if (c.includes('south korea') || s === 'kr' || (c.includes('korea') && !c.includes('north'))) return 'south-korea';
+  if (c.includes('papua new guinea') || s === 'pg') return 'papua-new-guinea';
+  if (c.includes('equatorial guinea') || s === 'gq') return 'equatorial-guinea';
+  if (c.includes('guinea bissau') || s === 'gw') return 'guinea-bissau';
+  if (c.includes('south sudan') || s === 'ss') return 'south-sudan';
+  if (c.includes('central african republic') || c === 'car' || s === 'cf') return 'car';
+  if (c.includes('democratic republic') || c.includes('dr congo') || c === 'drc' || s === 'cd') return 'drc';
+  if (c.includes('dominican republic') || s === 'do') return 'dominican-republic';
+  if (c.includes('trinidad') || c.includes('tobago') || s === 'tt') return 'trinidad';
+  if (c.includes('burkina faso') || s === 'bf') return 'burkina-faso';
+  if (c.includes('cabo verde') || c.includes('cape verde') || s === 'cv') return 'cabo-verde';
+  if (c.includes('costa rica') || s === 'cr') return 'costa-rica';
+  if (c.includes('el salvador') || s === 'sv') return 'el-salvador';
+  if (c.includes('sao tome') || s === 'st') return 'sao-tome';
+  if (c.includes('marshall islands') || s === 'mh') return 'marshall-islands';
+  if (c.includes('solomon islands') || s === 'sb') return 'solomon-islands';
+  if (c.includes('timor leste') || c.includes('east timor') || s === 'tl') return 'timor-leste';
+  if (c.includes('vatican') || c.includes('holy see') || s === 'va') return 'vatican-city';
+  if (c.includes('north macedonia') || s === 'mk') return 'north-macedonia';
+  if (c.includes('czech') || c.includes('prague') || s === 'cz') return 'czech-republic';
+  if (c.includes('bosnia') || s === 'ba') return 'bosnia';
+  if (c.includes('ivory coast') || c.includes("cote d'ivoire") || s === 'ci') return 'ivory-coast';
+  if (c.includes('new zealand') || s === 'nz') return 'new-zealand';
+  if (c.includes('south africa') || s === 'za') return 'south-africa';
+  if (c.includes('saudi arabia') || c.includes('saudi') || c.includes('ksa') || s === 'sa') return 'saudi-arabia';
+  if (c.includes('sri lanka') || s === 'lk') return 'sri-lanka';
+  if (c.includes('nigeria') || s === 'ng') return 'nigeria';
+  if (c.includes('ukraine') || s === 'ua') return 'ukraine';
+  if (c.includes('madagascar') || s === 'mg') return 'madagascar';
+  if (c.includes('nicaragua') || s === 'ni') return 'nicaragua';
+  if (c.includes('somalia') || s === 'so') return 'somalia';
+  if (c.includes('romania') || s === 'ro') return 'romania';
 
-  if (c.includes('australia') || c.includes('subclass 500')) return 'australia';
-  if (c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales')) return 'uk';
-  if (c.includes('usa') || c.includes('united states') || c.includes('america') || c.includes('u.s.') || c === 'us') return 'usa';
-  if (c.includes('canada')) return 'canada';
-  if (c.includes('germany') || c.includes('deutschland')) return 'germany';
-  if (c.includes('france') || c.includes('paris')) return 'france';
-  if (c.includes('ireland') || c.includes('irish') || c.includes('eire')) return 'ireland';
-  if (c.includes('italy') || c.includes('italia') || c.includes('rome') || c.includes('milan')) return 'italy';
-  if (c.includes('new zealand') || c === 'nz' || c.includes('auckland')) return 'new-zealand';
-  if (c.includes('singapore')) return 'singapore';
-  if (c.includes('japan') || c.includes('tokyo') || c.includes('kyoto')) return 'japan';
-  if (c.includes('austria') || c.includes('vienna')) return 'austria';
-  if (c.includes('belgium') || c.includes('brussels')) return 'belgium';
-  if (c.includes('czech') || c.includes('prague')) return 'czech-republic';
-  if (c.includes('denmark') || c.includes('copenhagen')) return 'denmark';
-  if (c.includes('finland') || c.includes('helsinki')) return 'finland';
-  if (c.includes('hungary') || c.includes('budapest')) return 'hungary';
-  if (c.includes('iceland') || c.includes('reykjavik')) return 'iceland';
-  if (c.includes('norway') || c.includes('oslo')) return 'norway';
-  if (c.includes('poland') || c.includes('warsaw') || c.includes('krakow')) return 'poland';
-  if (c.includes('portugal') || c.includes('lisbon')) return 'portugal';
-  if (c.includes('sweden') || c.includes('stockholm')) return 'sweden';
-  if (c.includes('switzerland') || c.includes('swiss') || c.includes('zurich')) return 'switzerland';
-  if (c.includes('turkey') || c.includes('turkiye') || c.includes('istanbul')) return 'turkey';
-  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
-  if (c.includes('netherlands') || c.includes('holland') || c.includes('dutch')) return 'netherlands';
-  
-  // ── 35 NEW COUNTRIES NORMALIZATION ──
-  // RUSSIA & CIS
-  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
-  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
-  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
-  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
-  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
-  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
-  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
-  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
-  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
-  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
-  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
-  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+  // Specific power origin aliases
+  if (c.includes('usa') || c.includes('united states') || s === 'us' || c.includes('america') || c.includes('american') || c.includes('b1/b2')) return 'usa';
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('great britain') || c.includes('britain') || s === 'gb' || c.includes('london')) return 'uk';
+  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi') || s === 'ae') return 'uae';
 
-  // ASIA
-  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
-  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
-  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
-  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
-  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
-  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
-  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
-  if (c.includes('macau') || c.includes('macao')) return 'macau';
+  // ── 2. ALL 195 COUNTRIES MATRIX ──
+  // ── EUROPE ──
+  if (s.includes('albania') || s === 'al') return 'albania';
+  if (s.includes('andorra') || s === 'ad') return 'andorra';
+  if (s.includes('austria') || s === 'at') return 'austria';
+  if (s.includes('belarus') || s === 'by') return 'belarus';
+  if (s.includes('belgium') || s === 'be') return 'belgium';
+  if (s.includes('bosnia') || s === 'ba') return 'bosnia';
+  if (s.includes('bulgaria') || s === 'bg') return 'bulgaria';
+  if (s.includes('croatia') || s === 'hr') return 'croatia';
+  if (s.includes('cyprus') || s === 'cy') return 'cyprus';
+  if (s.includes('czech') || s === 'cz') return 'czech-republic';
+  if (s.includes('denmark') || s === 'dk') return 'denmark';
+  if (s.includes('estonia') || s === 'ee') return 'estonia';
+  if (s.includes('finland') || s === 'fi') return 'finland';
+  if (s.includes('france') || s === 'fr') return 'france';
+  if (s.includes('germany') || s === 'de') return 'germany';
+  if (s.includes('greece') || s === 'gr') return 'greece';
+  if (s.includes('hungary') || s === 'hu') return 'hungary';
+  if (s.includes('iceland') || s === 'is') return 'iceland';
+  if (s.includes('ireland') || s === 'ie') return 'ireland';
+  if (s.includes('italy') || s === 'it') return 'italy';
+  if (s.includes('kosovo') || s === 'xk') return 'kosovo';
+  if (s.includes('latvia') || s === 'lv') return 'latvia';
+  if (s.includes('liechtenstein') || s === 'li') return 'liechtenstein';
+  if (s.includes('lithuania') || s === 'lt') return 'lithuania';
+  if (s.includes('luxembourg') || s === 'lu') return 'luxembourg';
+  if (s.includes('malta') || s === 'mt') return 'malta';
+  if (s.includes('moldova') || s === 'md') return 'moldova';
+  if (s.includes('monaco') || s === 'mc') return 'monaco';
+  if (s.includes('montenegro') || s === 'me') return 'montenegro';
+  if (s.includes('netherlands') || s === 'nl') return 'netherlands';
+  if (s.includes('north macedonia') || s === 'mk') return 'north-macedonia';
+  if (s.includes('norway') || s === 'no') return 'norway';
+  if (s.includes('poland') || s === 'pl') return 'poland';
+  if (s.includes('portugal') || s === 'pt') return 'portugal';
+  if (c.includes('romania') || s === 'ro') return 'romania';
+  if (s.includes('russia') || s === 'ru') return 'russia';
+  if (s.includes('san marino') || s === 'sm') return 'san-marino';
+  if (s.includes('serbia') || s === 'rs') return 'serbia';
+  if (s.includes('slovakia') || s === 'sk') return 'slovakia';
+  if (s.includes('slovenia') || s === 'si') return 'slovenia';
+  if (s.includes('spain') || s === 'es') return 'spain';
+  if (s.includes('sweden') || s === 'se') return 'sweden';
+  if (s.includes('switzerland') || s === 'ch') return 'switzerland';
+  if (c.includes('ukraine') || s === 'ua') return 'ukraine';
+  if ((c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || s === 'gb' || c.includes('london')) && !c.includes('ukraine')) return 'uk';
+  if (s.includes('vatican') || s === 'va') return 'vatican-city';
+  // ── AFRICA ── (54 countries)
+  if (s.includes('algeria') || s === 'dz') return 'algeria';
+  if (s.includes('angola') || s === 'ao') return 'angola';
+  if (s.includes('benin') || s === 'bj') return 'benin';
+  if (s.includes('botswana') || s === 'bw') return 'botswana';
+  if (s.includes('burkina faso') || s === 'bf') return 'burkina-faso';
+  if (s.includes('burundi') || s === 'bi') return 'burundi';
+  if (s.includes('cabo verde') || s === 'cv') return 'cabo-verde';
+  if (s.includes('cameroon') || s === 'cm') return 'cameroon';
+  if (c === 'car' || c.includes('central african republic') || s === 'cf') return 'car';
+  if (s.includes('chad') || s === 'td') return 'chad';
+  if (s.includes('comoros') || s === 'km') return 'comoros';
+  if ((c === 'congo' || c.includes('congo brazzaville') || s === 'cg') && !c.includes('democratic') && !c.includes('dr congo') && c !== 'drc') return 'congo';
+  if (s.includes('drc') || s.includes('democratic republic')) return 'drc';
+  if (s.includes('djibouti') || s === 'dj') return 'djibouti';
+  if (s.includes('egypt') || s === 'eg') return 'egypt';
+  if (s.includes('equatorial guinea') || s === 'gq') return 'equatorial-guinea';
+  if (s.includes('eritrea') || s === 'er') return 'eritrea';
+  if (s.includes('eswatini') || s === 'sz') return 'eswatini';
+  if (s.includes('ethiopia') || s === 'et') return 'ethiopia';
+  if (s.includes('gabon') || s === 'ga') return 'gabon';
+  if (s.includes('gambia') || s === 'gm') return 'gambia';
+  if (s.includes('ghana') || s === 'gh') return 'ghana';
+  if ((c === 'guinea' || s === 'gn') && !c.includes('bissau') && !c.includes('equatorial') && !c.includes('papua')) return 'guinea';
+  if (s.includes('guinea-bissau') || s === 'gw') return 'guinea-bissau';
+  if (s.includes('ivory coast') || s === 'ci') return 'ivory-coast';
+  if (s.includes('kenya') || s === 'ke') return 'kenya';
+  if (s.includes('lesotho') || s === 'ls') return 'lesotho';
+  if (s.includes('liberia') || s === 'lr') return 'liberia';
+  if (s.includes('libya') || s === 'ly') return 'libya';
+  if (s.includes('madagascar') || s === 'mg') return 'madagascar';
+  if (s.includes('malawi') || s === 'mw') return 'malawi';
+  if ((c === 'mali' || c.startsWith('mali ') || c.endsWith(' mali') || s === 'ml') && !c.includes('somalia')) return 'mali';
+  if (s.includes('mauritania') || s === 'mr') return 'mauritania';
+  if (s.includes('mauritius') || s === 'mu') return 'mauritius';
+  if (s.includes('morocco') || s === 'ma') return 'morocco';
+  if (s.includes('mozambique') || s === 'mz') return 'mozambique';
+  if (s.includes('namibia') || s === 'na') return 'namibia';
+  if ((c === 'niger' || c.startsWith('niger ') || c.endsWith(' niger') || s === 'ne') && !c.includes('nigeria')) return 'niger';
+  if (c.includes('nigeria') || s === 'ng') return 'nigeria';
+  if (s.includes('rwanda') || s === 'rw') return 'rwanda';
+  if (s.includes('sao tome') || s === 'st') return 'sao-tome';
+  if (s.includes('senegal') || s === 'sn') return 'senegal';
+  if (s.includes('seychelles') || s === 'sc') return 'seychelles';
+  if (s.includes('sierra leone') || s === 'sl') return 'sierra-leone';
+  if (c.includes('somalia') || s === 'so') return 'somalia';
+  if (s.includes('south africa') || s === 'za') return 'south-africa';
+  if (s.includes('south sudan') || s === 'ss') return 'south-sudan';
+  if ((c === 'sudan' || s === 'sd') && !c.includes('south sudan')) return 'sudan';
+  if (s.includes('tanzania') || s === 'tz') return 'tanzania';
+  if (s.includes('togo') || s === 'tg') return 'togo';
+  if (s.includes('tunisia') || s === 'tn') return 'tunisia';
+  if (s.includes('uganda') || s === 'ug') return 'uganda';
+  if (s.includes('zambia') || s === 'zm') return 'zambia';
+  if (s.includes('zimbabwe') || s === 'zw') return 'zimbabwe';
+  // ── ASIA ── (48 countries)
+  if (s.includes('afghanistan') || s === 'af') return 'afghanistan';
+  if (s.includes('armenia') || s === 'am') return 'armenia';
+  if (s.includes('azerbaijan') || s === 'az') return 'azerbaijan';
+  if (s.includes('bahrain') || s === 'bh') return 'bahrain';
+  if (s.includes('bangladesh') || s === 'bd') return 'bangladesh';
+  if (s.includes('bhutan') || s === 'bt') return 'bhutan';
+  if (s.includes('brunei') || s === 'bn') return 'brunei';
+  if (s.includes('cambodia') || s === 'kh') return 'cambodia';
+  if (s.includes('china') || s === 'cn') return 'china';
+  if (s.includes('georgia') || s === 'ge') return 'georgia';
+  if (s.includes('hong kong') || s === 'hk') return 'hong-kong';
+  if (s.includes('india') || s === 'in') return 'india';
+  if (s.includes('indonesia') || s === 'id') return 'indonesia';
+  if (s.includes('iran') || s === 'ir') return 'iran';
+  if (s.includes('iraq') || s === 'iq') return 'iraq';
+  if (s.includes('israel') || s === 'il') return 'israel';
+  if (s.includes('japan') || s === 'jp') return 'japan';
+  if (s.includes('jordan') || s === 'jo') return 'jordan';
+  if (s.includes('kazakhstan') || s === 'kz') return 'kazakhstan';
+  if (s.includes('kuwait') || s === 'kw') return 'kuwait';
+  if (s.includes('kyrgyzstan') || s === 'kg') return 'kyrgyzstan';
+  if (s.includes('laos') || s === 'la') return 'laos';
+  if (s.includes('lebanon') || s === 'lb') return 'lebanon';
+  if (s.includes('macau') || s === 'mo') return 'macau';
+  if (s.includes('malaysia') || s === 'my') return 'malaysia';
+  if (s.includes('maldives') || s === 'mv') return 'maldives';
+  if (s.includes('mongolia') || s === 'mn') return 'mongolia';
+  if (s.includes('myanmar') || s === 'mm') return 'myanmar';
+  if (s.includes('nepal') || s === 'np') return 'nepal';
+  if (c.includes('north korea') || c.includes('dprk') || s === 'kp') return 'north-korea';
+  if ((c === 'oman' || c.startsWith('oman ') || c.endsWith(' oman') || s === 'om' || c.includes('muscat')) && !c.includes('romania')) return 'oman';
+  if (s.includes('pakistan') || s === 'pk') return 'pakistan';
+  if (s.includes('palestine') || s === 'ps') return 'palestine';
+  if (s.includes('philippines') || s === 'ph') return 'philippines';
+  if (s.includes('qatar') || s === 'qa') return 'qatar';
+  if (s.includes('saudi arabia') || s === 'sa') return 'saudi-arabia';
+  if (s.includes('singapore') || s === 'sg') return 'singapore';
+  if ((c.includes('south korea') || c.includes('republic of korea') || s === 'kr' || c === 'korea') && !c.includes('north')) return 'south-korea';
+  if (s.includes('sri lanka') || s === 'lk') return 'sri-lanka';
+  if (s.includes('syria') || s === 'sy') return 'syria';
+  if (s.includes('taiwan') || s === 'tw') return 'taiwan';
+  if (s.includes('tajikistan') || s === 'tj') return 'tajikistan';
+  if (s.includes('thailand') || s === 'th') return 'thailand';
+  if (s.includes('timor-leste') || s === 'tl') return 'timor-leste';
+  if (s.includes('turkey') || s === 'tr') return 'turkey';
+  if (s.includes('turkmenistan') || s === 'tm') return 'turkmenistan';
+  if (s.includes('uae') || s.includes('united arab emirates') || s === 'ae') return 'uae';
+  if (s.includes('uzbekistan') || s === 'uz') return 'uzbekistan';
+  if (s.includes('vietnam') || s === 'vn') return 'vietnam';
+  if (s.includes('yemen') || s === 'ye') return 'yemen';
+  // ── AMERICAS ── (35 countries)
+  if (s.includes('argentina') || s === 'ar') return 'argentina';
+  if (s.includes('bahamas') || s === 'bs') return 'bahamas';
+  if (s.includes('barbados') || s === 'bb') return 'barbados';
+  if (s.includes('belize') || s === 'bz') return 'belize';
+  if (s.includes('bolivia') || s === 'bo') return 'bolivia';
+  if (s.includes('brazil') || s === 'br') return 'brazil';
+  if (s.includes('canada') || s === 'ca') return 'canada';
+  if (s.includes('chile') || s === 'cl') return 'chile';
+  if (s.includes('colombia') || s === 'co') return 'colombia';
+  if (s.includes('costa rica') || s === 'cr') return 'costa-rica';
+  if (s.includes('cuba') || s === 'cu') return 'cuba';
+  if (s.includes('dominican republic') || s === 'do') return 'dominican-republic';
+  if (s.includes('ecuador') || s === 'ec') return 'ecuador';
+  if (s.includes('el salvador') || s === 'sv') return 'el-salvador';
+  if (s.includes('guatemala') || s === 'gt') return 'guatemala';
+  if (s.includes('guyana') || s === 'gy') return 'guyana';
+  if (s.includes('haiti') || s === 'ht') return 'haiti';
+  if (s.includes('honduras') || s === 'hn') return 'honduras';
+  if (s.includes('jamaica') || s === 'jm') return 'jamaica';
+  if (s.includes('mexico') || s === 'mx') return 'mexico';
+  if (s.includes('nicaragua') || s === 'ni') return 'nicaragua';
+  if (s.includes('panama') || s === 'pa') return 'panama';
+  if (s.includes('paraguay') || s === 'py') return 'paraguay';
+  if (s.includes('peru') || s === 'pe') return 'peru';
+  if (s.includes('puerto rico') || s === 'pr') return 'puerto-rico';
+  if (s.includes('suriname') || s === 'sr') return 'suriname';
+  if (s.includes('trinidad') || s === 'tt') return 'trinidad';
+  if (s.includes('usa') || s.includes('united states') || s === 'us') return 'usa';
+  if (s.includes('uruguay') || s === 'uy') return 'uruguay';
+  if (s.includes('venezuela') || s === 've') return 'venezuela';
+  // ── OCEANIA ── (14 countries)
+  if (s.includes('australia') || s === 'au') return 'australia';
+  if (s.includes('fiji') || s === 'fj') return 'fiji';
+  if (s.includes('kiribati') || s === 'ki') return 'kiribati';
+  if (s.includes('marshall islands') || s === 'mh') return 'marshall-islands';
+  if (s.includes('micronesia') || s === 'fm') return 'micronesia';
+  if (s.includes('nauru') || s === 'nr') return 'nauru';
+  if (s.includes('new zealand') || s === 'nz') return 'new-zealand';
+  if (s.includes('palau') || s === 'pw') return 'palau';
+  if (s.includes('papua new guinea') || s === 'pg') return 'papua-new-guinea';
+  if (s.includes('samoa') || s === 'ws') return 'samoa';
+  if (s.includes('solomon islands') || s === 'sb') return 'solomon-islands';
+  if (s.includes('tonga') || s === 'to') return 'tonga';
+  if (s.includes('tuvalu') || s === 'tv') return 'tuvalu';
+  if (s.includes('vanuatu') || s === 'vu') return 'vanuatu';
 
-  // AFRICA
-  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
-  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
-  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
-  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
-  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
-
-  // AMERICAS
-  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
-  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
-  if (c.includes('chile') || c.includes('santiago')) return 'chile';
-  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
-  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
-
-  // EUROPE
-  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
-  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
-  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
-  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
-  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
-
-  
-  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
-
-  // EUROPE (6)
-  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
-  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
-  if (c.includes('albania') || c.includes('tirana')) return 'albania';
-  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
-  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
-  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
-
-  // AFRICA (21)
-  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
-  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
-  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
-  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
-  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
-  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
-  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
-  if (c.includes('djibouti')) return 'djibouti';
-  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
-  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
-  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
-  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
-  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
-  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
-  if (c.includes('angola') || c.includes('luanda')) return 'angola';
-  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
-  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
-  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
-  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
-  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
-  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
-
-  // ASIA (20)
-  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
-  if (c.includes('iran') || c.includes('tehran')) return 'iran';
-  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
-  if (c.includes('syria') || c.includes('damascus')) return 'syria';
-  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
-  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
-  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
-  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
-  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
-  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
-  if (c.includes('oman') || c.includes('muscat')) return 'oman';
-  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
-  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
-  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
-  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
-
-  // OCEANIA (5)
-  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
-  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
-  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
-  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
-  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
-  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
-
-  // AMERICAS (20)
-  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
-  if (c.includes('panama') || c.includes('panama city')) return 'panama';
-  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
-  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
-  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
-  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
-  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
-  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
-  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
-  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
-  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
-  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
-  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
-  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
-  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
-  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
-  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
-  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
-  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
-  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
-  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
-
-  return c;
+  return s.replace(/\s+/g, '-');
 }
 
 const DESTS: Record<string, any> = {

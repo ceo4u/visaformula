@@ -35,48 +35,316 @@ export interface StructuredVisaRequirements {
 }
 
 export function normalizeCountry(str: string): string {
-  if (!str) return 'india';
-  const c = str.toLowerCase().trim();
+  if (!str) return '';
+  const s = str.toLowerCase().trim();
+  const c = s.replace(/[-_]/g, ' ');
 
-  // ── TOP 20 ORIGINS ──
-  if (c.includes('usa') || c.includes('united states') || c === 'us' || c.includes('america') || c.includes('american')) return 'usa';
-  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('great britain') || c.includes('britain') || c.includes('british') || c === 'gb') return 'uk';
-  if (c.includes('canada') || c === 'ca' || c.includes('canadian')) return 'canada';
-  if (c.includes('australia') || c === 'au' || c.includes('australian') || c.includes('aussie')) return 'australia';
-  if (c.includes('germany') || c === 'de' || c.includes('deutschland') || c.includes('german')) return 'germany';
-  if (c.includes('france') || c === 'fr' || c.includes('french')) return 'france';
-  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi') || c.includes('emirates') || c.includes('emirati')) return 'uae';
-  if (c.includes('singapore') || c === 'sg' || c.includes('singaporean')) return 'singapore';
-  if (c.includes('netherlands') || c === 'nl' || c.includes('holland') || c.includes('dutch')) return 'netherlands';
-  if (c.includes('switzerland') || c === 'ch' || c.includes('swiss')) return 'switzerland';
-  if (c.includes('spain') || c === 'es' || c.includes('españa') || c.includes('spanish')) return 'spain';
-  if (c.includes('italy') || c === 'it' || c.includes('italian')) return 'italy';
-  if (c.includes('japan') || c === 'jp' || c.includes('japanese')) return 'japan';
-  if (c.includes('south korea') || c === 'kr' || c.includes('korea') || c.includes('korean')) return 'south-korea';
-  if (c.includes('china') || c === 'cn' || c.includes('chinese') || c.includes('prc')) return 'china';
-  if (c.includes('india') || c === 'in' || c.includes('indian')) return 'india';
-  if (c.includes('brazil') || c === 'br' || c.includes('brazilian')) return 'brazil';
-  if (c.includes('south africa') || c === 'za' || c.includes('south african')) return 'south-africa';
-  if (c.includes('mexico') || c === 'mx' || c.includes('mexican')) return 'mexico';
-  if (c.includes('russia') || c === 'ru' || c.includes('russian')) return 'russia';
-  if (c.includes('new zealand') || c === 'nz' || c.includes('kiwi')) return 'new-zealand';
+  // ── 1. COMPOUND & MULTI-WORD OVERRIDES FIRST ──
+  if (c.includes('north korea') || c.includes('dprk') || s === 'kp') return 'north-korea';
+  if (c.includes('south korea') || s === 'kr' || (c.includes('korea') && !c.includes('north'))) return 'south-korea';
+  if (c.includes('papua new guinea') || s === 'pg') return 'papua-new-guinea';
+  if (c.includes('equatorial guinea') || s === 'gq') return 'equatorial-guinea';
+  if (c.includes('guinea bissau') || s === 'gw') return 'guinea-bissau';
+  if (c.includes('south sudan') || s === 'ss') return 'south-sudan';
+  if (c.includes('central african republic') || c === 'car' || s === 'cf') return 'car';
+  if (c.includes('democratic republic') || c.includes('dr congo') || c === 'drc' || s === 'cd') return 'drc';
+  if (c.includes('dominican republic') || s === 'do') return 'dominican-republic';
+  if (c.includes('trinidad') || c.includes('tobago') || s === 'tt') return 'trinidad';
+  if (c.includes('burkina faso') || s === 'bf') return 'burkina-faso';
+  if (c.includes('cabo verde') || c.includes('cape verde') || s === 'cv') return 'cabo-verde';
+  if (c.includes('costa rica') || s === 'cr') return 'costa-rica';
+  if (c.includes('el salvador') || s === 'sv') return 'el-salvador';
+  if (c.includes('sao tome') || s === 'st') return 'sao-tome';
+  if (c.includes('marshall islands') || s === 'mh') return 'marshall-islands';
+  if (c.includes('solomon islands') || s === 'sb') return 'solomon-islands';
+  if (c.includes('timor leste') || c.includes('east timor') || s === 'tl') return 'timor-leste';
+  if (c.includes('vatican') || c.includes('holy see') || s === 'va') return 'vatican-city';
+  if (c.includes('north macedonia') || s === 'mk') return 'north-macedonia';
+  if (c.includes('czech') || c.includes('prague') || s === 'cz') return 'czech-republic';
+  if (c.includes('bosnia') || s === 'ba') return 'bosnia';
+  if (c.includes('ivory coast') || c.includes("cote d'ivoire") || s === 'ci') return 'ivory-coast';
+  if (c.includes('new zealand') || s === 'nz') return 'new-zealand';
+  if (c.includes('south africa') || s === 'za') return 'south-africa';
+  if (c.includes('saudi arabia') || c.includes('saudi') || c.includes('ksa') || s === 'sa') return 'saudi-arabia';
+  if (c.includes('sri lanka') || s === 'lk') return 'sri-lanka';
+  if (c.includes('nigeria') || s === 'ng') return 'nigeria';
+  if (c.includes('ukraine') || s === 'ua') return 'ukraine';
+  if (c.includes('madagascar') || s === 'mg') return 'madagascar';
+  if (c.includes('nicaragua') || s === 'ni') return 'nicaragua';
+  if (c.includes('somalia') || s === 'so') return 'somalia';
+  if (c.includes('romania') || s === 'ro') return 'romania';
 
-  // Middle East / GCC
-  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
-  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
-  if (c.includes('kuwait')) return 'kuwait';
-  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
-  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  // Specific power origin aliases
+  if (c.includes('usa') || c.includes('united states') || s === 'us' || c.includes('america') || c.includes('american') || c.includes('b1/b2')) return 'usa';
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('great britain') || c.includes('britain') || s === 'gb' || c.includes('london')) return 'uk';
+  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi') || s === 'ae') return 'uae';
 
-  // Asia
-  if (c.includes('malaysia') || c.includes('kuala lumpur')) return 'malaysia';
-  if (c.includes('thailand') || c.includes('bangkok')) return 'thailand';
-  if (c.includes('indonesia') || c.includes('jakarta') || c.includes('bali')) return 'indonesia';
-  if (c.includes('vietnam') || c.includes('hanoi')) return 'vietnam';
-  if (c.includes('philippines') || c.includes('manila')) return 'philippines';
+  // ── 2. ALL 195 COUNTRIES MATRIX ──
+  // ── EUROPE ──
+  if (s.includes('albania') || s === 'al') return 'albania';
+  if (s.includes('andorra') || s === 'ad') return 'andorra';
+  if (s.includes('austria') || s === 'at') return 'austria';
+  if (s.includes('belarus') || s === 'by') return 'belarus';
+  if (s.includes('belgium') || s === 'be') return 'belgium';
+  if (s.includes('bosnia') || s === 'ba') return 'bosnia';
+  if (s.includes('bulgaria') || s === 'bg') return 'bulgaria';
+  if (s.includes('croatia') || s === 'hr') return 'croatia';
+  if (s.includes('cyprus') || s === 'cy') return 'cyprus';
+  if (s.includes('czech') || s === 'cz') return 'czech-republic';
+  if (s.includes('denmark') || s === 'dk') return 'denmark';
+  if (s.includes('estonia') || s === 'ee') return 'estonia';
+  if (s.includes('finland') || s === 'fi') return 'finland';
+  if (s.includes('france') || s === 'fr') return 'france';
+  if (s.includes('germany') || s === 'de') return 'germany';
+  if (s.includes('greece') || s === 'gr') return 'greece';
+  if (s.includes('hungary') || s === 'hu') return 'hungary';
+  if (s.includes('iceland') || s === 'is') return 'iceland';
+  if (s.includes('ireland') || s === 'ie') return 'ireland';
+  if (s.includes('italy') || s === 'it') return 'italy';
+  if (s.includes('kosovo') || s === 'xk') return 'kosovo';
+  if (s.includes('latvia') || s === 'lv') return 'latvia';
+  if (s.includes('liechtenstein') || s === 'li') return 'liechtenstein';
+  if (s.includes('lithuania') || s === 'lt') return 'lithuania';
+  if (s.includes('luxembourg') || s === 'lu') return 'luxembourg';
+  if (s.includes('malta') || s === 'mt') return 'malta';
+  if (s.includes('moldova') || s === 'md') return 'moldova';
+  if (s.includes('monaco') || s === 'mc') return 'monaco';
+  if (s.includes('montenegro') || s === 'me') return 'montenegro';
+  if (s.includes('netherlands') || s === 'nl') return 'netherlands';
+  if (s.includes('north macedonia') || s === 'mk') return 'north-macedonia';
+  if (s.includes('norway') || s === 'no') return 'norway';
+  if (s.includes('poland') || s === 'pl') return 'poland';
+  if (s.includes('portugal') || s === 'pt') return 'portugal';
+  if (c.includes('romania') || s === 'ro') return 'romania';
+  if (s.includes('russia') || s === 'ru') return 'russia';
+  if (s.includes('san marino') || s === 'sm') return 'san-marino';
+  if (s.includes('serbia') || s === 'rs') return 'serbia';
+  if (s.includes('slovakia') || s === 'sk') return 'slovakia';
+  if (s.includes('slovenia') || s === 'si') return 'slovenia';
+  if (s.includes('spain') || s === 'es') return 'spain';
+  if (s.includes('sweden') || s === 'se') return 'sweden';
+  if (s.includes('switzerland') || s === 'ch') return 'switzerland';
+  if (c.includes('ukraine') || s === 'ua') return 'ukraine';
+  if ((c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || s === 'gb' || c.includes('london')) && !c.includes('ukraine')) return 'uk';
+  if (s.includes('vatican') || s === 'va') return 'vatican-city';
+  // ── AFRICA ── (54 countries)
+  if (s.includes('algeria') || s === 'dz') return 'algeria';
+  if (s.includes('angola') || s === 'ao') return 'angola';
+  if (s.includes('benin') || s === 'bj') return 'benin';
+  if (s.includes('botswana') || s === 'bw') return 'botswana';
+  if (s.includes('burkina faso') || s === 'bf') return 'burkina-faso';
+  if (s.includes('burundi') || s === 'bi') return 'burundi';
+  if (s.includes('cabo verde') || s === 'cv') return 'cabo-verde';
+  if (s.includes('cameroon') || s === 'cm') return 'cameroon';
+  if (c === 'car' || c.includes('central african republic') || s === 'cf') return 'car';
+  if (s.includes('chad') || s === 'td') return 'chad';
+  if (s.includes('comoros') || s === 'km') return 'comoros';
+  if ((c === 'congo' || c.includes('congo brazzaville') || s === 'cg') && !c.includes('democratic') && !c.includes('dr congo') && c !== 'drc') return 'congo';
+  if (s.includes('drc') || s.includes('democratic republic')) return 'drc';
+  if (s.includes('djibouti') || s === 'dj') return 'djibouti';
+  if (s.includes('egypt') || s === 'eg') return 'egypt';
+  if (s.includes('equatorial guinea') || s === 'gq') return 'equatorial-guinea';
+  if (s.includes('eritrea') || s === 'er') return 'eritrea';
+  if (s.includes('eswatini') || s === 'sz') return 'eswatini';
+  if (s.includes('ethiopia') || s === 'et') return 'ethiopia';
+  if (s.includes('gabon') || s === 'ga') return 'gabon';
+  if (s.includes('gambia') || s === 'gm') return 'gambia';
+  if (s.includes('ghana') || s === 'gh') return 'ghana';
+  if ((c === 'guinea' || s === 'gn') && !c.includes('bissau') && !c.includes('equatorial') && !c.includes('papua')) return 'guinea';
+  if (s.includes('guinea-bissau') || s === 'gw') return 'guinea-bissau';
+  if (s.includes('ivory coast') || s === 'ci') return 'ivory-coast';
+  if (s.includes('kenya') || s === 'ke') return 'kenya';
+  if (s.includes('lesotho') || s === 'ls') return 'lesotho';
+  if (s.includes('liberia') || s === 'lr') return 'liberia';
+  if (s.includes('libya') || s === 'ly') return 'libya';
+  if (s.includes('madagascar') || s === 'mg') return 'madagascar';
+  if (s.includes('malawi') || s === 'mw') return 'malawi';
+  if ((c === 'mali' || c.startsWith('mali ') || c.endsWith(' mali') || s === 'ml') && !c.includes('somalia')) return 'mali';
+  if (s.includes('mauritania') || s === 'mr') return 'mauritania';
+  if (s.includes('mauritius') || s === 'mu') return 'mauritius';
+  if (s.includes('morocco') || s === 'ma') return 'morocco';
+  if (s.includes('mozambique') || s === 'mz') return 'mozambique';
+  if (s.includes('namibia') || s === 'na') return 'namibia';
+  if ((c === 'niger' || c.startsWith('niger ') || c.endsWith(' niger') || s === 'ne') && !c.includes('nigeria')) return 'niger';
+  if (c.includes('nigeria') || s === 'ng') return 'nigeria';
+  if (s.includes('rwanda') || s === 'rw') return 'rwanda';
+  if (s.includes('sao tome') || s === 'st') return 'sao-tome';
+  if (s.includes('senegal') || s === 'sn') return 'senegal';
+  if (s.includes('seychelles') || s === 'sc') return 'seychelles';
+  if (s.includes('sierra leone') || s === 'sl') return 'sierra-leone';
+  if (c.includes('somalia') || s === 'so') return 'somalia';
+  if (s.includes('south africa') || s === 'za') return 'south-africa';
+  if (s.includes('south sudan') || s === 'ss') return 'south-sudan';
+  if ((c === 'sudan' || s === 'sd') && !c.includes('south sudan')) return 'sudan';
+  if (s.includes('tanzania') || s === 'tz') return 'tanzania';
+  if (s.includes('togo') || s === 'tg') return 'togo';
+  if (s.includes('tunisia') || s === 'tn') return 'tunisia';
+  if (s.includes('uganda') || s === 'ug') return 'uganda';
+  if (s.includes('zambia') || s === 'zm') return 'zambia';
+  if (s.includes('zimbabwe') || s === 'zw') return 'zimbabwe';
+  // ── ASIA ── (48 countries)
+  if (s.includes('afghanistan') || s === 'af') return 'afghanistan';
+  if (s.includes('armenia') || s === 'am') return 'armenia';
+  if (s.includes('azerbaijan') || s === 'az') return 'azerbaijan';
+  if (s.includes('bahrain') || s === 'bh') return 'bahrain';
+  if (s.includes('bangladesh') || s === 'bd') return 'bangladesh';
+  if (s.includes('bhutan') || s === 'bt') return 'bhutan';
+  if (s.includes('brunei') || s === 'bn') return 'brunei';
+  if (s.includes('cambodia') || s === 'kh') return 'cambodia';
+  if (s.includes('china') || s === 'cn') return 'china';
+  if (s.includes('georgia') || s === 'ge') return 'georgia';
+  if (s.includes('hong kong') || s === 'hk') return 'hong-kong';
+  if (s.includes('india') || s === 'in') return 'india';
+  if (s.includes('indonesia') || s === 'id') return 'indonesia';
+  if (s.includes('iran') || s === 'ir') return 'iran';
+  if (s.includes('iraq') || s === 'iq') return 'iraq';
+  if (s.includes('israel') || s === 'il') return 'israel';
+  if (s.includes('japan') || s === 'jp') return 'japan';
+  if (s.includes('jordan') || s === 'jo') return 'jordan';
+  if (s.includes('kazakhstan') || s === 'kz') return 'kazakhstan';
+  if (s.includes('kuwait') || s === 'kw') return 'kuwait';
+  if (s.includes('kyrgyzstan') || s === 'kg') return 'kyrgyzstan';
+  if (s.includes('laos') || s === 'la') return 'laos';
+  if (s.includes('lebanon') || s === 'lb') return 'lebanon';
+  if (s.includes('macau') || s === 'mo') return 'macau';
+  if (s.includes('malaysia') || s === 'my') return 'malaysia';
+  if (s.includes('maldives') || s === 'mv') return 'maldives';
+  if (s.includes('mongolia') || s === 'mn') return 'mongolia';
+  if (s.includes('myanmar') || s === 'mm') return 'myanmar';
+  if (s.includes('nepal') || s === 'np') return 'nepal';
+  if (c.includes('north korea') || c.includes('dprk') || s === 'kp') return 'north-korea';
+  if ((c === 'oman' || c.startsWith('oman ') || c.endsWith(' oman') || s === 'om' || c.includes('muscat')) && !c.includes('romania')) return 'oman';
+  if (s.includes('pakistan') || s === 'pk') return 'pakistan';
+  if (s.includes('palestine') || s === 'ps') return 'palestine';
+  if (s.includes('philippines') || s === 'ph') return 'philippines';
+  if (s.includes('qatar') || s === 'qa') return 'qatar';
+  if (s.includes('saudi arabia') || s === 'sa') return 'saudi-arabia';
+  if (s.includes('singapore') || s === 'sg') return 'singapore';
+  if ((c.includes('south korea') || c.includes('republic of korea') || s === 'kr' || c === 'korea') && !c.includes('north')) return 'south-korea';
+  if (s.includes('sri lanka') || s === 'lk') return 'sri-lanka';
+  if (s.includes('syria') || s === 'sy') return 'syria';
+  if (s.includes('taiwan') || s === 'tw') return 'taiwan';
+  if (s.includes('tajikistan') || s === 'tj') return 'tajikistan';
+  if (s.includes('thailand') || s === 'th') return 'thailand';
+  if (s.includes('timor-leste') || s === 'tl') return 'timor-leste';
+  if (s.includes('turkey') || s === 'tr') return 'turkey';
+  if (s.includes('turkmenistan') || s === 'tm') return 'turkmenistan';
+  if (s.includes('uae') || s.includes('united arab emirates') || s === 'ae') return 'uae';
+  if (s.includes('uzbekistan') || s === 'uz') return 'uzbekistan';
+  if (s.includes('vietnam') || s === 'vn') return 'vietnam';
+  if (s.includes('yemen') || s === 'ye') return 'yemen';
+  // ── AMERICAS ── (35 countries)
+  if (s.includes('argentina') || s === 'ar') return 'argentina';
+  if (s.includes('bahamas') || s === 'bs') return 'bahamas';
+  if (s.includes('barbados') || s === 'bb') return 'barbados';
+  if (s.includes('belize') || s === 'bz') return 'belize';
+  if (s.includes('bolivia') || s === 'bo') return 'bolivia';
+  if (s.includes('brazil') || s === 'br') return 'brazil';
+  if (s.includes('canada') || s === 'ca') return 'canada';
+  if (s.includes('chile') || s === 'cl') return 'chile';
+  if (s.includes('colombia') || s === 'co') return 'colombia';
+  if (s.includes('costa rica') || s === 'cr') return 'costa-rica';
+  if (s.includes('cuba') || s === 'cu') return 'cuba';
+  if (s.includes('dominican republic') || s === 'do') return 'dominican-republic';
+  if (s.includes('ecuador') || s === 'ec') return 'ecuador';
+  if (s.includes('el salvador') || s === 'sv') return 'el-salvador';
+  if (s.includes('guatemala') || s === 'gt') return 'guatemala';
+  if (s.includes('guyana') || s === 'gy') return 'guyana';
+  if (s.includes('haiti') || s === 'ht') return 'haiti';
+  if (s.includes('honduras') || s === 'hn') return 'honduras';
+  if (s.includes('jamaica') || s === 'jm') return 'jamaica';
+  if (s.includes('mexico') || s === 'mx') return 'mexico';
+  if (s.includes('nicaragua') || s === 'ni') return 'nicaragua';
+  if (s.includes('panama') || s === 'pa') return 'panama';
+  if (s.includes('paraguay') || s === 'py') return 'paraguay';
+  if (s.includes('peru') || s === 'pe') return 'peru';
+  if (s.includes('puerto rico') || s === 'pr') return 'puerto-rico';
+  if (s.includes('suriname') || s === 'sr') return 'suriname';
+  if (s.includes('trinidad') || s === 'tt') return 'trinidad';
+  if (s.includes('usa') || s.includes('united states') || s === 'us') return 'usa';
+  if (s.includes('uruguay') || s === 'uy') return 'uruguay';
+  if (s.includes('venezuela') || s === 've') return 'venezuela';
+  // ── OCEANIA ── (14 countries)
+  if (s.includes('australia') || s === 'au') return 'australia';
+  if (s.includes('fiji') || s === 'fj') return 'fiji';
+  if (s.includes('kiribati') || s === 'ki') return 'kiribati';
+  if (s.includes('marshall islands') || s === 'mh') return 'marshall-islands';
+  if (s.includes('micronesia') || s === 'fm') return 'micronesia';
+  if (s.includes('nauru') || s === 'nr') return 'nauru';
+  if (s.includes('new zealand') || s === 'nz') return 'new-zealand';
+  if (s.includes('palau') || s === 'pw') return 'palau';
+  if (s.includes('papua new guinea') || s === 'pg') return 'papua-new-guinea';
+  if (s.includes('samoa') || s === 'ws') return 'samoa';
+  if (s.includes('solomon islands') || s === 'sb') return 'solomon-islands';
+  if (s.includes('tonga') || s === 'to') return 'tonga';
+  if (s.includes('tuvalu') || s === 'tv') return 'tuvalu';
+  if (s.includes('vanuatu') || s === 'vu') return 'vanuatu';
 
-  return c;
+  return s.replace(/\s+/g, '-');
 }
+
+export const ORIGINS: string[] = [
+  'afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'argentina',
+  'armenia', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain',
+  'bangladesh', 'barbados', 'belarus', 'belgium', 'belize', 'benin',
+  'bhutan', 'bolivia', 'bosnia', 'botswana', 'brazil', 'brunei',
+  'bulgaria', 'burkina-faso', 'burundi', 'cabo-verde', 'cambodia', 'cameroon',
+  'canada', 'car', 'chad', 'chile', 'china', 'colombia',
+  'comoros', 'congo', 'costa-rica', 'croatia', 'cuba', 'cyprus',
+  'czech-republic', 'denmark', 'djibouti', 'dominican-republic', 'drc', 'ecuador',
+  'egypt', 'el-salvador', 'equatorial-guinea', 'eritrea', 'estonia', 'eswatini',
+  'ethiopia', 'fiji', 'finland', 'france', 'gabon', 'gambia',
+  'georgia', 'germany', 'ghana', 'greece', 'guatemala', 'guinea',
+  'guinea-bissau', 'guyana', 'haiti', 'honduras', 'hong-kong', 'hungary',
+  'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland',
+  'israel', 'italy', 'ivory-coast', 'jamaica', 'japan', 'jordan',
+  'kazakhstan', 'kenya', 'kiribati', 'kosovo', 'kuwait', 'kyrgyzstan',
+  'laos', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya',
+  'liechtenstein', 'lithuania', 'luxembourg', 'macau', 'madagascar', 'malawi',
+  'malaysia', 'maldives', 'mali', 'malta', 'marshall-islands', 'mauritania',
+  'mauritius', 'mexico', 'micronesia', 'moldova', 'monaco', 'mongolia',
+  'montenegro', 'morocco', 'mozambique', 'myanmar', 'namibia', 'nauru',
+  'nepal', 'netherlands', 'new-zealand', 'nicaragua', 'niger', 'nigeria',
+  'north-korea', 'north-macedonia', 'norway', 'oman', 'pakistan', 'palau',
+  'palestine', 'panama', 'papua-new-guinea', 'paraguay', 'peru', 'philippines',
+  'poland', 'portugal', 'puerto-rico', 'qatar', 'romania', 'russia',
+  'rwanda', 'samoa', 'san-marino', 'sao-tome', 'saudi-arabia', 'senegal',
+  'serbia', 'seychelles', 'sierra-leone', 'singapore', 'slovakia', 'slovenia',
+  'solomon-islands', 'somalia', 'south-africa', 'south-korea', 'south-sudan', 'spain',
+  'sri-lanka', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria',
+  'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo',
+  'tonga', 'trinidad', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu',
+  'uae', 'uganda', 'uk', 'ukraine', 'uruguay', 'usa',
+  'uzbekistan', 'vanuatu', 'vatican-city', 'venezuela', 'vietnam', 'yemen',
+  'zambia', 'zimbabwe',
+];
+
+
+export function isPureRoute(from: string): boolean {
+  const norm = normalizeCountry(from);
+  return norm !== 'india' && (ORIGINS.includes(norm) || norm.length > 0);
+}
+
+export function getPureRouteData(from: string, to: string, purpose: string = 'Tourism'): any {
+  const p = (purpose || 'tourism').toLowerCase();
+  if (p.includes('student') || p.includes('study') || p.includes('education')) {
+    return resolvePureRouteStudent(from, to);
+  }
+  if (p.includes('work') || p.includes('job') || p.includes('employment')) {
+    return resolvePureRouteWork(from, to);
+  }
+  if (p.includes('business')) {
+    return resolvePureRouteBusiness(from, to);
+  }
+  if (p.includes('pr') || p.includes('permanent')) {
+    return resolvePureRoutePR(from, to);
+  }
+  if (p.includes('family') || p.includes('spouse')) {
+    return resolvePureRouteFamily(from, to);
+  }
+  return resolvePureRouteTourism(from, to);
+}
+
 
 export function isEUMember(slug: string): boolean {
   return [
@@ -674,11 +942,335 @@ export function resolvePureRouteTourism(fromRaw: string, toRaw: string): Structu
     };
   }
 
+  
+  // ── 8. ALBANIA -> GERMANY (Schengen Visa-Free for Biometric Passports) ──
+  if (from === 'albania' && (to === 'germany' || isSchengenMember(to))) {
+    return {
+      passport_country: 'Albania',
+      destination_country: toName,
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Schengen Visa-Free Access (Up to 90 Days)',
+      source_url: 'https://tirana.diplo.de/al-sq/service/visa-einreise/-/1807770',
+      official_source_name: 'German Federal Foreign Office (Auswärtiges Amt) / German Embassy Tirana',
+      overview: 'Albanian citizens holding a valid biometric passport can travel to Germany and the entire Schengen Area completely visa-free for short stays of up to 90 days within any 180-day rolling period for tourism, visiting relatives, business meetings, or cultural trips. No traditional consular visa is required. Note: Non-biometric passports require a standard Schengen C-Visa.',
+      highlights: [
+        { icon: '🛂', title: '90-Day Visa-Free', description: 'Visa-free entry for up to 90 days in any 180-day period across all 29 Schengen states.' },
+        { icon: '💶', title: '€0 Visa Fee', description: 'No consular visa fee required for biometric passport holders.' },
+        { icon: '✈️', title: 'Direct EU Flights', description: 'Direct flights connect Tirana (TIA) with Frankfurt, Munich, Berlin, and Memmingen.' },
+        { icon: '📱', title: 'ETIAS Preparation', description: 'European Travel Information and Authorisation System (ETIAS) mandatory starting late 2025.' }
+      ],
+      how_to_apply: [
+        'Ensure Biometric Passport: Verify your Albanian passport has an electronic chip and at least 3 months validity beyond planned departure from Schengen.',
+        'Prepare Travel Medical Insurance: Obtain insurance with minimum €30,000 emergency medical coverage valid across the Schengen Area.',
+        'Secure Accommodation & Flights: Book return flight tickets and confirmed hotel booking or German host invitation (Verpflichtungserklärung).',
+        'Proof of Financial Means: Carry proof of economic solvency (~€45 to €50 per day of stay via international cards or cash).',
+        'Pass Border Control: Present biometric passport, return ticket, and accommodation details to German Federal Police (Bundespolizei) at Frankfurt, Munich, or other border checkpoints.'
+      ],
+      documents_required: [
+        { title: 'Valid Albanian Biometric Passport', description: 'Issued within the last 10 years and valid for at least 3 months after departure from Germany.', is_mandatory: true },
+        { title: 'Return Flight Ticket', description: 'Confirmed return ticket to Albania or onward destination outside Schengen.', is_mandatory: true },
+        { title: 'Proof of Lodging / Invitation', description: 'Hotel reservation or formal declaration of commitment (Verpflichtungserklärung).', is_mandatory: true },
+        { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 coverage including emergency repatriation.', is_mandatory: true },
+        { title: 'Proof of Financial Means', description: 'Cash, international credit/debit cards, or bank statement demonstrating sufficient funds.', is_mandatory: true }
+      ],
+      costs: {
+        visa_fee: '€0 (Visa-Exempt for Biometric Passports)',
+        service_fee: '€0',
+        total_fee: '€0',
+        notes: 'ETIAS application fee of €7 will apply once operational in late 2025.'
+      },
+      processing_time: 'Instant at Border Control',
+      processing_time_details: 'Cleared immediately at airport immigration upon verifying biometric passport and entry conditions.',
+      other_requirements: [
+        { category: 'Passport Validity', details: 'Must be biometric and valid for at least 3 months beyond departure date.' },
+        { category: '90/180 Rule', details: 'Strict maximum of 90 days stay in any 180-day rolling window across the Schengen Area.' }
+      ],
+      financial_proofs: [
+        { type: 'Cash / Credit Cards', minimum_balance_or_amount: '€45 - €50 per day of planned stay', time_frame: 'Valid cards', notes: 'Checked by border police at port of entry.' }
+      ],
+      faqs: [
+        { question: 'Do Albanian citizens need a visa to travel to Germany for tourism?', answer: 'No. Holders of valid Albanian biometric passports are exempt from visa requirements for stays up to 90 days within any 180-day period.' },
+        { question: 'What documents should Albanians carry when entering Germany?', answer: 'At German border control, you must be prepared to show your biometric passport, return flight ticket, proof of accommodation, travel insurance with €30,000 minimum coverage, and sufficient funds.' },
+        { question: 'Can Albanian tourists work in Germany under the visa-free regime?', answer: 'No. Visa-free entry does not permit employment in Germany. A German national employment visa (D-Visa) is required for work.' }
+      ],
+      validity: '90 Days in any 180-Day Rolling Period',
+      validity_details: 'Schengen short-stay visa waiver rule.',
+      stay_duration: 'Up to 90 Days',
+      stay_duration_details: 'Maximum allowable stay per 180-day cycle.',
+      entry_type: 'Multiple Entry',
+      entry_type_details: 'Unlimited entries into Germany and other Schengen countries within the 90/180-day limit.',
+      validity_and_stay: {
+        visa_validity: '90 Days in any 180-Day Rolling Period',
+        max_stay_per_entry: 'Up to 90 Days',
+        entry_type: 'Multiple Entry'
+      }
+    };
+  }
+
+  // ── 9. NIGERIA -> UK (Standard Visitor Visa) ──
+  if (from === 'nigeria' && to === 'uk') {
+    return {
+      passport_country: 'Nigeria',
+      destination_country: 'UK',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Standard Visitor Visa (UKVI)',
+      source_url: 'https://www.gov.uk/standard-visitor',
+      official_source_name: 'UK Visas and Immigration (GOV.UK) & VFS Global / TLScontact Nigeria',
+      overview: 'Nigerian passport holders must obtain a UK Standard Visitor Visa prior to traveling to the United Kingdom for holidays, sightseeing, visiting friends or family, or attending business conferences. All applications are completed online through GOV.UK, followed by biometric data enrollment at a Visa Application Centre (VFS Global / TLScontact) in Lagos or Abuja. A mandatory Tuberculosis (TB) test certificate from an IOM-approved medical clinic in Nigeria is required for visits over 6 months.',
+      highlights: [
+        { icon: '🏛️', title: '6-Month Tourist Stay', description: 'Stay up to 6 months per visit across England, Scotland, Wales, and Northern Ireland.' },
+        { icon: '📱', title: 'Online GOV.UK Application', description: 'Submit statutory visa application and upload scanned documents through the official UKVI portal.' },
+        { icon: '🏢', title: 'Biometric VAC Centers', description: 'Appointments available at TLScontact / VFS Global centers in Victoria Island, Ikeja, and Abuja.' },
+        { icon: '⚡', title: 'Priority Service Available', description: 'Optional 5-day Priority Visa service available for urgent travel needs.' }
+      ],
+      how_to_apply: [
+        'Complete Online Application: Fill out the Standard Visitor visa form on the official GOV.UK portal.',
+        'Pay Statutory UKVI Fees: Pay the visa application fee (£115 GBP for 6-month visa) online using a debit/credit card.',
+        'Book Biometrics Appointment: Schedule an appointment at TLScontact or VFS Global in Lagos (VI or Ikeja) or Abuja.',
+        'Upload Supporting Documents: Digitally upload 6 months bank statements, employment verification, tax clearance, and travel itinerary.',
+        'Attend Biometric Appointment: Submit fingerprints and digital photograph at the visa application centre.',
+        'Passport Collection: Receive your passport with the UK visa vignette via courier or collection from the VAC.'
+      ],
+      documents_required: [
+        { title: 'Valid Nigerian Passport', description: 'Valid for duration of trip with at least 1 full blank page for the UK visa vignette.', is_mandatory: true },
+        { title: '6 Months Bank Statements', description: 'Official stamped bank statements showing steady salary/business deposits and adequate savings balance.', is_mandatory: true },
+        { title: 'Proof of Employment & Income', description: 'Letter from employer on company letterhead confirming salary, role, length of service, and approved leave.', is_mandatory: true },
+        { title: 'Travel & Accommodation Itinerary', description: 'Provisional flight schedule, hotel reservation, or formal invitation letter from UK host with proof of their UK legal status.', is_mandatory: true },
+        { title: 'Proof of Strong Ties to Nigeria', description: 'Family ties, property ownership documents, company registration (CAC), or ongoing employment.', is_mandatory: true },
+        { title: 'Tuberculosis (TB) Test Certificate', description: 'Required from an approved IOM clinic in Abuja or Lagos if staying over 6 months.', is_mandatory: false }
+      ],
+      costs: {
+        visa_fee: '£115 GBP (~₦230,000 NGN)',
+        service_fee: '£0 (Standard VAC appointment included)',
+        total_fee: '£115 GBP (6-month) / £400 GBP (2-year) / £771 GBP (5-year) / £963 GBP (10-year)',
+        notes: 'Optional Priority Visa fee is £500 GBP for decision within 5 working days.'
+      },
+      processing_time: '3 to 6 Weeks (15 Working Days Standard)',
+      processing_time_details: 'Standard processing is approximately 15 working days after biometric enrollment in Nigeria.',
+      other_requirements: [
+        { category: 'Passport Validity', details: 'Must be valid for intended stay with at least 1 blank vignette page.' },
+        { category: 'Genuine Visitor Test', details: 'Must satisfy UKVI caseworker that you intend to leave the UK at the end of your visit.' }
+      ],
+      financial_proofs: [
+        { type: '6-Month Stamped Bank Statements', minimum_balance_or_amount: '£2,500 - £5,000+ equivalent in NGN', time_frame: 'Past 6 consecutive months', notes: 'Must demonstrate legitimate, steady income without unexplainable lump sum deposits.' }
+      ],
+      faqs: [
+        { question: 'Can Nigerian citizens travel to the UK without a visa?', answer: 'No. Nigerian citizens require a valid UK Standard Visitor Visa stamped in their passport prior to boarding flights to the UK.' },
+        { question: 'How much money must a Nigerian applicant show for a UK visitor visa?', answer: 'UKVI does not state a specific minimum balance, but applicants must demonstrate sufficient disposable income to cover all trip expenses (typically £2,500 to £5,000+ equivalent in Naira) with legitimate, traceable funds supported by 6 months of bank statements.' },
+        { question: 'Where are UK visa application centres located in Nigeria?', answer: 'UK visa biometrics are captured at TLScontact / VFS Global centres in Lagos (Victoria Island and Ikeja) and Abuja.' }
+      ],
+      validity: '6 Months / 2 Years / 5 Years / 10 Years',
+      validity_details: 'Standard visa is valid for 6 months; multi-year long-term visas available.',
+      stay_duration: 'Up to 6 Months per Visit (180 Days)',
+      stay_duration_details: 'Permitted stay duration on each trip.',
+      entry_type: 'Multiple Entry',
+      entry_type_details: 'Enter and leave the UK multiple times during the visa validity.',
+      validity_and_stay: {
+        visa_validity: '6 Months to 10 Years',
+        max_stay_per_entry: 'Up to 6 Months',
+        entry_type: 'Multiple Entry'
+      }
+    };
+  }
+
+  // ── 10. BRAZIL -> USA (B1/B2 Consular Visitor Visa) ──
+  if (from === 'brazil' && to === 'usa') {
+    return {
+      passport_country: 'Brazil',
+      destination_country: 'USA',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'B1/B2 Visitor Visa (Nonimmigrant)',
+      source_url: 'https://br.usembassy.gov/visas/tourism-visitor/',
+      official_source_name: 'U.S. Embassy & Consulates in Brazil / U.S. Department of State',
+      overview: 'Brazilian citizens traveling to the United States for tourism, family visits, leisure, or medical treatment require a U.S. B1/B2 Nonimmigrant Visitor Visa. The application requires completing the online DS-160 form, paying the $185 USD MRV fee, attending a biometrics appointment at an Applicant Service Center (CASV), and completing an in-person consular interview at the U.S. Embassy in Brasília or U.S. Consulates General in São Paulo, Rio de Janeiro, Recife, or Porto Alegre. Once approved, the visa is typically issued with a 10-year multiple-entry validity.',
+      highlights: [
+        { icon: '🗽', title: '10-Year Multiple Entry', description: 'Most approved Brazilian applicants receive a full 10-year multiple-entry B1/B2 visa.' },
+        { icon: '🌴', title: 'Explore the USA', description: 'Visit Orlando theme parks, Miami, New York, California, and national parks.' },
+        { icon: '🏛️', title: '5 Consular Locations', description: 'Interviews available in Brasília, São Paulo, Rio de Janeiro, Recife, and Porto Alegre.' },
+        { icon: '📅', title: '6-Month Stay per Entry', description: 'U.S. Customs and Border Protection (CBP) typically grants up to 6 months stay upon arrival.' }
+      ],
+      how_to_apply: [
+        'Complete Form DS-160: Fill out the online nonimmigrant visa application on ceac.state.gov and print the confirmation page.',
+        'Register and Pay MRV Fee: Create an account on ais.usvisa-info.com and pay the statutory $185 USD application fee.',
+        'Schedule Appointments: Book two appointments — one at the CASV (biometrics & photo) and one at the U.S. Embassy or Consulate (interview).',
+        'Attend CASV Appointment: Submit digital fingerprints and photo at the Centro de Atendimento ao Solicitante de Visto (CASV).',
+        'Attend Consular Interview: Interview in Portuguese or English with a U.S. consular officer, demonstrating ties to Brazil.',
+        'Receive Passport & Visa: Collect your passport from the CASV or receive it via Sedex courier with the 10-year B1/B2 visa.'
+      ],
+      documents_required: [
+        { title: 'Valid Brazilian Passport', description: 'Valid for at least 6 months beyond intended stay in the U.S.', is_mandatory: true },
+        { title: 'DS-160 Confirmation Page', description: 'Printed confirmation page with barcode from CEAC portal.', is_mandatory: true },
+        { title: 'MRV Payment Receipt & Appointment Confirmation', description: 'Proof of $185 USD fee payment and appointment confirmation letter.', is_mandatory: true },
+        { title: 'Proof of Economic Ties to Brazil', description: 'Employment contract (carteira de trabalho), pay stubs (holerites), Income Tax Return (Declaração de Imposto de Renda - IRPF).', is_mandatory: true },
+        { title: 'Bank Statements & Financial Solvency', description: 'Recent 3 to 6 months checking/investment account statements.', is_mandatory: true }
+      ],
+      costs: {
+        visa_fee: '$185 USD (R$ ~950 – R$ 1,100 BRL)',
+        service_fee: '$0 (CASV appointment included)',
+        total_fee: '$185 USD',
+        notes: 'Non-refundable statutory MRV fee paid via credit card or boleto bancário.'
+      },
+      processing_time: '3 to 5 Business Days Post-Interview',
+      processing_time_details: 'Passport issued and delivered within 3 to 10 days following consular approval. Appointment wait times vary by post.',
+      other_requirements: [
+        { category: 'Passport Validity', details: 'Must be valid for at least 6 months beyond departure date.' },
+        { category: 'Section 214(b)', details: 'Applicant must overcome presumption of immigrant intent by demonstrating strong social and economic ties to Brazil.' }
+      ],
+      financial_proofs: [
+        { type: 'Bank & Investment Statements', minimum_balance_or_amount: 'Sufficient funds for trip duration ($3,000 - $6,000+ USD)', time_frame: 'Last 3 to 6 months', notes: 'Showing regular income and accumulated savings.' }
+      ],
+      faqs: [
+        { question: 'Do Brazilian citizens need a visa to visit the United States?', answer: 'Yes. Brazilian passport holders must obtain a B1/B2 visitor visa prior to traveling to the United States. Brazil is not currently part of the Visa Waiver Program (ESTA).' },
+        { question: 'How long is the U.S. tourist visa valid for Brazilians?', answer: 'Under reciprocal agreements, most B1/B2 tourist visas issued to Brazilian citizens are valid for 10 years with multiple entries.' },
+        { question: 'Can the consular interview in Brazil be conducted in Portuguese?', answer: 'Yes. U.S. consular officers at all posts in Brazil (Brasília, São Paulo, Rio, Recife, Porto Alegre) speak Portuguese.' }
+      ],
+      validity: '10 Years',
+      validity_details: 'Standard 10-year multiple-entry visa for Brazilian passport holders.',
+      stay_duration: 'Up to 6 Months per Visit (180 Days)',
+      stay_duration_details: 'Determined by CBP officer at Port of Entry on Form I-94.',
+      entry_type: 'Multiple Entry',
+      entry_type_details: 'Multiple entries permitted over the 10-year duration.',
+      validity_and_stay: {
+        visa_validity: '10 Years',
+        max_stay_per_entry: 'Up to 6 Months',
+        entry_type: 'Multiple Entry'
+      }
+    };
+  }
+
+  // ── 11. JAPAN -> AUSTRALIA (Australian ETA Subclass 601) ──
+  if (from === 'japan' && to === 'australia') {
+    return {
+      passport_country: 'Japan',
+      destination_country: 'Australia',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Electronic Travel Authority (ETA - Subclass 601)',
+      source_url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/electronic-travel-authority-601',
+      official_source_name: 'Department of Home Affairs (Australian Government) / Australian Embassy Tokyo',
+      overview: 'Japanese passport holders are eligible for the Australian Electronic Travel Authority (ETA - Subclass 601). The ETA is applied for directly using the official "Australian ETA" smartphone app on iOS or Android. It allows Japanese citizens to visit Australia for tourism, family visits, holidays, or short business visitor activities for up to 3 months per visit over a 12-month validity period. Most applications are approved automatically within minutes.',
+      highlights: [
+        { icon: '⚡', title: 'Instant Mobile Grant', description: 'Apply via the official Australian ETA app with instant digital approval linked to your Japanese ePassport.' },
+        { icon: '🇦🇺', title: '12-Month Multi-Entry', description: 'Valid for 1 year with unlimited entries; stay up to 3 months on each visit.' },
+        { icon: '💵', title: 'AUD $20 Service Fee', description: 'Statutory government visa fee is $0 AUD; only a AUD $20 mobile processing fee applies.' },
+        { icon: '🏖️', title: 'Holiday & Sightseeing', description: 'Explore Sydney, Melbourne, the Great Barrier Reef, Gold Coast, and Outback.' }
+      ],
+      how_to_apply: [
+        'Download Official App: Install the "Australian ETA" app from Apple App Store or Google Play Store.',
+        'Scan Japanese ePassport: Use your smartphone camera and NFC reader to scan your Japanese passport chip.',
+        'Take Live Selfie: Capture a live facial photograph within the app for biometric identity verification.',
+        'Answer Declarations: Answer standard security and criminal history declarations.',
+        'Pay AUD $20 Fee: Pay the AUD $20 application service charge using Apple Pay, Google Pay, or credit card.',
+        'Instant Digital Confirmation: Receive your approved ETA reference number linked electronically to your passport.'
+      ],
+      documents_required: [
+        { title: 'Valid Japanese ePassport', description: 'Original Japanese passport with biometric microchip, valid for intended stay in Australia.', is_mandatory: true },
+        { title: 'Australian ETA Mobile App', description: 'Downloaded on NFC-enabled smartphone to complete biometric identity check.', is_mandatory: true },
+        { title: 'Valid Payment Method', description: 'Credit card or digital wallet (Apple Pay/Google Pay) for AUD $20 service fee.', is_mandatory: true },
+        { title: 'Return Flight & Solvency', description: 'Return flight booking and access to sufficient funds for stay in Australia.', is_mandatory: false }
+      ],
+      costs: {
+        visa_fee: 'AUD $0 (No government visa charge)',
+        service_fee: 'AUD $20 (~¥2,000 JPY)',
+        total_fee: 'AUD $20',
+        notes: 'Charged via the official Australian ETA mobile app.'
+      },
+      processing_time: 'Instant (Under 24 Hours)',
+      processing_time_details: 'Over 90% of Japanese ETA applications are granted instantly within minutes.',
+      other_requirements: [
+        { category: 'Passport Validity', details: 'Must be a valid Japanese biometric passport.' },
+        { category: 'Genuine Temporary Entrant', details: 'Must visit genuinely for holiday, sightseeing, or family visits without undertaking work.' }
+      ],
+      financial_proofs: [
+        { type: 'Credit Cards / Funds', minimum_balance_or_amount: 'AUD $1,000 - $2,000 per month of stay', time_frame: 'Valid cards', notes: 'Proof of economic solvency.' }
+      ],
+      faqs: [
+        { question: 'Do Japanese citizens need a visa for Australia?', answer: 'Japanese citizens require an Electronic Travel Authority (ETA - Subclass 601), which is easily obtained on a smartphone via the official Australian ETA app.' },
+        { question: 'How long can Japanese tourists stay in Australia on an ETA?', answer: 'The Subclass 601 ETA permits stays of up to 3 months (90 days) on each entry over a 12-month validity period.' },
+        { question: 'Can Japanese travelers use the ePassport SmartGate in Australia?', answer: 'Yes. Japanese ePassport holders aged 16 and over can use the automated SmartGates at all major Australian international airports.' }
+      ],
+      validity: '12 Months (1 Year)',
+      validity_details: 'Valid for 1 year from date of grant or until passport expires.',
+      stay_duration: 'Up to 3 Months per Visit (90 Days)',
+      stay_duration_details: 'Maximum stay of 3 consecutive months on each entry.',
+      entry_type: 'Multiple Entry',
+      entry_type_details: 'Enter Australia as many times as desired during the 12-month validity.',
+      validity_and_stay: {
+        visa_validity: '12 Months',
+        max_stay_per_entry: 'Up to 3 Months',
+        entry_type: 'Multiple Entry'
+      }
+    };
+  }
+
+  // ── 12. SOUTH AFRICA -> CANADA (Temporary Resident Visa - TRV) ──
+  if (from === 'south-africa' && to === 'canada') {
+    return {
+      passport_country: 'South Africa',
+      destination_country: 'Canada',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Visitor Visa (Temporary Resident Visa - TRV)',
+      source_url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada.html',
+      official_source_name: 'Immigration, Refugees and Citizenship Canada (IRCC) & VFS Global South Africa',
+      overview: 'South African passport holders require a Temporary Resident Visa (Visitor Visa TRV) to travel to Canada for tourism, holidays, or family visits. Applications are submitted online through the IRCC Portal, followed by mandatory biometric enrollment (fingerprints and photo) at a VFS Global Visa Application Centre (VAC) in Johannesburg, Cape Town, or Pretoria. Once approved, the visa is issued as a foil vignette in the passport, often valid up to the expiration date of the passport (up to 10 years).',
+      highlights: [
+        { icon: '🍁', title: 'Multi-Year Visitor Visa', description: 'Frequently granted as a multiple-entry visa valid up to 10 years (or passport expiry).' },
+        { icon: '📱', title: 'Online IRCC Portal', description: 'Apply and upload all financial and personal documents directly via canada.ca.' },
+        { icon: '🏢', title: 'VFS VACs in SA', description: 'Biometric enrollment available in Johannesburg, Cape Town, and Pretoria.' },
+        { icon: '🏔️', title: '6-Month Stay per Entry', description: 'Standard stay of up to 6 months granted by Canada Border Services Agency (CBSA).' }
+      ],
+      how_to_apply: [
+        'Create IRCC Account: Register on the official IRCC portal (canada.ca) and begin Visitor Visa application.',
+        'Complete Form IMM 5257: Fill out Application for Temporary Resident Visa and Family Information (IMM 5645).',
+        'Upload Documents: Upload 6 months bank statements, employment verification letter, flight itinerary, and hotel reservations.',
+        'Pay IRCC Fees: Pay CAD $100 visa processing fee and CAD $85 biometric fee online by credit card.',
+        'Receive Biometric Instruction Letter (BIL): Download BIL and schedule an appointment at VFS Global in Johannesburg, Cape Town, or Pretoria.',
+        'Attend Biometrics Appointment: Provide fingerprints and facial photo at the VAC.',
+        'Passport Submission & Return: Upon receiving the passport request letter (PPR), submit passport to VFS for visa stamping.'
+      ],
+      documents_required: [
+        { title: 'Valid South African Passport', description: 'Valid for at least 6 months with 2 blank pages.', is_mandatory: true },
+        { title: 'Proof of Financial Solvency', description: '6 months stamped South African bank statements demonstrating sufficient funds (typically ZAR 50,000 to 100,000+).', is_mandatory: true },
+        { title: 'Employment Confirmation Letter', description: 'Letter from employer in South Africa stating job title, salary, approved leave dates, and return date.', is_mandatory: true },
+        { title: 'Purpose of Travel & Travel Itinerary', description: 'Flight reservations, hotel bookings, or invitation letter from friends/family in Canada with proof of their Canadian status.', is_mandatory: true },
+        { title: 'Proof of Ties to South Africa', description: 'Property title deeds, lease agreement, marriage/children certificates, or business registration (CIPC).', is_mandatory: true }
+      ],
+      costs: {
+        visa_fee: 'CAD $100 (~ZAR 1,400)',
+        service_fee: 'CAD $85 (~ZAR 1,200) Biometrics Fee',
+        total_fee: 'CAD $185 (~ZAR 2,600)',
+        notes: 'Biometrics fee is valid for 10 years; paid once during a 10-year period.'
+      },
+      processing_time: '4 to 8 Weeks',
+      processing_time_details: 'Processing typically takes between 25 and 45 business days after biometrics submission at VFS South Africa.',
+      other_requirements: [
+        { category: 'Passport Validity', details: 'Must be valid for duration of intended stay with blank visa foil pages.' },
+        { category: 'Intent to Return', details: 'Applicant must prove they will leave Canada at the end of their authorized stay.' }
+      ],
+      financial_proofs: [
+        { type: '6-Month Stamped Bank Statements', minimum_balance_or_amount: 'CAD $3,000 - $6,000+ (ZAR 50,000 - 100,000+)', time_frame: 'Past 6 consecutive months', notes: 'Showing steady deposits and proof of economic standing.' }
+      ],
+      faqs: [
+        { question: 'Can South Africans visit Canada without a visa?', answer: 'No. South African citizens require a Temporary Resident Visa (Visitor Visa TRV) before traveling to Canada. South Africa is not currently eTA-eligible for initial travel.' },
+        { question: 'Where are Canadian visa application centres in South Africa?', answer: 'VFS Global operates Canada Visa Application Centres in Johannesburg (Rivonia), Cape Town, and Pretoria.' },
+        { question: 'How long can a South African stay in Canada on a visitor visa?', answer: 'Canadian border officers (CBSA) typically stamp visitors in for up to 6 months per entry.' }
+      ],
+      validity: 'Up to 10 Years (or Passport Validity)',
+      validity_details: 'Multi-entry visa issued up to the expiry date of the South African passport.',
+      stay_duration: 'Up to 6 Months per Visit',
+      stay_duration_details: 'Standard 6-month stay granted by CBSA at port of entry.',
+      entry_type: 'Multiple Entry',
+      entry_type_details: 'Multiple entries permitted for tourism, family visits, and leisure.',
+      validity_and_stay: {
+        visa_validity: 'Up to 10 Years',
+        max_stay_per_entry: 'Up to 6 Months',
+        entry_type: 'Multiple Entry'
+      }
+    };
+  }
+
   // 10. General Non-India Origin Resolver
   // If from is one of our 20 origins and heading to any country:
-  const isFromTopOrigin = ['usa', 'uk', 'canada', 'australia', 'germany', 'france', 'uae', 'singapore', 'netherlands', 'switzerland', 'spain', 'italy', 'japan', 'south-korea', 'china', 'brazil', 'south-africa', 'mexico', 'russia', 'new-zealand'].includes(from);
-
-  if (isFromTopOrigin && from !== 'india') {
+  if (from && from !== 'india' && to) {
     // If destination is India:
     if (to === 'india') {
       return {

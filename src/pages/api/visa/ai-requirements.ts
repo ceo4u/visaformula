@@ -82,6 +82,24 @@ import {
   getBusinessOfficialSourceName,
   getBusinessVisaData
 } from '../../../lib/business-visa';
+import {
+  getPROverview,
+  getPRHighlights,
+  getPRDocuments,
+  getPRSteps,
+  getPRVisaSteps,
+  getPRFees,
+  getPRProcessingTime,
+  getPRProcessingDetails,
+  getPRRequirements,
+  getPRFinancialProofs,
+  getPRFAQ,
+  getPRValidity,
+  getPRStayDuration,
+  getPREntryType,
+  getPROfficialSourceName,
+  getPRVisaData
+} from '../../../lib/pr-visa';
 
 export {
   normalizeCountry,
@@ -149,7 +167,23 @@ export {
   getBusinessStayDuration,
   getBusinessEntryType,
   getBusinessOfficialSourceName,
-  getBusinessVisaData
+  getBusinessVisaData,
+  getPROverview,
+  getPRHighlights,
+  getPRDocuments,
+  getPRSteps,
+  getPRVisaSteps,
+  getPRFees,
+  getPRProcessingTime,
+  getPRProcessingDetails,
+  getPRRequirements,
+  getPRFinancialProofs,
+  getPRFAQ,
+  getPRValidity,
+  getPRStayDuration,
+  getPREntryType,
+  getPROfficialSourceName,
+  getPRVisaData
 };
 
 export const prerender = false;
@@ -6246,6 +6280,29 @@ export const POST: APIRoute = async ({ request }) => {
     const toCountry = cleanCountryName(rawTo);
 
     const purposeLower = (purpose || '').toLowerCase();
+    const isPR = purposeLower.includes('pr') ||
+                 purposeLower.includes('permanent') ||
+                 purposeLower.includes('immigrat') ||
+                 purposeLower.includes('green card') ||
+                 purposeLower.includes('green-card') ||
+                 purposeLower.includes('settle') ||
+                 purposeLower.includes('residency') ||
+                 purposeLower.includes('settlement');
+
+    if (isPR) {
+      const prData = getPRVisaData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(prData as any),
+        source: 'consular-pr-pipeline',
+        verification_status: 'verified',
+        is_v3_verified: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const isStudent = purposeLower.includes('student') || purposeLower.includes('study') || purposeLower.includes('higher') || purposeLower.includes('education');
 
     if (isStudent) {

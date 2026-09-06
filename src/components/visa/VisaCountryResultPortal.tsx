@@ -4110,23 +4110,22 @@ export function VisaCountryResultPortal({
     });
   };
 
-  const handleToggleDocChecklist = (docKey: string, choice: 'yes' | 'no') => {
+  const handleToggleDocChecklist = (docKey: string, choice?: 'yes' | 'no') => {
     setPortalUploadedDocs(prev => {
       const current = prev[docKey];
       const isCurrentlyYes = current?.status === 'completed';
-      const isCurrentlyNo = current?.status === 'pending';
 
       let newStatus: 'completed' | 'pending' | 'not_started';
-      if (choice === 'yes') {
-        newStatus = isCurrentlyYes ? 'not_started' : 'completed';
+      if (choice === 'no') {
+        newStatus = current?.status === 'pending' ? 'not_started' : 'pending';
       } else {
-        newStatus = isCurrentlyNo ? 'not_started' : 'pending';
+        newStatus = isCurrentlyYes ? 'not_started' : 'completed';
       }
 
       const updated = {
         ...prev,
         [docKey]: {
-          fileName: newStatus === 'completed' ? 'Checklist Verified (Yes)' : (current?.fileName || 'Pending Checklist Item'),
+          fileName: newStatus === 'completed' ? 'Checklist Verified (Ready)' : (current?.fileName || 'Checklist Item'),
           fileSize: current?.fileSize || '',
           uploadedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
           status: newStatus
@@ -7299,7 +7298,7 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* Mobile Compact Document Cards List (Matching media_1788533524572.png) */}
+                {/* Mobile Compact Document Cards List */}
                 <div className="md:hidden space-y-2.5 text-left">
                   {portalDocItems
                     .filter((item: any) => {
@@ -7311,56 +7310,51 @@ export function VisaCountryResultPortal({
                     .map((doc: any) => {
                       const uploaded = portalUploadedDocs[doc.key];
                       const isCompleted = uploaded?.status === 'completed';
-                      const isPending = uploaded?.status === 'pending';
                       return (
                         <div
                           key={doc.key}
-                          className="bg-white rounded-2xl border border-slate-100 p-3.5 shadow-2xs flex items-center justify-between gap-3 text-left"
+                          onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
+                          className={`bg-white rounded-2xl border p-3.5 shadow-2xs flex items-center justify-between gap-3 text-left transition-all cursor-pointer select-none ${
+                            isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200/90 hover:border-slate-300'
+                          }`}
                         >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className={`w-10 h-10 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
+                          <div className="flex items-start gap-3 min-w-0 flex-1">
+                            <div className={`w-10 h-10 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
                               {doc.icon}
                             </div>
-                            <div className="min-w-0">
-                              <strong className="text-[15px] font-semibold text-slate-900 block leading-snug">{doc.name}</strong>
+                            <div className="min-w-0 flex-1">
+                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">{doc.name}</strong>
                               <div className="flex items-center gap-1.5 mt-0.5">
-                                <span className={`text-[12px] font-medium ${doc.mandatory ? 'text-rose-700' : 'text-slate-500'}`}>
+                                <span className={`text-[11px] font-medium ${doc.mandatory ? 'text-rose-700' : 'text-slate-500'}`}>
                                   {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                 </span>
-                                <span className="text-slate-300">•</span>
-                                <span className="text-[12px] font-normal text-slate-500">{doc.conditions[0] || 'Required'}</span>
                               </div>
+                              {doc.conditions && doc.conditions[0] && (
+                                <p className="text-[12px] font-normal text-slate-500 mt-1 leading-relaxed break-words line-clamp-2">
+                                  {doc.conditions[0]}
+                                </p>
+                              )}
                             </div>
                           </div>
 
-                          <div className="shrink-0 flex items-center gap-1.5">
+                          <div className="shrink-0 flex items-center pl-1">
                             <button
                               type="button"
-                              onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
-                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleToggleDocChecklist(doc.key, 'yes');
+                              }}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
                                 isCompleted
-                                  ? 'bg-emerald-50 border-emerald-400 text-emerald-800 font-bold shadow-2xs'
-                                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                                  ? 'bg-emerald-500 border-emerald-600 text-white shadow-xs'
+                                  : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700 shadow-2xs'
                               }`}
+                              title={isCompleted ? 'Ready (Click to untick)' : 'Click to tick as Ready'}
                             >
-                              <span className={`font-mono text-xs font-bold ${isCompleted ? 'text-emerald-700' : 'text-slate-400'}`}>
+                              <span className={`font-mono text-xs font-bold ${isCompleted ? 'text-white' : 'text-slate-400'}`}>
                                 [{isCompleted ? '✓' : ' '}]
                               </span>
-                              <span>Yes</span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleToggleDocChecklist(doc.key, 'no')}
-                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
-                                isPending
-                                  ? 'bg-rose-50 border-rose-400 text-rose-800 font-bold shadow-2xs'
-                                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                              }`}
-                            >
-                              <span className={`font-mono text-xs font-bold ${isPending ? 'text-rose-700' : 'text-slate-400'}`}>
-                                [{isPending ? '✓' : ' '}]
-                              </span>
-                              <span>No</span>
+                              <span>Ready</span>
                             </button>
                           </div>
                         </div>
@@ -7375,8 +7369,8 @@ export function VisaCountryResultPortal({
                       <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
                           <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
-                          <th className="py-3.5 px-4 text-left w-[48%]">Validity &amp; Conditions</th>
-                          <th className="py-3.5 px-4 text-left w-[24%]">Status</th>
+                          <th className="py-3.5 px-4 text-left w-[52%]">Validity &amp; Conditions</th>
+                          <th className="py-3.5 px-4 text-center w-[20%]">Ready</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7390,7 +7384,6 @@ export function VisaCountryResultPortal({
                         .map((doc: any) => {
                           const uploaded = portalUploadedDocs[doc.key];
                           const isYes = uploaded?.status === 'completed';
-                          const isNo = uploaded?.status === 'pending';
 
                           return (
                             <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
@@ -7424,48 +7417,27 @@ export function VisaCountryResultPortal({
                                 </ol>
                               </td>
 
-                              {/* Status - Square Bracket Yes/No Checklist */}
-                              <td className="py-4 px-4 align-top">
-                                <div className="flex flex-col gap-2">
-                                  <div className="flex items-center gap-2">
-                                    {/* [ ] Yes Checklist Option */}
-                                    <button
-                                      type="button"
-                                      onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
-                                      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
-                                        isYes
-                                          ? 'bg-emerald-50 border-emerald-400 text-emerald-800 shadow-2xs ring-1 ring-emerald-400/40'
-                                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-                                      }`}
-                                      title="Mark document as ready (Yes)"
-                                    >
-                                      <span className={`font-mono text-sm font-bold ${isYes ? 'text-emerald-700' : 'text-slate-400'}`}>
-                                        [{isYes ? '✓' : ' '}]
-                                      </span>
-                                      <span>Yes</span>
-                                    </button>
+                              {/* Ready Column - Square Bracket Ready Checklist */}
+                              <td className="py-4 px-4 align-top text-center">
+                                <div className="flex flex-col items-center gap-1.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
+                                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
+                                      isYes
+                                        ? 'bg-emerald-500 border-emerald-600 text-white shadow-xs ring-2 ring-emerald-500/20'
+                                        : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50/40 shadow-2xs'
+                                    }`}
+                                    title={isYes ? 'Ready (Click to untick)' : 'Click to tick as Ready'}
+                                  >
+                                    <span className={`font-mono text-sm font-bold ${isYes ? 'text-white' : 'text-slate-400'}`}>
+                                      [{isYes ? '✓' : ' '}]
+                                    </span>
+                                    <span>Ready</span>
+                                  </button>
 
-                                    {/* [ ] No Checklist Option */}
-                                    <button
-                                      type="button"
-                                      onClick={() => handleToggleDocChecklist(doc.key, 'no')}
-                                      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer select-none ${
-                                        isNo
-                                          ? 'bg-rose-50 border-rose-400 text-rose-800 shadow-2xs ring-1 ring-rose-400/40'
-                                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-                                      }`}
-                                      title="Mark document as pending / not ready (No)"
-                                    >
-                                      <span className={`font-mono text-sm font-bold ${isNo ? 'text-rose-700' : 'text-slate-400'}`}>
-                                        [{isNo ? '✓' : ' '}]
-                                      </span>
-                                      <span>No</span>
-                                    </button>
-                                  </div>
-
-                                  {/* Helper state indicator */}
                                   <span className="text-[11px] font-medium text-slate-400">
-                                    {isYes ? '✓ Ready / Available' : isNo ? '⚠️ Document Pending' : 'Tick [✓] to verify'}
+                                    {isYes ? '✓ Ready / Available' : 'Tick [✓] when ready'}
                                   </span>
                                 </div>
                               </td>

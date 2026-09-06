@@ -10770,7 +10770,7 @@ export function VisaCountryResultPortal({
                     <div className="flex flex-col items-center text-center px-2">
                       <div className="h-[110px] flex flex-col items-center justify-end pb-2">
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[160px]">
-                          Submit documents online on TravlTik
+                          Submit your documents online on TravlTik
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
@@ -10789,10 +10789,10 @@ export function VisaCountryResultPortal({
                       <div className="h-[110px] flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[170px]">
-                          AI ver &amp; self verify tools
+                          AI Verification &amp; Self-Check Tools
                         </span>
                         <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal leading-snug mt-1 max-w-[175px]">
-                          (Checklists help you gather and prepare a visa file as accurately as required for submission)
+                          (Smart checklists help you gather and prepare an accurate visa file for submission)
                         </span>
                       </div>
                     </div>
@@ -10801,7 +10801,7 @@ export function VisaCountryResultPortal({
                     <div className="flex flex-col items-center text-center px-2">
                       <div className="h-[110px] flex flex-col items-center justify-end pb-2">
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[175px]">
-                          Find best service providers and resources on TravlTik to complete missing documents
+                          Find the best service providers and resources on TravlTik to complete missing documents
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
@@ -10820,7 +10820,7 @@ export function VisaCountryResultPortal({
                       <div className="h-[110px] flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[180px]">
-                          Book appointment and submit your application with confidence or contact a top consultant and apply through them
+                          Book an appointment and submit your application with confidence, or contact a top consultant to apply through them
                         </span>
                       </div>
                     </div>

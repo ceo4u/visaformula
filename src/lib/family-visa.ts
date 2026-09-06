@@ -143,6 +143,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -2582,6 +2664,477 @@ const DESTS: Record<string, any> = {
       {
         "question": "When can a spouse apply for Swedish citizenship?",
         "answer": "If married or living as Sambo with a Swedish citizen for at least 2 years, you can apply for Swedish citizenship after living in Sweden for 3 years (instead of the standard 5 years)."
+      }
+    ]
+  }
+,
+  "serbia": {
+    "cname": "Serbia",
+    "scheme": "Spajanje porodice (Family Reunification Temporary Residence)",
+    "overview": "Spouses, registered domestic partners, and minor children of foreign professionals holding valid Serbian single permits or permanent residency can obtain a Family Reunification Residence Permit. Dependents receive biometric resident cards, granting peaceful family life, public healthcare, and schooling in Belgrade.",
+    "fees": {
+      "visa_fee": "RSD 11,000 (Temporary Residence Fee per person)",
+      "service_fee": "RSD 3,000 (Biometric Card)",
+      "total_fee": "approx. ₹11,000 per dependent",
+      "notes": "Processed via MUP Directorate for Foreigners."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Applied online via eUprava or directly at the local Police Directorate in Serbia.",
+    "source": "Ministry of Interior of the Republic of Serbia (MUP)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Serbian by a certified court interpreter (Sudski tumač).",
+    "min_funds": "Principal worker's salary contract and registered rental lease in Serbia",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Safe & Welcoming Balkan Culture",
+        "description": "Exceptional hospitality, vibrant café culture, high safety, and low living costs across Belgrade and Novi Sad."
+      },
+      {
+        "icon": "🎓",
+        "title": "International School Access",
+        "description": "International School of Belgrade (ISB) and British International School offer elite IB and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Border Travel",
+        "description": "Multiple entry privileges allow easy family vacations across Europe and return trips to India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification permit in Serbia?",
+        "answer": "Under the new Law on Foreigners, family members can obtain work authorization under a simplified procedure once resident."
+      },
+      {
+        "question": "Do Indian certificates need translation in Serbia?",
+        "answer": "Yes. Indian birth and marriage certificates must be apostilled by the MEA in India and translated into Serbian by a certified court interpreter."
+      }
+    ]
+  },
+  "montenegro": {
+    "cname": "Montenegro",
+    "scheme": "Privremeni boravak radi spajanja porodice (Family Reunification Residency)",
+    "overview": "Spouses and minor children of foreign professionals holding valid Montenegrin work or real estate residence permits can obtain a Family Reunification Residence Permit. Family members receive biometric cards, granting lawful residence, healthcare, and enrollment in public/private schools.",
+    "fees": {
+      "visa_fee": "€60 (Temporary Residence Fee per person)",
+      "service_fee": "€10 (Biometric Card)",
+      "total_fee": "approx. ₹6,500 per dependent",
+      "notes": "Processed via local MUP branches."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Submitted at local MUP office with apostilled marriage/birth certificates.",
+    "source": "Ministry of Internal Affairs of Montenegro (MUP)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Montenegrin by a certified court interpreter (Sudski tumač).",
+    "min_funds": "Principal worker's salary contract and registered rental lease or property deed in Montenegro",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Idyllic Coastal Living",
+        "description": "Safe, serene Mediterranean coastal life in Tivat, Kotor, and Budva with exceptional outdoor recreation."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "Knightsbridge Schools International (KSI Montenegro) in Porto Montenegro and Arcadia Academy in Kotor offer elite IB and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Travel Freedom",
+        "description": "Biometric resident card enables seamless travel in and out of Montenegro."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can dependent spouses work in Montenegro?",
+        "answer": "Yes. Spouses holding family reunification residency can apply for work authorization under simplified local procedures."
+      },
+      {
+        "question": "Do Indian certificates require apostille for Montenegro?",
+        "answer": "Yes. Montenegro is a signatory to the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India."
+      }
+    ]
+  },
+  "albania": {
+    "cname": "Albania",
+    "scheme": "Bashkim Familjar (Family Reunification Residency)",
+    "overview": "Spouses and minor children of foreign professionals holding valid Albanian Single Permits or permanent residency can obtain a Family Reunification Residence Permit (Leje Qëndrimi për Bashkim Familjar). Family members receive biometric cards, granting lawful residence, healthcare, and schooling in Tirana.",
+    "fees": {
+      "visa_fee": "€50 (Temporary Residence Fee per person)",
+      "service_fee": "ALL 5,000 (Biometric Card)",
+      "total_fee": "approx. ₹8,000 per dependent",
+      "notes": "Applied online via e-Albania."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Submitted digitally on e-Albania with apostilled family certificates.",
+    "source": "State Police Border and Migration Department",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Albanian by an authorized sworn translator.",
+    "min_funds": "Principal worker's salary contract and registered rental lease or property title in Albania",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Warm Mediterranean Lifestyle",
+        "description": "Sunny climate with over 300 days of sunshine, friendly locals, and safe European living in Tirana."
+      },
+      {
+        "icon": "🏫",
+        "title": "Top International Schools",
+        "description": "Tirana International School (QSI) and World Academy of Tirana offer elite IB and American curricula."
+      },
+      {
+        "icon": "✈️",
+        "title": "Free Border Movement",
+        "description": "Multiple entry privileges allow easy family travel throughout the Balkans and to India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification permit in Albania?",
+        "answer": "Yes. Under the Law on Foreigners, family reunification permit holders are entitled to engage in lawful employment in Albania."
+      },
+      {
+        "question": "Do Indian documents need apostille for Albania?",
+        "answer": "Yes. Albania is a member of the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India."
+      }
+    ]
+  },
+  "morocco": {
+    "cname": "Morocco",
+    "scheme": "Regroupement Familial (Family Reunification Carte de Séjour)",
+    "overview": "Spouses and minor children of foreign professionals holding valid Moroccan employment authorization or permanent residence can obtain a Dependent Residence Card (Carte de Séjour Conjoint/Enfant). Family members receive full resident protections, access to international healthcare, and enrollment in French, British, and American accredited schools.",
+    "fees": {
+      "visa_fee": "$70 (Consular Entry Visa per person)",
+      "service_fee": "MAD 500 (Annual Carte de Séjour)",
+      "total_fee": "approx. ₹11,000 per family member",
+      "notes": "Processed via DGSN Police Prefecture."
+    },
+    "proc_time": "4 to 6 Weeks",
+    "proc_details": "Applied via Moroccan consulate or finalized at local Police Prefecture in Morocco.",
+    "source": "Direction Générale de la Sûreté Nationale (DGSN)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into French or Arabic by a sworn translator (Traducteur Assermenté).",
+    "min_funds": "Principal worker's salary contract and registered residential lease in Morocco",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Rich Culture & Superb Climate",
+        "description": "Year-round sunny Mediterranean and Atlantic climate, delicious cuisine, and vibrant cosmopolitan cities."
+      },
+      {
+        "icon": "🎓",
+        "title": "Elite International Schools",
+        "description": "George Washington Academy (Casablanca), American School of Tangier, and Lycée Français offer top French, American, and IB diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel Mobility",
+        "description": "Multiple-entry Carte de Séjour enables hassle-free border crossing between Morocco and India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family dependent card in Morocco?",
+        "answer": "To work, a spouse must obtain an independent CTE approved employment contract from an employer in Morocco."
+      },
+      {
+        "question": "Do Indian certificates need translation for Morocco?",
+        "answer": "Yes. Indian birth and marriage certificates must be apostilled by the MEA in India and translated into French or Arabic by a certified sworn translator."
+      }
+    ]
+  },
+  "tunisia": {
+    "cname": "Tunisia",
+    "scheme": "Regroupement Familial (Family Dependent Residence)",
+    "overview": "Spouses and minor children of foreign professionals holding valid Tunisian employment authorization or permanent residency can obtain a Dependent Residence Card (Carte de Séjour). Family members can reside legally in Tunisia, access public/private healthcare, and enroll in top international schools.",
+    "fees": {
+      "visa_fee": "$50 (Entry Visa per person)",
+      "service_fee": "TND 50 (Annual Carte de Séjour)",
+      "total_fee": "approx. ₹5,500 per dependent",
+      "notes": "Processed via Ministry of Interior."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Submitted at local police station in Tunisia with apostilled marriage/birth certificates.",
+    "source": "Ministry of Interior",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into French or Arabic by a certified sworn translator.",
+    "min_funds": "Principal worker's salary contract and registered residential lease in Tunisia",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Tranquil Mediterranean Living",
+        "description": "Safe, family-friendly coastal suburbs in Tunis (La Marsa, Carthage, Gammarth) with rich culture and beaches."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "American Cooperative School of Tunis (ACST) and Lycée Français Gustave Flaubert offer world-class US, IB, and French diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel to Europe & India",
+        "description": "Tunis-Carthage Airport (TUN) offers extensive daily flight connections."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent visa in Tunisia?",
+        "answer": "A dependent permit does not automatically permit employment; the spouse must obtain an approved MFPE employment contract."
+      },
+      {
+        "question": "Do Indian certificates need translation for Tunisia?",
+        "answer": "Yes. Indian certificates must be apostilled by the MEA in India and translated into French or Arabic."
+      }
+    ]
+  },
+  "algeria": {
+    "cname": "Algeria",
+    "scheme": "Regroupement Familial (Family Dependent Residence)",
+    "overview": "Spouses and minor children of foreign specialists holding valid Algerian work permits or permanent residency can obtain a Family Dependent Visa and Carte de Résidence. Families enjoy safe compound communities, access to healthcare, and international schooling in Algiers.",
+    "fees": {
+      "visa_fee": "$80 (Consular Visa per person)",
+      "service_fee": "DZD 2,000 (Carte de Résidence)",
+      "total_fee": "approx. ₹8,000 per family member",
+      "notes": "Processed via Embassy in New Delhi and local Wilaya in Algeria."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Submitted to Algerian Embassy with apostilled marriage/birth certificates.",
+    "source": "Ministry of Foreign Affairs & Ministry of Interior",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into French or Arabic by a certified sworn translator.",
+    "min_funds": "Principal worker's salary contract and registered residential lease in Algeria",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Comfortable Expat Living",
+        "description": "Residential neighborhoods in Algiers (Hydra, Ben Aknoun, El Biar) offering embassies, international restaurants, and green parks."
+      },
+      {
+        "icon": "🏫",
+        "title": "International School Access",
+        "description": "Lycée International Alexandre Dumas and American International School of Algiers offer top French, IB, and US diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Direct Border Entry",
+        "description": "Multiple entry privileges allow easy school vacation travel to India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent visa in Algeria?",
+        "answer": "No. The dependent visa does not permit employment. To work, the spouse must obtain an independent work permit from an employer."
+      },
+      {
+        "question": "Do Indian certificates need translation for Algeria?",
+        "answer": "Yes. Indian birth and marriage certificates must be apostilled by the MEA in India and translated into French or Arabic."
+      }
+    ]
+  },
+  "uruguay": {
+    "cname": "Uruguay",
+    "scheme": "Residencia por Vínculo Familiar (Family Dependent Residency)",
+    "overview": "Spouses, domestic partners, and minor children of foreign professionals holding valid Uruguayan temporary or permanent residency can obtain matching dependent residency. Dependents receive Uruguayan Cédula cards, granting lawful residence, public healthcare (ASSE/mutualista), and free access to top public and private schools.",
+    "fees": {
+      "visa_fee": "$100 (Residence Fee per person)",
+      "service_fee": "$20 (Cédula de Identidad)",
+      "total_fee": "approx. ₹10,000 per dependent",
+      "notes": "Processed via Dirección Nacional de Migración."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Submitted to Migración in Montevideo with apostilled relationship certificates.",
+    "source": "Dirección Nacional de Migración (DNM)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Spanish by a licensed public translator (Traductor Público) in Uruguay.",
+    "min_funds": "Principal worker's salary contract and proof of family accommodation",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Safe & Progressive Society",
+        "description": "Ranked among the safest countries in the Americas with universal social safety and high education standards."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "The British Schools of Montevideo, Uruguayan American School (UAS), and Woodlands School offer elite IB and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Seamless Mercosur Travel",
+        "description": "Cédula holders can travel throughout South America (Brazil, Argentina, Chile) using just their Cédula card."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family residence permit in Uruguay?",
+        "answer": "Yes! Family members holding Uruguayan residence permits have the full legal right to work and engage in commerce."
+      },
+      {
+        "question": "Do Indian documents need apostille for Uruguay?",
+        "answer": "Yes. Uruguay is a member of the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India."
+      }
+    ]
+  },
+  "fiji": {
+    "cname": "Fiji",
+    "scheme": "Co-Extensive Permit for Spouses and Children",
+    "overview": "Spouses and minor children of foreign professionals holding valid Fijian work permits or investor permits can obtain a Co-Extensive Permit from Fiji Immigration. Family members can live legally in Fiji, attend top private schools, and access healthcare services.",
+    "fees": {
+      "visa_fee": "FJD $250 (Co-Extensive Permit Fee per person)",
+      "service_fee": "FJD $100 processing",
+      "total_fee": "approx. ₹13,000 per dependent",
+      "notes": "Processed via Fiji Immigration Department."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Applied at Fiji Immigration with legalized marriage and birth certificates.",
+    "source": "Fiji Immigration Department",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates verifying legal marriage and parentage.",
+    "min_funds": "Principal worker's salary contract and security bond guarantee",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Warm & Welcoming Community",
+        "description": "Friendly multi-cultural society where Hindi, English, and Fijian are widely spoken."
+      },
+      {
+        "icon": "🏫",
+        "title": "Top International Schools",
+        "description": "International School Suva (ISS) and International School Nadi offer premier IB and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel to Australia, NZ & India",
+        "description": "Fiji Airways operates direct flights from Nadi to Singapore, Australia, New Zealand, and the US."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a co-extensive permit in Fiji?",
+        "answer": "A co-extensive permit alone does not authorize employment; the spouse must apply for an independent work permit upon securing an employer job offer."
+      },
+      {
+        "question": "Is English widely spoken in Fiji?",
+        "answer": "Yes. English is an official language in Fiji and is the primary medium of education, commerce, and government."
+      }
+    ]
+  },
+  "panama": {
+    "cname": "Panama",
+    "scheme": "Visa de Dependiente (Family Dependent Residency)",
+    "overview": "Spouses and dependent children of foreign professionals holding valid Panamanian work permits, SEM visas, or Qualified Investor residency can obtain a Family Dependent Visa. Dependents receive Cédula E cards, granting lawful residence, healthcare, and enrollment in top international schools.",
+    "fees": {
+      "visa_fee": "$250 (Migración Fee per person)",
+      "service_fee": "$50 (Carné de Migración)",
+      "total_fee": "approx. ₹25,000 per dependent",
+      "notes": "Processed via Servicio Nacional de Migración."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Submitted via a Panamanian attorney with apostilled marriage/birth certificates.",
+    "source": "Servicio Nacional de Migración Panamá",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Spanish by an authorized public translator (Traductor Público Autorizado) in Panama.",
+    "min_funds": "Principal worker's salary contract and declaration of family maintenance",
+    "highlights": [
+      {
+        "icon": "🏙️",
+        "title": "Cosmopolitan & Safe Living",
+        "description": "Panama City's Punta Pacífica, Costa del Este, and Santa María offer luxury oceanfront skyscrapers, gated communities, and shopping malls."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "International School of Panama (ISP), Balboa Academy, and King's College offer premier US, IB, and British diplomas."
+      },
+      {
+        "icon": "🏥",
+        "title": "Johns Hopkins Affiliated Healthcare",
+        "description": "Hospital Punta Pacífica is affiliated with Johns Hopkins Medicine International, providing world-class care."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent visa in Panama?",
+        "answer": "The dependent visa does not grant automatic work rights; the spouse must apply for work authorization through MITRADEL upon securing an employer offer."
+      },
+      {
+        "question": "Do Indian documents need apostille for Panama?",
+        "answer": "Yes. Panama is a signatory to the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India."
+      }
+    ]
+  },
+  "dominican-republic": {
+    "cname": "Dominican Republic",
+    "scheme": "Residencia por Dependencia (Family Dependent Residency)",
+    "overview": "Spouses and minor children of foreign professionals holding valid Dominican work residency or investor permanent residency can obtain a Family Dependent Residence Card. Dependents receive full resident protections, access to modern private healthcare, and enrollment in top international schools.",
+    "fees": {
+      "visa_fee": "$100 (Consular Visa Fee per person)",
+      "service_fee": "DOP 8,000 (DGM Residence Carné)",
+      "total_fee": "approx. ₹18,000 per dependent",
+      "notes": "Processed via Dirección General de Migración."
+    },
+    "proc_time": "4 to 6 Weeks",
+    "proc_details": "Submitted to DGM in Santo Domingo with apostilled marriage/birth certificates.",
+    "source": "Dirección General de Migración (DGM)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Spanish by an authorized judicial interpreter (Intérprete Judicial) in Dominican Republic.",
+    "min_funds": "Principal worker's salary contract and declaration of family economic maintenance",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Vibrant Caribbean Lifestyle",
+        "description": "Beautiful beach communities in Punta Cana, Cap Cana, and Casa de Campo with tropical resort living."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "Carol Morgan School (Santo Domingo) and Punta Cana International School offer premier American, IB, and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "International Airport Connectivity",
+        "description": "Punta Cana International Airport connects directly to over 60 global cities."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent residence permit in Dominican Republic?",
+        "answer": "The dependent permit does not authorize work; the spouse must apply for work authorization upon securing an employment contract."
+      },
+      {
+        "question": "Do Indian documents need apostille for Dominican Republic?",
+        "answer": "Yes. The Dominican Republic is a member of the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India."
       }
     ]
   }

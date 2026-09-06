@@ -144,6 +144,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -1047,6 +1129,187 @@ const DESTS: Record<string, any> = {
     "min_funds": "€12,000 – €14,000/year living costs deposited into university's account or personal account",
     "acceptance_doc": "IND Approval Letter & University Enrolment Letter",
     "acceptance_desc": "Confirmation of admission from a Dutch university and formal IND approval notice."
+  }
+,
+  "serbia": {
+    "overview": "Serbia is an established regional hub for higher education, hosting the prestigious University of Belgrade (ranked among the world's top 500) and University of Novi Sad, offering internationally accredited English-medium Medical, Engineering, and Business degrees. International students obtain a Temporary Residence for Study (Privremeni boravak za studiranje) from the Ministry of Interior.",
+    "fees": {
+      "visa_fee": "€65 (D-Visa / Long-Stay Entry)",
+      "service_fee": "RSD 18,000 (Ministry of Interior Residence Card)",
+      "total_fee": "approx. ₹16,000 Total",
+      "notes": "Residence permit renewed annually at Police Directorate in Belgrade."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Requires official university admission letter; processed by Serbian diplomatic mission or local Police Directorate.",
+    "source": "Ministry of Interior (MUP) & Ministry of Education of Serbia",
+    "work_term": "Students can work part-time up to 20 hours per week",
+    "work_break": "Full-time during academic holidays",
+    "post_study": "Graduates can apply for a 1-year residence permit extension for employment seeking",
+    "min_funds": "Minimum €350 to €500 per month of living expenses",
+    "acceptance_doc": "Potvrda o upisu (Official University Enrollment Confirmation)",
+    "acceptance_desc": "Official enrollment certificate from an accredited Serbian public or private university."
+  },
+  "montenegro": {
+    "overview": "Montenegro offers European university education at the University of Montenegro (Podgorica and Kotor) and University of Donja Gorica (UDG). International students obtain a Temporary Residence Permit for Study (Privremeni boravak radi studiranja) from the Ministry of Internal Affairs (MUP).",
+    "fees": {
+      "visa_fee": "€60 (Temporary Residence Fee)",
+      "service_fee": "€10 (Biometric Card)",
+      "total_fee": "approx. ₹6,500 Total",
+      "notes": "Administered by MUP branch offices across Montenegro."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Applied at local MUP office with university enrollment confirmation and proof of accommodation.",
+    "source": "Ministry of Internal Affairs of Montenegro (MUP)",
+    "work_term": "Students can work part-time in seasonal tourism and retail sectors",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "Graduates can apply for employment residency upon securing an authorized job offer",
+    "min_funds": "Minimum €300 per month of living expenses (approx. €3,600/year)",
+    "acceptance_doc": "Potvrda o upisu (Official University Enrollment Certificate)",
+    "acceptance_desc": "Official enrollment certificate from a recognized Montenegrin higher education faculty."
+  },
+  "albania": {
+    "overview": "Albania hosts established institutions of higher education including the University of Tirana, Polytechnic University of Tirana, and Epoka University. International students obtain a Student Residence Permit (Leje Qëndrimi për Studime) from the Department of Border and Migration.",
+    "fees": {
+      "visa_fee": "€50 (National Study Visa)",
+      "service_fee": "ALL 10,000 (Police Residence Card)",
+      "total_fee": "approx. ₹12,000 Total",
+      "notes": "Applied online via the e-Albania government portal."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Applied online via e-Albania platform with university matriculation certificate.",
+    "source": "Ministry for Europe and Foreign Affairs & Department for Border and Migration",
+    "work_term": "Students can work part-time up to 20 hours per week",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "Graduates can apply for an extension to seek employment or launch a business",
+    "min_funds": "Minimum €300 per month living expenses guarantee",
+    "acceptance_doc": "Certifikatë Regjistrimi (Official University Admission Certificate)",
+    "acceptance_desc": "Official enrollment certificate from an accredited Albanian public or private university."
+  },
+  "morocco": {
+    "overview": "Morocco is an international educational center in North Africa, hosting the University of al-Qarawiyyin in Fez (recognized by UNESCO as the oldest continually operating university in the world, founded 859 AD), Mohammed V University in Rabat, and Al Akhawayn University in Ifrane (American liberal arts curriculum). International students obtain an Étudiant Residence Permit (Carte de Séjour Étudiant) from the Direction Générale de la Sûreté Nationale (DGSN).",
+    "fees": {
+      "visa_fee": "$70 (Long-Stay Entry Visa)",
+      "service_fee": "MAD 100 (Annual Student Carte de Séjour)",
+      "total_fee": "approx. ₹8,000 Total",
+      "notes": "Residence permit renewed annually at the local Police Prefecture."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Applied via Moroccan Embassy in New Delhi with AMCI (Moroccan Agency for International Cooperation) or university admission letter.",
+    "source": "Ministry of Foreign Affairs & Direction Générale de la Sûreté Nationale (DGSN)",
+    "work_term": "Academic internships permitted under university degree requirements",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can transition to corporate employment upon securing an authorized ministry work contract",
+    "min_funds": "$3,000 - $4,500 annual living expenses guarantee or AMCI scholarship",
+    "acceptance_doc": "Attestation d'Inscription Définitive from accredited Moroccan university",
+    "acceptance_desc": "Official enrollment certificate from a certified Moroccan higher education institution."
+  },
+  "tunisia": {
+    "overview": "Tunisia offers renowned public higher education anchored by the University of Tunis El Manar (ranked among the best in North Africa) and University of Carthage, featuring prestigious English- and French-taught programs in Medicine, Engineering, and Mediterranean Studies. Students obtain a Carte de Séjour Étudiant from the Ministry of Interior.",
+    "fees": {
+      "visa_fee": "$50 (Student Entry Visa)",
+      "service_fee": "TND 50 (Annual Student Carte de Séjour)",
+      "total_fee": "approx. ₹5,500 Total",
+      "notes": "Subsidized residence card fees for international students."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Requires official university admission letter endorsed by the Ministry of Higher Education and Scientific Research.",
+    "source": "Ministry of Higher Education and Scientific Research & Ministry of Interior",
+    "work_term": "Academic internships and practical coursework permitted",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can transition to employment status upon securing an approved corporate work contract",
+    "min_funds": "$2,500 - $4,000 annual maintenance or scholarship certificate",
+    "acceptance_doc": "Certificat d'Inscription Universitaire",
+    "acceptance_desc": "Official enrollment certificate from an accredited Tunisian university."
+  },
+  "algeria": {
+    "overview": "Algeria is home to major research universities including the University of Algiers 1 (Benyoucef Benkhedda, founded 1909), USTHB (University of Science and Technology Houari Boumediene), and University of Constantine. International students obtain a Student Visa (Visa Étudiant) and an annual Carte de Résidence from the Wilaya authorities.",
+    "fees": {
+      "visa_fee": "$80 (Consular Student Visa)",
+      "service_fee": "DZD 2,000 (Wilaya Residence Card)",
+      "total_fee": "approx. ₹8,500 Total",
+      "notes": "Administered by the Wilaya Police Department."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Requires ministerial admission certificate (MESRS) and approval by the Ministry of Foreign Affairs.",
+    "source": "Ministry of Higher Education and Scientific Research (MESRS) & Ministry of Interior",
+    "work_term": "Academic research and university assistantships permitted",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can transition to corporate employment upon securing a licensed work permit",
+    "min_funds": "$3,000 annual maintenance or state scholarship certificate",
+    "acceptance_doc": "Certificat de Pré-inscription / Inscription Universitaire",
+    "acceptance_desc": "Official enrollment certificate approved by MESRS in Algiers."
+  },
+  "uruguay": {
+    "overview": "Uruguay is home to Universidad de la República (UdelaR, founded in 1849, the nation's premier public university where undergraduate tuition is tuition-free) and prestigious private universities like Universidad ORT Uruguay. International students obtain a Temporary Student Residence (Residencia Temporal Estudiante) from the Dirección Nacional de Migración.",
+    "fees": {
+      "visa_fee": "$80 (Student Residence Application)",
+      "service_fee": "$20 (Cédula de Identidad)",
+      "total_fee": "approx. ₹8,500 Total",
+      "notes": "Processed via Dirección Nacional de Migración in Montevideo."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Applied at Migración office in Montevideo with university enrollment certificate.",
+    "source": "Dirección Nacional de Migración (DNM) & Ministerio de Educación y Cultura",
+    "work_term": "Students can work part-time or full-time with equal labour protections",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "Graduates can easily transition to employment or permanent residency",
+    "min_funds": "$3,000 - $4,500 annual living expense guarantee",
+    "acceptance_doc": "Certificado de Matrícula Universitaria",
+    "acceptance_desc": "Official enrollment certificate from an accredited Uruguayan university."
+  },
+  "fiji": {
+    "overview": "Fiji is the premier educational hub of the South Pacific, hosting the University of the South Pacific (USP, a regional university co-owned by 12 Pacific nations) and Fiji National University (FNU). International students obtain a Student Permit issued by the Fiji Immigration Department.",
+    "fees": {
+      "visa_fee": "FJD $250 (Student Permit Application Fee)",
+      "service_fee": "FJD $150 (Security Bond / Processing)",
+      "total_fee": "approx. ₹15,000 Total",
+      "notes": "Administered by the Department of Immigration in Suva."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Applied online or through university international office with admission confirmation.",
+    "source": "Fiji Immigration Department & Ministry of Education",
+    "work_term": "Academic internships and campus assistantships authorized",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can apply for corporate work permits upon receiving an authorized employment offer",
+    "min_funds": "FJD $5,000 - $8,000 per academic year living expenses guarantee",
+    "acceptance_doc": "Official University Admission Letter & Fee Invoice",
+    "acceptance_desc": "Official enrollment certificate from an accredited tertiary institution in Fiji."
+  },
+  "panama": {
+    "overview": "Panama is home to prestigious regional universities including Universidad de Panamá, Universidad Tecnológica de Panamá (UTP), and Florida State University (FSU Panama branch campus). International students obtain a Temporary Student Visa (Visa de Estudiante) via the Servicio Nacional de Migración.",
+    "fees": {
+      "visa_fee": "$100 (Student Visa Application)",
+      "service_fee": "$50 (Carné de Migración)",
+      "total_fee": "approx. ₹12,500 Total",
+      "notes": "Administered by Servicio Nacional de Migración in Panama City."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Submitted via a licensed Panamanian immigration attorney with university enrollment proof.",
+    "source": "Servicio Nacional de Migración Panamá & Ministry of Education",
+    "work_term": "Academic internships permitted under university degree requirements",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can apply for SEM or professional work permits upon corporate job offer",
+    "min_funds": "$3,000 annual maintenance or institutional scholarship certificate",
+    "acceptance_doc": "Certificación de Matrícula Universitaria",
+    "acceptance_desc": "Official enrollment certificate from an accredited Panamanian university."
+  },
+  "dominican-republic": {
+    "overview": "The Dominican Republic hosts prestigious Caribbean universities including Universidad Autónoma de Santo Domingo (UASD, the oldest university in the New World, founded 1538), Pontificia Universidad Católica Madre y Maestra (PUCMM), and UNIBE (renowned for international English-medium medical and dental programs). International students obtain a Student Visa (Visa de Estudiante - E) from the Ministry of Foreign Affairs (MIREX).",
+    "fees": {
+      "visa_fee": "$100 (Consular Student Visa Fee)",
+      "service_fee": "DOP 5,000 (DGM Student Carné)",
+      "total_fee": "approx. ₹15,000 Total",
+      "notes": "Applied at Dominican consulate with university admission letter."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Submitted via MIREX consular portal and finalized with student ID at DGM in Santo Domingo.",
+    "source": "Ministerio de Relaciones Exteriores (MIREX) & Dirección General de Migración (DGM)",
+    "work_term": "Academic internships and practical clinical coursework permitted",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can apply for work residency upon securing an authorized employment offer",
+    "min_funds": "$3,000 annual maintenance or institutional scholarship guarantee",
+    "acceptance_doc": "Certificado de Inscripción Universitaria",
+    "acceptance_desc": "Official enrollment certificate from a recognized Dominican higher education institution."
   }
 }
 ;

@@ -144,6 +144,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -2603,6 +2685,477 @@ const DESTS: Record<string, any> = {
       {
         "question": "Can my family members get permanent residence in Sweden with me?",
         "answer": "Family members can be granted permanent residence if you receive PUT, provided they have lived in Sweden for at least 3 years and adults can support themselves financially."
+      }
+    ]
+  }
+,
+  "serbia": {
+    "cname": "Serbia",
+    "scheme": "Stalno nastanjenje (Permanent Residence) / Real Estate Investor Residency",
+    "overview": "Serbia offers permanent settlement under the Law on Foreigners (Stalno nastanjenje). Foreign nationals who have resided legally in Serbia on temporary residence permits for three (3) consecutive years (reduced from 5 years under recent progressive amendments) qualify for permanent residence. In addition, purchasing residential real estate in Serbia grants renewable temporary residency with a direct path to permanent domicile.",
+    "fees": {
+      "visa_fee": "RSD 15,000 (Permanent Residence Application)",
+      "service_fee": "RSD 3,000 (Biometric Card)",
+      "total_fee": "approx. ₹14,000",
+      "notes": "Administered by the Ministry of Interior in Belgrade."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Evaluated directly by the Directorate for Foreigners (Uprava za strance) in Belgrade.",
+    "source": "Ministry of Interior of the Republic of Serbia (MUP)",
+    "validity": "5 Years (Renewable Indefinite Permanent Residence Card)",
+    "stay": "Permanent lawful domicile in Serbia",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "3-Year Legal Residence Records & Real Estate Ownership Cadastre Deed",
+    "assessment_desc": "Proof of 3 continuous years legal residence, property ownership deed from the Republic Geodetic Authority, and clean background certificate.",
+    "min_funds": "Proof of ongoing financial solvency and property ownership",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Fast 3-Year Settlement Timeline",
+        "description": "Eligibility for permanent residence after just 3 continuous years of legal temporary residence."
+      },
+      {
+        "icon": "🏡",
+        "title": "Real Estate Residency Pathway",
+        "description": "Acquisition of any residential property in Serbia qualifies foreign buyers for residency."
+      },
+      {
+        "icon": "🇷🇸",
+        "title": "Pathway to Serbian Citizenship",
+        "description": "Eligible to apply for Serbian naturalization and passport after securing permanent residence."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence lead to PR in Serbia?",
+        "answer": "Under the latest amendment to the Law on Foreigners, foreign nationals qualify for permanent residence after just three (3) continuous years on temporary permits."
+      },
+      {
+        "question": "Can Indian citizens buy real estate in Serbia?",
+        "answer": "Yes, under bilateral reciprocity, Indian citizens are permitted to acquire residential property and land in Serbia."
+      }
+    ]
+  },
+  "montenegro": {
+    "cname": "Montenegro",
+    "scheme": "Stalni boravak (Permanent Residence) / Property Residency",
+    "overview": "Montenegro grants permanent residence (Stalni boravak) to foreign nationals who have resided continuously and legally on temporary permits for at least five (5) consecutive years without exceeding statutory absence limits. In addition, owning residential or commercial real estate in Montenegro grants renewable 1-year residency with no minimum property valuation requirement.",
+    "fees": {
+      "visa_fee": "€100 (Permanent Residence Application)",
+      "service_fee": "€10 (Biometric Card)",
+      "total_fee": "approx. ₹10,000",
+      "notes": "Administered by the Ministry of Internal Affairs (MUP)."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Application evaluated directly by MUP in Podgorica.",
+    "source": "Ministry of Internal Affairs of Montenegro (MUP)",
+    "validity": "5 Years (Renewable Indefinite Permanent Resident Card)",
+    "stay": "Permanent lawful domicile in Montenegro",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year MUP Continuous Residency Records & Property Ownership Certificate (List nepokretnosti)",
+    "assessment_desc": "Proof of 5 continuous years legal residence, real estate deed (List nepokretnosti), clean police record, and basic Montenegrin language skills.",
+    "min_funds": "Demonstrated ongoing legal income or real estate ownership",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite Settlement Rights",
+        "description": "Permanent right to live, work, and operate businesses in Montenegro without annual permit renewals."
+      },
+      {
+        "icon": "🏡",
+        "title": "No Minimum Value Property Residency",
+        "description": "Owning any habitable apartment or house qualifies foreign buyers for residency."
+      },
+      {
+        "icon": "🇲🇪",
+        "title": "Future EU Citizenship Potential",
+        "description": "Permanent residents are positioned for EU citizenship upon Montenegro's anticipated EU accession."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is there a minimum real estate value to get residency in Montenegro?",
+        "answer": "No! Unlike golden visa programs, Montenegrin law sets no minimum property purchase price to qualify for temporary residency through real estate ownership."
+      },
+      {
+        "question": "How long does permanent residence take in Montenegro?",
+        "answer": "Five (5) consecutive years of lawful temporary residence qualify an applicant for Stalni boravak (Permanent Residence)."
+      }
+    ]
+  },
+  "albania": {
+    "cname": "Albania",
+    "scheme": "Leje Qëndrimi e Përhershme (Permanent Residence) / Real Estate Residency",
+    "overview": "Albania grants permanent residence (Leje Qëndrimi e Përhershme) to foreign nationals who have resided legally and continuously on temporary permits for at least five (5) consecutive years without exceeding statutory absence limits. In addition, purchasing residential real estate in Albania qualifies foreign buyers for renewable annual temporary residency.",
+    "fees": {
+      "visa_fee": "€150 (Permanent Residence Application)",
+      "service_fee": "ALL 5,000 (Biometric Card)",
+      "total_fee": "approx. ₹17,000",
+      "notes": "Administered by the State Police Department for Border and Migration."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Evaluated directly by the State Police Border and Migration Directorate in Tirana.",
+    "source": "State Police Border and Migration Department & Ministry of Interior",
+    "validity": "5 Years (Renewable Indefinite Permanent Resident Card)",
+    "stay": "Permanent lawful domicile in Albania",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year Continuous Legal Residence Records & Cadastral Property Deed (Hipoteka)",
+    "assessment_desc": "Proof of 5 continuous years legal residence, clean criminal background, property ownership deed from the State Cadastre Agency (ASHK), and basic Albanian language proficiency.",
+    "min_funds": "Demonstrated ongoing legal income or property ownership",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Settlement Security",
+        "description": "Indefinite right to reside, work, and operate commercial enterprises in Albania."
+      },
+      {
+        "icon": "🏡",
+        "title": "Coastal Real Estate Ownership",
+        "description": "Affordable beachfront property in Sarandë, Vlorë, and Durrës with low property taxes."
+      },
+      {
+        "icon": "🇦🇱",
+        "title": "Pathway to Albanian Citizenship",
+        "description": "Eligible to apply for Albanian naturalization and passport after 5 to 7 years of legal residence."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreigners buy real estate in Albania?",
+        "answer": "Yes. Foreign nationals can freely purchase residential apartments and commercial properties in Albania and obtain residency based on ownership."
+      },
+      {
+        "question": "How long does it take to qualify for PR in Albania?",
+        "answer": "Five (5) continuous years of legal residence on temporary permits qualify an applicant for permanent residence status."
+      }
+    ]
+  },
+  "morocco": {
+    "cname": "Morocco",
+    "scheme": "Carte de Résidence Permanente (10-Year Permanent Residence)",
+    "overview": "Morocco offers permanent settlement under Law No. 02-03. Foreign nationals who have resided legally in Morocco for at least three (3) consecutive years on temporary residence cards (Carte de Séjour), and who demonstrate continuous gainful employment, enterprise ownership, or retirement solvency, qualify to obtain a 10-Year Permanent Residence Card (Carte de Résidence).",
+    "fees": {
+      "visa_fee": "MAD 1,000 (Permanent Residence Issuance Fee)",
+      "service_fee": "MAD 100 application stamp",
+      "total_fee": "approx. ₹9,500",
+      "notes": "Administered by the Direction Générale de la Sûreté Nationale (DGSN)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the DGSN Police Prefecture in Morocco.",
+    "source": "Direction Générale de la Sûreté Nationale (DGSN) & Ministry of Interior",
+    "validity": "10 Years (Renewable Indefinite Permanent Residence Card)",
+    "stay": "Permanent lawful domicile in Morocco",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "3-Year Continuous Carte de Séjour Records & Tax Clearance (DGI)",
+    "assessment_desc": "Proof of 3 continuous years legal residence, clean judicial record (Fiche anthropométrique), and General Tax Directorate (DGI) compliance.",
+    "min_funds": "Demonstrated ongoing legal income or enterprise profits",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "10-Year Permanent Security",
+        "description": "10-year residency card eliminates the hassle of annual police renewals."
+      },
+      {
+        "icon": "🇲🇦",
+        "title": "Pathway to Moroccan Citizenship",
+        "description": "Eligible to apply for Moroccan naturalization after 5 years of continuous legal residence."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Business Operations",
+        "description": "Direct commercial property ownership and company operations under Moroccan domestic law."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long do I need to live in Morocco before getting permanent residency?",
+        "answer": "Under Law 02-03, foreign nationals who have resided legally for three (3) consecutive years on temporary resident status qualify for a 10-year Carte de Résidence."
+      },
+      {
+        "question": "Can foreign nationals own real estate in Morocco?",
+        "answer": "Yes. Foreigners can freely purchase residential and commercial real estate across Morocco (with restrictions only applying to agricultural farmland)."
+      }
+    ]
+  },
+  "tunisia": {
+    "cname": "Tunisia",
+    "scheme": "Carte de Séjour Définitive (Permanent Residence) / Foreign Investor Status",
+    "overview": "Tunisia offers permanent residence (Carte de Séjour Définitive) to foreign nationals who have resided legally in Tunisia for at least five (5) consecutive years on temporary residence permits, or to substantial foreign direct investors operating qualifying enterprises certified by FIPA.",
+    "fees": {
+      "visa_fee": "TND 300 (Permanent Residence Filing Fee)",
+      "service_fee": "TND 50 (Biometric Card)",
+      "total_fee": "approx. ₹9,500",
+      "notes": "Administered by the Ministry of Interior in Tunis."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the General Directorate of National Security in Tunis.",
+    "source": "Ministry of Interior (Direction Générale de la Sûreté Nationale)",
+    "validity": "5 Years (Renewable Indefinite Residence Card)",
+    "stay": "Permanent lawful domicile in Tunisia",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year Legal Residence Records & Tax Clearance Records",
+    "assessment_desc": "Proof of 5 years continuous legal residence, clean police background (Bulletin No. 3), and active tax compliance.",
+    "min_funds": "Demonstrated ongoing legal income or enterprise investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Settlement Protections",
+        "description": "Indefinite right to reside and operate businesses in Tunisia without annual renewals."
+      },
+      {
+        "icon": "🇹🇳",
+        "title": "Pathway to Tunisian Citizenship",
+        "description": "Eligible to apply for Tunisian naturalization after 5 years of continuous legal residence."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Idyllic Mediterranean Coast",
+        "description": "Charming coastal living in Sidi Bou Said, La Marsa, Hammamet, and Sousse."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence lead to PR in Tunisia?",
+        "answer": "Five (5) continuous years of legal temporary residence qualify an applicant to apply for permanent residence status."
+      },
+      {
+        "question": "Can foreigners own real estate in Tunisia?",
+        "answer": "Foreigners can purchase residential apartments in urban zones with governorate authorization (Autorisation du Gouverneur)."
+      }
+    ]
+  },
+  "algeria": {
+    "cname": "Algeria",
+    "scheme": "Carte de Résidence (10-Year Permanent Residence) - Ministry of Interior",
+    "overview": "Algeria grants long-term permanent settlement under Law No. 08-11. Foreign nationals who have resided legally in Algeria for at least seven (7) consecutive years on temporary residence cards (or spouses of Algerian citizens), and who demonstrate continuous gainful employment and civic integration, qualify for a 10-Year Permanent Residence Card (Carte de Résidence).",
+    "fees": {
+      "visa_fee": "DZD 10,000 (Permanent Residence Application)",
+      "service_fee": "DZD 2,000 (Card issuance)",
+      "total_fee": "approx. ₹8,000",
+      "notes": "Administered by the Ministry of Interior in Algiers."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the Wilaya Directorate of General Affairs and DGSN.",
+    "source": "Ministry of the Interior and Local Authorities (MICLAT)",
+    "validity": "10 Years (Renewable Permanent Residence Card)",
+    "stay": "Permanent lawful domicile in Algeria",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "7-Year Continuous Legal Residence Records & DGI Tax Clearance",
+    "assessment_desc": "Proof of 7 continuous years legal residence, clean police background (Casier judiciaire), and active tax compliance.",
+    "min_funds": "Demonstrated ongoing legal income or enterprise investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "10-Year Residency Tenure",
+        "description": "Long-term security of domicile without annual permit renewal requirements."
+      },
+      {
+        "icon": "🇩🇿",
+        "title": "Pathway to Algerian Citizenship",
+        "description": "Eligible to apply for Algerian naturalization after 7 years of legal continuous residence."
+      },
+      {
+        "icon": "💼",
+        "title": "Stable Commercial Protections",
+        "description": "Exempt from foreign employee labour quotas once permanent residence is established."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence lead to PR in Algeria?",
+        "answer": "Seven (7) consecutive years of lawful temporary residence qualify a foreign national to apply for a 10-year Carte de Résidence."
+      },
+      {
+        "question": "Can foreign permanent residents purchase property in Algeria?",
+        "answer": "Yes. Foreign permanent residents can acquire residential real estate in urban areas under Algerian civil law."
+      }
+    ]
+  },
+  "uruguay": {
+    "cname": "Uruguay",
+    "scheme": "Residencia Permanente (Permanent Residence) / Mercosur Settlement Framework",
+    "overview": "Uruguay offers one of the most accessible permanent settlement frameworks in the Americas under Law No. 18.250. Foreign nationals who demonstrate legal financial solvency (from employment, business, or investment) can apply for Residencia Permanente directly at the Dirección Nacional de Migración. Permanent residents receive an indefinite Cédula and enjoy equal civil rights to Uruguayan citizens.",
+    "fees": {
+      "visa_fee": "$200 (Permanent Residence Application)",
+      "service_fee": "$20 (Cédula de Identidad)",
+      "total_fee": "approx. ₹18,000",
+      "notes": "Processed via Dirección Nacional de Migración in Montevideo."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Applied directly at Migración headquarters in Montevideo with apostilled certificates.",
+    "source": "Dirección Nacional de Migración (DNM)",
+    "validity": "Indefinite Permanent Residence (Cédula renewed every 3-5 years)",
+    "stay": "Permanent lawful domicile in Uruguay",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "Certificado de Ingresos (Certified Proof of Income) & Clean Police Certificate",
+    "assessment_desc": "Proof of clean judicial record from country of origin and proof of stable monthly income or employment in Uruguay certified by a Public Accountant (Contador Público).",
+    "min_funds": "Demonstrated monthly income of approx. $1,500 USD per family or real estate investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Constitutional Settlement Equality",
+        "description": "Foreigners have equal rights to native citizens under the Uruguayan Constitution."
+      },
+      {
+        "icon": "🇺🇾",
+        "title": "Fast Path to Uruguayan Citizenship",
+        "description": "Eligible to apply for Uruguayan citizenship and passport after just 3 years (for married couples) or 5 years (for single applicants)."
+      },
+      {
+        "icon": "🌴",
+        "title": "Top Expat Quality of Life",
+        "description": "Punta del Este and Montevideo offer world-class coastal living, safe streets, and clean air."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How fast can I obtain Uruguayan citizenship after getting PR?",
+        "answer": "Under the Uruguayan Constitution, permanent residents can apply for legal citizenship after 3 years (if living with family/spouse) or 5 years (if single)."
+      },
+      {
+        "question": "Can permanent residents work for any employer in Uruguay?",
+        "answer": "Yes. Permanent residents have unrestricted right to work, establish companies, and purchase real estate."
+      }
+    ]
+  },
+  "fiji": {
+    "cname": "Fiji",
+    "scheme": "Permanent Residence / Foreign Investor Residency (Investor Permit)",
+    "overview": "Fiji offers permanent settlement under the Immigration Act. Foreign investors who make a qualifying capital investment through Investment Fiji (minimum FJD $50,000 to $250,000 depending on sector) receive a 7-Year Investor Permit with a direct pathway to permanent residence and citizenship. In addition, professionals residing continuously on work permits for over five (5) years qualify for permanent residence status.",
+    "fees": {
+      "visa_fee": "FJD $1,500 (Permanent Residence Application)",
+      "service_fee": "FJD $500 (Issuance Fee)",
+      "total_fee": "approx. ₹75,000",
+      "notes": "Administered by the Department of Immigration in Suva."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the Director of Immigration in Suva.",
+    "source": "Fiji Immigration Department & Investment Fiji",
+    "validity": "7 Years / Indefinite Permanent Residence",
+    "stay": "Permanent lawful domicile in Fiji",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "Investment Fiji Foreign Investment Registration Certificate (FIRC)",
+    "assessment_desc": "Certified copy of FIRC certificate, bank proof of foreign capital inflow, and clean police background clearance.",
+    "min_funds": "FJD $50,000 - $250,000 qualifying enterprise investment or 5 years legal residence",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "7-Year Investor Residency",
+        "description": "Multi-year investor status offering long-term stability and business operation rights."
+      },
+      {
+        "icon": "🇫🇯",
+        "title": "Pathway to Fijian Citizenship",
+        "description": "Eligible to apply for Fijian naturalization after 5 continuous years of legal residence."
+      },
+      {
+        "icon": "🌺",
+        "title": "Tropical Island Settlement",
+        "description": "Live peacefully in Pacific island paradises like Denarau Island, Pacific Harbour, or Savusavu."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the FIRC in Fiji?",
+        "answer": "FIRC (Foreign Investment Registration Certificate) is the official certificate issued by Investment Fiji authorizing foreign investors to operate in the country."
+      },
+      {
+        "question": "Can foreigners buy real estate in Fiji?",
+        "answer": "Foreigners can acquire freehold real estate located within designated municipal boundaries (such as Denarau Island and resort developments)."
+      }
+    ]
+  },
+  "panama": {
+    "cname": "Panama",
+    "scheme": "Residencia Permanente / Qualified Investor Visa (Golden Visa)",
+    "overview": "Panama offers permanent settlement under Executive Decree 722 (Qualified Investor Visa). Foreign investors who make a qualifying investment in real estate ($300,000 to $500,000 USD), stock market securities ($500,000 USD), or fixed-term bank deposits ($750,000 USD) obtain Permanent Residency within 30 days. In addition, professionals residing continuously on work permits qualify for permanent residence after continuous legal status.",
+    "fees": {
+      "visa_fee": "$5,000 (Government Application Levy) + $5,000 (Repatriation Deposit)",
+      "service_fee": "Legal representation fees",
+      "total_fee": "approx. $10,000 statutory fees",
+      "notes": "Administered by Servicio Nacional de Migración under fast-track rules."
+    },
+    "proc_time": "30 Days (Qualified Investor) or 3 to 6 Months (Standard)",
+    "proc_details": "Fast-tracked within 30 days for Qualified Investors through a Panamanian attorney.",
+    "source": "Servicio Nacional de Migración Panamá & Ministry of Commerce and Industries (MICI)",
+    "validity": "Indefinite Permanent Residence (Cédula E renewed every 10 years)",
+    "stay": "Permanent lawful domicile in Panama",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "Public Registry Real Estate Deed or National Securities Commission Certificate",
+    "assessment_desc": "Proof of qualifying investment capital originating from abroad, clean criminal background certificate, and health certificate.",
+    "min_funds": "$300,000 - $500,000 USD qualifying investment or continuous legal employment",
+    "highlights": [
+      {
+        "icon": "⚡",
+        "title": "Fast 30-Day Permanent Residency",
+        "description": "Qualified Investor Visa grants immediate permanent residency in as fast as 30 calendar days."
+      },
+      {
+        "icon": "🇵🇦",
+        "title": "Territorial Tax System",
+        "description": "Panama taxes only income generated within Panamanian territory; all foreign-sourced income is 100% tax-free."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Whole Family Inclusion",
+        "description": "Investor's spouse, dependent children up to age 25 in education, and dependent parents qualify for concurrent permanent residency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does Panama tax foreign income?",
+        "answer": "No! Panama has a strict territorial tax system. Permanent residents pay zero tax in Panama on income, dividends, or capital gains earned outside Panamanian territory."
+      },
+      {
+        "question": "How often do I need to visit Panama to keep permanent residency?",
+        "answer": "Permanent residents only need to visit Panama once every two (2) years to keep their permanent resident status active."
+      }
+    ]
+  },
+  "dominican-republic": {
+    "cname": "Dominican Republic",
+    "scheme": "Residencia Permanente / Residencia por Inversión (Investor Golden Visa)",
+    "overview": "The Dominican Republic offers fast-track permanent residency under Law No. 171-07 (Incentives for Retirees and Foreign Investors). Foreign investors who invest at least $200,000 USD in registered enterprise capital, real estate, or Free Trade Zone projects obtain Permanent Residency within 45 days, bypassing the standard temporary residency stage.",
+    "fees": {
+      "visa_fee": "$200 (Investor Visa Application)",
+      "service_fee": "DOP 15,000 (DGM Permanent Carné)",
+      "total_fee": "approx. ₹35,000",
+      "notes": "Fast-tracked under Law 171-07."
+    },
+    "proc_time": "45 Days (Investor Fast-Track) or 6 to 12 Months (Standard)",
+    "proc_details": "Application expedited through DGM and ProDominicana in Santo Domingo.",
+    "source": "Dirección General de Migración (DGM) & ProDominicana",
+    "validity": "Indefinite Permanent Residence (Carné renewed every 4 years)",
+    "stay": "Permanent lawful domicile in Dominican Republic",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "ProDominicana Foreign Investment Registration Certificate & Real Estate Deed",
+    "assessment_desc": "Proof of $200,000 USD foreign direct investment, clean judicial record, and medical clearance.",
+    "min_funds": "$200,000 USD qualifying investment or 5 years continuous legal residence",
+    "highlights": [
+      {
+        "icon": "⚡",
+        "title": "Fast 45-Day Direct Permanent Residency",
+        "description": "Law 171-07 grants direct permanent residency within 45 days, skipping temporary stages."
+      },
+      {
+        "icon": "🇩🇴",
+        "title": "Pathway to Dominican Citizenship",
+        "description": "Eligible to apply for Dominican naturalization and passport after just 6 months on investor permanent residency."
+      },
+      {
+        "icon": "💰",
+        "title": "Tax Exemptions on Foreign Income & Assets",
+        "description": "100% exemption from tax on transfer of property, import duties on household goods, and tax on foreign investments."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the investment threshold for Dominican Republic PR?",
+        "answer": "Under Law 171-07, a minimum foreign capital investment of $200,000 USD in real estate or business qualifies for direct permanent residency."
+      },
+      {
+        "question": "How quickly can an investor apply for citizenship in Dominican Republic?",
+        "answer": "Investors holding residency under Law 171-07 qualify to apply for expedited naturalization after just six (6) months of permanent residency."
       }
     ]
   }

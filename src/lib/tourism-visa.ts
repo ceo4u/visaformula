@@ -192,6 +192,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -4122,6 +4204,6485 @@ export const TOURISM_DESTS: Record<string, any> = {
     "stay_duration": "Up to 90 Days",
     "entry_type": "Single or Multiple Entry",
     "official_source": "Civil Registry and Migration Department (CRMD - mip.gov.cy) & High Commission of Cyprus in New Delhi"
+  }
+,
+  "serbia": {
+    "overview": "Serbia offers visa-free entry for Indian passport holders for up to 30 days. Explore Belgrade, Novi Sad, Niš, and the stunning Danube River. Rich history, vibrant nightlife, and beautiful architecture. No prior visa required.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Historic Belgrade",
+        "description": "Belgrade Fortress, Kalemegdan Park, and vibrant nightlife."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy 30-day visa-free entry to Serbia."
+      },
+      {
+        "icon": "🌊",
+        "title": "Danube River",
+        "description": "Beautiful river views and historic towns along the Danube."
+      },
+      {
+        "icon": "🍷",
+        "title": "Wine & Cuisine",
+        "description": "Serbian cuisine and local wines — rakija, ćevapi, and more."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation departing within 30 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Belgrade, Novi Sad, or other Serbian cities.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay covering emergency medical expenses.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Serbia Itinerary — Research Belgrade, Novi Sad, and other destinations.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Serbia — No prior visa required (30 days visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 30 days."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Direct entry stamp granted at Belgrade Nikola Tesla Airport (BEG) or land borders.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy 30-day visa-free entry."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "Mandatory white card police registration (Beli karton) within 24 hours (handled automatically by registered hotels)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "€50 per day of stay",
+        "description": "Cash or international card to show sufficient maintenance."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Serbia?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 30 days within any 1-year period."
+      },
+      {
+        "question": "How long can I stay in Serbia?",
+        "answer": "Up to 30 days visa-free. Extensions must be requested from the Ministry of Interior in Belgrade."
+      },
+      {
+        "question": "Is Serbia part of Schengen?",
+        "answer": "No, Serbia is not part of the Schengen zone, so stays do not count against your 90/180-day Schengen limit."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Serbia (mfa.gov.rs)"
+  },
+  "montenegro": {
+    "overview": "Montenegro offers visa-free entry for Indian passport holders for up to 30 days. Explore the Bay of Kotor, Budva, Durmitor National Park, and the Adriatic coast. Stunning natural beauty with mountains meeting the sea.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Adriatic Coast",
+        "description": "Beautiful beaches and crystal-clear waters on the Adriatic."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy 30-day visa-free entry to Montenegro."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Durmitor National Park",
+        "description": "Stunning mountains, canyons, and glacial lakes."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Bay of Kotor",
+        "description": "UNESCO World Heritage site with medieval towns."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Montenegro.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Montenegro Itinerary — Research Kotor, Budva, and other destinations.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Montenegro — No prior visa required (30 days visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 30 days."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Podgorica Airport (TGD) or Tivat Airport (TIV).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy 30-day visa-free entry."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "Mandatory tourist registration with local Tourist Organisation within 24 hours (handled by hotel)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of sufficient funds for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Montenegro?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 30 days."
+      },
+      {
+        "question": "How long can I stay in Montenegro?",
+        "answer": "Up to 30 days visa-free."
+      },
+      {
+        "question": "Is Montenegro part of Schengen?",
+        "answer": "No, Montenegro is not part of the Schengen zone (though it uses the Euro as its de facto currency)."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Montenegro (gov.me/mvp)"
+  },
+  "albania": {
+    "overview": "Albania offers visa-free entry for Indian passport holders for up to 90 days. Explore Tirana, Berat, Sarandë, and the Albanian Riviera. Beautiful beaches, ancient ruins, and rich cultural heritage.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Albanian Riviera",
+        "description": "Beautiful beaches and crystal-clear waters on the Ionian coast."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy 90-day visa-free entry to Albania."
+      },
+      {
+        "icon": "🏛️",
+        "title": "UNESCO Sites",
+        "description": "Berat and Gjirokastër — UNESCO World Heritage sites."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Accursed Mountains",
+        "description": "Stunning mountain scenery in northern Albania."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Albania.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Albania Itinerary — Research Tirana, Berat, Sarandë, and other destinations.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Albania — No prior visa required (90 days visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 90 days."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Tirana International Airport Nënë Tereza (TIA) or maritime/land borders.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy 90-day visa-free entry."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "Registration required for stays over 90 days."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "€50 per day of stay",
+        "description": "Cash or international card to show sufficient maintenance."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Albania?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 90 days (either under periodic seasonal decrees or with valid US/UK/Schengen visas)."
+      },
+      {
+        "question": "How long can I stay in Albania?",
+        "answer": "Up to 90 days visa-free within a 180-day period."
+      },
+      {
+        "question": "Is Albania part of Schengen?",
+        "answer": "No, Albania is not part of the Schengen zone."
+      }
+    ],
+    "validity": "90 Days on Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry for Europe and Foreign Affairs of Albania (punetejashtme.gov.al)"
+  },
+  "morocco": {
+    "overview": "Morocco is a top African tourist destination offering eVisa for Indian passport holders. Explore Marrakech, Casablanca, Fez, the Sahara Desert, and the Atlas Mountains. Rich culture, beautiful architecture, and delicious cuisine.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Marrakech & Fez",
+        "description": "Historic cities with stunning architecture and vibrant souks."
+      },
+      {
+        "icon": "🏜️",
+        "title": "Sahara Desert",
+        "description": "Camel treks, desert camps, and stunning sunsets."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Atlas Mountains",
+        "description": "Beautiful mountain scenery and trekking opportunities."
+      },
+      {
+        "icon": "📱",
+        "title": "eVisa Available",
+        "description": "Apply online for Morocco eVisa — valid for 30 days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "eVisa Application Form",
+        "description": "Completed online via Morocco eVisa portal.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Morocco.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Morocco Itinerary — Research Marrakech, Fez, Casablanca, and the Sahara.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Apply for eVisa — Complete online application on Morocco eVisa portal.",
+      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 5: Receive eVisa — Download eVisa PDF (issued within 3-5 days).",
+      "Step 6: Board Flight to Morocco — Carry passport, eVisa, return ticket, and hotel booking.",
+      "Step 7: Clear Immigration — Present documents at Moroccan airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "$30-50 USD (approx. ₹2,500-4,100)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$30-50 USD Total Reference",
+      "notes": "eVisa fee paid online via official Morocco portal."
+    },
+    "proc_time": "3-5 Business Days (eVisa)",
+    "proc_details": "Processed 100% online through the official Access Maroc electronic visa portal (acces-maroc.ma).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "eVisa Required",
+        "details": "Indian passport holders require eVisa for Morocco (or valid visa for US/UK/Schengen/Canada/Australia)."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Maximum 30 days per visit."
+      },
+      {
+        "category": "Insurance",
+        "details": "Travel medical insurance recommended."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Morocco?",
+        "answer": "Yes, Indian passport holders require an eVisa for Morocco. Apply online via acces-maroc.ma before travel."
+      },
+      {
+        "question": "How long can I stay in Morocco?",
+        "answer": "Up to 30 days on an eVisa. Extension possible in Casablanca or Marrakech through the police prefecture."
+      },
+      {
+        "question": "What is the processing time for Morocco eVisa?",
+        "answer": "Standard eVisa processing takes 3 business days; express eVisa takes 24 to 48 hours."
+      }
+    ],
+    "validity": "30 Days (eVisa)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Moroccan Ministry of Foreign Affairs & Access Maroc eVisa Portal"
+  },
+  "tunisia": {
+    "overview": "Tunisia offers eVisa and visa-on-arrival for Indian passport holders. Explore Tunis, Carthage, the Sahara Desert, and beautiful Mediterranean beaches. Rich history, ancient ruins, and delicious cuisine.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Carthage Ruins",
+        "description": "Ancient Roman ruins and UNESCO World Heritage sites."
+      },
+      {
+        "icon": "🏜️",
+        "title": "Sahara Desert",
+        "description": "Beautiful desert landscapes and star wars filming locations."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Mediterranean Beaches",
+        "description": "Beautiful beaches on the Mediterranean coast."
+      },
+      {
+        "icon": "📱",
+        "title": "eVisa Available",
+        "description": "Apply online for Tunisia eVisa."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "eVisa / Visa Application",
+        "description": "Completed online or on arrival.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Tunisia.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Tunisia Itinerary — Research Tunis, Carthage, and the Sahara.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Apply for eVisa — Complete online application on Tunisia eVisa portal.",
+      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 5: Receive eVisa — Download eVisa PDF (issued within 3-5 days).",
+      "Step 6: Board Flight to Tunisia — Carry passport, eVisa, return ticket, and hotel booking.",
+      "Step 7: Clear Immigration — Present documents at Tunisian airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "$30-50 USD (approx. ₹2,500-4,100)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$30-50 USD Total Reference",
+      "notes": "eVisa fee paid online via official Tunisia portal."
+    },
+    "proc_time": "3-5 Business Days (eVisa)",
+    "proc_details": "Applied online or through the Embassy of Tunisia in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "eVisa Required",
+        "details": "Indian passport holders require eVisa for Tunisia."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Maximum 30 days per visit."
+      },
+      {
+        "category": "Insurance",
+        "details": "Travel medical insurance recommended."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,25,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Tunisia?",
+        "answer": "Yes, Indian passport holders require an eVisa or consular visa for Tunisia."
+      },
+      {
+        "question": "How long can I stay in Tunisia?",
+        "answer": "Up to 30 days on tourist status."
+      },
+      {
+        "question": "What is the processing time for Tunisia eVisa?",
+        "answer": "eVisa is typically processed within 3-5 business days."
+      }
+    ],
+    "validity": "30 Days (eVisa)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Tunisian Ministry of Foreign Affairs (diplomatie.gov.tn)"
+  },
+  "algeria": {
+    "overview": "Algeria offers traditional visa for Indian passport holders. Explore Algiers, the Sahara Desert, and the Mediterranean coast. Rich history, beautiful architecture, and stunning natural landscapes.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Algiers Casbah",
+        "description": "UNESCO World Heritage site with historic architecture."
+      },
+      {
+        "icon": "🏜️",
+        "title": "Sahara Desert",
+        "description": "Stunning desert landscapes and oasis towns."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Roman Ruins",
+        "description": "Ancient Roman ruins at Timgad and Djemila."
+      },
+      {
+        "icon": "📋",
+        "title": "Visa Required",
+        "description": "Traditional visa required — apply at Algerian Embassy."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed Algerian visa application form in duplicate.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Invitation Letter / Hotel Voucher",
+        "description": "Official invitation from Algerian host (notarized in Algeria) or confirmed hotel booking.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Algeria.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay covering medical repatriation.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Algeria Itinerary — Research Algiers, Sahara, and other destinations.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Obtain Invitation Letter — Secure invitation from Algerian host or book hotel.",
+      "Step 4: Complete Visa Application — Fill Algerian visa application form.",
+      "Step 5: Submit Application — Apply at Algerian Embassy/VFS with complete dossier.",
+      "Step 6: Pay Visa Fee — Pay the applicable visa fee.",
+      "Step 7: Receive Visa & Travel — Receive visa. Travel to Algeria."
+    ],
+    "fees": {
+      "visa_fee": "$30-50 USD (approx. ₹2,500-4,100)",
+      "service_fee": "Payable at VFS / Embassy",
+      "total_fee": "$30-50 USD + VFS Logistics",
+      "notes": "Visa fee varies by entry type; paid at Embassy in New Delhi."
+    },
+    "proc_time": "5-10 Working Days",
+    "proc_details": "Submitted at Embassy of Algeria in New Delhi or authorized consular service center.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa Required",
+        "details": "Indian passport holders require a visa for Algeria."
+      },
+      {
+        "category": "Invitation Required",
+        "details": "Invitation letter from Algerian host or hotel booking required."
+      },
+      {
+        "category": "Insurance",
+        "details": "Travel medical insurance covering the entire stay."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,00,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Algeria?",
+        "answer": "Yes, Indian passport holders require a visa for Algeria. Apply at the Algerian Embassy in New Delhi before travel."
+      },
+      {
+        "question": "How long can I stay in Algeria?",
+        "answer": "Up to 30-90 days on tourist visa."
+      },
+      {
+        "question": "What is the processing time for Algeria visa?",
+        "answer": "Visa processing takes 5-10 working days at the embassy."
+      }
+    ],
+    "validity": "30-90 Days (Tourist Visa)",
+    "stay_duration": "Up to 30-90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Algeria (mae.gov.dz) & Embassy of Algeria New Delhi"
+  },
+  "uruguay": {
+    "overview": "Uruguay offers visa-free entry for Indian passport holders for up to 90 days. Explore Montevideo, Punta del Este, Colonia del Sacramento, and beautiful beaches along the Rio de la Plata. Rich culture, wine country, and stunning coastal scenery.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Punta del Este",
+        "description": "Beautiful beaches and vibrant resort town."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy 90-day visa-free entry to Uruguay."
+      },
+      {
+        "icon": "🍷",
+        "title": "Wine Country",
+        "description": "Tannat wines and beautiful vineyards."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Colonia del Sacramento",
+        "description": "UNESCO World Heritage site with cobblestone streets."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Uruguay.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Uruguay Itinerary — Research Montevideo, Punta del Este, and Colonia.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Uruguay — No prior visa required (90 days visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 90 days."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Immediate entry granted at Carrasco International Airport (MVD), Montevideo.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy 90-day visa-free entry."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "No registration required for stays under 90 days."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "USD $50 per day",
+        "description": "Proof of sufficient financial means for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Uruguay?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 90 days."
+      },
+      {
+        "question": "How long can I stay in Uruguay?",
+        "answer": "Up to 90 days visa-free."
+      },
+      {
+        "question": "Is Uruguay part of Schengen?",
+        "answer": "No, Uruguay is located in South America and is a member of Mercosur."
+      }
+    ],
+    "validity": "90 Days on Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Uruguay (gub.uy/mrree)"
+  },
+  "fiji": {
+    "overview": "Fiji offers visa-free entry for Indian passport holders for up to 4 months. Explore the beautiful islands, crystal-clear waters, coral reefs, and vibrant Fijian culture. Perfect for honeymoons, diving, and island adventures.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Island Paradise",
+        "description": "Beautiful islands with crystal-clear waters and white-sand beaches."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy up to 4 months visa-free entry to Fiji."
+      },
+      {
+        "icon": "🤿",
+        "title": "Scuba Diving",
+        "description": "World-class diving and snorkeling in the Pacific Ocean."
+      },
+      {
+        "icon": "🌺",
+        "title": "Fijian Culture",
+        "description": "Rich culture, friendly locals, and traditional ceremonies."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Fiji.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Fiji Itinerary — Research islands, resorts, and activities.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Fiji — No prior visa required (4 months visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 4 months."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Direct entry stamp granted at Nadi International Airport (NAN) or Nausori Airport (SUV).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy up to 4 months visa-free entry."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "No registration required."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "FJD $100 per day",
+        "description": "Proof of funds for island travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Fiji?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 4 months upon arrival."
+      },
+      {
+        "question": "How long can I stay in Fiji?",
+        "answer": "Up to 4 months visa-free on arrival, extendable locally up to 6 months at Fiji Immigration."
+      },
+      {
+        "question": "Is Fiji part of Schengen?",
+        "answer": "No, Fiji is an independent island nation in the South Pacific Ocean."
+      }
+    ],
+    "validity": "4 Months on Arrival",
+    "stay_duration": "Up to 4 Months",
+    "entry_type": "Single Entry",
+    "official_source": "Fiji Immigration Department (immigration.gov.fj)"
+  },
+  "panama": {
+    "overview": "Panama offers visa-free entry for Indian passport holders who hold a valid visa from USA, Canada, UK, Australia, or Schengen. Explore Panama City, the Panama Canal, San Blas Islands, and beautiful beaches.",
+    "highlights": [
+      {
+        "icon": "🚢",
+        "title": "Panama Canal",
+        "description": "World-famous canal with ship transits and Miraflores Locks."
+      },
+      {
+        "icon": "🏖️",
+        "title": "San Blas Islands",
+        "description": "Beautiful islands with pristine beaches and clear waters."
+      },
+      {
+        "icon": "🌆",
+        "title": "Panama City",
+        "description": "Modern city with historic Casco Viejo and skyline views."
+      },
+      {
+        "icon": "📋",
+        "title": "Visa on Arrival",
+        "description": "Visa-free entry with valid US/UK/Canada/Australia/Schengen visa."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US/UK/Canada/Australia/Schengen Visa",
+        "description": "Must hold a valid visa from listed countries with minimum 6 months remaining validity.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation departing within 90 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Panama City, Bocas del Toro, or San Blas.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Panama Itinerary — Research Panama City, Canal, and San Blas Islands.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Ensure Valid Visa — Must hold valid US/UK/Canada/Australia/Schengen visa.",
+      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 5: Board Flight to Panama — Visa-free entry with valid visa.",
+      "Step 6: Clear Immigration — Present passport, valid visa, and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry with valid visa)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Visa-free entry for Indian passport holders with valid US/UK/Canada/Australia/Schengen visa."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Immediate entry granted at Tocumen International Airport (PTY), Panama City.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Valid Visa",
+        "details": "Must hold valid US/UK/Canada/Australia/Schengen visa (used at least once)."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Economic Solvency",
+        "details": "Demonstrate minimum $500 in cash or credit card limit upon entry."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card Limit",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "Minimum $500 in cash or credit card limit checked by immigration officers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Panama?",
+        "answer": "No, Indian passport holders with a valid, previously used visa from the USA, UK, Canada, Australia, or Schengen area enjoy visa-free entry for up to 90 days under Executive Decree 521."
+      },
+      {
+        "question": "How long can I stay in Panama?",
+        "answer": "Up to 90 days visa-free with a qualifying third-country visa."
+      },
+      {
+        "question": "Can I enter Panama without a valid third-country visa?",
+        "answer": "If you do not hold a US/UK/Canada/Schengen visa, you must apply for a Stamped Visa (Visa Estampada) through the Embassy of Panama in New Delhi."
+      }
+    ],
+    "validity": "90 Days on Arrival (with valid visa)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Servicio Nacional de Migración Panamá (migracion.gob.pa)"
+  },
+  "dominican-republic": {
+    "overview": "Dominican Republic offers visa-free entry for Indian passport holders who hold a valid visa from USA, Canada, UK, or Schengen. Explore Punta Cana, Santo Domingo, Puerto Plata, and beautiful Caribbean beaches.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Punta Cana Beaches",
+        "description": "Beautiful beaches with crystal-clear Caribbean waters."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Santo Domingo",
+        "description": "Historic Colonial Zone — UNESCO World Heritage site."
+      },
+      {
+        "icon": "🌴",
+        "title": "Caribbean Paradise",
+        "description": "Resorts, golf courses, and vibrant nightlife."
+      },
+      {
+        "icon": "📋",
+        "title": "Visa on Arrival",
+        "description": "Visa-free entry with valid US/UK/Canada/Schengen visa."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US/UK/Canada/Schengen Visa",
+        "description": "Must hold a valid visa from listed countries with minimum remaining validity.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Mandatory E-Ticket Portal Registration",
+        "description": "Digital entry/exit ticket completed online prior to boarding at eticket.migracion.gob.do.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation departing within 30 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Punta Cana, Santo Domingo, or Puerto Plata.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Dominican Republic Itinerary — Research Punta Cana, Santo Domingo, and Puerto Plata.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Ensure Valid Visa — Must hold valid US/UK/Canada/Schengen visa.",
+      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 5: Complete E-Ticket Portal — Generate mandatory QR code on eticket.migracion.gob.do.",
+      "Step 6: Board Flight to Dominican Republic — Visa-free entry with valid visa.",
+      "Step 7: Clear Immigration — Present passport, valid visa, QR code, and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry with valid visa)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Visa-free entry for Indian passport holders with valid US/UK/Canada/Schengen visa. Tourist card fee ($10) is embedded in commercial flight tickets."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Immediate entry granted at Punta Cana Airport (PUJ) or Las Américas Airport (SDQ).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Valid Visa",
+        "details": "Must hold valid US/UK/Canada/Schengen visa."
+      },
+      {
+        "category": "E-Ticket Requirement",
+        "details": "Mandatory digital E-Ticket completed online before boarding."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "Proof of funds for Caribbean travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Dominican Republic?",
+        "answer": "No, Indian passport holders with a valid visa from the USA, UK, Canada, or Schengen area enjoy visa-free entry for up to 30 days under Decree 691-07."
+      },
+      {
+        "question": "How long can I stay in Dominican Republic?",
+        "answer": "Up to 30 days on tourist entry, extendable upon payment of departure tax at the airport."
+      },
+      {
+        "question": "What is the Dominican Republic E-Ticket?",
+        "answer": "It is a free, mandatory electronic form (eticket.migracion.gob.do) combining the customs declaration and embarkation/disembarkation card into a single QR code."
+      }
+    ],
+    "validity": "30 Days on Arrival (with valid visa)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Dirección General de Migración (migracion.gob.do) & MIREX"
+  },
+  "bosnia": {
+    "overview": "Bosnia and Herzegovina offers visa-free entry for Indian passport holders holding a valid multiple-entry Schengen visa, US visa, or EU member state visa for up to 30 days. Explore Sarajevo's Ottoman Baščaršija bazaar, the iconic Stari Most (Old Bridge) of Mostar (UNESCO), Kravice Waterfalls, and the emerald Neretva river valley. All other Indian passport holders apply at the Embassy of Bosnia and Herzegovina in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🌉",
+        "title": "Mostar & Stari Most (UNESCO)",
+        "description": "16th-century Ottoman arched stone bridge over the turquoise Neretva River and traditional bridge divers."
+      },
+      {
+        "icon": "🕌",
+        "title": "Sarajevo's Baščaršija & Latin Bridge",
+        "description": "Where East meets West: Ottoman bazaars, Austro-Hungarian architecture, and historic Latin Bridge."
+      },
+      {
+        "icon": "🌊",
+        "title": "Kravice Waterfalls",
+        "description": "Spectacular 25-meter cascading amphitheatre of waterfalls surrounded by lush greenery."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa Waiver with Schengen / US Visa",
+        "description": "Holders of valid multiple-entry Schengen or US visas enjoy 30-day visa-free entry."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid Schengen / US Visa (for visa waiver)",
+        "description": "Multiple-entry visa for Schengen, EU, or USA valid for the duration of stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight booking to Sarajevo International Airport (SJJ).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Accommodation Voucher",
+        "description": "Confirmed booking in Sarajevo, Mostar, or registered tourist voucher.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Emergency medical coverage valid in Bosnia for minimum €30,000.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Schengen Waiver: If holding a valid multi-entry Schengen or US visa, enter directly without a separate visa.",
+      "Apply via Embassy (if no Schengen/US visa): Submit visa application at Embassy of Bosnia and Herzegovina in New Delhi.",
+      "Gather Documents: Prepare passport, hotel voucher, flight itinerary, insurance, and bank statements.",
+      "Pay Consular Fee: Pay €31 (single entry) or €57 (multiple entry).",
+      "Receive Stamped Visa: Passport returned with visa sticker within 7 to 15 working days.",
+      "Border Clearance: Present passport, visa/waiver, and return ticket at immigration desk."
+    ],
+    "fees": {
+      "visa_fee": "€0 (Visa-free with Schengen/US visa) / €31 (Consular Visa)",
+      "service_fee": "₹0 (Direct Entry / Embassy)",
+      "total_fee": "€0 - €31 (approx. ₹0 - ₹2,800)",
+      "notes": "Holders of valid Schengen/US visas enter visa-free."
+    },
+    "proc_time": "Instant (with Schengen/US visa) or 7-15 Days (Consular)",
+    "proc_details": "Border entry stamp or consular processing at Embassy in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for minimum 3 months beyond intended departure."
+      },
+      {
+        "category": "Registration",
+        "details": "Mandatory white card registration with local police within 48 hours (handled by hotel)."
+      },
+      {
+        "category": "Schengen Waiver",
+        "details": "Multiple-entry Schengen or US visa allows 30-day visa-free stay."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statements / Cash",
+        "minimum_balance_or_amount": "BAM 150 (approx. €75) per day of stay",
+        "description": "Proof of sufficient funds for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens visit Bosnia visa-free?",
+        "answer": "Yes! Indian passport holders who hold a valid multiple-entry Schengen, EU, or US visa can enter Bosnia and Herzegovina visa-free for up to 30 days."
+      },
+      {
+        "question": "How long can I stay in Bosnia?",
+        "answer": "Up to 30 days per visit under the visa waiver or standard tourist visa."
+      },
+      {
+        "question": "Is Bosnia in the Schengen Zone?",
+        "answer": "No, Bosnia is not part of the Schengen area, so your stay does not count against your 90/180 Schengen days."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Bosnia and Herzegovina (mvp.gov.ba)"
+  },
+  "north-macedonia": {
+    "overview": "North Macedonia, situated in the heart of the Balkans, enchants travellers with UNESCO-listed Lake Ohrid (one of Europe's oldest and deepest lakes), the historic churches and fortress of Ohrid, the grand monuments and Old Bazaar of Skopje, and the dramatic Matka Canyon. Indian citizens holding a valid multiple-entry Schengen (Type C), UK, or US visa can enter North Macedonia VISA-FREE for up to 15 days; others apply at the Embassy of North Macedonia in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Lake Ohrid & Saint John at Kaneo",
+        "description": "Fairy-tale 13th-century clifftop church overlooking the crystal-clear waters of ancient Lake Ohrid (UNESCO)."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Skopje & Old Bazaar",
+        "description": "The largest Ottoman bazaar in the Balkans outside Istanbul, historic Stone Bridge, and monumental neoclassical plazas."
+      },
+      {
+        "icon": "🛶",
+        "title": "Matka Canyon & Vrelo Cave",
+        "description": "Spectacular karst river gorge popular for kayaking, boat tours, and deep subterranean cave exploration."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free with Schengen / US / UK Visa",
+        "description": "Holders of valid multi-entry Schengen, US, or UK visas enter 100% visa-free for up to 15 days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months after departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Qualifying Multi-Entry Schengen/US/UK Visa",
+        "description": "Must be valid for at least 5 days beyond stay for visa-free entry.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Skopje International Airport (SKP) or Ohrid Airport (OHD).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Booking",
+        "description": "Confirmed booking voucher in Skopje, Ohrid, or Bitola.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Minimum €30,000 emergency medical coverage.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Multi-Entry Visa: If holding a valid multi-entry Schengen, UK, or US visa, enter directly without a visa.",
+      "Apply at Embassy (if required): Submit visa application at Embassy of North Macedonia in New Delhi.",
+      "Gather Required Documents: Secure passport, hotel reservation, flight itinerary, and travel insurance.",
+      "Pay Consular Fee: Pay €60 consular tourist visa fee.",
+      "Passport Collection: Retrieve passport with visa sticker within 10 to 15 business days.",
+      "Border Entry: Present passport, visa/waiver, and return ticket at Skopje airport border control."
+    ],
+    "fees": {
+      "visa_fee": "€0 (Visa-free with Schengen/US/UK visa) / €60 (Consular Visa)",
+      "service_fee": "₹0 (Direct Entry)",
+      "total_fee": "€0 - €60 (approx. ₹0 - ₹5,400)",
+      "notes": "Free entry for holders of valid multi-entry Schengen, US, or UK visas."
+    },
+    "proc_time": "Instant (with Schengen/US visa) or 10-15 Days (Consular)",
+    "proc_details": "Border entry stamp or consular assessment at Embassy in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond intended departure."
+      },
+      {
+        "category": "Visa Waiver Duration",
+        "details": "15 days maximum stay per entry with qualifying third-country visa."
+      },
+      {
+        "category": "Police Registration",
+        "details": "Mandatory registration with local police within 24 hours of arrival (handled by registered accommodations)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of funds for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter North Macedonia visa-free?",
+        "answer": "Yes! Indian passport holders who hold a valid multiple-entry Schengen, UK, or US visa can enter North Macedonia visa-free for up to 15 days per visit."
+      },
+      {
+        "question": "How long can I stay in North Macedonia?",
+        "answer": "Up to 15 days under the visa waiver, or up to 90 days under a national consular tourist visa."
+      },
+      {
+        "question": "Is North Macedonia part of Schengen?",
+        "answer": "No, North Macedonia is not part of the Schengen area."
+      }
+    ],
+    "validity": "15 Days on Arrival",
+    "stay_duration": "Up to 15 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of North Macedonia (mfa.gov.mk)"
+  },
+  "kosovo": {
+    "overview": "Kosovo, Europe's youngest nation, charms visitors with Ottoman heritage, vibrant youth culture in the capital Pristina, UNESCO medieval Byzantine monasteries in Gračanica and Dečani, Ottoman cobblestone streets and Sinan Pasha Mosque in Prizren, and dramatic hiking in the Rugova Canyon. Indian citizens holding a valid multiple-entry Schengen visa can enter Kosovo VISA-FREE for up to 15 days; all other applicants must apply at an authorized Kosovo diplomatic mission.",
+    "highlights": [
+      {
+        "icon": "🕌",
+        "title": "Prizren & Kalaja Fortress",
+        "description": "Historic cultural capital with Ottoman stone bridge, vibrant Shadervan square, and hilltop fortress views."
+      },
+      {
+        "icon": "☕",
+        "title": "Pristina & World-Class Café Culture",
+        "description": "Lively capital with Newborn monument, Mother Teresa Cathedral, and world-renowned macchiato coffee scene."
+      },
+      {
+        "icon": "⛪",
+        "title": "UNESCO Medieval MonMonuments",
+        "description": "Visoki Dečani Monastery and Gračanica Monastery featuring 14th-century Byzantine frescoes."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Rugova Canyon & Peja",
+        "description": "Breathtaking 25-kilometer mountain canyon with rock climbing, via ferrata, and caves in the Accursed Mountains."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid Multi-Entry Schengen Visa (for visa waiver)",
+        "description": "Multiple-entry Schengen visa (Type C) allows 15-day visa-free entry.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Flight booking into Pristina International Airport Adem Jashari (PRN).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Proof of accommodation in Pristina or Prizren.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Emergency medical insurance covering minimum €30,000.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Schengen Visa Waiver: If you hold a valid multiple-entry Schengen visa, enter Kosovo visa-free for up to 15 days.",
+      "Apply at Consular Mission (if required): Apply at an accredited Embassy of the Republic of Kosovo.",
+      "Assemble Documents: Prepare passport, photo, hotel booking, flight ticket, and travel medical insurance.",
+      "Pay Statutory Fee: Pay €40 consular visa fee.",
+      "Receive Visa: Collect passport with stamped visa within 10 to 15 working days.",
+      "Immigration Entry: Present passport, visa/waiver, and return ticket at Pristina airport border control."
+    ],
+    "fees": {
+      "visa_fee": "€0 (Visa-free with Schengen) / €40 (Consular Visa)",
+      "service_fee": "₹0 (Direct Entry)",
+      "total_fee": "€0 - €40 (approx. ₹0 - ₹3,600)",
+      "notes": "Holders of valid multi-entry Schengen visas enter visa-free."
+    },
+    "proc_time": "Instant (with Schengen visa) or 10-15 Days (Consular)",
+    "proc_details": "Border entry stamp or consular assessment at Kosovo diplomatic mission.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond departure."
+      },
+      {
+        "category": "Schengen Exemption",
+        "details": "Holders of valid multi-entry Schengen visas enter visa-free for up to 15 days."
+      },
+      {
+        "category": "Currency",
+        "details": "Kosovo uses the Euro (€) as its de facto official currency."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of funds for travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens visit Kosovo with a Schengen visa?",
+        "answer": "Yes! Indian passport holders holding a valid multiple-entry Schengen visa can enter Kosovo visa-free for up to 15 days."
+      },
+      {
+        "question": "What currency is used in Kosovo?",
+        "answer": "Kosovo uses the Euro (€) as its official currency."
+      },
+      {
+        "question": "How long can I stay in Kosovo?",
+        "answer": "Up to 15 days under the Schengen visa waiver, or up to 90 days on a national visa."
+      }
+    ],
+    "validity": "15 Days on Arrival",
+    "stay_duration": "Up to 15 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs and Diaspora of Kosovo (mfa-ks.net)"
+  },
+  "libya": {
+    "overview": "Libya boasts magnificent classical Roman and Greek antiquities along the Mediterranean coast, including the colossal Roman ruins of Leptis Magna (UNESCO) and Sabratha, the Greek temple city of Cyrene, and the prehistoric rock art of the Sahara Desert. Indian passport holders require a pre-approved tourist visa arranged via an authorized Libyan tour operator and the Directorate of Passports and Nationality.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Leptis Magna (UNESCO)",
+        "description": "One of the most complete and best-preserved Roman cities in the Mediterranean, featuring the Arch of Septimius Severus and theatre."
+      },
+      {
+        "icon": "🎭",
+        "title": "Sabratha Ancient Amphitheatre",
+        "description": "Iconic three-story Roman seaside theatre overlooking the turquoise Mediterranean waters."
+      },
+      {
+        "icon": "🏜️",
+        "title": "Ghadames Oasis (Pearl of the Desert)",
+        "description": "Ancient fortified mud-brick desert oasis city renowned for whitewashed covered alleys and rooftop networks."
+      },
+      {
+        "icon": "🏺",
+        "title": "Cyrene Greek Ruins",
+        "description": "Ancient Greek colony in the Green Mountain (Jabal al Akhdar) featuring the Temple of Apollo and Sanctuary of Demeter."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with Arabic passport translation page (mandatory in Libya).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Official Libyan Visa Approval Voucher",
+        "description": "Government pre-approval clearance arranged via licensed Libyan tour agency.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Booking",
+        "description": "Flight booking arriving into Mitiga International Airport (MJI), Tripoli.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Booking",
+        "description": "Accommodation and escorted transport confirmation in Libya.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Select Licensed Tour Agency: Contact an authorized Libyan incoming tour agency to sponsor your tourist clearance.",
+      "Obtain Arabic Passport Translation: Ensure your passport biodata is translated into Arabic by an authorized translator.",
+      "Receive Government Approval: Libyan immigration issues official visa approval voucher.",
+      "Submit at Embassy of Libya New Delhi: Present approval letter and passport for consular visa stamping.",
+      "Fly to Tripoli: Board flights arriving into Mitiga International Airport (MJI).",
+      "Border Stamping: Complete immigration entry procedures upon arrival."
+    ],
+    "fees": {
+      "visa_fee": "$50 - $100 USD (Consular Visa Fee)",
+      "service_fee": "Tour operator sponsorship levy",
+      "total_fee": "approx. ₹10,000 - ₹15,000",
+      "notes": "All independent tourists must travel through registered local tour agencies."
+    },
+    "proc_time": "10 to 20 Working Days",
+    "proc_details": "Coordinated between Libyan Directorate of Passports and Nationality and Embassy of Libya in New Delhi.",
+    "requirements": [
+      {
+        "category": "Arabic Translation",
+        "details": "Libyan law strictly requires an official Arabic translation page inserted or accompanying your passport."
+      },
+      {
+        "category": "Guided Tour Mandatory",
+        "details": "Foreign tourists must be accompanied by an authorized local guide throughout their stay."
+      },
+      {
+        "category": "Security Clearance",
+        "details": "Prior security approval letter is mandatory before visa issuance."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statements / Tour Payment",
+        "minimum_balance_or_amount": "₹2,00,000",
+        "description": "Proof of tour package payment and travel solvency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Libya?",
+        "answer": "Yes, Indian passport holders require a pre-approved tourist visa arranged through a licensed Libyan tour operator."
+      },
+      {
+        "question": "Is the Arabic passport translation mandatory for Libya?",
+        "answer": "Yes. Libyan border regulations require an official Arabic translation of your passport details."
+      },
+      {
+        "question": "Can I travel independently in Libya?",
+        "answer": "No. International tourists must travel on an organized itinerary escorted by a licensed local tour guide."
+      }
+    ],
+    "validity": "30 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Directorate of Passports and Nationality & Embassy of the State of Libya New Delhi"
+  },
+  "sudan": {
+    "overview": "Sudan, the historic Land of the Black Pharaohs, boasts more ancient pyramids than Egypt! Marvel at the steep, slender Nubian pyramids of Meroë (UNESCO), the holy mountain of Jebel Barkal, the ancient royal temple of Naqa, and the confluence of the Blue and White Nile in Khartoum. Indian passport holders can apply for a tourist eVisa or entry permit via the Ministry of Interior / Sudanese diplomatic missions.",
+    "highlights": [
+      {
+        "icon": "🔺",
+        "title": "Nubian Pyramids of Meroë (UNESCO)",
+        "description": "Over 200 ancient steep stone pyramids rising majestically amidst wind-swept golden Saharan desert dunes."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Jebel Barkal & Temple of Amun",
+        "description": "Sacred sandstone mountain and 15th-century BC temples of the Kingdom of Kush and the 25th Pharaoh dynasty."
+      },
+      {
+        "icon": "🌊",
+        "title": "Confluence of the Blue and White Nile",
+        "description": "Witness the dramatic joining of the two great branches of the Nile River in Khartoum."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Temple of Naqa & Musawwarat",
+        "description": "Remarkably preserved Lion Temple and royal elephant enclosures in the Nubian desert."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages (must not contain Israeli stamps).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Entry Permit / Visa Application Form",
+        "description": "Completed visa form with sponsor or hotel booking.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Booking",
+        "description": "Round-trip flight booking to Port Sudan (PZU) or Khartoum.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Obtain Entry Clearance: Secure entry permit approval from Sudanese tour agency or sponsor.",
+      "Apply at Embassy in New Delhi: Submit passport, photo, hotel booking, and entry clearance.",
+      "Pay Statutory Fee: Pay $50 - $100 consular fee.",
+      "Receive Visa Stamping: Passport returned with visa sticker within 7 to 14 days.",
+      "Alien Registration: Register with Aliens Registration Police within 3 days of arrival in Sudan."
+    ],
+    "fees": {
+      "visa_fee": "$50 - $100 USD (Consular Entry Visa)",
+      "service_fee": "SDG registration levy",
+      "total_fee": "approx. ₹5,000 - ₹9,000",
+      "notes": "Mandatory alien registration required within 3 days of arrival."
+    },
+    "proc_time": "7 to 14 Working Days",
+    "proc_details": "Issued via Embassy of the Republic of the Sudan in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months without Israeli stamps."
+      },
+      {
+        "category": "Police Registration",
+        "details": "Mandatory alien registration within 3 days of arrival."
+      },
+      {
+        "category": "Travel Permits",
+        "details": "Internal travel permits required when travelling outside major regional transit hubs."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Sudan?",
+        "answer": "Yes, Indian passport holders require a tourist visa or entry permit prior to travel."
+      },
+      {
+        "question": "Does Sudan have more pyramids than Egypt?",
+        "answer": "Yes! Sudan is home to over 255 ancient Nubian pyramids (chiefly at Meroë, Nuri, and Karima), almost double the number found in Egypt."
+      },
+      {
+        "question": "Is registration required upon arrival in Sudan?",
+        "answer": "Yes. Foreign visitors must register with the Aliens Registration Office within 3 days of entering Sudan."
+      }
+    ],
+    "validity": "30 to 60 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Interior of Sudan & Embassy of Sudan New Delhi"
+  },
+  "south-sudan": {
+    "overview": "South Sudan, the world's youngest nation (independent since 2011), is home to the world's second-largest mammal migration across Boma National Park, the vast papyrus wetlands of the Sudd (one of the world's largest swamps on the White Nile), and extraordinary indigenous tribal cultures including the Dinka, Mundari, and Toposa cattle-keeping communities. Indian passport holders can apply online for an official tourist eVisa via evisa.gov.ss.",
+    "highlights": [
+      {
+        "icon": "🐂",
+        "title": "Mundari & Dinka Cattle Camps",
+        "description": "Ancient pastoral cattle camps renowned for indigenous ash-coating rituals, majestic Ankole-Watusi cows, and cultural photography."
+      },
+      {
+        "icon": "🦌",
+        "title": "Boma National Park Great Migration",
+        "description": "Over 1.5 million white-eared kobs, tiangs, and gazelles migrating across untouched savanna wilderness."
+      },
+      {
+        "icon": "🌿",
+        "title": "The Sudd Wetlands & White Nile",
+        "description": "Colossal 57,000-sq-km freshwater swamp and birdwatching paradise along the historic White Nile river."
+      },
+      {
+        "icon": "⚡",
+        "title": "Official eVisa Portal Available",
+        "description": "Apply conveniently online through the official South Sudan eVisa portal (evisa.gov.ss)."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved South Sudan eVisa Approval Letter",
+        "description": "Printed confirmation from official portal (evisa.gov.ss).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight booking arriving into Juba International Airport (JUB).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Operator Letter",
+        "description": "Proof of accommodation in Juba or escorted cultural expedition itinerary.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official South Sudan eVisa platform (evisa.gov.ss).",
+      "Upload Passport & Photo: Submit scans of passport biodata, passport photo, and yellow fever card.",
+      "Pay Statutory Fee: Pay $100 - $160 USD eVisa fee online by credit/debit card.",
+      "Receive Approval Letter: Official Electronic Visa Approval Letter is issued within 3 to 5 business days.",
+      "Fly to Juba: Board flight to Juba International Airport (JUB).",
+      "Border Clearance & Alien Registration: Present approval letter at immigration desk to receive passport entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$100 USD (Single Entry 1 Month) / $160 (Single Entry 3 Months)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$100 - $160 (approx. ₹8,400 - ₹13,500)",
+      "notes": "Payable directly by card on evisa.gov.ss."
+    },
+    "proc_time": "3 to 5 Business Days (eVisa)",
+    "proc_details": "Applied online via the Directorate of Nationality, Passports and Immigration (DNPI).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for minimum 6 months from entry date."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory for all travellers arriving in South Sudan."
+      },
+      {
+        "category": "Alien Registration",
+        "details": "Foreigners must complete alien registration within 3 days of arrival in Juba."
+      },
+      {
+        "category": "Photography Permit",
+        "details": "Mandatory photography permit required from Ministry of Information for taking photos."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "USD $1,000",
+        "description": "Sufficient travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a South Sudan eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official South Sudan eVisa portal (evisa.gov.ss)."
+      },
+      {
+        "question": "Is a Yellow Fever vaccination required for South Sudan?",
+        "answer": "Yes. A valid Yellow Fever Vaccination Card is strictly checked upon landing at Juba Airport."
+      },
+      {
+        "question": "Do I need a photography permit in South Sudan?",
+        "answer": "Yes. South Sudan regulations strictly require a photography permit issued by the Ministry of Information before capturing photos or video."
+      }
+    ],
+    "validity": "30 to 90 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Directorate of Nationality, Passports and Immigration of South Sudan (evisa.gov.ss)"
+  },
+  "eritrea": {
+    "overview": "Eritrea, the Red Sea's hidden jewel in the Horn of Africa, is famous for its UNESCO World Heritage capital Asmara—celebrated as a modernist architecture wonderland featuring 1930s Italian Art Deco buildings, vintage espresso bars, and palm-lined boulevards. Explore the historic Ottoman Red Sea port of Massawa and the pristine coral reefs of the Dahlak Archipelago. Indian citizens apply for a tourist visa through the Embassy of Eritrea in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Asmara: Africa's Modernist City (UNESCO)",
+        "description": "Pristine Italian modernist, futurist, and Art Deco architecture including the Fiat Tagliero airplane service station."
+      },
+      {
+        "icon": "☕",
+        "title": "Historic Italian Café Culture",
+        "description": "Sip traditional macchiato coffee in vintage 1930s bars along Harnet Avenue in Asmara."
+      },
+      {
+        "icon": "🌊",
+        "title": "Massawa & Red Sea Coast",
+        "description": "Ottoman and coral-block architecture, fresh seafood, and scenic Red Sea seaside promenade."
+      },
+      {
+        "icon": "🤿",
+        "title": "Dahlak Archipelago",
+        "description": "Over 200 pristine uninhabited Red Sea islands renowned for untouched coral reefs, manta rays, and pearl diving."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed Eritrean visa application form in duplicate.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Sized Photographs",
+        "description": "Recent color photos (35x45mm) on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Reservation",
+        "description": "Round-trip flight booking to Asmara International Airport (ASM).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Host Invitation",
+        "description": "Proof of accommodation in Asmara or Massawa.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Original stamped bank statements for past 3 months.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Download Visa Form: Obtain the official Eritrean visa application form.",
+      "Assemble Dossier: Prepare passport, 2 photos, flight itinerary, hotel booking, and bank statements.",
+      "Submit at Embassy in New Delhi: Submit physical file at the Embassy of the State of Eritrea in New Delhi.",
+      "Pay Consular Fee: Pay ₹4,000 - ₹5,000 consular visa fee.",
+      "Await Consular Clearance: Eritrean Ministry of Foreign Affairs reviews and approves entry permit.",
+      "Collect Stamped Passport: Retrieve passport with visa sticker within 10 to 15 working days."
+    ],
+    "fees": {
+      "visa_fee": "₹4,200 (approx. $50 USD Consular Fee)",
+      "service_fee": "₹0 (Direct Embassy Submission)",
+      "total_fee": "approx. ₹4,200 Total",
+      "notes": "Payable by cash or Demand Draft to Embassy of Eritrea New Delhi."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Applied directly at Embassy of the State of Eritrea in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months from arrival."
+      },
+      {
+        "category": "Travel Permits",
+        "details": "A Ministry of Tourism travel permit is required for travel outside Asmara (e.g. to Massawa or Keren)."
+      },
+      {
+        "category": "Currency Declaration",
+        "details": "Foreign currency must be declared upon arrival and exchanged only at official Himbol bureaux."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Eritrea?",
+        "answer": "Yes, Indian passport holders require a tourist visa applied through the Embassy of Eritrea in New Delhi before travel."
+      },
+      {
+        "question": "Why is Asmara famous?",
+        "answer": "Asmara is a UNESCO World Heritage site known as 'Piccola Roma' for having the world's most intact collection of Italian modernist and Art Deco architecture."
+      },
+      {
+        "question": "Can I travel outside Asmara?",
+        "answer": "Yes, but tourists must obtain an internal travel permit from the Ministry of Tourism in Asmara before travelling to regional towns like Massawa or Keren."
+      }
+    ],
+    "validity": "30 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Eritrea & Embassy of Eritrea New Delhi"
+  },
+  "djibouti": {
+    "overview": "Djibouti, located on the Bab-el-Mandeb strait between the Red Sea and Gulf of Aden, is famous for dramatic geothermal wonders: the otherworldly hypersaline Lake Assal (the lowest point in Africa and saltiest body of water on Earth), smoking limestone chimneys and pink flamingos of Lake Abbe, and world-class seasonal whale shark snorkeling in the Gulf of Tadjoura. Indian passport holders can easily obtain an official tourist eVisa online via evisa.gouv.dj.",
+    "highlights": [
+      {
+        "icon": "🧂",
+        "title": "Lake Assal (Lowest Point in Africa)",
+        "description": "Otherworldly hypersaline volcanic crater lake 155 meters below sea level, surrounded by glittering white salt plains."
+      },
+      {
+        "icon": "🌋",
+        "title": "Lake Abbe & Limestone Chimneys",
+        "description": "Lunar landscape of towering 50-meter steaming travertine limestone chimneys where Planet of the Apes was filmed."
+      },
+      {
+        "icon": "🦈",
+        "title": "Whale Shark Snorkeling in Tadjoura",
+        "description": "Swim alongside gentle giant whale sharks in the crystal-clear waters of the Gulf of Tadjoura (October to February)."
+      },
+      {
+        "icon": "⚡",
+        "title": "Official Online eVisa Portal",
+        "description": "Apply easily online at evisa.gouv.dj — issued typically within 48 to 72 hours."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond stay with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Djibouti eVisa Confirmation",
+        "description": "Electronic Visa Approval PDF printed from evisa.gouv.dj.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Djibouti-Ambouli International Airport (JIB).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Host Invitation",
+        "description": "Proof of accommodation in Djibouti City or registered tour voucher.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Card (if coming from endemic area)",
+        "description": "Required if arriving from yellow fever endemic nations.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official Djibouti eVisa portal (evisa.gouv.dj) and select Tourist Visa.",
+      "Upload Documents: Upload passport biodata scan, portrait photograph, flight booking, and hotel voucher.",
+      "Pay eVisa Fee Online: Pay $12 USD (transit) or $23 USD (short stay up to 30 days) via credit/debit card.",
+      "Receive Approval: Download and print your official eVisa PDF issued within 2 to 3 days.",
+      "Board Flight: Fly to Djibouti-Ambouli International Airport (JIB).",
+      "Border Entry: Present printed eVisa, passport, and hotel voucher for entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$23 USD (Short Stay up to 30 Days) / $12 USD (Transit up to 3 Days)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$23 USD (approx. ₹1,900 Total)",
+      "notes": "One of the most affordable official eVisas in Africa."
+    },
+    "proc_time": "2 to 3 Business Days (eVisa)",
+    "proc_details": "Processed 100% online through the official Djibouti government eVisa portal.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Entry Port",
+        "details": "Valid for entry through Djibouti-Ambouli International Airport (JIB) and maritime borders."
+      },
+      {
+        "category": "Accommodations",
+        "details": "Confirmed hotel booking or host invitation is strictly verified upon arrival."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "Proof of sufficient funds for travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Djibouti eVisa?",
+        "answer": "Yes! Indian passport holders are 100% eligible to apply online through the official Djibouti portal (evisa.gouv.dj)."
+      },
+      {
+        "question": "How much is the Djibouti eVisa?",
+        "answer": "The official short-stay tourist eVisa fee is only $23 USD (approx. ₹1,900), payable online by card."
+      },
+      {
+        "question": "When is whale shark season in Djibouti?",
+        "answer": "Whale sharks congregate in large numbers in the Gulf of Tadjoura and Arta Plage from mid-October to February."
+      }
+    ],
+    "validity": "30 Days from Date of Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Direction Générale de la Police Nationale de Djibouti (evisa.gouv.dj)"
+  },
+  "somalia": {
+    "overview": "Somalia and the self-declared autonomous region of Somaliland offer fascinating horn-of-Africa cultural heritage, the ancient Neolithic cave paintings of Laas Geel (UNESCO tentative list, among the oldest and best-preserved rock art in Africa), Mogadishu's historic Lido Beach, and the Gulf of Aden ports of Berbera and Zeila. Indian passport holders obtain a Visa on Arrival arranged with prior sponsorship letter or apply through diplomatic missions.",
+    "highlights": [
+      {
+        "icon": "🎨",
+        "title": "Laas Geel Cave Paintings (Somaliland)",
+        "description": "5,000 to 7,000-year-old rock art portraying vibrant cows, herders, and deities in vivid red, white, and yellow pigments."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Mogadishu Lido Beach",
+        "description": "Bustling coastal beachfront along the Indian Ocean with fresh seafood and vibrant local evening life."
+      },
+      {
+        "icon": "🚢",
+        "title": "Berbera & Zeila Historic Ports",
+        "description": "Ancient Ottoman and British colonial trading ports on the Gulf of Aden with coral-stone architecture."
+      },
+      {
+        "icon": "🐪",
+        "title": "Hargeisa Camel Market",
+        "description": "One of the largest livestock markets in the Horn of Africa, trading thousands of camels and livestock daily."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Official Sponsorship / Invitation Letter",
+        "description": "Formal invitation from a registered host, hotel, or tour operator.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Flight booking into Aden Adde Airport (MGQ), Mogadishu or Egal Airport (HGA), Hargeisa.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Proof of accommodation with registered security arrangements.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Secure Host Sponsorship: Obtain an official invitation and visa pre-clearance letter from your local host or authorized tour operator.",
+      "Check Port of Entry: If visiting Somaliland (Hargeisa), obtain Somaliland visa on arrival approval or apply at liaison office.",
+      "Book Flights & Accommodations: Secure flights and accommodation.",
+      "Fly to Destination: Board flight arriving into Mogadishu (MGQ) or Hargeisa (HGA).",
+      "Pay Visa Fee at Border: Pay the $60 USD visa on arrival fee at the airport immigration counter.",
+      "Border Stamping: Receive your entry visa stamp."
+    ],
+    "fees": {
+      "visa_fee": "$60 USD (Visa on Arrival Fee)",
+      "service_fee": "Host sponsorship coordination fee",
+      "total_fee": "approx. $60 - $100 USD (₹5,000 - ₹8,400)",
+      "notes": "Payable in US Dollars cash at airport immigration desks."
+    },
+    "proc_time": "Instant on Arrival (with sponsor pre-approval) or 7-10 Days",
+    "proc_details": "Granted at Aden Adde International Airport (Mogadishu) or Egal International Airport (Hargeisa).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months from entry."
+      },
+      {
+        "category": "Somaliland Visa Notice",
+        "details": "Somaliland operates separate immigration controls from Mogadishu; visitors to Hargeisa receive a separate Somaliland visa."
+      },
+      {
+        "category": "Security Escort",
+        "details": "Guided security escorts are required for international visitors in certain regional areas."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD)",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "US Dollar cash is widely used and accepted."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Somalia?",
+        "answer": "Yes, Indian passport holders require a visa, available on arrival at Mogadishu and Hargeisa airports with prior sponsor invitation letters."
+      },
+      {
+        "question": "Are Somalia and Somaliland visas the same?",
+        "answer": "No. Somaliland maintains independent border controls; entry into Hargeisa requires an independent Somaliland visa ($60 USD on arrival)."
+      },
+      {
+        "question": "What is Laas Geel?",
+        "answer": "Laas Geel near Hargeisa contains some of the most vibrant and ancient rock art in Africa, dating back over 5,000 years."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Immigration and Naturalization of Somalia & Somaliland Immigration"
+  },
+  "uganda": {
+    "overview": "Uganda, the 'Pearl of Africa', is world-renowned for trekking endangered mountain gorillas in Bwindi Impenetrable National Park, chimpanzee tracking in Kibale Forest, spectacular savanna game drives in Queen Elizabeth National Park with tree-climbing lions, roaring Murchison Falls where the Nile thunders through a 7-meter gorge, and white-water rafting at the source of the River Nile in Jinja. Indian passport holders can apply online for an official Uganda tourist eVisa via visas.immigration.go.ug.",
+    "highlights": [
+      {
+        "icon": "🦍",
+        "title": "Bwindi Impenetrable Mountain Gorillas",
+        "description": "Encounter half of the world's remaining mountain gorilla population in ancient mist-covered rainforests (UNESCO)."
+      },
+      {
+        "icon": "🌊",
+        "title": "Murchison Falls National Park",
+        "description": "The world's most powerful surge of water, where the River Nile crashes through a narrow 7-meter rock gorge."
+      },
+      {
+        "icon": "🦁",
+        "title": "Queen Elizabeth National Park",
+        "description": "Kazinga Channel boat safaris with massive hippos and famous tree-climbing lions in the Ishasha sector."
+      },
+      {
+        "icon": "🚣",
+        "title": "Source of the Nile & Jinja Rafting",
+        "description": "Grade 5 white-water rafting on the Victoria Nile and exploring the historic source of the River Nile."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Uganda eVisa Letter",
+        "description": "Official electronic visa approval letter printed from visas.immigration.go.ug.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of vaccination against yellow fever.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Entebbe International Airport (EBB).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Safari Itinerary",
+        "description": "Proof of accommodation in Entebbe, Kampala, or wildlife lodges.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official Directorate of Citizenship and Immigration portal (visas.immigration.go.ug).",
+      "Upload Documents: Submit passport biodata page, recent photo, yellow fever card, and travel itinerary.",
+      "Pay eVisa Fee Online: Pay the statutory $50 USD visa fee by international credit/debit card.",
+      "Receive Approval Letter: Uganda Immigration reviews and issues the approval letter within 2 to 4 working days.",
+      "Fly to Entebbe: Board flight to Entebbe International Airport (EBB).",
+      "Border Stamping: Present approval letter, passport, and yellow fever card to receive your visa sticker."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (Single Entry 3 Months) / $100 (East Africa Tourist Visa)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$50 USD (approx. ₹4,200 Total)",
+      "notes": "Payable online on visas.immigration.go.ug."
+    },
+    "proc_time": "2 to 4 Business Days (eVisa)",
+    "proc_details": "Applied 100% online through Directorate of Citizenship and Immigration Control (DCIC).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory for all arrivals aged 1 year and older."
+      },
+      {
+        "category": "East Africa Tourist Visa",
+        "details": "Eligible to apply for the $100 EATV covering Uganda, Rwanda, and Kenya on a single visa."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,00,000",
+        "description": "Last 3 months bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Uganda?",
+        "answer": "Yes, Indian passport holders require an eVisa for Uganda. Apply online at visas.immigration.go.ug before departure."
+      },
+      {
+        "question": "Is Yellow Fever vaccination mandatory for Uganda?",
+        "answer": "Yes. A valid Yellow Fever Vaccination Card is strictly compulsory and checked at Entebbe Airport."
+      },
+      {
+        "question": "What is the East Africa Tourist Visa?",
+        "answer": "The East Africa Tourist Visa (EATV) costs $100 USD and allows 90 days of multiple-entry travel across Uganda, Rwanda, and Kenya."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 to 90 Days",
+    "entry_type": "Single Entry / East Africa Tourist Visa",
+    "official_source": "Directorate of Citizenship and Immigration Control of Uganda (visas.immigration.go.ug)"
+  },
+  "malawi": {
+    "overview": "Malawi, known as the 'Warm Heart of Africa', is famous for Lake Malawi (UNESCO)—a vast inland freshwater sea with golden sandy beaches and hundreds of endemic colorful cichlid fish—alongside wildlife safaris in Majete and Liwonde National Parks, and hiking the granite plateau of Mount Mulanje. Indian passport holders can apply online for an official tourist eVisa via evisa.gov.mw.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Lake Malawi (Lake of Stars)",
+        "description": "Vast turquoise freshwater lake with golden beaches, kayaking, and world-class freshwater snorkeling among colorful cichlid fish."
+      },
+      {
+        "icon": "🐘",
+        "title": "Liwonde & Majete Wildlife Safaris",
+        "description": "Remarkable Big Five conservation success stories with roaming elephants, black rhinos, lions, and boat safaris on the Shire River."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Mount Mulanje Granite Massif",
+        "description": "Majestic 3,000-meter granite mountain peaks, cedar forests, natural swimming pools, and high-altitude hiking huts."
+      },
+      {
+        "icon": "⚡",
+        "title": "Official Online eVisa Available",
+        "description": "Apply easily online via evisa.gov.mw with decisions within 3 to 5 business days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Malawi eVisa Approval Letter",
+        "description": "Printed confirmation from official portal (evisa.gov.mw).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Kamuzu Airport (LLW), Lilongwe or Chileka Airport (BLZ), Blantyre.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Host Letter",
+        "description": "Proof of accommodation in Malawi.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Demonstrating financial sufficiency for stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit official Malawi eVisa portal (evisa.gov.mw).",
+      "Upload Documents: Submit digital passport scan, photograph, cover letter, and hotel reservation.",
+      "Pay eVisa Fee Online: Pay $50 USD statutory fee by credit/debit card.",
+      "Receive Approval: Download and print your official eVisa Approval Letter issued within 3 to 5 days.",
+      "Fly to Malawi: Board flight to Lilongwe (LLW) or Blantyre (BLZ).",
+      "Border Stamping: Present approval letter and passport at immigration desk."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (Single Entry 30 Days)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$50 USD (approx. ₹4,200 Total)",
+      "notes": "Payable online on evisa.gov.mw."
+    },
+    "proc_time": "3 to 5 Business Days (eVisa)",
+    "proc_details": "Applied online through the Malawi Department of Immigration and Citizenship Services.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond intended stay."
+      },
+      {
+        "category": "Cover Letter",
+        "details": "Brief cover letter stating purpose of holiday and destinations."
+      },
+      {
+        "category": "Health",
+        "details": "Yellow fever certificate required if travelling from endemic countries."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,00,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Malawi eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official Malawi eVisa portal (evisa.gov.mw)."
+      },
+      {
+        "question": "How long can I stay in Malawi on an eVisa?",
+        "answer": "Standard single-entry tourist eVisa grants a stay of up to 30 days, extendable locally at Immigration offices."
+      },
+      {
+        "question": "Why is Lake Malawi famous?",
+        "answer": "Lake Malawi contains more species of fish than any other lake in the world, including over 1,000 species of colorful cichlids."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Immigration and Citizenship Services of Malawi (evisa.gov.mw)"
+  },
+  "zambia": {
+    "overview": "Zambia, the birthplace of the legendary walking safari, is famous for sharing the awe-inspiring Victoria Falls (Mosi-oa-Tunya) with Zimbabwe, luxury wildlife safaris in South Luangwa National Park (the leopard capital of Africa), and canoeing among hippos in Lower Zambezi National Park. Indian passport holders can apply online for a tourist eVisa via eservices.zambiamigration.gov.zm or enter on the joint KAZA UniVisa.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Victoria Falls & Devil's Pool",
+        "description": "Swim on the edge of the world's largest waterfall in Devil's Pool and marvel at the thundering falls from Livingstone."
+      },
+      {
+        "icon": "🐆",
+        "title": "South Luangwa National Park",
+        "description": "Africa's premier walking safari destination with world-renowned densities of leopards, lions, and Thornicroft giraffes."
+      },
+      {
+        "icon": "🛶",
+        "title": "Lower Zambezi National Park",
+        "description": "Canoeing safaris past elephant herds and hippo pods along the tranquil Zambezi River against the escarpment backdrop."
+      },
+      {
+        "icon": "⚡",
+        "title": "KAZA UniVisa / Online eVisa",
+        "description": "Eligible for $50 KAZA UniVisa covering both Zambia and Zimbabwe, or direct online eVisa."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Zambia eVisa Approval Letter",
+        "description": "Printed confirmation from eservices.zambiamigration.gov.zm.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Flight booking into Kenneth Kaunda Airport (LUN), Lusaka or Harry Mwaanga Nkumbula Airport (LVI), Livingstone.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Safari Lodge Reservation",
+        "description": "Proof of accommodation in Livingstone, Lusaka, or safari lodges.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Cover Letter from Applicant",
+        "description": "Letter addressed to Director General of Immigration stating travel dates and itinerary.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official Zambia Immigration electronic portal (eservices.zambiamigration.gov.zm).",
+      "Upload Documents: Submit passport scan, portrait photo, cover letter, and return flight booking.",
+      "Pay Fee Online: Pay $50 USD statutory single-entry fee by credit/debit card.",
+      "Receive Approval Letter: Electronic Approval Letter is issued within 3 to 5 working days.",
+      "Fly to Zambia: Arrive in Lusaka (LUN) or Livingstone (LVI).",
+      "Border Stamping: Present approval letter to immigration officer to receive entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (Single Entry) / $80 (Double Entry) / $50 (KAZA UniVisa)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$50 USD (approx. ₹4,200 Total)",
+      "notes": "Payable online or via the joint $50 KAZA UniVisa."
+    },
+    "proc_time": "3 to 5 Working Days (eVisa)",
+    "proc_details": "Applied online through Zambia Department of Immigration.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "KAZA UniVisa",
+        "details": "Allows 30 days of seamless travel between Zambia and Zimbabwe for $50 USD."
+      },
+      {
+        "category": "Health",
+        "details": "Yellow fever certificate required if arriving from yellow fever endemic areas."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,00,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Zambia?",
+        "answer": "Yes, Indian passport holders can easily apply online for an eVisa at eservices.zambiamigration.gov.zm."
+      },
+      {
+        "question": "What is Devil's Pool in Zambia?",
+        "answer": "Devil's Pool is a natural rock infinity pool located on the Zambian edge of Victoria Falls on Livingstone Island, open for guided swimming in dry season."
+      },
+      {
+        "question": "What is the KAZA UniVisa?",
+        "answer": "The KAZA UniVisa costs $50 USD and allows 30 days of travel between Zambia and Zimbabwe, plus day trips into Botswana (Chobe)."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days per entry",
+    "entry_type": "Single / Double Entry / KAZA UniVisa",
+    "official_source": "Department of Immigration Zambia (zambiamigration.gov.zm)"
+  },
+  "botswana": {
+    "overview": "Botswana is Africa's premier high-end eco-safari wonderland, home to the Okavango Delta (UNESCO)—the world's largest inland delta where the Kalahari desert blossoms into a maze of crystal waterways and islands—colossal elephant herds in Chobe National Park, and the otherworldly salt crusts of Makgadikgadi Pans. Indian passport holders can easily apply online for an official tourist eVisa via evisa.gov.bw.",
+    "highlights": [
+      {
+        "icon": "🛶",
+        "title": "Okavango Delta Mokoro Safaris (UNESCO)",
+        "description": "Glide in traditional dug-out mokoro canoes past water lilies, elephants, and hippos through pristine inland delta lagoons."
+      },
+      {
+        "icon": "🐘",
+        "title": "Chobe National Park & River",
+        "description": "Home to the world's highest concentration of African elephants (over 120,000) and sensational sunset riverboat safaris."
+      },
+      {
+        "icon": "🦓",
+        "title": "Makgadikgadi Salt Pans & Meerkats",
+        "description": "Vast lunar salt flats, ancient baobab trees, zebra migrations, and habituated wild meerkat encounters."
+      },
+      {
+        "icon": "⚡",
+        "title": "Official Online eVisa Portal",
+        "description": "Fast online processing on evisa.gov.bw with electronic approval letters issued within 3 to 7 business days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 3 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Botswana eVisa Approval",
+        "description": "Printed electronic visa confirmation from evisa.gov.bw.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Maun (MUB), Kasane (BBK), or Gaborone (GBE).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Safari Lodge / Hotel Confirmation",
+        "description": "Confirmed booking in safari camps or hotels in Botswana.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Proof of financial sufficiency for travel.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official Botswana eVisa portal (evisa.gov.bw).",
+      "Upload Documents: Submit passport biodata, passport photo, flight itinerary, and safari lodge confirmations.",
+      "Pay Statutory Fee Online: Pay 300 BWP (approx. $25 USD) for single entry or 500 BWP for multiple entry.",
+      "Receive Approval Letter: Official Electronic Visa is issued within 3 to 7 business days.",
+      "Fly to Botswana: Fly to Maun (Okavango gateway) or Kasane (Chobe gateway).",
+      "Border Clearance: Present approval letter and passport at immigration desk for entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "300 BWP (approx. $25 USD / ₹2,100 Single Entry)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "approx. ₹2,100 Total",
+      "notes": "Highly affordable official government eVisa fee."
+    },
+    "proc_time": "3 to 7 Business Days (eVisa)",
+    "proc_details": "Applied 100% online through the Department of Immigration and Citizenship of Botswana.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 3 blank pages."
+      },
+      {
+        "category": "Children Travelling",
+        "details": "Unabridged birth certificates required for minor children entering Botswana."
+      },
+      {
+        "category": "Safari Vouchers",
+        "details": "Detailed itinerary from safari operator speeds approval."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Botswana eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official Botswana eVisa portal (evisa.gov.bw)."
+      },
+      {
+        "question": "What is the best gateway airport for Okavango Delta safaris?",
+        "answer": "Maun International Airport (MUB) is the primary aviation hub and gateway for scenic bush flights into the Okavango Delta lodges."
+      },
+      {
+        "question": "How much is the Botswana eVisa?",
+        "answer": "The official single-entry tourist eVisa fee is only 300 BWP (approx. $25 USD / ₹2,100)."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single or Multiple Entry",
+    "official_source": "Department of Immigration and Citizenship of Botswana (evisa.gov.bw)"
+  },
+  "namibia": {
+    "overview": "Namibia, a surreal wonderland of extremes in Southwestern Africa, is famous for the colossal red sand dunes of Sossusvlei and the eerie white clay pan of Deadvlei (with 900-year-old dead camel thorn trees), dramatic ocean-meets-desert scenery along the Skeleton Coast, Etosha National Park's colossal salt pan wildlife, and the Bavarian-style coastal town of Swakopmund. Indian passport holders can apply for an online Visa on Arrival (VoA) / eVisa via the Ministry of Home Affairs.",
+    "highlights": [
+      {
+        "icon": "🏜️",
+        "title": "Sossusvlei & Deadvlei (UNESCO)",
+        "description": "Climb 300-meter towering red sand dunes (Dune 45, Big Daddy) and marvel at ancient dead trees on bleached white clay."
+      },
+      {
+        "icon": "🦁",
+        "title": "Etosha National Park Wildlife",
+        "description": "Self-drive wildlife safaris around a colossal white salt pan, home to lions, elephants, leopards, and black rhinos."
+      },
+      {
+        "icon": "🌊",
+        "title": "Skeleton Coast & Cape Cross",
+        "description": "Wild ocean graveyard of shipwrecks shrouded in Atlantic mist and home to 100,000 Cape fur seals."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Swakopmund Adventure Capital",
+        "description": "German colonial seaside town famous for sandboarding, quad biking, skydiving, and fresh Atlantic oysters."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 3 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form / Online Pre-Approval",
+        "description": "Completed Namibian visa form or online pre-approval.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Hosea Kutako Airport (WDH), Windhoek or Walvis Bay (WVB).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Safari Lodge / Car Rental Booking",
+        "description": "Proof of accommodation and 4x4 self-drive rental reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay in Namibia.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online / Consular: Submit application via official portal (eservices.mhaiss.gov.na) or Embassy of Namibia in New Delhi.",
+      "Upload / Submit Documents: Provide passport, photo, round-trip flights, 4x4 rental, and lodge bookings.",
+      "Pay Statutory Fee: Pay 1,000 NAD (approx. $55 USD) visa fee.",
+      "Receive Visa Stamping: Stamped into passport at embassy or issued upon arrival with pre-clearance.",
+      "Arrive in Windhoek: Clear border immigration at Hosea Kutako International Airport."
+    ],
+    "fees": {
+      "visa_fee": "1,000 NAD (approx. $55 USD / ₹4,600)",
+      "service_fee": "₹0 (Direct)",
+      "total_fee": "approx. ₹4,600 Total",
+      "notes": "Payable in Namibian Dollars or South African Rand (ZAR)."
+    },
+    "proc_time": "5 to 10 Business Days",
+    "proc_details": "Applied via Ministry of Home Affairs, Immigration, Safety and Security (MHAISS) or Embassy of Namibia New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond intended stay."
+      },
+      {
+        "category": "Self-Drive Proof",
+        "details": "Proof of confirmed 4x4 vehicle rental or safari tour package."
+      },
+      {
+        "category": "Unabridged Birth Certificate",
+        "details": "Required for minor children travelling to or through Namibia."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Namibia?",
+        "answer": "Yes, Indian passport holders require a tourist visa, available via online pre-approval or the Embassy of Namibia in New Delhi."
+      },
+      {
+        "question": "Is Namibia good for self-drive road trips?",
+        "answer": "Yes! Namibia is internationally renowned as one of the best and safest self-drive road trip destinations in the world with well-maintained gravel roads."
+      },
+      {
+        "question": "What is the currency in Namibia?",
+        "answer": "The Namibian Dollar (NAD) is pegged 1:1 to the South African Rand (ZAR), and South African Rand cash is accepted everywhere in Namibia."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Home Affairs, Immigration, Safety and Security of Namibia (mhaiss.gov.na)"
+  },
+  "angola": {
+    "overview": "Angola is an undiscovered African gem boasting sensational natural spectacles: the thundering Kalandula Falls (one of Africa's largest waterfalls by volume), the serpentine cliff pass of Serra da Leba, the dramatic moonscapes of Miradouro da Lua, the lush Kissama National Park, and Portuguese colonial seaside forts in Luanda. Indian passport holders enjoy 30-day VISA-FREE entry under Presidential Decree 189/23! All other visitors can easily obtain an electronic tourist pre-visa online via sme.gov.ao.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Kalandula Falls",
+        "description": "Spectacular 105-meter horseshoe waterfall on the Lucala River, among the largest and most powerful in Africa."
+      },
+      {
+        "icon": "🛣️",
+        "title": "Serra da Leba Pass",
+        "description": "Iconic winding mountain hairpin road descending 1,800 meters through lush mist-shrouded green cliffs."
+      },
+      {
+        "icon": "🌙",
+        "title": "Miradouro da Lua (Moon Valley)",
+        "description": "Otherworldly lunar cliffs and multicolored canyon formations overlooking the Atlantic Ocean south of Luanda."
+      },
+      {
+        "icon": "✈️",
+        "title": "VISA-FREE / Online eVisa Available",
+        "description": "Indian passport holders can visit visa-free or obtain an instant pre-visa online via sme.gov.ao."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking to Quatro de Fevereiro International Airport (LAD), Luanda.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Proof of accommodation in Luanda or regional hotels.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Demonstrating minimum $200 USD per day of stay in Angola.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa Exemption: Indian tourists can travel visa-free for up to 30 days under Presidential Decree 189/23.",
+      "Alternatively Apply for Online Pre-Visa: Fill out the simple online form on sme.gov.ao.",
+      "Carry Mandatory Yellow Fever Card: Ensure yellow fever vaccine is valid at least 10 days before travel.",
+      "Fly to Luanda: Arrive at Quatro de Fevereiro International Airport (LAD).",
+      "Immigration Clearance: Present passport, return ticket, and yellow fever certificate to border control."
+    ],
+    "fees": {
+      "visa_fee": "$0 (Visa-free) or $120 USD (Consular / Port Stamping)",
+      "service_fee": "$0 (Direct Entry)",
+      "total_fee": "$0 - $120 USD",
+      "notes": "Indian passport holders can enter visa-free for tourism up to 30 days under Decree 189/23."
+    },
+    "proc_time": "Instant (on Arrival) or 2 to 3 Days (online pre-visa)",
+    "proc_details": "Border entry at Luanda airport or online pre-visa via Migration and Foreigners Service (SME).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory for all arrivals at Luanda airport."
+      },
+      {
+        "category": "Stay Limit",
+        "details": "Maximum 30 days per entry, up to 90 days total per calendar year."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Cash",
+        "minimum_balance_or_amount": "USD $200 per day",
+        "description": "Sufficient financial means."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens travel to Angola visa-free?",
+        "answer": "Yes! Under Presidential Decree No. 189/23, citizens of India are exempt from tourist visas for stays of up to 30 days per entry (maximum 90 days per year)."
+      },
+      {
+        "question": "Is Yellow Fever vaccine required for Angola?",
+        "answer": "Yes. A valid Yellow Fever Certificate is strictly mandatory for entering Angola."
+      },
+      {
+        "question": "What is Kalandula Falls?",
+        "answer": "Kalandula Falls in Malanje province is one of Africa's largest waterfalls, spanning over 400 meters wide and dropping 105 meters."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Migration and Foreigners Service of Angola (SME - sme.gov.ao)"
+  },
+  "mozambique": {
+    "overview": "Mozambique offers over 2,500 km of pristine turquoise Indian Ocean coastline, celebrated for the tropical islands of the Bazaruto Archipelago (home to rare dugongs, manta rays, and whale sharks), the historic Portuguese-Arab trading port of Mozambique Island (UNESCO), the coral reefs of Quirimbas, and Maputo's vibrant Afro-Portuguese seafood and jazz culture. Indian citizens can enter on an official tourist eVisa online via evisa.gov.mz.",
+    "highlights": [
+      {
+        "icon": "🏝️",
+        "title": "Bazaruto Archipelago (Marine National Park)",
+        "description": "Idyllic white-sand barrier islands, towering dunes dropping into turquoise seas, coral reefs, and endangered dugongs."
+      },
+      {
+        "icon": "🏰",
+        "title": "Ilha de Moçambique (UNESCO)",
+        "description": "Historic fortified coral-stone island trading capital with Portuguese, Arab, and Swahili architecture and Saint Sebastian Fort."
+      },
+      {
+        "icon": "🤿",
+        "title": "Tofo Beach & Manta Coast",
+        "description": "World capital for swimming alongside giant manta rays, whale sharks, and seasonal humpback whales."
+      },
+      {
+        "icon": "⚡",
+        "title": "Official Online eVisa Available",
+        "description": "Apply easily online at evisa.gov.mz with electronic approval issued within 3 to 5 business days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Mozambique eVisa Pre-Approval Letter",
+        "description": "Printed confirmation from evisa.gov.mz.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Maputo International Airport (MPM) or Vilankulo (VNX).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Resort Booking",
+        "description": "Proof of accommodation in Mozambique.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Bank statements or credit card showing adequate travel allowance.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit official Mozambique eVisa portal (evisa.gov.mz).",
+      "Upload Documents: Submit passport biodata scan, photo, flight ticket, and hotel booking.",
+      "Receive Pre-Approval: Download your official Preliminary Visa Authorization issued within 3 to 5 days.",
+      "Fly to Mozambique: Arrive in Maputo (MPM) or Vilankulo (VNX).",
+      "Pay Fee & Stamping: Pay the $50 USD statutory visa fee at the airport immigration counter and receive entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (approx. ₹4,200 Statutory Visa Fee)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$50 USD Total",
+      "notes": "Payable at port of entry with pre-approved eVisa letter."
+    },
+    "proc_time": "3 to 5 Business Days (eVisa)",
+    "proc_details": "Applied online through the National Migration Service (SENAMI).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months from entry."
+      },
+      {
+        "category": "Preliminary Authorization",
+        "details": "Must print and present the SENAMI online approval letter upon arrival."
+      },
+      {
+        "category": "Yellow Fever",
+        "details": "Required if travelling from endemic countries."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,00,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Mozambique eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official Mozambique eVisa portal (evisa.gov.mz)."
+      },
+      {
+        "question": "How long can I stay in Mozambique?",
+        "answer": "The standard tourist visa grants a stay of 30 days, extendable up to 60 days locally at SENAMI offices."
+      },
+      {
+        "question": "What is Bazaruto Archipelago famous for?",
+        "answer": "Bazaruto Archipelago is famous for pristine coral reefs, azure sandbars, and hosting the largest remaining population of dugongs in East Africa."
+      }
+    ],
+    "validity": "30 to 60 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "National Migration Service of Mozambique (SENAMI - evisa.gov.mz)"
+  },
+  "madagascar": {
+    "overview": "Madagascar, the world's fourth-largest island and an isolated biodiversity paradise in the Indian Ocean, shelters wildlife found nowhere else on Earth: over 100 species of lemurs, the iconic giant baobabs of the Avenue of the Baobabs, the otherworldly razor-sharp limestone pinnacles of Tsingy de Bemaraha (UNESCO), and pristine tropical beaches on Nosy Be. Indian citizens can easily obtain a Visa on Arrival (VoA) or apply online via evisamada-mg.com.",
+    "highlights": [
+      {
+        "icon": "🌳",
+        "title": "Avenue of the Baobabs",
+        "description": "Stunning row of majestic 800-year-old giant Grandidier's baobab trees along a red dirt road near Morondava."
+      },
+      {
+        "icon": "🐒",
+        "title": "Wild Lemur Encounters",
+        "description": "Spot wild ring-tailed lemurs, indris (singing lemurs), and dancing sifakas in Andasibe-Mantadia and Ranomafana."
+      },
+      {
+        "icon": "🪨",
+        "title": "Tsingy de Bemaraha (UNESCO)",
+        "description": "Spectacular forest of razor-sharp eroded limestone pinnacles, suspension bridges, and subterranean caves."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Nosy Be Tropical Island",
+        "description": "Perfume island famous for ylang-ylang plantations, turquoise waters, whale shark snorkeling, and luxury beach resorts."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking departing Madagascar within 60 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Booking",
+        "description": "Proof of accommodation in Antananarivo, Nosy Be, or national parks.",
+        "is_mandatory": true
+      },
+      {
+        "title": "eVisa Confirmation (if applied online)",
+        "description": "Electronic Visa confirmation from evisamada-mg.com or obtain on arrival.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Select Application Route: Apply online on evisamada-mg.com or obtain Visa on Arrival at Ivato Airport.",
+      "Book Flights & Accommodations: Secure round-trip flights into Antananarivo (TNR) or Nosy Be (NOS).",
+      "Fly to Madagascar: Board flight to Antananarivo or Nosy Be.",
+      "Pay Visa Fee at Border: Pay the €10 (15 days) or €35 (30 days) fee at the airport immigration counter.",
+      "Passport Stamping: Receive official visa sticker and entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "€10 (up to 15 Days) / €35 (up to 30 Days) / €40 (up to 60 Days)",
+      "service_fee": "$0 (Direct at Airport)",
+      "total_fee": "€10 - €35 (approx. ₹900 - ₹3,150)",
+      "notes": "Payable in Euros, US Dollars, or Malagasy Ariary (MGA) at airport immigration."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted instantly at Ivato International Airport (Antananarivo) or Fascene Airport (Nosy Be).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket strictly required."
+      },
+      {
+        "category": "Stay Limit",
+        "details": "Tourists can stay up to 60 days on standard tourist visa."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of funds for island travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Madagascar?",
+        "answer": "Yes! Indian passport holders can easily obtain a Visa on Arrival at Ivato International Airport (Antananarivo) or Nosy Be airport for up to 60 days."
+      },
+      {
+        "question": "How much does the Madagascar tourist visa cost?",
+        "answer": "The fee is just €10 for stays up to 15 days, or €35 for stays up to 30 days."
+      },
+      {
+        "question": "What percentage of wildlife in Madagascar is endemic?",
+        "answer": "Over 90% of Madagascar's wildlife—including all species of lemurs and half of the world's chameleons—is found nowhere else on Earth!"
+      }
+    ],
+    "validity": "Up to 60 Days on Arrival",
+    "stay_duration": "15 to 60 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Public Security of Madagascar (evisamada-mg.com)"
+  },
+  "comoros": {
+    "overview": "The Union of the Comoros, known as the 'Perfume Islands' in the Mozambique Channel, is famous for active volcanic landscapes (Mount Karthala), lush rainforests with giant fruit bats, fragrant vanilla and ylang-ylang plantations, white-sand beaches, and ancient coelacanth fish waters. Indian passport holders enjoy convenient VISA ON ARRIVAL at Prince Said Ibrahim International Airport in Moroni.",
+    "highlights": [
+      {
+        "icon": "🌋",
+        "title": "Mount Karthala Active Volcano",
+        "description": "2,361-meter active volcano on Grande Comore with one of the largest active volcanic calderas in the world (3x4 km)."
+      },
+      {
+        "icon": "🌺",
+        "title": "The Perfume Islands",
+        "description": "Vast hillside plantations of fragrant ylang-ylang, cloves, vanilla, and nutmeg perfuming the ocean air."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Mohéli Marine Park",
+        "description": "Protected island sanctuary where giant green sea turtles nest year-round and humpback whales breed."
+      },
+      {
+        "icon": "🐟",
+        "title": "Coelacanth Living Fossils",
+        "description": "Marine home to the prehistoric coelacanth fish, once thought to be extinct for 65 million years."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Prince Said Ibrahim Airport (HAH), Moroni.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Accommodation Proof",
+        "description": "Proof of lodging in Moroni or Mohéli.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Fee in Cash",
+        "description": "€30 / $50 USD in cash payable at airport immigration counter.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Moroni: Reserve flights arriving into Prince Said Ibrahim International Airport (HAH).",
+      "Prepare Travel Documents: Carry passport valid for 6 months, return air ticket, and hotel booking.",
+      "Arrive in Moroni: Land at Prince Said Ibrahim Airport on Grande Comore.",
+      "Pay Fee at Immigration: Pay €30 / $50 USD at the visa on arrival counter.",
+      "Receive Entry Stamp: Border control stamps your 45-day tourist visa into your passport."
+    ],
+    "fees": {
+      "visa_fee": "€30 or $50 USD (approx. ₹2,700 - ₹4,200)",
+      "service_fee": "$0 (Direct at Airport)",
+      "total_fee": "approx. ₹2,700 - ₹4,200 Total",
+      "notes": "Payable in cash (Euros or USD) upon arrival at Moroni airport."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Prince Said Ibrahim International Airport (Moroni).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Visa on Arrival",
+        "details": "All international visitors can obtain a 45-day visa on arrival."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return ticket strictly verified before boarding."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of funds for island stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Comoros?",
+        "answer": "Yes! Indian passport holders receive a Visa on Arrival for up to 45 days upon landing at Moroni airport."
+      },
+      {
+        "question": "How much is the Comoros visa on arrival?",
+        "answer": "The fee is €30 or $50 USD, payable in cash at the airport border desk."
+      },
+      {
+        "question": "What is Mohéli known for?",
+        "answer": "Mohéli is famous for its UNESCO Biosphere Reserve, where giant green sea turtles lay eggs on nesting beaches every single night of the year."
+      }
+    ],
+    "validity": "45 Days on Arrival",
+    "stay_duration": "Up to 45 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Interior and Immigration of the Union of the Comoros"
+  },
+  "cape-verde": {
+    "overview": "Cape Verde (Cabo Verde), an archipelago of 10 volcanic islands off the coast of Senegal, is famous for its year-round sunshine, golden sand beaches and turquoise waters on Sal and Boa Vista, active volcanic peaks of Fogo, dramatic hiking valleys of Santo Antão, and vibrant 'Morna' Creole music heritage in Mindelo (São Vicente). Indian citizens can easily pre-register online via the EASE platform (ease.gov.cv) and receive a Visa on Arrival.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Sal & Boa Vista Island Beaches",
+        "description": "Endless golden sand dunes meeting turquoise waters, kite surfing, and luxury beach resorts at Santa Maria."
+      },
+      {
+        "icon": "🌋",
+        "title": "Pico do Fogo Volcano",
+        "description": "Spectacular 2,829-meter active volcanic peak rising from black ash plains; taste unique volcanic wines in Chã das Caldeiras."
+      },
+      {
+        "icon": "🎵",
+        "title": "Mindelo Music & Culture (São Vicente)",
+        "description": "The cultural capital of Cape Verde, birthplace of legendary singer Cesária Évora and vibrant carnival celebrations."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Santo Antão Hiking Valleys",
+        "description": "Dramatic mountain ravines, terraced green valleys, and coastal hiking trails above crashing Atlantic waves."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "EASE Online Pre-Registration Form",
+        "description": "Completed online at ease.gov.cv at least 5 days prior to arrival.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Airport Security Fee (TSA) Payment",
+        "description": "Payment receipt of 3,400 CVE (approx. €31) paid via EASE platform.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Sal (SID), Praia (RAI), or Boa Vista (BVC).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation Proof",
+        "description": "Proof of stay in Cape Verde.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Pre-Register on EASE: Visit the official EASE portal (ease.gov.cv) at least 5 days before your trip.",
+      "Pay Airport Security Fee (TSA): Pay the 3,400 CVE (approx. €31) statutory fee online by card.",
+      "Fly to Cape Verde: Board flight to Sal Island (SID) or Praia (RAI).",
+      "Visa on Arrival Counter: Present passport and EASE confirmation at immigration desk.",
+      "Pay Visa on Arrival Fee: Pay the €25 tourist visa fee (or entry stamp) to receive entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "€25 (Visa on Arrival) + €31 (Airport Security Fee TSA)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "approx. €56 (₹5,000 Total)",
+      "notes": "TSA fee paid online via ease.gov.cv; visa fee paid upon arrival."
+    },
+    "proc_time": "Instant on Arrival (with EASE pre-registration)",
+    "proc_details": "Granted at Amílcar Cabral Airport (Sal), Nelson Mandela Airport (Praia), or Aristides Pereira (Boa Vista).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "EASE Pre-Registration",
+        "details": "Mandatory online registration on ease.gov.cv before boarding flight."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Proof of funds for island travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Cape Verde?",
+        "answer": "Yes! Indian passport holders can obtain a Visa on Arrival for up to 30 days after completing the online EASE pre-registration at ease.gov.cv."
+      },
+      {
+        "question": "What is the EASE platform?",
+        "answer": "EASE is Cape Verde's official online traveler pre-registration portal where visitors submit passport details and pay the statutory Airport Security Tax (TSA)."
+      },
+      {
+        "question": "Which Cape Verde island is best for beaches?",
+        "answer": "Sal Island (Santa Maria beach) and Boa Vista are world-famous for long white-sand beaches and watersports."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Direção de Emigração e Fronteiras de Cabo Verde (ease.gov.cv)"
+  },
+  "sao-tome": {
+    "overview": "São Tomé and Príncipe, the 'Chocolate Islands' on the equator in the Gulf of Guinea, is an unspoiled tropical paradise of lush jungle, soaring volcanic plugs (Cão Grande peak), historic Portuguese cocoa plantation estates (roças), deserted golden beaches, and the 'Leve Leve' (take it easy) way of life. Indian citizens can apply online for an official tourist eVisa via evisa.st.",
+    "highlights": [
+      {
+        "icon": "🍫",
+        "title": "Historic Cocoa Roças & Chocolate",
+        "description": "Tour historic 19th-century Portuguese cocoa plantations (Roça Agostinho Neto, Roça Sundy) and taste world-class organic chocolate."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Pico Cão Grande Volcanic Needle",
+        "description": "Dramatic 663-meter sheer needle-shaped volcanic plug rising vertically out of pristine primary rainforest in Obo National Park."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Banana Beach & Praia Inhame",
+        "description": "Picture-perfect palm-fringed tropical golden sand beaches on Príncipe and São Tomé."
+      },
+      {
+        "icon": "🐢",
+        "title": "Sea Turtle Nesting Sanctuaries",
+        "description": "Witness hawksbill, green, and leatherback sea turtles nesting on protected equatorial beaches."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved São Tomé eVisa Approval Letter",
+        "description": "Printed electronic visa approval from evisa.st.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into São Tomé International Airport (TMS).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Roça Lodge Booking",
+        "description": "Proof of accommodation in São Tomé or Príncipe.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit official São Tomé eVisa portal (evisa.st).",
+      "Fill Application: Submit personal biodata, passport scan, and travel dates.",
+      "Receive Approval PDF: Official Visa Approval is emailed within 3 to 7 business days.",
+      "Fly to São Tomé: Board flights arriving into São Tomé International Airport (TMS).",
+      "Pay Fee & Stamping: Pay €20 statutory fee at airport border control to receive visa entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "€20 (approx. $22 USD / ₹1,800)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "approx. ₹1,800 Total",
+      "notes": "Payable in cash (Euros) upon arrival with eVisa approval letter."
+    },
+    "proc_time": "3 to 7 Business Days (eVisa)",
+    "proc_details": "Applied online through the Migration and Border Service (SMF - evisa.st).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond intended stay."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory for all arrivals at São Tomé airport."
+      },
+      {
+        "category": "Approval Letter",
+        "details": "Must print and present the evisa.st approval letter to airline and immigration."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (Euros)",
+        "minimum_balance_or_amount": "€50 per day",
+        "description": "Euros cash is widely accepted across the islands."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a São Tomé & Príncipe eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official government portal (evisa.st)."
+      },
+      {
+        "question": "Why are São Tomé & Príncipe called the Chocolate Islands?",
+        "answer": "In the early 1900s, São Tomé and Príncipe was the world's largest producer of cocoa and is famous for high-grade organic chocolate."
+      },
+      {
+        "question": "What is the national motto in São Tomé?",
+        "answer": "'Leve Leve'—meaning 'take it easy' and live life slowly and peacefully."
+      }
+    ],
+    "validity": "30 Days from Date of Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Migration and Border Service of São Tomé and Príncipe (SMF - evisa.st)"
+  },
+  "afghanistan": {
+    "overview": "Afghanistan is an ancient crossroads of Central and South Asia with millennia of Silk Road history. Historic sites include the ancient Minaret of Jam (UNESCO), the blue-tiled Shrine of Hazrat Ali in Mazar-i-Sharif, the dramatic turquoise lakes of Band-e-Amir National Park, and the ancient ruins of Balkh (Mother of Cities). Indian passport holders require a consular tourist visa issued by an official Afghan diplomatic mission.",
+    "highlights": [
+      {
+        "icon": "🕌",
+        "title": "Blue Mosque of Mazar-i-Sharif",
+        "description": "Splendid turquoise Persian tilework and minarets at the Shrine of Hazrat Ali."
+      },
+      {
+        "icon": "🌊",
+        "title": "Band-e-Amir National Park",
+        "description": "Six breathtaking cobalt-blue travertine lakes surrounded by soaring Hindu Kush limestone cliffs in Bamyan."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Minaret of Jam (UNESCO)",
+        "description": "Graceful 65-meter 12th-century brick minaret rising dramatically from a remote river canyon in Ghor province."
+      },
+      {
+        "icon": "🏺",
+        "title": "Ancient Citadel of Herat",
+        "description": "Historic fortress rebuilt by Alexander the Great and restored Timurid tiled mosques."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed consular visa application form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Kabul International Airport (KBL).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Host Invitation",
+        "description": "Proof of accommodation in Kabul or regional centers.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Submit at Embassy: Apply for a consular tourist visa at an authorized Afghan embassy or consulate.",
+      "Provide Required Documents: Submit passport, photo, flight booking, and accommodation details.",
+      "Pay Consular Fee: Pay $50 - $100 USD visa fee.",
+      "Receive Visa Sticker: Collect stamped passport.",
+      "Border Clearance: Clear immigration at Kabul International Airport."
+    ],
+    "fees": {
+      "visa_fee": "$50 - $100 USD",
+      "service_fee": "Consular logistics",
+      "total_fee": "approx. ₹5,000 - ₹9,000",
+      "notes": "Issued via diplomatic missions."
+    },
+    "proc_time": "7 to 15 Working Days",
+    "proc_details": "Processed via authorized Afghan diplomatic missions.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for minimum 6 months from travel date."
+      },
+      {
+        "category": "Permits",
+        "details": "Tourists must register and obtain travel permits from local authorities when travelling between provinces."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statements / Cash",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Proof of travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Afghanistan?",
+        "answer": "Yes, Indian passport holders require a consular tourist visa issued by an official Afghan diplomatic mission before travel."
+      },
+      {
+        "question": "What is Band-e-Amir?",
+        "answer": "Band-e-Amir is Afghanistan's first national park, featuring 6 deep natural cobalt-blue travertine lakes in the Bamyan valley."
+      }
+    ],
+    "validity": "30 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of Afghanistan"
+  },
+  "iran": {
+    "overview": "Iran, the glorious land of ancient Persia, enchants visitors with 2,500 years of civilization: the colossal stone palaces of Persepolis (UNESCO), the dazzling turquoise domes and grand Naqsh-e Jahan Square of Isfahan, the Persian gardens and poetic shrines of Shiraz, the wind-catchers of desert oasis Yazd, and the snow-capped Alborz mountains of Tehran. Indian passport holders can enter VISA-FREE for tourism for up to 15 days (by air) under the 2024 visa waiver decree!",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Persepolis (Takht-e Jamshid)",
+        "description": "The monumental 6th-century BC ceremonial capital of the Persian Achaemenid Empire built by Darius the Great."
+      },
+      {
+        "icon": "🕌",
+        "title": "Isfahan: Half the World (Naqsh-e Jahan)",
+        "description": "Grand UNESCO square with Shah Mosque, Sheikh Lotfollah Mosque, Ali Qapu Palace, and Khaju bridge."
+      },
+      {
+        "icon": "🌹",
+        "title": "Shiraz: City of Poets & Gardens",
+        "description": "Pink Mosque (Nasir al-Mulk) with kaleidoscope stained glass, Persian gardens, and tombs of Hafez and Saadi."
+      },
+      {
+        "icon": "✈️",
+        "title": "15-Day VISA-FREE for Indian Citizens",
+        "description": "Indian passport holders enter Iran 100% VISA-FREE for up to 15 days when travelling by air."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight booking to Tehran Imam Khomeini Airport (IKA) or Shiraz (SYZ).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Proof of accommodation in Tehran, Isfahan, or Shiraz.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay in Iran.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa-Free Eligibility: Indian citizens entering by air for tourism enjoy 15-day visa-free entry.",
+      "Book Flights: Book round-trip air tickets into Tehran (IKA) or Shiraz (SYZ).",
+      "Ensure Passport Validity: Passport must be valid for at least 6 months.",
+      "Board Flight: Fly to Iran without needing a consular visa sticker.",
+      "Immigration Clearance: Present passport, return ticket, and hotel booking at Tehran airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free for 15 Days)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy 15-day visa-free entry by air under the 2024 reciprocal decree."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Imam Khomeini International Airport (Tehran) and international airport borders.",
+    "requirements": [
+      {
+        "category": "Visa Exemption Terms",
+        "details": "Indian citizens entering by air for tourism can enter without a visa once every 6 months for up to 15 non-extendable days."
+      },
+      {
+        "category": "Entry Method",
+        "details": "The visa-free facility applies exclusively to arrivals by air (not land borders)."
+      },
+      {
+        "category": "Passport Stamping",
+        "details": "Iran stamps an electronic entry slip without marking physical passport pages."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Foreign Currency",
+        "minimum_balance_or_amount": "USD $500 or €500",
+        "description": "International bank cards do not operate in Iran due to sanctions; bring cash (EUR/USD) to exchange locally."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Iran?",
+        "answer": "No! Under the visa waiver decree enacted in 2024, Indian passport holders can enter Iran VISA-FREE for up to 15 days when travelling by air for tourism."
+      },
+      {
+        "question": "Can I use international credit cards in Iran?",
+        "answer": "No. Due to international banking sanctions, Visa and Mastercard do not work in Iran. You must bring cash (Euros or USD) to exchange for Iranian Rials upon arrival or obtain a tourist MahCard."
+      },
+      {
+        "question": "Does Iran stamp passports?",
+        "answer": "No. Iranian immigration issues an electronic entry record without placing physical ink stamps or stickers in your passport."
+      }
+    ],
+    "validity": "15 Days on Arrival",
+    "stay_duration": "Up to 15 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of the Islamic Republic of Iran (evisa.mfa.ir)"
+  },
+  "iraq": {
+    "overview": "Iraq, the ancient Cradle of Civilization (Mesopotamia), boasts the world's most historic landmarks: ancient Babylon with the Ishtar Gate ruins, the great Ziggurat of Ur (birthplace of Prophet Abraham), the Mesopotamian Marshes (UNESCO), the holy shrines of Najaf and Karbala, and the vibrant souqs of Baghdad and Erbil (Iraqi Kurdistan). Indian passport holders can obtain an official Visa on Arrival (VoA) for religious and cultural tourism or apply for an eVisa via evisa.iq.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Babylon & Ishtar Gate Ruins",
+        "description": "The legendary Mesopotamian imperial city of Nebuchadnezzar II and King Hammurabi along the Euphrates River."
+      },
+      {
+        "icon": "🕌",
+        "title": "Holy Shrines of Najaf & Karbala",
+        "description": "The magnificent golden-domed Shrines of Imam Ali and Imam Husayn, sacred pilgrimage destinations for millions."
+      },
+      {
+        "icon": "🏺",
+        "title": "Ziggurat of Ur",
+        "description": "Colossal 4,000-year-old Sumerian stepped pyramidal temple in ancient Ur, the home of Prophet Abraham (UNESCO)."
+      },
+      {
+        "icon": "🌿",
+        "title": "Mesopotamian Ahwar Marshes",
+        "description": "The historic biblical wetlands where the Tigris and Euphrates rivers meet, navigated by traditional mashoof reed boats."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa on Arrival Approval / eVisa Slip",
+        "description": "Electronic visa approval from evisa.iq or VoA authorization.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Baghdad (BGW), Najaf (NJF), or Erbil (EBL).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Pilgrimage Tour Voucher",
+        "description": "Proof of accommodation in Baghdad, Najaf, or Erbil.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid travel medical insurance.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online or On Arrival: Apply for an eVisa at evisa.iq or prepare for Visa on Arrival at airport.",
+      "Book Flights: Reserve round-trip flights into Baghdad (BGW), Najaf (NJF), or Erbil (EBL).",
+      "Fly to Iraq: Arrive at airport immigration.",
+      "Pay Statutory Fee: Pay $75 - $80 USD visa fee at airport counter.",
+      "Medical Screening: Complete brief health/blood screening at airport if required.",
+      "Receive Entry Stamp: Border control stamps your 30-to-60 day visa into your passport."
+    ],
+    "fees": {
+      "visa_fee": "$75 - $80 USD (Visa on Arrival / eVisa Fee)",
+      "service_fee": "₹0 (Direct Border)",
+      "total_fee": "$75 - $80 USD (approx. ₹6,300 - ₹6,800)",
+      "notes": "Payable in cash (USD) or online for eVisa."
+    },
+    "proc_time": "Instant on Arrival (0 Days) or 3-5 Days (eVisa)",
+    "proc_details": "Granted at Baghdad International Airport, Najaf Airport, and Erbil International Airport.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months without Israeli stamps."
+      },
+      {
+        "category": "Kurdistan Region",
+        "details": "Erbil and Sulaymaniyah in Iraqi Kurdistan issue an independent regional eVisa (visit.gov.krd) allowing 30 days entry."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD)",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "US Dollar cash is widely accepted and used."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Iraq?",
+        "answer": "Yes! Indian passport holders can receive a Visa on Arrival at major international airports in Iraq (Baghdad, Najaf, Basra, Erbil) for $75-$80 USD."
+      },
+      {
+        "question": "Can I visit Iraqi Kurdistan on the same visa?",
+        "answer": "A federal Iraqi visa allows travel throughout Iraq including Kurdistan. Alternatively, visitors travelling solely to Erbil can apply for a Kurdistan regional eVisa online via visit.gov.krd."
+      },
+      {
+        "question": "What is the Ziggurat of Ur?",
+        "answer": "The Ziggurat of Ur is a colossal ancient Sumerian terraced pyramid built over 4,000 years ago during the Bronze Age."
+      }
+    ],
+    "validity": "30 to 60 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Interior of Iraq (evisa.iq) & KRG Interior Ministry (visit.gov.krd)"
+  },
+  "syria": {
+    "overview": "Syria is a historic cradle of ancient Mediterranean civilizations. Marvel at the grand Umayyad Mosque and ancient covered souq Al-Hamidiyah in Damascus (the oldest continuously inhabited capital in the world), the monumental Roman desert oasis of Palmyra (UNESCO), the medieval Crusader castle Crac des Chevaliers, and Aleppo's ancient citadel. Indian passport holders apply for an electronic security clearance or consular tourist visa via evisa.sy.",
+    "highlights": [
+      {
+        "icon": "🕌",
+        "title": "Old City of Damascus & Umayyad Mosque",
+        "description": "UNESCO World Heritage ancient walled city with the monumental 8th-century Umayyad Mosque and Roman streets."
+      },
+      {
+        "icon": "🏰",
+        "title": "Crac des Chevaliers (Qal'at al-Hosn)",
+        "description": "One of the most important and best-preserved medieval Crusader castles in the world."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Palmyra (Tadmor)",
+        "description": "Monumental Greco-Roman colonnaded desert oasis city and Temple of Bel in the Syrian Desert."
+      },
+      {
+        "icon": "🏺",
+        "title": "Citadel of Aleppo",
+        "description": "Colossal medieval fortified palace towering above the ancient city of Aleppo."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months (strictly no Israeli stamps).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Syrian eVisa / Security Clearance",
+        "description": "Electronic pre-approval obtained via official portal (evisa.sy).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Travel Itinerary / Hotel Booking",
+        "description": "Proof of accommodation in Damascus or authorized tour package.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online via eVisa Portal: Visit the official Syrian eVisa platform (evisa.sy).",
+      "Submit Personal Details: Provide passport biodata scan, photo, and travel dates.",
+      "Receive Security Approval: Electronic Visa Authorization is issued within 5 to 10 working days.",
+      "Travel to Syria: Fly into Damascus International Airport (DAM) or enter via Beirut overland border.",
+      "Pay Fee at Border: Pay the $50 - $75 USD statutory visa fee at border control."
+    ],
+    "fees": {
+      "visa_fee": "$50 - $75 USD",
+      "service_fee": "$0 (Direct Online)",
+      "total_fee": "approx. ₹4,200 - ₹6,300 Total",
+      "notes": "Payable at border upon presenting approved eVisa clearance."
+    },
+    "proc_time": "5 to 10 Working Days (eVisa)",
+    "proc_details": "Applied online via the official Syrian eVisa portal (evisa.sy).",
+    "requirements": [
+      {
+        "category": "Passport Restrictions",
+        "details": "Passports containing any Israeli entry/exit stamps or visas will be strictly denied entry."
+      },
+      {
+        "category": "Security Approval",
+        "details": "Prior electronic approval from evisa.sy is mandatory before travel."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD / EUR)",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "Bring cash as foreign credit cards do not work in Syria."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Syrian visa online?",
+        "answer": "Yes! The Syrian government operates an official electronic visa portal at evisa.sy where travellers can submit applications for security pre-clearance."
+      },
+      {
+        "question": "Can I travel to Syria with an Israeli stamp in my passport?",
+        "answer": "No. Syrian border control strictly refuses entry to any passport containing Israeli stamps, visas, or border crossing markers."
+      },
+      {
+        "question": "What is the oldest capital city in the world?",
+        "answer": "Damascus is widely recognized as the world's oldest continually inhabited national capital city."
+      }
+    ],
+    "validity": "30 to 90 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Tourism & Ministry of Interior of the Syrian Arab Republic (evisa.sy)"
+  },
+  "lebanon": {
+    "overview": "Lebanon, the sparkling pearl of the Eastern Mediterranean, enchants visitors with world-class Roman temples at Baalbek (UNESCO), the picturesque Phoenician seaport of Byblos (one of the oldest continuously inhabited towns on Earth), Beirut's cosmopolitan dining, nightlife, and seaside Corniche, the subterranean limestone grottos of Jeita, and the snow-capped Cedars of God. Indian passport holders enjoy VISA ON ARRIVAL at Beirut-Rafic Hariri Airport (BEY) provided they hold a confirmed hotel booking and $2,000 USD cash/equivalent.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Roman Temples of Baalbek (UNESCO)",
+        "description": "The colossal Temple of Jupiter, Temple of Bacchus, and Temple of Venus, among the greatest Roman temples ever built."
+      },
+      {
+        "icon": "⛵",
+        "title": "Byblos (Jbeil) Phoenician Port",
+        "description": "Ancient 7,000-year-old Phoenician harbour, Crusader castle, and seaside restaurants along the Mediterranean."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Beirut: Paris of the Middle East",
+        "description": "Vibrant nightlife in Mar Mikhaël and Gemmayzeh, Raouché Pigeon Rocks, and National Museum."
+      },
+      {
+        "icon": "🌲",
+        "title": "Cedars of God & Qadisha Valley",
+        "description": "Ancient high-altitude cedar forests mentioned in the Epic of Gilgamesh and cliff-hanging Christian monasteries."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months (strictly no Israeli stamps).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Reservation",
+        "description": "Confirmed booking at a registered 3-to-5-star hotel in Lebanon.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into Beirut-Rafic Hariri Airport (BEY).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means (Cash)",
+        "description": "Minimum $2,000 USD in cash (or certified bank card limit) required for Visa on Arrival.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Passport: Verify passport has at least 6 months validity and ZERO Israeli stamps.",
+      "Book Flights & Hotel: Secure confirmed round-trip flights to Beirut and prepaid hotel booking voucher.",
+      "Prepare Cash: Carry $2,000 USD in cash or equivalent (mandatory border check for Indian nationals).",
+      "Fly to Beirut: Arrive at Beirut-Rafic Hariri International Airport (BEY).",
+      "Immigration VoA Desk: Present passport, hotel voucher, flight ticket, and show $2,000 cash.",
+      "Receive Free Visa Stamp: Border police stamp a free 30-day tourist entry visa into your passport."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Statutory Visa on Arrival Fee)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Tourist Visa on Arrival is completely free for Indian citizens holding hotel booking and $2,000 USD cash."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Beirut-Rafic Hariri International Airport (BEY).",
+    "requirements": [
+      {
+        "category": "Israeli Stamp Prohibition",
+        "details": "Passports containing any Israeli stamps, visas, or border markers will be strictly denied entry and deported."
+      },
+      {
+        "category": "Mandatory Cash Check",
+        "details": "Indian citizens must show $2,000 USD in cash (or credit card with equivalent limit) and confirmed hotel reservation at the airport."
+      },
+      {
+        "category": "Stay Duration",
+        "details": "30 days granted on arrival, extendable up to 90 days at Sûreté Générale."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD)",
+        "minimum_balance_or_amount": "USD $2,000 in cash",
+        "description": "Mandatory cash check enforced by General Security at Beirut Airport."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Lebanon?",
+        "answer": "Yes! Indian passport holders are granted a FREE 30-day Visa on Arrival at Beirut Airport, provided they have a confirmed hotel reservation and carry $2,000 USD in cash."
+      },
+      {
+        "question": "Can I enter Lebanon if I have an Israeli stamp?",
+        "answer": "NO. Lebanese immigration law strictly forbids entry to anyone holding a passport with an Israeli stamp, visa, or land border mark."
+      },
+      {
+        "question": "What is Baalbek famous for?",
+        "answer": "Baalbek in the Bekaa Valley contains the monumental Temple of Bacchus—one of the best-preserved and grandest Roman temple sanctuaries in existence."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "General Directorate of General Security of Lebanon (surete-generale.gov.lb)"
+  },
+  "yemen": {
+    "overview": "Yemen is home to ancient South Arabian architectural marvels: the ancient mud skyscraper city of Shibam (the 'Manhattan of the Desert' - UNESCO), the gingerbread stained-glass tower houses of Old Sana'a, the medieval cliff villages of the Haraz Mountains, and the ecological paradise of Socotra Island—celebrated as the 'Galápagos of the Indian Ocean' for its dragon's blood trees, white sand dunes, and pristine coral reefs. Indian passport holders require a visa arranged via a licensed tour agency.",
+    "highlights": [
+      {
+        "icon": "🐉",
+        "title": "Socotra Island: Alien Paradise (UNESCO)",
+        "description": "The world's most isolated biodiversity island: bizarre umbrella-shaped Dragon's Blood trees, bottle trees, and pristine beaches."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Shibam: Manhattan of the Desert (UNESCO)",
+        "description": "Ancient 16th-century 10-story high-rise mud-brick skyscrapers rising out of the desert floodplains in Hadramawt."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Old City of Sana'a (UNESCO)",
+        "description": "Spectacular multi-story rammed-earth tower houses adorned with geometric white gypsum friezes and qamariya stained glass."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Haraz Mountain Fortresses",
+        "description": "Ancient stone citadel villages perched dramatically on knife-edge peaks surrounded by agricultural terraces."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages (no Israeli stamps).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Official Yemen Entry Visa / Socotra Security Clearance",
+        "description": "Arranged via licensed tour agency and Ministry of Interior.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Direct flights to Socotra (Air Arabia / Yemenia) or Aden (ADE).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Authorized Tour Operator: Contact an authorized local agency for Socotra or mainland Yemen.",
+      "Receive Immigration Pre-Approval: Operator submits passport copy to immigration authorities in Aden/Socotra.",
+      "Obtain Paper Visa Slip: Receive official stamped visa document PDF issued within 5 to 10 days.",
+      "Fly to Socotra / Aden: Fly via direct weekly flights from Abu Dhabi (AUH) or Cairo.",
+      "Border Clearance: Present paper visa slip and passport to receive entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$100 - $150 USD (Visa and Processing Fee)",
+      "service_fee": "Included in tour package",
+      "total_fee": "approx. ₹8,400 - ₹12,500 Total",
+      "notes": "Typically processed through Socotra licensed tour operators."
+    },
+    "proc_time": "5 to 10 Business Days",
+    "proc_details": "Issued via Yemen Immigration Authority / Socotra Department of Immigration.",
+    "requirements": [
+      {
+        "category": "Israeli Stamp Prohibition",
+        "details": "Passports containing Israeli stamps are strictly barred from entry."
+      },
+      {
+        "category": "Socotra Travel",
+        "details": "Socotra Island requires an authorized security visa clearance letter before boarding flights from Abu Dhabi."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD)",
+        "minimum_balance_or_amount": "USD $1,000",
+        "description": "All transactions in Socotra/Yemen require US Dollar cash."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do tourists visit Socotra Island?",
+        "answer": "Visitors book through a registered Socotra tour operator, who secures the official Yemeni visa clearance letter allowing you to board the dedicated direct flights from Abu Dhabi."
+      },
+      {
+        "question": "What is the Dragon's Blood Tree?",
+        "answer": "The Dragon's Blood Tree (Dracaena cinnabari) is an ancient umbrella-shaped tree endemic to Socotra that produces thick red resin used for centuries in medicine and dyes."
+      },
+      {
+        "question": "Can I visit mainland Yemen?",
+        "answer": "Visits to mainland Yemen require specialized tour coordination and security clearances through local agencies."
+      }
+    ],
+    "validity": "30 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Yemen Immigration and Passport Authority"
+  },
+  "palestine": {
+    "overview": "Palestine is steeped in profound millennia-old biblical, Islamic, and World Heritage history: the Church of the Nativity in Bethlehem (UNESCO - birthplace of Jesus Christ), ancient Jericho (one of the oldest continually inhabited cities on Earth, 10,000 years old), the historic Old City of Hebron with the Tomb of the Patriarchs (Ibrahimi Mosque), and the vibrant cultural center of Ramallah. International visitors enter through border crossings controlled by border authorities (via Jordan's King Hussein / Allenby Bridge or Ben Gurion Airport).",
+    "highlights": [
+      {
+        "icon": "⛪",
+        "title": "Bethlehem & Church of the Nativity (UNESCO)",
+        "description": "The historic 4th-century basilica built over the Grotto of the Nativity, birthplace of Jesus Christ."
+      },
+      {
+        "icon": "🌴",
+        "title": "Jericho: Oldest City on Earth",
+        "description": "Located 258 meters below sea level, featuring 10,000-year-old Tell es-Sultan ruins and Mount of Temptation monastery."
+      },
+      {
+        "icon": "🕌",
+        "title": "Hebron & Ibrahimi Mosque (UNESCO)",
+        "description": "Monumental Herodian stone sanctuary enshrining the tombs of Abraham, Sarah, Isaac, and Rebecca."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Ramallah Cultural Capital",
+        "description": "Dynamic city with the Yasser Arafat Museum, Palestinian cultural centers, and bustling markets."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Entry Permit / Border Card",
+        "description": "Border entry card issued at King Hussein / Allenby Bridge crossing from Jordan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel / Guest House Reservation",
+        "description": "Proof of accommodation in Bethlehem, Ramallah, or Jericho.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Travel Tickets",
+        "description": "Return travel reservations departing via Jordan or regional hub.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Travel via Jordan: Travel to Amman, Jordan, and proceed to the King Hussein / Allenby Bridge crossing.",
+      "Border Clearance: Present passport and travel details to receive a blue border entry card.",
+      "Enter West Bank / Palestine: Proceed through border terminal into Jericho, Bethlehem, or Ramallah.",
+      "Explore Cultural Landmarks: Visit Church of the Nativity, ancient Jericho, and Hebron with local guides."
+    ],
+    "fees": {
+      "visa_fee": "Border processing / exit taxes",
+      "service_fee": "₹0",
+      "total_fee": "approx. $30 - $50 USD border fees",
+      "notes": "No separate Palestinian visa fee; standard border crossing fees apply."
+    },
+    "proc_time": "Instant at Border Crossing (0 Days)",
+    "proc_details": "Administered at the King Hussein / Allenby Bridge land border crossing or airport terminals.",
+    "requirements": [
+      {
+        "category": "Border Card",
+        "details": "Keep the blue electronic border slip inside your passport at all times."
+      },
+      {
+        "category": "Border Crossing Points",
+        "details": "The most common entry for international tourists is via Jordan across the King Hussein Bridge."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "USD $500",
+        "description": "Sufficient funds for regional travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do international tourists enter Palestine?",
+        "answer": "Most international tourists enter from Jordan across the King Hussein / Allenby Bridge crossing or travel from Jerusalem into Bethlehem and Ramallah."
+      },
+      {
+        "question": "Do I need a separate Palestinian visa?",
+        "answer": "There is no separate Palestinian visa stamp; travelers receive a blue electronic entry card at the border crossing terminal."
+      },
+      {
+        "question": "Is Bethlehem open to visitors?",
+        "answer": "Yes! Bethlehem is located just 10 km south of Jerusalem and welcomes international pilgrims and tourists to the Church of the Nativity daily."
+      }
+    ],
+    "validity": "Up to 90 Days",
+    "stay_duration": "Up to 30 to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Palestinian Ministry of Tourism and Antiquities (travelpalestine.ps)"
+  },
+  "timor-leste": {
+    "overview": "Timor-Leste (East Timor), Southeast Asia's youngest nation, is a paradise of pristine coral reefs, rugged mountains, and Portuguese-Timorese heritage. Highlights include diving in the biodiverse waters of Atauro Island (ranked by scientists as having the most biodiverse reef fish in the world), the monumental Cristo Rei statue in Dili, climbing Mount Ramelau for sunrise, and exploring sacred animist culture in Jaco Island. Indian passport holders can receive a convenient 30-day VISA ON ARRIVAL at Dili airport.",
+    "highlights": [
+      {
+        "icon": "🤿",
+        "title": "Atauro Island (World's Most Biodiverse Reefs)",
+        "description": "Pristine tropical island ranked by marine scientists as having the highest average reef fish diversity on the planet."
+      },
+      {
+        "icon": "🗽",
+        "title": "Cristo Rei of Dili",
+        "description": "Monumental 27-meter bronze statue of Christ atop a coastal peninsula with panoramic ocean views."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Mount Ramelau (Tatamailau)",
+        "description": "Hike through eucalyptus forests to the 2,963-meter summit of Timor-Leste's highest peak for a breathtaking sunrise above the clouds."
+      },
+      {
+        "icon": "🏝️",
+        "title": "Sacred Jaco Island",
+        "description": "Uninhabited sacred island with crystal-clear turquoise waters and powdery white-sand beaches at the eastern tip of Timor."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Presidente Nicolau Lobato Airport (DIL), Dili.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Accommodation",
+        "description": "Hotel reservation voucher in Dili.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Fee in Cash ($30 USD)",
+        "description": "Clean US Dollar cash notes payable at immigration.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Demonstrate minimum $100 USD cash + $50 USD per day of stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Dili: Book flights via Bali (DPS), Singapore, or Darwin (DRW) into Dili (DIL).",
+      "Prepare Cash: Carry $30 USD in clean cash notes for the Visa on Arrival fee.",
+      "Fly to Dili: Arrive at Presidente Nicolau Lobato International Airport.",
+      "Pay Fee at Border Desk: Hand passport and $30 USD to immigration border officer.",
+      "Receive Visa Sticker: 30-day tourist entry sticker stamped into your passport."
+    ],
+    "fees": {
+      "visa_fee": "$30 USD (approx. ₹2,500 Statutory Visa Fee)",
+      "service_fee": "$0 (Direct at Airport)",
+      "total_fee": "$30 USD Total",
+      "notes": "Payable in US Dollar cash at Dili airport immigration counter."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Presidente Nicolau Lobato International Airport (Dili) or Dili seaport.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "US Dollar Currency",
+        "details": "The US Dollar ($) is the official currency in Timor-Leste."
+      },
+      {
+        "category": "Stay Duration",
+        "details": "30 days granted on arrival, extendable up to 90 days at immigration in Dili."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (USD)",
+        "minimum_balance_or_amount": "USD $100 + $50 per day",
+        "description": "Show sufficient maintenance funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Timor-Leste?",
+        "answer": "Yes! Indian passport holders are granted a 30-day Visa on Arrival for $30 USD cash at Dili International Airport."
+      },
+      {
+        "question": "What currency is used in Timor-Leste?",
+        "answer": "Timor-Leste uses the US Dollar ($) as its official currency, supplemented by domestic centavo coins."
+      },
+      {
+        "question": "Why is Atauro Island famous among divers?",
+        "answer": "Conservation International scientists discovered Atauro Island has the world's most biodiverse coral reef ecosystem, averaging 253 reef fish species per site."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable to 90 days)",
+    "entry_type": "Single Entry",
+    "official_source": "Migration Service of Timor-Leste (migracao.gov.tl)"
+  },
+  "brunei": {
+    "overview": "Brunei Darussalam, the peaceful 'Abode of Peace' on the island of Borneo, is famous for glittering golden-domed royal mosques (Sultan Omar Ali Saifuddien Mosque, Jame' Asr Hassanil Bolkiah), the world's largest water village (Kampong Ayer - 'Venice of the East'), the colossal 1,788-room royal palace Istana Nurul Iman, and pristine virgin primary rainforest in Ulu Temburong National Park. Indian passport holders can apply for a tourist visa via the High Commission of Brunei in New Delhi or obtain a transit entry.",
+    "highlights": [
+      {
+        "icon": "🕌",
+        "title": "Sultan Omar Ali Saifuddien Mosque",
+        "description": "Magnificent Italian marble mosque with pure gold dome, reflection lagoon, and 16th-century royal barge replica."
+      },
+      {
+        "icon": "🏘️",
+        "title": "Kampong Ayer (Venice of the East)",
+        "description": "The world's largest stilt settlement spanning 42 villages over the Brunei River, connected by wooden footbridges."
+      },
+      {
+        "icon": "🌳",
+        "title": "Ulu Temburong National Park Canopy Walk",
+        "description": "Untouched virgin Borneo rainforest featuring 60-meter high aluminum canopy walkway above the mist-shrouded jungle."
+      },
+      {
+        "icon": "👑",
+        "title": "Royal Regalia Museum",
+        "description": "House of royal crowns, chariots, gold and silver ceremonial armory, and gifts from world heads of state."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed consular visa application form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Flight booking into Brunei International Airport (BWN), Bandar Seri Begawan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Host Letter",
+        "description": "Proof of accommodation in Bandar Seri Begawan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Photos",
+        "description": "Recent color photographs on white background.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply at High Commission: Submit application form and passport at Brunei High Commission in New Delhi.",
+      "Submit Supporting Documents: Provide flight tickets, hotel booking, and bank statements.",
+      "Pay Statutory Fee: Pay BND $20 (approx. ₹1,250) single entry visa fee.",
+      "Receive Visa Sticker: Collect stamped passport within 5 to 7 business days.",
+      "Fly to Brunei: Board Royal Brunei Airlines or regional flight to Bandar Seri Begawan (BWN)."
+    ],
+    "fees": {
+      "visa_fee": "BND $20 (approx. ₹1,250 Single Entry)",
+      "service_fee": "₹0",
+      "total_fee": "approx. ₹1,250 Total",
+      "notes": "Payable at Brunei High Commission in New Delhi."
+    },
+    "proc_time": "5 to 7 Business Days",
+    "proc_details": "Issued via High Commission of Brunei Darussalam in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Strict Alcohol Laws",
+        "details": "Brunei is a dry country; non-Muslims can bring a small personal allowance strictly for private consumption."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Brunei?",
+        "answer": "Yes, Indian passport holders require a tourist visa applied through the High Commission of Brunei in New Delhi before travel."
+      },
+      {
+        "question": "What is Kampong Ayer?",
+        "answer": "Kampong Ayer in Brunei is the largest traditional stilt village in the world, home to over 30,000 people with schools, fire stations, and mosques built on water."
+      },
+      {
+        "question": "What currency is used in Brunei?",
+        "answer": "The Brunei Dollar (BND), which is pegged 1:1 with the Singapore Dollar (SGD). Singapore Dollar notes are accepted everywhere in Brunei."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 14 to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Immigration and National Registration of Brunei (immigration.gov.bn)"
+  },
+  "papua-new-guinea": {
+    "overview": "Papua New Guinea is one of the world's most culturally diverse and biologically rich frontiers, home to over 850 indigenous languages, the spectacular Mount Hagen and Goroka cultural sing-sing festivals (featuring vibrant body paint and bird-of-paradise feather headdresses), the legendary 96-km Kokoda Track, world-class diving in the Bismarck Sea, and untouched Sepik River spirit house traditions. Indian passport holders can apply online for an official tourist eVisa via evisa.ica.gov.pg.",
+    "highlights": [
+      {
+        "icon": "🎭",
+        "title": "Goroka & Mount Hagen Sing-Sing Festivals",
+        "description": "Hundreds of indigenous tribes gather in elaborate body paint, mud masks, and iridescent bird-of-paradise headdresses."
+      },
+      {
+        "icon": "🥾",
+        "title": "Kokoda Track Historic Trek",
+        "description": "Legendary 96-kilometer single-file rugged jungle trek crossing the Owen Stanley mountain ranges."
+      },
+      {
+        "icon": "🛶",
+        "title": "Sepik River Spirit Houses (Haus Tambaran)",
+        "description": "Canoe voyages past riverbank villages famous for sacred spirit houses, wood carvings, and crocodile ceremonies."
+      },
+      {
+        "icon": "🤿",
+        "title": "Milne Bay & Kimbe Bay Diving",
+        "description": "Unexplored coral walls, WWII aircraft wrecks, and pristine biodiversity in the Coral Triangle."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved PNG eVisa Confirmation",
+        "description": "Electronic Visa Approval PDF printed from evisa.ica.gov.pg.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Port Moresby Jacksons International Airport (POM).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Itinerary",
+        "description": "Proof of accommodation or expedition itinerary in PNG.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Proof of financial solvency for stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit official Papua New Guinea eVisa portal (evisa.ica.gov.pg) and select Tourist - Own Itinerary.",
+      "Upload Documents: Provide passport biodata scan, photo, return ticket, and accommodation confirmation.",
+      "Pay Fee Online: Pay $50 USD statutory fee by international credit/debit card.",
+      "Receive Electronic Visa: Download and print your approved eVisa PDF (issued within 3 to 7 days).",
+      "Fly to Port Moresby: Board flight to Jacksons International Airport (POM).",
+      "Border Clearance: Present passport and printed eVisa to border officer for entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (approx. ₹4,200 Statutory Fee)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$50 USD Total",
+      "notes": "Payable online on evisa.ica.gov.pg."
+    },
+    "proc_time": "3 to 7 Business Days (eVisa)",
+    "proc_details": "Applied online via the Papua New Guinea Immigration and Citizenship Authority (ICA).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond intended stay."
+      },
+      {
+        "category": "Health",
+        "details": "Proof of yellow fever vaccination if coming from endemic areas."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months stamped bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Papua New Guinea eVisa?",
+        "answer": "Yes! Indian passport holders can apply online directly through the official PNG Immigration portal (evisa.ica.gov.pg)."
+      },
+      {
+        "question": "What is a Sing-Sing in Papua New Guinea?",
+        "answer": "A Sing-Sing is a traditional cultural gathering where different tribes showcase their distinct music, dance, body paint, and elaborate headdresses."
+      },
+      {
+        "question": "How long is the PNG tourist eVisa valid for?",
+        "answer": "The standard tourist eVisa grants a stay of up to 30 or 60 days from arrival."
+      }
+    ],
+    "validity": "60 Days from Date of Issue",
+    "stay_duration": "Up to 30 or 60 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Papua New Guinea Immigration and Citizenship Authority (ICA - evisa.ica.gov.pg)"
+  },
+  "samoa": {
+    "overview": "Samoa, the heart of Polynesia in the South Pacific, enchants travelers with natural wonders: the breathtaking turquoise swimming sinkhole of To Sua Ocean Trench, white-sand beaches on Lalomanu, thundering Alofaaga blowholes, lush volcanic waterfalls, and the timeless 'Fa'a Samoa' (the 3,000-year-old traditional Samoan way of life). Indian passport holders enjoy 60-day VISA-FREE entry (Visitor Permit issued on arrival).",
+    "highlights": [
+      {
+        "icon": "🏊",
+        "title": "To Sua Ocean Trench",
+        "description": "Magical 30-meter deep natural limestone sinkhole filled with crystal-clear turquoise seawater and lush hanging vines."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Lalomanu Beach",
+        "description": "World-famous white-sand beach with open-air beach fales overlooking coral reefs and volcanic offshore islands."
+      },
+      {
+        "icon": "🌊",
+        "title": "Alofaaga Blowholes (Savai'i)",
+        "description": "Underwater sea caves blasting powerful geysers of ocean spray hundreds of feet into the air through volcanic basalt."
+      },
+      {
+        "icon": "✈️",
+        "title": "60-Day VISA-FREE for Indian Citizens",
+        "description": "Indian passport holders are granted a free 60-day Visitor Permit upon arrival."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Faleolo International Airport (APW), Apia.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel / Beach Fale Booking",
+        "description": "Proof of accommodation in Samoa.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Bank card or cash for holiday expenses.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Apia: Reserve flights via Fiji, New Zealand, or Australia into Faleolo Airport (APW).",
+      "Ensure Passport Validity: Passport must have 6+ months validity.",
+      "Fly to Samoa: Land at Faleolo International Airport.",
+      "Free Visitor Permit on Arrival: Present passport, return ticket, and accommodation to border officer.",
+      "Receive 60-Day Entry Stamp: Enjoy your visa-free Polynesian holiday."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Statutory Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy free 60-day visitor permit on arrival."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Faleolo International Airport (Apia).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket strictly enforced."
+      },
+      {
+        "category": "Fa'a Samoa Respect",
+        "details": "Dress respectfully when visiting local villages and church services."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "WST $100 per day",
+        "description": "Proof of travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Samoa?",
+        "answer": "No! Indian passport holders receive a FREE 60-day Visitor Permit upon arrival at Faleolo Airport in Samoa."
+      },
+      {
+        "question": "What is To Sua Ocean Trench?",
+        "answer": "To Sua is an ancient collapsed volcanic lava tube transformed into a breathtaking 30-meter deep swimming pool connected to the ocean."
+      },
+      {
+        "question": "What is a Beach Fale?",
+        "answer": "A beach fale is a traditional open-sided thatched wooden hut built right on the sand, offering authentic island accommodation."
+      }
+    ],
+    "validity": "60 Days on Arrival",
+    "stay_duration": "Up to 60 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of the Prime Minister and Cabinet - Samoa Immigration"
+  },
+  "tonga": {
+    "overview": "The Kingdom of Tonga, the only Pacific nation never colonized by a foreign power, is celebrated as the 'Friendly Islands'. Marvel at world-class swimming with wild humpback whale mothers and calves in Vava'u (July to October), the ancient megalithic stone trithon Ha'amonga 'a Maui (the Stonehenge of the Pacific), thundering Mapu 'a Vaea blowholes on Tongatapu, and pristine coral atolls. Indian passport holders can receive a 31-day VISA ON ARRIVAL at Fua'amotu Airport.",
+    "highlights": [
+      {
+        "icon": "🐋",
+        "title": "Swim with Humpback Whales (Vava'u)",
+        "description": "One of the few places on Earth where you can respectfully snorkel in open ocean alongside wild humpback whales and calves."
+      },
+      {
+        "icon": "🗿",
+        "title": "Ha'amonga 'a Maui Megalith",
+        "description": "13th-century 40-ton royal limestone trilithon, ancient astronomical calendar and gateway."
+      },
+      {
+        "icon": "🌊",
+        "title": "Mapu 'a Vaea Blowholes",
+        "description": "Five kilometers of coastal limestone blowholes shooting seawater geysers 30 meters into the sky."
+      },
+      {
+        "icon": "👑",
+        "title": "Polynesia's Last Monarchy",
+        "description": "Victorian royal palace and rich royal Polynesian cultural traditions."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Fua'amotu International Airport (TBU), Nuku'alofa.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Resort Reservation",
+        "description": "Proof of accommodation in Tongatapu or Vava'u.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Demonstrating adequate travel maintenance funds.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Nuku'alofa: Reserve flights via Fiji, New Zealand, or Australia into Fua'amotu Airport (TBU).",
+      "Ensure Passport Validity: Verify 6+ months validity.",
+      "Fly to Tonga: Arrive at Fua'amotu International Airport.",
+      "Free Visitor Permit on Arrival: Present passport, return ticket, and accommodation voucher to border officer.",
+      "Receive 31-Day Entry Stamp: Entry permit stamped into your passport."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Statutory Entry Stamp)",
+      "service_fee": "₹0 (Direct Border)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders receive free 31-day tourist permit on arrival."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Fua'amotu International Airport (Nuku'alofa).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond stay."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket strictly enforced."
+      },
+      {
+        "category": "Whale Season",
+        "details": "Whale swimming tours operate from July to October and require advance booking."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "TOP $100 per day",
+        "description": "Proof of travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Tonga?",
+        "answer": "Yes! Indian passport holders are granted a FREE 31-day Visitor Visa upon arrival at Fua'amotu Airport in Tonga."
+      },
+      {
+        "question": "Can I swim with whales in Tonga?",
+        "answer": "Yes! Tonga is one of the world's top destinations for swimming with humpback whales in the sheltered island waters of Vava'u between July and October."
+      },
+      {
+        "question": "Was Tonga ever colonized?",
+        "answer": "No. The Kingdom of Tonga is the only Pacific nation that never lost its indigenous sovereignty or monarchy to colonial rule."
+      }
+    ],
+    "validity": "31 Days on Arrival",
+    "stay_duration": "Up to 31 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of the Kingdom of Tonga (mic.gov.to)"
+  },
+  "solomon-islands": {
+    "overview": "The Solomon Islands, a wild archipelago of nearly 1,000 tropical islands in the South Pacific, is celebrated for world-class WWII wreck diving (Iron Bottom Sound), pristine turquoise lagoons (Marovo Lagoon - the world's largest saltwater lagoon, and UNESCO East Rennell), vibrant shell money traditions in Malaita, and volcanic landscapes. Indian passport holders can obtain a free Visitor Permit on Arrival at Honiara International Airport.",
+    "highlights": [
+      {
+        "icon": "🏝️",
+        "title": "Marovo Lagoon (World's Largest Saltwater Lagoon)",
+        "description": "World-famous double-barrier lagoon studded with hundreds of palm-fringed islands, coral reefs, and master woodcarvers."
+      },
+      {
+        "icon": "🤿",
+        "title": "Iron Bottom Sound & WWII Wreck Diving",
+        "description": "Dozens of sunken battleships, destroyers, submarines, and aircraft from the historic 1942 Battle of Guadalcanal."
+      },
+      {
+        "icon": "🌿",
+        "title": "East Rennell Coral Atoll (UNESCO)",
+        "description": "The world's largest raised coral atoll featuring Lake Tegano, endemic orchid species, and bat colonies."
+      },
+      {
+        "icon": "🐚",
+        "title": "Langa Langa Lagoon & Shell Money",
+        "description": "Man-made artificial stone islands where villagers craft traditional ancient red shell money strings."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Honiara Henderson Airport (HIR).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Eco-Lodge Reservation",
+        "description": "Proof of accommodation in Honiara or Western Province.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Demonstrate sufficient funds for stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Honiara: Reserve flights via Brisbane (BNE), Fiji, or Port Moresby into Honiara (HIR).",
+      "Ensure Passport Validity: Verify 6+ months validity.",
+      "Fly to Solomon Islands: Land at Honiara International Airport on Guadalcanal.",
+      "Free Visitor Permit on Arrival: Present passport, return ticket, and accommodation voucher to immigration officer.",
+      "Receive Entry Stamp: Receive 40-day visitor permit stamped into your passport."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Visitor Permit on Arrival)",
+      "service_fee": "₹0",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders receive free Visitor Permit on arrival."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Honiara International Airport (HIR).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return ticket strictly required."
+      },
+      {
+        "category": "Health",
+        "details": "Yellow fever certificate required if arriving from endemic countries."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "SBD $100 per day",
+        "description": "Proof of funds for island travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Solomon Islands?",
+        "answer": "Yes! Indian passport holders receive a FREE Visitor Permit on Arrival for up to 40 days at Honiara Airport."
+      },
+      {
+        "question": "Why are Solomon Islands famous among scuba divers?",
+        "answer": "The waters around Guadalcanal (Iron Bottom Sound) and Western Province have the highest density of intact WWII warship and aircraft wrecks in the world."
+      },
+      {
+        "question": "What is Marovo Lagoon?",
+        "answer": "Marovo Lagoon is the largest saltwater lagoon on Earth, sheltered by high volcanic islands and coral barrier reefs."
+      }
+    ],
+    "validity": "40 Days on Arrival",
+    "stay_duration": "Up to 40 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Immigration of Solomon Islands (commerce.gov.sb)"
+  },
+  "vanuatu": {
+    "overview": "Vanuatu, an archipelago of 83 volcanic islands in the South Pacific, is celebrated for extraordinary spectacles: peering into the bubbling red molten lava lake of Mount Yasur on Tanna Island (the world's most accessible active volcano), watching the breathtaking Pentecost Island land-diving (Naghol - the ancient origin of modern bungee jumping), swimming in radiant blue holes on Espiritu Santo, and diving the colossal SS President Coolidge shipwreck. Indian citizens enjoy 30-day VISA-FREE entry!",
+    "highlights": [
+      {
+        "icon": "🌋",
+        "title": "Mount Yasur Active Volcano (Tanna)",
+        "description": "Stand on the crater rim and watch glowing red molten magma fountains and volcanic fireworks safely at night."
+      },
+      {
+        "icon": "🪂",
+        "title": "Pentecost Island Land Diving (Naghol)",
+        "description": "Ancient ritual where tribal men dive head-first from 30-meter wooden towers with forest vines tied to their ankles."
+      },
+      {
+        "icon": "💎",
+        "title": "Espiritu Santo Blue Holes & Champagne Beach",
+        "description": "Luminous freshwater sapphire blue holes and powdery white-sand Champagne Beach with effervescent bubbles."
+      },
+      {
+        "icon": "🚢",
+        "title": "SS President Coolidge Wreck",
+        "description": "The world's largest, most accessible luxury ocean liner and WWII military troopship wreck dive."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into Bauerfield Airport (VLI), Port Vila.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Resort Reservation",
+        "description": "Proof of accommodation in Port Vila, Tanna, or Espiritu Santo.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Bank card or cash for holiday stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights to Port Vila: Reserve flights via Fiji, Australia, or New Zealand into Port Vila (VLI).",
+      "Ensure Passport Validity: Verify 6+ months validity.",
+      "Fly to Vanuatu: Land at Bauerfield International Airport on Efate.",
+      "Free Entry on Arrival: Present passport, return ticket, and accommodation voucher to border officer.",
+      "Receive 30-Day Entry Stamp: Enjoy your visa-free South Pacific adventure."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Visa-Free Entry)",
+      "service_fee": "₹0",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy free 30-day visa-free entry on arrival."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Bauerfield International Airport (Port Vila).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond travel dates."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket strictly enforced."
+      },
+      {
+        "category": "Extension",
+        "details": "Can be extended locally up to 4 months at Vanuatu Immigration."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "VUV 10,000 per day",
+        "description": "Proof of funds for island travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Vanuatu?",
+        "answer": "No! Indian passport holders enjoy 100% VISA-FREE entry to Vanuatu for up to 30 days upon arrival."
+      },
+      {
+        "question": "What is Mount Yasur?",
+        "answer": "Mount Yasur on Tanna Island is widely considered the most accessible active volcano in the world, erupting continuously for over 800 years."
+      },
+      {
+        "question": "What is Pentecost land-diving?",
+        "answer": "Naghol (land diving) on Pentecost Island is an ancient harvest fertility ritual where divers leap from tall wooden towers with vines tied to their ankles—the precursor to modern bungee jumping."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Vanuatu Immigration and Passport Services (immigration.gov.vu)"
+  },
+  "venezuela": {
+    "overview": "Venezuela is an ecological wonder of South America, home to Angel Falls (the world's highest uninterrupted waterfall plunging 979 meters), the prehistoric flat-topped tepuis of Canaima National Park (UNESCO), the pristine Caribbean archipelago of Los Roques, and the wildlife-rich plains of Los Llanos. Indian passport holders require an official consular tourist visa issued by the Embassy of the Bolivarian Republic of Venezuela in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Angel Falls (Salto Ángel)",
+        "description": "The world's highest uninterrupted waterfall at 979 meters, cascading off Auyán-tepui into the Churun River canyon."
+      },
+      {
+        "icon": "🏝️",
+        "title": "Los Roques Archipelago",
+        "description": "Over 300 idyllic coral cays and sandbanks in the Caribbean with turquoise lagoons and coral reefs."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Mount Roraima & Canaima (UNESCO)",
+        "description": "Ancient geological table-top mountains (tepuis) that inspired Arthur Conan Doyle's 'The Lost World'."
+      },
+      {
+        "icon": "🐆",
+        "title": "Los Llanos Wildlife Safaris",
+        "description": "Vast tropical savannas teeming with capybaras, giant anteaters, anacondas, and hundreds of bird species."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for minimum 6 months with at least 2 blank visa pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed and signed Venezuelan consular visa application form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Itinerary",
+        "description": "Flight reservation into Simón Bolívar International Airport (CCS), Caracas.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Booking",
+        "description": "Confirmed tourist accommodation or authorized national park expedition booking.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Solvency",
+        "description": "Original bank statements for the last 3 months attested by bank branch.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "International certificate of vaccination against Yellow Fever.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Schedule Consular Appointment: Contact the Embassy of Venezuela in New Delhi for a tourist visa submission slot.",
+      "Compile Documentation: Assemble passport, financial statements, travel itinerary, and yellow fever card.",
+      "Attend Consular Interview: Submit application dossier and attend consular interview at the embassy.",
+      "Pay Visa Fee: Pay consular fee ($30 to $50 USD) as directed by the embassy cashier.",
+      "Collect Passport: Retrieve passport with affixed visa sticker within 10 to 15 business days.",
+      "Arrival Clearance: Present stamped visa, hotel proof, and yellow fever certificate at Caracas border control."
+    ],
+    "fees": {
+      "visa_fee": "$30 - $50 USD (approx. ₹2,500 - ₹4,200)",
+      "service_fee": "₹0 (Embassy Direct)",
+      "total_fee": "approx. ₹3,500 Total",
+      "notes": "Consular fee payable as instructed by Venezuelan Embassy New Delhi."
+    },
+    "proc_time": "10 to 15 Business Days",
+    "proc_details": "Consular processing at the Embassy of the Bolivarian Republic of Venezuela in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity from entry date with 2 blank pages."
+      },
+      {
+        "category": "Yellow Fever Certificate",
+        "details": "Mandatory yellow fever vaccination card for entry."
+      },
+      {
+        "category": "Consular Interview",
+        "details": "Personal appearance may be requested by consular officers."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,00,000 balance",
+        "description": "Last 3 months attested statements demonstrating travel funding."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Venezuela?",
+        "answer": "Yes, Indian passport holders must obtain a consular tourist visa in advance from the Venezuelan Embassy in New Delhi."
+      },
+      {
+        "question": "How high is Angel Falls in Venezuela?",
+        "answer": "Angel Falls (Salto Ángel) is the highest uninterrupted waterfall on Earth, standing at 979 meters (3,212 feet) with an 807-meter plunge."
+      },
+      {
+        "question": "Is yellow fever vaccination mandatory for Venezuela?",
+        "answer": "Yes, international certificate of yellow fever vaccination is mandatory for travelers arriving in Venezuela."
+      }
+    ],
+    "validity": "Up to 90 Days",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Embassy of the Bolivarian Republic of Venezuela in India & MPPRE"
+  },
+  "ecuador": {
+    "overview": "Ecuador is one of the most biodiverse countries on Earth, encompassing the legendary Galápagos Islands (where Charles Darwin formulated the theory of evolution), Quito's pristine UNESCO-listed Spanish colonial historic centre, the snow-capped Cotopaxi active volcano, the Quilotoa emerald crater lake, and the Amazonian rainforest. Indian citizens must apply online for a consular tourist visa via the official Ecuador Consular Virtual portal (consulvirtual.gob.ec).",
+    "highlights": [
+      {
+        "icon": "🐢",
+        "title": "Galápagos Islands (UNESCO)",
+        "description": "Unrivaled wildlife encounters with giant tortoises, marine iguanas, blue-footed boobies, and sea lions."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Historic Old Town Quito",
+        "description": "The best-preserved and least-altered historic colonial centre in the Americas, perched at 2,850m elevation."
+      },
+      {
+        "icon": "🌋",
+        "title": "Cotopaxi Volcano & Avenue of the Volcanoes",
+        "description": "One of the world's highest active volcanoes (5,897m) with symmetrical snow cone in Cotopaxi National Park."
+      },
+      {
+        "icon": "🌊",
+        "title": "Quilotoa Emerald Crater Lake",
+        "description": "Breathtaking water-filled caldera lake glowing green and turquoise in the high Andean mountains."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Passport valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Ecuador Visa Application",
+        "description": "Electronic visa form completed through the ConsulVirtual portal.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Police Clearance Certificate (PCC)",
+        "description": "Apostilled Police Clearance Certificate issued within 6 months.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Economic Solvency",
+        "description": "Bank statements for last 6 months showing minimum $1,500 - $2,000 USD balance.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into Quito (UIO) or Guayaquil (GYE).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Booking",
+        "description": "Confirmed accommodations or Galápagos cruise reservation.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Register on ConsulVirtual: Create an account on the Ministry of Foreign Affairs portal (consulvirtual.gob.ec).",
+      "Upload Documents: Submit passport biodata, apostilled PCC, bank statements, and flight itinerary.",
+      "Consular Review: Consular officers review submission and schedule appointment / payment instructions.",
+      "Pay Visa Fee: Pay $50 application fee plus $400 visa issuance fee upon approval.",
+      "Receive eVisa / Stamped Visa: Official electronic visa PDF issued and linked to passport number.",
+      "Galápagos Transit Card: If visiting Galápagos, purchase mandatory Transit Control Card (TCT) at airport."
+    ],
+    "fees": {
+      "visa_fee": "$50 Application + $400 Issuance",
+      "service_fee": "₹0 (Official Portal)",
+      "total_fee": "$450 USD (approx. ₹37,500)",
+      "notes": "Official Ecuadorian consular fees paid via ConsulVirtual portal."
+    },
+    "proc_time": "15 to 30 Business Days",
+    "proc_details": "Digital submission via ConsulVirtual evaluated by Ecuadorian Consular Directorate.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Must have at least 6 months remaining validity."
+      },
+      {
+        "category": "Police Clearance",
+        "details": "Apostilled PCC required for tourist visa processing."
+      },
+      {
+        "category": "Health Insurance",
+        "details": "Valid international travel health insurance required for stay."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statements",
+        "minimum_balance_or_amount": "$2,000 USD (approx. ₹1,65,000)",
+        "description": "6 months stamped bank statements showing steady funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders travel to Ecuador without a visa?",
+        "answer": "No, Ecuador instituted mandatory tourist visas for Indian citizens in 2019, which must be secured via the ConsulVirtual portal."
+      },
+      {
+        "question": "Do I need a special permit to visit the Galápagos Islands?",
+        "answer": "Yes, tourists must purchase a Galápagos Transit Control Card (TCT) ($20) at Quito/Guayaquil airport and pay the national park entrance fee ($200) upon landing."
+      },
+      {
+        "question": "What is the official currency of Ecuador?",
+        "answer": "Ecuador adopted the United States Dollar (USD) as its official national currency in 2000."
+      }
+    ],
+    "validity": "90 Days from Issuance",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministerio de Relaciones Exteriores y Movilidad Humana (consulvirtual.gob.ec)"
+  },
+  "bolivia": {
+    "overview": "Bolivia is the high-altitude heart of South America, captivating travelers with the world's largest salt flat (Salar de Uyuni spanning 10,500 sq km), Lake Titicaca (the highest navigable lake on Earth), the soaring Andes mountains, and the colonial white city of Sucre (UNESCO). Indian passport holders can conveniently obtain a Tourist Visa on Arrival (VoA) at international airports (La Paz or Santa Cruz) or apply for a digital Tourist Visa in advance via portal.gob.bo.",
+    "highlights": [
+      {
+        "icon": "🧂",
+        "title": "Salar de Uyuni (Giant Salt Flats)",
+        "description": "Over 10,000 sq km of blinding white salt crust creating an extraordinary infinite mirror reflection during wet season."
+      },
+      {
+        "icon": "🌊",
+        "title": "Lake Titicaca & Isla del Sol",
+        "description": "Sacred birthplace of the Inca sun god set at 3,812m elevation with terraced hills and sapphire waters."
+      },
+      {
+        "icon": "🏙️",
+        "title": "La Paz & Mi Teleférico Cable Car",
+        "description": "The world's highest administrative capital (3,640m) navigated by the world's highest and longest urban cable car network."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Sucre Colonial City (UNESCO)",
+        "description": "Bolivia's constitutional capital renowned for whitewashed colonial mansions, red tiled roofs, and historic churches."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Passport valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa on Arrival Form / Online Application",
+        "description": "Completed immigration entry declaration form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Booking",
+        "description": "Flight itinerary into La Paz (LPB) or Santa Cruz (VVI).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Itinerary",
+        "description": "Confirmed booking in La Paz, Uyuni, or accredited tour operator itinerary.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Solvency",
+        "description": "Credit card copy or recent bank statement showing sufficient funds.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory if traveling into tropical or jungle areas (Santa Cruz, Amazon).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Prepare Documentation: Assemble passport, flight tickets, hotel reservations, and credit card/funds proof.",
+      "Flight to Bolivia: Board flight arriving into La Paz El Alto (LPB) or Santa Cruz Viru Viru (VVI).",
+      "Approach Immigration VoA Counter: Present passport and documents at designated Visa on Arrival desk.",
+      "Pay Statutory VoA Fee: Pay $100 USD visa fee in cash (clean, crisp US dollar bills).",
+      "Receive Visa Sticker: Immigration officer stamps and applies the 30-day tourist visa sticker to your passport.",
+      "Explore Bolivia: Freely explore Uyuni, Lake Titicaca, and Andean wonders (extendable up to 90 days)."
+    ],
+    "fees": {
+      "visa_fee": "$100 USD (approx. ₹8,300)",
+      "service_fee": "$0 (Direct on Arrival)",
+      "total_fee": "approx. ₹8,300 Total",
+      "notes": "Payable in cash USD at airport border control upon arrival."
+    },
+    "proc_time": "Instant on Arrival (VoA)",
+    "proc_details": "Issued directly at border control upon flight landing in La Paz or Santa Cruz.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Must have 6 months minimum validity."
+      },
+      {
+        "category": "Currency for VoA",
+        "details": "Must carry crisp, unblemished US dollar cash bills for border payment."
+      },
+      {
+        "category": "Yellow Fever",
+        "details": "Mandatory card required for entry if arriving from or visiting endemic areas."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Bank Proof",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "International credit card or recent bank statement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens get a Visa on Arrival in Bolivia?",
+        "answer": "Yes! Indian passport holders (Group II country) are eligible for a 30-day Tourist Visa on Arrival at international airports (La Paz and Santa Cruz)."
+      },
+      {
+        "question": "When is the best time to see the mirror effect in Salar de Uyuni?",
+        "answer": "The famous mirror reflection occurs during the rainy season from January to April when a thin layer of rainwater covers the vast salt crust."
+      },
+      {
+        "question": "Can I extend my stay in Bolivia?",
+        "answer": "Yes, the initial 30-day stay can be extended free of charge at any departmental immigration office in Bolivia up to a total of 90 days per calendar year."
+      }
+    ],
+    "validity": "30 Days on Arrival (Extendable to 90 Days)",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Dirección General de Migración de Bolivia (migracion.gob.bo)"
+  },
+  "paraguay": {
+    "overview": "Paraguay, the hidden gem of South America, offers rich Guaraní and Spanish colonial history, tranquil rivers, the UNESCO-listed Jesuit Missions of La Santísima Trinidad de Paraná, the massive Itaipu Dam (one of the engineering wonders of the world), and the vast wilderness of the Gran Chaco. Indian passport holders can apply for a consular tourist visa at the Embassy of Paraguay in New Delhi, or utilize visa facilitation if holding valid US, Canadian, or Schengen visas.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Jesuit Missions of Trinidad & Jesús (UNESCO)",
+        "description": "Magnificent 17th-century stone baroque mission ruins reflecting indigenous Guaraní and Jesuit communal society."
+      },
+      {
+        "icon": "⚡",
+        "title": "Itaipu Hydroelectric Dam",
+        "description": "One of the largest operational hydroelectric plants on Earth, spanning the Paraná River border with Brazil."
+      },
+      {
+        "icon": "🌳",
+        "title": "The Gran Chaco Wilderness",
+        "description": "Sprawling, sparsely populated thorny wilderness refuge for jaguars, giant armadillos, and indigenous Mennonite communities."
+      },
+      {
+        "icon": "🛶",
+        "title": "Asunción Colonial Capital & Costanera",
+        "description": "One of the oldest continuously inhabited colonial cities in South America with vibrant riverfront promenades."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Visa Application Form",
+        "description": "Completed and signed Paraguayan consular application form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Round-Trip Flight Itinerary",
+        "description": "Flight booking into Silvio Pettirossi International Airport (ASU), Asunción.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tourist Package",
+        "description": "Proof of accommodation in Asunción or other Paraguayan departments.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements",
+        "description": "Last 3 months bank statements showing sufficient funds (minimum ₹1,50,000).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Card",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Gather Documents: Assemble passport, bank statements, itinerary, and yellow fever card.",
+      "Submit at Embassy of Paraguay New Delhi: Submit visa dossier in person or via accredited representative.",
+      "Consular Review: Visa officer evaluates economic solvency and travel itinerary.",
+      "Pay Consular Fee: Pay $65 USD (single entry) or $100 USD (multiple entry) consular fee.",
+      "Collect Stamped Passport: Visa sticker is affixed within 7 to 10 working days.",
+      "Border Inspection: Present stamped visa and yellow fever card upon arrival in Asunción."
+    ],
+    "fees": {
+      "visa_fee": "$65 USD (approx. ₹5,400)",
+      "service_fee": "₹0 (Embassy Direct)",
+      "total_fee": "approx. ₹5,400 Total",
+      "notes": "Consular fee for single-entry tourist visa."
+    },
+    "proc_time": "7 to 10 Business Days",
+    "proc_details": "Processed at the Embassy of the Republic of Paraguay in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months remaining validity."
+      },
+      {
+        "category": "Yellow Fever",
+        "details": "Mandatory vaccination card presented at immigration."
+      },
+      {
+        "category": "Funds Proof",
+        "details": "Sufficient balance to cover stay duration."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000 balance",
+        "description": "Last 3 months attested bank statements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Paraguay?",
+        "answer": "Yes, Indian passport holders require a consular tourist visa obtained from the Embassy of Paraguay in New Delhi."
+      },
+      {
+        "question": "What languages are spoken in Paraguay?",
+        "answer": "Paraguay is uniquely bilingual, with Spanish and indigenous Guaraní both recognized as official languages and spoken widely."
+      },
+      {
+        "question": "What is the Jesuit Mission of Trinidad?",
+        "answer": "It is an impeccably preserved 17th-century UNESCO World Heritage site built by Jesuit missionaries and Guaraní indigenous artisans."
+      }
+    ],
+    "validity": "90 Days from Issue",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Dirección Nacional de Migraciones de Paraguay & Embassy of Paraguay in India"
+  },
+  "guyana": {
+    "overview": "Guyana, 'Land of Many Waters', is South America's only English-speaking nation, renowned for pristine equatorial Amazonian rainforests, the thunderous Kaieteur Falls (the world's largest single-drop waterfall by volume of water), vibrant Caribbean-influenced Georgetown, and thriving indigenous Amerindian eco-lodges. Indian passport holders can obtain an official Visa on Arrival with prior approval letter, or an eVisa through the Department of Citizenship and Immigration.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Kaieteur Falls",
+        "description": "The world's widest single-drop waterfall, plunging 226 meters through misty Amazonian canyon (5 times the height of Niagara)."
+      },
+      {
+        "icon": "🦜",
+        "title": "Iwokrama Rainforest & Canopy Walkway",
+        "description": "Pristine wilderness reserve featuring suspended canopy walkways, jaguars, harpy eagles, and giant river otters."
+      },
+      {
+        "icon": "🏛️",
+        "title": "St. George's Cathedral Georgetown",
+        "description": "One of the tallest freestanding wooden churches in the world, surrounded by vibrant Caribbean-colonial architecture."
+      },
+      {
+        "icon": "🐊",
+        "title": "Rupununi Savannas & Eco-Lodges",
+        "description": "Vast natural savanna ecosystems inhabited by vaqueros, black caimans, and indigenous Macushi villages."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for minimum 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Guyana Visa Approval Letter",
+        "description": "Pre-arranged immigration approval letter from Guyana Ministry of Home Affairs.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Ticket",
+        "description": "Round-trip flight booking to Cheddi Jagan International Airport (GEO), Georgetown.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Eco-Lodge Booking",
+        "description": "Confirmed booking in Georgetown or interior eco-resort.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Request Approval Letter: Apply online or through registered Guyanese tour sponsor for prior immigration entry approval.",
+      "Receive Approval PDF: Department of Citizenship issues official approval letter within 5 to 7 days.",
+      "Flight to Georgetown: Board flight arriving into Cheddi Jagan International Airport (GEO).",
+      "Border VoA Counter: Present passport, approval letter, return ticket, and yellow fever certificate.",
+      "Pay Statutory Fee: Pay $25 USD visa stamping fee at border control.",
+      "Entry Stamp Affixed: 30-day tourist entry stamp is affixed to your passport."
+    ],
+    "fees": {
+      "visa_fee": "$25 USD (approx. ₹2,100)",
+      "service_fee": "₹0 (Official)",
+      "total_fee": "approx. ₹2,100 Total",
+      "notes": "Payable in cash USD at airport immigration upon arrival."
+    },
+    "proc_time": "5 to 7 Business Days (Pre-Approval) / Instant on Arrival",
+    "proc_details": "Pre-approval issued by Department of Citizenship, Georgetown; stamped on arrival.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for minimum 6 months beyond departure."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory vaccination certificate required upon arrival."
+      },
+      {
+        "category": "Pre-Approval",
+        "details": "Must secure immigration approval letter prior to boarding flight."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "Proof of sufficient funds for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens get a visa on arrival in Guyana?",
+        "answer": "Yes, Indian passport holders can obtain a Visa on Arrival by securing a prior immigration approval letter through Guyana immigration or an authorized tour operator."
+      },
+      {
+        "question": "What language is spoken in Guyana?",
+        "answer": "Guyana is the only English-speaking country in South America, making travel exceptionally convenient for Indian visitors."
+      },
+      {
+        "question": "How high is Kaieteur Falls?",
+        "answer": "Kaieteur Falls drops 226 meters (741 feet) in a single sheer plunge, making it four times the height of Niagara Falls."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Citizenship and Immigration, Ministry of Home Affairs Guyana (moha.gov.gy)"
+  },
+  "suriname": {
+    "overview": "Suriname, South America's Dutch-speaking jewel nestled on the Guiana Shield, is a melting pot of Indian (Hindustani), Javanese, Creole, Maroon, and Amerindian cultures. Highlights include Paramaribo's UNESCO-listed wooden Dutch colonial historic inner city, the vast primary rainforest of Central Suriname Nature Reserve (UNESCO), sea turtle nesting at Galibi, and historic plantations. Indian citizens can enter easily by purchasing an online Entry Fee Voucher ($33 USD + $8 service fee) prior to travel.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Historic Paramaribo Wooden City (UNESCO)",
+        "description": "Remarkable Dutch colonial inner city constructed entirely of wood, where mosques and synagogues stand harmoniously side-by-side."
+      },
+      {
+        "icon": "🌳",
+        "title": "Central Suriname Nature Reserve (UNESCO)",
+        "description": "1.6 million hectares of pristine tropical rainforest featuring the towering granite dome of Voltzberg and pristine biodiversity."
+      },
+      {
+        "icon": "🐢",
+        "title": "Galibi Nature Reserve Sea Turtles",
+        "description": "Protected coastal sanctuary where endangered giant leatherback sea turtles nest on Atlantic beaches."
+      },
+      {
+        "icon": "🛶",
+        "title": "Commewijne Plantation Tours & River Dolphins",
+        "description": "Historic sugar and coffee plantations along the Commewijne River and sightings of rare pink Guiana river dolphins."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Suriname Entry Fee Voucher",
+        "description": "Pre-purchased official Entry Fee Voucher confirmation PDF from suriname.vfsevisa.com.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Round-Trip Flight Ticket",
+        "description": "Flight booking into Johan Adolf Pengel International Airport (PBM), Paramaribo.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Confirmed booking in Paramaribo or rainforest lodge.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory international certificate of yellow fever vaccination.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Visit Official Entry Portal: Go to the official Suriname Entry Fee portal (suriname.vfsevisa.com).",
+      "Fill Traveler Details: Input passport information, arrival date, and travel purpose.",
+      "Pay Entry Fee: Pay statutory entry fee of $33 USD (or €25) plus $8 service fee using credit/debit card.",
+      "Download Voucher PDF: Instant download of the Entry Fee Voucher sent to your registered email.",
+      "Flight to Paramaribo: Board flight arriving into Johan Adolf Pengel International Airport (PBM).",
+      "Immigration Entry: Present passport, printed Entry Fee Voucher, return ticket, and yellow fever card for 90-day entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$33 USD (Entry Fee)",
+      "service_fee": "$8 USD (VFS Portal Fee)",
+      "total_fee": "$41 USD (approx. ₹3,400)",
+      "notes": "Mandatory Entry Fee purchased online prior to departure."
+    },
+    "proc_time": "Instant (Electronic Voucher)",
+    "proc_details": "Instant electronic delivery via official government portal.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity from date of arrival."
+      },
+      {
+        "category": "Yellow Fever Card",
+        "details": "Mandatory yellow fever vaccination card for border clearance."
+      },
+      {
+        "category": "Printed Voucher",
+        "details": "Must print and carry physical copy of Entry Fee Voucher PDF."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "Proof of sufficient financial means for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Suriname?",
+        "answer": "No traditional visa is required! Indian passport holders simply purchase the mandatory online Entry Fee Voucher ($33 USD + $8) prior to travel for up to 90 days stay."
+      },
+      {
+        "question": "Why does Suriname have a large Indian population?",
+        "answer": "Between 1873 and 1916, over 34,000 Indian indentured workers moved to Suriname. Today, Indian-origin Surinamese (Hindustani) make up over 27% of the population, and Hindi and Bhojpuri are widely spoken."
+      },
+      {
+        "question": "What is the currency of Suriname?",
+        "answer": "The official currency is the Surinamese Dollar (SRD), though US Dollars and Euros are widely accepted."
+      }
+    ],
+    "validity": "90 Days from Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs, International Business and International Cooperation of Suriname (suriname.vfsevisa.com)"
+  },
+  "trinidad": {
+    "overview": "Trinidad & Tobago is the vibrant dual-island Caribbean cultural powerhouse, birthplace of steelpan music, calypso, and the world-famous Trinidad Carnival. Indian passport holders enjoy 100% VISA-FREE entry for up to 90 days! Explore the bustling culture of Port of Spain, the turquoise waters and coral reefs of Buccoo Reef and Pigeon Point in Tobago, the bird-rich Caroni Bird Sanctuary (home to thousands of scarlet ibises), and the unique Temple in the Sea at Waterloo.",
+    "highlights": [
+      {
+        "icon": "🎭",
+        "title": "World-Famous Trinidad Carnival",
+        "description": "The greatest street party on Earth featuring flamboyant masquerade bands, calypso, and steelpan competitions."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Pigeon Point & Buccoo Reef (Tobago)",
+        "description": "Tobago's premier turquoise beach with iconic thatched jetty, Nylon Pool natural swimming pool, and coral reefs."
+      },
+      {
+        "icon": "🦩",
+        "title": "Caroni Bird Sanctuary",
+        "description": "Mangrove boat safaris to witness thousands of vivid Scarlet Ibises (national bird) returning to roost at sunset."
+      },
+      {
+        "icon": "🛕",
+        "title": "Temple in the Sea (Waterloo)",
+        "description": "Historic Hindu temple built offshore by indentured Indian laborer Sewdass Sadhu, symbolizing resilience and heritage."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking departing within 90 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Accommodation",
+        "description": "Hotel reservation, guesthouse booking, or host invitation letter.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Credit card, traveler's cheques, or recent bank statement.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Online Immigration Departure/Arrival Form",
+        "description": "Completed electronic immigration form submitted prior to landing.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights: Reserve return flights to Piarco International Airport (POS), Trinidad or ANR Robinson (TAB), Tobago.",
+      "Check Passport Validity: Ensure passport has minimum 6 months validity.",
+      "Fill Arrival Form: Complete the online travel declaration prior to arrival.",
+      "Flight & Arrival: Fly into Trinidad or Tobago without applying for any advance visa.",
+      "Border Clearance: Present passport, return ticket, and hotel booking at immigration.",
+      "Receive Visa-Free Stamp: Immigration officer stamps passport for up to 90 days of visa-free stay."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Visa-Free Entry)",
+      "service_fee": "₹0",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy completely free visa-free entry."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Visa-free entry granted immediately at airport border control.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity beyond intended stay."
+      },
+      {
+        "category": "Return Flight",
+        "details": "Mandatory confirmed onward/return ticket."
+      },
+      {
+        "category": "Visa Waiver",
+        "details": "Bilateral visa waiver grants 90 days stay for tourism."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "$50 USD per day",
+        "description": "Proof of funds for Caribbean vacation."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian passport holders need a visa for Trinidad & Tobago?",
+        "answer": "No! Indian citizens enjoy 100% VISA-FREE entry for up to 90 days for tourism and leisure."
+      },
+      {
+        "question": "What is the cultural connection between Trinidad and India?",
+        "answer": "Over 35% of the population is of Indian descent (Indo-Trinidadians), having arrived between 1845 and 1917. Diwali is an official national public holiday, and Indian food (roti, doubles) is national cuisine."
+      },
+      {
+        "question": "How do you travel between Trinidad and Tobago?",
+        "answer": "High-speed passenger ferries operate daily between Port of Spain and Scarborough (approx. 2.5 hours), or 20-minute flights on Caribbean Airlines."
+      }
+    ],
+    "validity": "90 Days on Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Visa-Free",
+    "official_source": "Immigration Division, Ministry of National Security of Trinidad and Tobago (nationalsecurity.gov.tt)"
+  },
+  "barbados": {
+    "overview": "Barbados is the sophisticated jewel of the Eastern Caribbean, celebrated for powder-white pink-tinted beaches, crystal-clear turquoise waters, UNESCO-listed historic Bridgetown and its Garrison, Harrison's Cave limestone caverns, and vibrant Bajan rum and culinary culture. Indian passport holders enjoy completely VISA-FREE entry for up to 90 days on arrival! Bask on legendary beaches, snorkel with sea turtles in Carlisle Bay, and savor world-class Caribbean hospitality.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Carlisle Bay & Sea Turtle Snorkeling",
+        "description": "Calm crystalline waters harboring six shallow shipwrecks where you can swim freely with green sea turtles."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Historic Bridgetown & Garrison (UNESCO)",
+        "description": "Outstanding 17th-century British colonial architecture, historic parliament buildings, and military garrison."
+      },
+      {
+        "icon": "💎",
+        "title": "Harrison's Cave Eco-Adventure",
+        "description": "Spectacular underground crystallised limestone cavern with stalactites, stalagmites, and deep crystal-clear pools."
+      },
+      {
+        "icon": "🌊",
+        "title": "The Crane Beach & Platinum Coast",
+        "description": "World-famous pink sand beach surrounded by dramatic cliffs and luxury resorts on the Atlantic and Caribbean coasts."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Passport valid for duration of intended stay with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking to Grantley Adams International Airport (BGI).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Accommodation",
+        "description": "Hotel booking, guesthouse confirmation, or villa rental.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Online Immigration ED Card",
+        "description": "Completed online Immigration and Customs Form submitted within 72 hours prior to arrival.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Funds",
+        "description": "Credit card or bank statement demonstrating sufficient funds for stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights: Reserve return flights to Grantley Adams International Airport (BGI), Bridgetown.",
+      "Submit Online ED Card: Complete the free electronic immigration declaration form online (travelform.gov.bb).",
+      "Pack Documents: Carry passport, confirmed return ticket, hotel reservation, and funds proof.",
+      "Fly to Barbados: Arrive at Grantley Adams International Airport without any prior visa application.",
+      "Border Inspection: Present passport and digital ED card at immigration.",
+      "Receive Visa-Free Entry: Immigration officer stamps passport for up to 90 days stay."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Visa-Free Entry)",
+      "service_fee": "₹0",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian citizens enter Barbados visa-free for tourism up to 90 days."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted at Grantley Adams International Airport border control.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for the duration of stay."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Mandatory confirmed return or onward ticket."
+      },
+      {
+        "category": "Online ED Card",
+        "details": "Must complete digital travel declaration before arrival."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$50 USD per day",
+        "description": "Proof of funds for island stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa to visit Barbados?",
+        "answer": "No! Indian passport holders can visit Barbados completely VISA-FREE for stays up to 90 days for tourism."
+      },
+      {
+        "question": "What is the Barbados Online ED Card?",
+        "answer": "All travelers must fill out the free online Immigration/Customs Form (ED Card) at travelform.gov.bb within 72 hours before arrival in Barbados."
+      },
+      {
+        "question": "What currency is used in Barbados?",
+        "answer": "The official currency is the Barbadian Dollar (BBD), pegged to the US Dollar at 2 BBD = 1 USD. US dollars are universally accepted."
+      }
+    ],
+    "validity": "90 Days on Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Visa-Free",
+    "official_source": "Barbados Immigration Department (immigration.gov.bb)"
+  },
+  "bahamas": {
+    "overview": "The Bahamas is an archipelago of 700 subtropical islands and 2,400 cays scattered across stunning sapphire Atlantic waters. Renowned for Nassau's Paradise Island, the swimming pigs of Big Major Cay in Exuma, the Pink Sands Beach of Harbour Island, and world-class scuba diving along the world's third-largest barrier reef off Andros. Indian citizens holding a valid visa or permanent residency from the USA, Canada, UK, or Schengen area enjoy visa-free entry / expedited eVisa for up to 90 days.",
+    "highlights": [
+      {
+        "icon": "🐷",
+        "title": "Exuma Swimming Pigs & Cays",
+        "description": "Boat excursions to Big Major Cay to swim alongside the famous resident pigs in crystal-clear turquoise waters."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Harbour Island Pink Sands Beach",
+        "description": "Three miles of magical soft pale-pink sand formed by crushed microscopic coral shells (foraminifera)."
+      },
+      {
+        "icon": "🏰",
+        "title": "Nassau & Paradise Island",
+        "description": "The vibrant capital featuring pastel colonial architecture, pirate history, Queen's Staircase, and luxury water parks."
+      },
+      {
+        "icon": "🤿",
+        "title": "Andros Barrier Reef & Blue Holes",
+        "description": "The third-largest barrier reef on Earth teeming with coral walls, blue holes, sharks, and marine life."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months beyond departure date.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / UK / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, UK, or Schengen valid for duration of stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Air Ticket",
+        "description": "Flight booking into Lynden Pindling International Airport (NAS), Nassau.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Reservation",
+        "description": "Booking voucher for hotel or resort in Nassau, Exuma, or Grand Bahama.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Funds",
+        "description": "Credit card and recent bank statements demonstrating sufficient funds.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa Exemption: If holding a valid US, Canadian, UK, or Schengen visa, enter without a national Bahamian visa.",
+      "Apply Online (if required): If not holding a waiver visa, apply for an official Bahamas eVisa via mofr.gov.bs.",
+      "Submit Application: Upload passport scan, photo, return ticket, and financial proof.",
+      "Pay eVisa Fee: Pay $100 USD (single entry) or $110 USD (multiple entry) online.",
+      "Receive Approval: Download and print the electronic visa approval within 7 to 10 working days.",
+      "Border Entry: Present passport, visa/waiver, and return ticket at Nassau airport immigration desk."
+    ],
+    "fees": {
+      "visa_fee": "$0 (with US/UK/Schengen visa waiver) / $100 USD (eVisa)",
+      "service_fee": "₹0 (Official Portal)",
+      "total_fee": "$0 - $100 USD (approx. ₹0 - ₹8,300)",
+      "notes": "Holders of valid US/UK/Schengen visas enter under the tourist waiver."
+    },
+    "proc_time": "Instant (Waiver) or 7-10 Days (eVisa)",
+    "proc_details": "Border entry stamp on arrival with visa waiver or via Ministry of Foreign Affairs eVisa.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months remaining validity."
+      },
+      {
+        "category": "Visa Waiver Exemption",
+        "details": "Valid multiple-entry US, Canadian, UK, or Schengen visa qualifies for waiver."
+      },
+      {
+        "category": "Return Air Ticket",
+        "details": "Mandatory return ticket required by airline and immigration."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$100 USD per day",
+        "description": "Proof of funds for island stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter the Bahamas with a US visa?",
+        "answer": "Yes! Indian passport holders with a valid multiple-entry visa issued by the USA, Canada, UK, or Schengen area can enter the Bahamas without a separate Bahamian visa for up to 90 days."
+      },
+      {
+        "question": "Where are the swimming pigs located?",
+        "answer": "The famous swimming pigs live on Big Major Cay (Pig Beach) in the Exuma district, accessible by guided boat tours from Nassau, Staniel Cay, or Great Exuma."
+      },
+      {
+        "question": "What currency is used in The Bahamas?",
+        "answer": "The Bahamian Dollar (BSD) is pegged 1:1 to the US Dollar. Both currencies are accepted interchangeably everywhere across the islands."
+      }
+    ],
+    "validity": "Up to 90 Days",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Ministry of Foreign Affairs and Immigration of The Bahamas (mofr.gov.bs)"
+  },
+  "cuba": {
+    "overview": "Cuba is the largest and most captivating island in the Caribbean, frozen in timeless enchantment with vintage 1950s American classic cars, UNESCO-preserved Spanish colonial architecture in Old Havana (Habana Vieja) and Trinidad, the limestone mogotes and tobacco farms of Viñales Valley, and the dazzling white sands of Varadero. Indian passport holders must obtain an official Cuban Tourist Card (Tarjeta del Turista) prior to travel, available through the Embassy of Cuba in New Delhi or authorized travel agencies/airlines.",
+    "highlights": [
+      {
+        "icon": "🚗",
+        "title": "Old Havana & Vintage Classic Cars",
+        "description": "Stroll cobblestone plazas of UNESCO-listed Habana Vieja and cruise the Malecón seawall in a vibrant 1950s convertible."
+      },
+      {
+        "icon": "🌿",
+        "title": "Viñales Valley & Tobacco Farms",
+        "description": "Dramatic karst limestone hills (mogotes) where world-famous Cuban cigars are handcrafted on traditional plantations."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Varadero Beach Resort",
+        "description": "20 kilometers of powdery white sand and turquoise Caribbean water lined with palm trees and oceanfront resorts."
+      },
+      {
+        "icon": "🎺",
+        "title": "Trinidad Colonial Town (UNESCO)",
+        "description": "Impeccably preserved 16th-century Spanish colonial pastel mansions, cobblestone streets, and live open-air salsa music."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months beyond travel dates.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Cuban Tourist Card (Tarjeta del Turista)",
+        "description": "Original tourist card issued by Cuban Embassy or authorized agency.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into José Martí International Airport (HAV), Havana.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Mandatory international health insurance policy covering medical expenses in Cuba.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Casa Particular Reservation",
+        "description": "Confirmed booking at a hotel or licensed local homestay (Casa Particular).",
+        "is_mandatory": true
+      },
+      {
+        "title": "D'Viajeros Digital Declaration",
+        "description": "Completed online customs and health declaration completed within 48 hours before flight.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Obtain Cuban Tourist Card: Apply at the Embassy of Cuba in New Delhi or buy through authorized visa services/airlines.",
+      "Purchase Travel Insurance: Secure mandatory travel medical insurance valid in Cuba.",
+      "Fill D'Viajeros Online Form: Complete the official digital declaration (dviajeros.mitrans.gob.cu) within 48h of departure.",
+      "Flight to Havana: Fly into José Martí International Airport (HAV).",
+      "Immigration Clearance: Present passport, half of the Tourist Card, D'Viajeros QR code, and insurance policy.",
+      "Keep Tourist Card Stub: Retain the second half of the Tourist Card safely, as it must be returned upon departure."
+    ],
+    "fees": {
+      "visa_fee": "$25 - $50 USD (approx. ₹2,100 - ₹4,200)",
+      "service_fee": "₹0 - ₹1,500 (Agency)",
+      "total_fee": "approx. ₹3,500 Total",
+      "notes": "Tourist Card purchased through Cuban Embassy New Delhi or authorized agency."
+    },
+    "proc_time": "1 to 5 Business Days",
+    "proc_details": "Tourist Card issued over-the-counter or delivered via courier by authorized agencies.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity."
+      },
+      {
+        "category": "Medical Insurance",
+        "details": "Mandatory non-US travel health insurance policy covering Cuba."
+      },
+      {
+        "category": "D'Viajeros Form",
+        "details": "Mandatory digital form completed within 48 hours of flight."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (Euros / USD)",
+        "minimum_balance_or_amount": "$50 USD / €50 per day",
+        "description": "Foreign cash (Euros preferred) is essential as non-Cuban credit cards may face restrictions."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do Indian citizens get a Cuban Tourist Card?",
+        "answer": "Indian travelers can obtain the Cuban Tourist Card (Tarjeta del Turista) from the Embassy of Cuba in New Delhi or through accredited travel agencies and tour operators."
+      },
+      {
+        "question": "How long is the Cuban Tourist Card valid for?",
+        "answer": "The Tourist Card allows a stay of up to 90 days from arrival and can be extended for an additional 90 days locally at immigration offices."
+      },
+      {
+        "question": "What is a Casa Particular in Cuba?",
+        "answer": "A Casa Particular is a licensed private homestay offering visitors authentic Cuban hospitality, home-cooked Creole meals, and affordable lodging."
+      }
+    ],
+    "validity": "90 Days from Entry",
+    "stay_duration": "Up to 90 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Embassy of the Republic of Cuba in New Delhi & Ministerio de Relaciones Exteriores (cubaminrex.cu)"
+  },
+  "puerto-rico": {
+    "overview": "Puerto Rico, an enchanting unincorporated territory of the United States, combines vibrant Boricua Caribbean culture with lush tropical landscapes. Explore the blue-cobblestone streets and colossal 16th-century sea fortresses of Old San Juan (UNESCO), the magical emerald rainforest of El Yunque (the only tropical rainforest in the US National Forest System), the bioluminescent glowing waters of Mosquito Bay in Vieques, and world-famous Flamenco Beach on Culebra. Because Puerto Rico is a US territory, Indian citizens enter using a standard US B1/B2 Visitor Visa.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Old San Juan & Castillo San Felipe del Morro (UNESCO)",
+        "description": "Colossal 16th-century Spanish coastal fortress (El Morro), blue cobblestone streets, and pastel colonial facades."
+      },
+      {
+        "icon": "🌿",
+        "title": "El Yunque National Rainforest",
+        "description": "The only tropical rainforest in the US National Forest System, home to rushing waterfalls, giant tree ferns, and coqui frogs."
+      },
+      {
+        "icon": "✨",
+        "title": "Mosquito Bay Bioluminescent Waters (Vieques)",
+        "description": "Guinness World Record brightest bioluminescent bay on Earth, glowing neon blue with millions of dinoflagellates."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Flamenco Beach (Culebra)",
+        "description": "Consistently ranked among the top beaches worldwide, with turquoise waves, soft white sand, and historic painted tanks."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months with blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US B1/B2 Visitor Visa",
+        "description": "Valid non-immigrant US B1/B2 visitor visa sticker affixed to passport.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into Luis Muñoz Marín International Airport (SJU), San Juan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Resort Reservation",
+        "description": "Confirmed booking in San Juan, Vieques, or coastal resort.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Funds",
+        "description": "Credit cards and bank statements demonstrating travel budget.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Secure US B1/B2 Visa: Apply for a US Non-Immigrant Visitor Visa (DS-160) at US Embassy/Consulates in India.",
+      "Book Flights to San Juan: Book flights arriving into San Juan Luis Muñoz Marín International Airport (SJU).",
+      "No Separate Visa Required: Since Puerto Rico is a US territory, domestic or international entry is covered under your US Visa.",
+      "US Customs & Border Protection (CBP): Clear standard US immigration at port of entry.",
+      "Receive US Entry Stamp / I-94: Granted standard stay duration (typically up to 6 months) as determined by CBP.",
+      "Explore Puerto Rico: Freely travel between the main island, Vieques, Culebra, and US mainland."
+    ],
+    "fees": {
+      "visa_fee": "$185 USD (Standard US B1/B2 Visa)",
+      "service_fee": "₹0",
+      "total_fee": "$185 USD (approx. ₹15,400)",
+      "notes": "Standard US Department of State MRV visa application fee."
+    },
+    "proc_time": "Varies by US Consular Appointment Wait Times",
+    "proc_details": "Processed by US Department of State / US Embassy & Consulates in India.",
+    "requirements": [
+      {
+        "category": "US Immigration Law",
+        "details": "Standard United States immigration laws apply entirely."
+      },
+      {
+        "category": "Valid US Visa",
+        "details": "Must hold valid US B1/B2 visa or US Permanent Residency."
+      },
+      {
+        "category": "Electronic I-94",
+        "details": "CBP issues automated electronic I-94 arrival record upon entry."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Bank Account",
+        "minimum_balance_or_amount": "₹2,50,000 balance",
+        "description": "Demonstrates sufficient financial solvency for US territory travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a separate visa for Puerto Rico?",
+        "answer": "No separate visa is needed! Because Puerto Rico is a territory of the United States, entry requirements are identical to the US mainland. You enter on a valid US B1/B2 Visitor Visa."
+      },
+      {
+        "question": "Can I fly between the US mainland and Puerto Rico without going through immigration?",
+        "answer": "Yes! Flights between mainland US cities (Miami, New York, Orlando) and San Juan are domestic flights with no customs or immigration checkpoints between them."
+      },
+      {
+        "question": "What is the official currency in Puerto Rico?",
+        "answer": "The official currency is the United States Dollar (USD)."
+      }
+    ],
+    "validity": "Up to 10 Years (US Visa)",
+    "stay_duration": "Up to 6 Months (Per CBP I-94)",
+    "entry_type": "Multiple Entry",
+    "official_source": "US Customs and Border Protection (CBP) & Discover Puerto Rico (discoverpuertorico.com)"
+  },
+  "haiti": {
+    "overview": "Haiti, sharing the Caribbean island of Hispaniola with the Dominican Republic, is the world's first independent Black republic, rich in revolutionary pride, Vodou heritage, vibrant naive art, and monumental historic fortresses. Historic treasures include the Citadelle Laferrière (UNESCO, the largest fortress in the Americas), the ruins of Sans-Souci Palace, the tiered natural turquoise limestone pools of Bassin Bleu in Jacmel, and the seaside artisan markets. Indian passport holders enjoy VISA-FREE entry for up to 90 days upon paying a $10 tourist fee on arrival.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Citadelle Laferrière (UNESCO)",
+        "description": "The largest fortress in the Americas, perched atop Bonnet à l’Évêque mountain at 900m, built with 365 cannons."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Sans-Souci Palace (UNESCO)",
+        "description": "The magnificent 19th-century royal residence of King Henri I in Milot, known as the 'Versailles of the Caribbean'."
+      },
+      {
+        "icon": "🌊",
+        "title": "Bassin Bleu Waterfalls (Jacmel)",
+        "description": "Three breathtaking cascading turquoise pools and waterfalls hidden in lush mountain caves near artisan town Jacmel."
+      },
+      {
+        "icon": "🎨",
+        "title": "Jacmel Arts & Gingerbread Mansions",
+        "description": "Haiti's cultural and carnival capital, famous for papier-mâché sculptures, vibrant art galleries, and Victorian architecture."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for minimum 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Air Ticket",
+        "description": "Flight booking into Port-au-Prince (PAP) or Cap-Haïtien (CAP).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Reservation",
+        "description": "Booking voucher at a verified hotel or guest lodge.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Tourist Fee on Arrival",
+        "description": "$10 USD tourist card fee payable in cash at border control.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Cash or credit card demonstrating sufficient funds for stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Book Flights: Book roundtrip flights to Cap-Haïtien (CAP) or Port-au-Prince (PAP).",
+      "Prepare Passport: Ensure your Indian passport has at least 6 months validity.",
+      "Fly to Haiti: Travel to Haiti without applying for any prior visa at an embassy.",
+      "Immigration Desk: Present passport, return flight ticket, and hotel reservation.",
+      "Pay Tourist Fee: Pay $10 USD tourist fee in cash at the airport immigration counter.",
+      "Receive Visa-Free Entry Stamp: Immigration officer stamps passport for up to 90 days stay."
+    ],
+    "fees": {
+      "visa_fee": "FREE (₹0 Visa-Free)",
+      "service_fee": "$10 USD Tourist Fee (approx. ₹830)",
+      "total_fee": "$10 USD Total",
+      "notes": "Mandatory $10 USD tourist card fee payable in cash on arrival."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Granted upon arrival at Cap-Haïtien or Port-au-Prince international airports.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity from date of entry."
+      },
+      {
+        "category": "Airport Tourist Fee",
+        "details": "Must carry $10 USD in cash for airport entry fee."
+      },
+      {
+        "category": "Onward Ticket",
+        "details": "Confirmed return flight ticket strictly verified by airlines."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "Proof of funds for Caribbean travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian passport holders need a visa for Haiti?",
+        "answer": "No! Indian citizens enjoy VISA-FREE entry for up to 90 days. You only need to pay a nominal $10 USD tourist card fee at airport immigration upon arrival."
+      },
+      {
+        "question": "What is the Citadelle Laferrière?",
+        "answer": "It is a massive early 19th-century mountaintop fortress built by King Henri Christophe after Haiti won independence from France, recognized by UNESCO as the eighth wonder of the world."
+      },
+      {
+        "question": "What currencies are used in Haiti?",
+        "answer": "The official currency is the Haitian Gourde (HTG), but US Dollars (USD) are widely accepted in hotels, tours, and major establishments."
+      }
+    ],
+    "validity": "90 Days on Arrival",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Visa-Free",
+    "official_source": "Direction de l'Immigration et de l'Émigration d'Haïti"
+  },
+  "belize": {
+    "overview": "Belize is Central America's only English-speaking country, nestled along the Caribbean coast with lush tropical rainforests and the second-largest barrier reef in the world. Famous for the Great Blue Hole (a UNESCO world wonder for divers), ancient Mayan pyramids towering in the jungle (Xunantunich and Caracol), snorkeling with nurse sharks at Shark Ray Alley in Caye Caulker, and cave tubing through sacred underground rivers. Indian citizens holding a valid multiple-entry US, Canadian, or Schengen visa enjoy visa-free entry, while others apply for a consular visa.",
+    "highlights": [
+      {
+        "icon": "🤿",
+        "title": "Great Blue Hole (UNESCO)",
+        "description": "A 300-meter-wide, 125-meter-deep marine sinkhole renowned worldwide for crystal-clear deep scuba diving."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Xunantunich & Caracol Mayan Ruins",
+        "description": "Ancient ceremonial Mayan temples deep in the Cayo jungle, featuring the soaring 40-meter El Castillo pyramid."
+      },
+      {
+        "icon": "🦈",
+        "title": "Caye Caulker & Shark Ray Alley",
+        "description": "Laid-back Caribbean island with the motto 'Go Slow' where you can snorkel alongside friendly nurse sharks and stingrays."
+      },
+      {
+        "icon": "🛶",
+        "title": "Actun Tunichil Muknal (ATM Cave)",
+        "description": "Sacred Mayan sacrificial cave reached by swimming and trekking, featuring intact skeletal remains and ancient pottery."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / Canada / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, or Schengen valid for duration of stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Air Ticket",
+        "description": "Flight booking into Philip S.W. Goldson International Airport (BZE), Belize City.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Confirmed booking in Caye Caulker, San Pedro, or Cayo District.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Recent bank statements or international credit card ($75 USD per day).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check US / Schengen Waiver: If you hold a valid multiple-entry US, Canadian, or Schengen visa, enter visa-free directly.",
+      "Apply via Belize Mission (if no waiver): Apply at an accredited Belizean diplomatic mission or consulate.",
+      "Assemble Documents: Passport, photos, flight ticket, hotel booking, and bank statements.",
+      "Pay Consular Fee: Pay $50 USD (single entry) or statutory visa fee.",
+      "Receive Visa Sticker: Passport returned with visa sticker within 10 to 14 working days.",
+      "Immigration Clearance: Present passport, visa/waiver, and return ticket at Belize City airport."
+    ],
+    "fees": {
+      "visa_fee": "$0 (Visa-free with US/Schengen visa) / $50 USD (Consular)",
+      "service_fee": "₹0",
+      "total_fee": "$0 - $50 USD (approx. ₹0 - ₹4,200)",
+      "notes": "Indian holders of valid US/Canadian/Schengen visas enter visa-free."
+    },
+    "proc_time": "Instant (with Waiver) or 10-14 Days (Consular)",
+    "proc_details": "Border clearance on arrival with US/Schengen waiver or consular processing.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity."
+      },
+      {
+        "category": "US / Schengen Waiver",
+        "details": "Holders of valid multiple-entry US, Canadian, or Schengen visas enter visa-free for up to 30 days."
+      },
+      {
+        "category": "Departure Tax",
+        "details": "Airport departure fee (approx. $40 USD) often included in international airline tickets."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$75 USD per day",
+        "description": "Proof of funds for Caribbean/Central American stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter Belize with a US visa?",
+        "answer": "Yes! Indian citizens holding a valid multiple-entry visa issued by the USA, Canada, or Schengen member states can enter Belize VISA-FREE for up to 30 days."
+      },
+      {
+        "question": "What language is spoken in Belize?",
+        "answer": "English is the official language of Belize, making travel, dining, and navigation effortless for international travelers."
+      },
+      {
+        "question": "What is the Great Blue Hole?",
+        "answer": "The Great Blue Hole is a world-famous underwater sinkhole off the coast of Belize, made famous by Jacques Cousteau as one of the top ten scuba diving spots on Earth."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days (Extendable)",
+    "entry_type": "Single Entry",
+    "official_source": "Department of Immigration and Nationality Services of Belize (immigration.gov.bz)"
+  },
+  "el-salvador": {
+    "overview": "El Salvador, the 'Land of Volcanoes', is Central America's exciting tourism hotspot, renowned for world-class Pacific surfing along El Tunco and El Zonte (Bitcoin Beach), the scenic mountain villages and coffee plantations of the Ruta de las Flores, the towering turquoise crater lake of Santa Ana Volcano, and the UNESCO-preserved Mayan village of Joya de Cerén (the 'Pompeii of the Americas'). Indian citizens holding a valid multiple-entry US, Canadian, or Schengen visa enjoy visa-free entry under the CA-4 agreement upon purchasing a $12 tourist card.",
+    "highlights": [
+      {
+        "icon": "🏄",
+        "title": "El Tunco & Surf City (Bitcoin Beach)",
+        "description": "Legendary Pacific point breaks, black volcanic sand beaches, vibrant surf culture, and Bitcoin commerce."
+      },
+      {
+        "icon": "🌋",
+        "title": "Santa Ana Volcano (Ilamatepec)",
+        "description": "Hike to the summit of El Salvador's highest volcano (2,381m) to gaze into a glowing emerald sulfuric crater lake."
+      },
+      {
+        "icon": "☕",
+        "title": "Ruta de las Flores & Coffee Haciendas",
+        "description": "Picturesque colonial mountain villages (Juayúa, Ataco) featuring artisan craft markets and specialty high-altitude coffee tours."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Joya de Cerén Mayan Ruins (UNESCO)",
+        "description": "Pre-Columbian farming village buried beneath volcanic ash in 600 AD, remarkably preserving daily Mayan domestic life."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Passport valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / Canada / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, or Schengen valid for duration of stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Flight booking into El Salvador International Airport San Óscar Romero (SAL).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Tourist Card Fee",
+        "description": "$12 USD tourist card fee payable upon arrival at airport immigration.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Confirmed booking in San Salvador, El Tunco, or Ruta de las Flores.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Verify Visa Waiver: Check valid multiple-entry US, Canadian, or Schengen visa (or CA-4 status).",
+      "Book Flights: Book return flights to San Salvador International Airport (SAL).",
+      "Arrival at Airport: Land at SAL airport and proceed to immigration desk.",
+      "Pay Tourist Card Fee: Purchase the mandatory $12 USD tourist entry card at the immigration booth.",
+      "Immigration Stamping: Border officer validates passport and applies 90-day CA-4 regional entry stamp.",
+      "Explore El Salvador & CA-4: Travel freely across El Salvador, Guatemala, Honduras, and Nicaragua within the 90-day window."
+    ],
+    "fees": {
+      "visa_fee": "$0 (with US/Schengen visa waiver) / $40 (Consular)",
+      "service_fee": "$12 USD Tourist Card",
+      "total_fee": "$12 - $52 USD (approx. ₹1,000 - ₹4,300)",
+      "notes": "Mandatory $12 USD tourist card fee purchased upon arrival at airport."
+    },
+    "proc_time": "Instant on Arrival (with Waiver) or 7-10 Days (Consular)",
+    "proc_details": "Border entry stamp on arrival with visa waiver or via Salvadoran diplomatic missions.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity beyond entry."
+      },
+      {
+        "category": "CA-4 Tourist Card",
+        "details": "$12 USD tourist card payable at airport."
+      },
+      {
+        "category": "Schengen/US Waiver",
+        "details": "Valid multiple-entry US/Canadian/Schengen visa grants 90 days stay."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "$50 USD per day",
+        "description": "Proof of funds for Central American vacation."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders visit El Salvador with a US visa?",
+        "answer": "Yes! Indian citizens holding a valid multiple-entry visa for the USA, Canada, or Schengen area can enter El Salvador visa-free for up to 90 days upon buying a $12 tourist card."
+      },
+      {
+        "question": "What is the Central America CA-4 Border Control Agreement?",
+        "answer": "The CA-4 agreement allows free travel across El Salvador, Guatemala, Honduras, and Nicaragua on a single 90-day tourist entry without additional border visas."
+      },
+      {
+        "question": "What currency is accepted in El Salvador?",
+        "answer": "El Salvador uses the United States Dollar (USD) and Bitcoin as legal tender."
+      }
+    ],
+    "validity": "90 Days on Arrival (CA-4)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Dirección General de Migración y Extranjería de El Salvador (migracion.gob.sv)"
+  },
+  "guatemala": {
+    "overview": "Guatemala, the heart of the ancient Mayan civilization, is one of the most culturally and visually breathtaking countries in Central America. Discover the monumental pyramids of Tikal National Park (UNESCO) rising above the dense Petén jungle canopy, the cobblestone streets and Spanish baroque churches of Antigua Guatemala (UNESCO) framed by active volcanoes, the emerald waters of Lake Atitlán ringed by traditional indigenous Mayan villages, and the terraced turquoise limestone pools of Semuc Champey. Indian citizens holding a valid US, Canadian, or Schengen visa enjoy visa-free entry for up to 90 days under the CA-4 agreement.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Tikal National Park & Mayan Pyramids (UNESCO)",
+        "description": "Colossal pre-Columbian Mayan pyramids (Temple of the Grand Jaguar) soaring above pristine tropical rainforest canopy."
+      },
+      {
+        "icon": "🌋",
+        "title": "Antigua Guatemala & Volcán de Fuego (UNESCO)",
+        "description": "Enchanting 16th-century colonial city famous for pastel baroque architecture and views of active erupting Volcán de Fuego."
+      },
+      {
+        "icon": "🌊",
+        "title": "Lake Atitlán & Indigenous Mayan Villages",
+        "description": "Magnificent volcanic crater lake hailed as one of the most beautiful in the world, ringed by traditional Tz'utujil and Kaqchikel towns."
+      },
+      {
+        "icon": "🏊",
+        "title": "Semuc Champey Natural Limestone Pools",
+        "description": "Stepped natural turquoise limestone cascades and cascading pools nestled in a lush mountain river gorge."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months beyond travel dates.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / Canada / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, or Schengen area valid during stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into La Aurora International Airport (GUA), Guatemala City.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Tour Itinerary",
+        "description": "Confirmed booking in Antigua, Lake Atitlán, or Flores.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Guatemala Electronic Entry Declaration",
+        "description": "Completed online customs and immigration declaration form prior to arrival.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check US / Schengen Exemption: Holders of valid multi-entry US, Canadian, or Schengen visas qualify for visa-free entry.",
+      "Apply via Embassy (if no waiver): Apply for a consular visa at the Embassy of Guatemala in New Delhi.",
+      "Fill Electronic Entry Form: Complete the free online customs declaration before flight boarding.",
+      "Flight to Guatemala City: Land at La Aurora International Airport (GUA).",
+      "Border Control: Present passport, US/Schengen visa, return ticket, and electronic declaration code.",
+      "Receive CA-4 Stamp: Border control issues 90-day CA-4 regional entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$0 (Visa-free with US/Schengen visa) / $50 (Consular)",
+      "service_fee": "₹0 (Official)",
+      "total_fee": "$0 - $50 USD (approx. ₹0 - ₹4,200)",
+      "notes": "Holders of valid US/Canadian/Schengen visas enter completely visa-free."
+    },
+    "proc_time": "Instant (with Waiver) or 10-15 Days (Consular)",
+    "proc_details": "Border entry stamp on arrival with visa waiver or processed at Embassy in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity from entry."
+      },
+      {
+        "category": "Visa Waiver",
+        "details": "Multiple-entry US, Canadian, or Schengen visa allows 90 days visa-free entry under CA-4."
+      },
+      {
+        "category": "Return Air Ticket",
+        "details": "Mandatory onward/return flight reservation."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Bank Statements",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "Proof of sufficient funds for travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens visit Guatemala with a US visa?",
+        "answer": "Yes! Indian passport holders with a valid multiple-entry visa for the USA, Canada, or Schengen area can visit Guatemala VISA-FREE for up to 90 days under the CA-4 agreement."
+      },
+      {
+        "question": "What is the CA-4 visa?",
+        "answer": "The Central America-4 border control agreement allows tourists to travel freely across Guatemala, El Salvador, Honduras, and Nicaragua for up to 90 days on a single entry."
+      },
+      {
+        "question": "What currency is used in Guatemala?",
+        "answer": "The official currency is the Guatemalan Quetzal (GTQ), named after the sacred resplendent quetzal bird. US Dollars are also widely accepted in tourist hubs."
+      }
+    ],
+    "validity": "90 Days on Arrival (CA-4)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Instituto Guatemalteco de Migración (igm.gob.gt) & Embassy of Guatemala in India"
+  },
+  "honduras": {
+    "overview": "Honduras is a land of incredible biodiversity and ancient mysteries, home to the UNESCO-listed Copán Mayan Ruins (celebrated for the Hieroglyphic Stairway and intricate stone stelae), the world-class Caribbean diving islands of Roatán and Utila along the Mesoamerican Barrier Reef (famous for swimming with whale sharks), the pristine Cayos Cochinos marine reserve, and the colonial cobblestone city of Comayagua. Indian citizens holding a valid multiple-entry US, Canadian, or Schengen visa enjoy visa-free entry for up to 90 days under the CA-4 agreement.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Copán Mayan Ruins (UNESCO)",
+        "description": "The 'Paris of the Mayan World', renowned for the 63-step Hieroglyphic Stairway (longest Mayan text) and stone stelae."
+      },
+      {
+        "icon": "🦈",
+        "title": "Roatán & Utila Bay Islands",
+        "description": "World-class scuba diving along the Mesoamerican Barrier Reef, famous for affordable dive certifications and whale sharks."
+      },
+      {
+        "icon": "🏝️",
+        "title": "Cayos Cochinos Marine Reserve",
+        "description": "Unspoiled archipelago of 15 coral cays inhabited by the indigenous Garifuna people and surrounded by pristine reefs."
+      },
+      {
+        "icon": "🌿",
+        "title": "Pico Bonito National Park",
+        "description": "Rugged tropical mountain rainforest rising directly from the Caribbean coast, offering class-IV river rafting and canopy ziplines."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / Canada / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, or Schengen area valid for stay duration.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into Roatán (RTB), San Pedro Sula (SAP), or Palmerola/Tegucigalpa (XPL).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Dive Resort Booking",
+        "description": "Confirmed booking in Roatán, Utila, or Copán Ruinas.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Honduras Pre-Check (Prechequeo Migratorio)",
+        "description": "Mandatory online immigration pre-check completed before flight boarding.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Verify Visa Waiver: Check valid multiple-entry US, Canadian, or Schengen visa.",
+      "Complete Prechequeo Migratorio: Fill the mandatory free online immigration pre-check at prechequeo.inm.gob.hn.",
+      "Fly to Honduras: Land at Roatán (RTB) or Palmerola International Airport (XPL).",
+      "Border Inspection: Present passport, pre-check confirmation, return ticket, and US/Schengen visa.",
+      "Receive CA-4 Stamp: Immigration officer stamps passport for up to 90 days stay across the CA-4 region.",
+      "Explore Honduras: Enjoy diving in Roatán, exploring Copán, or continuing into Guatemala/El Salvador."
+    ],
+    "fees": {
+      "visa_fee": "$0 (Visa-free with US/Schengen visa) / $30 (Consular)",
+      "service_fee": "₹0 (Official)",
+      "total_fee": "$0 - $30 USD (approx. ₹0 - ₹2,500)",
+      "notes": "Indian holders of valid US/Canadian/Schengen visas enter completely visa-free."
+    },
+    "proc_time": "Instant (with Waiver) or 10-14 Days (Consular)",
+    "proc_details": "Border entry stamp on arrival with visa waiver or processed at consular mission.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months validity."
+      },
+      {
+        "category": "Online Prechequeo",
+        "details": "Mandatory pre-registration at prechequeo.inm.gob.hn prior to departure."
+      },
+      {
+        "category": "CA-4 Border Exemption",
+        "details": "US/Schengen visa grants 90 days stay across the CA-4 area."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash",
+        "minimum_balance_or_amount": "$50 USD per day",
+        "description": "Proof of funds for island/adventure travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter Honduras with a US visa?",
+        "answer": "Yes! Indian passport holders holding a valid multiple-entry visa for the USA, Canada, or Schengen area enter Honduras VISA-FREE for up to 90 days under the CA-4 agreement."
+      },
+      {
+        "question": "What is the Prechequeo Migratorio in Honduras?",
+        "answer": "It is a mandatory free electronic immigration pre-check that all travelers must complete at prechequeo.inm.gob.hn before boarding their flight to Honduras."
+      },
+      {
+        "question": "Where can you swim with whale sharks in Honduras?",
+        "answer": "The island of Utila is one of the few places in the world where whale sharks can be spotted swimming year-round, especially between March and April and September and December."
+      }
+    ],
+    "validity": "90 Days on Arrival (CA-4)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Instituto Nacional de Migración de Honduras (inm.gob.hn)"
+  },
+  "nicaragua": {
+    "overview": "Nicaragua, the 'Land of Lakes and Volcanoes', is an eco-adventurer's paradise boasting Granada's vibrant Spanish colonial architecture on Lake Nicaragua, Ometepe Island (a volcanic island formed by two volcanoes rising from a freshwater lake), the glowing lava lake inside Masaya Volcano, volcano-boarding down the black volcanic slopes of Cerro Negro in León, and the emerald Pacific surf haven of San Juan del Sur. Indian passport holders holding a valid multiple-entry US, Canadian, or Schengen visa enjoy visa-free entry upon purchasing a $10 tourist card on arrival.",
+    "highlights": [
+      {
+        "icon": "🌋",
+        "title": "Masaya Volcano Lava Lake & Cerro Negro",
+        "description": "Peer into the active bubbling glowing molten lava lake of Masaya, and surf down Cerro Negro's black gravel slopes on a board."
+      },
+      {
+        "icon": "🏝️",
+        "title": "Ometepe Island (Lake Nicaragua)",
+        "description": "Spectacular freshwater lake island formed by twin volcanoes (Concepción and Maderas) with waterfalls and petroglyphs."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Granada & León Colonial Cities",
+        "description": "Picturesque 16th-century Spanish colonial pastel mansions, Granada's cathedral, and León's rooftop Cathedral (UNESCO)."
+      },
+      {
+        "icon": "🏄",
+        "title": "San Juan del Sur & Emerald Coast",
+        "description": "Vibrant Pacific coastal town famous for world-class surf breaks, sunset catamaran cruises, and beachfront dining."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Passport valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US / Canada / Schengen Visa (for Visa Waiver)",
+        "description": "Multiple-entry visa from USA, Canada, or Schengen area valid for stay.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Flight booking into Augusto C. Sandino International Airport (MGA), Managua.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Tourist Card Fee",
+        "description": "$10 USD tourist card fee payable in cash upon arrival at airport.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Mandatory if arriving from countries with risk of yellow fever transmission.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa Waiver: Ensure you hold a valid multiple-entry US, Canadian, or Schengen visa.",
+      "Online Immigration Notice: Submit online entry notification to Nicaragua immigration at solicitudes.migob.gob.ni.",
+      "Fly to Managua: Land at Augusto C. Sandino International Airport (MGA).",
+      "Pay Tourist Card Fee: Purchase the $10 USD tourist card at the border immigration booth.",
+      "Border Inspection: Present passport, US/Schengen visa, return ticket, and immigration slip.",
+      "Receive CA-4 Stamp: Border officer stamps passport for up to 90 days stay across the CA-4 region."
+    ],
+    "fees": {
+      "visa_fee": "$0 (with US/Schengen visa waiver) / $50 (Consular)",
+      "service_fee": "$10 USD Tourist Card",
+      "total_fee": "$10 - $60 USD (approx. ₹830 - ₹5,000)",
+      "notes": "Mandatory $10 USD tourist card fee payable in cash upon arrival."
+    },
+    "proc_time": "Instant on Arrival (with Waiver) or 10-15 Days (Consular)",
+    "proc_details": "Border clearance on arrival with US/Schengen waiver or consular processing.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Minimum 6 months remaining validity."
+      },
+      {
+        "category": "Tourist Card Fee",
+        "details": "$10 USD cash payable at immigration on arrival."
+      },
+      {
+        "category": "CA-4 Border Exemption",
+        "details": "Valid multiple-entry US/Schengen visa allows 90 days visa-free travel."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Card",
+        "minimum_balance_or_amount": "$500 USD equivalent",
+        "description": "Proof of funds for Central American vacation."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter Nicaragua with a US visa?",
+        "answer": "Yes! Indian passport holders holding a valid multiple-entry visa for the USA, Canada, or Schengen area can enter Nicaragua VISA-FREE for up to 90 days upon paying the $10 tourist card fee."
+      },
+      {
+        "question": "What is volcano boarding at Cerro Negro?",
+        "answer": "Cerro Negro is an active volcano near León where adventurers hike up the cone and slide down the steep 45-degree slope on a custom wooden board at speeds up to 80 km/h."
+      },
+      {
+        "question": "What is unique about Lake Nicaragua?",
+        "answer": "Lake Nicaragua (Cocibolca) is the largest freshwater lake in Central America and the only freshwater lake in the world that is home to oceanic bull sharks."
+      }
+    ],
+    "validity": "90 Days on Arrival (CA-4)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Dirección General de Migración y Extranjería de Nicaragua (migob.gob.ni)"
   }
 };
 

@@ -149,6 +149,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -3135,6 +3217,507 @@ const DESTS: Record<string, any> = {
       {
         "question": "When can I apply for Permanent Residence in Sweden?",
         "answer": "You can apply for Permanent Residence (Permanent Uppeh\u00e5llstillst\u00e5nd - PUT) after you have held a work permit in Sweden for at least 4 years within the past 7 years, provided you can support yourself financially."
+      }
+    ]
+  }
+,
+  "serbia": {
+    "cname": "Serbia",
+    "permit_name": "Single Permit for Temporary Residence and Work (Jedinstvena dozvola)",
+    "permit_authority": "Ministry of Interior (MUP) & National Employment Service (NES)",
+    "overview": "Under the new consolidated Law on Foreigners, foreign professionals, IT engineers, construction specialists, and corporate executives employed in Serbia obtain a Single Permit (Jedinstvena dozvola) combining lawful residence and work authorization into one unified biometric card. The employer initiates the procedure online via the eUprava government portal.",
+    "fees": {
+      "visa_fee": "RSD 16,000 (Single Permit Processing Fee)",
+      "service_fee": "RSD 3,000 (Biometric Card)",
+      "total_fee": "approx. ₹15,000",
+      "notes": "Unified single procedure via the official eUprava portal."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Expedited digital procedure via eUprava portal, evaluated jointly by MUP and National Employment Service.",
+    "source": "Ministry of Interior (MUP) & National Employment Service (NES)",
+    "validity": "Up to 3 Years (Renewable)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "NES Positive Labour Market Assessment & Employment Agreement",
+    "contract_desc": "Formal employment contract complying with Serbian labour regulations and approved by the National Employment Service.",
+    "salary_threshold": "Contract must meet statutory Serbian minimum wage or industry collective agreement standards.",
+    "work_permit_type": "Unified Single Work and Residence Permit (Jedinstvena dozvola)",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "⚡",
+        "title": "Fast Digital Single Permit",
+        "description": "Unified work and residency smart card processed online via eUprava in just 15 to 30 days."
+      },
+      {
+        "icon": "💻",
+        "title": "Thriving Balkan Tech Capital",
+        "description": "Belgrade and Novi Sad are regional leaders in software engineering, gaming, and IT outsourcing."
+      },
+      {
+        "icon": "💰",
+        "title": "Competitive Tax Deductions",
+        "description": "Generous 70% income tax deductions available for employing newly relocated foreign specialists."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Jedinstvena dozvola in Serbia?",
+        "answer": "It is Serbia's new unified Single Permit, integrating both residence and work permits into a single biometric smart card issued by MUP."
+      },
+      {
+        "question": "Can I apply for a Serbian work permit online?",
+        "answer": "Yes. Sponsoring Serbian employers apply 100% digitally through the governmental eUprava portal."
+      }
+    ]
+  },
+  "montenegro": {
+    "cname": "Montenegro",
+    "permit_name": "Privremeni boravak i rad (Single Permit for Temporary Residence and Work)",
+    "permit_authority": "Ministry of Internal Affairs (MUP) & Employment Agency of Montenegro (ZZCG)",
+    "overview": "Foreign professionals, nautical engineers, hospitality managers, and IT specialists working in Montenegro obtain a combined Permit for Temporary Residence and Work (Dozvola za privremeni boravak i rad). Applications are processed directly at local MUP offices under annual quota allocations.",
+    "fees": {
+      "visa_fee": "€67 (Single Work & Residence Permit)",
+      "service_fee": "€10 (Biometric Card)",
+      "total_fee": "approx. ₹7,000",
+      "notes": "Official statutory rates paid to MUP Montenegro."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Submitted in person at local MUP office in Podgorica, Budva, Kotor, or Tivat.",
+    "source": "Ministry of Internal Affairs (MUP) & Employment Agency of Montenegro",
+    "validity": "1 Year (Renewable annually)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Signed Employment Contract & Written Job Offer",
+    "contract_desc": "Formal employment agreement specifying role, salary, and compliance with Montenegrin labor laws.",
+    "salary_threshold": "Salary must meet statutory minimum wage (€450 - €530 net under Europe Now economic program).",
+    "work_permit_type": "Unified MUP Temporary Residence and Work Permit",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Breathtaking Adriatic Coastline",
+        "description": "Live and work along the stunning Bay of Kotor, Porto Montenegro, and Luštica Bay."
+      },
+      {
+        "icon": "💶",
+        "title": "Uses the Euro (€)",
+        "description": "Montenegro uses the Euro as its official currency, providing economic and currency stability."
+      },
+      {
+        "icon": "💼",
+        "title": "9% Flat Corporate Tax",
+        "description": "One of the most competitive corporate tax rates in Europe (9% to 15% progressive)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get a work permit in Montenegro?",
+        "answer": "MUP typically issues the single work and residence permit card within 15 to 20 working days."
+      },
+      {
+        "question": "Can I work in Montenegro on a tourist visa?",
+        "answer": "No. Working on a tourist stay is illegal. You must hold an authorized Dozvola za privremeni boravak i rad."
+      }
+    ]
+  },
+  "albania": {
+    "cname": "Albania",
+    "permit_name": "Single Permit for Work and Residence (Leje Unike)",
+    "permit_authority": "National Agency for Employment and Skills (AKPA) & State Police Border Department",
+    "overview": "Foreign specialists, IT engineers, construction personnel, and managers employed in Albania obtain a Single Permit (Leje Unike) combining employment and residence rights under the updated Law on Foreigners. Sponsoring Albanian enterprises submit the application 100% digitally through the governmental e-Albania portal.",
+    "fees": {
+      "visa_fee": "€100 (Single Permit Processing Fee)",
+      "service_fee": "ALL 5,000 (Biometric Residence Card)",
+      "total_fee": "approx. ₹14,000",
+      "notes": "Submitted digitally via e-Albania portal."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Electronic application on e-Albania; biometric card issued at State Police Migration Department in Tirana.",
+    "source": "State Police Border and Migration Department & AKPA",
+    "validity": "1 to 2 Years (Renewable)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "AKPA Approved Labour Clearance & Formal Employment Contract",
+    "contract_desc": "Signed formal contract complying with the Albanian Labour Code and approved by the National Agency for Employment and Skills.",
+    "salary_threshold": "Contract must meet or exceed the national statutory minimum wage (ALL 40,000 gross per month).",
+    "work_permit_type": "Digital Unified Work and Residence Permit (Leje Unike)",
+    "min_funds": "Employer sponsorship and statutory minimum salary guarantee",
+    "highlights": [
+      {
+        "icon": "⚡",
+        "title": "100% Digital e-Albania Application",
+        "description": "End-to-end electronic application through the national e-Albania administrative platform."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Low Cost of Living in Europe",
+        "description": "One of the most affordable living and operational costs in Southeastern Europe with a booming coastal economy."
+      },
+      {
+        "icon": "📈",
+        "title": "Booming Tourism & Real Estate",
+        "description": "Rapid infrastructure development, coastal luxury developments, and expanding digital nomad hubs."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Leje Unike in Albania?",
+        "answer": "Leje Unike is Albania's unified Single Permit, which combines work authorization and residence permission into one biometric card."
+      },
+      {
+        "question": "Can I apply for an Albanian work permit online?",
+        "answer": "Yes. Sponsoring employers submit the entire dossier online via the e-Albania government portal."
+      }
+    ]
+  },
+  "morocco": {
+    "cname": "Morocco",
+    "permit_name": "Contrat de Travail d'Étranger (CTE / Work Visa) & Carte de Séjour",
+    "permit_authority": "Ministry of Economic Inclusion, Small Business, Employment and Skills & DGSN",
+    "overview": "Foreign specialists, aerospace engineers, automotive technicians, and corporate managers employed in Morocco require an approved foreign employment contract (Contrat de Travail d'Étranger - CTE) certified by the Ministry of Employment via the Taechir digital portal. Once the contract is approved, the worker obtains an entry work visa from the Moroccan Embassy in New Delhi and receives a Carte de Séjour (resident ID card) in Morocco.",
+    "fees": {
+      "visa_fee": "$100 (Long-Stay Employment Visa)",
+      "service_fee": "MAD 500 (Annual Carte de Séjour)",
+      "total_fee": "approx. ₹13,500",
+      "notes": "Costs typically paid by the employing commercial enterprise in Morocco."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Online CTE approval through Taechir platform (2-3 weeks), followed by consular visa issuance in New Delhi.",
+    "source": "Ministry of Employment (Taechir Portal) & DGSN",
+    "validity": "1 to 2 Years (Renewable based on CTE)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Visé Contrat de Travail d'Étranger (CTE Approval) & ANAPEC Labour Certificate",
+    "contract_desc": "Employment contract formally visa-stamped and certified by the Moroccan Ministry of Employment.",
+    "salary_threshold": "Salary must meet statutory expatriate professional benchmarks.",
+    "work_permit_type": "Certified Expatriate Employment Contract (CTE) & Carte de Séjour",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "🚗",
+        "title": "Africa's #1 Automotive Hub",
+        "description": "Massive manufacturing ecosystem hosting Renault Tanger Med, Stellantis, and Tier-1 aerospace suppliers."
+      },
+      {
+        "icon": "🚢",
+        "title": "Tanger Med Mega Port",
+        "description": "The largest container port in the Mediterranean and Africa, connecting 180 world ports."
+      },
+      {
+        "icon": "☀️",
+        "title": "World Leader in Concentrated Solar",
+        "description": "Home to the colossal Noor Ouarzazate Solar Complex and expanding green hydrogen infrastructure."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Taechir portal in Morocco?",
+        "answer": "Taechir is the official digital platform operated by the Moroccan Ministry of Employment for processing foreign worker employment contracts (CTE)."
+      },
+      {
+        "question": "Can I work in Morocco on an eVisa?",
+        "answer": "No. Working on an eVisa or tourist visa is strictly prohibited. You must have an approved CTE contract and long-stay employment visa."
+      }
+    ]
+  },
+  "tunisia": {
+    "cname": "Tunisia",
+    "permit_name": "Contrat de Travail pour Étranger (Work Visa) & Carte de Séjour",
+    "permit_authority": "Ministry of Employment and Vocational Training (MFPE) & Ministry of Interior",
+    "overview": "Foreign specialists, aerospace technicians, automotive engineers, and IT professionals working in Tunisia require an approved foreign employment contract (Contrat de Travail pour Étranger) certified by the Ministry of Employment (MFPE). Sponsoring enterprises must demonstrate specialized technical necessity. Once approved, the employee obtains a residence card (Carte de Séjour) from the Ministry of Interior.",
+    "fees": {
+      "visa_fee": "$80 (Long-Stay Employment Visa)",
+      "service_fee": "TND 150 (Annual Carte de Séjour)",
+      "total_fee": "approx. ₹10,500",
+      "notes": "Statutory rates administered by Ministry of Employment."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Contract evaluation by Ministry of Employment in Tunis; residence card issued by local police station.",
+    "source": "Ministry of Employment and Vocational Training (MFPE) & Ministry of Interior",
+    "validity": "1 to 2 Years (Renewable)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "MFPE Approved Employment Contract & Corporate Technical Justification",
+    "contract_desc": "Formal employment contract stamped and visa-approved by the Tunisian Ministry of Employment.",
+    "salary_threshold": "Contract must meet specialized expatriate market benchmarks.",
+    "work_permit_type": "MFPE Certified Foreign Worker Residence & Work Permit",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "✈️",
+        "title": "Aerospace & Automotive Engineering",
+        "description": "Major industrial cluster supplying Airbus, Safran, and European aerospace manufacturers."
+      },
+      {
+        "icon": "💻",
+        "title": "Startup Act Pioneer",
+        "description": "Tunisia's groundbreaking Startup Act provides fast-track licensing, tax holidays, and founder allowances."
+      },
+      {
+        "icon": "🌍",
+        "title": "Close European Proximity",
+        "description": "Just 2 hours flying time from major southern European capitals (Rome, Paris, Madrid)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Startup Act in Tunisia?",
+        "answer": "It is a progressive national legal framework offering tax exemptions, special customs clearance, and founder salaries to international startup entrepreneurs."
+      },
+      {
+        "question": "Can I work in Tunisia on a tourist entry?",
+        "answer": "No. Working without an authorized MFPE employment contract is strictly prohibited."
+      }
+    ]
+  },
+  "algeria": {
+    "cname": "Algeria",
+    "permit_name": "Permis de Travail (Work Permit) / Visa de Travail & Carte de Séjour",
+    "permit_authority": "Ministry of Labour, Employment and Social Security & Wilaya Direction of Employment",
+    "overview": "Foreign specialists, oil and gas engineers, construction supervisors, and corporate managers employed in Algeria require a Work Permit (Permis de Travail) or Temporary Work Authorization (APT) approved by the Ministry of Labour. Employing enterprises (especially in hydrocarbons, mining, and infrastructure) file applications with the local Wilaya Employment Directorate. Once approved, the employee obtains a Work Visa from the Embassy in New Delhi and receives a Carte de Résidence in Algeria.",
+    "fees": {
+      "visa_fee": "$120 (Work Visa Fee)",
+      "service_fee": "DZD 5,000 (Carte de Résidence)",
+      "total_fee": "approx. ₹14,000",
+      "notes": "Sponsoring Algerian company covers statutory labour fees."
+    },
+    "proc_time": "6 to 12 Weeks",
+    "proc_details": "Work permit approval by Wilaya Employment Directorate; visa issued by Embassy in New Delhi.",
+    "source": "Ministry of Labour, Employment and Social Security & Ministry of Interior",
+    "validity": "1 to 2 Years (Renewable)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Approved Permis de Travail / APT & Registered Employment Contract",
+    "contract_desc": "Official labour permit certificate and registered contract of employment approved by the Algerian Labour Directorate.",
+    "salary_threshold": "Contract must meet specialized expatriate technical benchmarks.",
+    "work_permit_type": "Ministry of Labour Approved Specialist Work Permit",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "🛢️",
+        "title": "Energy & Hydrocarbon Giant",
+        "description": "Leading global producer of natural gas and oil, with massive Sonatrach multinational joint ventures."
+      },
+      {
+        "icon": "🏗️",
+        "title": "Massive Infrastructure Investment",
+        "description": "Extensive metro, railway, renewable solar, and port construction developments across northern Africa."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Largest Country in Africa",
+        "description": "Vast commercial territory with expanding bilateral trade with India in pharmaceuticals and engineering."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the APT in Algeria?",
+        "answer": "APT (Autorisation Provisoire de Travail) is a temporary work authorization issued for short-term foreign technical experts working on projects for up to 3 months."
+      },
+      {
+        "question": "Can I convert a tourist visa to a work permit inside Algeria?",
+        "answer": "No. Under Algerian immigration law, you must obtain a formal Work Visa from an Algerian embassy abroad before entering for employment."
+      }
+    ]
+  },
+  "uruguay": {
+    "cname": "Uruguay",
+    "permit_name": "Residencia Temporal por Trabajo (Work Temporary Residence) & Cédula de Identidad",
+    "permit_authority": "Dirección Nacional de Migración (DNM) & Ministerio de Trabajo y Seguridad Social",
+    "overview": "Uruguay offers one of the most progressive and transparent work residency frameworks in South America under Law No. 18.250. Foreign professionals, software developers, fintech specialists, and corporate executives obtain a Temporary Residence for Work. Applicants are issued an Uruguayan Cédula de Identidad, giving full legal and employment rights with equal protections to domestic citizens.",
+    "fees": {
+      "visa_fee": "$150 (Migración Residence Fee)",
+      "service_fee": "$20 (Cédula de Identidad)",
+      "total_fee": "approx. ₹14,500",
+      "notes": "Administered directly by Dirección Nacional de Migración."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Initiated online via gub.uy; finalized in person in Montevideo with Cédula issuance.",
+    "source": "Dirección Nacional de Migración (DNM) & BPS (Banco de Previsión Social)",
+    "validity": "2 Years (Renewable)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Promesa de Trabajo / Contrato Laboral & BPS Registration",
+    "contract_desc": "Signed employment contract and registration with the social security institute (BPS).",
+    "salary_threshold": "Contract must meet statutory Uruguayan minimum wage and professional collective wage council levels.",
+    "work_permit_type": "Direct Work Residence & Cédula de Identidad",
+    "min_funds": "Employer sponsorship and statutory salary guarantee",
+    "highlights": [
+      {
+        "icon": "💳",
+        "title": "Uruguayan Cédula de Identidad",
+        "description": "National identity card providing access to local banking, healthcare (mutualista), and services."
+      },
+      {
+        "icon": "💻",
+        "title": "Silicon Valley of South America",
+        "description": "Top software exporter per capita in Latin America; home to fintech unicorn dLocal and global tech centers."
+      },
+      {
+        "icon": "🌿",
+        "title": "Top Latin American Democracy",
+        "description": "Consistently ranked #1 in Latin America for democracy, low corruption, and quality of life."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I work in Uruguay on a visa-free entry?",
+        "answer": "You can enter visa-free and submit your work residence petition directly at Migración in Montevideo without leaving the country."
+      },
+      {
+        "question": "What is the Cédula in Uruguay?",
+        "answer": "The Cédula de Identidad is the official national ID card issued to both citizens and legal foreign residents."
+      }
+    ]
+  },
+  "fiji": {
+    "cname": "Fiji",
+    "permit_name": "Work Permit (Key Post / Time Post)",
+    "permit_authority": "Fiji Immigration Department & Ministry of Employment",
+    "overview": "Foreign professionals, marine specialists, resort executives, healthcare practitioners, and educators working in Fiji obtain a Work Permit under Section 9 of the Immigration Act. Sponsoring enterprises apply for either a 'Key Post' (senior executive or major investor representative) or a 'Time Post' (specialist technical role for 1 to 3 years with local understudy training).",
+    "fees": {
+      "visa_fee": "FJD $550 (Work Permit Application Fee)",
+      "service_fee": "FJD $1,500 (Work Permit Issuance Fee)",
+      "total_fee": "approx. ₹75,000",
+      "notes": "Employer covers the statutory immigration fees."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Submitted to Fiji Immigration Department in Suva or Nadi; reviewed by the Immigrant Review Committee.",
+    "source": "Fiji Immigration Department (immigration.gov.fj)",
+    "validity": "1 to 3 Years (Renewable based on project)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Certified Employment Agreement & Local Counterpart Training Plan",
+    "contract_desc": "Formal employment contract and plan demonstrating training of a Fijian citizen to assume the role.",
+    "salary_threshold": "Salary must meet specialized expatriate market benchmarks.",
+    "work_permit_type": "Key Post / Time Post Expatriate Work Permit",
+    "min_funds": "Employer sponsorship and security bond guarantee",
+    "highlights": [
+      {
+        "icon": "🌺",
+        "title": "World-Class Tropical Resort Living",
+        "description": "Work and live in one of the world's most scenic island paradises with English as the official language."
+      },
+      {
+        "icon": "🇮🇳",
+        "title": "Strong Historical & Cultural Ties with India",
+        "description": "Over 35% of Fiji's population is of Indian heritage, with vibrant Indian cultural festivals, food, and temples."
+      },
+      {
+        "icon": "🏝️",
+        "title": "South Pacific Regional Hub",
+        "description": "Suva and Nadi serve as the diplomatic, aviation, and financial headquarters for Pacific island nations."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the difference between a Key Post and a Time Post in Fiji?",
+        "answer": "A Key Post is reserved for top management or investor representatives for prolonged tenures, while a Time Post is a specialist technical role (up to 3 years) requiring a local understudy."
+      },
+      {
+        "question": "Can I convert a tourist visa to a work permit inside Fiji?",
+        "answer": "Yes. Fiji immigration allows work permit applications to be lodged while residing in Fiji on a valid visitor entry."
+      }
+    ]
+  },
+  "panama": {
+    "cname": "Panama",
+    "permit_name": "Permiso de Trabajo / Visa de Trabajador Calificado (SEM / 10% Quota)",
+    "permit_authority": "Ministerio de Trabajo y Desarrollo Laboral (MITRADEL) & Migración Panamá",
+    "overview": "Foreign specialists, maritime executives, logistics managers, and IT personnel employed in Panama obtain a Work Permit from MITRADEL and a Work Residency Visa from Migración. Multinational corporations operating under the SEM regime (Sede de Empresas Multinacionales) enjoy expedited work permits for foreign executives exempt from local labor quotas.",
+    "fees": {
+      "visa_fee": "$250 (Work Residency Application)",
+      "service_fee": "$100 (MITRADEL Work Permit Fee)",
+      "total_fee": "approx. ₹29,000",
+      "notes": "Employer covers statutory labour and migration fees."
+    },
+    "proc_time": "4 to 8 Weeks (Expedited under SEM regime)",
+    "proc_details": "Processed via MITRADEL and Servicio Nacional de Migración in Panama City.",
+    "source": "MITRADEL & Servicio Nacional de Migración Panamá",
+    "validity": "1 to 2 Years (or up to 5 Years for SEM executives)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Contrato de Trabajo Registrado en MITRADEL & CSS Registration",
+    "contract_desc": "Formal employment contract registered with MITRADEL and social security (Caja de Seguro Social - CSS).",
+    "salary_threshold": "Contract must meet specialized expatriate market benchmarks (or SEM executive scales).",
+    "work_permit_type": "MITRADEL Work Permit & Migración Work Residency",
+    "min_funds": "Employer sponsorship and corporate tax registration",
+    "highlights": [
+      {
+        "icon": "🏢",
+        "title": "SEM Multinational Headquarters Regime",
+        "description": "Special regime for Fortune 500 multinationals (Dell, P&G, Huawei) offering 5-year executive work visas and 0% personal tax on SEM salaries."
+      },
+      {
+        "icon": "🚢",
+        "title": "Hub of the Americas",
+        "description": "Panama Canal, Colón Free Trade Zone, and Tocumen Airport make Panama the undisputed logistics capital of the Americas."
+      },
+      {
+        "icon": "💵",
+        "title": "US Dollar Economy",
+        "description": "The US Dollar has been the official currency of Panama since 1904, ensuring monetary stability."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the SEM visa in Panama?",
+        "answer": "The SEM visa is a specialized fast-track residence permit granted to foreign executives employed by certified multinational corporate headquarters in Panama, valid for up to 5 years."
+      },
+      {
+        "question": "Can I work in Panama on a tourist visa?",
+        "answer": "No. Working on a tourist entry is illegal. You must hold an authorized MITRADEL work permit and Migración work residency."
+      }
+    ]
+  },
+  "dominican-republic": {
+    "cname": "Dominican Republic",
+    "permit_name": "Visa de Trabajo (Visa NM1) & Carné de Residencia Temporal Laboral",
+    "permit_authority": "Ministerio de Trabajo & Dirección General de Migración (DGM)",
+    "overview": "Foreign specialists, resort executives, free trade zone engineers, and commercial managers employed in the Dominican Republic obtain a Business Visa for Employment Purposes (Visa de Negocios con Fines Laborales - NM1) approved by the Ministry of Foreign Affairs (MIREX) and a Temporary Residence Card from the Dirección General de Migración (DGM).",
+    "fees": {
+      "visa_fee": "$150 (Consular NM1 Work Visa)",
+      "service_fee": "DOP 10,000 (DGM Residence Carné)",
+      "total_fee": "approx. ₹26,000",
+      "notes": "Employer covers the statutory labour and immigration fees."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Applied via MIREX consular portal; resident card finalized in Santo Domingo.",
+    "source": "Dirección General de Migración (DGM) & Ministerio de Trabajo",
+    "validity": "1 Year (Renewable annually)",
+    "stay": "Duration of approved employment contract",
+    "entry_type": "Multiple Entry",
+    "contract_doc": "Contrato de Trabajo Registrado en el Ministerio de Trabajo & DGT-3 Form",
+    "contract_desc": "Formal employment contract registered with the Dominican Ministry of Labour and company personnel list.",
+    "salary_threshold": "Contract must meet specialized expatriate market benchmarks.",
+    "work_permit_type": "NM1 Employment Residence & Work Carné",
+    "min_funds": "Employer sponsorship and corporate tax registration",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Top Caribbean Tourist Economy",
+        "description": "Over 10 million annual international visitors driving booming hospitality, golf resort, and aviation sectors."
+      },
+      {
+        "icon": "🏭",
+        "title": "Zonas Francas (Free Trade Zones)",
+        "description": "Major manufacturing hubs for medical devices, electronics, and apparel with 100% tax holidays."
+      },
+      {
+        "icon": "🌴",
+        "title": "High Expat Quality of Life",
+        "description": "Warm Caribbean living, world-class golf courses, and beach communities in Punta Cana and Cap Cana."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Visa NM1 in Dominican Republic?",
+        "answer": "The Visa NM1 (Negocios con Fines Laborales) is the official consular work visa that allows foreign professionals to take up lawful contracted employment in the Dominican Republic."
+      },
+      {
+        "question": "Can I work in the Dominican Republic on a tourist entry?",
+        "answer": "No. Working on a tourist card is illegal. You must hold an authorized NM1 work visa."
       }
     ]
   }

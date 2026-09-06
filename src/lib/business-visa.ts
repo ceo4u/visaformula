@@ -142,6 +142,88 @@ export function normalizeCountry(country: string): string {
   if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
   if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
 
+  
+  // ── 68 NEW COUNTRIES NORMALIZATION ALIASES ──
+
+  // EUROPE (6)
+  if (c.includes('serbia') || c.includes('belgrade')) return 'serbia';
+  if (c.includes('montenegro') || c.includes('podgorica')) return 'montenegro';
+  if (c.includes('albania') || c.includes('tirana')) return 'albania';
+  if (c.includes('bosnia') || c.includes('herzegovina') || c.includes('sarajevo')) return 'bosnia';
+  if (c.includes('north macedonia') || c.includes('macedonia') || c.includes('skopje')) return 'north-macedonia';
+  if (c.includes('kosovo') || c.includes('pristina')) return 'kosovo';
+
+  // AFRICA (21)
+  if (c.includes('morocco') || c.includes('rabat') || c.includes('casablanca') || c.includes('marrakech')) return 'morocco';
+  if (c.includes('tunisia') || c.includes('tunis')) return 'tunisia';
+  if (c.includes('algeria') || c.includes('algiers')) return 'algeria';
+  if (c.includes('libya') || c.includes('tripoli')) return 'libya';
+  if (c.includes('south sudan') || c.includes('south-sudan') || c.includes('juba')) return 'south-sudan';
+  if (c.includes('sudan') || c.includes('khartoum')) return 'sudan';
+  if (c.includes('eritrea') || c.includes('asmara')) return 'eritrea';
+  if (c.includes('djibouti')) return 'djibouti';
+  if (c.includes('somalia') || c.includes('mogadishu')) return 'somalia';
+  if (c.includes('uganda') || c.includes('kampala')) return 'uganda';
+  if (c.includes('malawi') || c.includes('lilongwe')) return 'malawi';
+  if (c.includes('zambia') || c.includes('lusaka')) return 'zambia';
+  if (c.includes('botswana') || c.includes('gaborone')) return 'botswana';
+  if (c.includes('namibia') || c.includes('windhoek')) return 'namibia';
+  if (c.includes('angola') || c.includes('luanda')) return 'angola';
+  if (c.includes('mozambique') || c.includes('maputo')) return 'mozambique';
+  if (c.includes('madagascar') || c.includes('antananarivo')) return 'madagascar';
+  if (c.includes('comoros') || c.includes('moroni')) return 'comoros';
+  if (c.includes('cape verde') || c.includes('cape-verde') || c.includes('cabo verde') || c.includes('praia')) return 'cape-verde';
+  if (c.includes('sao tome') || c.includes('são tomé') || c.includes('sao-tome') || c.includes('principe')) return 'sao-tome';
+  if (c.includes('mauritius') || c.includes('port louis')) return 'mauritius';
+
+  // ASIA (20)
+  if (c.includes('afghanistan') || c.includes('kabul')) return 'afghanistan';
+  if (c.includes('iran') || c.includes('tehran')) return 'iran';
+  if (c.includes('iraq') || c.includes('baghdad')) return 'iraq';
+  if (c.includes('syria') || c.includes('damascus')) return 'syria';
+  if (c.includes('lebanon') || c.includes('beirut')) return 'lebanon';
+  if (c.includes('jordan') || c.includes('amman')) return 'jordan';
+  if (c.includes('yemen') || c.includes('sanaa') || c.includes('aden')) return 'yemen';
+  if (c.includes('palestine') || c.includes('ramallah') || c.includes('gaza')) return 'palestine';
+  if (c.includes('kuwait') || c.includes('kuwait city')) return 'kuwait';
+  if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
+  if (c.includes('oman') || c.includes('muscat')) return 'oman';
+  if (c.includes('qatar') || c.includes('doha')) return 'qatar';
+  if (c.includes('saudi') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
+  if (c.includes('timor') || c.includes('east timor') || c.includes('dili')) return 'timor-leste';
+  if (c.includes('brunei') || c.includes('bandar seri begawan')) return 'brunei';
+
+  // OCEANIA (5)
+  if (c.includes('fiji') || c.includes('suva') || c.includes('nadi')) return 'fiji';
+  if (c.includes('papua new guinea') || c.includes('png') || c.includes('port moresby')) return 'papua-new-guinea';
+  if (c.includes('samoa') || c.includes('apia')) return 'samoa';
+  if (c.includes('tonga') || c.includes('nuku')) return 'tonga';
+  if (c.includes('solomon islands') || c.includes('solomon-islands') || c.includes('honiara')) return 'solomon-islands';
+  if (c.includes('vanuatu') || c.includes('port vila')) return 'vanuatu';
+
+  // AMERICAS (20)
+  if (c.includes('uruguay') || c.includes('montevideo')) return 'uruguay';
+  if (c.includes('panama') || c.includes('panama city')) return 'panama';
+  if (c.includes('dominican republic') || c.includes('dominican-republic') || c.includes('santo domingo')) return 'dominican-republic';
+  if (c.includes('venezuela') || c.includes('caracas')) return 'venezuela';
+  if (c.includes('ecuador') || c.includes('quito') || c.includes('guayaquil')) return 'ecuador';
+  if (c.includes('bolivia') || c.includes('la paz') || c.includes('sucre')) return 'bolivia';
+  if (c.includes('paraguay') || c.includes('asuncion') || c.includes('asunción')) return 'paraguay';
+  if (c.includes('guyana') || c.includes('georgetown')) return 'guyana';
+  if (c.includes('suriname') || c.includes('paramaribo')) return 'suriname';
+  if (c.includes('trinidad') || c.includes('tobago') || c.includes('port of spain')) return 'trinidad';
+  if (c.includes('barbados') || c.includes('bridgetown')) return 'barbados';
+  if (c.includes('bahamas') || c.includes('nassau')) return 'bahamas';
+  if (c.includes('cuba') || c.includes('havana')) return 'cuba';
+  if (c.includes('jamaica') || c.includes('kingston')) return 'jamaica';
+  if (c.includes('puerto rico') || c.includes('puerto-rico') || c.includes('san juan')) return 'puerto-rico';
+  if (c.includes('haiti') || c.includes('port-au-prince')) return 'haiti';
+  if (c.includes('belize') || c.includes('belmopan')) return 'belize';
+  if (c.includes('el salvador') || c.includes('el-salvador') || c.includes('san salvador')) return 'el-salvador';
+  if (c.includes('guatemala') || c.includes('guatemala city')) return 'guatemala';
+  if (c.includes('honduras') || c.includes('tegucigalpa')) return 'honduras';
+  if (c.includes('nicaragua') || c.includes('managua')) return 'nicaragua';
+
   return c;
 }
 
@@ -2596,6 +2678,477 @@ const DESTS: Record<string, any> = {
       {
         "question": "Can I travel to other European countries with a Portuguese business visa?",
         "answer": "Yes. A Schengen visa issued by Portugal allows unrestricted travel across all 29 Schengen member states, provided Portugal is your primary destination."
+      }
+    ]
+  }
+,
+  "serbia": {
+    "cname": "Serbia",
+    "visa_category": "Short-Stay Business Visa (Visa C) / Visa-Free Commercial Visit",
+    "overview": "Indian passport holders can visit Serbia for business negotiations, corporate board meetings, trade exhibitions, and investment scoping VISA-FREE for up to 30 days. For longer commercial stays, foreign executives apply for a Business Visa (Visa C) with an official Chamber of Commerce invitation.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free for 30 Days) / €60 (Extended Business Visa)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Visa-Free)",
+      "notes": "No visa required for short commercial trips up to 30 days."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival) or 10 to 15 Days (Consular)",
+    "proc_details": "Immediate entry at Belgrade airport or consular processing in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Serbia & Chamber of Commerce and Industry of Serbia (CCIS)",
+    "validity": "30 Days (Visa-Free) or up to 1 Year Multi-Entry",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "CCIS Chamber of Commerce Certified Host Invitation",
+    "invitation_desc": "Official invitation letter from a registered Serbian company certified by the Chamber of Commerce and Industry of Serbia.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Strategic European Bridge",
+        "description": "Bilateral free trade agreements with EU, Eurasian Economic Union, Turkey, and China."
+      },
+      {
+        "icon": "✈️",
+        "title": "Direct Belgrade Hub",
+        "description": "Air Serbia operates direct intercontinental connections from Belgrade Nikola Tesla Airport."
+      },
+      {
+        "icon": "🏢",
+        "title": "Belgrade Waterfront & EXPO 2027",
+        "description": "Massive urban development and host nation of the Specialised World Expo 2027."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Serbia without a visa?",
+        "answer": "Yes. Indian passport holders enjoy 30-day visa-free entry, covering business meetings, conferences, and site visits."
+      },
+      {
+        "question": "Can I establish a company in Serbia as a foreign citizen?",
+        "answer": "Yes. Foreigners can easily incorporate a Serbian DOO (limited liability company) with a minimum registered capital of only 100 RSD (approx. €1)."
+      }
+    ]
+  },
+  "montenegro": {
+    "cname": "Montenegro",
+    "visa_category": "Short-Stay Business Entry / Visa-Free Commercial Visit",
+    "overview": "Indian business executives, commercial investors, luxury marina operators, and real estate developers can visit Montenegro VISA-FREE for up to 30 days for commercial meetings, contract signings, and investment reviews.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free for 30 Days)",
+      "service_fee": "₹0 (Direct Airport Border)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 30 days."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate entry at Tivat or Podgorica airport border desks.",
+    "source": "Ministry of Foreign Affairs & Montenegro Investment Agency (MIA)",
+    "validity": "30 Days on Arrival",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Notarized Montenegrin Host Company Invitation Letter",
+    "invitation_desc": "Official invitation letter from a registered Montenegrin corporate entity indicating the commercial nature of visit.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹1,50,000",
+    "highlights": [
+      {
+        "icon": "🛥️",
+        "title": "Superyacht Capital of the Mediterranean",
+        "description": "Porto Montenegro, Portonovi, and Luštica Bay are premier luxury yachting and marina destinations."
+      },
+      {
+        "icon": "📈",
+        "title": "Fast-Track EU Accession",
+        "description": "Montenegro is the leading candidate nation for European Union accession."
+      },
+      {
+        "icon": "💼",
+        "title": "Easy Business Incorporation",
+        "description": "Incorporate a Montenegrin DOO with just €1 registered capital in under 5 business days."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I register a business in Montenegro on a visa-free entry?",
+        "answer": "Yes. Foreign citizens can incorporate a Montenegrin company and open corporate bank accounts during a visa-free stay."
+      },
+      {
+        "question": "Does Montenegro have exchange control restrictions?",
+        "answer": "No. Capital can be freely transferred and repatriated in Euros without foreign exchange controls."
+      }
+    ]
+  },
+  "albania": {
+    "cname": "Albania",
+    "visa_category": "Short-Stay Commercial Entry / Visa-Free Business Visit",
+    "overview": "Indian corporate executives, construction contractors, renewable energy investors, and tourism operators can visit Albania VISA-FREE for up to 90 days for business negotiations, project surveys, and investment evaluations.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry for 90 Days)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 90 days."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate entry at Tirana International Airport border control.",
+    "source": "Ministry for Europe and Foreign Affairs & Albanian Investment Development Agency (AIDA)",
+    "validity": "90 Days on Arrival",
+    "stay": "Up to 90 Days within a 180-Day Period",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Notarized Albanian Host Company Invitation Letter",
+    "invitation_desc": "Official invitation letter from a registered Albanian company accompanied by its National Business Center (QKB) registration extract.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹1,50,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "AIDA Investment Facilitation",
+        "description": "The Albanian Investment Development Agency provides one-stop assistance for strategic investment projects."
+      },
+      {
+        "icon": "☀️",
+        "title": "Solar & Hydro Renewable Energy Hub",
+        "description": "98% of Albania's domestic electricity is generated from renewable hydropower and solar energy."
+      },
+      {
+        "icon": "💼",
+        "title": "Fast Company Registration",
+        "description": "Incorporate a business in Albania through the National Business Center (QKB) in under 48 hours for a nominal fee."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I register a business in Albania as an Indian citizen?",
+        "answer": "Yes. Foreigners have identical commercial rights to domestic citizens and can register a company (Sh.p.k.) with a minimum capital of just 100 ALL (approx. €1)."
+      },
+      {
+        "question": "Can I attend business meetings without a visa in Albania?",
+        "answer": "Yes. Indian passport holders enjoy 90-day visa-free entry covering business conferences, meetings, and trade evaluations."
+      }
+    ]
+  },
+  "morocco": {
+    "cname": "Morocco",
+    "visa_category": "Short-Stay Business Visa / Access Maroc Business eVisa",
+    "overview": "The Moroccan Business Visa enables international corporate directors, commercial buyers, automotive suppliers, textile traders, and agricultural investors to attend business meetings, factory audits, trade expos, and contract signings in Casablanca, Rabat, and Tangier.",
+    "fees": {
+      "visa_fee": "$50 - $70 USD (Business eVisa Fee)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$50 - $70 USD (approx. ₹4,200 - ₹5,900)",
+      "notes": "Applied online via acces-maroc.ma with host company invitation."
+    },
+    "proc_time": "3 to 5 Business Days",
+    "proc_details": "Processed online through the official Access Maroc eVisa portal.",
+    "source": "Ministry of Foreign Affairs & Moroccan Investment and Export Development Agency (AMDIE)",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 30 Days per entry",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Notarized Moroccan Corporate Host Invitation & Registre de Commerce (RC)",
+    "invitation_desc": "Official invitation from a registered Moroccan enterprise authenticated by local municipal authorities (Légalisation), accompanied by the company's Commercial Register extract (RC).",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🏭",
+        "title": "Casablanca Finance City (CFC)",
+        "description": "Premier financial center in Africa offering special tax incentives and fast-track business visas for multinationals."
+      },
+      {
+        "icon": "🤝",
+        "title": "AMDIE Investment Support",
+        "description": "Direct governmental assistance from the Moroccan Investment and Export Development Agency."
+      },
+      {
+        "icon": "🚄",
+        "title": "Al Boraq High-Speed Rail",
+        "description": "Africa's first high-speed bullet train connects Tangier to Casablanca in just 2 hours."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I get a Business Visa online for Morocco?",
+        "answer": "Yes! The Access Maroc eVisa portal allows commercial visitors to apply for an electronic Business Visa by uploading host company invitation documents."
+      },
+      {
+        "question": "What is Casablanca Finance City (CFC)?",
+        "answer": "CFC is an internationally recognized financial and business hub in Casablanca offering preferential corporate tax rates and streamlined work permits for regional headquarters."
+      }
+    ]
+  },
+  "tunisia": {
+    "cname": "Tunisia",
+    "visa_category": "Short-Stay Business Visa / Commercial Visitor Permit",
+    "overview": "The Tunisian Business Visa is issued to international company directors, commercial traders, olive oil and textile buyers, and tech investors visiting Tunisia for business discussions, factory inspections, trade exhibitions, and investment scoping.",
+    "fees": {
+      "visa_fee": "$50 - $70 USD (Consular Business Visa)",
+      "service_fee": "₹1,500 (Consular Logistics)",
+      "total_fee": "approx. ₹5,500 - ₹7,200",
+      "notes": "Applied at Embassy of Tunisia in New Delhi or online."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "Applied via Embassy of Tunisia in New Delhi or online portal with host invitation.",
+    "source": "Foreign Investment Promotion Agency (FIPA-Tunisia) & Ministry of Foreign Affairs",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Tunisian Corporate Host Invitation Letter & Registre National des Entreprises (RNE)",
+    "invitation_desc": "Official invitation from a registered Tunisian company accompanied by its RNE corporate registration extract.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "FIPA-Tunisia Support",
+        "description": "The Foreign Investment Promotion Agency provides direct facilitation for foreign investors."
+      },
+      {
+        "icon": "🫒",
+        "title": "World Leader in Olive Oil & Agribusiness",
+        "description": "One of the world's largest exporters of premium extra virgin olive oil and dates."
+      },
+      {
+        "icon": "🇪🇺",
+        "title": "EU Association Agreement",
+        "description": "Duty-free industrial trade with the European Union under bilateral association agreements."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings on a tourist visa in Tunisia?",
+        "answer": "Short introductory meetings can be conducted on tourist entry, but formal contract signing and commercial representations require a business visa."
+      },
+      {
+        "question": "What is FIPA-Tunisia?",
+        "answer": "FIPA is the governmental agency responsible for promoting foreign direct investment and assisting international corporate delegations in Tunisia."
+      }
+    ]
+  },
+  "algeria": {
+    "cname": "Algeria",
+    "visa_category": "Visa d'Affaires (Business Visa) - Embassy Application",
+    "overview": "The Algerian Business Visa enables international corporate executives, commercial negotiators, industrial suppliers, and energy contractors to visit Algeria for business meetings, contract signings, equipment commissioning, and project oversight.",
+    "fees": {
+      "visa_fee": "$100 USD (Consular Business Visa Fee)",
+      "service_fee": "₹1,500 (Consular Logistics)",
+      "total_fee": "approx. ₹9,800",
+      "notes": "Payable to Embassy of Algeria in New Delhi."
+    },
+    "proc_time": "7 to 14 Working Days",
+    "proc_details": "Applied directly at Embassy of Algeria in New Delhi with legalized host invitation.",
+    "source": "Ministry of Foreign Affairs & Algerian Investment Promotion Agency (AAPI)",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 30 or 90 Days as granted",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Notarized Algerian Host Invitation & Registre du Commerce (RC)",
+    "invitation_desc": "Official invitation letter from an Algerian registered enterprise legalized by local municipal town hall (APC), plus copy of company Commercial Register (RC).",
+    "min_funds": "Company corporate guarantee letter or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "AAPI Investment Agency Support",
+        "description": "The Algerian Investment Promotion Agency provides specialized assistance for industrial projects."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strategic Industrial Incentives",
+        "description": "Exemptions from customs duties and VAT on imported production equipment under the updated Investment Law."
+      },
+      {
+        "icon": "📈",
+        "title": "Expanding Bilateral Trade",
+        "description": "Growing commercial ties between India and Algeria in fertilizers, pharmaceuticals, and engineering."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does my Algerian business invitation need to be legalized?",
+        "answer": "Yes. Algerian consular regulations require all commercial invitation letters to be stamped and legalized by the local municipal town hall (APC) in Algeria."
+      },
+      {
+        "question": "How long does an Algerian business visa take to process?",
+        "answer": "Processing typically takes 7 to 10 working days at the Algerian Embassy in New Delhi."
+      }
+    ]
+  },
+  "uruguay": {
+    "cname": "Uruguay",
+    "visa_category": "Short-Stay Commercial Entry / Visa-Free Business Visit",
+    "overview": "Indian company directors, commercial negotiators, tech founders, and agribusiness investors can visit Uruguay VISA-FREE for up to 90 days for business negotiations, corporate board meetings, trade exhibitions, and Free Trade Zone inspections.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry for 90 Days)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 90 days."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate entry at Montevideo airport or ferry terminal from Buenos Aires.",
+    "source": "Uruguay XXI (Investment & Export Promotion Agency) & Ministry of Foreign Affairs",
+    "validity": "90 Days on Arrival",
+    "stay": "Up to 90 Days per visit",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Notarized Uruguayan Host Invitation Letter",
+    "invitation_desc": "Official invitation letter from a registered Uruguayan company stating commercial purpose.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹1,50,000",
+    "highlights": [
+      {
+        "icon": "🏭",
+        "title": "Zonamerica & Free Trade Zones",
+        "description": "100% tax-free regimes for international services, software development, and global trade hubs."
+      },
+      {
+        "icon": "🤝",
+        "title": "Uruguay XXI Facilitation",
+        "description": "Dedicated governmental one-stop investor assistance for setting up regional headquarters."
+      },
+      {
+        "icon": "🌱",
+        "title": "98% Clean Renewable Electricity",
+        "description": "Uruguay's power grid runs almost entirely on wind, solar, and hydro energy."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I set up a business in Uruguay as a foreign citizen?",
+        "answer": "Yes. Foreigners have equal commercial rights to citizens and can incorporate a Uruguayan S.A. or S.R.L. with no foreign ownership restrictions."
+      },
+      {
+        "question": "Can I attend business meetings without a visa in Uruguay?",
+        "answer": "Yes. Indian passport holders enjoy 90-day visa-free entry for commercial discussions and conferences."
+      }
+    ]
+  },
+  "fiji": {
+    "cname": "Fiji",
+    "visa_category": "Short-Stay Commercial Entry / Visa-Free Business Visit",
+    "overview": "Indian corporate directors, commercial buyers, sugar and forestry traders, luxury hospitality investors, and IT entrepreneurs can visit Fiji VISA-FREE for up to 4 months for commercial meetings, hotel development surveys, and investment discussions.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry for 4 Months)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 4 months."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate entry stamp granted at Nadi International Airport.",
+    "source": "Investment Fiji & Fiji Immigration Department",
+    "validity": "4 Months on Arrival",
+    "stay": "Up to 4 Months per visit",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Fijian Registered Enterprise Invitation Letter",
+    "invitation_desc": "Official invitation from a registered Fijian company or Investment Fiji certificate.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹1,50,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Investment Fiji One-Stop Shop",
+        "description": "Investment Fiji provides streamlined business licensing, tax incentives, and investor facilitation."
+      },
+      {
+        "icon": "🌴",
+        "title": "Eco-Tourism & Island Hospitality",
+        "description": "Massive foreign investment opportunities in luxury private islands, resorts, and eco-retreats."
+      },
+      {
+        "icon": "☀️",
+        "title": "Generous Tax Incentives",
+        "description": "Tax holidays for hotel investments, ICT development zones, and green energy infrastructure."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I explore business investments during a visa-free visit to Fiji?",
+        "answer": "Yes! Indian passport holders can use their 4-month visa-free stay to conduct site visits, meet with Investment Fiji, and evaluate projects."
+      },
+      {
+        "question": "What is Investment Fiji?",
+        "answer": "Investment Fiji is the statutory economic development agency that promotes foreign direct investment and guides international entrepreneurs."
+      }
+    ]
+  },
+  "panama": {
+    "cname": "Panama",
+    "visa_category": "Short-Stay Commercial Entry / Visa-Free Business Visit",
+    "overview": "Corporate executives, maritime shippers, logistics managers, banking representatives, and commodity traders can visit Panama VISA-FREE for up to 90 days if holding a valid US, UK, Canada, Australia, or Schengen visa. Perfect for meetings in Panama City and the Colón Free Trade Zone.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free with valid US/UK/Schengen visa)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 90 days with qualifying visa."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate border entry granted at Tocumen International Airport.",
+    "source": "PROPANAMA (Export & Investment Promotion Agency) & Migración Panamá",
+    "validity": "90 Days on Arrival",
+    "stay": "Up to 90 Days per visit",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Notarized Panamanian Corporate Invitation Letter",
+    "invitation_desc": "Official invitation from a registered Panamanian company or Chamber of Commerce stating commercial purpose.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🚢",
+        "title": "Colón Free Trade Zone (Zona Libre de Colón)",
+        "description": "The second-largest free trade zone in the world, processing billions in tax-free duty-free international re-exports."
+      },
+      {
+        "icon": "🏦",
+        "title": "International Banking Center",
+        "description": "Over 70 international and domestic banks offering global commercial banking and wealth management."
+      },
+      {
+        "icon": "🤝",
+        "title": "PROPANAMA Investment Support",
+        "description": "Direct state assistance from PROPANAMA for corporate relocations and infrastructure investments."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I conduct business meetings in Panama on my US visa?",
+        "answer": "Yes! Indian passport holders holding a valid US, UK, Canada, Australia, or Schengen visa can enter Panama visa-free for commercial meetings, conferences, and site visits for up to 90 days."
+      },
+      {
+        "question": "What is the Colón Free Trade Zone?",
+        "answer": "It is the largest free trade port in the Western Hemisphere, offering complete exemption from import/export tariffs and corporate taxes on foreign re-export trade."
+      }
+    ]
+  },
+  "dominican-republic": {
+    "cname": "Dominican Republic",
+    "visa_category": "Short-Stay Commercial Entry / Visa-Free Business Visit",
+    "overview": "International company executives, hotel developers, Free Trade Zone investors, and logistics operators can visit the Dominican Republic VISA-FREE for up to 30 days if holding a valid US, UK, Canada, or Schengen visa. Perfect for business meetings, contract negotiations, and resort evaluations.",
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free with valid US/UK/Canada/Schengen visa)",
+      "service_fee": "₹0 (Direct Border Entry)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "No visa required for short commercial trips up to 30 days with qualifying visa."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival)",
+    "proc_details": "Immediate entry granted at Punta Cana (PUJ) or Santo Domingo (SDQ) airport.",
+    "source": "ProDominicana (Investment & Export Center) & MIREX",
+    "validity": "30 Days on Arrival",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Notarized Dominican Corporate Host Invitation Letter",
+    "invitation_desc": "Official invitation from a registered Dominican company stating commercial purpose.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "ProDominicana Investor Facilitation",
+        "description": "One-stop investor facilitation for foreign corporations setting up regional logistics or hospitality ventures."
+      },
+      {
+        "icon": "🚢",
+        "title": "DP World Caucedo Mega Port",
+        "description": "State-of-the-art deep-water maritime terminal and logistics hub connecting North America and the Caribbean."
+      },
+      {
+        "icon": "🌴",
+        "title": "Tourism Incentive Law (Confotur)",
+        "description": "15-year 100% exemption from all national and municipal taxes for qualifying tourism investments."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Dominican Republic on my US visa?",
+        "answer": "Yes! Indian passport holders holding a valid US, UK, Canada, or Schengen visa can enter visa-free for commercial meetings, conferences, and site visits for up to 30 days."
+      },
+      {
+        "question": "What is the Confotur law in Dominican Republic?",
+        "answer": "Confotur (Law 158-01) is a specialized investment incentive granting 15 years of 0% income tax, property tax, and import duty exemptions for hotel and tourism developers."
       }
     ]
   }

@@ -1,3 +1,4 @@
+import { resolvePureRouteWork } from './pure-routes';
 // src/lib/work-visa.ts
 // Country-specific Work / Employment Visa pipeline based on official immigration and consular mandates
 
@@ -80,6 +81,30 @@ export interface StructuredVisaRequirements {
 // ── COUNTRY NORMALIZATION HELPER ──
 export function normalizeCountry(country: string): string {
   const c = (country || '').toLowerCase().trim().replace(/[-_]/g, ' ');
+
+  // ── TOP 20 ORIGINS ALIASES ──
+  if (c.includes('usa') || c.includes('united states') || c === 'us' || c.includes('america') || c.includes('american')) return 'usa';
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('great britain') || c.includes('britain') || c.includes('british') || c === 'gb') return 'uk';
+  if (c.includes('canada') || c === 'ca' || c.includes('canadian')) return 'canada';
+  if (c.includes('australia') || c === 'au' || c.includes('australian') || c.includes('aussie')) return 'australia';
+  if (c.includes('germany') || c === 'de' || c.includes('deutschland') || c.includes('german')) return 'germany';
+  if (c.includes('france') || c === 'fr' || c.includes('french')) return 'france';
+  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi') || c.includes('emirates') || c.includes('emirati')) return 'uae';
+  if (c.includes('singapore') || c === 'sg' || c.includes('singaporean')) return 'singapore';
+  if (c.includes('netherlands') || c === 'nl' || c.includes('holland') || c.includes('dutch')) return 'netherlands';
+  if (c.includes('switzerland') || c === 'ch' || c.includes('swiss')) return 'switzerland';
+  if (c.includes('spain') || c === 'es' || c.includes('españa') || c.includes('spanish')) return 'spain';
+  if (c.includes('italy') || c === 'it' || c.includes('italian')) return 'italy';
+  if (c.includes('japan') || c === 'jp' || c.includes('japanese')) return 'japan';
+  if (c.includes('south korea') || c === 'kr' || c.includes('korea') || c.includes('korean')) return 'south-korea';
+  if (c.includes('china') || c === 'cn' || c.includes('chinese') || c.includes('prc')) return 'china';
+  if (c.includes('india') || c === 'in' || c.includes('indian')) return 'india';
+  if (c.includes('brazil') || c === 'br' || c.includes('brazilian')) return 'brazil';
+  if (c.includes('south africa') || c === 'za' || c.includes('south african')) return 'south-africa';
+  if (c.includes('mexico') || c === 'mx' || c.includes('mexican')) return 'mexico';
+  if (c.includes('russia') || c === 'ru' || c.includes('russian')) return 'russia';
+  if (c.includes('new zealand') || c === 'nz' || c.includes('kiwi')) return 'new-zealand';
+
   if (c.includes('australia')) return 'australia';
   if (c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales')) return 'uk';
   if (c.includes('usa') || c.includes('united states') || c.includes('america') || c.includes('u.s.') || c === 'us') return 'usa';
@@ -3882,6 +3907,12 @@ export function getWorkVisaData(
   to: string,
   purpose: string = 'Work'
 ): StructuredVisaRequirements {
+  const fromNorm = normalizeCountry(from);
+  if (fromNorm && fromNorm !== 'india') {
+    const pureRoute = resolvePureRouteWork(from, to);
+    if (pureRoute) return pureRoute;
+  }
+
   const c = normalizeCountry(to);
   const countryName = to;
   const officialSource = getWorkOfficialSourceName(to);

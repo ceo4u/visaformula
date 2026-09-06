@@ -82,705 +82,1210 @@ export interface StructuredVisaRequirements {
 // ── COUNTRY NORMALIZATION HELPER ──
 export function normalizeCountry(country: string): string {
   const c = (country || '').toLowerCase().trim().replace(/[-_]/g, ' ');
-  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales')) return 'uk';
-  if (c.includes('usa') || c.includes('united states') || c.includes('america') || c.includes('u.s.') || c === 'us') return 'usa';
   if (c.includes('canada')) return 'canada';
   if (c.includes('australia')) return 'australia';
-  if (c.includes('new zealand') || c.includes('nz')) return 'new-zealand';
+  if (c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales')) return 'uk';
   if (c.includes('germany') || c.includes('deutschland')) return 'germany';
-  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi')) return 'uae';
+  if (c.includes('new zealand') || c === 'nz') return 'new-zealand';
   if (c.includes('singapore')) return 'singapore';
-  if (c.includes('ireland')) return 'ireland';
-  if (c.includes('netherlands') || c.includes('holland') || c.includes('dutch')) return 'netherlands';
-  if (c.includes('sweden')) return 'sweden';
-  if (c.includes('denmark')) return 'denmark';
+  if (c.includes('uae') || c.includes('united arab emirates') || c.includes('dubai') || c.includes('abu dhabi')) return 'uae';
+  if (c.includes('usa') || c.includes('united states') || c.includes('america') || c.includes('u.s.') || c === 'us') return 'usa';
+  if (c.includes('ireland') || c.includes('irish') || c.includes('eire')) return 'ireland';
+  if (c.includes('austria') || c.includes('vienna')) return 'austria';
+  if (c.includes('belgium') || c.includes('brussels')) return 'belgium';
+  if (c.includes('denmark') || c.includes('copenhagen')) return 'denmark';
+  if (c.includes('finland') || c.includes('helsinki')) return 'finland';
+  if (c.includes('italy') || c.includes('italia') || c.includes('rome') || c.includes('milan')) return 'italy';
+  if (c.includes('sweden') || c.includes('stockholm')) return 'sweden';
   return c;
 }
 
-// ── 1. PR OVERVIEW — COUNTRY SPECIFIC ──
+const DESTS: Record<string, any> = {
+  "canada": {
+    "cname": "Canada",
+    "scheme": "Express Entry (FSWP / CEC) & Provincial Nominee Programs (PNP)",
+    "overview": "Canada's Permanent Residency (PR) system is globally recognized as the gold standard in economic immigration. The primary pathway is the federal Express Entry system, which ranks skilled candidates via the Comprehensive Ranking System (CRS) across age, education (ECA), language proficiency (CLB in English/French), and skilled work experience (NOC TEER). Candidates selected in category-based or general draws receive an Invitation to Apply (ITA) for PR. Alternatively, Provincial Nominee Programs (PNP) award 600 bonus CRS points to applicants meeting specific provincial labor priorities. Canadian PR confers universal provincial healthcare, free public schooling, and eligibility for Canadian citizenship after 3 years (1,095 days).",
+    "fees": {
+      "visa_fee": "CAD $950 (Principal Applicant Processing Fee)",
+      "service_fee": "CAD $575 (Right of Permanent Residence Fee - RPRF) + CAD $85 Biometrics",
+      "total_fee": "CAD $1,610 Total Government Statutory Fee (approx. \u20b91,00,000)",
+      "currency": "CAD",
+      "notes": "The CAD $575 RPRF fee is refunded if the PR application is not approved. ECA credentials assessment (~$250) and IELTS/CELPIP testing fees are extra."
+    },
+    "proc_time": "6 Months (Standard Express Entry SLA from e-APR Submission)",
+    "proc_details": "Once an Invitation to Apply (ITA) is received, applicants have 60 calendar days to submit the electronic Application for Permanent Residence (e-APR). Standard IRCC processing is 6 months.",
+    "source": "Immigration, Refugees and Citizenship Canada (IRCC)",
+    "validity": "5 Years (PR Card)",
+    "stay": "Indefinite Lawful Permanent Resident Status",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Express Entry Invitation to Apply (ITA) or Provincial Nomination (PNP)",
+    "invitation_desc": "Official Invitation to Apply issued under Express Entry or provincial nomination confirmation certificate granting 600 CRS points.",
+    "min_funds": "CAD $14,690 for single applicant (scales by family size) held in unencumbered liquid funds for FSWP (exempt for CEC).",
+    "highlights": [
+      {
+        "icon": "\ud83c\udf41",
+        "title": "Comprehensive Ranking System (CRS)",
+        "description": "Points-based selection prioritizing youth, master's degrees, bilingualism, and Canadian work experience."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Universal Healthcare & Social Benefits",
+        "description": "Full access to provincial healthcare (OHIP, MSP, AHCIP), public child benefits, and subsidized university tuition."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "6-Month Fast-Track Processing",
+        "description": "Express Entry e-APR applications processed to final decision within 6 months of submission."
+      },
+      {
+        "icon": "\ud83c\udde8\ud83c\udde6",
+        "title": "Canadian Citizenship in 3 Years",
+        "description": "Eligible to apply for Canadian Citizenship and passport after completing 1,095 days of physical presence as a PR."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the minimum CRS score required for Canadian Permanent Residency?",
+        "answer": "CRS cutoff scores fluctuate with each Express Entry draw depending on intake quotas and category selections (e.g. STEM occupations, Healthcare, French-language proficiency, or Provincial Nominee Programs)."
+      },
+      {
+        "question": "What is the Educational Credential Assessment (ECA)?",
+        "answer": "An ECA is an evaluation from a designated organization (such as WES, ICAS, or CES) verifying that your foreign university degree is valid and equal to a completed Canadian educational credential."
+      },
+      {
+        "question": "What are the settlement fund requirements for Canadian Express Entry?",
+        "answer": "For the Federal Skilled Worker Program (FSWP), a single applicant must show at least CAD $14,690 in unencumbered liquid funds (savings, fixed deposits). Applicants applying under the Canadian Experience Class (CEC) or holding a valid Canadian job offer are exempt."
+      },
+      {
+        "question": "Can I sponsor my spouse and children on my Canadian PR application?",
+        "answer": "Yes. Your spouse/common-law partner and dependent children under 22 years of age can be included as accompanying dependents on your e-APR application and receive PR status simultaneously."
+      },
+      {
+        "question": "What are the residency obligations to maintain Canadian PR status?",
+        "answer": "To maintain your Canadian permanent resident status, you must be physically present in Canada for at least 730 days (2 years) out of every 5-year rolling period."
+      }
+    ]
+  },
+  "australia": {
+    "cname": "Australia",
+    "scheme": "General Skilled Migration (Subclass 189 / 190 / 491) & Employer Nomination (Subclass 186)",
+    "overview": "Australia's Permanent Residency system operates primarily under the General Skilled Migration (GSM) points-tested framework and employer-sponsored streams. The flagship independent route is the Skilled Independent Visa (Subclass 189), requiring an occupation on the Medium and Long-term Strategic Skills List (MLTSSL), a positive skills assessment, and submitting an Expression of Interest (EOI) via SkillSelect scoring at least 65 points. The Skilled Nominated Visa (Subclass 190) offers direct PR with 5 state nomination bonus points. Australian PR confers universal Medicare health coverage, subsidised tertiary education via CSP, and eligibility for Australian Citizenship after 4 years.",
+    "fees": {
+      "visa_fee": "AUD 4,770 (Principal Applicant Base Charge)",
+      "service_fee": "AUD 2,385 (Additional Adult Dependent) + AUD 1,195 (Child Dependent)",
+      "total_fee": "AUD 4,770 Base PR Fee (approx. \u20b92,62,000)",
+      "currency": "AUD",
+      "notes": "Paid online via ImmiAccount upon receiving an Invitation to Apply (ITA). Skills assessment fees (AUD 800 - 1,500) and English test fees are separate."
+    },
+    "proc_time": "6 to 12 Months from Lodgement on SkillSelect",
+    "proc_details": "Lodged digitally via Home Affairs ImmiAccount following invitation from SkillSelect. Standard assessment takes 6 to 9 months for priority sectors.",
+    "source": "Department of Home Affairs (ImmiAccount / SkillSelect)",
+    "validity": "5 Years (Resident Return Visa - RRV facility)",
+    "stay": "Indefinite Lawful Permanent Resident Status",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "SkillSelect Invitation to Apply (ITA) or State Nomination Grant",
+    "invitation_desc": "Official invitation issued by the Department of Home Affairs through SkillSelect or formal state nomination approval notice.",
+    "min_funds": "Personal savings of AUD $10,000 - $20,000 recommended for initial settlement (statutory proof mandatory for Subclass 190/491 states).",
+    "highlights": [
+      {
+        "icon": "\ud83e\udd98",
+        "title": "Direct Permanent Residence",
+        "description": "Subclass 189 and 190 grant direct, unconditional permanent residency from the day of initial visa approval."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Medicare & Social Security",
+        "description": "Immediate access to Australia's world-class public healthcare system (Medicare) and subsidized education."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "SkillSelect Points System",
+        "description": "Merit-based points calculation rewarding age (25-32), English superior scores, bachelor/master degrees, and work experience."
+      },
+      {
+        "icon": "\ud83c\udde6\ud83c\uddfa",
+        "title": "Australian Citizenship in 4 Years",
+        "description": "Eligible to apply for Australian Citizenship after 4 years of lawful residence, including at least 1 year as a Permanent Resident."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the minimum points score to receive an invitation for Australia PR?",
+        "answer": "The statutory minimum is 65 points on the SkillSelect points test. However, competitive invitations for high-demand occupations typically require 85 to 95+ points in recent invitation rounds."
+      },
+      {
+        "question": "What is a Skills Assessment for Australian immigration?",
+        "answer": "A mandatory pre-application assessment conducted by an authorized assessing body (such as ACS for IT, Engineers Australia for engineers, or VETASSESS) certifying that your qualifications and experience match Australian standards."
+      },
+      {
+        "question": "What is the difference between Subclass 189 and Subclass 190?",
+        "answer": "Subclass 189 is an independent federal visa allowing you to live and work anywhere in Australia without state sponsorship. Subclass 190 is a state-nominated visa that grants 5 bonus points in exchange for a commitment to live in the nominating state for 2 years."
+      },
+      {
+        "question": "Can I include my family on an Australian PR application?",
+        "answer": "Yes. Your spouse or de facto partner and dependent children can be included in the same application, granting them unconditional Australian Permanent Residency."
+      },
+      {
+        "question": "What is the 5-year travel facility on an Australian PR visa?",
+        "answer": "Your initial PR grant allows unrestricted travel into Australia for 5 years. If you travel overseas after 5 years, you must obtain a Resident Return Visa (Subclass 155/157) demonstrating continued ties or 2 years presence in Australia."
+      }
+    ]
+  },
+  "uk": {
+    "cname": "United Kingdom",
+    "scheme": "Indefinite Leave to Remain (ILR) / Settlement",
+    "overview": "Indefinite Leave to Remain (ILR) is the United Kingdom's permanent residency status, granting foreign nationals the lawful right to live, work, and study in the UK without any immigration time restrictions or sponsor binding. ILR is typically achieved through 5 continuous years of lawful residence under qualifying categories (such as the Skilled Worker Visa, Scale-up Visa, Global Talent Visa, or Innovator Founder Visa; 3 years accelerated for exceptional talent). Applicants must pass the Life in the UK Test, demonstrate CEFR B1 English proficiency, and comply with the continuous residence rule (no more than 180 days absence in any 12-month period). After 12 months holding ILR, holders are eligible for British Citizenship.",
+    "fees": {
+      "visa_fee": "\u00a32,885 (Standard ILR Application Fee)",
+      "service_fee": "\u00a3500 (Priority Service: 5 Days) or \u00a31,000 (Super Priority: Next Working Day)",
+      "total_fee": "\u00a32,885 Statutory Base Fee (approx. \u20b93,08,000)",
+      "currency": "GBP",
+      "notes": "Paid online on GOV.UK. Life in the UK Test fee (\u00a350) is separate. No Immigration Health Surcharge (IHS) is payable once ILR is granted."
+    },
+    "proc_time": "6 Months (Standard) / Next Business Day (Super Priority)",
+    "proc_details": "Processed online via GOV.UK. Super Priority option provides decision within 24 hours of biometric capture at UKVCAS.",
+    "source": "UK Visas and Immigration (UKVI / Home Office)",
+    "validity": "Permanent Settlement (No expiration of immigration status; BRP card valid 5-10 years)",
+    "stay": "Indefinite Settlement",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Employer Settlement Letter & 5-Year Residence Dossier",
+    "invitation_desc": "Official employer letter certifying that the sponsor still requires the applicant for the foreseeable future at or above the settlement salary threshold.",
+    "min_funds": "Earnings meeting applicable settlement salary threshold (minimum \u00a338,700/year or going rate for Skilled Worker)",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddec\ud83c\udde7",
+        "title": "Freedom from Sponsorship",
+        "description": "Completely removes employer tie: work for any employer, establish businesses, or pursue independent consulting."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Zero Healthcare Surcharge (IHS)",
+        "description": "Permanent exemption from the \u00a31,035/year Immigration Health Surcharge, with full free NHS access."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "British Citizenship in 12 Months",
+        "description": "Eligible to apply for naturalisation as a British Citizen and obtain a UK Passport after 12 months of ILR."
+      },
+      {
+        "icon": "\u26a1",
+        "title": "Super Priority 24-Hour Decision",
+        "description": "Optional Super Priority service grants same-day or next-business-day settlement adjudication."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the 180-day rule for UK Indefinite Leave to Remain?",
+        "answer": "You must not have been absent from the United Kingdom for more than 180 days in any rolling 12-month period during the continuous 5-year qualifying period."
+      },
+      {
+        "question": "What tests must I pass before applying for ILR in the UK?",
+        "answer": "You must pass the official 'Life in the UK' test (a 24-question test on British customs and history) and demonstrate English language proficiency at CEFR Level B1 or higher (or hold a degree taught in English)."
+      },
+      {
+        "question": "Can I lose my Indefinite Leave to Remain status?",
+        "answer": "Yes. If you remain outside the UK for more than 2 consecutive continuous years, your ILR status automatically lapses, requiring a Returning Resident visa to re-enter."
+      },
+      {
+        "question": "Can my spouse and children apply for ILR at the same time as me?",
+        "answer": "Yes. Dependents who have completed their own 5-year continuous qualifying residence in the UK as your partner/child can apply for ILR alongside you or separately."
+      },
+      {
+        "question": "When can I apply for a British passport after getting ILR?",
+        "answer": "You can apply for naturalization as a British citizen 12 months after receiving ILR (or immediately after ILR if you are married to a British citizen)."
+      }
+    ]
+  },
+  "germany": {
+    "cname": "Germany",
+    "scheme": "Permanent Settlement Permit (Niederlassungserlaubnis) / EU Long-Term Residence",
+    "overview": "The German Permanent Settlement Permit (Niederlassungserlaubnis, \u00a718c AufenthG) is an open-ended residence title authorizing foreign nationals to reside, work, or engage in self-employment in Germany without time restrictions or employer limitations. Under Germany's modernized immigration framework, EU Blue Card holders enjoy the fastest path to permanent settlement in Europe: eligible after just 21 months with B1 German language skills, or 27 months with basic A1 German. General skilled workers qualify after 3 years, and German university graduates after 2 years. The permit requires continuous statutory pension contributions (Rentenversicherung), secure livelihood, and passing the 'Living in Germany' test (Einb\u00fcrgerungstest).",
+    "fees": {
+      "visa_fee": "\u20ac113 (Standard Settlement Fee for Skilled Workers / Blue Card)",
+      "service_fee": "\u20ac147 (Self-employed / Business Investors)",
+      "total_fee": "\u20ac113 Statutory Administrative Fee (approx. \u20b910,200)",
+      "currency": "EUR",
+      "notes": "Paid directly at the local Foreigners Registration Office (Ausl\u00e4nderbeh\u00f6rde) upon biometrics capture for the eAT plastic residence card."
+    },
+    "proc_time": "6 to 12 Weeks from Ausl\u00e4nderbeh\u00f6rde Appointment",
+    "proc_details": "Application lodged with the local municipal Foreigners Authority (Ausl\u00e4nderbeh\u00f6rde) in your city of residence in Germany.",
+    "source": "Federal Foreign Office & Municipal Foreigners Authorities (Ausl\u00e4nderbeh\u00f6rde)",
+    "validity": "Unlimited / Permanent (Physical biometric card renewed every 10 years)",
+    "stay": "Indefinite Settlement in Germany",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Rentenversicherung Contribution Statement & Employer Confirmation",
+    "invitation_desc": "Official pension contribution statement (Versicherungsverlauf) proving 21 to 36 months of statutory contributions and current proof of active employment.",
+    "min_funds": "Self-sustaining income covering living expenses, health insurance, and rental costs without social assistance (SGB II).",
+    "highlights": [
+      {
+        "icon": "\ud83c\udde9\ud83c\uddea",
+        "title": "21-Month Blue Card Fast Track",
+        "description": "EU Blue Card holders can obtain permanent settlement after just 21 months with verified B1 German proficiency."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Unrestricted Labour Freedom",
+        "description": "Complete freedom to work in any job, start a business, or work as an independent freelancer across Germany."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Pathway to German Citizenship in 3-5 Years",
+        "description": "Under recent nationality law reforms, apply for German citizenship after 5 years (or 3 years with exceptional integration)."
+      },
+      {
+        "icon": "\ud83c\uddea\ud83c\uddfa",
+        "title": "EU Long-Term Residence Option",
+        "description": "Eligible for Daueraufenthalt-EU, facilitating relocation and work permit rights in other EU member states."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How quickly can an EU Blue Card holder get PR in Germany?",
+        "answer": "An EU Blue Card holder can apply for a Niederlassungserlaubnis after just 21 months if they prove German language ability at CEFR level B1, or after 27 months with basic A1 German, provided pension contributions were paid."
+      },
+      {
+        "question": "What is the German pension contribution requirement for settlement?",
+        "answer": "You must prove that you have paid mandatory or voluntary contributions to the statutory pension scheme (Deutsche Rentenversicherung) for 21-27 months (Blue Card), 24 months (German graduates), or 36-60 months (general skilled workers)."
+      },
+      {
+        "question": "What is the 'Living in Germany' test (Leben in Deutschland)?",
+        "answer": "It is a 33-question multiple-choice test on the legal and social order and living conditions in Germany, required for general settlement and naturalization."
+      },
+      {
+        "question": "Can I leave Germany without losing my Niederlassungserlaubnis?",
+        "answer": "Standard Niederlassungserlaubnis holders can remain outside Germany for up to 6 months before it expires. EU Blue Card settlement holders and long-term residents can remain outside the EU for up to 12-24 months."
+      },
+      {
+        "question": "Can my spouse work in Germany after I get permanent settlement?",
+        "answer": "Your spouse already holds unrestricted employment rights under family reunification, and their own path to settlement is preserved."
+      }
+    ]
+  },
+  "new-zealand": {
+    "cname": "New Zealand",
+    "scheme": "Skilled Migrant Category (SMC) Resident Visa & Green List Straight to Residence",
+    "overview": "New Zealand's permanent residence system attracts skilled global professionals through the modernized 6-Point Skilled Migrant Category (SMC) system and the Green List Straight to Residence pathways. Under the 6-point system, applicants claim points for New Zealand occupational registration, advanced educational qualifications (Bachelor's to PhD), or high income (1.5x to 3x median wage), combined with 1 to 3 years of skilled New Zealand work experience. Occupations on Tier 1 of the Green List (software engineers, doctors, civil engineers) qualify for direct Straight to Residence without prior NZ work experience. Once granted a Resident Visa, completing 2 years of residence entitles holders to a Permanent Resident Visa (PRV) with permanent travel facility.",
+    "fees": {
+      "visa_fee": "NZD 4,290 (approx. \u20b92,18,000 SMC Application Fee)",
+      "service_fee": "NZD 1,000 (Immigration Levy Included)",
+      "total_fee": "NZD 4,290 Total Statutory Fee",
+      "currency": "NZD",
+      "notes": "Paid online via Immigration New Zealand (INZ) portal. Covers principal applicant and accompanying spouse and dependent children."
+    },
+    "proc_time": "6 to 9 Months from Submission",
+    "proc_details": "Processed online via Immigration Online by Immigration New Zealand (INZ). Green List applications prioritized within 6 to 8 weeks.",
+    "source": "Immigration New Zealand (INZ / Immigration Online)",
+    "validity": "2 Years (Resident Visa travel conditions) leading to unconditional Permanent Resident Visa (PRV)",
+    "stay": "Indefinite Settlement in New Zealand",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Accredited Employer Job Offer & 6-Point SMC Assessment",
+    "invitation_desc": "Permanent or minimum 12-month full-time employment contract with an INZ Accredited Employer paying at least the median wage.",
+    "min_funds": "Full-time employment contract paying at or above the median hourly wage (NZD $31.61/hour as of 2024).",
+    "highlights": [
+      {
+        "icon": "\ud83e\udd5d",
+        "title": "Green List Straight to Residence",
+        "description": "Direct fast-track residence for high-demand IT engineers, doctors, and construction specialists."
+      },
+      {
+        "icon": "\ud83d\udccb",
+        "title": "Simplified 6-Point SMC System",
+        "description": "Transparent criteria awarding points for recognized degrees, professional registration, or high income."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Permanent Resident Visa (PRV)",
+        "description": "After 2 years on a Resident Visa, transition to a lifetime PRV with perpetual return travel rights."
+      },
+      {
+        "icon": "\ud83c\udf0f",
+        "title": "Australian Freedom of Movement",
+        "description": "New Zealand citizens enjoy automatic Special Category (Subclass 444) visas to live and work indefinitely in Australia."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the 6-point system for New Zealand Skilled Migrant Category?",
+        "answer": "You must claim 6 points from one of three skill pillars: (1) NZ occupational registration (3-6 pts), (2) recognized qualifications (Bachelor 3 pts, Master 5 pts, PhD 6 pts), or (3) high income (1.5x median wage 3 pts, 3x median wage 6 pts) + 1-3 points for NZ skilled work experience."
+      },
+      {
+        "question": "What is the Green List Straight to Residence pathway?",
+        "answer": "Eligible professionals in Tier 1 Green List roles (such as software engineers, medical practitioners, university lecturers) who have a full-time job offer from an accredited employer can apply directly for residence from overseas without waiting."
+      },
+      {
+        "question": "What is the difference between an NZ Resident Visa and a Permanent Resident Visa?",
+        "answer": "A Resident Visa grants permanent stay in NZ, but its travel conditions expire after 2 years. A Permanent Resident Visa (PRV), granted after 2 years of meeting commitment criteria, allows lifetime indefinite return to New Zealand."
+      },
+      {
+        "question": "Can I include my partner and children in my New Zealand residence application?",
+        "answer": "Yes. Partners (who meet genuine and stable relationship criteria) and dependent children aged 24 and under can be included in your residence application."
+      },
+      {
+        "question": "When can a New Zealand permanent resident apply for citizenship?",
+        "answer": "You can apply for New Zealand citizenship after holding residence status and living in New Zealand for at least 5 continuous years, spending at least 240 days in NZ each year."
+      }
+    ]
+  },
+  "singapore": {
+    "cname": "Singapore",
+    "scheme": "Professionals/Technical Personnel and Skilled Workers (PTS) Scheme",
+    "overview": "Singapore Permanent Residence (PR) under the Professionals/Technical Personnel and Skilled Workers (PTS) scheme is the premier immigration pathway for foreign professionals holding valid Employment Passes (EP) or S Passes. Administered by the Immigration & Checkpoints Authority (ICA), PR status grants lifelong lawful residency, complete freedom from work pass sponsorship, eligibility to purchase subsidized HDB resale apartments, access to the Central Provident Fund (CPF) retirement and healthcare scheme, and enrollment in premier public schools. Selection is holistic, evaluating economic contributions, academic credentials, professional industry, integration into Singaporean society, and family ties.",
+    "fees": {
+      "visa_fee": "SGD $100 (Non-refundable Application Fee per applicant)",
+      "service_fee": "SGD $120 (Entry Permit + Re-Entry Permit + Identity Card upon approval)",
+      "total_fee": "SGD $220 Statutory Reference (approx. \u20b914,000)",
+      "currency": "SGD",
+      "notes": "Applied online via the ICA Electronic PR (e-PR) portal. Principal applicant pays $100 per applicant at lodgement."
+    },
+    "proc_time": "6 to 12 Months from Electronic Submission",
+    "proc_details": "Lodged digitally via the ICA e-PR system using Singpass. Assessment involves multiple government ministry reviews.",
+    "source": "Immigration & Checkpoints Authority (ICA Singapore)",
+    "validity": "Permanent Residency (Re-Entry Permit - REP renewed every 5 years)",
+    "stay": "Lifelong Permanent Resident Status",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Annex A Employer Verification & Tax Assessment Notices (NOA)",
+    "invitation_desc": "Official ICA Annex A form signed by the Singapore employer and past 3 years of Inland Revenue Authority of Singapore (IRAS) Notices of Assessment.",
+    "min_funds": "Gainfully employed holding valid EP/S Pass with stable monthly salary (typically SGD $8,000 - $15,000+/month).",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddf8\ud83c\uddec",
+        "title": "Freedom from Work Passes",
+        "description": "Permanent right to work in Singapore without employer sponsorship, quota constraints, or COMPASS checks."
+      },
+      {
+        "icon": "\ud83c\udfe6",
+        "title": "Central Provident Fund (CPF)",
+        "description": "Mandatory employer (17%) and employee (20%) pension contributions for tax-free retirement and medical savings."
+      },
+      {
+        "icon": "\ud83c\udfe0",
+        "title": "HDB & Private Property Rights",
+        "description": "Eligible to purchase resale Housing & Development Board (HDB) flats and enjoy significantly reduced buyer stamp duties."
+      },
+      {
+        "icon": "\ud83e\udd81",
+        "title": "Singapore Citizenship Pathway",
+        "description": "Eligible to apply for Singapore Citizenship after completing 2 years of permanent residency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "When can an Employment Pass holder apply for Singapore PR?",
+        "answer": "There is no statutory minimum waiting period, but it is standard practice to apply after completing at least 1 to 2 years of continuous, tax-paying employment in Singapore under the PTS scheme."
+      },
+      {
+        "question": "What is the National Service (NS) liability for Singapore PRs?",
+        "answer": "Male applicants who receive PR under the PTS scheme as first-generation migrants are exempt from National Service. However, male children granted PR as dependents are legally liable for mandatory full-time National Service upon reaching age 18."
+      },
+      {
+        "question": "What is a Re-Entry Permit (REP)?",
+        "answer": "An REP is a travel authorization that allows a Singapore PR to retain permanent resident status while traveling abroad, typically renewed online every 5 years based on continuing economic ties to Singapore."
+      },
+      {
+        "question": "What factors improve chances of Singapore PR approval?",
+        "answer": "Stable employment in key strategic growth sectors (ICT, semiconductors, biotech, finance), competitive salary, degrees from top universities, paying taxes via IRAS, and demonstrable community integration."
+      },
+      {
+        "question": "Can I include my family on my Singapore PR application?",
+        "answer": "Yes. You can sponsor your legal spouse and unmarried biological or legally adopted children under the age of 21 within your e-PR application."
+      }
+    ]
+  },
+  "uae": {
+    "cname": "United Arab Emirates",
+    "scheme": "UAE 10-Year Golden Visa (Specialists, Executives & Real Estate Investors)",
+    "overview": "The UAE 10-Year Golden Visa is the United Arab Emirates' flagship long-term residency program, granting expatriates, top executive talents, specialized professionals, and major property investors permanent-equivalent residency without requiring a national sponsor. High-skilled employees holding a bachelor's degree and earning a basic monthly salary of at least AED 30,000 qualify under the 'Skilled Professionals' category. Real estate investors purchasing properties valued at AED 2,000,000 or more qualify for 10-year residency. Golden Visa holders enjoy complete self-sponsorship, 100% tax-free income, unrestricted domestic and foreign travel (no 6-month stay requirement), and unlimited family sponsorship.",
+    "fees": {
+      "visa_fee": "AED 2,800 - 3,800 (approx. \u20b964,000 - \u20b986,000 for 10-Year Residency & Emirates ID)",
+      "service_fee": "AED 350 (ICP Nomination Assessment)",
+      "total_fee": "AED 3,150 - 4,150 Total Government Reference",
+      "currency": "AED",
+      "notes": "Applied online via the ICP Smart Services or GDRFA Dubai portal. Includes 10-year physical Emirates ID card and VIP medical screening."
+    },
+    "proc_time": "1 to 2 Weeks from ICP Nomination Approval",
+    "proc_details": "Digital application via ICP or GDRFA portal. Once initial nomination is endorsed, medical fitness and biometric issuance are completed in 3 to 5 business days.",
+    "source": "Federal Authority for Identity, Citizenship, Customs and Port Security (ICP) & GDRFA Dubai",
+    "validity": "10 Years (Renewable indefinitely upon maintaining qualifying criteria)",
+    "stay": "Continuous 10-Year Residency (No 6-month outside UAE stay cancellation rule)",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "MOHRE Contract / Salary Certificate or Real Estate Title Deed",
+    "invitation_desc": "Official salary certificate demonstrating AED 30,000+/month basic wage or official Land Department Title Deed showing AED 2M+ valuation.",
+    "min_funds": "Monthly basic salary of AED 30,000+ or real estate property investment of AED 2,000,000+.",
+    "highlights": [
+      {
+        "icon": "\ud83c\udf1f",
+        "title": "10-Year Self-Sponsored Residency",
+        "description": "100% self-sponsored long-term residency without requiring a local Emirati partner or employer sponsorship."
+      },
+      {
+        "icon": "\ud83c\udf34",
+        "title": "Zero Minimum Stay Cancellation",
+        "description": "Holders can remain outside the UAE for longer than 6 continuous months without their Golden Visa being invalidated."
+      },
+      {
+        "icon": "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67",
+        "title": "Unlimited Family Sponsorship",
+        "description": "Sponsor spouse, children of any age, and domestic staff with uninterrupted validity even upon the holder's passing."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "100% Tax-Free Earnings",
+        "description": "Zero personal income tax, capital gains tax, or corporate withholding taxes on individual compensation."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Who qualifies for the UAE 10-Year Golden Visa through employment?",
+        "answer": "Skilled professionals classified under MOHRE Occupational Level 1 or 2 who hold a bachelor's degree and earn a basic monthly salary of at least AED 30,000 qualify for the 10-Year Golden Visa."
+      },
+      {
+        "question": "Can I qualify for the UAE Golden Visa through property investment?",
+        "answer": "Yes. Investors who purchase one or more real estate properties in the UAE with a combined valuation of at least AED 2,000,000 (including mortgaged properties with bank clearance) qualify for a 10-year renewable visa."
+      },
+      {
+        "question": "Do Golden Visa holders lose their residency if they stay outside the UAE for 6 months?",
+        "answer": "No. Unlike standard UAE residence visas, Golden Visa holders are exempt from the 6-month stay rule and can remain outside the UAE indefinitely without their residency being canceled."
+      },
+      {
+        "question": "Can I sponsor my family on a UAE Golden Visa?",
+        "answer": "Yes. Golden Visa holders can sponsor their spouse and children of any age (no 25-year-old cap for sons), as well as parents and domestic staff."
+      },
+      {
+        "question": "Can I work for any employer in the UAE with a Golden Visa?",
+        "answer": "Yes. The Golden Visa provides independent self-sponsored residency. You can work for any company, open your own business, or work as an independent consultant without employer visa transfer."
+      }
+    ]
+  },
+  "usa": {
+    "cname": "United States",
+    "scheme": "Employment-Based Permanent Residency (EB-1, EB-2 NIW, EB-3 Green Card)",
+    "overview": "United States Lawful Permanent Residency (Green Card) grants foreign nationals the statutory authorization to reside and work permanently in the United States. Employment-based pathways include EB-1 (Priority Workers: extraordinary ability, outstanding researchers, multinational managers), EB-2 (Advanced Degree professionals or exceptional ability, including National Interest Waivers - NIW), and EB-3 (Skilled Workers with bachelor's degrees). Most EB-2 and EB-3 pathways require a certified permanent labor certification (PERM) from the US Department of Labor confirming no qualified US workers were available, followed by an approved Form I-140 and adjustment of status (Form I-485) or consular processing.",
+    "fees": {
+      "visa_fee": "USD $715 (Form I-140 Petition Fee) + USD $1,440 (Form I-485 Adjustment of Status)",
+      "service_fee": "USD $2,805 (Optional Form I-907 Premium Processing)",
+      "total_fee": "USD $2,155+ Government Reference",
+      "currency": "USD",
+      "notes": "PERM recruitment and filing costs must be paid exclusively by the sponsoring US employer. Immigrant visa fee at consulate is $345."
+    },
+    "proc_time": "1 to 3 Years (Subject to Visa Bulletin Priority Date Backlogs for India)",
+    "proc_details": "Three-stage procedure: (1) DOL PERM labor certification, (2) USCIS Form I-140 immigrant petition, and (3) Form I-485 adjustment of status once priority date is current.",
+    "source": "U.S. Citizenship and Immigration Services (USCIS) & U.S. Department of State",
+    "validity": "10 Years (Form I-551 Permanent Resident Card - Green Card, renewable)",
+    "stay": "Permanent Lawful Resident Status",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Approved Form I-140 Immigrant Petition & Certified ETA-9089",
+    "invitation_desc": "Official USCIS Form I-797 Notice of Action confirming approval of Form I-140 Immigrant Petition for Alien Worker.",
+    "min_funds": "Guaranteed permanent job offer paying certified prevailing wage or Form I-864 Affidavit of Support.",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddfa\ud83c\uddf8",
+        "title": "Lawful Permanent Residency",
+        "description": "Full permanent residency (Green Card) granting unrestricted right to live, work, and study anywhere in the United States."
+      },
+      {
+        "icon": "\ud83c\udf93",
+        "title": "EB-2 NIW Self-Petitioning",
+        "description": "National Interest Waiver allows eligible advanced degree specialists to self-petition without employer sponsorship or PERM."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "AC21 Job Portability",
+        "description": "Change employers 180 days after filing Form I-485 in a same or similar occupational classification without losing Green Card priority."
+      },
+      {
+        "icon": "\ud83d\uddfd",
+        "title": "US Citizenship in 5 Years",
+        "description": "Eligible to apply for naturalization as a United States Citizen after 5 continuous years of Lawful Permanent Resident status."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the PERM labor certification process in the US?",
+        "answer": "PERM is a Department of Labor recruitment and advertising process that the employer must conduct to test the US labor market and prove that no qualified, willing, and available US workers exist for the position."
+      },
+      {
+        "question": "What is the Visa Bulletin and Priority Date for Indian applicants?",
+        "answer": "Your Priority Date is established when your PERM or I-140 is filed. Because US law imposes a 7% per-country numerical ceiling, immigrant visas for applicants born in India have significant backlogs in EB-2 and EB-3 categories."
+      },
+      {
+        "question": "What is an EB-2 National Interest Waiver (NIW)?",
+        "answer": "An EB-2 NIW allows advanced-degree professionals to waive the job offer and PERM labor certification requirements if their proposed endeavor has substantial merit, national importance, and benefits the United States."
+      },
+      {
+        "question": "Can I work for any employer after getting a Green Card?",
+        "answer": "Yes. A Green Card grants complete employment authorization. You can work for any company, freelance, establish a business, or retire."
+      },
+      {
+        "question": "When can a Green Card holder apply for US Citizenship?",
+        "answer": "You can apply for naturalization (Form N-400) after 5 continuous years as a Lawful Permanent Resident (or 3 years if married to a US citizen), provided you meet physical presence requirements."
+      }
+    ]
+  },
+  "ireland": {
+    "cname": "Ireland",
+    "scheme": "Stamp 4 Permanent Residence Permission / Long Term Residency",
+    "overview": "Ireland offers an accelerated, world-class settlement framework for international professionals through the Stamp 4 permission. Foreign specialists holding a Critical Skills Employment Permit (CSEP) can apply directly for Stamp 4 immigration permission after just 2 years of qualifying employment with their sponsoring employer. General Employment Permit holders qualify for Stamp 4 after 5 continuous years. Stamp 4 confers unrestricted employment rights\u2014allowing individuals to work in any role, switch companies without an employment permit, establish commercial businesses, and sponsor family members. After 5 years of reckonable residence, holders can apply for Irish Citizenship and an EU Passport.",
+    "fees": {
+      "visa_fee": "\u20ac300 (Irish Residence Permit - IRP Card Fee)",
+      "service_fee": "\u20ac500 (Long Term Residency Application Fee, if applying separately)",
+      "total_fee": "\u20ac300 Standard IRP Fee (approx. \u20b927,000)",
+      "currency": "EUR",
+      "notes": "CSEP holders transition to Stamp 4 with no separate government visa fee other than the standard \u20ac300 IRP registration fee."
+    },
+    "proc_time": "4 to 8 Weeks from Stamp 4 Support Letter Submission",
+    "proc_details": "First, obtain a Stamp 4 Support Letter from DETE. Second, book an appointment at the local immigration registration office (ISD Dublin or Garda immigration) to collect the Stamp 4 IRP card.",
+    "source": "Department of Enterprise, Trade and Employment (DETE) & Irish Immigration Service (ISD)",
+    "validity": "2 Years (Renewable for 3 years, leading directly to permanent settlement)",
+    "stay": "Indefinite Settlement Permission",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "DETE Stamp 4 Support Letter & P60 / Employment Detail Summary",
+    "invitation_desc": "Official Stamp 4 Support Letter issued by DETE verifying 21+ months of continuous employment on a Critical Skills permit accompanied by Revenue tax summaries.",
+    "min_funds": "Demonstrated continuous employment meeting Critical Skills threshold (\u20ac38,000 - \u20ac64,000/year).",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddee\ud83c\uddea",
+        "title": "Stamp 4 in Just 2 Years",
+        "description": "Critical Skills permit holders qualify for Stamp 4 immigration permission after only 21 to 24 months of employment."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Unrestricted Employment Rights",
+        "description": "Work for any employer in Ireland without an employment permit, establish a business, or pursue consulting."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "5-Year Irish EU Citizenship",
+        "description": "Eligible to apply for Irish Citizenship by naturalization after 5 years of reckonable residence (1,825 days)."
+      },
+      {
+        "icon": "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67",
+        "title": "Full Family Work Permissions",
+        "description": "Spouses and dependents hold Stamp 1G/4 permissions with full independent employment rights in Ireland."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do I transition from Critical Skills Permit to Stamp 4 in Ireland?",
+        "answer": "After working for 21 months with your employer on a CSEP, apply online to DETE for a Stamp 4 Support Letter. Present this letter with recent payslips and P60/Employment Detail Summary to the immigration office to receive your Stamp 4 IRP card."
+      },
+      {
+        "question": "What can I do on Stamp 4 that I couldn't do on Stamp 1?",
+        "answer": "On Stamp 4, you no longer require an employment permit from DETE. You can change employers freely, work multiple jobs, start your own enterprise, or freelance."
+      },
+      {
+        "question": "Does Ireland offer an EU Long-Term Resident status?",
+        "answer": "Yes. Foreign nationals who have completed 5 years of continuous legal residence on work permits in Ireland can apply for Long-Term Residency."
+      },
+      {
+        "question": "Can I travel to the UK or Europe with an Irish Stamp 4 card?",
+        "answer": "Ireland is not part of the Schengen zone. Stamp 4 grants residence rights solely in Ireland. Travel to Schengen or the UK requires standard visitor visas depending on your passport."
+      },
+      {
+        "question": "When can I apply for an Irish passport and citizenship?",
+        "answer": "You can apply for Irish citizenship by naturalisation after accumulating 5 years (1,825 days) of reckonable residence in Ireland over the preceding 9 years, including 1 continuous year before applying."
+      }
+    ]
+  },
+  "austria": {
+    "cname": "Austria",
+    "scheme": "Long-Term Resident \u2013 EU (Daueraufenthalt \u2013 EU) & Red-White-Red Card Plus",
+    "overview": "Austria's permanent settlement framework is anchored by the 'Long-Term Resident \u2013 EU' (Daueraufenthalt \u2013 EU) title, governed by the Austrian Settlement and Residence Act (NAG). Foreign professionals who have held continuous legal residence in Austria for 5 years on a Red-White-Red Card or EU Blue Card qualify for Daueraufenthalt \u2013 EU. Applicants must demonstrate Module 2 of the Integration Agreement (German B1 proficiency), stable earnings meeting Austrian collective agreement benchmarks, adequate residential accommodation, and clean criminal standing. The status grants indefinite settlement, full labour market parity with Austrian citizens, and mobility across the European Union.",
+    "fees": {
+      "visa_fee": "\u20ac160 (Statutory Daueraufenthalt Application & Card Fee)",
+      "service_fee": "\u20ac20 (Police Biometric Verification Fee)",
+      "total_fee": "\u20ac180 Total Reference (approx. \u20b916,200)",
+      "currency": "EUR",
+      "notes": "Paid directly to the competent settlement authority in Austria (Magistrat or Bezirkshauptmannschaft) upon biometrics capture."
+    },
+    "proc_time": "2 to 3 Months from Application Lodgement",
+    "proc_details": "Lodged in Austria with the local provincial settlement authority (Magistratsabteilung 35 in Vienna or Bezirkshauptmannschaft in other federal provinces).",
+    "source": "Austrian Federal Ministry of the Interior (BMI) & Settlement Authorities (Magistrat / BH)",
+    "validity": "5 Years (Biometric Card validity, status is permanent and open-ended)",
+    "stay": "Indefinite Settlement in Austria",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "5-Year Residence Dossier & Austrian Social Insurance Extract (\u00d6GK)",
+    "invitation_desc": "Certified insurance history statement from the \u00d6sterreichische Gesundheitskasse (\u00d6GK) confirming 5 continuous years of employment and social insurance.",
+    "min_funds": "Regular monthly net income exceeding the ASVG standard equalization supplement rate (\u20ac1,217 single / \u20ac1,921 couple).",
+    "highlights": [
+      {
+        "icon": "\ud83c\udde6\ud83c\uddf9",
+        "title": "Indefinite Settlement Rights",
+        "description": "Lifelong permanent residence authorization in Austria with unrestricted labour and commercial rights."
+      },
+      {
+        "icon": "\ud83c\uddea\ud83c\uddfa",
+        "title": "EU-Wide Mobility Directive",
+        "description": "Daueraufenthalt \u2013 EU grants privileged access to live, study, and work in other EU member states under Directive 2003/109/EC."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Integration Agreement Module 2",
+        "description": "German B1 language proficiency certifies full social and economic integration into Austrian society."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Full Social Security Parity",
+        "description": "Equal access to Austrian public welfare, universal healthcare (\u00d6GK), unemployment insurance, and family allowances."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the difference between RWR Card Plus and Daueraufenthalt \u2013 EU in Austria?",
+        "answer": "The Red-White-Red Card Plus is a temporary permit granted after 21 months of an RWR Card that allows free access to the Austrian labour market. Daueraufenthalt \u2013 EU is the permanent settlement title granted after 5 continuous years."
+      },
+      {
+        "question": "What German language level is required for Austrian permanent residence?",
+        "answer": "You must fulfill Module 2 of the Integration Agreement, which requires passing a recognized German B1 language examination (\u00d6SD, Goethe, or telc) that includes knowledge of Austrian values."
+      },
+      {
+        "question": "How long can I stay outside Austria without losing Daueraufenthalt \u2013 EU?",
+        "answer": "You can stay outside the European Union for up to 12 consecutive months without losing your Daueraufenthalt \u2013 EU status (or up to 24 months for former EU Blue Card holders)."
+      },
+      {
+        "question": "Can I apply for Austrian citizenship after getting permanent residence?",
+        "answer": "Yes. Foreign nationals can apply for Austrian citizenship after 6 to 10 years of legal residence, provided they demonstrate B2 German proficiency, financial self-sufficiency, and pass the citizenship exam."
+      },
+      {
+        "question": "Are my family members eligible for Daueraufenthalt \u2013 EU?",
+        "answer": "Yes. Family members who have legally resided in Austria for 5 continuous years and have fulfilled Module 2 of the Integration Agreement can apply for their own Daueraufenthalt \u2013 EU cards."
+      }
+    ]
+  },
+  "belgium": {
+    "cname": "Belgium",
+    "scheme": "Belgian Long-Term Resident (Statut de R\u00e9sident de Longue Dur\u00e9e / Electronic D Card)",
+    "overview": "Belgium's permanent settlement scheme is governed by the Law of 15 December 1980 and the EU Long-Term Residents Directive. Non-EEA professionals who have resided legally and uninterruptedly in Belgium for 5 years holding qualifying residence permits (Single Permit, EU Blue Card) are entitled to apply for Belgian Long-Term Resident status (R\u00e9sident de Longue Dur\u00e9e - D Card / K Card). The applicant must prove stable, regular, and sufficient financial resources (minimum \u20ac1,070/month net plus \u20ac356 per dependent), comprehensive health insurance, and clean criminal record. Long-term resident status grants unconditional access to the Belgian labour market and EU-wide mobility privileges.",
+    "fees": {
+      "visa_fee": "\u20ac25 - \u20ac50 (Municipal Administrative Card Fee for Electronic D Card)",
+      "service_fee": "Nil",
+      "total_fee": "approx. \u20ac50 Municipal Reference (approx. \u20b94,500)",
+      "currency": "EUR",
+      "notes": "Application lodged at the local municipal administrative office (Maison Communale / Gemeentehuis) in your place of residence in Belgium."
+    },
+    "proc_time": "2 to 4 Months from Municipal Submission",
+    "proc_details": "Lodged at the local municipality, which forwards the dossier to the Belgian Immigration Office (DOFI / Office des \u00c9trangers) for final statutory decision.",
+    "source": "Belgian Immigration Office (DOFI / Office des \u00c9trangers) & Municipal Administrations",
+    "validity": "5 Years (Physical D-card validity, underlying settlement right is indefinite)",
+    "stay": "Indefinite Settlement in Belgium",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "5-Year Belgian Residence History & Tax Assessment Summaries (Avertissement-Extrait de R\u00f4le)",
+    "invitation_desc": "Official Belgian personal income tax assessments from the SPF Finances proving 5 years of uninterrupted income and statutory social contributions.",
+    "min_funds": "Stable regular income exceeding the statutory integration minimum (approx. \u20ac1,070/month net for individual).",
+    "highlights": [
+      {
+        "icon": "\ud83c\udde7\ud83c\uddea",
+        "title": "Electronic D-Card Settlement",
+        "description": "Unconditional permanent settlement status granting complete parity with Belgian nationals in employment and commerce."
+      },
+      {
+        "icon": "\ud83c\udfe2",
+        "title": "Exemption from Work Permits",
+        "description": "Permanently eliminates the requirement for Single Permits or regional labour ministry authorizations."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Belgian Citizenship in 5 Years",
+        "description": "Eligible to apply for Belgian Nationality (EU Passport) immediately upon completing 5 years of legal residence and social integration."
+      },
+      {
+        "icon": "\ud83c\uddea\ud83c\uddfa",
+        "title": "EU Long-Term Mobility",
+        "description": "Facilitates relocation to other European Union member states for employment or business under EU Directive 2003/109/EC."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the difference between an electronic B-card and D-card in Belgium?",
+        "answer": "The B-card is an indefinite residence permit valid only within Belgium. The D-card is the EU Long-Term Resident status, which grants both permanent settlement in Belgium and mobility rights across the European Union."
+      },
+      {
+        "question": "Can I apply for Belgian citizenship after 5 years on a work permit?",
+        "answer": "Yes. Under the Belgian Nationality Code, foreign nationals who have completed 5 years of uninterrupted legal residence, prove language knowledge (French, Dutch, or German at A2 level), and prove 468 days of work can apply directly for Belgian citizenship."
+      },
+      {
+        "question": "What absences are permitted during the 5-year qualifying period in Belgium?",
+        "answer": "Absences from Belgium must not exceed 6 consecutive months and must not total more than 10 months over the entire 5-year period."
+      },
+      {
+        "question": "Do I need to take a formal integration test in Belgium?",
+        "answer": "In Flanders, completing a formal integration course (inburgering) is mandatory. In Wallonia and Brussels, completing an integration pathway is required for settlement or nationality."
+      },
+      {
+        "question": "Can my spouse obtain permanent residence in Belgium simultaneously?",
+        "answer": "Yes. Family members who have legally resided in Belgium for 5 continuous years can submit concurrent applications for their own D-cards."
+      }
+    ]
+  },
+  "denmark": {
+    "cname": "Denmark",
+    "scheme": "Permanent Residence Permit (Tidsubegr\u00e6nset Opholdstilladelse)",
+    "overview": "Denmark's Permanent Residence Permit (Tidsubegr\u00e6nset opholdstilladelse), administered by the Danish Immigration Service and SIRI, grants foreign nationals the permanent right to reside and work in Denmark. Applicants must have resided legally in Denmark for at least 8 continuous years (reduced to 4 years if meeting all 4 supplementary requirements). Mandatory basic requirements include passing the Danish 2 Language Test (Pr\u00f8ve i Dansk 2), being currently employed in ordinary, full-time employment, having worked full-time for at least 3.5 of the past 4 years, not receiving public social assistance (aktivloven) for 4 years, and having a clean criminal record.",
+    "fees": {
+      "visa_fee": "DKK 4,945 (approx. \u20ac665 / \u20b959,000 SIRI Case Order Fee)",
+      "service_fee": "\u20ac30 (Biometrics Fee)",
+      "total_fee": "DKK 4,945 + Biometrics Fee",
+      "currency": "DKK",
+      "notes": "Case Order ID created on newtodenmark.dk and fee paid online prior to biometric submission."
+    },
+    "proc_time": "6 to 8 Months from Submission",
+    "proc_details": "Processed by the Danish Immigration Service or SIRI following digital lodgement on newtodenmark.dk.",
+    "source": "Danish Agency for International Recruitment and Integration (SIRI) & Danish Immigration Service",
+    "validity": "Permanent / Unlimited (Plastic card renewed every 5-10 years)",
+    "stay": "Permanent Lawful Settlement in Denmark",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Danish Employment History (eIndkomst) & Pr\u00f8ve i Dansk 2 Certificate",
+    "invitation_desc": "Official Danish Tax Agency (Skattestyrelsen) eIndkomst extract proving 3.5+ years of full-time employment and official language examination certificate.",
+    "min_funds": "Ordinary full-time employment (minimum 30 hours/week) and financial self-sufficiency with no public welfare claims for 4 years.",
+    "highlights": [
+      {
+        "icon": "\ud83c\udde9\ud83c\uddf0",
+        "title": "Fast-Track 4-Year Settlement",
+        "description": "Achieve permanent residence in just 4 years by meeting supplementary criteria: Pr\u00f8ve i Dansk 3, 4 years work, high income, or active civic engagement."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Work Permit Exemption",
+        "description": "Completely removes employer sponsorship requirements, salary thresholds, and Pay Limit regulations."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Indefinite Danish Residence",
+        "description": "Permanent lawful status with full access to Danish healthcare, university tuition, and social pension systems."
+      },
+      {
+        "icon": "\ud83d\udc51",
+        "title": "Pathway to Danish Citizenship",
+        "description": "Permanent residence is the mandatory prerequisite before applying for Danish naturalization."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the 4-year fast-track permanent residence in Denmark?",
+        "answer": "You can qualify for permanent residence after 4 years instead of 8 if you meet the basic criteria and fulfill all 4 supplementary requirements: (1) Pr\u00f8ve i Dansk 3, (2) 4 years full-time work, (3) annual income above DKK 328,000, and (4) passing the active citizenship test or participating in local council work."
+      },
+      {
+        "question": "What is the Danish language requirement for permanent residence?",
+        "answer": "You must pass the official 'Pr\u00f8ve i Dansk 2' language examination (or an equivalent or higher Danish test such as Pr\u00f8ve i Dansk 3)."
+      },
+      {
+        "question": "What constitutes 'ordinary full-time employment' in Denmark?",
+        "answer": "Employment of at least 30 hours per week under a standard Danish employment contract complying with collective bargaining standards."
+      },
+      {
+        "question": "Can I receive public benefits while qualifying for Danish PR?",
+        "answer": "You must not have received any benefits under the Active Social Policy Act (Aktivloven) or the Integration Act for the 4 years immediately preceding your application."
+      },
+      {
+        "question": "Can my spouse apply for permanent residence in Denmark at the same time?",
+        "answer": "Spouses must independently meet the permanent residence requirements (including residency duration, language test, and employment requirements)."
+      }
+    ]
+  },
+  "finland": {
+    "cname": "Finland",
+    "scheme": "Permanent Residence Permit (Pysyv\u00e4 oleskelulupa - P-lupa) / EU Long-Term Resident",
+    "overview": "The Finnish Permanent Residence Permit (Pysyv\u00e4 oleskelulupa, P-permit), issued by the Finnish Immigration Service (Migri) under the Aliens Act (Ulkomaalaislaki), confers indefinite lawful residence in Finland. Foreign nationals qualify for a P-permit after residing continuously in Finland for 4 years holding a continuous residence permit (Type A permit, such as a Specialist or Employed Person permit). Applicants must have spent no more than 2 years total abroad during the 4-year qualifying period, have secure and verifiable income from employment or entrepreneurship, and maintain clean criminal standing. Permanent residence provides an immediate pathway to Finnish Citizenship.",
+    "fees": {
+      "visa_fee": "\u20ac220 (Electronic Application via Enter Finland) / \u20ac270 (Paper Application)",
+      "service_fee": "Nil",
+      "total_fee": "\u20ac220 Statutory Reference (approx. \u20b919,800)",
+      "currency": "EUR",
+      "notes": "Applied online via enterfinland.fi. Biometrics confirmed at a Migri service point in Finland."
+    },
+    "proc_time": "1 to 3 Months from Enter Finland Submission",
+    "proc_details": "Automated and manual digital assessment via Migri's Enter Finland system. Decisions typically issued within 30 to 60 days.",
+    "source": "Finnish Immigration Service (Migri / Enter Finland)",
+    "validity": "Permanent / Unlimited (Biometric residence card renewed every 5 years)",
+    "stay": "Indefinite Settlement in Finland",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Finnish Tax Assessment (Verotodistus) & 4-Year A-Permit History",
+    "invitation_desc": "Official tax decisions from the Finnish Tax Administration (Verohallinto) and pension certificates confirming 4 years of continuous employment.",
+    "min_funds": "Self-sustaining employment income meeting statutory threshold (minimum \u20ac1,399/month net).",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddeb\ud83c\uddee",
+        "title": "P-Permit in 4 Years",
+        "description": "Qualify for permanent residence after just 4 continuous years on a Type A work permit."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Unrestricted Labour Market Access",
+        "description": "Complete freedom to work in any sector, establish innovative businesses, or study without permit restrictions."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Finnish Citizenship in 5 Years",
+        "description": "Eligible for Finnish Citizenship (and EU Passport) after 5 years of residence (or 4 years with B1 Finnish/Swedish)."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Universal Kela Healthcare & Welfare",
+        "description": "Full lifelong entitlement to Finland's world-renowned social security and universal healthcare system (Kela)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the continuous residence requirement for Finland permanent residence?",
+        "answer": "You must hold a continuous residence permit (A-permit) for 4 uninterrupted years and have stayed in Finland for at least half of that time, with no single absence exceeding 2 years."
+      },
+      {
+        "question": "Does student residence count towards Finnish permanent residency?",
+        "answer": "Time spent on a B-permit (temporary student permit) counts as half time towards the 4-year requirement, provided you transition to a continuous A-permit before applying for permanent residence."
+      },
+      {
+        "question": "Is there a Finnish language requirement for a Permanent Residence Permit (P-lupa)?",
+        "answer": "No. Finnish language proficiency is NOT mandatory for the permanent residence permit (P-lupa). However, passing the YKI test at intermediate level (B1) is required if you subsequently apply for Finnish Citizenship."
+      },
+      {
+        "question": "Can I lose my Finnish permanent residence permit?",
+        "answer": "Your permanent permit can be cancelled if you move out of Finland permanently or live outside the European Union for 2 consecutive years without an exemption."
+      },
+      {
+        "question": "Can my family members obtain permanent residence with me?",
+        "answer": "Family members who have held continuous A-permits based on family ties for 4 years can apply for their own permanent residence permits simultaneously."
+      }
+    ]
+  },
+  "italy": {
+    "cname": "Italy",
+    "scheme": "EU Long-Term Residence Permit (Permesso di Soggiorno UE per Soggiornanti di Lungo Periodo)",
+    "overview": "Italy's permanent residency framework is centered on the EU Long-Term Residence Permit (Permesso di Soggiorno UE per Soggiornanti di Lungo Periodo, formerly known as Carta di Soggiorno), issued under Article 9 of the Consolidated Immigration Act (TUI). Foreign nationals who have resided legally and continuously in Italy for at least 5 years holding a valid residence permit (such as a work permit or EU Blue Card) are entitled to apply. The applicant must prove a minimum annual income equal to the social allowance (Assegno Sociale, approx. \u20ac6,947/year plus 50% per dependent), pass an official Italian A2 language test, provide proof of suitable housing, and possess clean criminal standing.",
+    "fees": {
+      "visa_fee": "\u20ac100 (Statutory Long-Term Permit Electronic Card Fee)",
+      "service_fee": "\u20ac30 (Post Office Postal Kit Fee) + \u20ac16 (Revenue Stamp - Marca da Bollo)",
+      "total_fee": "\u20ac146 Total Government Reference (approx. \u20b913,200)",
+      "currency": "EUR",
+      "notes": "Submitted via the Yellow Postal Kit (Kit Giallo) at designated Italian Post Offices (Sportello Amico) followed by biometric booking at the Questura."
+    },
+    "proc_time": "3 to 6 Months from Questura Biometric Capture",
+    "proc_details": "Lodged via the Post Office Sportello Amico, then processed by the Immigration Office (Ufficio Immigrazione) of the local Questura (police headquarters).",
+    "source": "Ministry of the Interior (Ministero dell'Interno) & Questura / Prefettura",
+    "validity": "Permanent / Unlimited (Physical card renewed every 10 years for adults)",
+    "stay": "Indefinite Settlement in Italy",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Certificato di Idoneit\u00e0 Alloggiativa & Modello CUD / 730 Tax Returns",
+    "invitation_desc": "Municipal housing suitability certificate (Certificato di idoneit\u00e0 alloggiativa) and past 3 years of Italian income tax declarations (Modello Unico / 730 / CUD).",
+    "min_funds": "Annual income exceeding the statutory social allowance (\u20ac6,947/year for individual + \u20ac3,473 per dependent).",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddee\ud83c\uddf9",
+        "title": "Indefinite Settlement Rights",
+        "description": "Permanent lawful residence in Italy with unrestricted rights to work as an employee or independent professional."
+      },
+      {
+        "icon": "\ud83c\udfe2",
+        "title": "Exemption from Work Visas",
+        "description": "Permanently eliminates the requirement for Nulla Osta authorizations and annual Decreto Flussi quotas."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Italian Citizenship in 10 Years",
+        "description": "Eligible to apply for Italian Citizenship by naturalization after completing 10 years of registered municipal residence."
+      },
+      {
+        "icon": "\ud83c\uddea\ud83c\uddfa",
+        "title": "EU Long-Term Mobility",
+        "description": "Authorized to relocate, work, or study in other European Union member states under EU Directive 2003/109/EC."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What Italian language test is required for permanent residence?",
+        "answer": "You must pass an official Italian language test at CEFR Level A2 or higher organized by the Prefettura or hold an approved certificate from an accredited institution (CLI, Dante Alighieri, CILS, CELI)."
+      },
+      {
+        "question": "What is the Certificato di Idoneit\u00e0 Alloggiativa in Italy?",
+        "answer": "It is an official certificate issued by the local municipality (Comune) certifying that your apartment complies with statutory sanitary and surface standards based on the number of occupants."
+      },
+      {
+        "question": "What absences from Italy are permitted during the 5-year qualifying period?",
+        "answer": "You must not have been absent from Italy for more than 6 consecutive months, and total absences must not exceed 10 months over the 5-year qualifying period (12 months for EU Blue Card holders)."
+      },
+      {
+        "question": "Can I lose my Italian EU long-term residence permit?",
+        "answer": "The permit can be revoked if you stay outside the European Union for 12 consecutive months or if you acquire EU long-term resident status in another EU member state."
+      },
+      {
+        "question": "Can my spouse and children obtain the EU long-term permit with me?",
+        "answer": "Yes. Family members who have legally resided in Italy for 5 continuous years can apply, provided your household income meets the scaled social allowance benchmarks."
+      }
+    ]
+  },
+  "sweden": {
+    "cname": "Sweden",
+    "scheme": "Permanent Residence Permit (Permanent Uppeh\u00e5llstillst\u00e5nd - PUT) / EU Long-Term Resident",
+    "overview": "The Swedish Permanent Residence Permit (Permanent Uppeh\u00e5llstillst\u00e5nd - PUT) is issued by the Swedish Migration Agency (Migrationsverket) under the Aliens Act (Utl\u00e4nningslagen). Foreign workers who have held a work permit in Sweden for a total of 4 years within the past 7 years can apply for permanent residence in conjunction with their work permit extension application. Under the revised Aliens Act, applicants must demonstrate financial self-support through ongoing employment or business activity of duration (at least 18 months), compliance with Swedish collective bargaining standards throughout their work history, and good conduct. Permanent residence confers indefinite residency and an accelerated path to Swedish Citizenship after 5 years.",
+    "fees": {
+      "visa_fee": "SEK 2,200 (Work Permit Extension & Permanent Residence Assessment)",
+      "service_fee": "Nil",
+      "total_fee": "SEK 2,200 Statutory Reference (approx. \u20b917,500)",
+      "currency": "SEK",
+      "notes": "Paid online via the Swedish Migration Agency (Migrationsverket) e-service portal."
+    },
+    "proc_time": "2 to 4 Months from Extension Lodgement",
+    "proc_details": "Applied online concurrently with the work permit extension on Migrationsverket's digital portal.",
+    "source": "Swedish Migration Agency (Migrationsverket)",
+    "validity": "Permanent / Unlimited (Biometric residence card renewed every 5 years)",
+    "stay": "Indefinite Settlement in Sweden",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "4-Year Employment Dossier & Swedish Tax Agency (Skatteverket) Records",
+    "invitation_desc": "Official statement from Skatteverket (tax agency) and insurances certificates proving 4 years of uninterrupted employment and collective terms.",
+    "min_funds": "Self-sustaining employment income with an employment contract lasting at least 18 months from the date of decision.",
+    "highlights": [
+      {
+        "icon": "\ud83c\uddf8\ud83c\uddea",
+        "title": "Permanent Residence in 4 Years",
+        "description": "Eligible for PUT after holding a Swedish work permit for 4 years within the previous 7-year period."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Unrestricted Labour Freedom",
+        "description": "Completely eliminates employer and occupation ties, allowing you to work for any employer or start an enterprise."
+      },
+      {
+        "icon": "\u23f1\ufe0f",
+        "title": "Swedish Citizenship in 5 Years",
+        "description": "Apply for Swedish Citizenship and an EU Passport after 5 years of continuous habitual residence in Sweden."
+      },
+      {
+        "icon": "\ud83c\udfe5",
+        "title": "Universal Public Services",
+        "description": "Equal access to universal healthcare, parental leave insurance, free higher education, and state pensions."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the 18-month employment requirement for Swedish PR?",
+        "answer": "Under the new Swedish Aliens Act, you must prove that you can support yourself through ongoing employment or business activity that is expected to last for at least 18 months from the date of the permanent residence decision."
+      },
+      {
+        "question": "Are past insurances audited during the Swedish PR application?",
+        "answer": "Yes. Migrationsverket strictly verifies that your employer provided occupational pension, health, life, and industrial injury insurances covering every single month of your 4-year work history in Sweden."
+      },
+      {
+        "question": "Is there a Swedish language test required for permanent residence?",
+        "answer": "Currently, Swedish language proficiency is not a statutory requirement for PUT. However, legislative proposals are in progress to introduce basic Swedish language and civic knowledge criteria."
+      },
+      {
+        "question": "When can I apply for Swedish Citizenship after getting PUT?",
+        "answer": "You can apply for Swedish Citizenship (medborgarskap) after completing 5 continuous years of lawful residence in Sweden, provided you hold a permanent residence permit (PUT)."
+      },
+      {
+        "question": "Can my family members get permanent residence in Sweden with me?",
+        "answer": "Family members can be granted permanent residence if you receive PUT, provided they have lived in Sweden for at least 3 years and adults can support themselves financially."
+      }
+    ]
+  }
+};
+
+// ── 1. PR OVERVIEW ──
 export function getPROverview(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Canada Express Entry is a points-based immigration system for skilled workers. Candidates are assessed on age, education, work experience, language proficiency (IELTS/PTE), and adaptability. The Comprehensive Ranking System (CRS) scores candidates, with top-scoring applicants receiving Invitations to Apply (ITA) through regular draws. Successful applicants receive Confirmation of Permanent Residence (COPR) and can live, work, and study anywhere in Canada. Path to Canadian Citizenship after 3 years (1,095 days) of physical presence.',
-    'australia': 'Australia Skilled Independent Visa (Subclass 189) is a points-based permanent residency visa for skilled workers not sponsored by an employer, state, or family member. You must score at least 65 points on the SkillSelect points test. Points are awarded based on age, English proficiency (IELTS 6.0+ / PTE 50+), qualifications, and work experience. An Invitation to Apply (ITA) is required before lodging the visa application. Permanent Residency leads to Australian Citizenship after 4 years.',
-    'uk': 'UK Indefinite Leave to Remain (ILR) is permanent settlement in the UK. You must have lived in the UK for 5 years on a qualifying visa (Skilled Worker, Global Talent, etc.). Requirements include passing the Life in the UK Test, meeting English language requirement (CEFR B1), and not exceeding 180 days absence in any 12-month period. ILR grants unrestricted right to live, work, and study in the UK. Apply for British Citizenship after 1 year of ILR.',
-    'usa': 'US Green Card (Lawful Permanent Resident status) allows foreign nationals to live and work permanently in the United States. There are several pathways: Employment-Based (EB-1, EB-2, EB-3), Family-Based (I-130), or Investment (EB-5). The process involves an approved USCIS petition (I-140/I-130), priority date wait (based on Visa Bulletin), and consular processing (DS-260) or Adjustment of Status (I-485). Green Card is valid for 10 years and renewable. Path to US Citizenship after 5 years (or 3 years if married to a US citizen).',
-    'new-zealand': 'New Zealand Skilled Migrant Category (SMC) is a points-based permanent residency visa. The new 6-point system requires a minimum of 6 points from either: NZ occupational registration, recognized qualification (Bachelor/Master/PhD), or high income (1.5x - 3x median wage), plus 1-3 points for skilled work in NZ. A job offer from an accredited employer is required. Permanent Residency leads to NZ Citizenship after 5 years.',
-    'germany': 'Germany Permanent Settlement (Niederlassungserlaubnis) allows long-term residence in Germany. For EU Blue Card holders: fast-track PR in 21 months (with B1 German) or 27 months (with A1 German). For other skilled workers: 5 years of residence. Requirements include statutory pension contributions, adequate living space, and basic knowledge of the legal and social order in Germany. Permanent Settlement grants unrestricted right to work and live in Germany.',
-    'uae': 'UAE 10-Year Golden Visa is a long-term residency visa for investors, entrepreneurs, and highly skilled professionals. Requirements include: minimum monthly salary of 30,000 AED (approx. 8,160 USD), real estate investment of 2,000,000 AED, or outstanding talent in fields such as technology, healthcare, or education. Golden Visa holders can sponsor family members of any age and unlimited domestic helpers. Stay outside UAE for > 6 months allowed without losing visa status.',
-    'singapore': 'Singapore Permanent Residency (PR) is issued by the Immigration and Checkpoints Authority (ICA). Applicants are assessed based on age, education, work experience, salary, and family background. Typically, Employment Pass (EP) holders with 2-5 years of work experience are eligible to apply. PR holders can live, work, and study in Singapore. Path to Singapore Citizenship after 2-3 years of PR status.'
-  };
-
-  return map[c] || `The ${country} Permanent Residency (PR) / Settlement Visa allows foreign nationals to live and work permanently in ${country}. Pathways vary by country and include points-based systems, employer sponsorship, family sponsorship, and investment. Please check the official immigration website for current requirements.`;
+  const d = DESTS[c];
+  if (d && d.overview) return d.overview;
+  return `The Permanent Residency (PR) / Settlement framework in ${country} enables qualified foreign nationals to achieve lawful indefinite residence status with full employment, social security, and citizenship pathways.`;
 }
 
-// ── 2. PR HIGHLIGHTS — COUNTRY SPECIFIC ──
+// ── 2. PR HIGHLIGHTS ──
 export function getPRHighlights(country: string): PRHighlightItem[] {
   const c = normalizeCountry(country);
-  const map: Record<string, PRHighlightItem[]> = {
-    'canada': [
-      { icon: 'chart', title: 'CRS Points System', description: 'Comprehensive Ranking System (CRS) scores candidates on age, education, work experience, and language.', desc: 'Comprehensive Ranking System scores candidates on age, education, work, and language.' },
-      { icon: 'award', title: 'Express Entry Draws', description: 'Top-scoring candidates receive Invitations to Apply (ITA) through regular bi-weekly draws.', desc: 'Top-scoring candidates receive Invitations to Apply (ITA) through regular bi-weekly draws.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'Canadian Citizenship after 3 years (1,095 days) of physical presence in Canada.', desc: 'Canadian Citizenship after 3 years (1,095 days) of physical presence in Canada.' },
-      { icon: 'building', title: 'PNP Pathways', description: 'Provincial Nominee Programs (PNP) offer additional pathways to PR with 600 bonus CRS points.', desc: 'Provincial Nominee Programs offer additional pathways to PR with 600 bonus CRS points.' }
-    ],
-    'australia': [
-      { icon: 'chart', title: 'Points Test (65+ Points)', description: 'Minimum 65 points required on SkillSelect points test based on age, English, qualifications, and work experience.', desc: 'Minimum 65 points required on SkillSelect points test based on age, English, and work.' },
-      { icon: 'award', title: 'SkillSelect EOI', description: 'Expression of Interest (EOI) submitted online, then wait for Invitation to Apply (ITA).', desc: 'Expression of Interest submitted online, followed by Invitation to Apply.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'Australian Citizenship after 4 years of lawful permanent residency.', desc: 'Australian Citizenship after 4 years of lawful permanent residency.' },
-      { icon: 'building', title: 'State Nomination', description: 'Subclass 190 (State Nominated) and Subclass 491 (Regional) offer additional pathways.', desc: 'Subclass 190 (State Nominated) and Subclass 491 (Regional) offer additional pathways.' }
-    ],
-    'uk': [
-      { icon: 'calendar', title: '5-Year Residence', description: 'Must have lived in the UK for 5 years on a qualifying visa (Skilled Worker, Global Talent).', desc: 'Must have lived in the UK for 5 years on a qualifying visa.' },
-      { icon: 'award', title: 'Life in the UK Test', description: 'Mandatory civic knowledge test covering British history, culture, and government.', desc: 'Mandatory civic knowledge test covering British history, culture, and government.' },
-      { icon: 'file', title: 'English Language B1', description: 'CEFR B1 level in reading, writing, speaking, and listening (IELTS/PTE/Trinity).', desc: 'CEFR B1 level in reading, writing, speaking, and listening.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'Apply for British Citizenship after 1 year of holding Indefinite Leave to Remain status.', desc: 'Apply for British Citizenship after 1 year of holding ILR status.' }
-    ],
-    'usa': [
-      { icon: 'file', title: 'USCIS Petition (I-140/I-130)', description: 'Employer or family relative files petition with USCIS. Must receive approval before immigrant visa application.', desc: 'Employer or family relative files petition with USCIS before immigrant application.' },
-      { icon: 'calendar', title: 'Priority Date & Visa Bulletin', description: 'Wait for priority date to become current in the Department of State Visa Bulletin.', desc: 'Wait for priority date to become current in the Department of State Visa Bulletin.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'US Citizenship after 5 years (or 3 years if married to a US citizen).', desc: 'US Citizenship after 5 years (or 3 years if married to a US citizen).' },
-      { icon: 'building', title: 'Adjustment of Status', description: 'I-485 Adjustment of Status for applicants already in the US on a valid nonimmigrant visa.', desc: 'I-485 Adjustment of Status for applicants already legally in the US.' }
-    ],
-    'new-zealand': [
-      { icon: 'chart', title: '6-Point System', description: 'Minimum 6 points from: occupational registration, recognized qualification, or high income.', desc: 'Minimum 6 points from: occupational registration, recognized qualification, or high income.' },
-      { icon: 'building', title: 'Accredited Employer', description: 'Job offer from an INZ Accredited Employer required for work experience points.', desc: 'Job offer from an INZ Accredited Employer required for work experience points.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'NZ Citizenship after 5 years of lawful permanent residency.', desc: 'NZ Citizenship after 5 years of lawful permanent residency.' },
-      { icon: 'file', title: 'English Language', description: 'IELTS 6.5+ or PTE 58+ required for primary applicant.', desc: 'IELTS 6.5+ or PTE 58+ required for primary applicant.' }
-    ],
-    'germany': [
-      { icon: 'calendar', title: 'Fast-Track PR (21 Months)', description: 'EU Blue Card holders with B1 German get Permanent Settlement in 21 months.', desc: 'EU Blue Card holders with B1 German get Permanent Settlement in 21 months.' },
-      { icon: 'credit', title: 'Statutory Pension', description: '21-27 months of mandatory pension contributions (Rentenversicherung) required.', desc: '21-27 months of mandatory pension contributions required.' },
-      { icon: 'building', title: 'Adequate Living Space', description: 'Lease agreement (Mietvertrag) and landlord confirmation required.', desc: 'Lease agreement (Mietvertrag) and landlord confirmation required.' },
-      { icon: 'file', title: 'German Language', description: 'B1 German (21 months) or A1 German (27 months) CEFR certificate required.', desc: 'B1 German (21 months) or A1 German (27 months) CEFR certificate required.' }
-    ],
-    'uae': [
-      { icon: 'award', title: '10-Year Golden Visa', description: 'Long-term residency visa for investors, entrepreneurs, and highly skilled professionals.', desc: 'Long-term residency visa for investors, entrepreneurs, and skilled professionals.' },
-      { icon: 'credit', title: 'Salary/Investment Requirement', description: '30,000 AED/month salary OR 2,000,000 AED real estate investment.', desc: '30,000 AED/month salary OR 2,000,000 AED real estate investment.' },
-      { icon: 'user', title: 'Unlimited Family Sponsorship', description: 'Sponsor spouse, children of any age, and unlimited domestic helpers.', desc: 'Sponsor spouse, children of any age, and unlimited domestic helpers.' },
-      { icon: 'plane', title: 'No 6-Month Rule', description: 'Stay outside UAE for any duration without losing residency status.', desc: 'Stay outside UAE for any duration without losing residency status.' }
-    ],
-    'singapore': [
-      { icon: 'file', title: 'ICA Assessment', description: 'PR applications assessed by ICA on age, education, work experience, salary, and family background.', desc: 'PR applications assessed on age, education, work experience, and salary.' },
-      { icon: 'building', title: 'EP Holders Preferred', description: 'Employment Pass (EP) holders with 2-5 years Singapore experience are eligible to apply.', desc: 'Employment Pass (EP) holders with 2-5 years experience eligible to apply.' },
-      { icon: 'globe', title: 'Path to Citizenship', description: 'Singapore Citizenship after 2-3 years of permanent resident status.', desc: 'Singapore Citizenship after 2-3 years of permanent resident status.' },
-      { icon: 'credit', title: 'CPF Contributions', description: 'Central Provident Fund (CPF) contributions for retirement, housing, and healthcare.', desc: 'Central Provident Fund (CPF) contributions for retirement and healthcare.' }
-    ]
-  };
-
-  const defaultHighlights: PRHighlightItem[] = [
-    { icon: 'chart', title: 'Points-Based System', description: 'Most countries use a points-based system to assess PR applicants.', desc: 'Points-based assessment on age, education, and language skills.' },
-    { icon: 'award', title: 'Invitation to Apply', description: 'You must receive an Invitation to Apply (ITA) before lodging your formal PR application.', desc: 'Receive an Invitation to Apply before lodging your formal application.' },
-    { icon: 'globe', title: 'Path to Citizenship', description: 'Permanent Residency is the primary statutory pathway to full citizenship.', desc: 'Permanent Residency is the primary pathway to full citizenship.' },
-    { icon: 'file', title: 'Document Verification', description: 'Educational Credential Assessment (ECA) and Police Clearance Certificate (PCC) required.', desc: 'Educational Credential Assessment and Police Clearance Certificates required.' }
+  const d = DESTS[c];
+  if (d && d.highlights) return d.highlights;
+  return [
+    { icon: '🌟', title: 'Indefinite Settlement', description: 'Lawful indefinite residence without employer sponsorship or work permit restrictions.' },
+    { icon: '🏥', title: 'Universal Healthcare Access', description: 'Equal access to national public health, social benefits, and subsidized education.' },
+    { icon: '⏱️', title: 'Citizenship Pathway', description: 'Direct statutory pathway to naturalization and passport after continuous residence.' },
+    { icon: '👨‍👩‍👧', title: 'Family Protection Rights', description: 'Concurrent permanent settlement rights for spouse and dependent minor children.' }
   ];
-
-  return map[c] || defaultHighlights;
 }
 
-// ── 3. PR DOCUMENTS — COUNTRY SPECIFIC ──
-export function getPRDocuments(countryOrFrom: string, maybeCountry?: string, _purpose?: string): DocumentRequiredItem[] {
-  const target = maybeCountry || countryOrFrom;
-  const c = normalizeCountry(target);
-  const map: Record<string, DocumentRequiredItem[]> = {
-    'canada': [
-      { title: 'Valid Passport', description: 'Color scan of bio-data page and all stamped pages (valid for intended travel duration).', is_mandatory: true },
-      { title: 'Educational Credential Assessment (ECA)', description: 'ECA evaluation report from WES, CES, or IQAS establishing Canadian equivalency.', is_mandatory: true },
-      { title: 'Official Language Test Results', description: 'IELTS General Training (CLB 7+ minimum; CLB 9+ recommended) or PTE Core scorecard.', is_mandatory: true },
-      { title: 'Police Clearance Certificates (PCC)', description: 'PCCs from Regional Passport Office (RPO) and all countries resided in for 6+ consecutive months since age 18.', is_mandatory: true },
-      { title: 'Proof of Settlement Funds', description: 'Official bank letter with 6-month average balance meeting IRCC minimum threshold (14,690 CAD for single applicant).', is_mandatory: true },
-      { title: 'Immigration Medical Exam (IME)', description: 'Upfront medical examination conducted by an IRCC-authorized panel physician (eMedical sheet).', is_mandatory: true },
-      { title: 'Work Experience Reference Letters', description: 'Detailed reference letters from employers confirming job title, responsibilities, salary, and dates of employment.', is_mandatory: true }
-    ],
-    'australia': [
-      { title: 'Valid Passport', description: 'Color scan of bio-data and stamped pages of current passport.', is_mandatory: true },
-      { title: 'Positive Skills Assessment Outcome', description: 'Official assessment from assessing authority (ACS, Engineers Australia, VETASSESS).', is_mandatory: true },
-      { title: 'English Language Competency Scorecard', description: 'PTE Academic (65+ for Proficient English / 79+ for Superior) or IELTS scorecard.', is_mandatory: true },
-      { title: 'Employment Reference & Tax Documents', description: 'Detailed work reference letters, payslips, bank statements, and Form 16 / ITRs proving claimed points.', is_mandatory: true },
-      { title: 'National Police Clearance Certificates', description: 'Indian PCC from Regional Passport Office (RPO) and clearances from all countries lived in 12+ months.', is_mandatory: true },
-      { title: 'HAP ID Medical Clearance Report', description: 'Health assessment conducted by Bupa Medical Visa Services / designated panel clinics.', is_mandatory: true },
-      { title: 'Proof of Funds & Employment Income', description: 'Sufficient funds for settlement & relocation (approx. 25,000–35,000 AUD).', is_mandatory: true }
-    ],
-    'uk': [
-      { title: 'Valid Passport', description: 'Current and all previous Passports used during the 5-year qualifying residence period.', is_mandatory: true },
-      { title: 'Employer Confirmation Letter', description: 'Confirming ongoing employment at required rate (Skilled Worker route) on official letterhead.', is_mandatory: true },
-      { title: 'Life in the UK Test Pass Notification', description: 'Mandatory civic knowledge test pass certificate with unique reference number.', is_mandatory: true },
-      { title: 'B1 English Language Certificate / UK Degree', description: 'SELT CEFR B1 certificate or Ecctis statement confirming UK degree equivalency.', is_mandatory: true },
-      { title: 'Continuous Residence Absence Summary', description: 'Evidence of absences from the UK not exceeding 180 days in any 12-month period with travel history log.', is_mandatory: true },
-      { title: 'Police Clearance Certificate (PCC)', description: 'Clean criminal record check from home country and official UK residence disclosure.', is_mandatory: true }
-    ],
-    'usa': [
-      { title: 'Valid Passport', description: 'Must be valid for at least 6 months beyond the intended date of entry into the United States.', is_mandatory: true },
-      { title: 'Approved USCIS Immigrant Petition', description: 'Form I-797 approval notice (I-130 / I-140 / I-526) with current Priority Date in Visa Bulletin.', is_mandatory: true },
-      { title: 'Form DS-260 Immigrant Visa Confirmation Page', description: 'Online Immigrant Visa Electronic Application confirmation page submitted via CEAC with barcode.', is_mandatory: true },
-      { title: 'Form I-864 Affidavit of Support & IRS Tax Transcripts', description: 'Legally binding financial sponsorship with IRS tax transcripts and W-2s proving income above 125% FPG.', is_mandatory: true },
-      { title: 'Civil Documents & Police Clearance Certificates', description: 'Original birth certificates, marriage certificates, and PCCs from all countries lived in 6+ months.', is_mandatory: true },
-      { title: 'CDC Approved Panel Physician Medical Examination', description: 'Sealed medical report from CDC panel physician (Max Healthcare, Apollo) including vaccinations.', is_mandatory: true }
-    ],
-    'new-zealand': [
-      { title: 'Valid Passport', description: 'Color scan of bio-data and all stamped pages of current passport (valid 12+ months).', is_mandatory: true },
-      { title: 'NZQA International Qualifications Assessment (IQA)', description: 'Official International Qualifications Assessment from NZQA confirming qualification equivalency.', is_mandatory: true },
-      { title: 'English Language Competency Scorecard', description: 'IELTS General Training (minimum 6.5 overall) or PTE Academic (minimum 58 overall) scorecard.', is_mandatory: true },
-      { title: 'Skilled Employment Offer / Registration', description: 'Offer of skilled employment from an accredited NZ employer paying at or above the median wage.', is_mandatory: true },
-      { title: 'National Police Clearance Certificates', description: 'Police certificates from Regional Passport Office (RPO) and all countries resided in for 12+ months.', is_mandatory: true },
-      { title: 'INZ 1007 General Medical Certificate & Chest X-ray', description: 'eMedical panel physician medical and chest X-ray certificate.', is_mandatory: true },
-      { title: 'Proof of Settlement Solvency', description: 'Minimum 20,000–30,000 NZD in unencumbered liquid funds.', is_mandatory: true }
-    ],
-    'germany': [
-      { title: 'Valid Passport', description: 'Current passport with at least 12 months validity and blank visa pages.', is_mandatory: true },
-      { title: 'Foreign Degree Recognition (ZAB / Anabin)', description: 'ZAB Statement of Comparability confirming German university degree equivalency.', is_mandatory: true },
-      { title: 'German Language Certificate (CEFR A1 / B1)', description: 'Goethe-Institut / telc / TestDaF certificate proving required German language level.', is_mandatory: true },
-      { title: 'Statutory Pension Proof (Rentenversicherung)', description: 'Official contribution statement showing 21 to 27 months of statutory pension payments.', is_mandatory: true },
-      { title: 'Employment Contract & Salary Slips', description: 'Current indefinite employment contract, job description, and last 6 months payslips.', is_mandatory: true },
-      { title: 'Proof of Adequate Living Space (Mietvertrag)', description: 'Lease agreement and landlord confirmation (Wohnungsgeberbestätigung).', is_mandatory: true },
-      { title: 'Integration & Legal System Knowledge', description: '"Life in Germany" / Einbürgerungstest test certificate.', is_mandatory: true }
-    ],
-    'uae': [
-      { title: 'Valid Passport', description: 'Original passport valid for at least 6 months with clear bio-data pages.', is_mandatory: true },
-      { title: 'MOE Degree Attestation / Equivalency', description: 'Apostilled and UAE Ministry of Education (MOE) attested Bachelor/Master/PhD degree certificate.', is_mandatory: true },
-      { title: 'Employment Contract / Professional Letter', description: 'Valid UAE employment contract with minimum monthly salary of 30,000 AED or real estate title deed.', is_mandatory: true },
-      { title: '6-Month Bank Statements', description: 'Stamped UAE bank statements showing regular salary credit of 30,000+ AED/month.', is_mandatory: true },
-      { title: 'Comprehensive UAE Health Insurance', description: 'Valid medical insurance policy covering Golden Visa holder and family dependents.', is_mandatory: true },
-      { title: 'Real Estate Title Deed (if applicable)', description: 'Title Deed from Dubai Land Department (DLD) for 2,000,000 AED property investment.', is_mandatory: false }
-    ],
-    'singapore': [
-      { title: 'Valid Passport', description: 'Color scan of bio-data page and all stamped pages.', is_mandatory: true },
-      { title: 'Educational Credentials', description: 'Degree certificates, transcripts, and professional qualifications.', is_mandatory: true },
-      { title: 'Employment Records', description: 'Employment contracts, payslips, and CPF contribution statements for the last 2-5 years.', is_mandatory: true },
-      { title: 'Income Tax Returns (ITR)', description: 'Last 3 years ITR acknowledgements from IRAS or home country.', is_mandatory: true },
-      { title: 'Police Clearance Certificate (PCC)', description: 'Valid PCC from your home country.', is_mandatory: true },
-      { title: 'Medical Examination Report', description: 'Health check report from an approved medical clinic.', is_mandatory: true },
-      { title: 'Family Background Documents', description: 'Birth certificates, marriage certificates, and family details.', is_mandatory: true }
-    ]
-  };
-
-  const defaultDocs: DocumentRequiredItem[] = [
-    { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended travel date.', is_mandatory: true },
-    { title: 'Educational Credential Assessment (ECA)', description: 'Official qualification equivalency report from an authorized evaluating body.', is_mandatory: true },
-    { title: 'English/French Language Test Score', description: 'IELTS, PTE, or TEF scorecard meeting minimum requirements.', is_mandatory: true },
-    { title: 'Police Clearance Certificate (PCC)', description: 'PCCs from all countries resided in for 6+ months since age 18.', is_mandatory: true },
-    { title: 'Medical Examination Report', description: 'Comprehensive medical clearance from authorized panel clinics.', is_mandatory: true },
-    { title: 'Proof of Settlement Funds', description: 'Liquid bank balance certificate demonstrating financial self-sufficiency.', is_mandatory: true },
-    { title: 'Work Experience Reference Letters', description: 'Detailed reference letters from employers confirming job title, responsibilities, and dates.', is_mandatory: true }
+// ── 3. STEPS TO APPLY ──
+export function getPRSteps(country: string): string[] {
+  const c = normalizeCountry(country);
+  const d = DESTS[c];
+  const cname = d ? d.cname : country;
+  const scheme = d ? d.scheme : 'permanent residency stream';
+  const auth = d ? d.source : 'official immigration authorities';
+  return [
+    `Check Statutory Eligibility: Assess qualifying criteria under ${scheme}, including continuous residence, skill assessment, or qualifying job tier.`,
+    `Verify Credentials & Language: Complete required educational evaluation (ECA), professional skills accreditation, and official language examination (IELTS/PTE/national language test).`,
+    `Submit Expression of Interest (EOI) / Invitation: Lodge profile via official immigration portal (${auth}) and receive formal Invitation to Apply (ITA) or provincial nomination.`,
+    `Assemble Verified PR Dossier: Compile apostilled police clearances (PCC) from all countries of residence, tax assessments, employment references, and proof of unencumbered funds.`,
+    `Submit Permanent Residence Application: File complete electronic application and pay statutory government permanent residence and visa processing fees.`,
+    `Complete Medical Screening & Biometrics: Undergo statutory panel physician immigration medical examination and attend biometrics appointment.`,
+    `Receive PR Grant / Settlement Status: Upon approval, receive official Confirmation of Permanent Residence (COPR), electronic grant notice, or physical biometric permanent residence card.`
   ];
-
-  return map[c] || defaultDocs;
 }
 
-// ── 4. PR STEPS — COUNTRY SPECIFIC ──
-export function getPRSteps(countryOrFrom: string, maybeCountry?: string, _purpose?: string): string[] {
-  const target = maybeCountry || countryOrFrom;
-  const c = normalizeCountry(target);
-  const map: Record<string, string[]> = {
-    'canada': [
-      'Step 1: Complete Educational Credential Assessment (ECA) — Get your foreign degree assessed by WES, CES, or IQAS for Canadian equivalency.',
-      'Step 2: Take Language Test — Appear for IELTS General Training (CLB 7+ minimum) or PTE Core and receive your scorecard.',
-      'Step 3: Create Express Entry Profile — Submit your profile online on the IRCC portal with your ECA, language scores, and work experience.',
-      'Step 4: Enter Express Entry Pool — Your CRS score is calculated. You will receive an Invitation to Apply (ITA) in a regular bi-weekly draw.',
-      'Step 5: Submit Complete e-APR — Within 60 days of receiving ITA, submit your electronic Application for Permanent Residence with medicals, PCC, and settlement fund proof.',
-      'Step 6: Pay Fees & Wait for Processing — Pay 950 CAD processing fee + 575 CAD RPRF fee + 85 CAD biometrics fee. Wait for 6 months (standard IRCC SLA).',
-      'Step 7: Receive Confirmation of Permanent Residence (COPR) — Submit passport to VFS for PR visa foil stamping.',
-      'Step 8: Land in Canada & Receive PR Card — Travel to Canada, present COPR at port of entry, and receive your 5-Year PR Card.'
-    ],
-    'australia': [
-      'Step 1: Complete Skills Assessment — Get your skills assessed by the relevant Australian assessing authority (ACS, Engineers Australia, VETASSESS).',
-      'Step 2: Take English Language Exam — Appear for PTE Academic (65+ for Proficient English / 79+ for Superior) or IELTS.',
-      'Step 3: Submit Expression of Interest (EOI) — Lodge your EOI on SkillSelect portal with your points breakdown (minimum 65 points).',
-      'Step 4: Receive Invitation to Apply (ITA) — Wait for a SkillSelect invitation round based on points cutoff.',
-      'Step 5: Lodge Complete Visa Application — Submit your visa application (Subclass 189/190) on ImmiAccount within 60 days of invitation.',
-      'Step 6: Complete Health & Biometrics — Complete medical examination (HAP ID) and attend biometrics at VFS Global ABCC.',
-      'Step 7: Pay Fees & Wait for Processing — Pay 4,765 AUD base application charge. Wait for 6-9 months.',
-      'Step 8: Receive PR Grant & Plan Travel — Receive permanent residency grant notification and travel to Australia before initial entry date.'
-    ],
-    'uk': [
-      'Step 1: Complete 5 Years of Qualifying Residence — Hold a qualifying visa (Skilled Worker, Global Talent, etc.) for 5 years with no major absences.',
-      'Step 2: Prepare Continuous Residence Evidence — Ensure absences from the UK do not exceed 180 days in any 12-month period.',
-      'Step 3: Pass the Life in the UK Test — Take and pass the civic knowledge test at an authorized test centre.',
-      'Step 4: Meet English Language Requirement — Provide CEFR B1 English certificate (IELTS/PTE/Trinity) or UK degree evidence.',
-      'Step 5: Complete Online ILR Application (Set(O) / Set(M)) — Fill the online settlement form on GOV.UK.',
-      'Step 6: Pay ILR Application Fee — Pay £3,029 ILR settlement application fee + £50 Life in the UK Test fee.',
-      'Step 7: Attend UKVCAS Biometrics — Attend biometric appointment to scan passport and enroll biometrics.',
-      'Step 8: Receive ILR Decision — Get your Indefinite Leave to Remain approval. Apply for British Citizenship after 1 year of ILR.'
-    ],
-    'usa': [
-      'Step 1: Secure USCIS Petition Approval — Employer or family relative files Form I-130/I-140 and receives Form I-797 approval notice.',
-      'Step 2: Case Transfer to NVC — Case transferred to National Visa Center (NVC). Pay DS-260 immigrant fee (345 USD employment / 325 USD family).',
-      'Step 3: Complete DS-260 & Upload Documents — Fill online DS-260 and upload civil documents, PCC, and I-864 Affidavit of Support with IRS tax returns.',
-      'Step 4: Complete Medical Exam — Complete medical exam at CDC-authorized panel physician clinic in India.',
-      'Step 5: Attend VAC Biometrics — Submit biometrics at the Visa Application Center.',
-      'Step 6: Attend Immigrant Visa Interview — Attend interview at US Embassy/Consulate with original civil dossier.',
-      'Step 7: Receive Immigrant Visa Foil — Receive 6-month immigrant entry visa foil in passport.',
-      'Step 8: Travel to US & Receive Green Card — Pay 235 USD USCIS Immigrant Fee online and travel to the US to receive physical 10-Year Green Card.'
-    ],
-    'new-zealand': [
-      'Step 1: Complete NZQA International Qualifications Assessment (IQA) — Get your foreign qualification assessed by NZQA.',
-      'Step 2: Take English Language Exam — Appear for IELTS General Training (6.5+) or PTE Academic (58+).',
-      'Step 3: Secure Accredited Employer Job Offer — Get a job offer from an INZ Accredited Employer paying at or above median wage.',
-      'Step 4: Submit EOI in SMC Pool — Lodge Expression of Interest claiming 6 points on Immigration New Zealand portal.',
-      'Step 5: Receive Invitation to Apply (ITA) — Wait for invitation from INZ upon verification of point claims.',
-      'Step 6: Lodge Complete Resident Visa Application — Submit complete application within 4 months with eMedical, apostilled PCC, and employer confirmation.',
-      'Step 7: Pay Fees & Wait for Processing — Pay 4,890 NZD application & immigration levy. Wait for 6-9 months.',
-      'Step 8: Receive Resident Visa Grant — Receive electronic Skilled Migrant Category Resident Visa Grant Notice. Apply for Permanent Resident Visa (PRV) after 24 months.'
-    ],
-    'germany': [
-      'Step 1: Secure EU Blue Card or Qualifying Employment — Get a job offer meeting EU Blue Card salary thresholds (€45,300/year for shortage occupations).',
-      'Step 2: Obtain ZAB Degree Comparability — Get your foreign degree recognized as equivalent to a German university degree.',
-      'Step 3: Complete 21 Months (B1 German) or 27 Months (A1 German) — Work and pay statutory pension contributions (Rentenversicherung) for the required period.',
-      'Step 4: Pass German Language Test — Goethe-Institut / telc / TestDaF certificate at B1 (21 months) or A1 (27 months).',
-      'Step 5: Gather Required Documents — Compile employment contract, pension proof, lease agreement, and language certificate.',
-      'Step 6: Submit Application at Ausländerbehörde — Apply for Niederlassungserlaubnis at the local immigration office.',
-      'Step 7: Pay Settlement Application Fee — Pay 113 EUR settlement application fee.',
-      'Step 8: Receive Permanent Settlement Permit — Receive indefinite Niederlassungserlaubnis. Card renewal every 10 years matching passport.'
-    ],
-    'uae': [
-      'Step 1: Check Eligibility — Meet salary requirement (30,000 AED/month) or real estate investment (2,000,000 AED) or outstanding talent criteria.',
-      'Step 2: Attest University Degree — Get your degree apostilled and attested by UAE Ministry of Education (MOE).',
-      'Step 3: Submit Golden Visa Nomination — Apply for Golden Visa nomination via ICP portal or GDRFA Dubai.',
-      'Step 4: Receive 6-Month Entry Visa — Get 6-month multiple-entry visa to finalize procedures in the UAE.',
-      'Step 5: Complete Medical & Biometrics — Complete VIP medical fitness screening and Emirates ID biometric enrollment.',
-      'Step 6: Pay Fees & Receive Golden Visa — Pay 2,800-3,800 AED + 1,050 AED Emirates ID fee.',
-      'Step 7: Receive 10-Year Golden Visa — Get official 10-Year Golden Visa digital residency and physical Emirates ID.'
-    ],
-    'singapore': [
-      'Step 1: Hold Employment Pass (EP) for 2-5 Years — Gain work experience in Singapore on an EP or S-Pass.',
-      'Step 2: Gather Required Documents — Compile passport, educational credentials, employment records, CPF contributions, and tax returns.',
-      'Step 3: Submit PR Application to ICA — Complete the online PR application form on ICA website.',
-      'Step 4: Pay Application Fee — Pay SGD 100 application fee.',
-      'Step 5: Attend ICA Interview (if requested) — ICA may call for an interview or additional document submission.',
-      'Step 6: Wait for Processing — PR applications take 4-6 months to process.',
-      'Step 7: Receive PR Approval — Receive In-Principle Approval (IPA) from ICA.',
-      'Step 8: Complete Formalities & Receive PR Card — Complete medical and biometrics at ICA. Receive Blue IC (Singapore PR card).'
-    ]
-  };
-
-  const defaultSteps: string[] = [
-    'Step 1: Check Eligibility — Verify you meet the minimum eligibility requirements for PR in your destination country.',
-    'Step 2: Complete Educational Assessment — Get your foreign credentials assessed by the designated authority.',
-    'Step 3: Take Language Test — Appear for the required English/French language test.',
-    'Step 4: Submit Expression of Interest (EOI) — Lodge your EOI in the immigration pool.',
-    'Step 5: Receive Invitation to Apply (ITA) — Wait for invitation from immigration authorities.',
-    'Step 6: Lodge Complete Application — Submit complete PR application with all supporting documents.',
-    'Step 7: Complete Medical & Biometrics — Complete health examination and biometric enrollment.',
-    'Step 8: Receive PR Grant & Plan Travel — Receive permanent residency grant. Plan your move to your destination country.'
+// ── 4. DOCUMENTS REQUIRED ──
+export function getPRDocuments(countryOrFrom: string, maybeCountry?: string, purpose?: string): DocumentRequiredItem[] {
+  const country = maybeCountry || countryOrFrom;
+  const c = normalizeCountry(country);
+  const d = DESTS[c];
+  const doc = d ? d.invitation_doc : 'Official Invitation to Apply / Nomination Grant';
+  const doc_desc = d ? d.invitation_desc : 'Official government invitation or nomination confirmation certificate issued under qualifying stream.';
+  return [
+    { title: 'Valid International Passport', description: 'Original passport valid for at least 12 months beyond application submission with all prior visa stamps.', is_mandatory: true },
+    { title: doc, description: doc_desc, is_mandatory: true },
+    { title: 'Educational Credential Assessment (ECA) / Degree Evaluation', description: 'Official credential evaluation certificate confirming equivalency to domestic higher education degrees.', is_mandatory: true },
+    { title: 'Standardized Language Test Report', description: 'Official language proficiency score report (IELTS General, CELPIP, PTE Core, or national language exam) within validity window.', is_mandatory: true },
+    { title: 'Proof of Qualifying Work Experience', description: 'Detailed employment reference letters on corporate letterheads with job duties, pay slips, and tax assessment summaries.', is_mandatory: true },
+    { title: 'Police Clearance Certificates (PCC)', description: 'Original PCC issued by the Regional Passport Office (RPO) and police authorities of all countries lived in for 6+ months.', is_mandatory: true },
+    { title: 'Immigration Medical Examination (IME) Report', description: 'Medical examination conducted by an authorized panel physician covering chest X-ray and blood pathology.', is_mandatory: true },
+    { title: 'Verifiable Proof of Settlement Funds', description: 'Official bank statements, fixed deposit certificates, or provident fund statements proving unencumbered liquid funds.', is_mandatory: true },
+    { title: 'Civil Status & Family Relationship Documents', description: 'Government-issued birth certificates, marriage certificates, and national identification cards with certified translations.', is_mandatory: true }
   ];
-
-  return map[c] || defaultSteps;
 }
 
-export function getPRVisaSteps(countryOrFrom: string, maybeCountry?: string, _purpose?: string): string[] {
-  return getPRSteps(countryOrFrom, maybeCountry, _purpose);
-}
-
-// ── 5. PR FEES — COUNTRY SPECIFIC ──
+// ── 5. PR FEES ──
 export function getPRFees(country: string): { visa_fee: string; service_fee: string; total_fee: string; currency: string; notes: string } {
   const c = normalizeCountry(country);
-  const map: Record<string, { visa_fee: string; service_fee: string; total_fee: string; currency: string; notes: string }> = {
-    'canada': {
-      visa_fee: '950 CAD (Principal Applicant Processing Fee)',
-      service_fee: '575 CAD (Right of Permanent Residence Fee - RPRF) + 85 CAD (Biometrics Fee)',
-      total_fee: '1,610 CAD Total IRCC Fee for Single Applicant',
-      currency: 'CAD',
-      notes: 'RPRF (575 CAD) is refundable if application is refused. Spouse fee: 950 CAD + 575 CAD RPRF. Dependent child: 230 CAD.'
-    },
-    'australia': {
-      visa_fee: '4,765 AUD (Base Application Charge for Primary Applicant)',
-      service_fee: '2,385 AUD (Additional Applicant 18+ Years) / 1,195 AUD (Under 18)',
-      total_fee: '4,765 AUD Base Charge',
-      currency: 'AUD',
-      notes: 'Paid online via ImmiAccount. Excludes Skills Assessment and English test fees.'
-    },
-    'uk': {
-      visa_fee: '£3,029 (ILR Settlement Application Fee)',
-      service_fee: '£50 (Life in the UK Test)',
-      total_fee: '£3,079 Total Official Fees',
-      currency: 'GBP',
-      notes: 'Payable online at official UKVI portal. Super Priority: 24 hours (+£1,000).'
-    },
-    'usa': {
-      visa_fee: '345 USD (Employment-Based DS-260) / 325 USD (Family-Based DS-260)',
-      service_fee: '235 USD (USCIS Immigrant Fee for Green Card Production) + 120 USD (NVC I-864 Review if applicable)',
-      total_fee: '580 USD – 700 USD Official Government Fee Breakdown',
-      currency: 'USD',
-      notes: 'NVC fees paid via CEAC portal. 235 USD Green Card production fee paid online to USCIS before US arrival. Excludes initial Form I-130/I-140 filing fees.'
-    },
-    'new-zealand': {
-      visa_fee: '4,890 NZD (Immigration New Zealand SMC Application & Immigration Levy)',
-      service_fee: '450 NZD (NZQA IQA Evaluation)',
-      total_fee: '4,890 NZD Official Government Fee',
-      currency: 'NZD',
-      notes: 'Paid online via Immigration Online portal. Excludes medical exam and English test charges.'
-    },
-    'germany': {
-      visa_fee: '75 EUR (National Visa Type D) + 113 EUR (Niederlassungserlaubnis Settlement Application Fee)',
-      service_fee: '200 EUR (ZAB Degree Statement of Comparability)',
-      total_fee: '188 EUR Government Immigration Fee',
-      currency: 'EUR',
-      notes: 'Payable in EUR/INR at German Embassy and Ausländerbehörde upon application.'
-    },
-    'uae': {
-      visa_fee: '2,800 AED – 3,800 AED (approx. 760 USD – 1,030 USD)',
-      service_fee: '1,050 AED (Emirates ID 10-Year Issuance Fee)',
-      total_fee: '3,850 AED Total Official Government Fee',
-      currency: 'AED',
-      notes: 'Paid online directly through official ICP / GDRFA Dubai portals.'
-    },
-    'singapore': {
-      visa_fee: 'SGD 100 (Application Fee)',
-      service_fee: 'SGD 100 (PR Card Issuance Fee)',
-      total_fee: 'SGD 200 Total Reference',
-      currency: 'SGD',
-      notes: 'Paid online via ICA portal. Additional fees for dependents.'
-    }
-  };
-
-  return map[c] || {
-    visa_fee: 'Official Statutory Fee',
-    service_fee: 'VAC Service Fee',
-    total_fee: 'Official Fee + VAC Logistics',
+  const d = DESTS[c];
+  if (d && d.fees) return d.fees;
+  return {
+    visa_fee: 'Statutory Permanent Residence Fee',
+    service_fee: 'Right of Permanent Residence / Biometrics Fee',
+    total_fee: 'Statutory Fee + Biometrics',
     currency: 'USD',
-    notes: 'Check official immigration department website for current PR statutory fee schedules.'
+    notes: 'Check official immigration department portal for current fee schedules.'
   };
 }
 
-// ── 6. PR PROCESSING TIME — COUNTRY SPECIFIC ──
+// ── 6. PROCESSING TIME ──
 export function getPRProcessingTime(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': '6 Months (Express Entry IRCC Standard SLA). PNP: 8-12 months. Quebec: 12-18 months.',
-    'australia': '6 to 9 Months from Invitation to Visa Grant. Skills Assessment: 4-8 weeks. EOI waiting: varies.',
-    'uk': 'Standard: Up to 6 Months. Super Priority: 24 Hours available (+£1,000).',
-    'usa': 'NVC Consular Processing (Subject to Visa Bulletin Priority Dates). I-485: 6-12 months. EB-5: 12-24 months.',
-    'new-zealand': '6 to 9 Months Standard SLA. SMC processing: 6-9 months after ITA.',
-    'germany': 'Fast-Track PR: 21 Months (B1 German) or 27 Months (A1 German). Application decision: 6-12 weeks.',
-    'uae': '48 to 72 hours initial approval; 7 to 14 days full issuance. Golden Visa processing: 1-2 weeks.',
-    'singapore': '4 to 6 Months (ICA Standard Processing). PR applications take 4-6 months after submission.'
-  };
-
-  return map[c] || 'Per Official Immigration SLA. Apply at least 6-12 months before planned relocation.';
+  const d = DESTS[c];
+  return d ? d.proc_time : '6 to 12 Months (Standard Permanent Residence Assessment)';
 }
 
 export function getPRProcessingDetails(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Complete ECA and language test before creating Express Entry profile. Submit complete e-APR within 60 days of receiving ITA.',
-    'australia': 'Complete Skills Assessment before submitting EOI. Lodge visa application within 60 days of receiving invitation.',
-    'uk': 'Apply up to 28 days before completing the 5-year qualifying period. Life in UK Test must be passed before application.',
-    'usa': 'File DS-260 once NVC issues welcome letter and Priority Date is current in Visa Bulletin. Medical exam valid for 6 months.',
-    'new-zealand': 'Submit complete application within 4 months of receiving ITA. IQA and medicals must be valid.',
-    'germany': 'Apply for Settlement Permit after 21 or 27 months of Blue Card employment. Pension contributions must be verified.',
-    'uae': 'Apply anytime upon meeting salary (30k AED) or real estate investment (2M AED) benchmarks.',
-    'singapore': 'Apply after 2-5 years of work experience in Singapore. ICA assesses applications on a case-by-case basis.'
-  };
-
-  return map[c] || 'Apply at least 6-12 months before planned relocation. Check official immigration website for current processing stages.';
+  const d = DESTS[c];
+  return d ? d.proc_details : 'Timelines depend on annual quota allocations, priority date queues, and background security checks.';
 }
 
-// ── 7. PR REQUIREMENTS — COUNTRY SPECIFIC ──
+// ── 7. OTHER REQUIREMENTS ──
 export function getPRRequirements(country: string): OtherRequirementItem[] {
   const c = normalizeCountry(country);
-  const map: Record<string, OtherRequirementItem[]> = {
-    'canada': [
-      { category: 'CRS Points Threshold', details: 'CRS score must meet current Express Entry draw cutoff. Minimum: 67 points for FSW, but actual cutoff varies (typically 470-500+).' },
-      { category: 'Language Proficiency', details: 'IELTS General Training (CLB 7+ minimum; CLB 9+ recommended) or PTE Core (58+).' },
-      { category: 'ECA & Work Experience', details: 'Educational Credential Assessment (ECA) and 1+ years of continuous skilled work experience (NOC TEER 0/1/2/3).' },
-      { category: 'Settlement Funds', details: 'Minimum 14,690 CAD for single applicant, 18,288 CAD for family of 2. Must be unencumbered liquid funds.' },
-      { category: 'Medical & PCC', details: 'Upfront medical examination (IME) and Police Clearance Certificates (PCC) from all countries lived in 6+ months.' }
-    ],
-    'australia': [
-      { category: 'Points Threshold (65+ Points)', details: 'Minimum 65 points required on DHA points test based on age, English proficiency, qualifications, and work experience.' },
-      { category: 'Skills Assessment', details: 'Positive skills assessment from designated Australian assessing authority (ACS, EA, VETASSESS).' },
-      { category: 'Language Proficiency', details: 'PTE Academic (65+ for Proficient English / 79+ for Superior) or IELTS (6.0+ for Competent / 7.0+ for Proficient).' },
-      { category: 'Occupation List', details: 'Nominated occupation must be on the relevant skilled occupation list (MLTSSL or STSOL).' },
-      { category: 'Age Limit', details: 'Under 45 years of age at the time of invitation to apply.' }
-    ],
-    'uk': [
-      { category: '5-Year Continuous Residence', details: 'Must have lived in the UK for 5 years on a qualifying visa. Absences not exceeding 180 days in any 12-month period.' },
-      { category: 'Life in the UK Test', details: 'Mandatory civic knowledge test covering British history, culture, and government. Must be passed before application.' },
-      { category: 'English Language B1', details: 'CEFR B1 level in reading, writing, speaking, and listening (IELTS/PTE/Trinity).' },
-      { category: 'Good Character Requirement', details: 'Clean criminal record with no serious convictions. No public funds reliance.' }
-    ],
-    'usa': [
-      { category: 'USCIS Petition Approval', details: 'Approved I-130 (Family) or I-140 (Employment) petition from USCIS. Priority Date must be current in Visa Bulletin.' },
-      { category: 'I-864 Affidavit of Support', details: 'Legally binding financial sponsorship with IRS tax transcripts and W-2s proving income above 125% of Federal Poverty Guidelines.' },
-      { category: 'Medical & Vaccination', details: 'CDC-approved panel physician medical examination and vaccination dossier completed within 6 months of consular interview.' },
-      { category: 'No Unlawful Presence', details: 'No unauthorized work or overstay in the US. Must not have violated immigration laws.' }
-    ],
-    'germany': [
-      { category: 'Pension Contributions', details: '21-27 months of statutory pension payments (Rentenversicherung). Contributions must be verified with official statement.' },
-      { category: 'German Language', details: 'B1 German (21 months) or A1 German (27 months) certification from Goethe-Institut / telc / TestDaF.' },
-      { category: 'Adequate Living Space', details: 'Lease agreement (Mietvertrag) and landlord confirmation (Wohnungsgeberbestätigung) proving adequate room space.' },
-      { category: 'Integration Knowledge', details: '"Life in Germany" / Einbürgerungstest test certificate proving basic knowledge of legal and social order.' }
-    ],
-    'uae': [
-      { category: 'Salary / Investment Threshold', details: '30,000 AED monthly salary OR 2,000,000 AED real estate investment OR outstanding talent in technology/healthcare/education.' },
-      { category: 'Degree Attestation', details: 'MOE (Ministry of Education) degree attestation for educational qualification. Must be apostilled and attested.' },
-      { category: 'Health Insurance', details: 'Comprehensive UAE health insurance covering Golden Visa holder and family dependents.' },
-      { category: 'Exemption from 6-Month Rule', details: 'Golden Visa holders can stay outside the UAE for any duration without visa becoming invalid.' }
-    ],
-    'new-zealand': [
-      { category: '6-Point Threshold', details: 'Minimum 6 points required from qualifications, NZ occupational registration, or high income plus NZ skilled work.' },
-      { category: 'Accredited Employer Job Offer', details: 'Full-time employment offer from an INZ Accredited Employer paying at least the median wage.' },
-      { category: 'English Competency', details: 'Minimum IELTS 6.5 overall or PTE Academic 58 overall for principal applicant.' },
-      { category: 'Age Limit', details: 'Must be 55 years of age or younger when submitting the Resident Visa application.' }
-    ],
-    'singapore': [
-      { category: 'Employment Standing', details: 'Employment Pass (EP) or S-Pass holder with 2-5 years of demonstrated career progression in Singapore.' },
-      { category: 'Economic & Social Contributions', details: 'Verified CPF contributions, local tax compliance (IRAS), and community integration.' },
-      { category: 'Educational Pedigree', details: 'Recognized tertiary qualifications from accredited global institutions.' },
-      { category: 'Family Roots', details: 'Assessment includes marital status, dependent children, and local Singapore family ties.' }
-    ]
-  };
-
-  const defaultRequirements: OtherRequirementItem[] = [
-    { category: 'Points Threshold', details: 'Must meet the minimum points threshold for your destination country\'s PR program.' },
-    { category: 'Language Proficiency', details: 'Must meet the minimum language test score requirement (IELTS/PTE/TEF).' },
-    { category: 'Qualification Assessment', details: 'ECA (Educational Credential Assessment) from an authorized evaluating body.' },
-    { category: 'Police Clearance', details: 'PCC from all countries resided in for 6+ months since age 18.' },
-    { category: 'Medical Clearance', details: 'Medical examination from authorized panel physicians.' }
+  const d = DESTS[c];
+  const scheme = d ? d.scheme : 'Permanent residence legal category';
+  return [
+    { category: 'Qualifying Stream & Points Assessment', details: `Satisfy eligibility criteria under ${scheme} including points benchmarks, continuous residence, or employer sponsorship.` },
+    { category: 'Language & Integration Standard', details: 'Verifiable standardized language proficiency and passing national integration or civic knowledge tests.' },
+    { category: 'Good Character & Security Clearance', details: 'Apostilled Police Clearance Certificates (PCC) from all resident countries demonstrating no serious criminal convictions.' },
+    { category: 'Health & Public Charge Clearance', details: 'Passing comprehensive immigration medical screening with no inadmissible medical conditions or public health burdens.' }
   ];
-
-  return map[c] || defaultRequirements;
 }
 
-// ── 8. PR FINANCIAL PROOFS ──
+// ── 8. FINANCIAL PROOFS ──
 export function getPRFinancialProofs(country: string): FinancialProofItem[] {
   const c = normalizeCountry(country);
-  const map: Record<string, FinancialProofItem[]> = {
-    'canada': [
-      { type: 'Proof of Settlement Funds (LICO)', minimum_balance_or_amount: '14,690 CAD (Single) / 18,288 CAD (Family of 2)', time_frame: 'Last 6 Months', notes: 'Official bank letter stating unencumbered liquid funds in savings/fixed deposit accounts.' },
-      { type: 'Average 6-Month Bank Balance', minimum_balance_or_amount: 'Maintained above threshold', time_frame: 'Last 6 Months', notes: 'Detailed stamped bank statements showing steady closing balances with zero borrowed funds.' },
-      { type: 'Personal Liquid Assets', minimum_balance_or_amount: 'Liquid cash, FDs, mutual funds', time_frame: 'Immediate availability', notes: 'Real estate equity cannot count toward settlement funds.' }
-    ],
-    'australia': [
-      { type: 'Settlement Liquidity Benchmark', minimum_balance_or_amount: '25,000 AUD – 35,000 AUD recommended', time_frame: 'At time of relocation', notes: 'Liquid funds to support relocation and living expenses prior to securing local employment.' },
-      { type: 'Employment Earnings & Tax Filings', minimum_balance_or_amount: 'Proof of claimed salary', time_frame: 'Last 3-5 Years', notes: 'Income tax returns (ITRs / Form 16) and payslips verifying claimed points for overseas work experience.' },
-      { type: 'Bank Account Statements', minimum_balance_or_amount: 'Substantial savings', time_frame: 'Last 6 Months', notes: 'Stamped bank statements corroborating salary credits.' }
-    ],
-    'uk': [
-      { type: 'Minimum Income & Salary Threshold', minimum_balance_or_amount: 'Statutory going rate for SOC code', time_frame: 'Current & Ongoing', notes: 'Employer letter and payslips confirming ongoing salary at or above Skilled Worker settlement rate.' },
-      { type: 'Bank Statements & Payslips', minimum_balance_or_amount: 'Regular monthly salary credits', time_frame: 'Last 3 to 6 Months', notes: 'Official bank statements showing regular salary deposits matching payslips.' },
-      { type: 'No Recourse to Public Funds', minimum_balance_or_amount: 'Financial self-sufficiency', time_frame: 'Entire qualifying 5-year period', notes: 'Evidence that applicant has maintained themselves without claiming public funds.' }
-    ],
-    'usa': [
-      { type: 'Form I-864 Affidavit of Support', minimum_balance_or_amount: '125% of Federal Poverty Guidelines', time_frame: 'Most recent tax year', notes: 'Legally binding financial contract executed by petitioner or joint sponsor.' },
-      { type: 'IRS Tax Return Transcripts & W-2s', minimum_balance_or_amount: 'Above federal poverty threshold', time_frame: 'Last 3 Tax Years', notes: 'Official IRS tax return transcripts and Form W-2 wage statements.' },
-      { type: 'Proof of Current Employment / Assets', minimum_balance_or_amount: 'Liquid assets or employment letter', time_frame: 'Current', notes: 'Current employment confirmation or liquid assets totaling 5x the shortfall.' }
-    ],
-    'germany': [
-      { type: 'Statutory Pension Proof (Versicherungsverlauf)', minimum_balance_or_amount: '21 to 27 monthly contributions', time_frame: '21-27 Months', notes: 'Official statement from Deutsche Rentenversicherung proving required compulsory pension payments.' },
-      { type: 'Salary Slips & Employment Contract', minimum_balance_or_amount: 'EU Blue Card threshold (€45,300+)', time_frame: 'Last 6 Months', notes: 'Indefinite employment contract and last 6 monthly payslips.' },
-      { type: 'Bank Account Statements', minimum_balance_or_amount: 'Regular net salary inflows', time_frame: 'Last 3 Months', notes: 'Stamped German bank statements matching salary slips.' }
-    ],
-    'uae': [
-      { type: 'Monthly Salary Credit Benchmark', minimum_balance_or_amount: '30,000+ AED per month', time_frame: 'Last 6 Months', notes: 'Personal bank statements showing continuous monthly salary credits of at least 30,000 AED under standard employment.' },
-      { type: 'Real Estate Investment Title Deed', minimum_balance_or_amount: '2,000,000 AED property value', time_frame: 'Unencumbered or low mortgage', notes: 'Official Dubai Land Department (DLD) title deed proving property ownership of 2M+ AED.' },
-      { type: 'Bank Deposit Certificate (Investor)', minimum_balance_or_amount: '2,000,000 AED fixed deposit', time_frame: '2-Year Term', notes: 'Accredited UAE bank certificate confirming non-withdrawable 2-year deposit.' }
-    ]
-  };
-
-  const defaultProofs: FinancialProofItem[] = [
-    { type: 'Proof of Settlement Solvency', minimum_balance_or_amount: '₹10,00,000 – ₹15,00,000 equivalent', time_frame: 'Last 6 Months', notes: 'Official bank letter confirming unencumbered liquid funds in savings or fixed deposits.' },
-    { type: 'Bank Statements', minimum_balance_or_amount: 'Consistent liquid balance', time_frame: 'Last 6 Months', notes: 'Stamped official bank statements showing regular savings and no recent unexplainable lump sums.' },
-    { type: 'Tax Filings & Employment Income', minimum_balance_or_amount: 'Verified earnings', time_frame: 'Last 3 Years', notes: 'Income Tax Return (ITR) acknowledgements and Form 16 / payslips.' }
+  const d = DESTS[c];
+  const funds = d ? d.min_funds : 'Demonstrated liquid settlement maintenance funds ($10,000 - $20,000)';
+  return [
+    { type: 'Unencumbered Settlement Funds / Bank Statements', minimum_balance_or_amount: funds, time_frame: 'Held for past 3 to 6 months', notes: 'Official bank balance certificate and stamped statements proving unencumbered liquid funds for settlement.' },
+    { type: 'Income Tax Assessment Summaries (ITR / Form 16 / Notice of Assessment)', minimum_balance_or_amount: 'Past 3 Assessment Years', time_frame: 'Prior 36 months', notes: 'Official government tax assessment notices confirming stable legal earning capacity and tax compliance.' },
+    { type: 'Continuous Employment / Contract Confirmation', minimum_balance_or_amount: 'Statutory Prevailing Remuneration', time_frame: 'Current / Ongoing', notes: 'Current employment contract or letter of employment confirming permanent ongoing position and compensation.' },
+    { type: 'Superannuation / Social Pension Contributions', minimum_balance_or_amount: 'Statutory Contribution Record', time_frame: 'Qualifying residence period', notes: 'Official statement from statutory pension fund (Rentenversicherung, ÖGK, CPF, Superannuation) proving compliance.' }
   ];
-
-  return map[c] || defaultProofs;
 }
 
-// ── 9. PR FAQ — COUNTRY SPECIFIC ──
+// ── 9. FAQS ──
 export function getPRFAQ(country: string): FAQItem[] {
   const c = normalizeCountry(country);
-  const map: Record<string, FAQItem[]> = {
-    'canada': [
-      { question: 'What is the minimum CRS score for Canada PR?', answer: 'The CRS score minimum varies by draw. Recently, scores have been 470-500+. You should aim for at least CRS 470 to be competitive. Provincial Nominee Programs (PNP) give an additional 600 points.' },
-      { question: 'What is the processing time for Canada Express Entry?', answer: 'Standard processing time is 6 months from e-APR submission. PNP applications take 8-12 months. Apply 4-6 months before planned relocation.' },
-      { question: 'Do I need a job offer for Canada PR?', answer: 'No, you do not need a job offer for Federal Skilled Worker (FSW) under Express Entry. However, a job offer can boost your CRS score by 50-200 points.' },
-      { question: 'Can I bring my family on Canada PR?', answer: 'Yes, you can include your spouse and dependent children in your PR application. Spouse fee: 950 CAD + 575 CAD RPRF. Dependent child: 230 CAD.' },
-      { question: 'When can I apply for Canadian Citizenship?', answer: 'You can apply for Canadian citizenship once you have been physically present in Canada as a Permanent Resident for at least 1,095 days (3 years) within the past 5 years.' }
-    ],
-    'australia': [
-      { question: 'What is the minimum points required for Australia PR?', answer: 'You need at least 65 points on the SkillSelect points test. However, actual invitation scores are often higher (75-85+). Points are awarded for age, English, qualifications, work experience, and more.' },
-      { question: 'What is the processing time for Australia PR?', answer: 'Standard processing is 6 to 9 months from invitation to visa grant. Skills assessment: 4-8 weeks. EOI waiting: varies by occupation.' },
-      { question: 'Do I need a job offer for Australia PR?', answer: 'No, Subclass 189 (Skilled Independent) does not require a job offer. Subclass 190 (State Nominated) requires state nomination. Subclass 491 (Regional) requires regional nomination.' },
-      { question: 'Can I bring my family on Australia PR?', answer: 'Yes, you can include your spouse and dependent children. Additional fees apply: 2,385 AUD for spouse (18+ years), 1,195 AUD for children (under 18).' },
-      { question: 'When can I apply for Australian Citizenship?', answer: 'You can apply for Australian citizenship after living in Australia for 4 years on a valid visa, including at least 12 months as a Permanent Resident.' }
-    ],
-    'uk': [
-      { question: 'What is ILR and how do I get it?', answer: 'ILR (Indefinite Leave to Remain) is permanent settlement in the UK. You must have lived in the UK for 5 years on a qualifying visa, pass the Life in the UK Test, and meet English language requirements.' },
-      { question: 'What is the processing time for UK ILR?', answer: 'Standard processing: Up to 6 months. Super Priority: 24 hours (+£1,000). Apply 28 days before completing the 5-year qualifying period.' },
-      { question: 'Can I bring my family on UK ILR?', answer: 'Yes, you can include your spouse and dependent children. They need to apply as dependents and meet the financial requirement.' },
-      { question: 'What is the Life in the UK Test?', answer: 'The Life in the UK Test is a mandatory civic knowledge test covering British history, culture, and government. You must pass it before applying for ILR.' },
-      { question: 'When can I apply for British Citizenship after ILR?', answer: 'You can apply for naturalization as a British citizen after holding ILR for at least 12 months (or immediately upon ILR grant if married to a British citizen).' }
-    ],
-    'usa': [
-      { question: 'What is the processing time for US Green Card?', answer: 'Processing time varies by category and priority date. EB-1: 6-12 months. EB-2/EB-3: 12-24 months. EB-5: 12-24 months. Family-based: 12-24 months. Wait for priority date to become current in Visa Bulletin.' },
-      { question: 'What is the difference between I-485 and DS-260?', answer: 'I-485 (Adjustment of Status) is for applicants already in the US on a valid visa. DS-260 (Consular Processing) is for applicants outside the US applying through the National Visa Center (NVC).' },
-      { question: 'Can I bring my family on US Green Card?', answer: 'Yes, you can include your spouse and dependent children. They will receive derivative immigrant visas and Green Cards.' },
-      { question: 'What is the Visa Bulletin?', answer: 'The Visa Bulletin is a monthly publication by the Department of State showing priority dates for immigrant visas. Your priority date must become current before you can proceed with your Green Card application.' },
-      { question: 'When can I apply for US Citizenship?', answer: 'You can apply for US citizenship (Form N-400) after 5 years of holding Lawful Permanent Resident status (or 3 years if continuously married to a US citizen).' }
-    ],
-    'new-zealand': [
-      { question: 'How does the New Zealand 6-point SMC system work?', answer: 'The SMC system requires 6 points from either: NZ occupational registration, recognized qualification (Bachelor/Master/PhD), or high income (1.5x-3x median wage), plus skilled work experience in NZ.' },
-      { question: 'Do I need a job offer for New Zealand SMC?', answer: 'Yes, you must have a genuine job offer from an INZ Accredited Employer paid at or above the national median wage.' },
-      { question: 'Can I include my partner and children in my NZ PR application?', answer: 'Yes, partners and dependent children under 24 years of age can be included, provided they satisfy relationship, character, and health requirements.' },
-      { question: 'What is the difference between Resident Visa and Permanent Resident Visa (PRV)?', answer: 'A Resident Visa allows you to live indefinitely in NZ but has a 2-year travel condition. After 2 years, you convert to a Permanent Resident Visa (PRV) with lifetime travel rights.' }
-    ],
-    'germany': [
-      { question: 'How quickly can an EU Blue Card holder get PR in Germany?', answer: 'An EU Blue Card holder can obtain permanent settlement (Niederlassungserlaubnis) in just 21 months with certified B1 German, or in 27 months with basic A1 German.' },
-      { question: 'What pension proof is required for German PR?', answer: 'You must provide an official contribution statement (Versicherungsverlauf) from Deutsche Rentenversicherung showing at least 21 or 27 monthly statutory payments.' },
-      { question: 'Can my spouse work freely if I receive German permanent settlement?', answer: 'Yes, spouses of Niederlassungserlaubnis holders have unrestricted employment and self-employment rights across Germany.' },
-      { question: 'When can I apply for German citizenship after PR?', answer: 'Under the reformed German nationality law, skilled permanent residents can apply for German naturalization after 5 years (or 3 years with exceptional C1 integration).' }
-    ],
-    'uae': [
-      { question: 'Who is eligible for the UAE 10-Year Golden Visa?', answer: 'Professionals earning at least 30,000 AED/month, real estate investors owning 2,000,000+ AED property, entrepreneurs, PhD holders, and outstanding talents in STEM or healthcare.' },
-      { question: 'Does the 6-month stay rule apply to UAE Golden Visa holders?', answer: 'No, Golden Visa holders are exempt from the standard rule and can stay outside the UAE for any duration without their visa being revoked.' },
-      { question: 'Can I sponsor my parents on a UAE Golden Visa?', answer: 'Yes, Golden Visa holders can sponsor their parents, spouse, and children of any age under 10-year residency permits.' },
-      { question: 'Does the UAE Golden Visa lead to UAE citizenship?', answer: 'The Golden Visa provides 10-year renewable long-term residency. UAE citizenship is granted solely by special royal decree or cabinet nomination.' }
-    ],
-    'singapore': [
-      { question: 'How long do I need to work in Singapore before applying for PR?', answer: 'Typically, Employment Pass (EP) or S-Pass holders apply after 2 to 5 years of continuous employment and demonstrated tax compliance in Singapore.' },
-      { question: 'What are the main factors ICA looks for in Singapore PR?', answer: 'ICA assesses age, family ties, economic contributions, educational qualifications, industry sector relevance, and social integration.' },
-      { question: 'Do Singapore PRs have to contribute to CPF?', answer: 'Yes, both employer and employee must make statutory Central Provident Fund (CPF) contributions starting in the first year of PR status.' },
-      { question: 'Can Singapore PRs apply for citizenship?', answer: 'Yes, individuals who have been Singapore Permanent Residents for at least 2 years are eligible to submit an application for Singapore citizenship.' }
-    ]
-  };
-
-  const defaultFAQ: FAQItem[] = [
-    { question: `Do I qualify for PR in ${country}?`, answer: `Qualification depends on age, education, work experience, language proficiency, and other factors. Check the official immigration website for current eligibility requirements.` },
-    { question: `What is the processing time for PR in ${country}?`, answer: `Processing times vary by country and application type. Apply at least 6-12 months before planned relocation.` },
-    { question: `Can I bring my family on PR?`, answer: `Yes, you can usually include your spouse and dependent children in your PR application. Additional fees and documentation may apply.` },
-    { question: `Does Permanent Residency lead to Citizenship?`, answer: `In most countries, permanent residency is the primary legal pathway to citizenship after satisfying physical residence requirements (typically 3 to 5 years).` },
-    { question: `Can I buy property and work anywhere on a PR status?`, answer: `Yes, permanent residents enjoy unrestricted work rights and can reside anywhere in the country with property purchase rights similar to domestic citizens.` }
+  const d = DESTS[c];
+  if (d && d.faqs) return d.faqs;
+  const cname = d ? d.cname : country;
+  return [
+    { question: `What benefits do I receive as a permanent resident of ${cname}?`, answer: `Permanent residents enjoy indefinite lawful residence, unrestricted employment and business rights, access to public healthcare and education, and eligibility for citizenship.` },
+    { question: `Can my family be included in my permanent residence application?`, answer: `Yes. Your spouse or partner and dependent children can be included as accompanying dependents and receive permanent resident status concurrently.` },
+    { question: `What are the residency obligations to maintain PR status?`, answer: `Most countries require you to be physically present for a minimum number of days (e.g. 2 out of every 5 years) to maintain your permanent resident status and travel facility.` },
+    { question: `When can I apply for citizenship after getting permanent residence?`, answer: `Depending on the jurisdiction, permanent residents are typically eligible to apply for citizenship by naturalization after 3 to 5 years of lawful residence.` },
+    { question: `Can my permanent residency status be revoked?`, answer: `Permanent residency can generally only be revoked if obtained through fraud, prolonged continuous absence exceeding statutory limits, or conviction of serious criminal offenses.` }
   ];
-
-  return map[c] || defaultFAQ;
 }
 
-// ── 10. PR VALIDITY, STAY, ENTRY — COUNTRY SPECIFIC ──
+// ── 10. VALIDITY & STAY ──
 export function getPRValidity(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Permanent Resident Status (5-Year Renewable PR Card)',
-    'australia': 'Permanent Residency (5-Year Travel Facility; Indefinite Stay)',
-    'uk': 'Indefinite Leave to Remain (No Time Limit)',
-    'usa': 'Permanent Resident Status (10-Year Renewable Green Card)',
-    'new-zealand': 'Resident Visa (2-Year Travel Conditions; Indefinite Stay)',
-    'germany': 'Niederlassungserlaubnis (Permanent Settlement — Unlimited Validity)',
-    'uae': '10-Year Renewable Golden Residency',
-    'singapore': 'Permanent Resident Status (5-Year Renewable PR Card)'
-  };
-
-  return map[c] || 'Permanent Resident Status (Renewable)';
+  const d = DESTS[c];
+  return d ? d.validity : '5 Years (Permanent Residency Travel Facility / Renewable Card)';
 }
 
 export function getPRStayDuration(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Indefinite / Permanent Resident Status with Path to Citizenship after 3 Years (1,095 Days)',
-    'australia': 'Permanent Resident Status with Path to Citizenship after 4 Years',
-    'uk': 'Indefinite Stay with Path to British Citizenship after 1 Year of ILR',
-    'usa': 'Permanent / Indefinite Legal Resident Status (LPR) with Path to Citizenship after 5 Years (or 3 Years if married to US citizen)',
-    'new-zealand': 'Indefinite Stay with Path to Permanent Resident Visa (PRV) after 2 Years',
-    'germany': 'Indefinite Permanent Residency with Unrestricted Right to Work & EU Mobility',
-    'uae': 'Continuous Residency in UAE (Exempt from 6-month stay rule)',
-    'singapore': 'Permanent Resident Status with Path to Citizenship after 2-3 Years'
-  };
-
-  return map[c] || 'Indefinite / Permanent Resident Status';
+  const d = DESTS[c];
+  return d ? d.stay : 'Indefinite Settlement';
 }
 
 export function getPREntryType(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Permanent Resident (Multiple Entry)',
-    'australia': 'Permanent Resident (5-Year Travel Facility)',
-    'uk': 'Indefinite Leave to Enter / Remain',
-    'usa': 'Lawful Permanent Resident (Multiple Entry)',
-    'new-zealand': 'Resident Visa (Multiple Entry)',
-    'germany': 'Permanent Settlement (Multiple Entry & EU Mobility)',
-    'uae': '10-Year Multiple Entry Residency',
-    'singapore': 'Permanent Resident (Multiple Re-Entry Permit)'
-  };
-
-  return map[c] || 'Permanent Resident (Multiple Entry)';
+  const d = DESTS[c];
+  return d ? d.entry_type : 'Multiple Entry';
 }
 
-// ── 11. OFFICIAL SOURCE NAME ──
 export function getPROfficialSourceName(country: string): string {
   const c = normalizeCountry(country);
-  const map: Record<string, string> = {
-    'canada': 'Immigration, Refugees and Citizenship Canada (IRCC)',
-    'australia': 'Australian Department of Home Affairs (SkillSelect)',
-    'uk': 'UK Visas and Immigration (UKVI) & Home Office',
-    'usa': 'USCIS & National Visa Center (Department of State)',
-    'new-zealand': 'Immigration New Zealand (INZ)',
-    'germany': 'Federal Office for Migration and Refugees (BAMF) & Ausländerbehörde',
-    'uae': 'Federal Authority for Identity, Citizenship, Customs and Port Security (ICP) & GDRFA',
-    'singapore': 'Immigration & Checkpoints Authority (ICA) Singapore'
-  };
-
-  return map[c] || `${country} Immigration Department & Ministry of Interior`;
+  const d = DESTS[c];
+  return d ? d.source : `${country} Immigration Department`;
 }
 
-// ── 12. COMPLETE PR VISA DATA BUILDER ──
+// ── 11. COMPLETE PR VISA DATA BUILDER ──
 export function getPRVisaData(
   from: string,
   to: string,
-  purpose: string = 'PR'
+  purpose: string = 'Permanent Residency'
 ): StructuredVisaRequirements {
-  const countryName = to;
   const c = normalizeCountry(to);
+  const countryName = to;
+  const officialSource = getPROfficialSourceName(to);
+  const procTime = getPRProcessingTime(to);
+  const procDetails = getPRProcessingDetails(to);
+  const val = getPRValidity(to);
+  const stay = getPRStayDuration(to);
+  const entryType = getPREntryType(to);
+  const fees = getPRFees(to);
+  const faqs = getPRFAQ(to);
+  const highlights = getPRHighlights(to);
+  const steps = getPRSteps(to);
+  const docs = getPRDocuments(from, to, purpose);
+  const reqs = getPRRequirements(to);
+  const proofs = getPRFinancialProofs(to);
 
   return {
     passport_country: from,
     destination_country: countryName,
     purpose_of_visit: 'Permanent Residency / Settlement',
-    visa_type: `${countryName} Permanent Residency Visa`,
-    source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' permanent residency immigration official')}`,
-    official_source_name: getPROfficialSourceName(to),
-
-    // ── OVERVIEW ──
+    visa_type: `${countryName} Permanent Residency (PR)`,
+    source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' permanent residency settlement official immigration requirements')}`,
+    official_source_name: officialSource,
     overview: getPROverview(to),
-    highlights: getPRHighlights(to),
-
-    // ── STEPS ──
-    how_to_apply: getPRSteps(from, to, purpose),
-
-    // ── DOCUMENTS ──
-    documents_required: getPRDocuments(from, to, purpose),
-
-    // ── FEES ──
-    costs: getPRFees(to),
-
-    // ── PROCESSING TIME ──
-    processing_time: getPRProcessingTime(to),
-    processing_time_details: getPRProcessingDetails(to),
-
-    // ── REQUIREMENTS ──
-    other_requirements: getPRRequirements(to),
-    financial_proofs: getPRFinancialProofs(to),
-
-    // ── FAQ ──
-    faqs: getPRFAQ(to),
-
-    // ── VALIDITY & STAY ──
-    validity: getPRValidity(to),
-    stay_duration: getPRStayDuration(to),
-    entry_type: getPREntryType(to),
-
+    highlights: highlights,
+    how_to_apply: steps,
+    documents_required: docs,
+    costs: fees,
+    processing_time: procTime,
+    processing_time_details: procDetails,
+    other_requirements: reqs,
+    financial_proofs: proofs,
+    faqs: faqs,
+    validity: val,
+    validity_details: `Standard permanent residency status: ${val}`,
+    stay_duration: stay,
+    stay_duration_details: `Maximum permitted stay: ${stay}`,
+    entry_type: entryType,
+    entry_type_details: `${entryType} permanent settlement authorization`,
     validity_and_stay: {
-      visa_validity: getPRValidity(to),
-      max_stay_per_entry: getPRStayDuration(to),
-      entry_type: getPREntryType(to)
+      visa_validity: val,
+      max_stay_per_entry: stay,
+      entry_type: entryType
     },
-
     processing_and_timing: {
-      apply_window: 'Apply 6 to 12 months prior to planned relocation.',
-      decision_time: getPRProcessingTime(to),
-      max_extension: 'Permanent resident status is indefinite. Card renewal as per statutory country requirements.',
-      center_notes: `Authorized Immigration Portal / ${countryName} Mission. Check appointment availability online.`
+      apply_window: 'Initiate preparation 6 to 12 months prior to targeted submission window.',
+      decision_time: procTime,
+      max_extension: 'Permanent resident cards are renewed every 5 to 10 years upon meeting physical presence obligations.',
+      center_notes: `Processed by ${officialSource}. Coordinate biometric enrollment at authorized VAC or municipal offices.`
     },
-
     verification_status: 'verified',
     is_v3_verified: true
   };

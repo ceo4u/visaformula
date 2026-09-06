@@ -107,8 +107,25 @@ export function normalizeCountry(country: string): string {
   if (c.includes('sweden') || c.includes('stockholm')) return 'sweden';
   if (c.includes('norway') || c.includes('oslo')) return 'norway';
   if (c.includes('finland') || c.includes('helsinki')) return 'finland';
+  if (c.includes('czech') || c.includes('prague') || c.includes('ceska')) return 'czech-republic';
+  if (c.includes('poland') || c.includes('warsaw') || c.includes('krakow') || c.includes('polska')) return 'poland';
+  if (c.includes('hungary') || c.includes('budapest') || c.includes('magyar')) return 'hungary';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('cyprus') || c.includes('nicosia')) return 'cyprus';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('romania') || c.includes('bucharest') || c.includes('transylvania')) return 'romania';
+  if (c.includes('slovakia') || c.includes('bratislava')) return 'slovakia';
+  if (c.includes('slovenia') || c.includes('ljubljana') || c.includes('bled')) return 'slovenia';
+  if (c.includes('estonia') || c.includes('tallinn')) return 'estonia';
+  if (c.includes('latvia') || c.includes('riga')) return 'latvia';
+  if (c.includes('lithuania') || c.includes('vilnius')) return 'lithuania';
+  if (c.includes('luxembourg')) return 'luxembourg';
+  if (c.includes('malta') || c.includes('valletta')) return 'malta';
+  if (c.includes('iceland') || c.includes('reykjavik')) return 'iceland';
+  if (c.includes('liechtenstein') || c.includes('vaduz')) return 'liechtenstein';
   if (c.includes('australia') || c.includes('sydney') || c.includes('melbourne') || c.includes('subclass 600')) return 'australia';
-  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales') || c.includes('london')) return 'uk';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c === 'uk' || c.startsWith('uk ') || c.endsWith(' uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('great britain') || c.includes('scotland') || c.includes('wales') || c.includes('london')) return 'uk';
   if (c.includes('usa') || c.includes('united states') || c.includes('america') || c.includes('u.s.') || c === 'us' || c.includes('new york') || c.includes('b1/b2') || c.includes('b2')) return 'usa';
   if (c.includes('canada') || c.includes('toronto') || c.includes('vancouver')) return 'canada';
   if (c.includes('japan') || c.includes('tokyo') || c.includes('osaka') || c.includes('kyoto')) return 'japan';
@@ -120,11 +137,14 @@ export function normalizeCountry(country: string): string {
   if (c.includes('philippines') || c.includes('manila') || c.includes('cebu')) return 'philippines';
   if (c.includes('qatar') || c.includes('doha')) return 'qatar';
   if (c.includes('saudi arabia') || c.includes('saudi') || c.includes('ksa') || c.includes('riyadh') || c.includes('jeddah')) return 'saudi-arabia';
-  if (c.includes('oman') || c.includes('muscat') || c.includes('salalah')) return 'oman';
+  if (c === 'oman' || c.startsWith('oman ') || c.endsWith(' oman') || c.includes('muscat') || c.includes('salalah')) return 'oman';
   if (c.includes('bahrain') || c.includes('manama')) return 'bahrain';
   if (c.includes('new zealand') || c === 'nz' || c.includes('auckland') || c.includes('queenstown')) return 'new-zealand';
   if (c.includes('south africa') || c.includes('johannesburg') || c.includes('cape town') || c.includes('durban')) return 'south-africa';
   if (c.includes('brazil') || c.includes('rio') || c.includes('sao paulo')) return 'brazil';
+  if (c.includes('israel') || c.includes('tel aviv') || c.includes('jerusalem')) return 'israel';
+  if (c.includes('chile') || c.includes('santiago') || c.includes('patagonia')) return 'chile';
+  if (c.includes('mexico') || c.includes('cancun') || c.includes('mexico city')) return 'mexico';
   return c;
 }
 
@@ -186,6 +206,29 @@ export function getTourismOverview(country: string): string {
     'new-zealand': 'New Zealand Visitor Visa allows Indian passport holders to visit New Zealand for tourism, holidays, and visiting family/friends. Apply online through Immigration New Zealand (immigration.govt.nz). Valid for 3, 6, or 9 months stay. Multiple entry available.',
     'south-africa': 'South Africa Visitor Visa (Section 11(1)) allows Indian passport holders to visit South Africa for tourism, holidays, and leisure. Apply through VFS Global South Africa. Valid for 90 days single/multiple entry. Consular fee is ₹0 for Indian citizens — only VFS service fee applies.',
     'brazil': 'Brazil Tourist Visa allows Indian passport holders to visit Brazil for tourism, holidays, and leisure. Apply through the Brazilian Embassy via VFS Global. Valid for up to 90 days single/multiple entry. E-visa available for eligible applicants.'
+  ,
+
+    'czech-republic': 'The Czech Republic Tourist Visa (Schengen Visa Type C) allows Indian citizens to explore Prague\'s historic Old Town, Prague Castle, and the Charles Bridge, as well as UNESCO Heritage towns like Český Krumlov and world-famous spa towns such as Karlovy Vary. A Czech Schengen visa allows unrestricted travel across all 29 Schengen states within the standard 90/180-day limitation.',
+    'poland': 'The Poland Tourist Visa (Schengen Visa Type C) permits Indian passport holders to explore Poland\'s remarkable historical legacy and vibrant cultural heritage. Discover Warsaw\'s reconstructed Royal Castle and Old Town, the ancient royal capital of Kraków with Wawel Castle, the medieval salt mine at Wieliczka, and the Baltic port of Gdańsk, alongside free mobility across all Schengen countries.',
+    'hungary': 'The Hungary Tourist Visa (Schengen Visa Type C) opens the gateway to Central European grandeur. Budapest, the \'Pearl of the Danube\', features architectural icons including the Hungarian Parliament, Buda Castle, and historic thermal spas like Széchenyi, alongside scenic Lake Balaton and the Tokaj wine region, with full Schengen travel privileges.',
+    'croatia': 'The Croatia Tourist Visa (Schengen Visa Type C) allows Indian passport holders to experience the jewel of the Adriatic. Walk Dubrovnik\'s famous ancient stone walls, explore Emperor Diocletian\'s Palace in Split, cruise the sunny Dalmatian islands (Hvar, Korčula), and hike through the cascading waterfalls of Plitvice Lakes National Park with full Schengen access.',
+    'bulgaria': 'The Bulgaria Tourist Visa (Short-Stay Type C) enables Indian travelers to discover Southeast Europe\'s ancient crossroads. Highlights include Sofia\'s Alexander Nevsky Cathedral, Europe\'s oldest continuously inhabited city Plovdiv, the spiritual mountain sanctuary of Rila Monastery, and popular Black Sea resorts like Varna and Sunny Beach.',
+    'cyprus': 'The Cyprus Tourist Visa (Category C Short-Stay) allows Indian citizens to explore the Mediterranean island nation. Discover UNESCO World Heritage archaeological parks in Paphos, lively coastal promenades in Limassol, the mythical birthplace of Aphrodite at Petra tou Romiou, and tranquil Byzantine monasteries in the Troodos Mountains.',
+    'romania': 'The Romania Short-Stay Tourist Visa (Type C/TU) permits Indian visitors to explore Eastern Europe\'s most captivating landscapes and legendary heritage. Tour Bucharest\'s grand boulevards, mythical Transylvanian Gothic fortresses (Bran Castle and Peleș Castle), medieval citadels like Sighișoara, and the Carpathian Mountains.',
+    'slovakia': 'The Slovakia Tourist Visa (Schengen Visa Type C) enables Indian visitors to discover Central Europe\'s dramatic mountainous landscapes. Highlights include Bratislava\'s hilltop castle and charming Old Town on the Danube, the alpine peaks and glacier lakes of the High Tatras, UNESCO World Heritage fortress Spiš Castle, and karst ice caves.',
+    'slovenia': 'The Slovakia Tourist Visa (Schengen Visa Type C) allows Indian citizens to discover Europe\'s green alpine jewel. Key attractions include the fairytale emerald waters of Lake Bled with its island church, the eco-friendly capital Ljubljana, Triglav National Park, and the subterranean wonders of Postojna Cave.',
+    'estonia': 'The Estonia Tourist Visa (Schengen Visa Type C) lets Indian travelers explore the most digitally advanced Nordic-Baltic nation. Walk through Tallinn\'s impeccably preserved UNESCO medieval Old Town, unwind in the Baltic seaside resort of Pärnu, explore Lahemaa National Park, and travel across the Schengen zone.',
+    'latvia': 'The Latvia Tourist Visa (Schengen Visa Type C) provides Indian passport holders access to the Baltic coast. Experience Riga\'s world-famous Art Nouveau architecture and historic Old Town, stroll the endless white-sand beaches of Jūrmala on the Gulf of Riga, and explore medieval castles and primeval forests in Gauja National Park.',
+    'lithuania': 'The Lithuania Tourist Visa (Schengen Visa Type C) enables Indian citizens to immerse themselves in Baltic culture, architecture, and nature. Key attractions include Vilnius\'s sprawling Baroque Old Town, the Gothic island fortress of Trakai Castle set amid tranquil lakes, the Hill of Crosses pilgrimage site, and the towering sand dunes of the Curonian Spit.',
+    'luxembourg': 'The Luxembourg Tourist Visa (Schengen Visa Type C) invites Indian visitors to explore one of Europe\'s wealthiest and most picturesque nations. Discover the dramatic clifftop UNESCO fortifications and underground Bock Casemates of Luxembourg City, the Grand Ducal Palace, the fairytale castle of Vianden, and the scenic vineyards of the Moselle Valley, alongside free nationwide public transit.',
+    'malta': 'The Malta Tourist Visa (Schengen Visa Type C) permits Indian passport holders to visit the sun-soaked Mediterranean archipelago. Explore the fortified UNESCO capital Valletta built by the Knights of St. John, the silent walled city of Mdina, the crystal-clear azure waters of the Blue Lagoon on Comino, 5,000-year-old megalithic temples older than the Pyramids, and scenic sister island Gozo.',
+    'iceland': 'The Iceland Tourist Visa (Schengen Visa Type C) allows Indian travelers to embark on the ultimate land of fire and ice adventure. Marvel at the dancing Northern Lights (Aurora Borealis), journey along the Golden Circle to see Gullfoss waterfall and Geysir, soak in the mineral-rich geothermal waters of the Blue Lagoon, and witness volcanic black sand beaches in Vík.',
+    'liechtenstein': 'The Liechtenstein Tourist Visa (Schengen Visa Type C) allows Indian passport holders to visit the Alpine principality nestled between Switzerland and Austria. Explore the capital Vaduz dominated by the princely Vaduz Castle, enjoy scenic Alpine hiking in Malbun, tour the prince\'s historic vineyards in the Rhine Valley, and experience seamless border-free Schengen entry.',
+    'israel': 'The Israel Tourist Visa (B/2 Visitor Visa) permits Indian citizens to visit the holy and historic lands of Israel. Experience the sacred history and timeless spiritual sites of Jerusalem\'s Old City (Western Wall, Church of the Holy Sepulchre, Dome of the Rock), the vibrant Mediterranean beaches and high-tech nightlife of Tel Aviv, floating in the mineral-rich Dead Sea, and ancient fortress Masada.',
+    'chile': 'The Chile Tourist Visa (Visto de Turismo) enables Indian passport holders to explore South America\'s dramatic Pacific-to-Andes territory. Highlights include trekking through the granite towers and glaciers of Torres del Paine National Park in Patagonia, stargazing in the world\'s driest Atacama Desert, wine tasting in the Central Valley, and exploring the vibrant capital Santiago.',
+    'mexico': 'The Mexico Tourist Visa (Visa de Turista) allows Indian travelers to experience the vibrant colors, ancient pre-Columbian history, and world-class cuisine of Mexico. Highlights include exploring the ancient Mayan wonder of Chichén Itzá, relaxing on the turquoise Caribbean beaches of Cancún and the Riviera Maya, exploring the historic center of Mexico City, and soaking in Oaxaca\'s colonial charm (visa-exempt for valid US/UK/Canada/Japan/Schengen visa holders).',
+    'ukraine': 'The Ukraine Tourist e-Visa (Type C-02) allows Indian travelers to visit Eastern Europe\'s cultural heartland. Key attractions include the golden-domed monasteries and cathedrals of Kyiv (Kyiv Pechersk Lavra, St. Sophia\'s), the cobblestone streets and coffee houses of UNESCO-listed Lviv, the Black Sea port of Odesa, and the picturesque Carpathian Mountains.'
+
   };
   
   return map[c] || 
@@ -436,6 +479,129 @@ export function getTourismHighlights(country: string): TourismHighlightItem[] {
       { icon: '⚽', title: 'Sports & Culture', description: 'Football culture, samba, carnival, and vibrant festivals' },
       { icon: '📱', title: 'Online Visa', description: 'E-visa available for eligible applicants' }
     ]
+  ,
+
+    'czech-republic': [
+      { icon: '🏰', title: 'Prague Castle & Charles Bridge', description: 'Gothic cathedrals, historic bridges, and panoramic Vltava river views' },
+      { icon: '🍺', title: 'Brewing Heritage', description: 'World-famous Pilsner Urquell, traditional beer halls, and Czech cuisine' },
+      { icon: '🏛️', title: 'UNESCO Heritage Towns', description: 'Fairytale Český Krumlov, Kutná Hora bone church, and Telč' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Seamless access across 29 European countries with one visa' }
+    ],
+    'poland': [
+      { icon: '🏰', title: 'Historic Royal Castles', description: 'Wawel Castle in Kraków and Warsaw\'s meticulously rebuilt Royal Castle' },
+      { icon: '⛏️', title: 'Wieliczka Salt Mine', description: 'Subterranean salt-carved chapels, lakes, and centuries of mining history' },
+      { icon: '⚓', title: 'Baltic Port of Gdańsk', description: 'Colorful merchant houses, amber workshops, and maritime heritage' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Unrestricted travel across all Schengen member states' }
+    ],
+    'hungary': [
+      { icon: '🏛️', title: 'Danube Architectural Marvels', description: 'Hungarian Parliament, Buda Castle, and Fisherman\'s Bastion' },
+      { icon: '♨️', title: 'Historic Thermal Baths', description: 'Century-old hot spring spas including Széchenyi and Gellért' },
+      { icon: '🍷', title: 'Tokaj Wine & Lake Balaton', description: 'UNESCO sweet wine cellars and Central Europe\'s largest freshwater lake' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Travel seamlessly across 29 European member countries' }
+    ],
+    'croatia': [
+      { icon: '🏰', title: 'Dubrovnik Old Town', description: 'Walk the ancient stone ramparts overlooking the crystal azure Adriatic Sea' },
+      { icon: '🌊', title: 'Plitvice Lakes National Park', description: '16 terraced cascade lakes connected by scenic waterfalls and wooden trails' },
+      { icon: '⛵', title: 'Dalmatian Island Hopping', description: 'Explore Hvar, Korčula, and Brač by ferry, speedboat, or yacht' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Full Schengen member status allowing border-free EU transit' }
+    ],
+    'bulgaria': [
+      { icon: '⛪', title: 'Sofia Golden Cathedrals', description: 'Alexander Nevsky Cathedral with neo-Byzantine golden domes' },
+      { icon: '🏛️', title: 'Ancient Plovdiv', description: '2,000-year-old Roman amphitheater and vibrant arts district Kapana' },
+      { icon: '⛰️', title: 'Rila Monastery Sanctuary', description: '10th-century UNESCO monastery nestled in forested alpine peaks' },
+      { icon: '🏖️', title: 'Black Sea Riviera', description: 'Golden sands and sunny seaside resorts at Varna and Nessebar' }
+    ],
+    'cyprus': [
+      { icon: '🏖️', title: 'Sun-Drenched Beaches', description: 'Nissi Beach, Fig Tree Bay, and crystal turquoise Mediterranean coves' },
+      { icon: '🏛️', title: 'Paphos Archaeological Park', description: 'Exquisite Roman floor mosaics, Tombs of the Kings, and ancient theaters' },
+      { icon: '⛰️', title: 'Troodos Mountain Villages', description: 'Pine-scented peaks, painted Byzantine churches, and traditional wineries' },
+      { icon: '🕊️', title: 'Myth of Aphrodite', description: 'Visit Aphrodite\'s legendary sea stack birthplace at Petra tou Romiou' }
+    ],
+    'romania': [
+      { icon: '🧛', title: 'Legendary Bran Castle', description: 'Explore Dracula\'s mythical Gothic fortress nestled in the Carpathians' },
+      { icon: '🏰', title: 'Peleș Royal Castle', description: 'Neo-Renaissance masterpiece set in the lush mountains of Sinaia' },
+      { icon: '🏛️', title: 'Medieval Transylvania', description: 'Cobblestone streets of Sighișoara, Brașov, and Sibiu\'s historic squares' },
+      { icon: '🚗', title: 'Transfăgărășan Highway', description: 'One of the world\'s most dramatic high-altitude mountain drives' }
+    ],
+    'slovakia': [
+      { icon: '🏔️', title: 'High Tatras Alpine Peaks', description: 'Glacial valleys, high-altitude mountain huts, and scenic hiking trails' },
+      { icon: '🏰', title: 'Spiš Castle Ruins', description: 'One of Central Europe\'s largest fortified castle complexes on a limestone cliff' },
+      { icon: '🏙️', title: 'Bratislava on the Danube', description: 'Compact Old Town, coronation church, and panoramic castle hill' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Border-free mobility across the entire Schengen European territory' }
+    ],
+    'slovenia': [
+      { icon: '⛵', title: 'Fairytale Lake Bled', description: 'Emerald alpine lake with a church on an island and a cliffside castle' },
+      { icon: '🐉', title: 'Charming Green Ljubljana', description: 'Pedestrian-only historic center, Dragon Bridge, and outdoor riverside cafés' },
+      { icon: '🦇', title: 'Postojna Underground Cave', description: 'Underground electric train ride through stunning stalactite caverns' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Seamless access across all 29 Schengen member states' }
+    ],
+    'estonia': [
+      { icon: '🏰', title: 'Tallinn Medieval Old Town', description: 'One of Europe\'s best-preserved Hanseatic fortified medieval city centers' },
+      { icon: '💻', title: 'Digital Innovation Hub', description: 'World\'s pioneer in e-governance, digital nomad lifestyle, and tech culture' },
+      { icon: '🌲', title: 'Pristine Bogs & Forests', description: 'Boardwalk hiking across mirror-like bog lakes in Lahemaa National Park' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Unrestricted travel throughout 29 European countries' }
+    ],
+    'latvia': [
+      { icon: '🏛️', title: 'Riga Art Nouveau Splendour', description: 'Over 800 ornate Art Nouveau facades and a UNESCO-listed medieval center' },
+      { icon: '🏖️', title: 'Jūrmala White Sand Dunes', description: 'Historic seaside spa resort famous for wooden architecture and pine sea air' },
+      { icon: '🏰', title: 'Gauja National Park Castles', description: 'Turaida stone castle and Sigulda bobsleigh track in the Gauja river valley' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Travel freely across all 29 Schengen member nations' }
+    ],
+    'lithuania': [
+      { icon: '🏛️', title: 'Vilnius Baroque Old Town', description: 'Sprawling UNESCO historic center with cobblestone lanes and Gothic churches' },
+      { icon: '🏰', title: 'Trakai Island Castle', description: '14th-century red-brick castle built on an island in Lake Galvė' },
+      { icon: '🏜️', title: 'Curonian Spit Giant Dunes', description: 'Spectacular moving coastal sand dunes between the Baltic Sea and lagoon' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Border-free European travel within the 90/180-day limitation' }
+    ],
+    'luxembourg': [
+      { icon: '🏰', title: 'UNESCO Fortified Old City', description: 'Dramatic clifftop ramparts and underground 17km Bock Casemates labyrinth' },
+      { icon: '👑', title: 'Grand Ducal Palace', description: 'Official residence of the Grand Duke with ceremonial guard changes' },
+      { icon: '🚌', title: 'Free Nationwide Transit', description: 'All public trains, trams, and buses are completely free across the country' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Unrestricted access across 29 European Schengen member states' }
+    ],
+    'malta': [
+      { icon: '🏛️', title: 'Fortified Valletta Capital', description: 'Baroque UNESCO capital founded by the Knights Hospitaller in 1566' },
+      { icon: '🌊', title: 'Blue Lagoon on Comino', description: 'World-famous crystalline turquoise swimming and snorkeling paradise' },
+      { icon: '🗿', title: 'Megalithic Stone Temples', description: 'Prehistoric temples at Ħaġar Qim older than Stonehenge and Egyptian pyramids' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Convenient Mediterranean gateway with full Schengen zone access' }
+    ],
+    'iceland': [
+      { icon: '🌌', title: 'Aurora Borealis (Northern Lights)', description: 'Spectacular winter night sky light displays across untouched dark skies' },
+      { icon: '🌋', title: 'Golden Circle & Geysers', description: 'Exploding Strokkur geysir, Gullfoss roaring waterfall, and Thingvellir rift' },
+      { icon: '♨️', title: 'Geothermal Blue Lagoon', description: 'Soak in silica-rich mineral milky turquoise pools surrounded by volcanic lava' },
+      { icon: '🧊', title: 'Glacier Lagoons & Black Beaches', description: 'Floating icebergs at Jökulsárlón and basalt columns at Reynisfjara' }
+    ],
+    'liechtenstein': [
+      { icon: '🏰', title: 'Vaduz Princely Castle', description: 'Iconic clifftop castle overlooking the Rhine Valley, home to the Prince' },
+      { icon: '🏔️', title: 'Alpine Peak Hiking', description: 'Scenic mountain trails, Malbun ski resort, and sweeping Alpine panoramas' },
+      { icon: '🍷', title: 'Princely Wine Cellars', description: 'Tasting rare Pinot Noir wines from the Prince\'s personal Hofkellerei estate' },
+      { icon: '✨', title: 'Schengen Freedom', description: 'Seamless border-free entry via Switzerland or Austria' }
+    ],
+    'israel': [
+      { icon: '🕊️', title: 'Jerusalem Old City', description: 'Western Wall, Church of the Holy Sepulchre, and Dome of the Rock' },
+      { icon: '🏖️', title: 'Tel Aviv Mediterranean Vibe', description: 'Golden sandy city beaches, Bauhaus architecture, and world-class culinary scene' },
+      { icon: '🌊', title: 'Floating in the Dead Sea', description: 'Lowest elevation on Earth with hyper-saline waters and therapeutic mineral mud' },
+      { icon: '🏰', title: 'Ancient Masada Fortress', description: 'Dramatic King Herod desert mountain plateau fortress overlooking the Dead Sea' }
+    ],
+    'chile': [
+      { icon: '🏔️', title: 'Torres del Paine Patagonia', description: 'Epic granite spires, blue glaciers, and world-famous trekking circuits' },
+      { icon: '🌌', title: 'Atacama Stargazing', description: 'World\'s driest desert with ultra-clear skies, geysers, and salt flats' },
+      { icon: '🍷', title: 'Central Valley Wineries', description: 'Famous Carménère and Cabernet Sauvignon vineyards near Santiago' },
+      { icon: '🗿', title: 'Easter Island (Rapa Nui)', description: 'Mysterious giant stone Moai statues carved by early Polynesian voyagers' }
+    ],
+    'mexico': [
+      { icon: '🏛️', title: 'Chichén Itzá Mayan Wonder', description: 'Iconic El Castillo pyramid and ancient pre-Columbian ceremonial centers' },
+      { icon: '🏖️', title: 'Cancún & Riviera Maya', description: 'Turquoise Caribbean waters, all-inclusive luxury resorts, and cenote swimming' },
+      { icon: '🌮', title: 'World-Renowned Gastronomy', description: 'UNESCO intangible cultural heritage Mexican cuisine from tacos to mole' },
+      { icon: '🏙️', title: 'Mexico City Historic Heart', description: 'Zócalo square, Frida Kahlo\'s Casa Azul, and floating gardens of Xochimilco' }
+    ],
+    'ukraine': [
+      { icon: '⛪', title: 'Kyiv Golden-Domed Monasteries', description: 'Kyiv Pechersk Lavra cave monastery and St. Sophia\'s 11th-century mosaics' },
+      { icon: '☕', title: 'Historic Lviv Old Town', description: 'Central European cobblestone charm, historic coffee houses, and chocolate workshops' },
+      { icon: '⛰️', title: 'Carpathian Mountains', description: 'Verdant forested peaks, traditional wooden churches, and Hutsul folk culture' },
+      { icon: '⚓', title: 'Black Sea Port of Odesa', description: 'Famous Potemkin Stairs, monumental Opera House, and coastal promenades' }
+    ]
+
   };
   
   return map[c] || [
@@ -456,49 +622,81 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Valid Passport', description: 'Valid for at least 6 months beyond travel date with 2 blank pages.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Verifiable ticket leaving Thailand within 60 days.', is_mandatory: true },
       { title: 'Proof of Accommodation', description: 'Hotel booking or host invitation in Thailand.', is_mandatory: true },
-      { title: 'Living Expense Funds', description: '10,000 THB per person / 20,000 THB per family (approx. ₹24,000 – ₹48,000) in cash or cards.', is_mandatory: false }
+      { title: 'Living Expense Funds', description: '10,000 THB per person / 20,000 THB per family (approx. ₹24,000 – ₹48,000) in cash or cards.', is_mandatory: false },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'malaysia': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months from arrival date with 2 blank pages.', is_mandatory: true },
       { title: 'Malaysia Digital Arrival Card (MDAC)', description: 'Mandatory online form submitted within 3 days prior to arrival at imigresen-online.imi.gov.my/mdac.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Malaysia within 30 days.', is_mandatory: true },
-      { title: 'Hotel Reservation', description: 'Confirmed hotel booking or proof of residence in Malaysia.', is_mandatory: true }
+      { title: 'Hotel Reservation', description: 'Confirmed hotel booking or proof of residence in Malaysia.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'mauritius': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended stay with 2 blank pages.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Mauritius within 60 days.', is_mandatory: true },
       { title: 'Proof of Accommodation', description: 'Hotel booking voucher or host invitation letter.', is_mandatory: true },
       { title: 'Mauritius All-in-One Digital Form', description: 'Mandatory online entry form at safetravel.govmu.org prior to departure.', is_mandatory: true },
-      { title: 'Sufficient Funds Proof', description: 'Minimum USD $100 / EUR €100 / MUR 4,000 per day of stay.', is_mandatory: false }
+      { title: 'Sufficient Funds Proof', description: 'Minimum USD $100 / EUR €100 / MUR 4,000 per day of stay.', is_mandatory: false },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'maldives': [
       { title: 'Valid Passport', description: 'Valid for at least 1 month (recommended 6 months) with machine-readable zone.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Return ticket leaving Maldives within 30 days.', is_mandatory: true },
       { title: 'Confirmed Resort / Hotel Booking', description: 'Prepaid hotel reservation or resort booking voucher.', is_mandatory: true },
-      { title: 'IMUGA Traveler Declaration', description: 'Mandatory online form within 96 hours before arrival at imuga.immigration.gov.mv.', is_mandatory: true }
+      { title: 'IMUGA Traveler Declaration', description: 'Mandatory online form within 96 hours before arrival at imuga.immigration.gov.mv.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'jamaica': [
       { title: 'Valid Indian Passport', description: 'Valid for the duration of stay. At least 1 blank page required for entry stamp.', is_mandatory: true },
       { title: 'C5 Online Immigration & Customs Form', description: 'MANDATORY: Complete at enterjamaica.com BEFORE boarding. QR code generated.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Immigration officers may request evidence of onward travel.', is_mandatory: true },
-      { title: 'Proof of Accommodation', description: 'Hotel booking, Airbnb reservation, or host invitation letter.', is_mandatory: true }
+      { title: 'Proof of Accommodation', description: 'Hotel booking, Airbnb reservation, or host invitation letter.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'nepal': [
       { title: 'Indian Passport OR Voter ID Card', description: 'Indian citizens can travel with EITHER a valid Indian Passport OR original Voter ID card.', is_mandatory: true },
-      { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Kathmandu (KTM).', is_mandatory: true }
+      { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Kathmandu (KTM).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'bhutan': [
       { title: 'Indian Passport OR Voter ID Card', description: 'Valid for at least 6 months OR original Voter ID card.', is_mandatory: true },
       { title: 'Passport-Size Photographs', description: 'Two recent color photographs on white background (35x45mm).', is_mandatory: true },
       { title: 'Confirmed Hotel Booking', description: 'Hotel reservations with Department of Tourism approved accommodation.', is_mandatory: true },
-      { title: 'Sustainable Development Fee (SDF)', description: '₹1,200 per night (children 6-12: ₹600). Paid prior to arrival.', is_mandatory: true }
+      { title: 'Sustainable Development Fee (SDF)', description: '₹1,200 per night (children 6-12: ₹600). Paid prior to arrival.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'seychelles': [
       { title: 'Valid Passport', description: 'Valid for the duration of stay with at least 1 blank page.', is_mandatory: true },
       { title: 'Seychelles Travel Authorization (TA)', description: 'Mandatory online TA at seychelles.govtas.com — €10 EUR fee.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Return ticket leaving Seychelles within 30 days.', is_mandatory: true },
       { title: 'Confirmed Hotel Booking', description: 'Accommodation at certified eco-tourism hotel/resort.', is_mandatory: true },
-      { title: 'Travel Medical Insurance', description: 'Mandatory international travel medical insurance covering emergency expenses.', is_mandatory: true }
+      { title: 'Travel Medical Insurance', description: 'Mandatory international travel medical insurance covering emergency expenses.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     
     // ── SCHENGEN COUNTRIES ──
@@ -594,7 +792,11 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Digital Photograph', description: '35mm x 45mm, white background, taken within 6 months.', is_mandatory: true },
       { title: 'Travel Purpose & Itinerary', description: 'Cover letter, round-trip flight booking, hotel reservations, or invitation letter.', is_mandatory: true },
       { title: 'Ties to Home Country', description: 'Employment letter, leave approval NOC, property documents.', is_mandatory: true },
-      { title: 'Bank Statements & Tax Returns', description: '6 months stamped bank statements + 3 years ITR.', is_mandatory: true }
+      { title: 'Bank Statements & Tax Returns', description: '6 months stamped bank statements + 3 years ITR.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'japan': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months with 2 blank visa pages.', is_mandatory: true },
@@ -623,7 +825,11 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Passport Bio-Data Page Scan', description: 'Clear color scan in JPG format.', is_mandatory: true },
       { title: 'Portrait Digital Photograph (4×6cm)', description: 'Straight-looking photo on white background, taken within 6 months.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip air ticket with verifiable PNR.', is_mandatory: true },
-      { title: 'Hotel Booking / Accommodation', description: 'Confirmed hotel reservations for planned cities.', is_mandatory: true }
+      { title: 'Hotel Booking / Accommodation', description: 'Confirmed hotel reservations for planned cities.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'indonesia': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months from arrival date with 2 blank pages.', is_mandatory: true },
@@ -638,12 +844,20 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Passport Photograph', description: 'Recent digital color photo with white background.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket to Phnom Penh (PNH) or Siem Reap (SAI).', is_mandatory: true },
       { title: 'Hotel Booking / Itinerary', description: 'Confirmed hotel reservations in Siem Reap or Phnom Penh.', is_mandatory: true },
-      { title: 'Cambodia e-Arrival Card', description: 'Mandatory digital form within 7 days prior to arrival at arrival.gov.kh.', is_mandatory: true }
+      { title: 'Cambodia e-Arrival Card', description: 'Mandatory digital form within 7 days prior to arrival at arrival.gov.kh.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'sri-lanka': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months from arrival date with 2 blank pages.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Return ticket leaving Sri Lanka within 30 days.', is_mandatory: true },
-      { title: 'Proof of Accommodation', description: 'Hotel booking or host address in Sri Lanka.', is_mandatory: true }
+      { title: 'Proof of Accommodation', description: 'Hotel booking or host address in Sri Lanka.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'philippines': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months beyond stay with 2 blank pages.', is_mandatory: true },
@@ -659,28 +873,44 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Valid Passport', description: 'Valid for at least 6 months from arrival date with 2 blank pages.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Return ticket departing Hamad International Airport (DOH).', is_mandatory: true },
       { title: 'Mandatory Hotel Booking via Discover Qatar', description: 'Hotel reservation booked through discoverqatar.qa — third-party bookings NOT accepted.', is_mandatory: true },
-      { title: 'Mandatory Qatar Health Insurance', description: 'QAR 50 (approx. ₹1,150) from Ministry of Public Health approved insurer.', is_mandatory: true }
+      { title: 'Mandatory Qatar Health Insurance', description: 'QAR 50 (approx. ₹1,150) from Ministry of Public Health approved insurer.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'saudi-arabia': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months beyond travel date with 2 blank visa pages.', is_mandatory: true },
       { title: 'Digital Passport Photograph (2×2 inch)', description: 'Recent color photo on pure white background.', is_mandatory: true },
       { title: 'Mandatory Saudi Health Insurance', description: 'Automatically bundled with visa fee covering SAR 100,000 emergency medical care.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket to Riyadh, Jeddah, Dammam, or Medina.', is_mandatory: true },
-      { title: 'Hotel Booking / Accommodation', description: 'Hotel reservations for the duration of stay.', is_mandatory: true }
+      { title: 'Hotel Booking / Accommodation', description: 'Hotel reservations for the duration of stay.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'oman': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months from entry date with 2 blank pages.', is_mandatory: true },
       { title: 'Passport Bio-Data Page Scan', description: 'High-resolution color scan of passport details page.', is_mandatory: true },
       { title: 'Digital Passport Photograph', description: 'Recent color photo on white background (35x45mm).', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Muscat (MCT) or Salalah (SLL).', is_mandatory: true },
-      { title: 'Hotel Booking / Accommodation', description: 'Hotel reservations in Oman for duration of visit.', is_mandatory: true }
+      { title: 'Hotel Booking / Accommodation', description: 'Hotel reservations in Oman for duration of visit.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'bahrain': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months with 2 blank pages.', is_mandatory: true },
       { title: 'Passport Bio-Data & Last Page Scan', description: 'Color copy of passport bio page and address page.', is_mandatory: true },
       { title: 'Confirmed Return Flight Ticket', description: 'Round-trip ticket departing Bahrain International Airport (BAH).', is_mandatory: true },
       { title: 'Hotel Booking / Host Proof', description: 'Hotel reservation or CPR copy of resident host.', is_mandatory: true },
-      { title: 'Bank Account Statements (3 Months)', description: 'Stamped statement showing USD $1,00,000 / BHD 300 / ₹85,000 balance.', is_mandatory: true }
+      { title: 'Bank Account Statements (3 Months)', description: 'Stamped statement showing USD $1,00,000 / BHD 300 / ₹85,000 balance.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed round-trip ticket departing within permitted stay duration.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Prepaid hotel reservation or confirmed host invitation voucher.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Cash, international credit cards, or stamped bank statements showing sufficient funds.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical and hospitalization travel insurance policy.', is_mandatory: false }
     ],
     'new-zealand': [
       { title: 'Current Passport', description: 'High-resolution color scan of all pages. Valid for 6+ months.', is_mandatory: true },
@@ -710,6 +940,234 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Proof of Employment / Occupation', description: 'Employer NOC + 3 months salary slips.', is_mandatory: true },
       { title: 'Bank Statements (3-6 Months)', description: 'Stamped statements showing sufficient funds.', is_mandatory: true }
     ]
+  ,
+
+    'czech-republic': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'poland': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'hungary': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'croatia': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'slovakia': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'slovenia': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'estonia': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'latvia': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'lithuania': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'luxembourg': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'malta': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'iceland': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'liechtenstein': [
+      { title: 'Valid Passport', description: 'Original passport valid for at least 3 months beyond intended departure from Schengen area, with 2 blank pages.', is_mandatory: true },
+      { title: 'Harmonised Schengen Visa Application Form', description: 'Fully completed online, printed, and signed by applicant.', is_mandatory: true },
+      { title: 'Biometric Passport Photographs', description: 'Two recent photos (35x45mm, white/light-grey background, 70-80% face coverage).', is_mandatory: true },
+      { title: 'Confirmed Return Flight Reservation', description: 'Flight itinerary showing entry and exit from Schengen territory with verifiable PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel vouchers for every night across all destinations, or official invitation.', is_mandatory: true },
+      { title: 'Schengen Travel Medical Insurance', description: 'Minimum €30,000 emergency medical and repatriation coverage valid across all Schengen states.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing healthy liquid balance (minimum ₹3,00,000 – ₹5,00,000).', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Acknowledged ITR-V forms and Form 16 for the last 2-3 assessment years.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer leave sanction letter, 3 months salary slips, and company ID.', is_mandatory: true },
+      { title: 'Day-to-Day Travel Plan & Cover Letter', description: 'Detailed cover letter outlining trip purpose, travel dates, and ties to India.', is_mandatory: true }
+],
+    'bulgaria': [
+      { title: 'Valid Passport', description: 'Valid for at least 3 months beyond departure date from Bulgaria with 2 blank pages.', is_mandatory: true },
+      { title: 'Bulgaria Visa Application Form', description: 'Duly completed and signed application form.', is_mandatory: true },
+      { title: 'Biometric Photographs', description: 'Two recent color photos (35x45mm) on light background.', is_mandatory: true },
+      { title: 'Round-Trip Flight Reservation', description: 'Confirmed return air ticket itinerary with PNR.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Confirmed hotel reservations or host invitation letter certified by Bulgarian authorities.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Valid for Bulgaria with minimum €30,000 emergency medical coverage.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Stamped bank statements showing at least €50 per day (minimum €500).', is_mandatory: true },
+      { title: 'Proof of Employment / Occupation', description: 'Employer NOC, salary slips, or business registration.', is_mandatory: true }
+    ],
+    'cyprus': [
+      { title: 'Valid Passport', description: 'Valid for at least 3 months beyond intended stay with at least 2 blank pages.', is_mandatory: true },
+      { title: 'Cyprus Visa Application Form', description: 'Completed and signed form with passport-style photograph attached.', is_mandatory: true },
+      { title: 'Passport Photographs', description: 'Two recent color photographs (35x45mm) on white background.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Confirmed return flight booking with airline reservation code.', is_mandatory: true },
+      { title: 'Proof of Hotel Accommodation', description: 'Confirmed hotel voucher or Assumption of Responsibility form certified by Cyprus notary.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Emergency medical insurance coverage with minimum €30,000 limit.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 3-6 Months)', description: 'Original bank statements with bank seal proving sufficient financial funds.', is_mandatory: true },
+      { title: 'Employment NOC / Business Documents', description: 'Leave letter from employer, 3 months payslips, and ITR-V.', is_mandatory: true }
+    ],
+    'romania': [
+      { title: 'Valid Passport', description: 'Valid for at least 3 months beyond planned departure from Romania with 2 blank pages.', is_mandatory: true },
+      { title: 'eVisa Application Dossier', description: 'Application registered online at evisa.mae.ro with all uploaded documents.', is_mandatory: true },
+      { title: 'Passport Photographs', description: 'Two recent 35x45mm color photographs on white background.', is_mandatory: true },
+      { title: 'Round-Trip Air Ticket Booking', description: 'Confirmed return flight itinerary entering and exiting Romania.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Confirmed hotel voucher or certified invitation from Romanian host.', is_mandatory: true },
+      { title: 'Travel Health Insurance', description: 'Minimum €30,000 coverage valid across Romania and Europe.', is_mandatory: true },
+      { title: 'Proof of Financial Means', description: 'Original bank statement showing minimum €50/day (minimum €500 total).', is_mandatory: true },
+      { title: 'Employment NOC & ITR-V', description: 'Letter from employer confirming leave and last 2 years income tax returns.', is_mandatory: true }
+    ],
+    'israel': [
+      { title: 'Valid Passport', description: 'Valid for at least 6 months beyond travel dates with at least 2 blank pages.', is_mandatory: true },
+      { title: 'B/2 Visa Application Form', description: 'Completed official application form with original applicant signature.', is_mandatory: true },
+      { title: 'Passport Photographs', description: 'Two recent color photos (50x50mm or 35x45mm) on white background.', is_mandatory: true },
+      { title: 'Confirmed Round-Trip Flight Itinerary', description: 'Confirmed round-trip ticket reservations with PNR.', is_mandatory: true },
+      { title: 'Hotel Bookings / Travel Itinerary', description: 'Confirmed accommodation for each night of stay in Israel.', is_mandatory: true },
+      { title: 'Travel Medical Insurance', description: 'Comprehensive medical insurance covering emergency treatment in Israel.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 6 Months)', description: 'Original stamped statements showing minimum balance of ₹2,50,000+.', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Last 3 years acknowledged income tax return copies.', is_mandatory: true },
+      { title: 'Employer NOC / Leave Sanction', description: 'Letter from employer stating designation, salary, and authorized leave dates.', is_mandatory: true }
+    ],
+    'chile': [
+      { title: 'Valid Passport', description: 'Valid for at least 6 months beyond intended stay with at least 2 blank pages.', is_mandatory: true },
+      { title: 'SAC Ciudadanos Online Application', description: 'Application submitted via official portal tramites.minrel.gov.cl.', is_mandatory: true },
+      { title: 'Digital Photograph', description: 'Recent photograph with white background, JPEG format.', is_mandatory: true },
+      { title: 'Confirmed Flight Itinerary', description: 'Round-trip air ticket reservation showing entry and exit from Chile.', is_mandatory: true },
+      { title: 'Proof of Lodging', description: 'Confirmed hotel reservations or certified Chilean host invitation letter.', is_mandatory: true },
+      { title: 'Proof of Financial Solvency', description: 'Personal bank statements for past 3-6 months showing sufficient funds.', is_mandatory: true },
+      { title: 'Employment Certificate / NOC', description: 'Employer letter stating position, salary, and granted leave period.', is_mandatory: true },
+      { title: 'Detailed Trip Itinerary', description: 'Day-by-day plan of cities and activities in Chile.', is_mandatory: true }
+    ],
+    'mexico': [
+      { title: 'Valid Passport', description: 'Valid for at least 6 months with at least 2 blank pages.', is_mandatory: true },
+      { title: 'Mexico Visa Application Form', description: 'Completed and signed form printed double-sided on one sheet.', is_mandatory: true },
+      { title: 'Passport Photograph', description: 'One recent color photograph (35x45mm) on white background, no glasses.', is_mandatory: true },
+      { title: 'Personal Bank Statements (Past 3-6 Months)', description: 'Stamped bank statements showing monthly balance equivalent to approx. ₹1,50,000 – ₹2,50,000.', is_mandatory: true },
+      { title: 'Proof of Employment / Income', description: 'Employment letter on official letterhead stating start date, salary, and position; plus 3 months salary slips.', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Last 2 years tax returns.', is_mandatory: true },
+      { title: 'Flight & Hotel Reservations', description: 'Tentative round-trip flight booking and hotel accommodation in Mexico.', is_mandatory: true }
+    ],
+    'ukraine': [
+      { title: 'Valid Passport', description: 'Valid for at least 3 months beyond departure date from Ukraine with 2 blank pages.', is_mandatory: true },
+      { title: 'Official e-Visa Application Form', description: 'Registered and submitted online at evisa.mfa.gov.ua.', is_mandatory: true },
+      { title: 'Passport Photograph', description: 'Recent color photo in digital format.', is_mandatory: true },
+      { title: 'Valid Health Insurance Policy', description: 'Covering at least €30,000 or equivalent emergency medical expenses in Ukraine.', is_mandatory: true },
+      { title: 'Proof of Sufficient Funds', description: 'Bank statement or credit card statement demonstrating sufficient financial means.', is_mandatory: true },
+      { title: 'Document Confirming Purpose of Travel', description: 'Hotel booking, organized tour voucher, or private invitation letter.', is_mandatory: true },
+      { title: 'Return Flight Reservation', description: 'Confirmed flight ticket departing Ukraine.', is_mandatory: true }
+    ]
+
   };
   
   const defaultDocs: DocumentRequiredItem[] = [
@@ -965,6 +1423,167 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
       'Step 9: Travel to New Zealand — Valid for 3, 6, or 9 months stay with single or multiple entry.',
       'Step 10: Clear Immigration — Present passport at New Zealand airport for entry clearance.'
     ]
+  ,
+
+    'czech-republic': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'poland': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'hungary': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'croatia': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'slovakia': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'slovenia': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'estonia': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'latvia': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'lithuania': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'luxembourg': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'malta': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'iceland': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'liechtenstein': [
+      'Determine Jurisdiction & Travel Dates: Ensure this destination is your primary destination or point of longest stay in the Schengen zone.',
+      'Complete Online Application Form: Fill out the official visa application via the designated consular portal.',
+      'Book VAC Appointment: Schedule an appointment for biometric capture and document submission at VFS Global.',
+      'Assemble Required Dossier: Gather passport, travel insurance (€30k), bank statements (6 months stamped), ITR-V, flight and hotel reservations, and employer NOC.',
+      'Attend Appointment: Visit the VAC to submit physical documents, pay visa (€90) and service fees, and submit digital fingerprints and photo.',
+      'Passport Processing & Collection: Track status online; receive your passport with visa vignette via courier or collection within 15 calendar days.'
+],
+    'bulgaria': [
+      'Confirm Entry Eligibility: Check whether traveling on national Bulgarian visa or existing valid double/multiple entry Schengen visa.',
+      'Complete Visa Application: Fill out the Bulgarian visa application form accurately.',
+      'Schedule VAC Appointment: Book an appointment at VFS Global Bulgaria in your city.',
+      'Prepare Dossier: Assemble original passport, photos, flight itinerary, hotel booking, insurance (€30k), bank statements, and employment proof.',
+      'Attend Appointment: Submit application, complete biometrics, and pay €90 visa fee plus VFS logistics fee.',
+      'Passport Collection: Collect passport with visa vignette or await courier delivery in 10-15 business days.'
+    ],
+    'cyprus': [
+      'Check Visa Requirements: Indian citizens require a Cyprus visa unless holding valid multiple-entry Schengen visa.',
+      'Complete Application Form: Fill out Cyprus Category C application form with attached photo.',
+      'Book Submission Appointment: Schedule appointment at Cyprus High Commission or authorized VAC.',
+      'Assemble Documents: Prepare original passport, flight reservations, confirmed hotel accommodation, bank statements, ITR-V, and employer NOC.',
+      'Submit Application & Pay Fees: Submit physical file and pay €90 consular visa fee.',
+      'Collect Passport: Receive visa decision within 10 to 15 working days.'
+    ],
+    'romania': [
+      'Register on eVisa Romania: Create account and upload application dossier at official portal evisa.mae.ro.',
+      'Await Consular Validation: Embassy/consulate reviews digital dossier and schedules physical submission.',
+      'Prepare Physical Documents: Print verified application, gather stamped bank statements, hotel vouchers, flights, and €30k insurance.',
+      'Attend Consular Appointment: Submit physical passport and documents at Romanian Embassy/Consulate and pay €90 fee.',
+      'Collect Passport: Collect passport with visa sticker within 10 to 14 calendar days.'
+    ],
+    'israel': [
+      'Complete B/2 Application: Fill out official Israel visa application form.',
+      'Gather Supporting Documents: Collect 6 months stamped bank statements, 3 years ITR, employer NOC, round-trip flights, and hotel bookings.',
+      'Schedule Israel VAC Appointment: Book appointment at Israel Visa Application Centre (I-VAC / Embassy).',
+      'Submit Dossier & Pay Fees: Submit application and pay ₹2,500 visa fee plus VAC service charges.',
+      'Security Verification & Processing: Consular verification takes 10-15 business days.',
+      'Collect Passport: Collect passport with B/2 visa or electronic entry confirmation.'
+    ],
+    'chile': [
+      'Access SAC Ciudadanos: Register on Chilean Ministry of Foreign Affairs portal (tramites.minrel.gov.cl).',
+      'Upload Digital Documents: Submit digital copies of passport, round-trip flights, hotel bookings, bank statements, and employment proof.',
+      'Await Consular Review: Chilean consulate reviews application and requests any additional information.',
+      'Pay Consular Fee: Upon approval notice, pay $50 USD consular visa fee via authorized payment channel.',
+      'Submit Passport for Stamping: Present physical passport at Embassy of Chile in New Delhi for visa vignette affixation.',
+      'Receive Visa: Collect passport stamped with Chilean tourist visa.'
+    ],
+    'mexico': [
+      'Check Exemption: If holding valid, multiple-entry visa for USA, Canada, Japan, UK, or Schengen, you are visa-exempt.',
+      'Schedule MiConsulado Appointment: Book in-person consular appointment via official portal citas.sre.gob.mx.',
+      'Complete Application Form: Print application form double-sided on a single sheet of paper.',
+      'Assemble Financials: Gather 3-6 months stamped bank statements and payslips meeting monthly income thresholds.',
+      'Attend Consular Interview: Visit Embassy of Mexico in New Delhi for biometrics, consular interview, and $53 USD fee payment.',
+      'Passport Collection: Collect passport with Mexico visa sticker within 10 business days.'
+    ],
+    'ukraine': [
+      'Register on MFA eVisa Portal: Visit official website evisa.mfa.gov.ua and create applicant profile.',
+      'Fill Online Form: Complete online questionnaire matching passport details.',
+      'Upload Required Documents: Upload photo, passport scan, health insurance (€30k), bank balance proof, and accommodation confirmation.',
+      'Pay Online Fee: Pay $20-$30 USD visa fee securely online using Visa or Mastercard.',
+      'Receive Electronic Visa: Download and print approved e-Visa (PDF with QR code) sent via email within 3-5 business days.'
+    ]
+
   };
   
   const defaultSteps = [
@@ -1040,7 +1659,30 @@ export function getTourismFees(country: string): any {
     'bahrain': { visa_fee: 'BHD 9 – BHD 29 (approx. ₹2,000 – ₹6,400)', service_fee: 'BHD 4 (Application Processing Fee)', total_fee: 'BHD 9 – 29 Total Reference', notes: 'Paid online directly on official Bahrain NPRA portal.' },
     'new-zealand': { visa_fee: 'NZD 530 (approx. ₹27,000)', service_fee: 'Payable at VFS Global', total_fee: 'NZD 530 Base Application Charge', notes: 'Paid online via Immigration New Zealand portal. Medical exam fees extra.' },
     'south-africa': { visa_fee: '₹0 (Free Consular Fee for Indian Citizens)', service_fee: '₹2,040 (VFS Logistics Service Charge)', total_fee: '₹2,040 Total Reference', notes: 'Official consular visa fee is completely waived for Indian passport holders.' },
-    'brazil': { visa_fee: 'Official Statutory Fee', service_fee: 'VAC Service Fee', total_fee: 'Official Fee + VAC Logistics', notes: 'Check official embassy website for current fees. E-visa available for eligible applicants.' }
+    'brazil': { visa_fee: 'USD $80 (approx. ₹6,800)', service_fee: '₹1,500 (Consular/VAC)', total_fee: 'approx. ₹8,300 Total Reference', notes: 'Apply via E-Consular portal followed by document submission.' }
+  ,
+
+    'czech-republic': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE even if visa is refused.' },
+    'poland': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'hungary': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'croatia': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'slovakia': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'slovenia': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'estonia': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'latvia': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'lithuania': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'luxembourg': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'malta': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'iceland': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Embassy visa fee is NON-REFUNDABLE.' },
+    'liechtenstein': { visa_fee: '€90 (Adult) / €45 (Children 6-12) / Free (Under 6)', service_fee: '€30 (VFS Service Fee)', total_fee: '€120 Total Reference', notes: 'Processed under Swiss representation.' },
+    'bulgaria': { visa_fee: '€90 (Adult) / €45 (Child 6-12)', service_fee: '€30 (VFS Logistics Fee)', total_fee: '€120 Total Reference (approx. ₹10,800)', notes: 'Consular visa fee is non-refundable.' },
+    'cyprus': { visa_fee: '€90 (Adult) / €45 (Child 6-12)', service_fee: '₹1,800 (VAC Logistics Fee)', total_fee: 'approx. ₹9,900 Total Reference', notes: 'Payable at time of submission.' },
+    'romania': { visa_fee: '€90 (Adult) / €45 (Child 6-12)', service_fee: '€25 (Consular Logistics)', total_fee: '€115 Total Reference (approx. ₹10,350)', notes: 'Initial registration online at evisa.mae.ro.' },
+    'israel': { visa_fee: '₹2,500 (B/2 Consular Visa Fee)', service_fee: '₹1,850 (I-VAC Service Fee)', total_fee: '₹4,350 Total Reference', notes: 'Payable via draft/card at Israel Visa Application Centre.' },
+    'chile': { visa_fee: '$50 USD (approx. ₹4,250)', service_fee: '₹1,500 (Consular Processing)', total_fee: 'approx. ₹5,750 Total Reference', notes: 'Paid online upon preliminary application approval.' },
+    'mexico': { visa_fee: '$53 USD (approx. ₹4,400)', service_fee: '0 USD (Direct Consular Fee)', total_fee: '$53 USD Total Reference', notes: 'Exempt if holding valid US, Canada, Japan, UK or Schengen visa.' },
+    'ukraine': { visa_fee: '$20 – $30 USD (approx. ₹1,700 – ₹2,550)', service_fee: '₹0 (Official Direct Portal)', total_fee: '$20 – $30 USD Total Reference', notes: 'Paid online directly via credit card on evisa.mfa.gov.ua.' }
+
   };
   
   return map[c] || {
@@ -1109,6 +1751,29 @@ export function getTourismProcessingTime(country: string): string {
     'new-zealand': '15 to 25 Calendar Days (Standard Assessment)',
     'south-africa': '10–15 Business Days (VFS Submission)',
     'brazil': '5 to 15 Working Days (or Instant / 24–72 Hours for eVisa)'
+  ,
+
+    'czech-republic': '15 Calendar Days statutory consular SLA',
+    'poland': '15 Calendar Days statutory consular SLA',
+    'hungary': '15 Calendar Days statutory consular SLA',
+    'croatia': '15 Calendar Days statutory consular SLA',
+    'slovakia': '15 Calendar Days statutory consular SLA',
+    'slovenia': '15 Calendar Days statutory consular SLA',
+    'estonia': '15 Calendar Days statutory consular SLA',
+    'latvia': '15 Calendar Days statutory consular SLA',
+    'lithuania': '15 Calendar Days statutory consular SLA',
+    'luxembourg': '15 Calendar Days statutory consular SLA',
+    'malta': '15 Calendar Days statutory consular SLA',
+    'iceland': '15 Calendar Days statutory consular SLA',
+    'liechtenstein': '15 Calendar Days statutory consular SLA',
+    'bulgaria': '10 – 15 Working Days',
+    'cyprus': '10 – 15 Working Days',
+    'romania': '10 – 14 Calendar Days',
+    'israel': '10 – 15 Business Days',
+    'chile': '15 – 20 Business Days',
+    'mexico': '10 – 15 Working Days',
+    'ukraine': '3 – 5 Business Days (e-Visa)'
+
   };
   
   return map[c] || 'Per Official Consular SLA. Apply at least 3-4 weeks before travel.';
@@ -1147,6 +1812,29 @@ export function getTourismProcessingDetails(country: string): string {
     'south-korea': 'Apply 3-6 weeks before travel. Q-Code health declaration required.',
     'new-zealand': 'Apply 4-8 weeks before travel. 100% digital e-Visa.',
     'south-africa': 'Apply 3-6 weeks before travel. ₹0 consular fee for Indian citizens.'
+  ,
+
+    'czech-republic': 'Under Schengen Visa Code rules, standard processing takes 15 calendar days from document receipt at Embassy in New Delhi. Apply 4 to 6 weeks prior to travel.',
+    'poland': 'Standard Schengen processing time of 15 calendar days from consular receipt. May extend to 45 days if additional security screening is required.',
+    'hungary': 'Consular processing standard SLA is 15 calendar days. Early appointment booking at VFS Hungary is recommended.',
+    'croatia': 'Processed in approximately 15 calendar days in accordance with Schengen regulations. Apply 1 to 2 months before planned departure.',
+    'slovakia': 'Schengen processing SLA is 15 calendar days from submission at VFS Global.',
+    'slovenia': 'Standard Schengen timeframe is 15 calendar days from appointment date.',
+    'estonia': 'Consular decision takes 15 calendar days under standard circumstances.',
+    'latvia': 'Embassy of Latvia processes Schengen tourist applications within 15 calendar days.',
+    'lithuania': 'Standard processing timeline is 15 calendar days from biometric appointment.',
+    'luxembourg': 'Processed within 15 calendar days in accordance with Schengen guidelines.',
+    'malta': 'Central Visa Unit processes applications within 15 calendar days. Peak summer seasons may experience longer queues.',
+    'iceland': 'Applications processed via representation within 15 calendar days.',
+    'liechtenstein': 'Processed via Swiss Embassy within 15 calendar days.',
+    'bulgaria': 'Consular section of Bulgarian Embassy evaluates tourist visa applications within 10-15 working days.',
+    'cyprus': 'High Commission of Cyprus processes applications in 10-15 working days.',
+    'romania': 'Online validation followed by consular processing takes approximately 10-14 calendar days.',
+    'israel': 'Embassy of Israel and Israel VAC process B/2 visitor applications within 10 to 15 business days.',
+    'chile': 'Chilean consular authorities process electronic applications within 15 to 20 business days.',
+    'mexico': 'Consular interview and visa issuance typically takes 10 to 15 working days at Embassy in New Delhi.',
+    'ukraine': 'Ministry of Foreign Affairs processes standard e-Visa applications within 3 to 5 business days.'
+
   };
   
   return map[c] || 'Apply at least 3-4 weeks before travel. Check official website for current processing times.';
@@ -1159,118 +1847,501 @@ export function getTourismFAQ(country: string): FAQItem[] {
     'thailand': [
       { question: 'Do Indian citizens need a visa for Thailand?', answer: 'No, Indian passport holders can enter Thailand visa-free for up to 60 days. This is a visa exemption scheme effective from 2024 onwards.' },
       { question: 'How can I extend my stay in Thailand?', answer: 'You can extend your stay for an additional 30 days at local Thai immigration offices for 1,900 THB. Extensions are subject to approval.' },
-      { question: 'Is there any minimum funds requirement for Thailand?', answer: 'You should have 10,000 THB per person or 20,000 THB per family in cash or card. This is a standard immigration spot-check requirement.' }
+      { question: 'Is there any minimum funds requirement for Thailand?', answer: 'You should have 10,000 THB per person or 20,000 THB per family in cash or card. This is a standard immigration spot-check requirement.' },
+      { question: 'Can I extend my 60-day visa exemption in Thailand?', answer: 'Yes, you can apply for a one-time 30-day extension at any local Thai Immigration Office for a statutory fee of 1,900 THB.' },
+      { question: 'What funds proof is required at Thai immigration?', answer: 'Immigration officers may randomly request proof of 10,000 THB per person (approx. ₹24,000) or 20,000 THB per family in cash or card.' }
     ],
     'malaysia': [
       { question: 'Do Indian citizens need a visa for Malaysia?', answer: 'No, Indian passport holders enjoy visa-free entry for up to 30 days for tourism. You must submit the free MDAC online within 3 days before arrival.' },
       { question: 'What is the MDAC requirement for Malaysia?', answer: 'The Malaysia Digital Arrival Card (MDAC) is a mandatory online arrival form completed at imigresen-online.imi.gov.my/mdac. It generates an electronic confirmation required at border control.' },
-      { question: 'Can I extend my stay in Malaysia?', answer: 'The 30-day visa-free social visit pass is non-extendable except under exceptional medical or emergency circumstances approved by immigration.' }
+      { question: 'Can I extend my stay in Malaysia?', answer: 'The 30-day visa-free social visit pass is non-extendable except under exceptional medical or emergency circumstances approved by immigration.' },
+      { question: 'Is the Malaysia Digital Arrival Card (MDAC) mandatory?', answer: 'Yes, all Indian travelers must complete the MDAC online within 3 days prior to arrival at imigresen-online.imi.gov.my/mdac.' },
+      { question: 'Can the 30-day visa-free stay be extended in Malaysia?', answer: 'No, the 30-day visa exemption is non-extendable and non-convertible. You must exit Malaysia within 30 days.' }
     ],
     'mauritius': [
       { question: 'Do Indian citizens need a visa for Mauritius?', answer: 'No prior visa is required. Indian tourists receive a free 60-day entry permit on arrival at SSR International Airport.' },
       { question: 'What is the Mauritius All-in-One Digital Form?', answer: 'It is a mandatory online health and immigration declaration completed at safetravel.govmu.org before departure. Generate the QR code for airport presentation.' },
-      { question: 'Can I extend my stay in Mauritius?', answer: 'Yes, tourist permits can be extended free of charge for up to 90 days total at the Passport & Immigration Office in Port Louis.' }
+      { question: 'Can I extend my stay in Mauritius?', answer: 'Yes, tourist permits can be extended free of charge for up to 90 days total at the Passport & Immigration Office in Port Louis.' },
+      { question: 'Is the All-in-One digital travel form mandatory for Mauritius?', answer: 'Yes, travelers must complete the Mauritius All-in-One Digital Travel Form at safetravel.govmu.org prior to departure.' },
+      { question: 'Can I extend my stay beyond 60 days in Mauritius?', answer: 'Yes, you can apply for an extension up to 90 days at the Passport and Immigration Office in Port Louis without additional visa fees.' }
     ],
     'maldives': [
       { question: 'Do Indian citizens get visa on arrival for Maldives?', answer: 'Yes, all tourists receive a complimentary 30-day visa on arrival upon showing a valid passport, prepaid hotel voucher, and return ticket.' },
       { question: 'What is the IMUGA declaration?', answer: 'The IMUGA Traveler Declaration must be submitted online at imuga.immigration.gov.mv within 96 hours before arriving and departing Maldives.' },
-      { question: 'Can the Maldives tourist visa be extended?', answer: 'Yes, the 30-day visa on arrival can be extended for up to 90 days total by applying directly at the Maldives Immigration Department in Male.' }
+      { question: 'Can the Maldives tourist visa be extended?', answer: 'Yes, the 30-day visa on arrival can be extended for up to 90 days total by applying directly at the Maldives Immigration Department in Male.' },
+      { question: 'Is the IMUGA declaration mandatory for Maldives?', answer: 'Yes, all passengers must submit the IMUGA online traveler declaration at imuga.immigration.gov.mv within 96 hours before arrival.' },
+      { question: 'Can I extend the 30-day Maldives on-arrival visa?', answer: 'Yes, the visa on arrival can be extended for up to 90 days total by applying to the Department of Immigration in Malé.' }
     ],
     'jamaica': [
       { question: 'Do Indian citizens need a visa for Jamaica?', answer: 'No, Indian tourists can visit Jamaica visa-free for up to 30 days. You only need a valid passport, return ticket, and the mandatory C5 online form.' },
       { question: 'What is the C5 form for Jamaica?', answer: 'The C5 Online Immigration and Customs Form must be filled out at enterjamaica.com before boarding your flight. It is completely free.' },
-      { question: 'Can the 30-day stay in Jamaica be extended?', answer: 'Yes, you can extend your stay inside Jamaica by visiting the Passport, Immigration and Citizenship Agency (PICA) office in Kingston or Montego Bay.' }
+      { question: 'Can the 30-day stay in Jamaica be extended?', answer: 'Yes, you can extend your stay inside Jamaica by visiting the Passport, Immigration and Citizenship Agency (PICA) office in Kingston or Montego Bay.' },
+      { question: 'What is the C5 online form for Jamaica?', answer: 'The C5 Online Immigration and Customs Declaration form must be submitted at enterjamaica.com before boarding your flight.' },
+      { question: 'Do Indian passport holders pay any visa fees for Jamaica?', answer: 'No, Indian citizens enjoy visa-free entry for up to 30 days with zero consular visa fees.' }
     ],
     'uae': [
       { question: 'Do Indian citizens need a visa for UAE?', answer: 'Yes, Indian passport holders require a valid eVisa or entry permit to enter the UAE. Apply online through ICP/GDRFA portals. Visa on arrival is available for US citizens only.' },
       { question: 'How long is the UAE Tourist eVisa valid?', answer: 'The eVisa is valid for 60 days from the date of electronic issuance. You must enter the UAE within this period. Stay duration depends on your selected tier (30 or 60 days).' },
-      { question: 'Can I extend my UAE Tourist Visa?', answer: 'Yes, you can extend your tourist visa inside the UAE for an additional 30 days without exit. Extensions are processed through ICP/GDRFA.' }
+      { question: 'Can I extend my UAE Tourist Visa?', answer: 'Yes, you can extend your tourist visa inside the UAE for an additional 30 days without exit. Extensions are processed through ICP/GDRFA.' },
+      { question: 'Can I extend my UAE tourist visa while inside Dubai?', answer: 'Yes, UAE tourist visas can be extended inside the country for an additional 30 days without exiting through ICP/GDRFA.' },
+      { question: 'Does the UAE tourist visa include medical insurance?', answer: 'Yes, official UAE tourist visas include mandatory emergency health insurance valid across the UAE.' }
     ],
     'singapore': [
       { question: 'Do Indian citizens need a visa for Singapore?', answer: 'Yes, Indian passport holders require a valid eVisa to enter Singapore. Apply through ICA Authorized Visa Agents (AVAs) in India. You cannot apply directly on ICA unless sponsored by a Singapore Citizen/PR.' },
       { question: 'How long is the Singapore eVisa valid?', answer: 'Singapore e-Visas are typically issued for up to 2 years with multiple entries. Each visit allows a stay of up to 30 days. Validity and stay duration are at the discretion of ICA.' },
-      { question: 'What is the SG Arrival Card (SGAC)?', answer: 'The SGAC is a mandatory electronic arrival declaration. You must submit it online within 3 days before arrival in Singapore. It includes health declaration and travel details.' }
+      { question: 'What is the SG Arrival Card (SGAC)?', answer: 'The SGAC is a mandatory electronic arrival declaration. You must submit it online within 3 days before arrival in Singapore. It includes health declaration and travel details.' },
+      { question: 'Can I apply for a Singapore visa directly as an individual?', answer: 'Singapore visas must be submitted through an authorized visa agent (AVA) or a Singapore citizen/PR local sponsor via ICA e-Services.' },
+      { question: 'Is the Singapore Arrival Card (SGAC) mandatory?', answer: 'Yes, all travelers must submit the SG Arrival Card online within 3 days prior to arrival.' }
     ],
     'turkey': [
       { question: 'Who is eligible for Turkey online eVisa from India?', answer: 'Indian passport holders can apply for an online eVisa at evisa.gov.tr ONLY IF they hold a valid US, UK, Schengen, or Ireland visa/residence permit. Otherwise, a sticker visa via Gateway Globe is required.' },
       { question: 'How fast is the Turkey online eVisa processed?', answer: 'The online eVisa is issued instantly (typically within 5 minutes) upon online payment of $43 USD at evisa.gov.tr.' },
-      { question: 'How long can I stay in Turkey on an eVisa?', answer: 'The eVisa allows a single entry of up to 30 days within a 180-day validity window.' }
+      { question: 'How long can I stay in Turkey on an eVisa?', answer: 'The eVisa allows a single entry of up to 30 days within a 180-day validity window.' },
+      { question: 'Who is eligible for a Turkish eVisa?', answer: 'Indian passport holders who possess a valid supporting visa or residence permit from the Schengen area, USA, UK, or Ireland can obtain a 30-day single-entry Turkish eVisa online.' },
+      { question: 'How do I apply if I do not have a Schengen/US/UK visa?', answer: 'You must apply for a physical sticker visa through Gateway Globe VAC in India.' }
     ],
     'jordan': [
       { question: 'How does the Jordan Pass save money on visa fees?', answer: 'Purchasing the Jordan Pass (starting 70 JOD at jordanpass.jo) waives the 40 JOD visa on arrival fee, provided you stay at least 3 consecutive nights, and covers entry to Petra and 40+ attractions.' },
       { question: 'Can Indian citizens get Visa on Arrival in Jordan?', answer: 'Yes, Visa on Arrival is available at Queen Alia Airport (AMM) for 40 JOD cash/card, or free with an advance Jordan Pass.' },
-      { question: 'How long is the Jordan tourist visa valid for stay?', answer: 'The standard stay granted on arrival is 30 days, which can be extended for up to 3 months at a local Jordanian police station.' }
+      { question: 'How long is the Jordan tourist visa valid for stay?', answer: 'The standard stay granted on arrival is 30 days, which can be extended for up to 3 months at a local Jordanian police station.' },
+      { question: 'What is the Jordan Pass benefit for Indians?', answer: 'Buying the Jordan Pass (70 JOD) online before departure waives the 40 JOD visa fee and includes entry to Petra and 40+ sites.' },
+      { question: 'Can Indian citizens get visa on arrival in Jordan?', answer: 'Yes, visa on arrival is available at Queen Alia Airport (Amman) for 40 JOD.' }
     ],
     'egypt': [
       { question: 'How do Indian passport holders apply for Egypt eVisa?', answer: 'Apply online at visa2egypt.gov.eg at least 7 days before departure. The fee is $25 USD for single entry and $60 USD for multiple entry.' },
       { question: 'Can Indian citizens get Visa on Arrival in Egypt?', answer: 'Indian citizens holding a valid, used visa for the US, UK, Schengen, Japan, or Canada can obtain a 30-day Visa on Arrival for $25 USD at Cairo Airport.' },
-      { question: 'What documents are checked at Egyptian immigration?', answer: 'You must present your printed eVisa/visa, passport with 6+ months validity, return flight ticket, hotel bookings, and travel itinerary.' }
+      { question: 'What documents are checked at Egyptian immigration?', answer: 'You must present your printed eVisa/visa, passport with 6+ months validity, return flight ticket, hotel bookings, and travel itinerary.' },
+      { question: 'Can Indians get an Egypt eVisa?', answer: 'Yes, Indian citizens holding valid visas for USA, UK, Canada, Japan, or Schengen can obtain an eVisa online or visa on arrival.' },
+      { question: 'How long does an Egypt visa take?', answer: 'eVisa takes 5 to 7 days; Embassy sticker visa takes 10 to 15 business days.' }
     ],
     'kenya': [
       { question: 'What is the Kenya eTA system?', answer: 'Kenya has replaced traditional visas with an Electronic Travel Authorisation (eTA). All visitors must apply online at etakenya.go.ke before boarding. Processing takes 72 hours and costs $34 USD.' },
       { question: 'Can I get a visa on arrival in Kenya?', answer: 'No, Kenya no longer issues any visas on arrival. You must obtain an approved eTA QR code prior to flight departure.' },
-      { question: 'How long is the Kenya eTA valid?', answer: 'The eTA allows a single entry of up to 90 days from the date of approval.' }
+      { question: 'How long is the Kenya eTA valid?', answer: 'The eTA allows a single entry of up to 90 days from the date of approval.' },
+      { question: 'Is Kenya visa-free?', answer: 'Kenya replaced visas with the mandatory Electronic Travel Authorization (eTA) at etakenya.go.ke ($34 USD fee).' },
+      { question: 'How long before travel should I apply for Kenya eTA?', answer: 'Apply at least 3 days prior to departure; standard processing takes 72 hours.' }
     ],
     'france': [
       { question: 'Do Indian citizens need a visa for France?', answer: 'Yes, Indian passport holders require a Schengen visa to enter France. Apply through France-Visas portal and VFS Global. France is part of the Schengen Area.' },
       { question: 'What is the Schengen 90/180 rule?', answer: 'You can stay up to 90 days within any rolling 180-day period across all 29 Schengen countries. Overstaying results in a multi-year Schengen entry ban.' },
-      { question: 'How much travel insurance do I need for Schengen?', answer: 'You need travel medical insurance with minimum €30,000 coverage for emergency medical treatment, hospitalization, and repatriation across all Schengen states.' }
+      { question: 'How much travel insurance do I need for Schengen?', answer: 'You need travel medical insurance with minimum €30,000 coverage for emergency medical treatment, hospitalization, and repatriation across all Schengen states.' },
+      { question: 'Can I appeal if my visa is refused?', answer: 'Yes, you receive an official refusal notice and have 30 days to lodge a remonstrance or submit a fresh application addressing the refusal reasons.' },
+      { question: 'Do I need to submit biometrics if I gave them previously?', answer: 'Biometric data (fingerprints) is stored in the VIS system for 59 months. If taken within 5 years, you may be exempt from re-fingerprinting.' }
     ],
     'germany': [
       { question: 'Do Indian citizens need a visa for Germany?', answer: 'Yes, Indian passport holders require a Schengen visa to enter Germany. Apply through the VIDEX portal and book an appointment at VFS Global Germany.' },
       { question: 'What is the financial requirement for Germany tourist visa?', answer: 'You should show around €45 to €100 per day of stay through 3 to 6 months stamped bank statements and last 2-3 years ITR.' },
-      { question: 'Can I travel to other European countries on a German visa?', answer: 'Yes, a Schengen visa issued by Germany allows seamless travel across all 29 Schengen member states during its validity.' }
+      { question: 'Can I travel to other European countries on a German visa?', answer: 'Yes, a Schengen visa issued by Germany allows seamless travel across all 29 Schengen member states during its validity.' },
+      { question: 'Can I appeal if my visa is refused?', answer: 'Yes, you receive an official refusal notice and have 30 days to lodge a remonstrance or submit a fresh application addressing the refusal reasons.' },
+      { question: 'Do I need to submit biometrics if I gave them previously?', answer: 'Biometric data (fingerprints) is stored in the VIS system for 59 months. If taken within 5 years, you may be exempt from re-fingerprinting.' }
     ],
     'italy': [
       { question: 'Do Indian citizens need a visa for Italy?', answer: 'Yes, Indian passport holders require a Schengen visa. Apply online through the Italian MFA portal and schedule submission at VFS Global Italy.' },
       { question: 'How much funds do I need to show for Italy visa?', answer: 'Italian consular authorities expect approximately €50–€100 per day of stay demonstrated via 3–6 months stamped bank statements.' },
-      { question: 'Can I visit the Vatican and San Marino with an Italy visa?', answer: 'Yes, both the Vatican City and San Marino are enclaves accessible without additional border checks from Italy.' }
+      { question: 'Can I visit the Vatican and San Marino with an Italy visa?', answer: 'Yes, both the Vatican City and San Marino are enclaves accessible without additional border checks from Italy.' },
+      { question: 'Can I appeal if my visa is refused?', answer: 'Yes, you receive an official refusal notice and have 30 days to lodge a remonstrance or submit a fresh application addressing the refusal reasons.' },
+      { question: 'Do I need to submit biometrics if I gave them previously?', answer: 'Biometric data (fingerprints) is stored in the VIS system for 59 months. If taken within 5 years, you may be exempt from re-fingerprinting.' }
     ],
     'spain': [
       { question: 'Do Indian citizens need a visa for Spain?', answer: 'Yes, Indian passport holders require a Schengen visa to enter Spain. Apply through BLS International Spain (blsspainvisa.com). Spain does NOT use VFS Global.' },
       { question: 'What is the Carta de Invitación for Spain?', answer: 'If staying with friends or relatives in Spain, the host must obtain an official Carta de Invitación from the local Policía Nacional. Private or notarized letters are NOT accepted.' },
-      { question: 'What is the financial requirement for Spain visa?', answer: 'You must show minimum €122 per person per day of stay, with an absolute irreducible minimum of €1,099 per person (Order PRE/1282/2007).' }
+      { question: 'What is the financial requirement for Spain visa?', answer: 'You must show minimum €122 per person per day of stay, with an absolute irreducible minimum of €1,099 per person (Order PRE/1282/2007).' },
+      { question: 'Can I appeal if my visa is refused?', answer: 'Yes, you receive an official refusal notice and have 30 days to lodge a remonstrance or submit a fresh application addressing the refusal reasons.' },
+      { question: 'Do I need to submit biometrics if I gave them previously?', answer: 'Biometric data (fingerprints) is stored in the VIS system for 59 months. If taken within 5 years, you may be exempt from re-fingerprinting.' }
     ],
     'greece': [
       { question: 'Do Indian citizens need a visa for Greece?', answer: 'Yes, Indian passport holders require a Schengen visa to enter Greece. Apply through GVCW Greece (gvcworld.eu). Greece does NOT use VFS Global.' },
       { question: 'Do I need to book all my Greek island ferries in advance?', answer: 'For visa applications, include inter-island ferry/domestic flight bookings in your itinerary. You can book on seajets.gr or ferryscanner.com for your visa application.' },
-      { question: 'Can I visit other Schengen countries with a Greece visa?', answer: 'Yes, a Schengen visa issued by Greece allows travel to all 29 Schengen countries, provided you spend the most time in Greece or enter through Greece.' }
+      { question: 'Can I visit other Schengen countries with a Greece visa?', answer: 'Yes, a Schengen visa issued by Greece allows travel to all 29 Schengen countries, provided you spend the most time in Greece or enter through Greece.' },
+      { question: 'Can I appeal if my visa is refused?', answer: 'Yes, you receive an official refusal notice and have 30 days to lodge a remonstrance or submit a fresh application addressing the refusal reasons.' },
+      { question: 'Do I need to submit biometrics if I gave them previously?', answer: 'Biometric data (fingerprints) is stored in the VIS system for 59 months. If taken within 5 years, you may be exempt from re-fingerprinting.' }
     ],
     'australia': [
       { question: 'Do Indian citizens need a visa for Australia?', answer: 'Yes, Indian passport holders require a valid visa to enter Australia. Apply for Visitor Visa (Subclass 600) through ImmiAccount. No visa on arrival available.' },
       { question: 'What is the processing time for Australia Visitor Visa?', answer: 'Standard processing is 15 to 25 calendar days. Apply 4-8 weeks before travel. 100% digital e-Visa linked to your passport.' },
-      { question: 'What documents do I need for Australia Visitor Visa?', answer: 'You need a valid passport, 6-month bank statements, employment proof, travel itinerary, and accommodation details. Biometrics may be requested.' }
+      { question: 'What documents do I need for Australia Visitor Visa?', answer: 'You need a valid passport, 6-month bank statements, employment proof, travel itinerary, and accommodation details. Biometrics may be requested.' },
+      { question: 'Is a physical passport submission required for Australia visa?', answer: 'No. The Subclass 600 Visitor Visa is 100% electronic. The visa is digitally linked to your passport number with no physical sticker.' },
+      { question: 'Can I work on a Subclass 600 tourist visa in Australia?', answer: 'No, employment is strictly prohibited on an Australian visitor visa. Condition 8101 applies.' }
     ],
     'uk': [
       { question: 'Do Indian citizens need a visa for UK?', answer: 'Yes, Indian passport holders require a Standard Visitor Visa to enter the UK. Apply online through GOV.UK. No visa on arrival available.' },
       { question: 'What is the processing time for UK Visitor Visa?', answer: 'Standard processing is 3 weeks (15 working days). Priority service available: 5 working days (+£500) or Super Priority: 24 hours (+£1,000).' },
-      { question: 'Can I work on a UK Visitor Visa?', answer: 'No, paid work or employment is strictly prohibited on a Standard Visitor Visa. You can attend meetings, conferences, or conduct business negotiations.' }
+      { question: 'Can I work on a UK Visitor Visa?', answer: 'No, paid work or employment is strictly prohibited on a Standard Visitor Visa. You can attend meetings, conferences, or conduct business negotiations.' },
+      { question: 'Can I track my UK visa decision online?', answer: 'Yes, you will receive email notifications from UKVI when your application is assessed, and VFS tracking allows you to track passport transit.' },
+      { question: 'Is priority or super-priority processing available for UK visa?', answer: 'Yes, UKVI offers Priority Visa (5 working days) and Super Priority Visa (next working day) for an additional expedited fee.' }
     ],
     'usa': [
       { question: 'Do Indian citizens need a visa for USA?', answer: 'Yes, Indian passport holders require a B1/B2 Visitor Visa to enter the USA. India is not part of the Visa Waiver Program (ESTA).' },
       { question: 'How long is the US Visitor Visa valid?', answer: 'The B1/B2 visa is typically valid for 10 years with multiple entries. CBP determines stay duration at the port of entry on Form I-94 (usually up to 6 months).' },
-      { question: 'What is the visa interview process for USA?', answer: 'You must complete DS-160 online, pay MRV fee, schedule VAC biometrics, and attend an in-person consular interview at the US Embassy/Consulate.' }
+      { question: 'What is the visa interview process for USA?', answer: 'You must complete DS-160 online, pay MRV fee, schedule VAC biometrics, and attend an in-person consular interview at the US Embassy/Consulate.' },
+      { question: 'Can I expedite my US visa appointment in India?', answer: 'Yes, expedited emergency appointments can be requested for urgent medical, funeral, or business travel through the official portal.' },
+      { question: 'What is the interview waiver (Dropbox) criteria for US visa?', answer: 'Applicants renewing a B1/B2 visa that expired within the last 48 months may qualify for interview waiver dropbox submission without an in-person consular interview.' }
     ],
     'canada': [
       { question: 'Do Indian citizens need a visa for Canada?', answer: 'Yes, Indian passport holders require a Visitor Visa (TRV) to enter Canada. Apply online through IRCC. No visa on arrival available.' },
       { question: 'How long is the Canada Visitor Visa valid?', answer: 'The TRV is typically valid for up to 10 years with multiple entries. Biometrics required. Stay duration determined at port of entry.' },
-      { question: 'What is the processing time for Canada Visitor Visa?', answer: 'Typically 15 to 30 business days after biometrics submission. Apply 30-90 days before travel.' }
+      { question: 'What is the processing time for Canada Visitor Visa?', answer: 'Typically 15 to 30 business days after biometrics submission. Apply 30-90 days before travel.' },
+      { question: 'How long is a Canada multiple-entry tourist visa valid?', answer: 'A Canada visitor visa is typically issued as a multiple-entry visa valid up to 10 years or until one month before passport expiry.' },
+      { question: 'Is biometrics mandatory for Canada visa from India?', answer: 'Yes, applicants must give biometric fingerprints and a digital photo at a VFS Canada Visa Application Centre (valid for 10 years).' }
     ],
     'japan': [
       { question: 'Do Indian citizens need a visa for Japan?', answer: 'Yes, Indian passport holders require a Tourist Visa to enter Japan. Apply online through evisa.mofa.go.jp or through VFS Global Japan.' },
       { question: 'How long can I stay in Japan on a Tourist Visa?', answer: 'Tourist visas are typically issued for 15, 30, or 90 days single entry. Duration is determined by the consular officer based on your itinerary.' },
-      { question: 'What is Visit Japan Web?', answer: 'Visit Japan Web (vjw-lp.digital.go.jp) is a pre-arrival registration system. Complete it before departure for immigration and customs QR code clearance at airports.' }
+      { question: 'What is Visit Japan Web?', answer: 'Visit Japan Web (vjw-lp.digital.go.jp) is a pre-arrival registration system. Complete it before departure for immigration and customs QR code clearance at airports.' },
+      { question: 'Can Indian citizens apply for Japan eVisa?', answer: 'Yes, Indian passport holders living in India can apply for an eVisa for short-term tourism (single entry 90 days) via designated agencies.' },
+      { question: 'What is the standard processing time for a Japan visa?', answer: 'Processing typically takes 5 to 7 working days from submission at VFS Japan.' }
     ],
     'new-zealand': [
       { question: 'Do Indian citizens need a visa for New Zealand?', answer: 'Yes, Indian passport holders require a Visitor Visa to enter New Zealand. Apply online through Immigration New Zealand (immigration.govt.nz).' },
       { question: 'What is the processing time for New Zealand Visitor Visa?', answer: 'Standard processing is 15 to 25 calendar days. 100% digital e-Visa linked to your passport.' },
-      { question: 'Can I work on a New Zealand Visitor Visa?', answer: 'No, paid work or employment is strictly prohibited on a Visitor Visa. You can only engage in tourism, leisure, and visiting family/friends.' }
+      { question: 'Can I work on a New Zealand Visitor Visa?', answer: 'No, paid work or employment is strictly prohibited on a Visitor Visa. You can only engage in tourism, leisure, and visiting family/friends.' },
+      { question: 'What is the processing time for a New Zealand visitor visa?', answer: 'Immigration New Zealand currently processes visitor visas within 4 to 6 weeks on average.' },
+      { question: 'Is physical passport submission required for New Zealand?', answer: 'No, New Zealand visitor visas are processed online via RealMe; e-Visas are issued digitally.' }
     ],
     'south-africa': [
       { question: 'Do Indian citizens need a visa for South Africa?', answer: 'Yes, Indian passport holders require a Visitor Visa (Section 11(1)) to enter South Africa. Apply through VFS Global South Africa.' },
       { question: 'Is there a visa fee for Indian citizens?', answer: 'No, the consular visa fee is completely waived for Indian citizens. You only pay the VFS Global logistics service charge (₹2,040).' },
-      { question: 'What is the processing time for South Africa Visitor Visa?', answer: 'Standard processing is 10 to 15 business days. Apply 3-6 weeks before travel.' }
+      { question: 'What is the processing time for South Africa Visitor Visa?', answer: 'Standard processing is 10 to 15 business days. Apply 3-6 weeks before travel.' },
+      { question: 'Is the South Africa visa fee really free for Indians?', answer: 'Yes! The official consular visa fee is completely waived for Indian citizens; only the VFS logistics charge applies.' },
+      { question: 'How long does South Africa visa processing take?', answer: 'Processing takes approximately 10 to 15 business days through VFS Global South Africa.' }
     ]
+  ,
+
+    'czech-republic': [
+      { question: 'Can I visit other European countries with a Czech Republic Schengen visa?', answer: 'Yes. A Schengen visa issued by Czech Republic grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Czech Republic tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Czech VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Czech Republic?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'poland': [
+      { question: 'Can I visit other European countries with a Poland Schengen visa?', answer: 'Yes. A Schengen visa issued by Poland grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Poland tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Poland VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Poland?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'hungary': [
+      { question: 'Can I visit other European countries with a Hungary Schengen visa?', answer: 'Yes. A Schengen visa issued by Hungary grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Hungary tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Hungary VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Hungary?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'croatia': [
+      { question: 'Can I visit other European countries with a Croatia Schengen visa?', answer: 'Yes. A Schengen visa issued by Croatia grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Croatia tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Croatia VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Croatia?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'slovakia': [
+      { question: 'Can I visit other European countries with a Slovakia Schengen visa?', answer: 'Yes. A Schengen visa issued by Slovakia grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Slovakia tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Slovakia VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Slovakia?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'slovenia': [
+      { question: 'Can I visit other European countries with a Slovenia Schengen visa?', answer: 'Yes. A Schengen visa issued by Slovenia grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Slovenia tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Slovenia VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Slovenia?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'estonia': [
+      { question: 'Can I visit other European countries with a Estonia Schengen visa?', answer: 'Yes. A Schengen visa issued by Estonia grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Estonia tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Estonia VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Estonia?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'latvia': [
+      { question: 'Can I visit other European countries with a Latvia Schengen visa?', answer: 'Yes. A Schengen visa issued by Latvia grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Latvia tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Latvia VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Latvia?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'lithuania': [
+      { question: 'Can I visit other European countries with a Lithuania Schengen visa?', answer: 'Yes. A Schengen visa issued by Lithuania grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Lithuania tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Lithuania VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Lithuania?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'luxembourg': [
+      { question: 'Can I visit other European countries with a Luxembourg Schengen visa?', answer: 'Yes. A Schengen visa issued by Luxembourg grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Luxembourg tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Luxembourg VAC / Embassy across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Luxembourg?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'malta': [
+      { question: 'Can I visit other European countries with a Malta Schengen visa?', answer: 'Yes. A Schengen visa issued by Malta grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Malta tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Malta VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Malta?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'iceland': [
+      { question: 'Can I visit other European countries with a Iceland Schengen visa?', answer: 'Yes. A Schengen visa issued by Iceland grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Iceland tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global / Danish Embassy across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Iceland?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'liechtenstein': [
+      { question: 'Can I visit other European countries with a Liechtenstein Schengen visa?', answer: 'Yes. A Schengen visa issued by Liechtenstein grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Liechtenstein tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Switzerland VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Liechtenstein?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+],
+    'bulgaria': [
+      { question: 'Can I travel to Bulgaria with a Schengen visa?', answer: 'Yes, holders of valid double or multiple-entry Schengen visas may enter and stay in Bulgaria for up to 90 days in any 180-day period without a separate Bulgarian visa.' },
+      { question: 'What is the processing time for a Bulgaria tourist visa?', answer: 'Consular processing at the Embassy of Bulgaria in New Delhi takes approximately 10 to 15 working days from receipt.' },
+      { question: 'Is biometrics mandatory for Bulgaria visa?', answer: 'Yes, applicants must submit fingerprints and a digital photograph at VFS Global Bulgaria.' },
+      { question: 'What is the minimum bank balance required for Bulgaria?', answer: 'Applicants must show at least €50 per day of planned stay with a minimum of €500 or ₹1,50,000 in liquid funds.' },
+      { question: 'Is travel medical insurance mandatory?', answer: 'Yes, international travel medical insurance with minimum €30,000 coverage is compulsory.' }
+    ],
+    'cyprus': [
+      { question: 'Does a Schengen visa allow entry to Cyprus?', answer: 'Yes, holders of valid double or multiple-entry Schengen C visas who have already entered the Schengen zone can enter Cyprus without a separate visa.' },
+      { question: 'Where do I submit my Cyprus visa application in India?', answer: 'Applications are lodged through authorized visa application centers or directly with the Cyprus High Commission in New Delhi.' },
+      { question: 'What is the processing time for a Cyprus tourist visa?', answer: 'Standard processing takes 10 to 15 working days from submission.' },
+      { question: 'Can I travel between South Cyprus and North Cyprus?', answer: 'Travelers must enter Cyprus through official Republic of Cyprus ports (Larnaca or Paphos airports). Entry via the unrecognized northern ports is considered illegal by Cypriot authorities.' },
+      { question: 'Is hotel booking confirmation mandatory?', answer: 'Yes, confirmed hotel accommodation vouchers or an Assumption of Responsibility form certified by a Cypriot notary is mandatory.' }
+    ],
+    'romania': [
+      { question: 'Can I visit Romania with a Schengen visa?', answer: 'Holders of valid double or multiple-entry Schengen visas may enter Romania for up to 90 days within any 180-day period without a Romanian visa.' },
+      { question: 'What is the eVisa Romania portal?', answer: 'All applicants must first register and upload their dossier on evisa.mae.ro. Once approved, an appointment is scheduled for physical passport submission.' },
+      { question: 'How long does it take to process a Romania tourist visa?', answer: 'Total processing typically takes 10 to 14 calendar days from the physical document submission.' },
+      { question: 'What financial proof is required for Romania?', answer: 'You must show bank statements demonstrating at least €50 per day of stay (minimum €500).' },
+      { question: 'Is travel insurance required for Romania?', answer: 'Yes, comprehensive medical insurance with at least €30,000 coverage valid across the EU is required.' }
+    ],
+    'israel': [
+      { question: 'Does Israel stamp my passport upon arrival?', answer: 'No. Israeli border control does not stamp passports. Instead, they issue an electronic blue entry card (Border Control Card) to keep with your passport during your stay.' },
+      { question: 'Where do I submit my Israel tourist visa application in India?', answer: 'Applications are submitted at Israel Visa Application Centres (I-VAC) in New Delhi, Mumbai, or Bengaluru.' },
+      { question: 'How long does it take to process an Israel B/2 visitor visa?', answer: 'Processing takes approximately 10 to 15 business days following in-person submission.' },
+      { question: 'What bank balance is needed for an Israel visa?', answer: 'Applicants should demonstrate consistent liquid funds of at least ₹2,50,000 to ₹3,50,000 along with 3 years of ITR returns.' },
+      { question: 'Can I visit neighboring Jordan or Egypt from Israel?', answer: 'Yes, land border crossings are open (e.g. Allenby Bridge, Yitzhak Rabin/Arava, Taba). Ensure you hold appropriate visas or Jordan Pass beforehand.' }
+    ],
+    'chile': [
+      { question: 'How do I apply for a Chile tourist visa from India?', answer: 'Applications are submitted online via the official SAC Ciudadanos portal (tramites.minrel.gov.cl). Upon approval, your passport is stamped at the Embassy of Chile in New Delhi.' },
+      { question: 'What is the processing time for a Chile visa?', answer: 'Online processing and consular review typically takes 15 to 20 business days.' },
+      { question: 'Can I enter Chile with a US or Schengen visa?', answer: 'No, Indian citizens require a Chilean tourist visa regardless of holding US or Schengen visas.' },
+      { question: 'How much is the consular fee for a Chile visa?', answer: 'The consular visa fee is $50 USD, payable online once preliminary authorization is granted.' },
+      { question: 'What documents are essential for Chile?', answer: 'Passport valid for 6 months, round-trip flights, hotel bookings, 3-6 months stamped bank statements, employer NOC, and day-by-day travel plan.' }
+    ],
+    'mexico': [
+      { question: 'Am I exempt from a Mexican visa if I have a US visa?', answer: 'YES! Indian citizens holding a valid, unexpired multiple-entry visa for the USA, Canada, Japan, United Kingdom, or any Schengen country DO NOT need a Mexican visa for stays up to 180 days.' },
+      { question: 'How do I book a visa appointment at the Mexican Embassy?', answer: 'Appointments must be booked online through the official MiConsulado appointment system (citas.sre.gob.mx).' },
+      { question: 'Is a personal interview mandatory for Mexico?', answer: 'Yes, every applicant must attend an in-person consular interview and biometric capture at the Embassy of Mexico in New Delhi.' },
+      { question: 'What are the financial requirements for a Mexico visa?', answer: 'You must show 3 to 6 months stamped bank statements and payslips proving steady monthly income meeting Mexican consular thresholds.' },
+      { question: 'What is the maximum duration of stay on a Mexico tourist visa?', answer: 'Tourist visas are typically granted for multiple entries with up to 180 days stay per entry.' }
+    ],
+    'ukraine': [
+      { question: 'How do Indian citizens apply for a Ukraine tourist visa?', answer: 'Eligible Indian citizens can apply 100% online through the official MFA Ukraine e-Visa portal at evisa.mfa.gov.ua.' },
+      { question: 'How fast is the Ukraine e-Visa processed?', answer: 'Standard processing takes 3 to 5 business days from online submission.' },
+      { question: 'What is the fee for a Ukraine e-Visa?', answer: 'The official consular fee is $20 USD for single-entry and $30 USD for double-entry.' },
+      { question: 'Is health insurance mandatory for Ukraine?', answer: 'Yes, medical health insurance with minimum €30,000 coverage is required and must be uploaded with the application.' },
+      { question: 'Do I need to visit an embassy for Ukraine e-Visa?', answer: 'No, the entire process is digital. The approved e-Visa is emailed as a PDF with a verification QR code.' }
+    ]
+
+  ,
+
+    'netherlands': [
+      { question: 'Can I visit other European countries with a Netherlands Schengen visa?', answer: 'Yes. A Schengen visa issued by Netherlands grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Netherlands tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Netherlands VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Netherlands?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'switzerland': [
+      { question: 'Can I visit other European countries with a Switzerland Schengen visa?', answer: 'Yes. A Schengen visa issued by Switzerland grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Switzerland tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Switzerland VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Switzerland?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'portugal': [
+      { question: 'Can I visit other European countries with a Portugal Schengen visa?', answer: 'Yes. A Schengen visa issued by Portugal grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Portugal tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Portugal VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Portugal?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'austria': [
+      { question: 'Can I visit other European countries with a Austria Schengen visa?', answer: 'Yes. A Schengen visa issued by Austria grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Austria tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Austria VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Austria?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'belgium': [
+      { question: 'Can I visit other European countries with a Belgium Schengen visa?', answer: 'Yes. A Schengen visa issued by Belgium grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Belgium tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Belgium VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Belgium?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'denmark': [
+      { question: 'Can I visit other European countries with a Denmark Schengen visa?', answer: 'Yes. A Schengen visa issued by Denmark grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Denmark tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Denmark VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Denmark?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'sweden': [
+      { question: 'Can I visit other European countries with a Sweden Schengen visa?', answer: 'Yes. A Schengen visa issued by Sweden grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Sweden tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Sweden VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Sweden?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'norway': [
+      { question: 'Can I visit other European countries with a Norway Schengen visa?', answer: 'Yes. A Schengen visa issued by Norway grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Norway tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Norway VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Norway?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'finland': [
+      { question: 'Can I visit other European countries with a Finland Schengen visa?', answer: 'Yes. A Schengen visa issued by Finland grants unrestricted travel across all 29 Schengen member countries within the 90/180-day limitation rule.' },
+      { question: 'How early should I apply for a Finland tourist visa?', answer: 'You can apply up to 6 months before your intended departure date. We recommend applying at least 4 to 6 weeks before travel to account for consular processing.' },
+      { question: 'Where do I submit my biometrics and documents in India?', answer: 'Applications are submitted at VFS Global Finland VAC across major Indian metro cities including New Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, and Kolkata.' },
+      { question: 'Is travel medical insurance mandatory for Finland?', answer: 'Yes. Consular regulations mandate a travel health policy with minimum €30,000 emergency coverage valid across all Schengen states.' },
+      { question: 'What happens if my visa application is refused?', answer: 'You will receive an official refusal notice outlining specific grounds. You have the right to file an appeal (remonstrance) within 30 days or re-apply with corrected documentation.' }
+    ],
+
+    'nepal': [
+      { question: 'Do Indian citizens need a visa to enter Nepal?', answer: 'No. Indian citizens do not require a visa or entry permit to enter Nepal for tourism or business under the 1950 Indo-Nepal Treaty of Peace and Friendship.' },
+      { question: 'What identification documents can Indian citizens use for Nepal?', answer: 'Indian citizens must carry EITHER an original valid Indian Passport OR an original Voter Identity Card issued by the Election Commission of India. Aadhaar card is NOT accepted.' },
+      { question: 'Can Indian citizens drive their own vehicle into Nepal?', answer: 'Yes, with a vehicle permit (Bhansar) obtained at the land border checkpoint upon presenting the RC book, Indian driving license, and insurance.' },
+      { question: 'What are the currency restrictions for Indians in Nepal?', answer: 'Indian Rupee notes in denominations of ₹100 and below are freely accepted everywhere. Carrying notes of ₹500 and ₹2000 is strictly prohibited by law.' },
+      { question: 'Are there any airport departure taxes in Nepal?', answer: 'Airport passenger service charges and taxes are now included in your commercial flight ticket price.' }
+    ],
+    'bhutan': [
+      { question: 'Do Indian citizens need a visa to enter Bhutan?', answer: 'Indian nationals do not require a visa, but must obtain an Entry Permit at the port of entry (Paro Airport or Phuentsholing/Samdrup Jongkhar land borders).' },
+      { question: 'What is the Sustainable Development Fee (SDF) for Indian tourists?', answer: 'Indian nationals pay a concessional statutory SDF of ₹1,200 per person per night (children aged 6-12 pay ₹600 per night). Infants under 6 are exempt.' },
+      { question: 'What ID is required for Indian citizens visiting Bhutan?', answer: 'You must present an original valid Indian Passport (with minimum 6 months validity) OR an original Voter ID card issued by the Election Commission of India.' },
+      { question: 'Is it mandatory to hire a Bhutanese tour guide?', answer: 'Yes, hiring a certified Bhutanese local guide and staying at Department of Tourism certified accommodation is mandatory for all international visitors.' },
+      { question: 'Can Indian tourists drive an Indian registered car into Bhutan?', answer: 'Yes, personal vehicles require an entry permit endorsement from the Department of Surface Transport at the border.' }
+    ],
+    'seychelles': [
+      { question: 'Do Indian citizens need a visa for Seychelles?', answer: 'No prior visa is required. Indian passport holders are granted a complimentary Visitor\'s Permit on arrival valid for up to 30 days.' },
+      { question: 'What is the Seychelles Travel Authorization (TA)?', answer: 'All travelers must obtain an electronic Travel Authorization at seychelles.govtas.com prior to departure for a €10 EUR processing fee.' },
+      { question: 'What documents are required at Seychelles immigration?', answer: 'Valid passport, approved Travel Authorization (TA) QR code, confirmed return flight ticket, and confirmed certified accommodation voucher.' },
+      { question: 'Can the Seychelles visitor permit be extended?', answer: 'Yes, the permit can be extended in 3-month increments up to a total maximum of 12 months at the Department of Immigration in Victoria, Mahé.' },
+      { question: 'Is yellow fever vaccination required for Seychelles?', answer: 'A yellow fever vaccination certificate is required only if arriving from or having transited through an endemic yellow fever area.' }
+    ],
+    'tanzania': [
+      { question: 'Do Indian citizens need a visa for Tanzania?', answer: 'Yes, Indian passport holders can apply for an electronic visa online via the official portal (eservices.immigration.go.tz) or obtain a Visa on Arrival for $50 USD.' },
+      { question: 'What is the mandatory Zanzibar health insurance?', answer: 'All foreign visitors to Zanzibar must purchase statutory Zanzibar Inbound Travel Insurance online for $44 USD, regardless of existing international insurance.' },
+      { question: 'How long is the Tanzania tourist visa valid?', answer: 'The standard single-entry tourist visa allows a stay of up to 90 days from the date of entry.' },
+      { question: 'Can I visit both Mainland Tanzania and Zanzibar with one visa?', answer: 'Yes, Tanzania and Zanzibar share the same immigration jurisdiction. One visa covers both areas.' },
+      { question: 'Is yellow fever vaccination required for Tanzania?', answer: 'Vaccination certificate is required only if arriving from or transiting through a country with risk of yellow fever transmission for more than 12 hours.' }
+    ],
+    'south-korea': [
+      { question: 'Do Indian citizens need a visa for South Korea?', answer: 'Yes, Indian passport holders require a visa to visit South Korea. Apply for a C-3-9 tourist visa through the Korea Visa Application Center (KVAC) in New Delhi or Kolkata.' },
+      { question: 'Can Indian citizens get a multiple-entry visa for South Korea?', answer: 'Yes, multiple-entry visas valid for 5 years (allowing up to 30 days per visit) are available for professionals, high-income earners, and frequent travelers.' },
+      { question: 'What is the processing time for a South Korea tourist visa?', answer: 'Processing takes approximately 7 to 10 working days from the date of submission at KVAC.' },
+      { question: 'Can Indian citizens visit Jeju Island without a visa?', answer: 'Direct flights to Jeju Island offer visa-free entry, but any transit through mainland South Korea (Seoul/Incheon) strictly requires a Korean visa.' },
+      { question: 'What bank balance is needed for a South Korea visa?', answer: 'Consular guidelines recommend demonstrating a bank balance of at least ₹1,50,000 to ₹2,50,000 along with 6 months stamped bank statements and last 2 years ITR.' }
+    ],
+    'vietnam': [
+      { question: 'How do Indian citizens apply for a Vietnam tourist visa?', answer: 'Indian citizens can apply 100% online for an official e-Visa via the National Web Portal on Immigration at evisa.xuatnhapcanh.gov.vn.' },
+      { question: 'How long is the Vietnam e-Visa valid?', answer: 'Vietnam issues single or multiple-entry e-Visas valid for up to 90 days.' },
+      { question: 'What is the processing time and fee for Vietnam e-Visa?', answer: 'Standard processing takes 3 to 5 business days. The government fee is $25 USD for single entry and $50 USD for multiple entry.' },
+      { question: 'Can I extend my stay in Vietnam on an e-Visa?', answer: 'E-visas cannot be renewed from inside Vietnam. You must exit the country and re-enter on a new e-Visa.' },
+      { question: 'Do I need to visit an embassy or submit physical passport?', answer: 'No, the entire application is digital. The approved e-Visa is emailed as a PDF with a QR code to print and show at airport immigration.' }
+    ],
+    'indonesia': [
+      { question: 'Can Indian passport holders get a visa on arrival in Indonesia (Bali)?', answer: 'Yes, Indian citizens can obtain a 30-day electronic Visa on Arrival (e-VOA) online at molina.imigrasi.go.id or directly at international airport immigration counters (e.g. Denpasar Bali, Jakarta).' },
+      { question: 'What is the cost of the Indonesia e-VOA / VOA?', answer: 'The statutory fee is IDR 500,000 (approx. $35 USD or ₹2,700), payable online via credit card or at airport cash/card counters.' },
+      { question: 'Can the 30-day Indonesian visa on arrival be extended?', answer: 'Yes, it can be extended once for an additional 30 days either online through the molina portal (if applied as e-VOA) or at a local immigration office.' },
+      { question: 'What is the Bali Tourist Levy?', answer: 'Bali mandates an additional regional tourist tax of IDR 150,000 (approx. ₹800) paid online via lovebali.baliprov.go.id.' },
+      { question: 'What documents are required at Indonesian immigration?', answer: 'Passport valid for at least 6 months, return flight ticket, confirmed hotel accommodation, and completed electronic customs declaration (ECD).' }
+    ],
+    'cambodia': [
+      { question: 'Can Indian citizens get a Cambodia visa on arrival?', answer: 'Yes, a 30-day tourist Visa on Arrival (VoA) is available at Phnom Penh and Siem Reap international airports for $30 USD in cash.' },
+      { question: 'Can Indian citizens apply for a Cambodia eVisa online?', answer: 'Yes, an official eVisa can be obtained online at evisa.gov.kh for $36 USD within 3 business days.' },
+      { question: 'Can the Cambodia tourist visa be extended?', answer: 'Yes, a 30-day tourist visa can be extended once for an additional 30 days through the Department of Immigration in Phnom Penh.' },
+      { question: 'What currency is used in Cambodia for visa payment?', answer: 'US Dollars (USD) are widely used and preferred for on-arrival visa fees. Ensure notes are crisp, clean, and uncreased.' },
+      { question: 'What is the Cambodia e-Arrival Card?', answer: 'All travelers must submit the free Cambodia e-Arrival Card online within 7 days prior to entry at arrival.gov.kh.' }
+    ],
+    'sri-lanka': [
+      { question: 'Do Indian passport holders need a visa for Sri Lanka?', answer: 'Yes, travelers must obtain an Electronic Travel Authorization (ETA) online at eta.gov.lk or authorized portal before departure.' },
+      { question: 'What is the validity and stay duration of Sri Lanka tourist ETA?', answer: 'The tourist ETA is typically valid for 30 days from entry with double-entry privileges.' },
+      { question: 'Can Indian citizens get visa on arrival in Sri Lanka?', answer: 'A Visa on Arrival facility is available at Bandaranaike International Airport (Colombo), but obtaining an ETA online in advance avoids long airport queues.' },
+      { question: 'Can I extend my stay in Sri Lanka?', answer: 'Yes, tourist ETAs can be extended up to 90 days and further up to 180 days at the Department of Immigration in Battaramulla.' },
+      { question: 'Are visa fees waived for Indian tourists in Sri Lanka?', answer: 'Sri Lanka periodically waives visa fees for Indian citizens under bilateral tourism promotional pilot schemes. Check current status at official portal.' }
+    ],
+    'philippines': [
+      { question: 'Do Indian citizens need a visa for the Philippines?', answer: 'Yes, Indian passport holders require a 9A Temporary Visitor Visa. However, Indian passport holders with valid visas for USA, Japan, Australia, Canada, Schengen, UK, or Singapore can enter visa-free for up to 14 days.' },
+      { question: 'Where do I submit my Philippines visa application in India?', answer: 'Applications are submitted at the Philippine Embassy in New Delhi or the Philippine General Consulates in Mumbai and Kolkata.' },
+      { question: 'What is the processing time for a Philippines tourist visa?', answer: 'Processing typically takes 10 to 15 working days from physical document submission.' },
+      { question: 'What is the mandatory eTravel registration for the Philippines?', answer: 'All inbound passengers must complete the free online eTravel declaration at etravel.gov.ph within 72 hours before departure.' },
+      { question: 'Can the 14-day visa-free entry be extended in the Philippines?', answer: 'No, the 14-day visa exemption for valid US/Schengen visa holders is non-extendable.' }
+    ],
+    'qatar': [
+      { question: 'Do Indian citizens get visa-free entry to Qatar?', answer: 'Yes, Indian nationals can obtain a 30-day visa waiver completely free of charge upon arrival at Hamad International Airport (Doha).' },
+      { question: 'What are the entry conditions for Qatar visa waiver?', answer: 'Passport valid for 6 months, confirmed return flight ticket, mandatory Hayya health insurance (QAR 50), and confirmed hotel reservation booked through Discover Qatar.' },
+      { question: 'Can the Qatar 30-day visa waiver be extended?', answer: 'Yes, the visa waiver can be extended for an additional 30 days online via the Ministry of Interior (MOI) portal.' },
+      { question: 'Is travel health insurance mandatory for Qatar?', answer: 'Yes, international visitors must obtain a mandatory health insurance policy approved by the Qatar Ministry of Public Health (cost approx. QAR 50).' },
+      { question: 'Can I transit through Doha without a visa?', answer: 'Yes, passengers transiting through Hamad International Airport on a single ticket do not need a transit visa if remaining in the international transit area.' }
+    ],
+    'saudi-arabia': [
+      { question: 'Who is eligible for Saudi Tourist Visa on Arrival?', answer: 'Indian citizens holding a valid, used tourist or business visa for the USA, United Kingdom, or Schengen zone (with at least one entry stamp) can obtain a 1-year multiple entry visa on arrival.' },
+      { question: 'How do other Indian passport holders apply for a Saudi tourist visa?', answer: 'Applicants not eligible for visa-on-arrival must apply for a tourist sticker visa through Tasheer Visa Application Centers across India.' },
+      { question: 'What is the validity and permitted stay on a Saudi tourist visa?', answer: 'The multiple-entry tourist visa is valid for 1 year with a maximum permitted stay of 90 days per visit (up to 180 days cumulative per year).' },
+      { question: 'Does the Saudi tourist visa include medical insurance?', answer: 'Yes, the visa fee automatically includes mandatory emergency health insurance covering medical emergencies up to SAR 100,000.' },
+      { question: 'Can I perform Umrah on a Saudi tourist visa?', answer: 'Yes, tourists can perform Umrah at any time of the year (except during the official Hajj season) by booking a slot via the Nusuk app.' }
+    ],
+    'oman': [
+      { question: 'Who is eligible for an Oman unsponsored tourist visa?', answer: 'Indian citizens residing in or holding valid visas for the USA, Canada, United Kingdom, Japan, or Schengen states can apply for an unsponsored tourist eVisa online at evisa.rop.gov.om.' },
+      { question: 'How do other Indian travelers apply for an Oman tourist visa?', answer: 'Travelers without supporting visas must apply through an authorized Omani travel agency or local sponsor.' },
+      { question: 'What is the validity and fee for an Oman tourist eVisa?', answer: 'A 30-day single-entry eVisa (Subclass 26B) costs OMR 20 (approx. ₹4,300); a 1-year multiple-entry eVisa costs OMR 50 (approx. ₹10,800).' },
+      { question: 'How long does Oman eVisa processing take?', answer: 'Online processing through the Royal Oman Police portal typically takes 24 to 48 hours.' },
+      { question: 'Can the 30-day Oman tourist visa be extended?', answer: 'Yes, the 30-day single entry visa can be extended once for an additional 30 days online for OMR 20.' }
+    ],
+    'bahrain': [
+      { question: 'Can Indian citizens get a Bahrain eVisa?', answer: 'Yes, Indian passport holders can apply online for a tourist eVisa through the official Ministry of Interior NPRA portal at evisa.gov.bh.' },
+      { question: 'What are the visa options and validity for Bahrain?', answer: 'Bahrain offers a 2-week single-entry visa (BHD 9), a 1-month multiple-entry visa (BHD 12), and a 1-year multiple-entry visa (BHD 29).' },
+      { question: 'How long does Bahrain eVisa processing take?', answer: 'Standard online processing takes 3 to 5 working days from submission.' },
+      { question: 'Can Indian citizens get visa on arrival in Bahrain?', answer: 'Indian citizens holding valid GCC residence permits or specific visas may be eligible for visa on arrival; others must obtain an eVisa in advance.' },
+      { question: 'Can a Bahrain tourist visa be extended?', answer: 'Yes, tourist e-Visas can be extended inside Bahrain at the Nationality, Passports and Residence Affairs (NPRA) office.' }
+    ],
+    'new-zealand': [
+      { question: 'How do Indian passport holders apply for a New Zealand visitor visa?', answer: 'Applications are submitted online through Immigration New Zealand\'s official portal (immigration.govt.nz) using a RealMe account.' },
+      { question: 'What is the processing time for a New Zealand visitor visa?', answer: 'Current processing times average 4 to 6 weeks. It is strongly recommended to apply at least 8 weeks prior to departure.' },
+      { question: 'What is the total cost of a New Zealand visitor visa?', answer: 'The total fee is NZD $341 (approx. ₹17,500), which includes the base application fee and the statutory International Visitor Conservation and Tourism Levy (IVL).' },
+      { question: 'Do I need to submit physical passport for New Zealand visa?', answer: 'No, New Zealand visitor visas are completely digital (eVisa). You receive an electronic Visa Approval Notification PDF.' },
+      { question: 'Can family members be included in one New Zealand visa application?', answer: 'Yes, a principal applicant can include a partner and dependent children aged 19 and under in a single online application and fee.' }
+    ],
+    'south-africa': [
+      { question: 'Is the South Africa consular visa fee really free for Indian citizens?', answer: 'Yes! Under bilateral agreements, the official consular visa fee is completely waived (₹0) for Indian passport holders. Only the VFS Global logistics service charge (₹2,040) applies.' },
+      { question: 'Where do I submit my South Africa visa application in India?', answer: 'Applications are submitted in person at VFS Global South Africa application centers in Mumbai, New Delhi, Bengaluru, Chennai, Kolkata, etc.' },
+      { question: 'What is the processing time for a South Africa tourist visa?', answer: 'Consular processing takes approximately 10 to 15 working days from submission at VFS.' },
+      { question: 'What bank balance is required for South Africa?', answer: 'You must provide 3 months original stamped bank statements with a minimum balance of ₹1,00,000 to ₹1,50,000, plus last 3 years ITR-V.' },
+      { question: 'Is yellow fever vaccination required for South Africa?', answer: 'A yellow fever vaccination certificate is required ONLY if traveling from or transiting through a yellow fever endemic country in Africa or South America.' }
+    ],
+    'brazil': [
+      { question: 'How do Indian citizens apply for a Brazil visitor visa (VIVIS)?', answer: 'Applications are registered online via the official E-Consular system (ec-novadelhi.itamaraty.gov.br) before submitting physical documents to the Embassy in New Delhi.' },
+      { question: 'What is the consular visa fee for Brazil?', answer: 'The consular fee for an Indian passport holder applying for a Visitor Visa (VIVIS) is $80 USD (approx. ₹6,800), paid via bank draft.' },
+      { question: 'What is the processing time for a Brazil visitor visa?', answer: 'Consular processing at the Embassy of Brazil in New Delhi takes approximately 10 to 15 business days.' },
+      { question: 'What is the validity and stay duration of a Brazil visa?', answer: 'Brazil visitor visas are typically issued for multiple entries valid for up to 1 to 5 years, with up to 90 days stay per visit (extendable up to 180 days per year).' },
+      { question: 'Is yellow fever vaccination mandatory for Brazil?', answer: 'While not legally mandatory for entry, yellow fever vaccination is strongly recommended by Brazilian health authorities (ANVISA) for travel to forested areas and national parks.' }
+    ]
+
   };
   
   const defaultFAQ: FAQItem[] = [
@@ -1384,6 +2455,129 @@ export function getTourismRequirements(country: string): OtherRequirementItem[] 
       { category: 'Visit Japan Web', details: 'Register on Visit Japan Web for immigration and customs QR clearance.' },
       { category: 'No Employment', details: 'Temporary visitor visa strictly prohibits taking up local paid work.' }
     ]
+  ,
+
+    'czech-republic': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'poland': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'hungary': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'croatia': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'slovakia': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'slovenia': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'estonia': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'latvia': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'lithuania': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'luxembourg': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'malta': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'iceland': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'liechtenstein': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months after scheduled departure from Schengen territory with at least 2 blank pages.' },
+      { category: 'Financial Sufficiency', details: 'Must demonstrate minimum liquid funds (approx. €65 – €100 per day of stay) via 6 months stamped bank statements and 3 years ITR-V.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory insurance with minimum €30,000 emergency coverage valid across all 29 Schengen states.' },
+      { category: 'Genuine Intent & Ties', details: 'Confirmed round-trip flights, hotel vouchers across entire itinerary, employer NOC, and family/property ties to India.' }
+],
+    'bulgaria': [
+      { category: 'Passport Validity', details: 'Passport valid for at least 3 months beyond departure date from Bulgaria.' },
+      { category: 'Financial Solvency', details: 'Minimum €50 per day (minimum €500 total) evidenced by stamped bank statements.' },
+      { category: 'Travel Insurance', details: 'Minimum €30,000 coverage valid for Bulgaria covering emergency medical care.' },
+      { category: 'Travel Confirmation', details: 'Confirmed round-trip flight booking and verifiable hotel reservations.' }
+    ],
+    'cyprus': [
+      { category: 'Passport Validity', details: 'Must be valid for at least 3 months beyond planned stay.' },
+      { category: 'Sufficient Funds', details: 'Bank statements for past 3-6 months with bank stamp showing adequate balance.' },
+      { category: 'Travel Health Insurance', details: 'Emergency medical insurance with minimum €30,000 coverage.' },
+      { category: 'Socio-Economic Ties', details: 'Employer NOC, salary slips, and income tax returns (ITR-V).' }
+    ],
+    'romania': [
+      { category: 'Passport Validity', details: 'Valid for at least 3 months after departure from Romania with 2 blank pages.' },
+      { category: 'Financial Means', details: 'At least €50 per day for the entire stay, but not less than €500.' },
+      { category: 'Travel Insurance', details: 'Medical insurance covering at least €30,000 for emergency treatment.' },
+      { category: 'Itinerary Verification', details: 'Confirmed return flight ticket and prepaid accommodation vouchers.' }
+    ],
+    'israel': [
+      { category: 'Passport Validity', details: 'Valid for at least 6 months from entry date with 2 blank pages.' },
+      { category: 'Financial Capacity', details: 'Stamped bank statements for past 6 months showing minimum balance of ₹2,50,000+.' },
+      { category: 'Travel Medical Insurance', details: 'Mandatory policy covering emergency medical care and hospitalisation in Israel.' },
+      { category: 'Employment & Ties', details: 'Letter from employer on letterhead granting leave + last 3 years ITR-V.' }
+    ],
+    'chile': [
+      { category: 'Passport Validity', details: 'Valid for at least 6 months beyond intended departure date from Chile.' },
+      { category: 'Financial Solvency', details: 'Personal bank statements proving funds to support travel expenses in Chile.' },
+      { category: 'Itinerary & Booking', details: 'Round-trip air ticket reservation and confirmed hotel reservations.' },
+      { category: 'Employment Proof', details: 'Certificate of employment stating salary, job title, and approved leave.' }
+    ],
+    'mexico': [
+      { category: 'Passport Validity', details: 'Valid for at least 6 months from arrival date with blank pages.' },
+      { category: 'Financial Threshold', details: 'Monthly bank balance or employment income meeting Mexican consular requirements.' },
+      { category: 'Visa Exemption Rule', details: 'Holders of valid visas for USA, Canada, Japan, UK, or Schengen are visa-exempt.' },
+      { category: 'Consular Interview', details: 'Mandatory in-person interview at Mexican Embassy in New Delhi.' }
+    ],
+    'ukraine': [
+      { category: 'Passport Validity', details: 'Valid for at least 3 months after departure date from Ukraine.' },
+      { category: 'Financial Sufficiency', details: 'Documentary proof of sufficient funds for stay (approx. $50/day).' },
+      { category: 'Travel Medical Insurance', details: 'Medical insurance policy covering at least €30,000 in Ukraine.' },
+      { category: 'Purpose of Visit', details: 'Confirmed hotel reservation, tour itinerary, or invitation letter.' }
+    ]
+
   };
   
   const defaultRequirements: OtherRequirementItem[] = [
@@ -1439,6 +2633,115 @@ export function getTourismFinancialProofs(country: string): FinancialProofItem[]
     'mauritius': [
       { type: 'Daily Expense Funds', minimum_balance_or_amount: 'USD $100 / EUR €100 / MUR 4,000 per day', time_frame: 'At time of entry', notes: 'Immigration may request proof of funds or credit cards on arrival.' }
     ]
+  ,
+
+    'czech-republic': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'poland': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'hungary': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'croatia': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'slovakia': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'slovenia': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'estonia': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'latvia': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'lithuania': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'luxembourg': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'malta': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'iceland': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'liechtenstein': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹3,00,000 – ₹5,00,000 per applicant', time_frame: 'Past 6 months', notes: 'Original bank stamp and signature on every page with fresh closing balance.' },
+      { type: 'Income Tax Return (ITR-V)', minimum_balance_or_amount: 'Past 2 to 3 assessment years', time_frame: 'Assessment years 2022-2025', notes: 'Acknowledgment receipts with computation of income.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Latest 3 to 6 months', time_frame: 'Past 3-6 months', notes: 'Bearing official company seal and signature alongside employment contract.' },
+      { type: 'Fixed Deposits & Investments', minimum_balance_or_amount: 'Optional supporting', time_frame: 'Current holdings', notes: 'Mutual funds, FD certificates, or property valuation as secondary proof of wealth.' }
+],
+    'bulgaria': [
+      { type: 'Bank Statements', minimum_balance_or_amount: 'Minimum €500 / ₹1,50,000', time_frame: 'Past 6 months', notes: 'Bank stamped statements proving daily allowance.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Last 3 months', time_frame: 'Past 3 months', notes: 'Certified by employer.' }
+    ],
+    'cyprus': [
+      { type: 'Personal Bank Statement', minimum_balance_or_amount: '₹2,00,000 – ₹3,00,000', time_frame: 'Past 3 to 6 months', notes: 'Original stamped statement with consistent transaction history.' },
+      { type: 'Income Tax Returns', minimum_balance_or_amount: 'Last 2 assessment years', time_frame: 'Past 2 years', notes: 'ITR-V acknowledgments.' }
+    ],
+    'romania': [
+      { type: 'Bank Statement', minimum_balance_or_amount: '€50/day (minimum €500)', time_frame: 'Past 3 months', notes: 'Original bank statement with bank stamp and seal.' },
+      { type: 'Salary Slips & ITR', minimum_balance_or_amount: 'Last 3 months payslips', time_frame: 'Past 2-3 years ITR', notes: 'Employer certified.' }
+    ],
+    'israel': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: '₹2,50,000+ liquid balance', time_frame: 'Past 6 months', notes: 'Original bank seal and signature.' },
+      { type: 'Income Tax Returns (ITR-V)', minimum_balance_or_amount: 'Last 3 assessment years', time_frame: 'Past 3 years', notes: 'Copies of ITR acknowledgments.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Last 3 months', time_frame: 'Past 3 months', notes: 'Official company letterhead with stamp.' }
+    ],
+    'chile': [
+      { type: 'Bank Account Statement', minimum_balance_or_amount: '₹2,00,000 – ₹3,00,000', time_frame: 'Past 3 to 6 months', notes: 'Stamped statements demonstrating solvency.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Last 3 months', time_frame: 'Past 3 months', notes: 'Signed by company HR/Finance.' }
+    ],
+    'mexico': [
+      { type: 'Bank Account Statements', minimum_balance_or_amount: 'Monthly balance approx. ₹1,50,000 – ₹2,50,000', time_frame: 'Past 3 to 6 months', notes: 'Stamped bank statements.' },
+      { type: 'Salary Slips', minimum_balance_or_amount: 'Last 3 months', time_frame: 'Past 3 months', notes: 'Showing minimum net monthly income.' }
+    ],
+    'ukraine': [
+      { type: 'Bank Account Statement', minimum_balance_or_amount: '$1,500 – $2,500 equivalent', time_frame: 'Past 3 months', notes: 'Statement demonstrating sufficient funds for stay.' }
+    ]
+
   };
   
   const defaultProofs: FinancialProofItem[] = [
@@ -1500,6 +2803,29 @@ export function getTourismValidity(country: string): string {
     'new-zealand': 'Up to 12 Months (Single or Multiple Entry)',
     'south-africa': '3 Months from Date of Issue',
     'brazil': 'Up to 90 Days'
+  ,
+
+    'czech-republic': 'Up to 90 Days (Schengen Uniform Visa)',
+    'poland': 'Up to 90 Days (Schengen Uniform Visa)',
+    'hungary': 'Up to 90 Days (Schengen Uniform Visa)',
+    'croatia': 'Up to 90 Days (Schengen Uniform Visa)',
+    'slovakia': 'Up to 90 Days (Schengen Uniform Visa)',
+    'slovenia': 'Up to 90 Days (Schengen Uniform Visa)',
+    'estonia': 'Up to 90 Days (Schengen Uniform Visa)',
+    'latvia': 'Up to 90 Days (Schengen Uniform Visa)',
+    'lithuania': 'Up to 90 Days (Schengen Uniform Visa)',
+    'luxembourg': 'Up to 90 Days (Schengen Uniform Visa)',
+    'malta': 'Up to 90 Days (Schengen Uniform Visa)',
+    'iceland': 'Up to 90 Days (Schengen Uniform Visa)',
+    'liechtenstein': 'Up to 90 Days (Schengen Uniform Visa)',
+    'bulgaria': 'Up to 90 Days within 180 Days',
+    'cyprus': 'Up to 90 Days within 180 Days',
+    'romania': 'Up to 90 Days within 180 Days',
+    'israel': 'Up to 3 Months (Single or Multiple Entry)',
+    'chile': 'Up to 90 Days Single or Multiple Entry',
+    'mexico': 'Up to 180 Days Multiple Entry',
+    'ukraine': 'Up to 30 Days Single or Double Entry'
+
   };
   
   return map[c] || '30 to 90 Days (Subject to Consular Grant)';
@@ -1556,6 +2882,29 @@ export function getTourismStayDuration(country: string): string {
     'new-zealand': 'Up to 3, 6, or 9 Months per stay',
     'south-africa': 'Up to 90 Days',
     'brazil': 'Up to 90 Days'
+  ,
+
+    'czech-republic': 'Maximum 90 Days per 180-day period',
+    'poland': 'Maximum 90 Days per 180-day period',
+    'hungary': 'Maximum 90 Days per 180-day period',
+    'croatia': 'Maximum 90 Days per 180-day period',
+    'slovakia': 'Maximum 90 Days per 180-day period',
+    'slovenia': 'Maximum 90 Days per 180-day period',
+    'estonia': 'Maximum 90 Days per 180-day period',
+    'latvia': 'Maximum 90 Days per 180-day period',
+    'lithuania': 'Maximum 90 Days per 180-day period',
+    'luxembourg': 'Maximum 90 Days per 180-day period',
+    'malta': 'Maximum 90 Days per 180-day period',
+    'iceland': 'Maximum 90 Days per 180-day period',
+    'liechtenstein': 'Maximum 90 Days per 180-day period',
+    'bulgaria': 'Up to 90 Days per 180-day period',
+    'cyprus': 'Up to 90 Days per 180-day period',
+    'romania': 'Up to 90 Days per 180-day period',
+    'israel': 'Up to 90 Days per entry',
+    'chile': 'Up to 90 Days per entry',
+    'mexico': 'Up to 180 Days per entry',
+    'ukraine': 'Up to 30 Days'
+
   };
   
   return map[c] || 'Up to 30 Days (Extendable)';
@@ -1612,6 +2961,29 @@ export function getTourismEntryType(country: string): string {
     'new-zealand': 'Single or Multiple Entry',
     'south-africa': 'Single / Multiple Entry',
     'brazil': 'Single / Multiple Entry'
+  ,
+
+    'czech-republic': 'Single, Double, or Multiple Entry (Consular Discretion)',
+    'poland': 'Single, Double, or Multiple Entry',
+    'hungary': 'Single, Double, or Multiple Entry',
+    'croatia': 'Single, Double, or Multiple Entry',
+    'slovakia': 'Single, Double, or Multiple Entry',
+    'slovenia': 'Single, Double, or Multiple Entry',
+    'estonia': 'Single, Double, or Multiple Entry',
+    'latvia': 'Single, Double, or Multiple Entry',
+    'lithuania': 'Single, Double, or Multiple Entry',
+    'luxembourg': 'Single, Double, or Multiple Entry',
+    'malta': 'Single, Double, or Multiple Entry',
+    'iceland': 'Single, Double, or Multiple Entry',
+    'liechtenstein': 'Single, Double, or Multiple Entry',
+    'bulgaria': 'Single, Double, or Multiple Entry',
+    'cyprus': 'Single or Multiple Entry',
+    'romania': 'Single or Multiple Entry',
+    'israel': 'Single or Multiple Entry',
+    'chile': 'Single or Multiple Entry',
+    'mexico': 'Multiple Entry',
+    'ukraine': 'Single or Double Entry'
+
   };
   
   return map[c] || 'Single / Multiple Entry';
@@ -1662,6 +3034,29 @@ export function getTourismOfficialSourceName(country: string): string {
     'new-zealand': 'Immigration New Zealand (Ministry of Business, Innovation and Employment)',
     'south-africa': 'Department of Home Affairs, Republic of South Africa',
     'brazil': 'Ministry of Foreign Affairs (Itamaraty) — Consular Portal'
+  ,
+
+    'czech-republic': 'Ministry of Foreign Affairs of the Czech Republic / VFS Global',
+    'poland': 'Ministry of Foreign Affairs of the Republic of Poland (e-Konsulat) / VFS Global',
+    'hungary': 'Consular Services of Hungary / VFS Global',
+    'croatia': 'Ministry of Foreign and European Affairs of the Republic of Croatia / VFS Global',
+    'slovakia': 'Ministry of Foreign and European Affairs of the Slovak Republic / VFS Global',
+    'slovenia': 'Ministry of Foreign Affairs of the Republic of Slovenia / VFS Global',
+    'estonia': 'Ministry of Foreign Affairs of the Republic of Estonia / VFS Global',
+    'latvia': 'Ministry of Foreign Affairs of the Republic of Latvia / VFS Global',
+    'lithuania': 'Ministry of Foreign Affairs of the Republic of Lithuania / VFS Global',
+    'luxembourg': 'Ministry of Foreign and European Affairs Luxembourg / VFS Global',
+    'malta': 'Central Visa Unit / Identity Malta Agency / VFS Global',
+    'iceland': 'Directorate of Immigration Iceland / Embassy of Denmark / VFS Global',
+    'liechtenstein': 'Swiss Federal Department of Foreign Affairs / VFS Global Switzerland',
+    'bulgaria': 'Ministry of Foreign Affairs of the Republic of Bulgaria / VFS Global',
+    'cyprus': 'Ministry of Foreign Affairs of the Republic of Cyprus / High Commission in New Delhi',
+    'romania': 'Ministry of Foreign Affairs Romania (eVisa Portal: evisa.mae.ro)',
+    'israel': 'Ministry of Foreign Affairs of Israel / Israel Visa Application Centre (I-VAC)',
+    'chile': 'Ministry of Foreign Affairs Chile (SAC Ciudadanos Portal: tramites.minrel.gov.cl)',
+    'mexico': 'Secretariat of Foreign Affairs Mexico (SRE / MiConsulado) / Embassy of Mexico',
+    'ukraine': 'Ministry of Foreign Affairs of Ukraine (MFA e-Visa Portal: evisa.mfa.gov.ua)'
+
   };
 
   return map[c] || `${country} Immigration Authority & Consular Affairs`;

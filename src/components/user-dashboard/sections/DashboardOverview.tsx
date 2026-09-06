@@ -35,7 +35,7 @@ export function DashboardOverview({
   setSelectedApplicationId
 }: {
   userDisplayName: string;
-  comprehensiveAuditMetrics: { score: number; isUnselected: boolean };
+  comprehensiveAuditMetrics: { score: number; isUnselected: boolean; missingProofs?: any[] };
   visasProcessingState: any[];
   luggageProgress: { packed: number; total: number; percent: number };
   documents: any[];

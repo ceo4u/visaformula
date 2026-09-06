@@ -442,6 +442,21 @@ export function UniversitiesPortal() {
     setConsultants(studyConsultantsList);
   };
 
+  const handleBookCounselling = (consultant: UniversityConsultant) => {
+    setActiveConsultant(consultant);
+    setCounsellingSuccess(false);
+    setCounsellingModalOpen(true);
+  };
+
+  const submitCounsellingForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCounsellingSuccess(true);
+    setTimeout(() => {
+      setCounsellingModalOpen(false);
+      setCounsellingSuccess(false);
+    }, 2500);
+  };
+
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
     const map: Record<string, string> = {

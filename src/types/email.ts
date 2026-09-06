@@ -10,6 +10,7 @@ export type EmailType =
   | 'login_alert'
   | 'visa_notification'
   | 'appointment_reminder'
+  | 'status_update'
   | 'marketing';
 
 export interface SendEmailOptions {

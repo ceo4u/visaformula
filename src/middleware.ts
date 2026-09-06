@@ -1,6 +1,4 @@
-import { defineMiddleware } from 'astro:middleware';
-
-export const onRequest = defineMiddleware(async (context, next) => {
+export const onRequest = async (context: any, next: any): Promise<Response> => {
   const url = new URL(context.request.url);
   const proto = context.request.headers.get('x-forwarded-proto') || url.protocol.replace(':', '');
   const host = context.request.headers.get('host') || url.host;
@@ -35,4 +33,4 @@ export const onRequest = defineMiddleware(async (context, next) => {
   );
 
   return response;
-});
+};

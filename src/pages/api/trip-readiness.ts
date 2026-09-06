@@ -6,6 +6,7 @@ import { verifyTurnstileToken } from '../../lib/verify-turnstile';
 import { checkAIRateLimit } from '../../lib/ai-rate-limiter';
 import fs from 'fs';
 import path from 'path';
+import { getVerifiedOfficialData } from './visa/ai-requirements';
 
 export const prerender = false;
 

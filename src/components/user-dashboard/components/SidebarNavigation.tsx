@@ -85,7 +85,7 @@ export function SidebarNavigation({
                         onClick={() => {
                           setActiveTab(item.id);
                           if (item.id === "cases") {
-                            setSelectedApplicationId(null);
+                            setSelectedApplicationId?.(null);
                           }
                         }}
                         title={item.label}
@@ -151,7 +151,7 @@ export function SidebarNavigation({
                     onClick={() => {
                       setActiveTab(item.id);
                       if (item.id === "cases") {
-                        setSelectedApplicationId(null);
+                        setSelectedApplicationId?.(null);
                       }
                       setIsMobileSidebarOpen(false);
                     }}

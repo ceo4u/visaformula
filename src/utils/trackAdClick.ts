@@ -98,7 +98,23 @@ export async function trackAdClick(payload: AdClickPayload) {
   }
 }
 
-export function handleAdClickWithAuth(e: React.MouseEvent, payload: AdClickPayload) {
+export function handleAdClickWithAuth(
+  e: React.MouseEvent,
+  payloadOrId: AdClickPayload | string,
+  targetUrl?: string
+) {
+  let payload: AdClickPayload;
+  if (typeof payloadOrId === 'string') {
+    payload = {
+      adId: payloadOrId,
+      adTitle: 'Classified Ad',
+      adType: 'classified',
+      targetUrl: targetUrl || `/classifieds/${payloadOrId}`
+    };
+  } else {
+    payload = payloadOrId;
+  }
+
   // Always track the click attempt
   trackAdClick(payload);
 

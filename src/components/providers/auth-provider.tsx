@@ -309,7 +309,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (realUser.type === 'expert') {
                 localStorage.setItem('expert_isLoggedIn', 'true');
                 localStorage.setItem('expert_email', realUser.email);
-                localStorage.setItem('expert_businessName', realUser.displayName || realUser.rawUser?.business_name || '');
+                localStorage.setItem('expert_businessName', realUser.displayName || (realUser as any).rawUser?.business_name || '');
                 if (googlePhoto) localStorage.setItem('expert_profilePhoto', googlePhoto);
             } else {
                 const names = (realUser.displayName || googleName || '').trim().split(' ');

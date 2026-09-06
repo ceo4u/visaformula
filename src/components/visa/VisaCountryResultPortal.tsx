@@ -3602,7 +3602,7 @@ export function VisaCountryResultPortal({
       return { title, desc };
     });
 
-    const student8Steps = getStudentVisaSteps(passportCountry, countryName, 'Student Visa').map((s, i) => {
+    const student8Steps = getStudentVisaSteps(passportCountry, countryName).map((s, i) => {
       const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
       let title = '';
       let desc = '';
@@ -4290,7 +4290,7 @@ export function VisaCountryResultPortal({
             isMandatory: d.is_mandatory !== false
           }))
         : isStudy
-        ? getStudentDocuments(passportCountry, countryName, 'Student').map(d => ({
+        ? getStudentDocuments(passportCountry, countryName).map(d => ({
             title: d.title,
             description: d.description,
             isMandatory: d.is_mandatory !== false
@@ -4349,7 +4349,7 @@ export function VisaCountryResultPortal({
         : (dynamicSteps && dynamicSteps.length > 0)
         ? dynamicSteps.map(s => ({ step: s.step, title: s.title, desc: s.desc }))
         : isFamily
-        ? getFamilyVisaSteps(passportCountry, countryName, 'Family Visa').map((s, idx) => {
+        ? getFamilyVisaSteps(countryName).map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
             const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
             return {
@@ -4359,7 +4359,7 @@ export function VisaCountryResultPortal({
             };
           })
         : isPR
-        ? getPRVisaSteps(passportCountry, countryName, 'PR Visa').map((s, idx) => {
+        ? getPRVisaSteps(countryName).map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
             const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
             return {
@@ -4369,7 +4369,7 @@ export function VisaCountryResultPortal({
             };
           })
         : isStudy
-        ? getStudentVisaSteps(passportCountry, countryName, 'Student Visa').map((s, idx) => {
+        ? getStudentVisaSteps(passportCountry, countryName).map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
             const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
             return {
@@ -4379,7 +4379,7 @@ export function VisaCountryResultPortal({
             };
           })
         : isWork
-        ? getWorkVisaSteps(passportCountry, countryName, 'Work Visa').map((s, idx) => {
+        ? getWorkVisaSteps(countryName).map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
             const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
             return {
@@ -4389,7 +4389,7 @@ export function VisaCountryResultPortal({
             };
           })
         : isBusiness
-        ? getBusinessVisaSteps(passportCountry, countryName, 'Business Visa').map((s, idx) => {
+        ? getBusinessVisaSteps(countryName).map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
             const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
             return {
@@ -4483,8 +4483,8 @@ export function VisaCountryResultPortal({
       downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
 
       // 2. SYNC APPLICATION INTO DASHBOARD "ACTIVE VISA CASES"
+      const caseId = `case-${slugClean}`;
       if (typeof window !== 'undefined') {
-        const caseId = `case-${slugClean}`;
         const existingCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
         const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination?.toLowerCase() !== countryName.toLowerCase());
 
@@ -6200,7 +6200,7 @@ export function VisaCountryResultPortal({
 
     // Student visa fallback if AI is still fetching
     if (activePurposeTab === 'study' || initialPurpose === 'study') {
-      const studentDocs = getStudentDocuments(passportCountry, countryName, 'Student');
+      const studentDocs = getStudentDocuments(passportCountry, countryName);
       return studentDocs.map((doc, idx) => {
         const key = `doc_std_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
         const titleLower = doc.title.toLowerCase();

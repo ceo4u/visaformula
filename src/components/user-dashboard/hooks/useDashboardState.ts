@@ -156,8 +156,8 @@ export function useDashboardState() {
   };
 
   // Profile Save Modal Handler
-  const handleSaveProfileModal = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveProfileModal = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     const formattedPhone = modalPhone.startsWith("+") ? modalPhone : (countryCode + " " + modalPhone).trim();
     setFirstName(modalFirstName);
     setLastName(modalLastName);

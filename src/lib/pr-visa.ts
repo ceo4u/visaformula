@@ -3423,7 +3423,7 @@ export function getPRVisaData(
   const fromNorm = normalizeCountry(from);
   if (fromNorm && fromNorm !== 'india') {
     const pureRoute = resolvePureRoutePR(from, to);
-    if (pureRoute) return pureRoute;
+    if (pureRoute) return pureRoute as any;
   }
 
   const c = normalizeCountry(to);

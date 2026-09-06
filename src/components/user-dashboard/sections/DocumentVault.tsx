@@ -465,7 +465,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             isUploaded,
             docNumber: isUploaded ? (matchedDoc.ocrData?.visaNumber || matchedDoc.ocrData?.documentNumber || matchedDoc.ocrData?.docNumber || matchedDoc.docNumber || (req.key === 'statutory_visa' ? 'VISA-ON-FILE' : req.key === 'statutory_national_id' ? 'AADHAAR-ON-FILE' : req.key === 'statutory_tax_id' ? 'PAN-ON-FILE' : 'Verified on File')) : '—',
             country: isUploaded ? (matchedDoc.ocrData?.issuingCountry || matchedDoc.country || matchedDoc.ocrData?.nationality || selectedPassport || 'India') : selectedPassport || 'India',
-            issuer: isUploaded ? (matchedDoc.issuer || matchedDoc.ocrData?.issuingAuthority || (type === 'visa' ? 'Consular Authority' : type === 'flight' ? 'Commercial Airline' : type === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${selectedPassport || 'India'}` : 'Official Authority')) : (type === 'visa' ? 'Consular Authority' : `Government of ${selectedPassport || 'India'}`),
+            issuer: isUploaded ? (matchedDoc.issuer || matchedDoc.ocrData?.issuingAuthority || (type === 'visa' ? 'Consular Authority' : (type as string) === 'flight' ? 'Commercial Airline' : (type as string) === 'insurance' ? 'International Travel Assure Ltd' : type === 'passport' ? `Government of ${selectedPassport || 'India'}` : 'Official Authority')) : (type === 'visa' ? 'Consular Authority' : `Government of ${selectedPassport || 'India'}`),
             holderName: isUploaded ? (matchedDoc.holderName || matchedDoc.ocrData?.bearerName || matchedDoc.ocrData?.fullName || fullName || 'Traveler') : '—',
             subDetails: isUploaded ? (matchedDoc.subDetails || req.hint || 'Verified & Ingested into Encrypted Vault') : (req.hint || req.description),
             dateOfBirth: isUploaded ? (matchedDoc.dateOfBirth || matchedDoc.ocrData?.dob || '14 Oct 1994') : '—',
@@ -572,7 +572,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             {/* Hidden Inputs for Upload & Replace */}
             <input
                 type="file"
-                ref={vaultFileInputRef}
+                ref={vaultFileInputRef as any}
                 accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
                 className="hidden"
                 onChange={(e) => {
@@ -583,7 +583,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             />
             <input
                 type="file"
-                ref={replaceFileInputRef}
+                ref={replaceFileInputRef as any}
                 accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
                 className="hidden"
                 onChange={(e) => {

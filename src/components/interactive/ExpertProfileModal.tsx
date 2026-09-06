@@ -11,6 +11,8 @@ interface ExpertProfileModalProps {
     name: string;
     role: string;
     city: string;
+    email?: string;
+    phone?: string;
     bio?: string;
     aboutMe?: string;
     tags: string[];

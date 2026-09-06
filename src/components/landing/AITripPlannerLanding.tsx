@@ -1620,6 +1620,7 @@ export function AITripPlannerLanding() {
   // Real File Uploads State & Refs for Step 3 and Document Sections
   const [uploadedDocFiles, setUploadedDocFiles] = useState<Record<string, { name: string; size: string; time: string }>>({});
   const [uploadingDocKey, setUploadingDocKey] = useState<string | null>(null);
+  const [passportVerified, setPassportVerified] = useState(false);
 
   const transcriptsInputRef = useRef<HTMLInputElement>(null);
   const sopInputRef = useRef<HTMLInputElement>(null);
@@ -1889,7 +1890,7 @@ export function AITripPlannerLanding() {
       if (searchLocation) params.set('city', searchLocation);
       
       window.location.href = `/find-experts?${params.toString()}`;
-    } else if (activeSearchTab === 'relocation') {
+    } else if ((activeSearchTab as string) === 'relocation') {
       if (searchCountry) params.set('country', searchCountry);
       if (searchLocation) params.set('location', searchLocation);
       window.location.href = `/classifieds?${params.toString()}`;

@@ -1201,7 +1201,7 @@ export function VisaReadinessScore({
                                                     <div className="pt-3 border-t border-slate-100">
                                                         <button
                                                             type="button"
-                                                            onClick={() => toggleReadinessDoc(doc.key, doc.title)}
+                                                            onClick={() => toggleReadinessDoc?.(doc.key, doc.title)}
                                                             className={`w-full px-3.5 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                                                                 isReady
                                                                     ? 'bg-emerald-600 text-white shadow-xs hover:bg-emerald-700'

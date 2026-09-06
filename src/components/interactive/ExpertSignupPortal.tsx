@@ -602,7 +602,8 @@ function ExpertSignupPortalContent() {
         if (city) localStorage.setItem("expert_city", city);
         if (state) localStorage.setItem("expert_state", state);
         if (country) localStorage.setItem("expert_country", country);
-        if (phone) localStorage.setItem("expert_phone", `${dialCode} ${phone}`);
+        const contactPhone = businessPhone || (mobileNumber ? `${mobileCode} ${mobileNumber}` : "");
+        if (contactPhone) localStorage.setItem("expert_phone", contactPhone);
         if (website) localStorage.setItem("expert_website", website);
         if (selectedServices.length > 0) localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
         if (selectedDestinations.length > 0) localStorage.setItem("expert_countriesExpertise", selectedDestinations.join(", "));

@@ -3979,7 +3979,7 @@ export function getWorkVisaData(
   const fromNorm = normalizeCountry(from);
   if (fromNorm && fromNorm !== 'india') {
     const pureRoute = resolvePureRouteWork(from, to);
-    if (pureRoute) return pureRoute;
+    if (pureRoute) return pureRoute as any;
   }
 
   const c = normalizeCountry(to);

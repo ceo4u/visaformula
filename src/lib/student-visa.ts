@@ -1699,7 +1699,7 @@ export function getStudentVisaData(
   const fromNorm = normalizeCountry(from);
   if (fromNorm && fromNorm !== 'india') {
     const pureRoute = resolvePureRouteStudent(from, to);
-    if (pureRoute) return pureRoute;
+    if (pureRoute) return pureRoute as any;
   }
 
   const c = normalizeCountry(to);

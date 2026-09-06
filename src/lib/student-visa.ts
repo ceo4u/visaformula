@@ -97,10 +97,671 @@ export function normalizeCountry(country: string): string {
   if (c.includes('turkey') || c.includes('turkiye') || c.includes('istanbul')) return 'turkey';
   if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
   if (c.includes('netherlands') || c.includes('holland') || c.includes('dutch')) return 'netherlands';
+  
+  // ── 35 NEW COUNTRIES NORMALIZATION ──
+  // RUSSIA & CIS
+  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
+  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
+  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
+  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
+  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
+  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
+  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
+  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
+  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
+  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+
+  // ASIA
+  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
+  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
+  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
+  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
+  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
+  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
+  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
+  if (c.includes('macau') || c.includes('macao')) return 'macau';
+
+  // AFRICA
+  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
+  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
+  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
+  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
+  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
+
+  // AMERICAS
+  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
+  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
+  if (c.includes('chile') || c.includes('santiago')) return 'chile';
+  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
+  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
+
+  // EUROPE
+  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
+  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
+
   return c;
 }
 
 const DESTS: Record<string, any> = {
+  // ── 35 NEW COUNTRIES ──
+  "russia": {
+    "overview": "Russia is a top global destination for Indian medical students (MBBS). World-class universities: Moscow State University, Sechenov First MSMU, Kazan Federal University, and Pavlov First St. Petersburg offer affordable degrees in English.",
+    "fees": {
+      "visa_fee": "$50-100 USD (approx. ₹4,100-8,200)",
+      "service_fee": "Payable at VFS",
+      "total_fee": "$50-100 USD + VFS Logistics",
+      "notes": "Visa fee varies by entry type. University tuition: ₹20-35 Lakhs total for MBBS."
+    },
+    "proc_time": "15-20 Working Days",
+    "proc_details": "Consular processing following official invitation from the Ministry of Internal Affairs (MVD).",
+    "source": "Russian Ministry of Internal Affairs & Consular Department / VFS Global",
+    "work_term": "Up to 20 hours per week (during studies)",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "Job search / work visa transition upon graduation",
+    "min_funds": "Proof of funds for tuition + living expenses (approx. ₹3-4 Lakhs/year)",
+    "acceptance_doc": "Official Admission Letter & MVD Invitation Voucher",
+    "acceptance_desc": "Ministry of Internal Affairs (MVD) official study invitation voucher processed by the university."
+  },
+  "kazakhstan": {
+    "overview": "Kazakhstan is a major medical and engineering education hub for Indian students. Universities such as Kazakh National Medical University (Asfendiyarov), Al-Farabi Kazakh National University, and Astana Medical University offer internationally recognized MBBS and technical programs in English.",
+    "fees": {
+      "visa_fee": "$80 USD (approx. ₹6,700)",
+      "service_fee": "Payable at Embassy/VAC",
+      "total_fee": "$80 USD Statutory Reference",
+      "notes": "C9 Study Visa fee paid at consular mission in India."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Foreign Affairs / Migration Committee confirmation telex requested by the university.",
+    "source": "Ministry of Foreign Affairs of Kazakhstan & Migration Service / Embassy in New Delhi",
+    "work_term": "Part-time allowed on campus",
+    "work_break": "Full-time during official vacation",
+    "post_study": "1 Year post-graduate internship / work visa transition",
+    "min_funds": "$3,000 - $4,000 USD / year living expenses + university tuition",
+    "acceptance_doc": "Official Letter of Acceptance & MFA Invitation Telex (Nomer Priglasheniya)",
+    "acceptance_desc": "Ministry of Foreign Affairs visa invitation number issued through the university portal."
+  },
+  "ukraine": {
+    "overview": "Ukraine has historically been a premier European destination for Indian medical students (MBBS). Leading institutions include Bogomolets National Medical University, VN Karazin Kharkiv National University, and Bukovinian State Medical University.",
+    "fees": {
+      "visa_fee": "$65-130 USD (approx. ₹5,400-10,800)",
+      "service_fee": "Payable at VFS Global Ukraine",
+      "total_fee": "$65-130 USD + VFS Logistics",
+      "notes": "Long-Stay Visa Type D-13 fee paid upon consular filing."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Application lodged at VFS Global Ukraine in India and verified against the UDMS student database.",
+    "source": "Ministry of Education and Science of Ukraine & State Migration Service (SMS)",
+    "work_term": "Part-time work permitted with university approval",
+    "work_break": "Full-time during semester vacations",
+    "post_study": "1 Year post-graduate training / clinical residency",
+    "min_funds": "$3,000 - $4,000 USD living expenses + tuition fee coverage",
+    "acceptance_doc": "Official Invitation Letter from Ukrainian State Center for International Education",
+    "acceptance_desc": "Standardized invitation letter registered with the Ministry of Education and Science of Ukraine."
+  },
+  "belarus": {
+    "overview": "Belarus offers high-standard, cost-effective medical (MBBS) and engineering education at institutions like Belarusian State Medical University (BSMU Minsk), Vitebsk State Medical University, and BSU Minsk, taught in English.",
+    "fees": {
+      "visa_fee": "€60 (approx. ₹5,400)",
+      "service_fee": "Medical insurance and registration on arrival",
+      "total_fee": "€60 Consular Reference",
+      "notes": "Official invitation processed by the Department on Citizenship and Migration."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "Consular section in New Delhi issues study entry visa based on official Ministry-approved invitation.",
+    "source": "Ministry of Education of Belarus & Department on Citizenship and Migration",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year internship / clinical residency options",
+    "min_funds": "$2,500 - $3,500 USD / year living expenses + tuition coverage",
+    "acceptance_doc": "Official Student Invitation Letter from Citizenship and Migration Department",
+    "acceptance_desc": "Official statutory invitation approved by regional migration authorities in Belarus."
+  },
+  "uzbekistan": {
+    "overview": "Uzbekistan has rapidly become a premier hub for Indian medical students (MBBS). Recognized universities such as Tashkent Medical Academy, Samarkand State Medical University, and Fergana State University offer affordable WHO/NMC-aligned programs in English.",
+    "fees": {
+      "visa_fee": "$50-80 USD (approx. ₹4,200-6,700)",
+      "service_fee": "Registration and student visa extension in-country",
+      "total_fee": "$50-80 USD Consular Reference",
+      "notes": "C9 Student visa issued by Uzbek Embassy in New Delhi."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Higher Education and Ministry of Foreign Affairs telex clearance requested by university.",
+    "source": "Ministry of Higher Education, Science and Innovations of Uzbekistan & MFA",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year clinical internship / licensing pathway",
+    "min_funds": "$2,500 - $3,500 USD annual living expenses + tuition fees",
+    "acceptance_doc": "Official Admission Letter & MFA Visa Confirmation Telex",
+    "acceptance_desc": "Formal invitation voucher confirmed by the Uzbek Ministry of Foreign Affairs."
+  },
+  "kyrgyzstan": {
+    "overview": "Kyrgyzstan is one of the most popular medical study (MBBS) destinations for Indian students. Accredited universities include Kyrgyz State Medical Academy (KSMA), Osh State University, and International School of Medicine (ISM Bishkek) offering affordable NMC-compliant medical programs in English.",
+    "fees": {
+      "visa_fee": "$60-90 USD",
+      "service_fee": "Registration and residence permit extension in Kyrgyzstan",
+      "total_fee": "$60-90 USD Consular Reference",
+      "notes": "Category S student visa issued upon Ministry confirmation."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Education and Science clearance and electronic visa approval.",
+    "source": "Ministry of Education and Science & Ministry of Foreign Affairs of Kyrgyzstan",
+    "work_term": "Campus employment permitted",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year medical internship / FMGE-NExT preparation",
+    "min_funds": "$2,000 - $3,000 USD / year living costs + tuition fee receipts",
+    "acceptance_doc": "Official University Admission Letter & Ministry Student Invitation",
+    "acceptance_desc": "Official invitation processed through the Department of Consular Service of Kyrgyzstan."
+  },
+  "tajikistan": {
+    "overview": "Tajikistan offers affordable medical education at Avicenna Tajik State Medical University in Dushanbe. The university is WHO and NMC-recognized, offering an 5-year MBBS curriculum in English.",
+    "fees": {
+      "visa_fee": "$50-80 USD",
+      "service_fee": "Registration and residence visa extension in Dushanbe",
+      "total_fee": "$50-80 USD Consular Reference",
+      "notes": "Category O student visa issued through Tajik consular missions."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Education and Science clearance and electronic visa confirmation.",
+    "source": "Ministry of Education and Science & Ministry of Foreign Affairs of Tajikistan",
+    "work_term": "Campus employment allowed",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year clinical internship / licensing pathway",
+    "min_funds": "$2,000 - $3,000 USD / year living expenses + tuition receipts",
+    "acceptance_doc": "Official Admission Letter & MFA Student Invitation",
+    "acceptance_desc": "Official student visa invitation registered with the Tajik Ministry of Foreign Affairs."
+  },
+  "turkmenistan": {
+    "overview": "International students in Turkmenistan study at Turkmen State University (Magtymguly) and State Medical University of Turkmenistan in Ashgabat, sponsored under government bilateral quotas.",
+    "fees": {
+      "visa_fee": "$60-100 USD",
+      "service_fee": "Registration and residence visa extension",
+      "total_fee": "$60-100 USD Consular Reference",
+      "notes": "State Migration Service student approval voucher required."
+    },
+    "proc_time": "20 to 30 Calendar Days",
+    "proc_details": "State Migration Service of Turkmenistan approves invitation submitted by the university.",
+    "source": "State Migration Service of Turkmenistan & Ministry of Education",
+    "work_term": "Employment not permitted on study visa",
+    "work_break": "Not permitted",
+    "post_study": "Graduation transition as per bilateral protocol",
+    "min_funds": "$3,000 USD annual maintenance + tuition coverage",
+    "acceptance_doc": "State Migration Service Student Invitation Approval",
+    "acceptance_desc": "Official statutory invitation issued by the State Migration Service in Ashgabat."
+  },
+  "azerbaijan": {
+    "overview": "Azerbaijan is an emerging higher education hub for Indian students. Universities including Azerbaijan Medical University (Baku), ADA University, and Khazar University offer internationally recognized programs in medicine, engineering, and business in English.",
+    "fees": {
+      "visa_fee": "$50-80 USD",
+      "service_fee": "Payable at VFS / State Migration card fee",
+      "total_fee": "$50-80 USD Consular Reference",
+      "notes": "Study visa issued by Embassy of Azerbaijan in New Delhi."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Science and Education accreditation and State Migration Service clearance.",
+    "source": "Ministry of Science and Education & State Migration Service of Azerbaijan",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year post-study job search / work transition",
+    "min_funds": "$3,000 - $4,000 USD / year living costs + tuition fees",
+    "acceptance_doc": "Official University Admission Letter & State Migration Service Invitation",
+    "acceptance_desc": "Formal invitation voucher confirmed by the State Migration Service of Azerbaijan."
+  },
+  "georgia": {
+    "overview": "Georgia is a top European medical study destination for Indian students. Universities including Tbilisi State Medical University (TSMU), University of Georgia, European University, and Ilia State University offer world-class WHO/WFME-accredited MBBS programs in English.",
+    "fees": {
+      "visa_fee": "$20 USD (Consular D3 Immigration Visa)",
+      "service_fee": "Public Service Hall residence card fee (approx. 200 GEL)",
+      "total_fee": "approx. ₹8,000 Consular & In-Country Reference",
+      "notes": "Category D3 Immigration Visa for Study issued by Georgian MFA."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "National Center for Educational Quality Enhancement (NCEQE) accreditation and consular visa D3.",
+    "source": "Ministry of Education and Science & Ministry of Foreign Affairs of Georgia",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year clinical internship / licensing pathway",
+    "min_funds": "$3,000 - $4,000 USD / year living expenses + tuition fees",
+    "acceptance_doc": "NCEQE Recognition Decree & University Order of Enrolment",
+    "acceptance_desc": "Official accreditation order from the National Center for Educational Quality Enhancement."
+  },
+  "armenia": {
+    "overview": "Armenia is a prominent medical education center for Indian students. Yerevan State Medical University (YSMU), Mkhitar Gosh University, and Traditional Medicine University offer internationally recognized WHO/NMC-aligned MBBS programs in English.",
+    "fees": {
+      "visa_fee": "$33 USD (Consular Study Visa)",
+      "service_fee": "Temporary Residence card fee (approx. 105,000 AMD)",
+      "total_fee": "approx. ₹15,000 Total Consular & In-Country",
+      "notes": "Unified Migration Service issues student temporary residence card."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Education, Science, Culture and Sports accreditation and consular visa stamping.",
+    "source": "Ministry of Education & Migration and Citizenship Service of the Republic of Armenia",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "1 Year post-graduate internship / work transition",
+    "min_funds": "$2,500 - $3,500 USD / year living expenses + tuition coverage",
+    "acceptance_doc": "Official Admission Order & Ministry Student Invitation",
+    "acceptance_desc": "Official enrolment order approved by the Armenian Ministry of Education."
+  },
+  "moldova": {
+    "overview": "Moldova is home to Nicolae Testemițanu State University of Medicine and Pharmacy (USMF) in Chișinău, offering high-standard European medical degrees (MBBS) recognized by WHO, WFME, and the NMC, taught in English.",
+    "fees": {
+      "visa_fee": "€80 (Long-Stay Type D/AS Visa)",
+      "service_fee": "General Inspectorate for Migration residence permit fee",
+      "total_fee": "approx. ₹12,000 Consular & In-Country Reference",
+      "notes": "Type D/AS Study Visa issued by Moldovan diplomatic missions."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Ministry of Education and Research letter of acceptance and consular visa review.",
+    "source": "Ministry of Education and Research & General Inspectorate for Migration (IGM)",
+    "work_term": "Part-time work permitted during studies",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "1 Year post-graduate clinical training / licensing",
+    "min_funds": "$3,000 - $4,000 USD / year living expenses + tuition receipts",
+    "acceptance_doc": "Official Letter of Acceptance from Ministry of Education",
+    "acceptance_desc": "Standardized admission order from the Moldovan Ministry of Education and Research."
+  },
+  "pakistan": {
+    "overview": "International students in Pakistan enroll in recognized medical, engineering, and Islamic studies programs under Higher Education Commission (HEC) quotas and bilateral exchange schemes.",
+    "fees": {
+      "visa_fee": "$60 USD",
+      "service_fee": "NADRA portal fee",
+      "total_fee": "$60 USD Consular Reference",
+      "notes": "Requires Higher Education Commission (HEC) clearance."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Coordinated between HEC, Ministry of Interior, and Pakistan High Commission.",
+    "source": "Higher Education Commission (HEC) & Ministry of Interior Pakistan",
+    "work_term": "Employment not permitted on student visa",
+    "work_break": "Not permitted",
+    "post_study": "Course completion return protocol",
+    "min_funds": "$3,000 USD annual maintenance + tuition coverage",
+    "acceptance_doc": "HEC No Objection Certificate (NOC) & University Offer Letter",
+    "acceptance_desc": "Official statutory NOC issued by the Higher Education Commission in Islamabad."
+  },
+  "bangladesh": {
+    "overview": "Bangladesh is a major regional destination for Indian medical students. Renowned institutions including Dhaka Medical College, Sir Salimullah Medical College, and leading private medical colleges offer WHO/NMC-recognized 5-year MBBS programs sharing identical syllabi and clinical disease patterns with India.",
+    "fees": {
+      "visa_fee": "₹0 (Consular Visa Fee)",
+      "service_fee": "DGHS equivalency & application handling fees",
+      "total_fee": "approx. ₹5,000 Equivalence Reference",
+      "notes": "Directorate General of Health Services (DGHS) eligibility required."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "DGHS equivalency verification and Ministry of Foreign Affairs student visa endorsement.",
+    "source": "Directorate General of Health Services (DGHS) & Department of Immigration and Passports",
+    "work_term": "Internship permitted in affiliated teaching hospital",
+    "work_break": "Vacations permitted",
+    "post_study": "1 Year mandatory clinical internship recognized by NMC/FMGE",
+    "min_funds": "₹2,50,000/year living allowance + university tuition receipts",
+    "acceptance_doc": "DGHS Equivalence Certificate & Medical College Offer Letter",
+    "acceptance_desc": "Official marks equivalency certificate issued by DGHS in Dhaka."
+  },
+  "myanmar": {
+    "overview": "International students in Myanmar pursue Buddhist philosophy, Burmese language, and cultural studies at universities such as Yangon University and the International Theravāda Buddhist Missionary University (ITBMU).",
+    "fees": {
+      "visa_fee": "$50 USD (Education Visa Type ED)",
+      "service_fee": "Stay permit extension in Yangon",
+      "total_fee": "$50 USD Consular Reference",
+      "notes": "Requires Ministry of Religious Affairs or Ministry of Education clearance."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Ministry of Education approval and consular visa issuance.",
+    "source": "Ministry of Immigration and Population & Ministry of Education",
+    "work_term": "Employment not permitted",
+    "work_break": "Not permitted",
+    "post_study": "Course completion return protocol",
+    "min_funds": "$2,500 USD annual maintenance + course sponsorship",
+    "acceptance_doc": "University Admission Letter & Ministry Recommendation",
+    "acceptance_desc": "Official enrolment order certified by the Ministry of Education."
+  },
+  "laos": {
+    "overview": "International students in Laos study Lao language, Southeast Asian studies, and environmental management at the National University of Laos (NUOL) in Vientiane under bilateral governmental quotas.",
+    "fees": {
+      "visa_fee": "$50 USD (Student Visa Type ST)",
+      "service_fee": "Annual stay permit extension in Vientiane",
+      "total_fee": "$50 USD Consular Reference",
+      "notes": "Ministry of Education and Sports authorization required."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Ministry of Education and Sports student clearance and MFA visa stamping.",
+    "source": "Ministry of Education and Sports & Ministry of Foreign Affairs of Lao PDR",
+    "work_term": "Employment not permitted on student visa",
+    "work_break": "Not permitted",
+    "post_study": "Course completion return protocol",
+    "min_funds": "$2,500 USD annual maintenance + tuition coverage",
+    "acceptance_doc": "National University of Laos Offer Letter & Ministry Approval",
+    "acceptance_desc": "Official enrolment order certified by the Ministry of Education and Sports."
+  },
+  "mongolia": {
+    "overview": "International students in Mongolia study Mongolian language, central Asian archaeology, and mining engineering at the National University of Mongolia (NUM) and Mongolian University of Science and Technology (MUST) in Ulaanbaatar.",
+    "fees": {
+      "visa_fee": "$60 USD (Student Visa Type S)",
+      "service_fee": "Mongolia Immigration Agency residence card fee",
+      "total_fee": "$60 USD Consular Reference",
+      "notes": "Mongolia Immigration Agency study permission required."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Education and Science approval and MIA electronic visa clearance.",
+    "source": "Mongolia Immigration Agency & Ministry of Education and Science",
+    "work_term": "Part-time work permitted with university authorization",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "1 Year post-graduate transition",
+    "min_funds": "$3,000 USD annual maintenance + tuition coverage",
+    "acceptance_doc": "National University of Mongolia Offer Letter & MIA Study Approval",
+    "acceptance_desc": "Official enrolment order certified by the Mongolia Immigration Agency."
+  },
+  "taiwan": {
+    "overview": "Taiwan is a premier global destination for higher education, semiconductors, and Mandarin studies. World-class institutions including National Taiwan University (NTU), National Tsing Hua University (NTHU), and National Yang Ming Chiao Tung University (NYCU) offer extensive English-taught Master's and PhD programs with generous government scholarships (MOE/TaiwanICDF).",
+    "fees": {
+      "visa_fee": "₹5,300 (Resident Visa for Study)",
+      "service_fee": "Alien Resident Certificate (ARC) fee: NT$1,000/year",
+      "total_fee": "approx. ₹8,000 Consular & ARC Reference",
+      "notes": "Resident Visa leads to Alien Resident Certificate (ARC) in Taiwan."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "Taipei Economic and Cultural Center (TECC) in New Delhi or Chennai.",
+    "source": "Bureau of Consular Affairs (BOCA) & National Immigration Agency (NIA)",
+    "work_term": "Up to 20 hours per week (requires Ministry of Labor student work permit)",
+    "work_break": "Full-time during winter/summer breaks",
+    "post_study": "Up to 1 to 2 Years post-graduation job search extension (ARC extension)",
+    "min_funds": "NT$100,000 - NT$200,000 (approx. ₹2,50,000 - ₹5,00,000) bank deposit + scholarship proof",
+    "acceptance_doc": "Official University Admission Letter & MOE Scholarship Certificate (if applicable)",
+    "acceptance_desc": "Unconditional admission letter issued by an accredited Taiwanese higher education institution."
+  },
+  "hong-kong": {
+    "overview": "Hong Kong hosts five universities ranked in the global Top 100: University of Hong Kong (HKU), Hong Kong University of Science and Technology (HKUST), Chinese University of Hong Kong (CUHK), CityU, and PolyU. All courses taught in English with post-study work rights under the IANG scheme.",
+    "fees": {
+      "visa_fee": "HK$230 (approx. ₹2,500)",
+      "service_fee": "University visa handling logistics",
+      "total_fee": "HK$230 Statutory Reference",
+      "notes": "Admitting university coordinates visa submission with ImmD."
+    },
+    "proc_time": "6 to 8 Weeks",
+    "proc_details": "Coordinated between the admitting university and the Hong Kong Immigration Department.",
+    "source": "Hong Kong Immigration Department (ImmD)",
+    "work_term": "On-campus part-time work up to 20 hours/week during term",
+    "work_break": "Summer full-time work permitted",
+    "post_study": "2 Years post-study work authorization via Immigration Arrangements for Non-local Graduates (IANG)",
+    "min_funds": "HK$100,000 - HK$150,000/year living expenses + tuition fee receipts",
+    "acceptance_doc": "Official University Offer Letter & ImmD Student Visa Label / e-Visa",
+    "acceptance_desc": "Official unconditional admission offer accompanied by ImmD electronic study visa."
+  },
+  "macau": {
+    "overview": "International students in Macau enroll in high-caliber English-medium degree programs in hospitality, gaming management, business, and Chinese-Portuguese bilingual law at the University of Macau (UM) and Macau University of Science and Technology (MUST).",
+    "fees": {
+      "visa_fee": "100 MOP (Special Authorization to Stay for Study)",
+      "service_fee": "University coordination fee",
+      "total_fee": "100 MOP Consular Reference",
+      "notes": "Special Authorization to Stay granted by PSPF Immigration."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "Public Security Police Force (PSPF) Immigration Department.",
+    "source": "Education and Youth Development Bureau (DSEDJ) & PSPF Macau",
+    "work_term": "Academic internships permitted as part of curriculum",
+    "work_break": "Vacation internships with authorization",
+    "post_study": "Transition via specialized talent admission schemes",
+    "min_funds": "50,000 MOP/year living expenses + tuition fee receipts",
+    "acceptance_doc": "University Admission Letter & Student Stay Authorization",
+    "acceptance_desc": "Official acceptance from recognized Macau higher education institution."
+  },
+  "nigeria": {
+    "overview": "Nigeria's higher education system encompasses leading regional institutions like the University of Lagos (UNILAG), University of Ibadan, Covenant University, and Ahmadu Bello University. International students obtain a Subject to Regularization (STR) visa in India, which regularizes into a Combined Expatriate Residence Permit and Aliens Card (CERPAC Green Card) upon arrival.",
+    "fees": {
+      "visa_fee": "$160 (STR Visa Application)",
+      "service_fee": "$1,000 (Annual Student CERPAC Green Card Fee)",
+      "total_fee": "$1,160 (Consular + First Year CERPAC)",
+      "notes": "CERPAC permits full resident status for the duration of the academic program."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Subject to Regularization (STR) visa issued by Nigerian High Commission New Delhi; CERPAC regularized within 90 days of arrival.",
+    "source": "Nigeria Immigration Service (NIS) & Federal Ministry of Education",
+    "work_term": "Part-time on-campus work permitted with university authorization",
+    "work_break": "Full-time during designated school vacations",
+    "post_study": "Graduates may transition to Expatriate Quota employment upon securing a corporate sponsor",
+    "min_funds": "$3,000 - $5,000 per academic year tuition plus living expenses",
+    "acceptance_doc": "Official University Admission Letter & JAMB Regularization Confirmation",
+    "acceptance_desc": "Formal unconditional admission letter from an accredited Nigerian tertiary institution."
+  },
+  "ghana": {
+    "overview": "Ghana is a major educational hub in West Africa, hosting prestigious public universities such as the University of Ghana (Legon), Kwame Nkrumah University of Science and Technology (KNUST), and Ashesi University. International students obtain a Ghana Student Visa and subsequently register for a Non-Citizen ECOWAS/GIS Resident Permit.",
+    "fees": {
+      "visa_fee": "₹6,000 (Consular Entry Visa)",
+      "service_fee": "$150 - $200 (GIS Student Residence Permit)",
+      "total_fee": "approx. ₹20,000 Total",
+      "notes": "Student Residence Permit renewed annually at GIS headquarters."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Consular entry visa processed in New Delhi; GIS student permit registered in Accra after university matriculation.",
+    "source": "Ghana Immigration Service (GIS) & Ghana Tertiary Education Commission (GTEC)",
+    "work_term": "Campus employment allowed with university approval",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "Graduates can apply for GIPC employment quota transfer upon securing an authorized job offer",
+    "min_funds": "$2,500 - $4,000 annual maintenance + university tuition payment receipt",
+    "acceptance_doc": "Official University Admission Letter & Tuition Fee Receipt",
+    "acceptance_desc": "Unconditional admission letter from a recognized Ghanaian public or accredited private university."
+  },
+  "ethiopia": {
+    "overview": "Ethiopia is a growing center for higher learning in the Horn of Africa, anchored by Addis Ababa University (AAU)—one of Africa's premier research universities—and Jimma University. International students obtain an Ethiopian Student Visa (IV) through the Department for Immigration and Nationality Affairs following institutional sponsorship.",
+    "fees": {
+      "visa_fee": "$82 (Initial Student Entry Visa)",
+      "service_fee": "$100/year (Resident ID Card)",
+      "total_fee": "approx. ₹15,000",
+      "notes": "University foreign students office assists with local resident permit."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Online pre-clearance via evisa.gov.et or Embassy of Ethiopia in New Delhi with Ministry of Education endorsement.",
+    "source": "Main Department for Immigration and Nationality Affairs & Ministry of Education",
+    "work_term": "Academic research and teaching assistantships permitted",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can transition to corporate employment upon securing an authorized work permit",
+    "min_funds": "$2,000 - $3,500 annual maintenance plus paid tuition receipt",
+    "acceptance_doc": "Official University Admission Letter & Ministry of Education Clearance",
+    "acceptance_desc": "Formal admission confirmation from an accredited Ethiopian higher education institution."
+  },
+  "rwanda": {
+    "overview": "Rwanda has rapidly emerged as a regional technological education hub, hosting prestigious global branch campuses including Carnegie Mellon University Africa (CMU-Africa), African Leadership University (ALU), and the University of Global Health Equity (UGHE), alongside the University of Rwanda. Students receive a Student Visa (Category V1) from the Directorate General of Immigration and Emigration (DGIE).",
+    "fees": {
+      "visa_fee": "10,000 RWF (approx. $8 / ₹700 Student Visa Fee)",
+      "service_fee": "50,000 RWF (Annual Residence ID)",
+      "total_fee": "approx. ₹5,000 Total",
+      "notes": "Subsidized highly competitive student fee structure under DGIE policies."
+    },
+    "proc_time": "1 to 2 Weeks",
+    "proc_details": "Applied online via IREMBO platform with institution admission letter.",
+    "source": "Directorate General of Immigration and Emigration (DGIE) & Higher Education Council (HEC)",
+    "work_term": "Internships and part-time research allowed under university guidance",
+    "work_break": "Full-time holiday research",
+    "post_study": "Graduates can apply for the Category G (Graduate Job Search) permit or transition to a work permit",
+    "min_funds": "$2,000 - $3,500 annual living expenses guarantee",
+    "acceptance_doc": "University Admission Letter & HEC Registration Equivalence",
+    "acceptance_desc": "Official letter of admission from an accredited Rwandan university or international branch campus."
+  },
+  "zimbabwe": {
+    "overview": "Zimbabwe's higher education sector is known for high literacy standards and esteemed universities, notably the University of Zimbabwe (UZ) in Harare, National University of Science and Technology (NUST) in Bulawayo, and Africa University in Mutare. International students apply for a Student Permit / Scholar Permit issued by the Department of Immigration.",
+    "fees": {
+      "visa_fee": "$100 (Annual Student Permit Fee)",
+      "service_fee": "$50 (Registration & Admin)",
+      "total_fee": "$150 (approx. ₹12,500)",
+      "notes": "Administered by the Department of Immigration in Harare."
+    },
+    "proc_time": "3 to 6 Weeks",
+    "proc_details": "Applied through sponsoring university and Department of Immigration headquarters.",
+    "source": "Department of Immigration Zimbabwe & Ministry of Higher and Tertiary Education",
+    "work_term": "Academic internships and practical training allowed",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates may qualify for Temporary Employment Permit upon corporate sponsorship",
+    "min_funds": "$2,000 - $3,500 annual maintenance plus university fee payment",
+    "acceptance_doc": "Official University Admission Letter & Ministry Clearance",
+    "acceptance_desc": "Official letter of acceptance from a registered Zimbabwean university."
+  },
+  "colombia": {
+    "overview": "Colombia boasts some of Latin America's top-ranked universities, including Universidad de los Andes (UniAndes), Universidad Nacional de Colombia, and Pontificia Universidad Javeriana. International students apply for the Visitor Visa for Studies (Visa V Estudiante), valid for the full length of academic programs and exchange semesters.",
+    "fees": {
+      "visa_fee": "$16 (Study Fee) + $51 (Issuance Fee) = $67 USD",
+      "service_fee": "$55 (Cédula de Extranjería biometric card)",
+      "total_fee": "approx. ₹10,000 Total",
+      "notes": "Highly economical visa fees for international students."
+    },
+    "proc_time": "10 to 20 Working Days",
+    "proc_details": "Applied 100% online through the Cancillería portal; Cédula de Extranjería registered at Migración Colombia.",
+    "source": "Ministerio de Relaciones Exteriores (Cancillería) & Migración Colombia",
+    "work_term": "Internships and research assistantships authorized under university curriculum",
+    "work_break": "Vacation research allowed",
+    "post_study": "Graduates can apply for Visa M (Migrant Worker) upon securing an authorized employment contract",
+    "min_funds": "Minimum 10 times Colombian monthly minimum wage (approx. ₹2,50,000 balance or sponsor guarantee)",
+    "acceptance_doc": "Certificado de Admisión / Matrícula from accredited university",
+    "acceptance_desc": "Official enrollment certificate from a certified Colombian higher education institution."
+  },
+  "peru": {
+    "overview": "Peru offers rich academic and anthropological research programs at institutions like Pontificia Universidad Católica del Perú (PUCP) and Universidad Nacional Mayor de San Marcos (the oldest continuously operating university in the Americas, founded 1551). Students obtain a Student Resident Visa (Visa de Estudiante) via Migraciones.",
+    "fees": {
+      "visa_fee": "$80 (Consular / Migraciones Student Fee)",
+      "service_fee": "$30 (Carné de Extranjería)",
+      "total_fee": "approx. ₹9,500 Total",
+      "notes": "Applied at Peruvian consulate or regularized at Migraciones in Lima."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "University issues matriculation certificate; approved by Migraciones Peru.",
+    "source": "Superintendencia Nacional de Migraciones & SUNEDU",
+    "work_term": "Academic internships permitted under university degree requirements",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can transition to Worker Resident status upon securing an approved employment contract",
+    "min_funds": "$3,000 annual maintenance or institutional scholarship guarantee",
+    "acceptance_doc": "Constancia de Matrícula & University Acceptance Letter",
+    "acceptance_desc": "Official enrollment certificate from a SUNEDU-licensed Peruvian university."
+  },
+  "chile": {
+    "overview": "Chile is home to South America's highest-ranking universities: Pontificia Universidad Católica de Chile (UC) and Universidad de Chile. International students obtain a Student Temporary Residency (Residencia Temporal para Estudiantes) through the National Migration Service (SERMIG).",
+    "fees": {
+      "visa_fee": "$60 (SERMIG Student Visa Fee)",
+      "service_fee": "$15 (Registration)",
+      "total_fee": "approx. ₹6,500 Total",
+      "notes": "Administered online through the SERMIG digital portal."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Applied online via tramites.extranjeria.gob.cl with university acceptance and proof of maintenance.",
+    "source": "Servicio Nacional de Migraciones (SERMIG) & Ministerio de Educación",
+    "work_term": "Internships required by university curriculum permitted",
+    "work_break": "Research work authorized",
+    "post_study": "Graduates can apply for Work Temporary Residency upon securing an authorized employment contract",
+    "min_funds": "$3,000 - $4,500 annual living expense guarantee or scholarship certificate",
+    "acceptance_doc": "Certificado de Matrícula Definitiva from recognized Chilean university",
+    "acceptance_desc": "Official enrollment certificate from an accredited higher education institution in Chile."
+  },
+  "costa-rica": {
+    "overview": "Costa Rica is renowned for world-class environmental research, peace studies, and Spanish immersion, hosting the UN-mandated University for Peace (UPEACE), EARTH University, and the Universidad de Costa Rica (UCR). International students obtain a Provisional Student Visa (Permiso de Estudiante) via DGME.",
+    "fees": {
+      "visa_fee": "$50 (Provisional Student Visa)",
+      "service_fee": "$125 (DIMEX student resident card)",
+      "total_fee": "approx. ₹15,000 Total",
+      "notes": "Registered through the DGME foreign student division."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Applied through university sponsorship and approved by the Dirección General de Migración y Extranjería (DGME).",
+    "source": "Dirección General de Migración y Extranjería (DGME) & CONESUP",
+    "work_term": "Academic research and university internships authorized",
+    "work_break": "Vacation research work",
+    "post_study": "Graduates can apply for special work permits upon receiving an authorized corporate job offer",
+    "min_funds": "$3,000 - $4,500 annual maintenance or scholarship certificate",
+    "acceptance_doc": "Certificado de Admisión Definitiva from accredited university",
+    "acceptance_desc": "Official admission letter from a university recognized by CONESUP or created by international treaty (UPEACE)."
+  },
+  "romania": {
+    "overview": "Romania is a major destination for international higher education, particularly renowned for European-accredited English-taught Medical, Dental, and Engineering degrees at prestigious universities like Carol Davila University of Medicine and Pharmacy (Bucharest), Iuliu Hațieganu University (Cluj-Napoca), and Politehnica University of Bucharest. International students obtain a National Long-Stay Visa for Study (Visa D/SD) and an IGI Permis de Ședere resident permit.",
+    "fees": {
+      "visa_fee": "€120 (National Long-Stay Study Visa Type D)",
+      "service_fee": "259 RON + 120 RON (IGI Residence Permit & Stamp)",
+      "total_fee": "approx. ₹18,000 Total",
+      "notes": "Residence permit renewed annually at Inspectoratul General pentru Imigrări (IGI)."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Requires Ministry of Education Letter of Acceptance (Scrisoare de Acceptare la Studii); visa issued by Embassy in New Delhi.",
+    "source": "Ministry of Foreign Affairs (MAE) & Inspectoratul General pentru Imigrări (IGI)",
+    "work_term": "Up to 4 hours per day (20 hours per week) without a separate work permit",
+    "work_break": "Full-time during scheduled university vacations",
+    "post_study": "Graduates can apply for an extension of stay for up to 9 months to seek employment or establish a business",
+    "min_funds": "Minimum Romanian statutory minimum wage per month (approx. €600/month or €7,200/year)",
+    "acceptance_doc": "Scrisoare de Acceptare la Studii (Ministry of Education Letter of Acceptance)",
+    "acceptance_desc": "Official acceptance letter issued directly by the Romanian Ministry of National Education."
+  },
+  "bulgaria": {
+    "overview": "Bulgaria is a premier European destination for international medical, dental, and veterinary studies, offering internationally recognized EU-accredited English-medium programs at Medical University of Sofia, Medical University of Plovdiv, and Sofia University St. Kliment Ohridski. Students obtain a National Long-Stay Visa for Study (Visa D) and a Bulgarian Residence Permit.",
+    "fees": {
+      "visa_fee": "€100 (National Long-Stay Visa Type D)",
+      "service_fee": "200 BGN - 500 BGN (Bulgarian Residence Permit)",
+      "total_fee": "approx. ₹18,000 Total",
+      "notes": "Processed via Embassy of Bulgaria in New Delhi; residence permit renewed annually."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Requires Certificate of Acceptance from the Bulgarian Ministry of Education and Science (MES).",
+    "source": "Ministry of Foreign Affairs (MFA) & Ministry of Education and Science (MES)",
+    "work_term": "Up to 20 hours per week during academic term",
+    "work_break": "Full-time during official vacations",
+    "post_study": "Graduates can apply for an extension of stay for up to 9 months for job search or business startup",
+    "min_funds": "Minimum Bulgarian statutory minimum wage per month (approx. €500/month or €6,000/year)",
+    "acceptance_doc": "Official Certificate of Acceptance from Ministry of Education and Science (MES)",
+    "acceptance_desc": "Official document issued directly by the Bulgarian Ministry of Education and Science certifying university admission."
+  },
+  "croatia": {
+    "overview": "Croatia offers high-quality European university education with historic institutions like the University of Zagreb (founded in 1669, one of the oldest in Southeastern Europe), University of Split, and RIT Croatia (Rochester Institute of Technology branch campus). International students obtain a Temporary Residence Permit for Study (Privremeni boravak u svrhu studiranja) and an entry visa.",
+    "fees": {
+      "visa_fee": "€93 (Temporary Residence Permit for Study)",
+      "service_fee": "€41 (Biometric Residence Card)",
+      "total_fee": "approx. ₹12,000 Total",
+      "notes": "Administered by the Ministry of the Interior (MUP) in Croatia."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Applied through Croatian diplomatic mission in New Delhi or directly at the local Police Administration (Policijska uprava) in Croatia.",
+    "source": "Ministry of the Interior (MUP) & Ministry of Science and Education",
+    "work_term": "Students can work through the official Student Centre (Studentski centar) for up to 20 hours per week",
+    "work_break": "Full-time during semester breaks",
+    "post_study": "Graduates can apply for an extension of temporary residence for up to 12 months for job search or business launch",
+    "min_funds": "Minimum €400 to €500 per month of living expenses (approx. €5,000/year)",
+    "acceptance_doc": "Potvrda o upisu (Official University Enrollment Certificate)",
+    "acceptance_desc": "Official enrollment certificate from an accredited Croatian university or higher education academy."
+  },
+  "slovenia": {
+    "overview": "Slovenia offers outstanding higher education in the heart of Europe, anchored by the University of Ljubljana (ranked among the world's top 3% of universities, founded in 1919) and the University of Maribor. International students obtain a Temporary Residence Permit for Study (Dovoljenje za začasno prebivanje zaradi študija) and an entry visa.",
+    "fees": {
+      "visa_fee": "€50 (Temporary Residence Permit for Study)",
+      "service_fee": "€15 (Biometric card fee)",
+      "total_fee": "approx. ₹6,000 Total",
+      "notes": "Highly subsidized statutory administrative fees in Slovenia."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "Applied through Embassy of Slovenia in New Delhi or Administrative Unit (Upravna enota) in Slovenia.",
+    "source": "Ministry of the Interior (MNZ) & Ministry of Higher Education, Science and Innovation",
+    "work_term": "Students can work through Student Work (Študentsko delo) with referral forms for up to 20 hours per week",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "Graduates can extend temporary residence for up to 9 months for job seeking or establishing an innovative business",
+    "min_funds": "Minimum basic income per month (approx. €465/month or €5,600/year)",
+    "acceptance_doc": "Potrdilo o vpisu (Official University Enrollment Certificate)",
+    "acceptance_desc": "Official enrollment certificate from an accredited Slovenian university or higher vocational college."
+  },
+  "cyprus": {
+    "overview": "Cyprus is a major international educational hub in the Eastern Mediterranean, known for affordable, high-calibre English-taught programs at institutions like the University of Cyprus (UCY), Cyprus University of Technology (CUT), and the University of Nicosia (UNIC - famous for its premier Medical School and blockchain research). International students obtain an Entry Visa for Study and an Alien Registration Certificate (ARC / Pink Slip) from CRMD.",
+    "fees": {
+      "visa_fee": "€140 (Entry Visa for Study & Migration Fee)",
+      "service_fee": "€70 (Alien Registration ARC Pink Slip)",
+      "total_fee": "approx. ₹19,000 Total",
+      "notes": "Administered by the Civil Registry and Migration Department (CRMD)."
+    },
+    "proc_time": "4 to 8 Weeks",
+    "proc_details": "University coordinates clearance with CRMD in Nicosia; entry visa issued by Cyprus High Commission in New Delhi.",
+    "source": "Civil Registry and Migration Department (CRMD) & Ministry of Education, Sport and Youth",
+    "work_term": "Up to 20 hours per week in designated sectors (hospitality, logistics, agriculture) after completing the first 6 months of study",
+    "work_break": "Full-time during summer vacations",
+    "post_study": "Graduates can apply for an extension of stay for up to 9 months for job search or business launch",
+    "min_funds": "Minimum €7,000 per academic year living expenses guarantee",
+    "acceptance_doc": "Official University Admission Letter & CRMD Pre-Clearance Letter",
+    "acceptance_desc": "Formal unconditional admission letter and migration pre-clearance issued by CRMD in Nicosia."
+  },
+
   "australia": {
     "overview": "The Australian Student Visa (Subclass 500) authorizes international students to undertake full-time higher education, vocational training, or postgraduate research at registered CRICOS academic institutions. Students are permitted to work up to 48 hours per fortnight during university terms and unrestricted hours during scheduled semester breaks. Upon graduation from eligible degrees, students can transition to the Subclass 485 Temporary Graduate Visa for 2 to 4 years of post-study work rights.",
     "fees": { "visa_fee": "AUD 1,600 (approx. ₹88,000)", "service_fee": "₹1,650 (VFS Global ABCC Biometrics)", "total_fee": "AUD 1,600 Base Application Charge", "notes": "Paid online via ImmiAccount. Excludes mandatory Overseas Student Health Cover (OSHC) of AUD 600-900/year and Bupa medical examinations." },
@@ -393,6 +1054,7 @@ const DESTS: Record<string, any> = {
 // ── 1. STUDENT OVERVIEW ──
 export function getStudentOverview(country: string): string {
   const c = normalizeCountry(country);
+  if (DESTS[c]?.overview) return DESTS[c].overview;
   const map: Record<string, string> = {
     'australia': 'The Australian Student Visa (Subclass 500) authorizes international students to undertake full-time higher education, vocational training, or postgraduate research at registered CRICOS academic institutions. Students are permitted to work up to 48 hours per fortnight during university terms and unrestricted hours during scheduled semester breaks. Upon graduation from eligible degrees, students can transition to the Subclass 485 Temporary Graduate Visa for 2 to 4 years of post-study work rights.',
     'uk': 'The UK Student Route Visa permits international students to enroll in full-time degree programs at licensed Student Sponsor Higher Education Providers (HEPs). Students holding a degree-level visa can work up to 20 hours per week during term time and full-time during official vacation periods. Upon successful course completion, graduates can transition to the 2-year Graduate Route Post-Study Work Visa (3 years for PhD/doctoral graduates) with no job sponsorship required.',
@@ -427,6 +1089,7 @@ export function getStudentOverview(country: string): string {
 // ── 2. STUDENT FEES ──
 export function getStudentFees(country: string): { visa_fee: string; service_fee: string; total_fee: string; notes: string } {
   const c = normalizeCountry(country);
+  if (DESTS[c]?.fees) return DESTS[c].fees;
   const map: Record<string, any> = {
     'australia': { visa_fee: 'AUD 1,600 (approx. ₹88,000)', service_fee: '₹1,650 (VFS Global ABCC Biometrics)', total_fee: 'AUD 1,600 Base Application Charge', notes: 'Paid online via ImmiAccount. Excludes mandatory Overseas Student Health Cover (OSHC) of AUD 600-900/year and Bupa medical examinations.' },
     'uk': { visa_fee: '£490 (approx. ₹52,400)', service_fee: '£776/year (Immigration Health Surcharge - IHS)', total_fee: '£1,266+ (Visa £490 + Annual IHS £776)', notes: 'Paid online on GOV.UK. Mandatory IHS covers full NHS healthcare access during studies. Priority visa processing (+£500 for 5 days) available.' },
@@ -461,6 +1124,7 @@ export function getStudentFees(country: string): { visa_fee: string; service_fee
 // ── 3. STUDENT PROCESSING TIME ──
 export function getStudentProcessingTime(country: string): string {
   const c = normalizeCountry(country);
+  if (DESTS[c]?.proc_time) return DESTS[c].proc_time;
   const map: Record<string, string> = {
     'australia': '4 to 8 Weeks (Standard Higher Education Sector)',
     'uk': '3 Weeks (15 Working Days) Standard Processing',
@@ -495,6 +1159,7 @@ export function getStudentProcessingTime(country: string): string {
 // ── 4. STUDENT PROCESSING DETAILS ──
 export function getStudentProcessingDetails(country: string): string {
   const c = normalizeCountry(country);
+  if (DESTS[c]?.proc_details) return DESTS[c].proc_details;
   const map: Record<string, string> = {
     'australia': 'Applications are processed under the simplified student visa framework (SSVF). Lodging with a Confirmation of Enrolment (CoE) and evidence of Genuine Student (GS) intent accelerates assessment.',
     'uk': 'UKVI standard processing is 3 weeks following biometric capture at VFS Global. Priority (5 days) and Super Priority (next business day) services are optional.',
@@ -555,6 +1220,7 @@ export function getStudentStayDetails(country: string): string {
 // ── 7. OFFICIAL SOURCE NAME ──
 export function getStudentOfficialSourceName(country: string): string {
   const c = normalizeCountry(country);
+  if (DESTS[c]?.source) return DESTS[c].source;
   const map: Record<string, string> = {
     'australia': 'Department of Home Affairs (ImmiAccount) / VFS Global Australia',
     'uk': 'UK Visas and Immigration (UKVI / GOV.UK) / VFS Global',

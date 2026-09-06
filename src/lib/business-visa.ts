@@ -95,10 +95,1550 @@ export function normalizeCountry(country: string): string {
   if (c.includes('italy') || c.includes('italia') || c.includes('rome') || c.includes('milan')) return 'italy';
   if (c.includes('norway') || c.includes('oslo')) return 'norway';
   if (c.includes('portugal') || c.includes('lisbon')) return 'portugal';
+  
+  // ── 35 NEW COUNTRIES NORMALIZATION ──
+  // RUSSIA & CIS
+  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
+  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
+  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
+  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
+  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
+  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
+  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
+  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
+  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
+  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+
+  // ASIA
+  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
+  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
+  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
+  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
+  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
+  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
+  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
+  if (c.includes('macau') || c.includes('macao')) return 'macau';
+
+  // AFRICA
+  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
+  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
+  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
+  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
+  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
+
+  // AMERICAS
+  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
+  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
+  if (c.includes('chile') || c.includes('santiago')) return 'chile';
+  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
+  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
+
+  // EUROPE
+  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
+  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
+
   return c;
 }
 
 const DESTS: Record<string, any> = {
+  // ── 35 NEW COUNTRIES ──
+  "russia": {
+    "cname": "Russia",
+    "visa_category": "Business / Commercial Visitor Visa",
+    "overview": "Russia Business Visa allows Indian professionals to travel for business meetings, conferences, trade fairs, and contract negotiations. Valid for up to 90 days with single or double entry. Business invitation letter from a Russian host company is mandatory.",
+    "fees": {
+      "visa_fee": "$50-100 USD (approx. ₹4,100-8,200)",
+      "service_fee": "Payable at VFS",
+      "total_fee": "$50-100 USD + VFS Logistics",
+      "notes": "Visa fee varies by entry type and duration."
+    },
+    "proc_time": "4-7 Working Days (Standard)",
+    "proc_details": "Processed at Russian Embassy/VFS based on official electronic MFA/MVD business invitation.",
+    "source": "Russian Ministry of Foreign Affairs & Consular Department / VFS Global",
+    "validity": "Up to 90 Days (Single/Double Entry) or 1-Year Multi-Entry",
+    "stay": "Up to 90 Days per 180-Day Period",
+    "entry_type": "Single / Double / Multiple Entry",
+    "invitation_doc": "Official Russian MFA / MVD Business Invitation Telex",
+    "invitation_desc": "Electronic invitation voucher issued by the Ministry of Foreign Affairs or Russian host enterprise.",
+    "min_funds": "Company sponsorship letter or bank statement showing ₹2,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Business Meetings",
+        "description": "Attend meetings, conferences, and trade fairs in Moscow, St. Petersburg."
+      },
+      {
+        "icon": "📋",
+        "title": "Invitation Required",
+        "description": "Official business invitation from Russian host company."
+      },
+      {
+        "icon": "🔄",
+        "title": "Single/Double Entry",
+        "description": "Valid for up to 90 days with single or double entry."
+      },
+      {
+        "icon": "🌍",
+        "title": "Growing Market",
+        "description": "Russia offers business opportunities in energy, IT, manufacturing, and trade."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do I need a business visa for Russia?",
+        "answer": "Yes, a business visa is required for business activities in Russia. Tourist visa is only for tourism."
+      },
+      {
+        "question": "How long can I stay on a Russia Business Visa?",
+        "answer": "Up to 90 days per visit. Single, double, and multi-entry available."
+      },
+      {
+        "question": "Can I work on a business visa?",
+        "answer": "No, you CANNOT take up employment. Business visas are for meetings and negotiations only."
+      }
+    ]
+  },
+  "kazakhstan": {
+    "cname": "Kazakhstan",
+    "visa_category": "Category B1 / B2 / B3 Business Visitor Visa",
+    "overview": "The Kazakhstan Business Visa authorizes commercial visits, negotiations, contract signing, and attending exhibitions. Indian passport holders enjoy 14 days visa-free for short business meetings; for stays up to 30-90 days, a Category B business visa is issued upon invitation from a registered Kazakh company.",
+    "fees": {
+      "visa_fee": "$80 USD (Single Entry) / $200 USD (Multiple Entry)",
+      "service_fee": "Consular logistics",
+      "total_fee": "$80-200 USD Consular Fee",
+      "notes": "Fee depends on single vs multiple entry. Stays under 14 days are visa-free."
+    },
+    "proc_time": "5 to 7 Working Days (Standard)",
+    "proc_details": "Invitation telex approved by Ministry of Foreign Affairs of Kazakhstan.",
+    "source": "Ministry of Foreign Affairs of Kazakhstan / Embassy of Kazakhstan in India",
+    "validity": "90 Days (Single) / 1 Year (Multiple Entry)",
+    "stay": "Up to 30-60 Days per visit",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Official MFA Business Invitation Number (Nomer Priglasheniya)",
+    "invitation_desc": "Bilingual invitation letter issued by registered Kazakh enterprise with MFA telex number.",
+    "min_funds": "Company deputation letter or bank statements showing ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Central Asian Hub",
+        "description": "Astana and Almaty are premier business and financial centers (AIFC)."
+      },
+      {
+        "icon": "✈️",
+        "title": "Short Trips Visa-Free",
+        "description": "Business meetings under 14 days do not require a prior visa."
+      },
+      {
+        "icon": "🌐",
+        "title": "1-Year Multi-Entry",
+        "description": "Frequent business visitors can obtain 1-year multiple entry visas."
+      },
+      {
+        "icon": "🏢",
+        "title": "AIFC Financial Center",
+        "description": "Astana International Financial Centre operates under English common law."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Kazakhstan without a visa?",
+        "answer": "Yes, Indian citizens can attend short business meetings and conferences for up to 14 days under the visa-free regime."
+      },
+      {
+        "question": "When is a formal Business Visa required?",
+        "answer": "A Category B business visa is required if your stay will exceed 14 days or if you need multi-entry access over 1 year."
+      },
+      {
+        "question": "What document does the Kazakh host need to provide?",
+        "answer": "The host company must register an invitation telex with the Kazakh MFA and provide the registration number."
+      }
+    ]
+  },
+  "ukraine": {
+    "cname": "Ukraine",
+    "visa_category": "Business Visa (Type C-01)",
+    "overview": "The Ukraine Business Visa allows Indian executives and commercial representatives to conduct negotiations, sign contracts, and attend trade exhibitions for up to 90 days within 180 days.",
+    "fees": {
+      "visa_fee": "$20-65 USD",
+      "service_fee": "VFS logistics if filed physically",
+      "total_fee": "$20-65 USD Total",
+      "notes": "Available as eVisa ($20 USD) or consular sticker visa."
+    },
+    "proc_time": "3 Days (eVisa) / 10-15 Days (Consular)",
+    "proc_details": "Direct MFA eVisa portal or Embassy of Ukraine in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Ukraine / Embassy of Ukraine in India",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 90 Days per 180-Day Period",
+    "entry_type": "Single / Double / Multiple Entry",
+    "invitation_doc": "Official Business Invitation from Ukrainian Entity",
+    "invitation_desc": "Invitation on corporate letterhead from a Ukrainian registered legal entity with state registration code (EDRPOU).",
+    "min_funds": "Company deputation guarantee or bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Commercial Meetings",
+        "description": "Contract negotiations, grain and commodities trade, machinery inspection."
+      },
+      {
+        "icon": "📱",
+        "title": "Online eVisa",
+        "description": "Fast-track 3-day online processing for short business trips."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I apply for a business visa online for Ukraine?",
+        "answer": "Yes, business visitors can obtain an eVisa online via evisa.mfa.gov.ua with a corporate invitation letter."
+      }
+    ]
+  },
+  "belarus": {
+    "cname": "Belarus",
+    "visa_category": "Short-Stay Business Visa (Type C-Business)",
+    "overview": "Allows commercial representatives, investors, and company delegates to attend business conferences, inspect factories, and negotiate contracts for up to 90 days per year.",
+    "fees": {
+      "visa_fee": "€60 (Single) / €150 (Multiple Entry)",
+      "service_fee": "Consular direct",
+      "total_fee": "€60-150 Consular Fee",
+      "notes": "Official invitation from a Belarusian enterprise is mandatory."
+    },
+    "proc_time": "5 Working Days (Standard) / 2 Days (Express)",
+    "proc_details": "Embassy of Belarus in New Delhi based on corporate invitation letter.",
+    "source": "Ministry of Foreign Affairs of Belarus & Belarusian Chamber of Commerce",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 90 Days per visit",
+    "entry_type": "Single / Double / Multiple Entry",
+    "invitation_doc": "Official Business Invitation on Corporate Letterhead",
+    "invitation_desc": "Formal invitation from a Belarusian company registered with the state executive committee.",
+    "min_funds": "Company deputation letter or bank statements showing ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Industrial Partnerships",
+        "description": "Agricultural machinery, fertilizers, IT, and pharmaceutical collaborations."
+      },
+      {
+        "icon": "🏭",
+        "title": "Great Stone Industrial Park",
+        "description": "Special economic zone offering tax incentives for international ventures."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is needed from the Belarusian host company?",
+        "answer": "An official invitation letter on corporate letterhead with company seal, tax ID (UNP), and itinerary."
+      }
+    ]
+  },
+  "uzbekistan": {
+    "cname": "Uzbekistan",
+    "visa_category": "Category B-1 / B-2 Business Visitor Visa",
+    "overview": "Authorizes business delegations, corporate investors, and commercial agents to negotiate contracts, inspect manufacturing plants, and participate in trade fairs for up to 90 days.",
+    "fees": {
+      "visa_fee": "$50 USD (Single) / $150 USD (1-Year Multiple Entry)",
+      "service_fee": "Consular direct",
+      "total_fee": "$50-150 USD Consular Fee",
+      "notes": "Invitation telex confirmation required from Uzbek MFA."
+    },
+    "proc_time": "5 to 7 Working Days",
+    "proc_details": "Host company files visa support application with Uzbek MFA in Tashkent.",
+    "source": "Ministry of Foreign Affairs of Uzbekistan & Chamber of Commerce and Industry",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-90 Days per entry",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Official Uzbek MFA Visa Confirmation Telex",
+    "invitation_desc": "Invitation registered by the host enterprise with the Ministry of Foreign Affairs.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Central Asian Crossroads",
+        "description": "Rapidly reforming economy with extensive foreign trade concessions."
+      },
+      {
+        "icon": "🏢",
+        "title": "Tashkent City Business Hub",
+        "description": "Modern financial district attracting global corporate headquarters."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Uzbekistan on an eVisa?",
+        "answer": "Yes, short commercial meetings can be attended on a standard eVisa, while multi-entry business missions require a B-category visa."
+      }
+    ]
+  },
+  "kyrgyzstan": {
+    "cname": "Kyrgyzstan",
+    "visa_category": "Type B Business Visitor Visa",
+    "overview": "Authorizes commercial negotiations, trade fairs, tender submissions, and factory visits for up to 90 days. Can be obtained as an eVisa or consular sticker.",
+    "fees": {
+      "visa_fee": "$60 USD (Single) / $120 USD (Multiple Entry)",
+      "service_fee": "Online portal or consular direct",
+      "total_fee": "$60-120 USD Consular Fee",
+      "notes": "Corporate invitation letter required."
+    },
+    "proc_time": "5 to 7 Working Days",
+    "proc_details": "Processed via evisa.e-gov.kg or Embassy of the Kyrgyz Republic in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Kyrgyzstan & Chamber of Commerce and Industry",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-60 Days per visit",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation from Kyrgyz Host Entity",
+    "invitation_desc": "Invitation from a registered Kyrgyz legal entity or joint venture.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Bilateral Trade",
+        "description": "Growing trade in textiles, pharmaceuticals, leather, and mining equipment."
+      },
+      {
+        "icon": "📱",
+        "title": "Online Business eVisa",
+        "description": "Fast online issuance without visiting the Embassy."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do I apply for a Kyrgyz business visa?",
+        "answer": "Apply online at evisa.e-gov.kg selecting the Business category with your host company's invitation."
+      }
+    ]
+  },
+  "tajikistan": {
+    "cname": "Tajikistan",
+    "visa_category": "Category K Business Visitor Visa",
+    "overview": "Allows commercial representatives, trade delegations, and joint venture partners to conduct negotiations, sign contracts, and attend exhibitions for up to 90 days.",
+    "fees": {
+      "visa_fee": "$50 USD (Single) / $120 USD (Multiple Entry)",
+      "service_fee": "Online portal or consular direct",
+      "total_fee": "$50-120 USD Consular Fee",
+      "notes": "Available online via evisa.tj with corporate invitation."
+    },
+    "proc_time": "3 to 5 Working Days",
+    "proc_details": "Direct online eVisa portal or Embassy of Tajikistan in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Tajikistan & Chamber of Commerce and Industry",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-60 Days per visit",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Official Business Invitation from Tajik Registered Entity",
+    "invitation_desc": "Invitation from a registered Tajik enterprise or chamber of commerce.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Regional Commerce",
+        "description": "Trade in pharmaceuticals, tea, spices, textiles, and engineering machinery."
+      },
+      {
+        "icon": "📱",
+        "title": "Online Business eVisa",
+        "description": "Fast 3-day online turnaround for business travelers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I get a business visa for Tajikistan online?",
+        "answer": "Yes, you can apply for a business eVisa at evisa.tj by uploading your corporate invitation."
+      }
+    ]
+  },
+  "turkmenistan": {
+    "cname": "Turkmenistan",
+    "visa_category": "Business / Commercial Visitor Visa",
+    "overview": "Authorizes business negotiations, technical audits, and trade conferences upon invitation from a registered Turkmen state agency or licensed private company.",
+    "fees": {
+      "visa_fee": "$85-155 USD",
+      "service_fee": "Migration LOI fee applies",
+      "total_fee": "$85-155 USD Consular Fee",
+      "notes": "State Migration Service LOI is strictly mandatory."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "Host enterprise files invitation dossier with State Migration Service in Ashgabat.",
+    "source": "State Migration Service of Turkmenistan & Chamber of Commerce",
+    "validity": "Up to 90 Days",
+    "stay": "Up to 30-60 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "State Migration Service Business Invitation LOI",
+    "invitation_desc": "Official invitation approval stamped by the State Migration Service of Turkmenistan.",
+    "min_funds": "Company deputation letter and cash reserves in USD",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Energy & Textiles",
+        "description": "Commercial partnerships in natural gas, cotton, petrochemicals, and construction."
+      },
+      {
+        "icon": "🏢",
+        "title": "Chamber of Commerce",
+        "description": "Facilitated business missions through official state industrial chambers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do I get a business visa for Turkmenistan?",
+        "answer": "Your Turkmen business partner must apply for an LOI from the State Migration Service. Once approved, you can obtain your visa at the Embassy or on arrival."
+      }
+    ]
+  },
+  "azerbaijan": {
+    "cname": "Azerbaijan",
+    "visa_category": "Business Visa (ASAN eVisa Business or Consular Sticker)",
+    "overview": "Authorizes business meetings, contract negotiations, conference participation, and trade exhibitions for up to 90 days. Can be obtained directly online via ASAN Visa.",
+    "fees": {
+      "visa_fee": "$26 USD (ASAN Standard) / $60 USD (ASAN Urgent)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$26-60 USD Total Reference",
+      "notes": "Select 'Business' category on evisa.gov.az."
+    },
+    "proc_time": "3 Days (Standard) / 3 Hours (Urgent)",
+    "proc_details": "Instant digital processing on evisa.gov.az.",
+    "source": "State Agency for Public Service (ASAN Visa) & Ministry of Foreign Affairs",
+    "validity": "90 Days Validity / 30 Days Stay",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single Entry (Multi-entry available via Embassy)",
+    "invitation_doc": "Business Invitation Letter from Azerbaijani Company",
+    "invitation_desc": "Invitation from a registered Azerbaijani corporate entity detailing meeting itinerary.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Baku Business Hub",
+        "description": "Major exhibitions at Baku Expo Center in energy, food, and construction."
+      },
+      {
+        "icon": "📱",
+        "title": "Fast-Track 3-Hour eVisa",
+        "description": "Get your business visa in 3 hours with urgent ASAN processing."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I use ASAN eVisa for business trips to Baku?",
+        "answer": "Yes, select the 'Business' purpose on the ASAN portal; valid for attending commercial meetings and conferences."
+      }
+    ]
+  },
+  "georgia": {
+    "cname": "Georgia",
+    "visa_category": "Category C3 Business Visa / Visa-Free for Western Visa Holders",
+    "overview": "Allows commercial meetings, investment surveys, contract signings, and trade missions. Valid Western visa holders enter visa-free for 90 days; others obtain an eVisa or C3 visa.",
+    "fees": {
+      "visa_fee": "$20 USD (eVisa) / ₹0 (if holding valid US/UK/Schengen visa)",
+      "service_fee": "2% online fee",
+      "total_fee": "$20 USD Total",
+      "notes": "Holders of valid US/UK/Schengen visas enter free for 90 days."
+    },
+    "proc_time": "5 Business Days (eVisa) / Instant at Border",
+    "proc_details": "Online via evisa.gov.ge or border control with valid Western visa.",
+    "source": "Ministry of Foreign Affairs of Georgia & Enterprise Georgia",
+    "validity": "Up to 90 Days",
+    "stay": "Up to 30-90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation from Georgian Entity",
+    "invitation_desc": "Letter from registered Georgian company or Enterprise Georgia invitation.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Enterprise Georgia",
+        "description": "Government incentives for foreign investment, IT free zones, and manufacturing."
+      },
+      {
+        "icon": "🌐",
+        "title": "International Gateway",
+        "description": "Strategic Eurasian transit corridor linking Europe, the Caucasus, and Asia."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Georgia without a visa?",
+        "answer": "Yes, if you hold a valid multiple-entry US, UK, Schengen, or Canadian visa, you can enter visa-free for up to 90 days."
+      }
+    ]
+  },
+  "armenia": {
+    "cname": "Armenia",
+    "visa_category": "Short-Stay Business Visa",
+    "overview": "Authorizes business meetings, contract negotiations, conference participation, and corporate missions for up to 120 days. Obtainable online via evisa.mfa.am.",
+    "fees": {
+      "visa_fee": "$7 USD (21 Days) / $33 USD (120 Days)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$7-33 USD Total Reference",
+      "notes": "Extremely low fee paid online."
+    },
+    "proc_time": "3 Business Days",
+    "proc_details": "Processed electronically on evisa.mfa.am.",
+    "source": "Ministry of Foreign Affairs of Armenia & Enterprise Armenia",
+    "validity": "Up to 120 Days",
+    "stay": "Up to 120 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation from Armenian Legal Entity",
+    "invitation_desc": "Invitation from a registered Armenian enterprise with tax code (HVHH).",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Free Economic Zones",
+        "description": "Tax-exempt trade zones in Meghri and Alliance FEZ for tech and manufacturing."
+      },
+      {
+        "icon": "📱",
+        "title": "Instant Online Issuance",
+        "description": "Obtain business travel authorization online in 3 days."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I use Armenia eVisa for business meetings?",
+        "answer": "Yes, the standard eVisa covers business meetings, negotiations, and conference attendance."
+      }
+    ]
+  },
+  "moldova": {
+    "cname": "Moldova",
+    "visa_category": "Short-Stay Business Visa (Type C/A)",
+    "overview": "Authorizes business delegations, investors, and commercial agents to negotiate contracts, inspect factories, and participate in trade fairs for up to 90 days within 180 days.",
+    "fees": {
+      "visa_fee": "€40 (eVisa) / €80 (Consular Sticker)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "€40-80 Total Reference",
+      "notes": "Official corporate invitation letter required."
+    },
+    "proc_time": "10 to 15 Calendar Days",
+    "proc_details": "Processed online on evisa.gov.md or via Moldovan Embassy in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Moldova & Chamber of Commerce and Industry",
+    "validity": "Up to 90 Days",
+    "stay": "Up to 90 Days within 180 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation from Moldovan Registered Entity",
+    "invitation_desc": "Formal invitation from a registered Moldovan company with tax ID (IDNO).",
+    "min_funds": "Company deputation letter or personal bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Free Economic Zones",
+        "description": "Bălți and Ungheni free zones for automotive, electronics, and food export manufacturing."
+      },
+      {
+        "icon": "🍇",
+        "title": "Wine & Agriculture",
+        "description": "World-class agro-industrial partnerships and export trade."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do I apply for a business visa for Moldova?",
+        "answer": "Apply online at evisa.gov.md with an official invitation letter from a Moldovan host company."
+      }
+    ]
+  },
+  "pakistan": {
+    "cname": "Pakistan",
+    "visa_category": "Business Visa in Your Inbox (BVHI) / E-Business Visa",
+    "overview": "Authorizes business meetings, commercial audits, contract negotiations, and trade delegations for up to 90 days. Can be obtained online via NADRA portal with Chamber recommendation.",
+    "fees": {
+      "visa_fee": "$60-100 USD",
+      "service_fee": "NADRA portal fee",
+      "total_fee": "$60-100 USD Total",
+      "notes": "Requires Chamber of Commerce recommendation."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "Processed online via visa.nadra.gov.pk.",
+    "source": "Board of Investment & Ministry of Interior Pakistan",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Corporate Invitation & Chamber of Commerce Recommendation",
+    "invitation_desc": "Invitation certified by registered Pakistani business and local Chamber.",
+    "min_funds": "Corporate sponsorship letter or bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Business in Your Inbox",
+        "description": "Fast-track electronic business visa issuance via NADRA portal."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is Business Visa in Your Inbox?",
+        "answer": "A fast-track electronic travel authorization issued by NADRA within 48-72 hours for business travelers holding recognized chamber recommendation letters."
+      }
+    ]
+  },
+  "bangladesh": {
+    "cname": "Bangladesh",
+    "visa_category": "Category B Business Visa",
+    "overview": "Authorizes business meetings, factory inspections, commercial negotiations, and trade delegations for up to 90 days or 1 year multiple entry.",
+    "fees": {
+      "visa_fee": "₹0 (Consular Fee)",
+      "service_fee": "approx. ₹850 (VAC Handling)",
+      "total_fee": "₹850 Total Reference",
+      "notes": "Invitation from a registered Bangladeshi company required."
+    },
+    "proc_time": "5 to 7 Working Days",
+    "proc_details": "Deputy High Commissions of Bangladesh in India.",
+    "source": "Ministry of Foreign Affairs of Bangladesh & FBCCI",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation & Letter of Recommendation from FBCCI / Trade Body",
+    "invitation_desc": "Invitation from a registered Bangladeshi company with TIN certificate.",
+    "min_funds": "Company deputation letter or bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Bilateral Trade",
+        "description": "India and Bangladesh enjoy deep bilateral commercial ties and border haats."
+      },
+      {
+        "icon": "🏭",
+        "title": "Industrial Parks",
+        "description": "Direct investment opportunities in high-tech and manufacturing zones."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is needed for a Bangladesh business visa?",
+        "answer": "An invitation letter from a Bangladeshi enterprise with TIN certificate and a letter of deputation from your Indian employer."
+      }
+    ]
+  },
+  "myanmar": {
+    "cname": "Myanmar",
+    "visa_category": "Business eVisa (Type B)",
+    "overview": "Authorizes business meetings, contract negotiations, site visits, and commercial conferences for up to 70 days. Can be obtained online via evisa.moip.gov.mm in 3 business days.",
+    "fees": {
+      "visa_fee": "$70 USD (approx. ₹5,800)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$70 USD Total Reference",
+      "notes": "Corporate invitation and company registration copy required."
+    },
+    "proc_time": "3 Working Days",
+    "proc_details": "Direct online eVisa portal evisa.moip.gov.mm.",
+    "source": "Ministry of Immigration and Population & DICA",
+    "validity": "90 Days Validity / 70 Days Stay",
+    "stay": "Up to 70 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Invitation Letter & Host Company Registration Extract",
+    "invitation_desc": "Invitation from a company registered with the Directorate of Investment and Company Administration (DICA).",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Fast 3-Day Business eVisa",
+        "description": "70 days of stay issued online in just 3 working days."
+      },
+      {
+        "icon": "🏭",
+        "title": "Thilawa SEZ",
+        "description": "Prime industrial hub near Yangon attracting major international manufacturers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the stay limit on a Myanmar Business eVisa?",
+        "answer": "The Business eVisa permits up to 70 days of stay and is extendable in-country through DICA."
+      }
+    ]
+  },
+  "laos": {
+    "cname": "Laos",
+    "visa_category": "Business Visa (Type NI-B2)",
+    "overview": "Authorizes commercial discussions, feasibility studies, investment surveys, and contract negotiations for up to 90 days. Can be obtained upon invitation from a registered Lao company.",
+    "fees": {
+      "visa_fee": "$50-80 USD",
+      "service_fee": "Consular direct or fast-track agent",
+      "total_fee": "$50-80 USD Total",
+      "notes": "Invitation from a registered Lao enterprise required."
+    },
+    "proc_time": "5 to 7 Working Days",
+    "proc_details": "Embassy of Lao PDR in New Delhi or authorized entry checkpoints.",
+    "source": "Ministry of Foreign Affairs of Lao PDR & Ministry of Industry and Commerce",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation & Enterprise Registration Certificate",
+    "invitation_desc": "Invitation from a registered Lao company with corporate tax identification.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹1,50,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Special Economic Zones",
+        "description": "Savannakhet and Vientiane SEZs offering corporate tax holidays and land leases."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is needed for a Laos business visa?",
+        "answer": "An invitation letter from a licensed Lao business partner and a deputation letter from your Indian enterprise."
+      }
+    ]
+  },
+  "mongolia": {
+    "cname": "Mongolia",
+    "visa_category": "Business Visa (Type B)",
+    "overview": "Authorizes commercial discussions, mining concession evaluations, contract negotiations, and trade missions for up to 90 days. Can be obtained online via evisa.mn.",
+    "fees": {
+      "visa_fee": "$51.50 USD (eVisa) / $100 USD (Consular Multi-Entry)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$51.50-100 USD Total Reference",
+      "notes": "Invitation from a registered Mongolian legal entity required."
+    },
+    "proc_time": "3 Business Days (eVisa)",
+    "proc_details": "Direct online eVisa portal evisa.mn.",
+    "source": "Mongolia Immigration Agency & Mongolian National Chamber of Commerce",
+    "validity": "Up to 90 Days / 1 Year",
+    "stay": "Up to 30-90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Business Invitation & Host Company Registration Number",
+    "invitation_desc": "Invitation from a registered Mongolian enterprise with state registration certificate.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Fast 3-Day Business eVisa",
+        "description": "Apply online at evisa.mn for rapid 72-hour business visa approval."
+      },
+      {
+        "icon": "💼",
+        "title": "Mining & Construction Expo",
+        "description": "Major annual events like Discover Mongolia bringing global resource executives to Ulaanbaatar."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I get a Mongolian business visa online?",
+        "answer": "Yes, select 'Business' on evisa.mn and upload your host company's invitation letter and company registration certificate."
+      }
+    ]
+  },
+  "taiwan": {
+    "cname": "Taiwan",
+    "visa_category": "Visitor Visa for Business / Free TAC Entry",
+    "overview": "Authorizes business meetings, factory inspections, procurement, and international trade fairs (Computex, SEMICON Taiwan). Valid Western visa holders enter free for 14 days; others obtain a BOCA business visitor visa.",
+    "fees": {
+      "visa_fee": "₹0 (Online TAC) or ₹4,000 (TECC Business Visitor Visa)",
+      "service_fee": "₹0 (Direct)",
+      "total_fee": "₹0 or ₹4,000 Total Reference",
+      "notes": "TAC is completely free online."
+    },
+    "proc_time": "Instant (TAC) / 5 Working Days (TECC)",
+    "proc_details": "Online via National Immigration Agency or TECC New Delhi / Chennai.",
+    "source": "Bureau of Consular Affairs (BOCA) & TAITRA",
+    "validity": "Up to 90 Days / 1-5 Years Multiple Entry",
+    "stay": "Up to 14 Days (TAC) / 30-90 Days (Consular Visa)",
+    "entry_type": "Single / Multiple Entry",
+    "invitation_doc": "Official Business Invitation from Taiwanese Enterprise",
+    "invitation_desc": "Formal invitation on corporate letterhead with Unified Business Number (UBN).",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,50,000+",
+    "highlights": [
+      {
+        "icon": "💻",
+        "title": "Computex & SEMICON Taiwan",
+        "description": "World-leading technology and electronics trade exhibitions in Taipei."
+      },
+      {
+        "icon": "⚡",
+        "title": "Instant Free TAC",
+        "description": "Attend business meetings for up to 14 days using free online TAC."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend trade exhibitions in Taiwan on a free TAC?",
+        "answer": "Yes, short business meetings, conferences, and exhibitions are fully authorized under the 14-day online TAC."
+      }
+    ]
+  },
+  "hong-kong": {
+    "cname": "Hong Kong",
+    "visa_category": "Business Visitor (Free PAR Entry / Business Visa)",
+    "overview": "Authorizes business meetings, contract negotiations, trade exhibitions, and corporate audits. Indian citizens can attend business meetings for up to 14 days on a free PAR; longer stays require a business visit visa.",
+    "fees": {
+      "visa_fee": "₹0 (Free 14-Day PAR) or HK$230 (ImmD Business Visa)",
+      "service_fee": "₹0 (Direct)",
+      "total_fee": "₹0 or HK$230 Total Reference",
+      "notes": "Short commercial meetings fully permitted on free PAR."
+    },
+    "proc_time": "Instant (PAR) / 4 Weeks (ImmD Consular Visa)",
+    "proc_details": "Online via gov.hk or direct filing with ImmD.",
+    "source": "Hong Kong Immigration Department & HKTDC",
+    "validity": "6 Months (PAR) / Up to 1 Year (Visa)",
+    "stay": "Up to 14 Days (PAR) / 30-90 Days (Visa)",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Business Invitation from Hong Kong Host Company",
+    "invitation_desc": "Invitation detailing commercial meetings and confirmation that no Hong Kong salary will be paid.",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,00,000+",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Free 14-Day PAR Entry",
+        "description": "Attend business meetings, trade fairs, and negotiations instantly with zero visa fees."
+      },
+      {
+        "icon": "🏢",
+        "title": "HKTDC Mega Fairs",
+        "description": "World's largest electronics, jewelry, and toy trade fairs at HKCEC."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Hong Kong on a PAR?",
+        "answer": "Yes, participating in commercial meetings, negotiations, contract signings, and trade exhibitions is legally permitted under visitor status with a PAR."
+      }
+    ]
+  },
+  "macau": {
+    "cname": "Macau",
+    "visa_category": "Business Visitor (Entry Permit on Arrival)",
+    "overview": "Authorizes commercial negotiations, conference attendance, supplier audits, and trade exhibitions for up to 30 days. Obtainable instantly on arrival at border control.",
+    "fees": {
+      "visa_fee": "100 MOP (approx. ₹1,050)",
+      "service_fee": "₹0 (On Arrival)",
+      "total_fee": "100 MOP Total Reference",
+      "notes": "Paid in MOP or HKD cash at border counter."
+    },
+    "proc_time": "Instant on Arrival (10 Minutes)",
+    "proc_details": "Border control at Macau Airport or ferry checkpoints.",
+    "source": "Commerce and Investment Promotion Institute (IPIM) & PSPF",
+    "validity": "30 Days on Arrival",
+    "stay": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "invitation_doc": "Business Invitation from Macau Host Company",
+    "invitation_desc": "Corporate invitation letter with Macau business registration details.",
+    "min_funds": "Carried solvency proof of minimum 5,000 MOP in cash or cards",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Instant Business VOA",
+        "description": "No prior embassy appointment needed — fly in and get 30 days on arrival."
+      },
+      {
+        "icon": "🏢",
+        "title": "Sino-Portuguese Commercial Platform",
+        "description": "Official gateway bridging China with Portuguese-speaking countries."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Macau on an arrival entry permit?",
+        "answer": "Yes, short commercial meetings, trade conventions, and contract negotiations are fully authorized under entry permit status."
+      }
+    ]
+  },
+  "nigeria": {
+    "cname": "Nigeria",
+    "visa_category": "F4A Business Visa / Visa on Arrival (VoA) for Business Executives",
+    "overview": "The Nigerian Business Visa is designed for foreign business owners, commercial investors, contractors, and corporate delegates attending meetings, contract signings, trade exhibitions, and scoping operations in Nigeria. Alternatively, senior business executives can apply for the pre-approved Visa on Arrival (VoA) facility via the NIS Comptroller General portal.",
+    "fees": {
+      "visa_fee": "$160 (Consular Business Visa Fee)",
+      "service_fee": "$90 (OIS Logistics Fee)",
+      "total_fee": "$250 (approx. ₹21,000)",
+      "notes": "VoA processing requires payment online prior to boarding flight."
+    },
+    "proc_time": "5 to 10 Working Days (or 48-72 hours for pre-approved VoA)",
+    "proc_details": "Applied via OIS Services center or pre-approved online via NIS Comptroller General office.",
+    "source": "Nigeria Immigration Service & Federal Ministry of Industry, Trade and Investment",
+    "validity": "90 Days from Date of Issue",
+    "stay": "Up to 90 Days per Entry",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "CAC Corporate Certificate & Notarized Host Invitation with Immigration Responsibility",
+    "invitation_desc": "Official formal letter of invitation on corporate letterhead from a CAC-registered Nigerian company accepting full immigration responsibility, plus company CAC Certificate of Incorporation.",
+    "min_funds": "Company sponsorship guarantee or ₹2,50,000 personal bank balance",
+    "highlights": [
+      {
+        "icon": "💼",
+        "title": "Corporate Commercial Engagement",
+        "description": "Authorized for investor negotiations, plant inspections, board conferences, and contract executions."
+      },
+      {
+        "icon": "⚡",
+        "title": "Executive Visa on Arrival (VoA) Available",
+        "description": "High-level executives can obtain pre-approved entry approval letters online within 48 to 72 hours."
+      },
+      {
+        "icon": "📈",
+        "title": "Gateway to ECOWAS Markets",
+        "description": "Lagos and Abuja serve as strategic commercial launchpads for the entire 400-million West African market."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I obtain a Nigerian Business Visa on Arrival?",
+        "answer": "Yes, provided you receive an official 'Visa on Arrival Approval Letter' issued directly by the Comptroller General of the Nigeria Immigration Service before boarding your flight."
+      },
+      {
+        "question": "What corporate documents are required from the Nigerian host?",
+        "answer": "The host company must provide its Corporate Affairs Commission (CAC) certificate of incorporation, valid tax clearance certificate, and a formal invitation letter accepting immigration responsibility."
+      }
+    ]
+  },
+  "ghana": {
+    "cname": "Ghana",
+    "visa_category": "B-1 Business Visa / Commercial Visitor Permit",
+    "overview": "The Ghana Business Visa is issued to commercial executives, technical advisors, infrastructure consultants, and commodity traders visiting Ghana for negotiations, project tenders, corporate oversight, and investment due diligence.",
+    "fees": {
+      "visa_fee": "₹8,000 (Single Entry) / ₹12,000 (Multiple Entry)",
+      "service_fee": "₹1,500 (Processing)",
+      "total_fee": "₹9,500 - ₹13,500",
+      "notes": "Demand Draft payable to Ghana High Commission New Delhi."
+    },
+    "proc_time": "5 to 8 Working Days",
+    "proc_details": "Applied directly at High Commission of Ghana in New Delhi.",
+    "source": "Ghana Immigration Service & Ministry of Foreign Affairs and Regional Integration",
+    "validity": "3 to 12 Months",
+    "stay": "Up to 60 Days per visit",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Ghana Registrar General's Company Certificate & Formal Host Invitation",
+    "invitation_desc": "Invitation letter from a registered Ghanaian business accompanied by its Certificate of Incorporation and Certificate to Commence Business.",
+    "min_funds": "Company sponsorship letter or personal 6-month bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Direct B2B Commercial Access",
+        "description": "Engage with Ghanaian partners in gold, cocoa, oil & gas, fintech, and agriculture."
+      },
+      {
+        "icon": "🏢",
+        "title": "Fast-Track Consular Assessment",
+        "description": "Standard decisions rendered within one business week in New Delhi."
+      },
+      {
+        "icon": "🌍",
+        "title": "AfCFTA Secretariat Hub",
+        "description": "Accra hosts the African Continental Free Trade Area (AfCFTA) headquarters."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can an Indian business traveller get multiple entries for Ghana?",
+        "answer": "Yes. If your company maintains regular trading relations with Ghana, a 1-year multiple entry visa can be requested with appropriate host documentation."
+      },
+      {
+        "question": "Is a company registration certificate required from the Ghanaian host?",
+        "answer": "Yes. Consular rules require a copy of the host company's Registrar General's Department incorporation certificate."
+      }
+    ]
+  },
+  "ethiopia": {
+    "cname": "Ethiopia",
+    "visa_category": "Conference / Commercial Business eVisa (CB / CONF)",
+    "overview": "The Ethiopian Business eVisa enables international company executives, commercial buyers, trade delegation members, and conference participants to enter Ethiopia for business negotiations, investment surveys, African Union events, and commercial contracts. Conveniently issued online via evisa.gov.et.",
+    "fees": {
+      "visa_fee": "$102 (30-day Single Entry) / $252 (90-day Multiple Entry)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$102 - $252 (approx. ₹8,600 - ₹21,000)",
+      "notes": "Official fees payable online by international card."
+    },
+    "proc_time": "2 to 4 Working Days",
+    "proc_details": "Applied 100% online through evisa.gov.et with host company invitation letter.",
+    "source": "Immigration and Citizenship Service (ICS) & Ethiopian Investment Commission (EIC)",
+    "validity": "30 to 90 Days",
+    "stay": "30 to 90 Days as per visa category",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Ethiopian Company Business License & Formal Letter of Invitation",
+    "invitation_desc": "Letter of invitation from a registered Ethiopian business enterprise or conference organizer, plus copy of their Business License (TIN / Commercial Registration).",
+    "min_funds": "Corporate sponsorship guarantee or ₹1,50,000 bank balance",
+    "highlights": [
+      {
+        "icon": "⚡",
+        "title": "Fast Online eVisa Processing",
+        "description": "Direct digital approval delivered to your inbox within 48 to 72 hours."
+      },
+      {
+        "icon": "🌐",
+        "title": "Diplomatic & AU Center",
+        "description": "Addis Ababa is the diplomatic capital of Africa, hosting the African Union and UNECA."
+      },
+      {
+        "icon": "📈",
+        "title": "Booming Investment Opportunities",
+        "description": "High-growth sectors in renewable energy, telecommunications, logistics, and agriculture."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I get a Business Visa online for Ethiopia?",
+        "answer": "Yes. The Ethiopian official eVisa platform supports Business Visas (Conference, Private Business, and Government delegate visas) with uploaded invitation documents."
+      },
+      {
+        "question": "What documents does my Ethiopian business host need to supply?",
+        "answer": "Your host must supply a formal invitation letter and a clear copy of their active Ethiopian Business License and Tax Identification Number (TIN)."
+      }
+    ]
+  },
+  "rwanda": {
+    "cname": "Rwanda",
+    "visa_category": "V2 Business Visa / Conference & Investor Entry Permit",
+    "overview": "Rwanda is internationally ranked among Africa's easiest places to do business. The Business Visa is issued to commercial entrepreneurs, institutional investors, startup founders, and conference delegates attending forums at the Kigali Convention Centre.",
+    "fees": {
+      "visa_fee": "$50 (Single Entry 30 Days) / $70 (Multiple Entry 90 Days)",
+      "service_fee": "$0 (Direct Online / VOA)",
+      "total_fee": "$50 - $70 (approx. ₹4,200 - ₹5,900)",
+      "notes": "Can be obtained on arrival or online via Irembo."
+    },
+    "proc_time": "Instant (on arrival) or 3 Days (online pre-approval)",
+    "proc_details": "Issued directly at Kigali Airport immigration or through irembo.gov.rw.",
+    "source": "Directorate General of Immigration and Emigration (DGIE) & Rwanda Development Board (RDB)",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "RDB Certificate of Registration & Host Business Invitation Letter",
+    "invitation_desc": "Invitation from a registered Rwandan enterprise or event organizer, plus company Rwanda Development Board (RDB) certificate.",
+    "min_funds": "Corporate sponsorship or personal bank balance of ₹1,00,000",
+    "highlights": [
+      {
+        "icon": "🚀",
+        "title": "Top Ease of Doing Business",
+        "description": "Register a new business in Rwanda in just 6 hours through the Rwanda Development Board (RDB)."
+      },
+      {
+        "icon": "🏢",
+        "title": "World-Class Convention Hub",
+        "description": "Host venue for Commonwealth CHOGM, WEF Africa, and major international summits."
+      },
+      {
+        "icon": "🤝",
+        "title": "East African Gateway",
+        "description": "Strategic platform connecting East, Central, and francophone African markets."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I register a business in Rwanda while on a business visa?",
+        "answer": "Yes. Foreigners can incorporate a Rwandan company online with RDB within a single working day without minimum capital restrictions."
+      },
+      {
+        "question": "Can I attend conferences on a standard VOA in Rwanda?",
+        "answer": "Yes. The standard Visa on Arrival covers conference participation, trade seminars, and introductory business meetings."
+      }
+    ]
+  },
+  "zimbabwe": {
+    "cname": "Zimbabwe",
+    "visa_category": "Business Visitor Visa / Commercial Entry Permit",
+    "overview": "The Zimbabwe Business Visa accommodates foreign corporate executives, mining investors, agricultural commodity traders, and machinery technicians visiting Zimbabwe for trade discussions, project surveys, board meetings, and investment scoping.",
+    "fees": {
+      "visa_fee": "$45 (Single Entry) / $65 (Double Entry)",
+      "service_fee": "$0 (Direct Online / Border)",
+      "total_fee": "$45 - $65 (approx. ₹3,800 - ₹5,500)",
+      "notes": "Applied online via evisa.gov.zw or upon arrival with host documents."
+    },
+    "proc_time": "3 to 5 Working Days",
+    "proc_details": "Applied online via evisa.gov.zw or directly at port of entry with formal company invitation.",
+    "source": "Department of Immigration Zimbabwe & Zimbabwe Investment and Development Agency (ZIDA)",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 30 Days per visit",
+    "entry_type": "Single or Double Entry",
+    "invitation_doc": "Zimbabwe Company Registration & Host Invitation Letter",
+    "invitation_desc": "Official invitation letter from a registered Zimbabwean business indicating nature of business, plus copy of company certificate.",
+    "min_funds": "Company sponsorship or personal bank balance of ₹1,00,000",
+    "highlights": [
+      {
+        "icon": "💎",
+        "title": "Abundant Mineral Wealth",
+        "description": "World-class deposits of lithium, platinum group metals (PGM), gold, and diamonds."
+      },
+      {
+        "icon": "🤝",
+        "title": "ZIDA One-Stop Investment Centre",
+        "description": "The Zimbabwe Investment and Development Agency provides expedited investor assistance."
+      },
+      {
+        "icon": "🇿🇼",
+        "title": "Growing Bilateral Ties",
+        "description": "Expanding commercial trade between India and Zimbabwe in pharmaceuticals, agro-machinery, and mining."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I apply for a Zimbabwean business visa online?",
+        "answer": "Yes. The official evisa.gov.zw portal allows you to select 'Business Visa' and upload host invitations and company details."
+      },
+      {
+        "question": "What is ZIDA?",
+        "answer": "ZIDA (Zimbabwe Investment and Development Agency) is the national one-stop agency in Harare that facilitates foreign investment, licensing, and permits."
+      }
+    ]
+  },
+  "colombia": {
+    "cname": "Colombia",
+    "visa_category": "Visitor Visa for Business (Visa V Negocios) / Visa-Free Entry",
+    "overview": "Business visitors entering Colombia for corporate meetings, commercial negotiations, trade fairs, and contract signings can enter VISA-FREE for up to 90 days if holding a valid US or Schengen visa. Other business travelers apply online for the Visa V Negocios through Cancillería.",
+    "fees": {
+      "visa_fee": "$52 (Study Fee) + $249 (Issuance Fee) = $301 USD",
+      "service_fee": "FREE if using US/Schengen Visa waiver",
+      "total_fee": "$0 (Visa-free) or $301 (approx. ₹25,000 for Visa V)",
+      "notes": "US/Schengen visa waiver applies to short commercial visits as well."
+    },
+    "proc_time": "10 to 20 Business Days (or Instant with US/Schengen waiver)",
+    "proc_details": "Applied online at cancilleria.gov.co with company sponsorship letters.",
+    "source": "Cancillería Colombia & ProColombia",
+    "validity": "Up to 2 Years (Multiple Entry)",
+    "stay": "Up to 180 Days per calendar year",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Certificado Cámara de Comercio & Corporate Invitation Letter",
+    "invitation_desc": "Official invitation from a Colombian company and its Cámara de Comercio (Chamber of Commerce) certificate of existence and legal representation.",
+    "min_funds": "Company sponsorship letter or personal 6-month bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🚀",
+        "title": "Top Tech & Startup Ecosystem",
+        "description": "Medellín and Bogotá are renowned innovation capitals with booming fintech and software sectors."
+      },
+      {
+        "icon": "🤝",
+        "title": "ProColombia Investment Support",
+        "description": "Direct governmental assistance for foreign enterprises expanding into Latin America."
+      },
+      {
+        "icon": "✈️",
+        "title": "Strategic Connectivity",
+        "description": "El Dorado International Airport (BOG) in Bogotá is the busiest cargo and passenger hub in South America."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Colombia using my US visa?",
+        "answer": "Yes! If you hold a valid US visa (B1/B2) or Schengen visa (180+ days validity), you can enter Colombia visa-free for commercial meetings and market exploration for up to 90 days."
+      },
+      {
+        "question": "Can I receive local salary on a business visa?",
+        "answer": "No. Commercial visitors cannot receive remuneration from Colombian entities; payments must originate from your foreign employer."
+      }
+    ]
+  },
+  "peru": {
+    "cname": "Peru",
+    "visa_category": "Business Visa (Visa de Negocios) / Visa-Free Commercial Visit",
+    "overview": "Business executives visiting Peru for commercial contracts, corporate negotiations, equipment inspections, and mining forums can enter VISA-FREE for up to 180 days if holding a valid US, UK, Canada, Australia, or Schengen visa. Other business travelers obtain a Business Visa at the Peruvian Embassy.",
+    "fees": {
+      "visa_fee": "₹2,700 (Consular Business Visa Fee)",
+      "service_fee": "FREE if using US/UK/Canada/Schengen waiver",
+      "total_fee": "₹0 (Visa-free) or ₹2,700 (Consular)",
+      "notes": "Supreme Decree visa exemption applies to commercial visits as well."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival) or 7 to 10 Working Days (Consular)",
+    "proc_details": "Direct entry at Lima airport or application via Embassy of Peru New Delhi.",
+    "source": "Superintendencia Nacional de Migraciones & PROMPERÚ",
+    "validity": "Up to 180 Days per entry (or 1 Year for Consular)",
+    "stay": "Up to 180 Days",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Peruvian Host Letter of Invitation & RUC Certificate",
+    "invitation_desc": "Formal letter from a Peruvian registered company specifying commercial objectives and company active RUC status with SUNAT.",
+    "min_funds": "Corporate sponsorship or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Pacific Alliance Commercial Hub",
+        "description": "Peru is a founding member of the Pacific Alliance with duty-free integration across Latin America."
+      },
+      {
+        "icon": "🚢",
+        "title": "Mega Port of Chancay",
+        "description": "New state-of-the-art deep-water port transforming Peru into South America's maritime gateway to Asia."
+      },
+      {
+        "icon": "📈",
+        "title": "Thriving B2B Markets",
+        "description": "Expanding trade in minerals, agricultural exports (avocados, asparagus, coffee), and textiles."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Peru on my US visa?",
+        "answer": "Yes! Indian passport holders holding a valid US, UK, Canada, Australia, or Schengen visa can enter Peru visa-free for commercial discussions and conferences for up to 180 days."
+      },
+      {
+        "question": "Can I sign commercial contracts on a business entry?",
+        "answer": "Yes. Business visitors are legally authorized to sign commercial agreements, conduct market research, and evaluate investments."
+      }
+    ]
+  },
+  "chile": {
+    "cname": "Chile",
+    "visa_category": "Visto de Turismo para Negocios / Commercial Temporary Permit",
+    "overview": "The Chilean Business Visa is issued to international company directors, commercial investors, tech entrepreneurs, and trade delegates visiting Chile for contract negotiations, mining asset reviews, corporate oversight, and venture meetings.",
+    "fees": {
+      "visa_fee": "$50 (Single Entry) / $70 (Multiple Entry)",
+      "service_fee": "Consular administrative fee",
+      "total_fee": "$50 - $70 (approx. ₹4,200 - ₹5,900)",
+      "notes": "Applied online at serviciosconsulares.cl."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "Submitted digitally on the Chilean consular portal, followed by passport stamping at the Embassy in New Delhi.",
+    "source": "Ministerio de Relaciones Exteriores de Chile & InvestChile",
+    "validity": "Up to 90 Days per entry (or 1 Year Multiple Entry)",
+    "stay": "Up to 90 Days",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Notarized Chilean Host Invitation & Company Tax ID (RUT)",
+    "invitation_desc": "Official invitation letter from a Chilean registered enterprise notarized in Chile, stating business purpose and guaranteeing company financial backing.",
+    "min_funds": "Company sponsorship letter or personal 6-month bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🚀",
+        "title": "Start-Up Chile Accelerator",
+        "description": "World-renowned governmental startup accelerator offering equity-free grants and fast-track investor visas."
+      },
+      {
+        "icon": "💼",
+        "title": "Strongest Economy in Latin America",
+        "description": "Chile boasts Latin America's highest sovereign credit rating and transparent legal framework."
+      },
+      {
+        "icon": "☀️",
+        "title": "Green Energy Frontier",
+        "description": "Atacama Desert hosts the world's highest solar radiation, attracting billions in green energy investment."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I apply for Start-Up Chile on a business visa?",
+        "answer": "Yes. Selected founders are assisted by Start-Up Chile and SERMIG with a specialized 1-year Temporary Residency visa."
+      },
+      {
+        "question": "How many days can I stay in Chile on a business visa?",
+        "answer": "Consular business visas generally authorize up to 90 days per entry, extendable locally at SERMIG."
+      }
+    ]
+  },
+  "argentina": {
+    "cname": "Argentina",
+    "visa_category": "Visa de Negocios (Business Visa) / RENURE Commercial Entry",
+    "overview": "The Argentine Business Visa is issued to commercial executives, technical consultants, institutional investors, and trade delegates visiting Argentina for business negotiations, investment surveys, contract executions, and international trade shows.",
+    "fees": {
+      "visa_fee": "$200 USD (Statutory Consular Business Visa Fee)",
+      "service_fee": "₹0 (Embassy submission)",
+      "total_fee": "$200 USD (approx. ₹16,800)",
+      "notes": "Paid by Demand Draft / bank transfer to Embassy of Argentina."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Applied directly at Embassy of Argentina New Delhi or Consulate in Mumbai.",
+    "source": "Dirección Nacional de Migraciones & Cancillería Argentina",
+    "validity": "Up to 1 Year (Multiple Entry)",
+    "stay": "Up to 60 or 90 Days per visit",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Carta de Invitación Registrada en RENURE & Notarized Argentine Host Letter",
+    "invitation_desc": "Formal invitation letter signed by a legal representative of an Argentine enterprise registered on the RENURE portal and authenticated by a Public Notary and Colegios de Escribanos.",
+    "min_funds": "Corporate sponsorship letter or personal 6-month bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🥩",
+        "title": "Global Agri & Energy Powerhouse",
+        "description": "World-class agribusiness (soy, beef, wine) and massive Vaca Muerta shale gas and lithium reserves."
+      },
+      {
+        "icon": "🤝",
+        "title": "Mercosur Founding Member",
+        "description": "Direct access to the Southern Common Market (Argentina, Brazil, Paraguay, Uruguay)."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Reliable Consular Review",
+        "description": "Transparent processing via the Argentine diplomatic missions in New Delhi and Mumbai."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does my Argentine host need to be registered with RENURE?",
+        "answer": "Yes. Argentine consular regulations require the inviting Argentine company to be registered with RENURE and authenticate the invitation letter before an Argentine notary."
+      },
+      {
+        "question": "Can I conduct commercial contracts on a business visa?",
+        "answer": "Yes. Business visa holders are fully authorized to negotiate, inspect facilities, sign commercial agreements, and participate in conferences."
+      }
+    ]
+  },
+  "costa-rica": {
+    "cname": "Costa Rica",
+    "visa_category": "Business Visitor Entry / Visa-Free Commercial Visit",
+    "overview": "Corporate executives, commercial delegates, tech investors, and renewable energy consultants visiting Costa Rica for business discussions, investment due diligence, contract signing, and Free Trade Zone reviews can enter VISA-FREE for up to 30 days if holding a valid US, Canada, or Schengen visa. Other business travellers obtain a consular business visa.",
+    "fees": {
+      "visa_fee": "$52 USD (Consular Visa Fee)",
+      "service_fee": "FREE if using US/Canada/Schengen waiver",
+      "total_fee": "$0 (Visa-free) or $52 USD (Consular)",
+      "notes": "US/Canada/Schengen visa exemption applies to business visits."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival) or 10 to 15 Working Days (Consular)",
+    "proc_details": "Direct entry at airport border control or applied via Embassy of Costa Rica New Delhi.",
+    "source": "Dirección General de Migración y Extranjería & CINDE",
+    "validity": "30 to 90 Days",
+    "stay": "Up to 30 Days per visit (Extendable)",
+    "entry_type": "Single or Multiple Entry",
+    "invitation_doc": "Notarized Costa Rican Host Letter & Personería Jurídica",
+    "invitation_desc": "Official invitation from a registered Costa Rican enterprise accompanied by its certified Personería Jurídica (corporate legal status).",
+    "min_funds": "Company sponsorship letter or personal bank balance of ₹2,00,000",
+    "highlights": [
+      {
+        "icon": "🏭",
+        "title": "Zona Franca (Free Trade Zone) Incentives",
+        "description": "100% exemption from corporate income tax, customs duties, and dividend withholding taxes for qualifying export investments."
+      },
+      {
+        "icon": "🤝",
+        "title": "CINDE Top Investment Agency",
+        "description": "CINDE has been ranked by the International Trade Centre as the world's top foreign investment promotion agency for five consecutive years."
+      },
+      {
+        "icon": "🌱",
+        "title": "100% Renewable Energy Grid",
+        "description": "Costa Rica's electricity grid runs on over 99% renewable power (hydro, geothermal, wind)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend commercial meetings on my US visa in Costa Rica?",
+        "answer": "Yes! Indian passport holders holding a valid multiple-entry US, Canada, or Schengen visa can enter Costa Rica visa-free for commercial meetings, conferences, and site visits for up to 30 days."
+      },
+      {
+        "question": "What is the Free Trade Zone (Zona Franca) in Costa Rica?",
+        "answer": "It is a special tax regime offering 0% corporate tax holidays to international manufacturing, tech, and shared services companies setting up operations in Costa Rica."
+      }
+    ]
+  },
+  "romania": {
+    "cname": "Romania",
+    "visa_category": "Uniform Schengen Business Visa (Type C/Afaceri)",
+    "overview": "The Romanian Business Visa (Type C/A) allows foreign company directors, commercial negotiators, IT consultants, and industrial investors to attend trade exhibitions, contract signings, technical consultations, and corporate audits in Romania and across the Schengen area.",
+    "fees": {
+      "visa_fee": "€90 (Schengen Type C Business Visa)",
+      "service_fee": "₹1,500 - ₹2,000 (Consular VAC)",
+      "total_fee": "€90 (approx. ₹8,100 + logistics)",
+      "notes": "Official EU Schengen fee table."
+    },
+    "proc_time": "15 to 25 Calendar Days",
+    "proc_details": "Applied online via evisa.mae.ro and finalized at the Embassy of Romania in New Delhi.",
+    "source": "Ministry of Foreign Affairs of Romania (MAE) & Ministry of Economy",
+    "validity": "Up to 1 to 5 Years Multiple Entry (as granted by consulate)",
+    "stay": "Up to 90 Days within any 180-Day Period",
+    "entry_type": "Multiple Entry Schengen Visa",
+    "invitation_doc": "Official Host Invitation Stamped by IGI or Registered Romanian Corporate Entity",
+    "invitation_desc": "Official invitation letter from a Romanian company registered with the National Trade Register Office (ONRC) stating commercial scope and financial liability.",
+    "min_funds": "Company corporate guarantee or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🤝",
+        "title": "Schengen Commercial Mobility",
+        "description": "Conduct business seamlessly across Romania, Germany, France, and all 29 Schengen states on a single visa."
+      },
+      {
+        "icon": "💻",
+        "title": "Silicon Valley of Eastern Europe",
+        "description": "Cluj-Napoca and Bucharest are dynamic tech centers hosting Microsoft, Oracle, UiPath, and Continental."
+      },
+      {
+        "icon": "🇪🇺",
+        "title": "EU Single Market Access",
+        "description": "Direct access to the 450-million consumer European single market."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does a Romanian business visa allow travel to Germany or France?",
+        "answer": "Yes! Because Romania issues Uniform Schengen Visas (Type C), your business visa is valid across all 29 Schengen countries including Germany, France, Austria, and Italy."
+      },
+      {
+        "question": "What corporate documents are required from the Romanian host?",
+        "answer": "The host company must provide a formal invitation letter, their ONRC Certificate of Registration (CUI), and a confirmation of company financial standing."
+      }
+    ]
+  },
+  "bulgaria": {
+    "cname": "Bulgaria",
+    "visa_category": "Uniform Schengen Business Visa (Type C/Business)",
+    "overview": "The Bulgarian Business Visa (Type C) allows company directors, commercial negotiators, industrial suppliers, and trade delegates to attend business meetings, trade exhibitions, corporate conferences, and investor negotiations in Bulgaria and across the 29 Schengen states.",
+    "fees": {
+      "visa_fee": "€90 (Schengen Type C Business Visa)",
+      "service_fee": "₹1,800 - ₹2,400 (VFS Global)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Official EU statutory rate."
+    },
+    "proc_time": "15 to 25 Calendar Days",
+    "proc_details": "Applied through VFS Global and processed by the Embassy of Bulgaria in New Delhi.",
+    "source": "Ministry of Foreign Affairs of the Republic of Bulgaria & InvestBulgaria Agency (IBA)",
+    "validity": "Up to 1 to 5 Years Multiple Entry",
+    "stay": "Up to 90 Days within any 180-Day Period",
+    "entry_type": "Multiple Entry Schengen Visa",
+    "invitation_doc": "Bulgarian Chamber of Commerce (BCCI) Stamped Corporate Invitation",
+    "invitation_desc": "Official invitation from a Bulgarian company authenticated by the Bulgarian Chamber of Commerce and Industry (BCCI) or Bulgarian Industrial Association.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🇪🇺",
+        "title": "Schengen-Wide Mobility",
+        "description": "Travel across Bulgaria and all 29 Schengen countries on a single business visa."
+      },
+      {
+        "icon": "💰",
+        "title": "10% Flat Corporate Tax",
+        "description": "Lowest corporate tax rate in the European Union, making Bulgaria highly attractive for corporate headquarters and shared services."
+      },
+      {
+        "icon": "🤝",
+        "title": "InvestBulgaria Support",
+        "description": "Institutional support for foreign enterprises investing in automotive, electronics, and software."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does a Bulgarian business visa allow entry into other European countries?",
+        "answer": "Yes! Because Bulgaria issues Uniform Schengen Visas (Type C), your business visa is valid across all 29 Schengen countries including Germany, France, and Greece."
+      },
+      {
+        "question": "Does the invitation letter need Bulgarian Chamber of Commerce authentication?",
+        "answer": "Yes. Standard Bulgarian consular regulations require business invitations to be verified by the Bulgarian Chamber of Commerce and Industry (BCCI)."
+      }
+    ]
+  },
+  "croatia": {
+    "cname": "Croatia",
+    "visa_category": "Uniform Schengen Business Visa (Type C/Poslovni)",
+    "overview": "The Croatian Business Visa (Type C) allows international corporate executives, commercial buyers, naval architects, maritime investors, and IT specialists to attend commercial negotiations, contract signings, trade conferences, and maritime audits in Croatia and across the Schengen area.",
+    "fees": {
+      "visa_fee": "€90 (Schengen Type C Business Visa)",
+      "service_fee": "₹2,200 (VFS Global)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Standard EU Schengen statutory fee."
+    },
+    "proc_time": "15 to 25 Calendar Days",
+    "proc_details": "Applied via VFS Global and processed by the Embassy of the Republic of Croatia in New Delhi.",
+    "source": "Ministry of Foreign and European Affairs of Croatia (MVEP) & Croatian Chamber of Economy (HGK)",
+    "validity": "Up to 1 to 5 Years Multiple Entry",
+    "stay": "Up to 90 Days within any 180-Day Period",
+    "entry_type": "Multiple Entry Schengen Visa",
+    "invitation_doc": "Jamstveno Pismo (Official Letter of Guarantee for Business) Verified by Notary",
+    "invitation_desc": "Official Croatian MFA Guarantee Letter (Jamstveno pismo) completed by a registered Croatian enterprise and certified by a Croatian public notary or Commercial Court.",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🇪🇺",
+        "title": "Full Schengen Commercial Access",
+        "description": "Seamless border-free travel across Croatia and all 29 Schengen member states."
+      },
+      {
+        "icon": "🚢",
+        "title": "Premier Maritime & Logistics Hub",
+        "description": "Port of Rijeka and Ploče serve as strategic deep-water maritime freight gateways to Central Europe."
+      },
+      {
+        "icon": "🤝",
+        "title": "Transparent EU Legal Standards",
+        "description": "Strong rule of law, investor protection, and commercial dispute resolution under EU jurisprudence."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Jamstveno Pismo in Croatia?",
+        "answer": "Jamstveno Pismo is the official Croatian Letter of Guarantee. For business visits, the inviting Croatian company must complete this form, notarize it in Croatia, and send it to the applicant."
+      },
+      {
+        "question": "Can I visit other Schengen countries on a Croatian business visa?",
+        "answer": "Yes. A Uniform Schengen Visa (Type C) issued by Croatia is valid for commercial travel across all 29 Schengen states."
+      }
+    ]
+  },
+  "slovenia": {
+    "cname": "Slovenia",
+    "visa_category": "Uniform Schengen Business Visa (Type C/Poslovni)",
+    "overview": "The Slovenian Business Visa (Type C) enables international company directors, commercial negotiators, engineering consultants, pharmaceutical executives, and tech partners to attend commercial discussions, corporate audits, trade expos, and investor symposiums in Slovenia and across the Schengen area.",
+    "fees": {
+      "visa_fee": "€90 (Schengen Type C Business Visa)",
+      "service_fee": "₹2,000 - ₹2,500 (VFS Global)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Official EU statutory rate."
+    },
+    "proc_time": "15 to 25 Calendar Days",
+    "proc_details": "Applied via VFS Global and processed by the Embassy of the Republic of Slovenia in New Delhi.",
+    "source": "Ministry of Foreign and European Affairs of Slovenia & SPIRIT Slovenia (Business Development Agency)",
+    "validity": "Up to 1 to 5 Years Multiple Entry",
+    "stay": "Up to 90 Days within any 180-Day Period",
+    "entry_type": "Multiple Entry Schengen Visa",
+    "invitation_doc": "Garancijsko Pismo (Letter of Guarantee for Business) Certified by Administrative Unit",
+    "invitation_desc": "Official Letter of Guarantee (Garancijsko pismo) executed by a registered Slovenian enterprise and certified by an Administrative Unit (Upravna enota) or Chamber of Commerce and Industry of Slovenia (GZS).",
+    "min_funds": "Company sponsorship guarantee or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "🇪🇺",
+        "title": "Schengen Commercial Mobility",
+        "description": "Conduct business seamlessly across Slovenia, Germany, Austria, Italy, and all 29 Schengen member states."
+      },
+      {
+        "icon": "🚢",
+        "title": "Port of Koper (Luka Koper)",
+        "description": "The northernmost deep-sea port in the Adriatic, serving as Central Europe's fastest maritime route to Asia and India."
+      },
+      {
+        "icon": "🤝",
+        "title": "SPIRIT Slovenia Support",
+        "description": "Direct institutional support for foreign companies in green technology, advanced engineering, and logistics."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the Garancijsko Pismo in Slovenia?",
+        "answer": "Garancijsko Pismo is the official Letter of Guarantee required by Slovenian immigration. For business trips, the inviting Slovenian enterprise must certify this guarantee at their local Administrative Unit."
+      },
+      {
+        "question": "Can I visit other Schengen countries on a Slovenian business visa?",
+        "answer": "Yes. A Uniform Schengen Visa (Type C) issued by Slovenia allows commercial travel across all 29 Schengen states."
+      }
+    ]
+  },
+  "cyprus": {
+    "cname": "Cyprus",
+    "visa_category": "Business Visitor Visa / Visa-Free Entry with Multi-Entry Schengen",
+    "overview": "The Cyprus Business Visa enables corporate directors, shipowners, commercial lawyers, fintech investors, and tech executives to attend commercial meetings, maritime summits (Maritime Cyprus), corporate board sessions, and investment reviews in Nicosia and Limassol. Indian passport holders holding a valid double- or multiple-entry Schengen visa can enter VISA-FREE for up to 90 days.",
+    "fees": {
+      "visa_fee": "€80 (Consular Business Visa Fee)",
+      "service_fee": "FREE if using Multi-Entry Schengen Visa",
+      "total_fee": "€0 (Visa-free with Schengen) or €80 (Consular)",
+      "notes": "Schengen multi-entry waiver applies to commercial visits as well."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival with Schengen) or 7 to 12 Working Days (Consular)",
+    "proc_details": "Applied via VFS Global / High Commission of Cyprus in New Delhi, or direct entry with multi-entry Schengen visa.",
+    "source": "Civil Registry and Migration Department & Invest Cyprus (CIPA)",
+    "validity": "Up to 90 Days per visit (or up to 1-3 Years Multi-Entry)",
+    "stay": "Up to 90 Days in any 180-Day Period",
+    "entry_type": "Multiple Entry",
+    "invitation_doc": "Notarized Cypriot Corporate Invitation & Assumption of Responsibility Form",
+    "invitation_desc": "Official invitation letter from a registered Cypriot enterprise accompanied by a notarized Assumption of Responsibility form guaranteeing lodging and repatriation.",
+    "min_funds": "Company corporate guarantee or personal bank balance of ₹2,50,000",
+    "highlights": [
+      {
+        "icon": "⚓",
+        "title": "Largest Shipmanagement Center in the EU",
+        "description": "Cyprus is the largest third-party shipmanagement hub in Europe and top-three worldwide."
+      },
+      {
+        "icon": "💰",
+        "title": "12.5% Corporate Tax & Non-Dom Regime",
+        "description": "Attractive 12.5% corporate tax rate and zero tax on dividends/interest for non-domiciled tax residents."
+      },
+      {
+        "icon": "🤝",
+        "title": "Invest Cyprus Facilitation",
+        "description": "Direct state assistance from Invest Cyprus for company headquarters relocation and real estate development."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I attend business meetings in Cyprus on my Schengen visa?",
+        "answer": "Yes! If you hold a valid double- or multiple-entry Schengen visa (Type C), you can enter Cyprus visa-free for commercial meetings, conferences, and site visits for up to 90 days."
+      },
+      {
+        "question": "What is the corporate tax rate in Cyprus?",
+        "answer": "Cyprus has one of the lowest corporate tax rates in the European Union at a competitive flat 12.5%."
+      }
+    ]
+  },
+
   "usa": {
     "cname": "United States",
     "visa_category": "B-1 Business Visitor Visa",

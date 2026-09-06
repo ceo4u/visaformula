@@ -97,10 +97,1540 @@ export function normalizeCountry(country: string): string {
   if (c.includes('finland') || c.includes('helsinki')) return 'finland';
   if (c.includes('italy') || c.includes('italia') || c.includes('rome') || c.includes('milan')) return 'italy';
   if (c.includes('sweden') || c.includes('stockholm')) return 'sweden';
+  
+  // ── 35 NEW COUNTRIES NORMALIZATION ──
+  // RUSSIA & CIS
+  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
+  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
+  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
+  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
+  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
+  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
+  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
+  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
+  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
+  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+
+  // ASIA
+  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
+  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
+  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
+  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
+  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
+  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
+  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
+  if (c.includes('macau') || c.includes('macao')) return 'macau';
+
+  // AFRICA
+  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
+  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
+  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
+  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
+  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
+
+  // AMERICAS
+  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
+  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
+  if (c.includes('chile') || c.includes('santiago')) return 'chile';
+  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
+  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
+
+  // EUROPE
+  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
+  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
+
   return c;
 }
 
 const DESTS: Record<string, any> = {
+  // ── 35 NEW COUNTRIES ──
+  "russia": {
+    "cname": "Russia",
+    "scheme": "Permanent Residency (Vid na Zhitelstvo - VNZh)",
+    "overview": "Russia offers Permanent Residency (Vid na Zhitelstvo) after 5 years of continuous residence. Requires a valid residence permit, Russian language proficiency (TIR), and financial stability. Path to Russian citizenship after 5 years of permanent residency.",
+    "fees": {
+      "visa_fee": "State Duty: 5,000 RUB (approx. ₹4,500)",
+      "service_fee": "State medical & TIR exam fees apply",
+      "total_fee": "approx. ₹15,000 Total Statutory Reference",
+      "currency": "RUB",
+      "notes": "Application lodged at local MVD Migration Department."
+    },
+    "proc_time": "4 to 6 Months (Standard Statutory SLA)",
+    "proc_details": "Adjudicated by the Ministry of Internal Affairs (MVD) Migration Directorate.",
+    "source": "Russian Ministry of Internal Affairs (MVD) & Migration Department",
+    "validity": "Indefinite Permanent Resident Status (Booklet renewed at age milestones)",
+    "stay": "Indefinite (with Valid PR Status)",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Temporary Residence Permit (RVP) & TIR Language Certificate",
+    "assessment_desc": "Valid RVP maintained for at least 8 months plus official TIR Russian language, history, and law certificate.",
+    "min_funds": "Official annual income meeting Russian regional subsistence minimum (NDFL-2 / bank balance)",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Residency",
+        "description": "Vid na Zhitelstvo — indefinite residence with unrestricted employment rights."
+      },
+      {
+        "icon": "🗣️",
+        "title": "Russian Language",
+        "description": "TIR exam — Russian language proficiency required for PR and citizenship."
+      },
+      {
+        "icon": "📋",
+        "title": "Temporary Residence Permit",
+        "description": "RVP is the prerequisite step toward permanent residency."
+      },
+      {
+        "icon": "🔄",
+        "title": "Path to Citizenship",
+        "description": "Russian citizenship eligibility after 5 years of permanent residency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get PR in Russia?",
+        "answer": "You must complete at least 8-12 months on RVP before applying. Processing takes 4-6 months."
+      },
+      {
+        "question": "Do I need to speak Russian for PR?",
+        "answer": "Yes, you must pass the TIR Russian language proficiency, history, and law exam."
+      },
+      {
+        "question": "Can I get Russian citizenship after PR?",
+        "answer": "Yes, after holding PR status and residing for 5 years, you can apply for Russian citizenship."
+      }
+    ]
+  },
+  "kazakhstan": {
+    "cname": "Kazakhstan",
+    "scheme": "Permanent Residence Permit (Vid na Zhitelstvo / L-1)",
+    "overview": "Kazakhstan offers Permanent Residence permits for foreign nationals residing legally for 3 or more years or investing in the Kazakh economy. Applicants must prove financial solvency (deposit in Kazakh bank) and register with the Migration Police.",
+    "fees": {
+      "visa_fee": "State duty: 4 monthly calculation indices (approx. ₹3,500)",
+      "service_fee": "Legalization & apostille costs",
+      "total_fee": "Official Government State Duties Apply",
+      "currency": "KZT",
+      "notes": "Application lodged at local Migration Service Department in Kazakhstan."
+    },
+    "proc_time": "2 to 3 Months (Statutory Review)",
+    "proc_details": "Processed by the Migration Service Committee of the Ministry of Internal Affairs of Kazakhstan.",
+    "source": "Migration Service Committee of the Ministry of Internal Affairs of Kazakhstan",
+    "validity": "10-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Solvency Confirmation from Kazakh Bank & Police Clearance",
+    "assessment_desc": "Bank guarantee showing 1,320 MCI (approx. $10,000 USD) plus apostilled Indian police clearance certificate.",
+    "min_funds": "Deposit of minimum 1,320 Monthly Calculation Indices in a Kazakh bank account",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "10-Year Residence Card",
+        "description": "Full residence rights and national social benefits."
+      },
+      {
+        "icon": "💼",
+        "title": "Free Employment",
+        "description": "Work in any sector without employer-sponsored work permits."
+      },
+      {
+        "icon": "🏡",
+        "title": "Property Ownership",
+        "description": "Right to purchase real estate and residential property in Kazakhstan."
+      },
+      {
+        "icon": "🔄",
+        "title": "Path to Citizenship",
+        "description": "Eligible to apply for Kazakh citizenship after 5 years continuous residence."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can an Indian citizen get PR in Kazakhstan?",
+        "answer": "Requires holding a valid temporary residence permit, passing security checks, and depositing the statutory solvency amount in a Kazakh bank."
+      },
+      {
+        "question": "How long is the Kazakhstan PR card valid?",
+        "answer": "The biometric residence certificate is issued for 10 years, renewable upon expiry."
+      },
+      {
+        "question": "Does PR allow visa-free entry to Kazakhstan?",
+        "answer": "Yes, permanent residence permit holders can enter and exit Kazakhstan freely without visas."
+      }
+    ]
+  },
+  "ukraine": {
+    "cname": "Ukraine",
+    "scheme": "Permanent Residence Permit (Posvidka na postiyne prozhyvannya)",
+    "overview": "Ukraine grants Permanent Residence (Posvidka) to foreign nationals within statutory immigration quotas or quota-exempt categories (spouses of Ukrainian citizens, investors contributing $100,000+ USD, and scientists).",
+    "fees": {
+      "visa_fee": "State duty: approx. 1,000-2,000 UAH",
+      "service_fee": "Administrative card issuance fee",
+      "total_fee": "approx. ₹10,000 Statutory Reference",
+      "currency": "UAH",
+      "notes": "Applied at State Migration Service offices in Ukraine."
+    },
+    "proc_time": "6 to 12 Months (Statutory Review)",
+    "proc_details": "State Migration Service verifies immigration permission (Dozvil na immigratsiyu).",
+    "source": "State Migration Service of Ukraine (SMS)",
+    "validity": "10-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Immigration Permit Grant (Dozvil na immigratsiyu)",
+    "assessment_desc": "Official immigration quota approval issued by the State Migration Service of Ukraine.",
+    "min_funds": "Proof of continuous lawful income or property ownership in Ukraine",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite Stay",
+        "description": "Full permanent residency rights with no employment permit required."
+      },
+      {
+        "icon": "🔄",
+        "title": "Path to Citizenship",
+        "description": "Eligible for naturalization after 5 years continuous permanent residency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do you qualify for PR in Ukraine?",
+        "answer": "Through marriage to a Ukrainian citizen for 2+ years, foreign investment of $100,000+ USD, or holding high-demand specialized skills under annual quotas."
+      }
+    ]
+  },
+  "belarus": {
+    "cname": "Belarus",
+    "scheme": "Permanent Residence Permit (Vid na zhitelstvo)",
+    "overview": "Permanent residence in Belarus is available to foreign nationals who have resided continuously on temporary permits for 7 years, or through investment of €150,000+, marriage to a Belarusian citizen, or high professional merit.",
+    "fees": {
+      "visa_fee": "State duty: 2 basic units (approx. ₹2,200)",
+      "service_fee": "Biometric residence card fee",
+      "total_fee": "approx. ₹5,000 Statutory Reference",
+      "currency": "BYN",
+      "notes": "Applied at local Department on Citizenship and Migration in Belarus."
+    },
+    "proc_time": "3 to 6 Months (Statutory Review)",
+    "proc_details": "Adjudicated by the Department on Citizenship and Migration of the Ministry of Internal Affairs.",
+    "source": "Department on Citizenship and Migration of the Republic of Belarus",
+    "validity": "Biometric Residence Card (Renewable every 5-10 years)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Migration Approval Order & Police Clearance",
+    "assessment_desc": "Official decree granting permanent residence status by the Ministry of Internal Affairs.",
+    "min_funds": "Proof of continuous lawful income meeting Belarusian subsistence standards",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Full Social Rights",
+        "description": "Equal rights to healthcare, education, and social security as citizens."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Employment",
+        "description": "Work in any enterprise without special permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long before an Indian can get PR in Belarus?",
+        "answer": "Standard qualification requires 7 years continuous legal residence, reduced to 2 years for spouses of citizens or high-value investors."
+      }
+    ]
+  },
+  "uzbekistan": {
+    "cname": "Uzbekistan",
+    "scheme": "Permanent Residence Permit (Vid na zhitelstvo)",
+    "overview": "Uzbekistan offers permanent residency to foreign nationals investing $100,000+ USD in real estate (in Tashkent region) or residing legally on temporary permits for 5 continuous years.",
+    "fees": {
+      "visa_fee": "State duty: approx. 2-5 basic calculation units",
+      "service_fee": "Biometric card processing fee",
+      "total_fee": "approx. ₹8,000 Statutory Reference",
+      "currency": "UZS",
+      "notes": "Applied at Main Directorate of Migration and Citizenship in Tashkent."
+    },
+    "proc_time": "3 to 6 Months (Statutory Review)",
+    "proc_details": "Processed by the Ministry of Internal Affairs of the Republic of Uzbekistan.",
+    "source": "Main Directorate of Migration and Citizenship (MVD Uzbekistan)",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Property Purchase Deed ($100k+ USD) or 5-Year Legal Residence Verification",
+    "assessment_desc": "Registered title deed in Tashkent region or continuous employment/residence record.",
+    "min_funds": "Real estate investment threshold or verifiable sustainable income",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Real Estate Route",
+        "description": "Fast-track PR through property acquisition in Tashkent or Samarkand."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Equal Civil Rights",
+        "description": "Access to local banking, business ownership, and healthcare."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can buying property in Uzbekistan give PR?",
+        "answer": "Yes, foreign nationals purchasing real estate valued at $100,000+ USD in Tashkent region qualify for a permanent residence permit."
+      }
+    ]
+  },
+  "kyrgyzstan": {
+    "cname": "Kyrgyzstan",
+    "scheme": "Permanent Residence Permit (Vid na zhitelstvo)",
+    "overview": "Available to foreign nationals residing legally on temporary permits for 5 continuous years, or through significant capital investments or marriage to a Kyrgyz citizen.",
+    "fees": {
+      "visa_fee": "State duty: approx. 3,000-5,000 KGS",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹6,000 Statutory Reference",
+      "currency": "KGS",
+      "notes": "Lodged at local Migration Department in Kyrgyzstan."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Adjudicated by the Ministry of Internal Affairs and State Migration Service.",
+    "source": "Ministry of Internal Affairs of the Kyrgyz Republic (MVD)",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Proof of 5-Year Continuous Lawful Residence & Solvency",
+    "assessment_desc": "Clean police clearance and verified housing registration in Kyrgyzstan.",
+    "min_funds": "Proof of sustainable annual income or local property ownership",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "5-Year Residence Card",
+        "description": "Permanent residence with unrestricted domestic employment rights."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens obtain PR in Kyrgyzstan?",
+        "answer": "Yes, after 5 continuous years of lawful temporary residence and passing standard police/tax clearances."
+      }
+    ]
+  },
+  "tajikistan": {
+    "cname": "Tajikistan",
+    "scheme": "Permanent Residence Permit (Iҷozat baroi sukūnati doimī)",
+    "overview": "Permanent residence is granted to foreign nationals residing legally on temporary permits for 5 continuous years, high-value investors, or spouses of Tajik citizens.",
+    "fees": {
+      "visa_fee": "State duty: approx. 500-1,000 TJS",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹5,000 Statutory Reference",
+      "currency": "TJS",
+      "notes": "Lodged at Migration Service in Dushanbe."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Adjudicated by the Ministry of Internal Affairs (VKD).",
+    "source": "Ministry of Internal Affairs of the Republic of Tajikistan (VKD)",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Proof of 5-Year Continuous Residence & Clean Police Clearance",
+    "assessment_desc": "Proof of continuous legal stay and registered residential accommodation.",
+    "min_funds": "Proof of sustainable lawful income in Tajikistan",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Status",
+        "description": "Live and work indefinitely in Tajikistan without annual work permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can an Indian get PR in Tajikistan?",
+        "answer": "By completing 5 years of lawful temporary residence or through substantial direct business investments."
+      }
+    ]
+  },
+  "turkmenistan": {
+    "cname": "Turkmenistan",
+    "scheme": "Permanent Residence Status (Hemişelik ýaşaýyş)",
+    "overview": "Permanent residence in Turkmenistan is highly restricted and granted strictly by presidential decree or State Migration Service authorization after 5+ years lawful residence, marriage to a citizen, or strategic national contribution.",
+    "fees": {
+      "visa_fee": "State duty: approx. 200-500 TMT",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹10,000 Statutory Reference",
+      "currency": "TMT",
+      "notes": "State Migration Service Central Headquarters in Ashgabat."
+    },
+    "proc_time": "6 to 12 Months",
+    "proc_details": "Adjudicated centrally by the State Migration Service of Turkmenistan.",
+    "source": "State Migration Service of Turkmenistan",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "State Migration Service Permanent Residence Decree",
+    "assessment_desc": "Official decree approving permanent residence registration in Turkmenistan.",
+    "min_funds": "Verified lawful income and registered residential accommodation in Turkmenistan",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Rare Permanent Status",
+        "description": "Indefinite residence authorization granted under strict statutory criteria."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is PR available in Turkmenistan?",
+        "answer": "PR is rare and strictly regulated, requiring years of legal residence, marriage to a citizen, or strategic economic investment."
+      }
+    ]
+  },
+  "azerbaijan": {
+    "cname": "Azerbaijan",
+    "scheme": "Permanent Residence Permit (Daimi yaşamaq üçün icazə vəsiqəsi)",
+    "overview": "Azerbaijan grants permanent residence to foreign nationals who have resided continuously on temporary residence permits for 2 years, or through investment of 500,000+ AZN in the economy or 200,000+ AZN in local bank deposits.",
+    "fees": {
+      "visa_fee": "State duty: approx. 300-500 AZN",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹15,000 Statutory Reference",
+      "currency": "AZN",
+      "notes": "Applied at State Migration Service in Baku."
+    },
+    "proc_time": "2 to 3 Months",
+    "proc_details": "Adjudicated by the State Migration Service of Azerbaijan.",
+    "source": "State Migration Service of the Republic of Azerbaijan",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "2-Year Lawful Residence Record or Investment Proof & Azerbaijani Language Test",
+    "assessment_desc": "Proof of 2 years continuous temporary residence and basic Azerbaijani language test.",
+    "min_funds": "Proof of sustainable lawful income or bank deposit in Azerbaijan",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Fast 2-Year Pathway",
+        "description": "One of the quickest European/Eurasian paths to PR — eligible after just 2 years of residence."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Work Rights",
+        "description": "Work in any enterprise without employer-sponsored work permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How quickly can I get PR in Azerbaijan?",
+        "answer": "You can apply after holding a temporary residence permit continuously for just 2 years and passing a basic language/rights test."
+      }
+    ]
+  },
+  "georgia": {
+    "cname": "Georgia",
+    "scheme": "Permanent Residence Permit (Mudmivi binadrobis motsmoba)",
+    "overview": "Georgia grants Permanent Residence to foreign nationals who have resided lawfully on temporary residence permits for 6 continuous years, or through $300,000+ USD real estate investment (5-year investment PR leading to permanent status).",
+    "fees": {
+      "visa_fee": "State fee: approx. 300-500 GEL",
+      "service_fee": "Card processing fee",
+      "total_fee": "approx. ₹12,000 Statutory Reference",
+      "currency": "GEL",
+      "notes": "Applied at Public Service Hall in Tbilisi or regional branches."
+    },
+    "proc_time": "30 Calendar Days (Standard) / 10 Days (Express)",
+    "proc_details": "Adjudicated by the Public Service Development Agency under the Ministry of Justice.",
+    "source": "Public Service Hall & Ministry of Justice of Georgia",
+    "validity": "Indefinite Permanent Residence Status (Biometric card renewed every 5 years)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "6-Year Temporary Residence Record or $300k USD Investment Proof",
+    "assessment_desc": "Continuous legal residence record verified by Public Service Hall.",
+    "min_funds": "Verified sustainable income or investment threshold",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Residence Card",
+        "description": "Indefinite right to live and work in Georgia without visa requirements."
+      },
+      {
+        "icon": "🏡",
+        "title": "Real Estate Investment",
+        "description": "Pathways to residence through property acquisition."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get PR in Georgia?",
+        "answer": "Standard eligibility requires 6 continuous years of temporary residence, or fast-track investment in commercial real estate."
+      }
+    ]
+  },
+  "armenia": {
+    "cname": "Armenia",
+    "scheme": "Special Residence Status (10-Year Passport) / Permanent Residence (5-Year Card)",
+    "overview": "Armenia offers a unique Special Residence Status (10-year passport booklet) for foreign nationals of Armenian origin or significant economic/cultural contributors, as well as 5-year Permanent Residence cards after 3 years legal residence.",
+    "fees": {
+      "visa_fee": "Special Status: 150,000 AMD (approx. ₹30,000) / PR: 140,000 AMD",
+      "service_fee": "Document review fee",
+      "total_fee": "approx. ₹30,000 Statutory Reference",
+      "currency": "AMD",
+      "notes": "Special Status grants a 10-year passport issued by the President."
+    },
+    "proc_time": "2 to 3 Months",
+    "proc_details": "Adjudicated by the Migration and Citizenship Service and the Office of the Prime Minister/President.",
+    "source": "Migration and Citizenship Service & Office of the President of Armenia",
+    "validity": "10-Year Special Passport / 5-Year Permanent Residence Card",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "Economic Investment / 3-Year Legal Residence Verification",
+    "assessment_desc": "Proof of continuous residence, business investment, or exceptional contribution.",
+    "min_funds": "Proof of sustainable lawful income or enterprise ownership in Armenia",
+    "highlights": [
+      {
+        "icon": "📘",
+        "title": "10-Year Special Passport",
+        "description": "Prestigious 10-year special passport booklet granting full residency rights."
+      },
+      {
+        "icon": "💼",
+        "title": "Free Employment & Enterprise",
+        "description": "Work and start businesses with zero foreign worker restrictions."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is Armenia Special Residence Status?",
+        "answer": "A prestigious 10-year status granted by presidential decree that provides full residency, civil rights, and border-free entry."
+      }
+    ]
+  },
+  "moldova": {
+    "cname": "Moldova",
+    "scheme": "Permanent Residence Permit (Drept de ședere permanentă)",
+    "overview": "Moldova grants permanent residency to foreign nationals who have resided continuously on temporary residence permits for 5 years, investors contributing significant capital, or spouses of Moldovan citizens after 3 years.",
+    "fees": {
+      "visa_fee": "State duty: approx. 1,000 MDL",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹8,000 Statutory Reference",
+      "currency": "MDL",
+      "notes": "Lodged at General Inspectorate for Migration in Chișinău."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Adjudicated by the General Inspectorate for Migration under the Ministry of Internal Affairs.",
+    "source": "General Inspectorate for Migration of the Republic of Moldova (IGM)",
+    "validity": "10-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "5-Year Continuous Residence Record & Romanian/Moldovan Language Test",
+    "assessment_desc": "Clean police clearance, certified housing, and basic state language test.",
+    "min_funds": "Proof of sustainable lawful income or property in Moldova",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent European Status",
+        "description": "Full permanent residence rights in an EU candidate country."
+      },
+      {
+        "icon": "💼",
+        "title": "Free Employment",
+        "description": "Work in any sector without work authorization permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can an Indian get PR in Moldova?",
+        "answer": "After 5 continuous years of lawful temporary residence, passing standard health, criminal, and state language checks."
+      }
+    ]
+  },
+  "pakistan": {
+    "cname": "Pakistan",
+    "scheme": "Permanent Residence / Pakistan Origin Card (POC)",
+    "overview": "Foreign spouses of Pakistani citizens qualify for a Pakistan Origin Card (POC) granting indefinite stay and visa-free travel. Permanent residence for foreign investors requires substantial capital investment under Board of Investment guidelines.",
+    "fees": {
+      "visa_fee": "$150-250 USD",
+      "service_fee": "NADRA smart card fee",
+      "total_fee": "$150-250 USD Statutory Reference",
+      "currency": "USD",
+      "notes": "Issued by NADRA."
+    },
+    "proc_time": "2 to 3 Months",
+    "proc_details": "Adjudicated by NADRA and Ministry of Interior.",
+    "source": "NADRA & Ministry of Interior Pakistan",
+    "validity": "5-Year Smart Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "POC Eligibility Verification / BOI Investment Approval",
+    "assessment_desc": "Proof of marriage to a citizen or major foreign direct investment.",
+    "min_funds": "Proof of sustainable lawful income or investment threshold",
+    "highlights": [
+      {
+        "icon": "💳",
+        "title": "NADRA Smart Card",
+        "description": "Visa-free entry, employment rights, and bank account opening in Pakistan."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreign spouses get permanent stay in Pakistan?",
+        "answer": "Yes, foreign spouses of Pakistani citizens qualify for the Pakistan Origin Card (POC), which provides multi-year residence and visa-free travel."
+      }
+    ]
+  },
+  "bangladesh": {
+    "cname": "Bangladesh",
+    "scheme": "Permanent Resident Status / Investor PR",
+    "overview": "Bangladesh offers permanent residency to foreign nationals who invest a minimum of $75,000 USD in a non-repatriable industrial project or $1,000,000 USD in recognized financial institutions under BIDA guidelines.",
+    "fees": {
+      "visa_fee": "State duty applies",
+      "service_fee": "Administrative processing",
+      "total_fee": "Official Statutory Fees Apply",
+      "currency": "BDT",
+      "notes": "Applied via Bangladesh Investment Development Authority (BIDA)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Reviewed by BIDA and approved by Ministry of Home Affairs.",
+    "source": "Bangladesh Investment Development Authority (BIDA) & Ministry of Home Affairs",
+    "validity": "Permanent Residence Status (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "BIDA Investment Certificate ($75,000+ USD)",
+    "assessment_desc": "Official proof of capital transfer into Bangladesh banking system.",
+    "min_funds": "Minimum $75,000 USD direct industrial investment",
+    "highlights": [
+      {
+        "icon": "💰",
+        "title": "Low Investment Threshold",
+        "description": "PR granted through direct enterprise investment starting at $75,000 USD."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Citizenship Pathway",
+        "description": "Investment of $500,000 USD qualifies for naturalized citizenship."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can a foreigner get PR in Bangladesh?",
+        "answer": "By investing a minimum of $75,000 USD in a non-repatriable enterprise approved by BIDA."
+      }
+    ]
+  },
+  "myanmar": {
+    "cname": "Myanmar",
+    "scheme": "Permanent Residence Scheme (PR System)",
+    "overview": "Myanmar offers a Permanent Residence (PR) scheme for foreign investors, specialists, professionals, and foreign spouses of Myanmar citizens, permitting long-term stay and multi-entry privileges.",
+    "fees": {
+      "visa_fee": "Application fee: $500 USD / Annual permit fee applies",
+      "service_fee": "Biometric card fee",
+      "total_fee": "$500 USD Statutory Reference",
+      "currency": "USD",
+      "notes": "Administered by the Ministry of Immigration and Population in Nay Pyi Taw."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Reviewed by the Central Committee for the Management of Permanent Residence.",
+    "source": "Ministry of Immigration and Population of Myanmar",
+    "validity": "Initial 5-Year Term (Renewable for 5-year periods)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "DICA Investment / Professional Qualification Verification",
+    "assessment_desc": "Certified professional credentials or DICA-approved enterprise investment.",
+    "min_funds": "Proof of sustainable lawful income or investment capital",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "5-Year Renewable Term",
+        "description": "Multi-year residence with unrestricted exit and entry."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How does an Indian citizen qualify for Myanmar PR?",
+        "answer": "Through the official PR scheme as an investor, skilled specialist, or foreign spouse after background and financial vetting."
+      }
+    ]
+  },
+  "laos": {
+    "cname": "Laos",
+    "scheme": "Permanent Stay Permit (Bay anuyat yu doim)",
+    "overview": "Permanent residence in Laos is granted to foreign investors with substantial registered capital ($500,000+ USD) in national development projects or foreign nationals with 10+ years lawful continuous residence.",
+    "fees": {
+      "visa_fee": "State duty applies",
+      "service_fee": "Biometric card fee",
+      "total_fee": "Official Government State Duties Apply",
+      "currency": "LAK",
+      "notes": "Administered by the Department of Immigration in Vientiane."
+    },
+    "proc_time": "6 to 12 Months",
+    "proc_details": "Reviewed by the Ministry of Public Security and approved by Prime Minister's Office.",
+    "source": "Ministry of Public Security & Ministry of Planning and Investment of Lao PDR",
+    "validity": "5-Year Renewable Stay Permit",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "MPI Investment Concession / Continuous Residence Record",
+    "assessment_desc": "Proof of major enterprise investment or clean 10-year residence record.",
+    "min_funds": "Substantial enterprise investment or verified sustainable income",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Long-Term Residence",
+        "description": "Long-term security for major international investors and project directors."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreigners get PR in Laos?",
+        "answer": "Yes, through substantial investment in registered concession projects or extended lawful residence under Ministry of Public Security rules."
+      }
+    ]
+  },
+  "mongolia": {
+    "cname": "Mongolia",
+    "scheme": "Permanent Residence Permit (Baingyn orshin suukh zöwshööröl)",
+    "overview": "Permanent residence in Mongolia is available to foreign nationals who have resided legally for 3+ years, made substantial capital investments ($100,000+ USD) in Mongolian enterprise, or spouses of Mongolian citizens.",
+    "fees": {
+      "visa_fee": "State duty: approx. 100,000-200,000 MNT",
+      "service_fee": "Biometric card fee",
+      "total_fee": "approx. ₹8,000 Statutory Reference",
+      "currency": "MNT",
+      "notes": "Administered by the Mongolia Immigration Agency in Ulaanbaatar."
+    },
+    "proc_time": "2 to 3 Months",
+    "proc_details": "Adjudicated by the Mongolia Immigration Agency.",
+    "source": "Mongolia Immigration Agency (MIA)",
+    "validity": "5-Year Biometric Residence Card (Renewable)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "3-Year Legal Residence Record / $100k USD Investment Certificate",
+    "assessment_desc": "Clean background check and certified proof of continuous residence or investment.",
+    "min_funds": "Proof of sustainable lawful income or enterprise investment in Mongolia",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "5-Year Residence Card",
+        "description": "Permanent residence with unrestricted work authorization and travel freedom."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can an Indian get PR in Mongolia?",
+        "answer": "By investing $100,000+ USD in an active Mongolian enterprise or residing continuously for 3+ years on a valid residence permit."
+      }
+    ]
+  },
+  "taiwan": {
+    "cname": "Taiwan",
+    "scheme": "Alien Permanent Resident Certificate (APRC / 永久居留證)",
+    "overview": "Taiwan offers Alien Permanent Resident Certificates (APRC) to foreign professionals who have legally resided in Taiwan for 5 consecutive years (residing at least 183 days per year) and meet statutory salary or asset requirements (reduced to 3 years for Gold Card holders).",
+    "fees": {
+      "visa_fee": "State fee: NT$10,000 (approx. ₹26,000)",
+      "service_fee": "Document verification fee",
+      "total_fee": "NT$10,000 Statutory Reference",
+      "currency": "TWD",
+      "notes": "Administered by National Immigration Agency (NIA) service centers in Taiwan."
+    },
+    "proc_time": "1 to 2 Months",
+    "proc_details": "Adjudicated by the National Immigration Agency under the Ministry of the Interior.",
+    "source": "National Immigration Agency (NIA Taiwan)",
+    "validity": "Indefinite Permanent Resident Status (Open work rights)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "5-Year ARC Residence Record & Tax Assessment (twice minimum wage)",
+    "assessment_desc": "Proof of 5 years residence and annual income exceeding twice the statutory minimum wage (NT$575,000+).",
+    "min_funds": "Annual income of twice the statutory minimum wage or verified net worth exceeding NT$5,000,000",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Open Work Rights",
+        "description": "Work in any role or start any business without employer sponsorship."
+      },
+      {
+        "icon": "⚡",
+        "title": "Fast-Track for Gold Card",
+        "description": "Employment Gold Card holders qualify for APRC in just 3 years instead of 5 years."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get APRC in Taiwan?",
+        "answer": "Standard requirement is 5 consecutive years residing at least 183 days/year, reduced to 3 years for Employment Gold Card holders."
+      }
+    ]
+  },
+  "hong-kong": {
+    "cname": "Hong Kong",
+    "scheme": "Permanent Identity Card (Right of Abode / 香港永久性居民身分證)",
+    "overview": "Foreign nationals who have entered Hong Kong lawfully on a valid visa (work, business, study) and resided continuously for not less than 7 years qualify for Right of Abode and a Hong Kong Permanent Identity Card (HKID).",
+    "fees": {
+      "visa_fee": "HK$0 (Application Fee) / HK$0 (Smart ID Card issuance)",
+      "service_fee": "₹0",
+      "total_fee": "HK$0 Total Government Cost",
+      "currency": "HKD",
+      "notes": "Right of Abode verification is free of charge."
+    },
+    "proc_time": "6 to 8 Weeks",
+    "proc_details": "Adjudicated by the Right of Abode Section of the Hong Kong Immigration Department.",
+    "source": "Hong Kong Immigration Department (ImmD)",
+    "validity": "Indefinite Right of Abode (Never expires)",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "7-Year Continuous Ordinary Residence Record & Tax Notices",
+    "assessment_desc": "Proof of continuous residence in Hong Kong for at least 7 consecutive years.",
+    "min_funds": "No minimum fund requirement for Right of Abode",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Right of Abode",
+        "description": "Constitutional right to land, live, work, vote, and never be deported from Hong Kong."
+      },
+      {
+        "icon": "💳",
+        "title": "Hong Kong Permanent ID Card",
+        "description": "Free electronic e-Channel border clearance and full social healthcare/schooling access."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get PR in Hong Kong?",
+        "answer": "You must reside continuously for 7 years on an eligible work, talent, or residence visa (time spent on a student visa can count towards the 7 years if followed by work/IANG)."
+      }
+    ]
+  },
+  "macau": {
+    "cname": "Macau",
+    "scheme": "Macau SAR Permanent Resident Identity Card (澳門永久性居民身分證)",
+    "overview": "Permanent residency in Macau is granted to foreign nationals who have lawfully resided for a continuous period of not less than 7 years, or high-level talent under the new Qualified Talent Admission Scheme administered by IPIM.",
+    "fees": {
+      "visa_fee": "State fee applies",
+      "service_fee": "Identification Services Bureau card fee",
+      "total_fee": "Official Statutory Fees Apply",
+      "currency": "MOP",
+      "notes": "Administered by the Identification Services Bureau (DSI)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Adjudicated by the Identification Services Bureau (DSI) and Talent Development Committee.",
+    "source": "Identification Services Bureau (DSI) & Commerce and Investment Promotion Institute (IPIM)",
+    "validity": "Indefinite Permanent Resident Status",
+    "stay": "Indefinite Lawful Residence",
+    "entry_type": "Permanent Resident",
+    "assessment_doc": "7-Year Lawful Residence Record or Talent Admission Decree",
+    "assessment_desc": "Proof of continuous residence for 7 years or certified High-End Talent status.",
+    "min_funds": "Sustainable lawful income or specialized professional contribution",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Macau Permanent ID Card",
+        "description": "Constitutional Right of Abode, free public healthcare, and annual cash handouts (Wealth Partaking Scheme)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does it take to get PR in Macau?",
+        "answer": "Standard qualification requires 7 continuous years of ordinary residence, or accelerated entry under the new Talent Admission schemes."
+      }
+    ]
+  },
+  "nigeria": {
+    "cname": "Nigeria",
+    "scheme": "Indefinite Expatriate Residence Permit & High-Capital Investor Status",
+    "overview": "Nigeria grants long-term residency and permanent settlement through successive renewals of the CERPAC Green Card, or through large-scale capital importation certified by the Central Bank of Nigeria (CBN) and the Nigerian Investment Promotion Commission (NIPC). Foreigners residing legally in Nigeria for extended periods who contribute substantially to the national economy can apply to the Minister of Interior for indefinite residence status.",
+    "fees": {
+      "visa_fee": "$2,000 (CERPAC Bi-Annual Renewal)",
+      "service_fee": "Variable ministerial processing levies",
+      "total_fee": "$2,500 - $3,500",
+      "notes": "Statutory rates administered by Federal Ministry of Interior."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Requires submission of file to Comptroller General of Immigration and Federal Ministry of Interior headquarters in Abuja.",
+    "source": "Federal Ministry of Interior & Nigeria Immigration Service (NIS)",
+    "validity": "Indefinite / 5-Year Renewable Card",
+    "stay": "Continuous lawful residency",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "NIPC Investor Certificate & Central Bank Certificate of Capital Importation (CCI)",
+    "assessment_desc": "Proof of active major foreign direct investment, continuous tax compliance, and clean criminal background in Nigeria.",
+    "min_funds": "Minimum $500,000 USD foreign direct investment capital importation or 5+ years executive tax contributions",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Settlement Security",
+        "description": "Long-term security of domicile without needing annual expatriate quota renewal submissions."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Business Operations",
+        "description": "Own, establish, and operate Nigerian businesses with 100% foreign equity under the NIPC Act."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Full Family Inclusion",
+        "description": "Spouses and children receive dependent permanent status with unrestricted domestic schooling and residence."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreigners get citizenship or PR in Nigeria?",
+        "answer": "Foreigners can obtain permanent residence through the Ministry of Interior after sustained lawful residence and economic contributions. Citizenship by naturalization requires 15 continuous years of residence and presidential assent."
+      },
+      {
+        "question": "What is the fastest pathway to long-term residency in Nigeria?",
+        "answer": "The most reliable route is establishing a registered enterprise with NIPC and securing multi-year executive CERPAC status backed by capital importation certificates."
+      }
+    ]
+  },
+  "ghana": {
+    "cname": "Ghana",
+    "scheme": "Indefinite Residence Status / Right of Abode (Immigration Act 2000)",
+    "overview": "Ghana offers long-term settlement under Section 17 of the Immigration Act 2000. Foreign nationals who have resided continuously in Ghana for at least seven (7) years and contributed significantly to the country's economic, social, or cultural progress can petition the Minister for the Interior for Indefinite Residence. High-value foreign investors can also qualify for long-term residency privileges through GIPC.",
+    "fees": {
+      "visa_fee": "$2,500 (Statutory Indefinite Residence Application)",
+      "service_fee": "Variable ministerial inspection levies",
+      "total_fee": "approx. $3,000",
+      "notes": "Administered by the Ministry for the Interior in Accra."
+    },
+    "proc_time": "6 to 12 Months",
+    "proc_details": "Requires security vetting by GIS and approval by the Minister for the Interior.",
+    "source": "Ministry for the Interior & Ghana Immigration Service (GIS)",
+    "validity": "Indefinite Permanent Status",
+    "stay": "Permanent lawful residence in Ghana",
+    "entry_type": "Multiple Entry (Free border passage)",
+    "assessment_doc": "GIS 7-Year Continuous Residence Records & GRA Tax Clearance Certificates",
+    "assessment_desc": "Documentary proof of 7+ years legal residence, clean police report, and Ghana Revenue Authority (GRA) tax compliance.",
+    "min_funds": "Continuous financial solvency and property ownership or enterprise investment in Ghana",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Lifetime Right to Reside",
+        "description": "Permanent right to live, move, and establish home anywhere in Ghana without annual permit renewals."
+      },
+      {
+        "icon": "💼",
+        "title": "Freedom of Enterprise",
+        "description": "Direct commercial property ownership and company operations under Ghanaian domestic frameworks."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Settlement Protections",
+        "description": "Spouses and qualifying dependents enjoy permanent residency rights."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence are required for PR in Ghana?",
+        "answer": "A foreign national must reside legally in Ghana for at least seven (7) consecutive years before qualifying to apply for Indefinite Residence status."
+      },
+      {
+        "question": "Can an Indian national buy property in Ghana?",
+        "answer": "Yes. Foreigners can purchase and hold 50-year leasehold interests in real property under Ghanaian land laws."
+      }
+    ]
+  },
+  "ethiopia": {
+    "cname": "Ethiopia",
+    "scheme": "Foreign Investor Residence Permit (Ethiopian Investment Commission)",
+    "overview": "Ethiopia grants multi-year and permanent residence privileges to foreign direct investors under the Ethiopian Investment Commission (EIC) framework. Investors who inject qualifying capital into priority manufacturing, agriculture, pharmaceuticals, or technology sectors receive renewable 5-year foreign investor residency cards, complete with duty-free exemptions and land lease access.",
+    "fees": {
+      "visa_fee": "$500 (Investor Residency Authorization)",
+      "service_fee": "Variable municipal levies",
+      "total_fee": "approx. $750",
+      "notes": "Administered jointly by EIC and Immigration and Citizenship Service (ICS)."
+    },
+    "proc_time": "1 to 3 Months",
+    "proc_details": "Requires approved EIC Investment Permit and capital registration with the National Bank of Ethiopia (NBE).",
+    "source": "Ethiopian Investment Commission (EIC) & Immigration and Citizenship Service (ICS)",
+    "validity": "5 Years Renewable / Indefinite Status",
+    "stay": "Continuous resident status",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "EIC Investment Permit & NBE Foreign Exchange Inflow Registration",
+    "assessment_desc": "Certified proof of capital importation, operational enterprise license, and local employment creation.",
+    "min_funds": "Minimum $150,000 USD (joint venture) or $200,000 USD (100% foreign owned) capital investment",
+    "highlights": [
+      {
+        "icon": "🏢",
+        "title": "5-Year Investor Security",
+        "description": "Multi-year resident permit eliminates the need for frequent short-term visa renewals."
+      },
+      {
+        "icon": "💰",
+        "title": "Generous Tax Holidays",
+        "description": "Up to 5 to 10 years of income tax exemption depending on industrial park location and export volume."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Investor Family Privilege",
+        "description": "Investor's spouse and dependent children automatically receive matching 5-year residency status."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can an Indian investor obtain long-term residency in Ethiopia?",
+        "answer": "Yes. Foreign investors with an approved EIC investment permit and registered capital receive a renewable 5-year foreign investor residence card."
+      },
+      {
+        "question": "Can foreign nationals own land in Ethiopia?",
+        "answer": "Land in Ethiopia is state-owned, but foreign investors can secure long-term industrial and agricultural leases of up to 40 to 80 years."
+      }
+    ]
+  },
+  "rwanda": {
+    "cname": "Rwanda",
+    "scheme": "Permanent Residence Permit (Class PR) / High-Value Investor Residency",
+    "overview": "Rwanda offers permanent residency to foreign nationals under Law No. 04/2011. Foreigners who have resided continuously and legally in Rwanda for at least five (5) consecutive years, or who invest substantial capital into registered priority sectors through the Rwanda Development Board (RDB), are eligible for permanent residence status.",
+    "fees": {
+      "visa_fee": "200,000 RWF (approx. $160 Permanent Residence Card)",
+      "service_fee": "50,000 RWF application fee",
+      "total_fee": "approx. ₹20,000",
+      "notes": "Highly accessible permanent residency statutory levies."
+    },
+    "proc_time": "1 to 3 Months",
+    "proc_details": "Application submitted to the Director General of Immigration and Emigration in Kigali.",
+    "source": "Directorate General of Immigration and Emigration (DGIE) & RDB",
+    "validity": "Permanent / Lifetime Status",
+    "stay": "Unrestricted permanent residency in Rwanda",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "RDB Certified Investment Portfolio or 5-Year Legal Residence Records",
+    "assessment_desc": "Proof of clean judicial record, continuous tax compliance with Rwanda Revenue Authority (RRA), and substantial economic integration.",
+    "min_funds": "$100,000+ USD qualifying investment or 5 years demonstrated professional income",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Settlement Security",
+        "description": "Indefinite right to reside in Rwanda without renewing work or temporary permits."
+      },
+      {
+        "icon": "🏡",
+        "title": "Unrestricted Real Estate & Asset Ownership",
+        "description": "Acquire freehold property and assets across Kigali and all provincial districts."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Inclusivity",
+        "description": "Full permanent residence rights extended to spouse and qualifying dependent children."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long do I need to live in Rwanda before applying for PR?",
+        "answer": "Under DGIE regulations, five (5) consecutive years of lawful temporary residence qualify an applicant for permanent residence status."
+      },
+      {
+        "question": "Can foreign PR holders own real estate in Rwanda?",
+        "answer": "Yes. Permanent residents have full rights to purchase and hold property across Rwanda."
+      }
+    ]
+  },
+  "zimbabwe": {
+    "cname": "Zimbabwe",
+    "scheme": "Permanent Residence Permit / Investor Domicile Status",
+    "overview": "Zimbabwe grants Permanent Residence to foreign nationals who make substantial qualifying investments in key economic sectors (such as mining, agriculture, manufacturing, or tourism infrastructure) through ZIDA, or who have resided legally in Zimbabwe for extended periods (typically 5+ years) on continuous temporary permits.",
+    "fees": {
+      "visa_fee": "$1,000 (Permanent Residence Statutory Assessment)",
+      "service_fee": "$500 (Issuance)",
+      "total_fee": "approx. $1,500",
+      "notes": "Approved by the Minister of Home Affairs and Cultural Heritage."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "File submitted to the Chief Director of Immigration in Harare for ministerial approval.",
+    "source": "Department of Immigration Zimbabwe & Ministry of Home Affairs",
+    "validity": "Permanent / Indefinite Residence",
+    "stay": "Permanent lawful domicile in Zimbabwe",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "ZIDA Investment License & Central Bank Exchange Control Registration",
+    "assessment_desc": "Proof of qualifying foreign direct investment, asset ownership, and clear police background records.",
+    "min_funds": "Minimum $100,000 - $300,000 USD foreign direct investment in registered enterprise",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Security of Tenure",
+        "description": "Long-term domicile security without reliance on periodic work permit renewals."
+      },
+      {
+        "icon": "🌾",
+        "title": "Asset & Enterprise Ownership",
+        "description": "Full commercial rights to develop mining claims, agricultural operations, and businesses."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Generational Family Stability",
+        "description": "Permanent residence extends to spouse and dependent family members."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian investors get permanent residency in Zimbabwe?",
+        "answer": "Yes. Foreign investors who establish bona fide enterprises through ZIDA and invest significant capital qualify to apply for permanent residence."
+      },
+      {
+        "question": "Can foreign PR holders purchase property in Zimbabwe?",
+        "answer": "Yes. Foreign permanent residents can purchase residential and commercial real estate in Zimbabwe."
+      }
+    ]
+  },
+  "colombia": {
+    "cname": "Colombia",
+    "scheme": "Resident Visa (Visa R - Residente Permanente) / Investor Residency",
+    "overview": "Colombia offers permanent settlement through the Resident Visa (Visa R). Foreign nationals qualify after maintaining continuous legal residence under a Migrant Visa (Visa M) for five (5) consecutive years, or by making a substantial qualifying direct foreign investment (minimum 650 Colombian legal monthly minimum wages, approx. $175,000 USD) in Colombian enterprises or real estate.",
+    "fees": {
+      "visa_fee": "$52 (Study Fee) + $391 (Issuance Fee) = $443 USD",
+      "service_fee": "$55 (Cédula de Extranjería)",
+      "total_fee": "$498 USD (approx. ₹41,800)",
+      "notes": "Official fees set by Cancillería under Resolution 5477."
+    },
+    "proc_time": "1 to 3 Months",
+    "proc_details": "Applied online at cancilleria.gov.co with proof of 5-year Visa M holding or certified capital investment.",
+    "source": "Ministerio de Relaciones Exteriores (Cancillería)",
+    "validity": "5 Years (Renewable Indefinite Permanent Status)",
+    "stay": "Permanent lawful residence in Colombia",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year Safe Conduct / Visa M History or Banco de la República Foreign Investment Certificate",
+    "assessment_desc": "Certified proof of continuous legal residence on Visa M without exceeding absence limits, or Central Bank registered foreign direct investment.",
+    "min_funds": "5 years continuous employment on Visa M or 650 monthly minimum wages invested",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Colombian Residence",
+        "description": "Full permanent status granting unrestricted employment, business creation, and domicile."
+      },
+      {
+        "icon": "🇨🇴",
+        "title": "Pathway to Colombian Citizenship",
+        "description": "Eligible to apply for Colombian naturalization and passport after 5 years on Visa R."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Permanent Regularization",
+        "description": "Spouses and children receive matching permanent resident status."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many days can I be outside Colombia on Visa R without losing it?",
+        "answer": "Under Cancillería regulations, Visa R holders must not remain outside Colombia for more than two (2) consecutive years continuously, or the visa may be canceled."
+      },
+      {
+        "question": "How many years of work visa lead to permanent residency?",
+        "answer": "Holding a Visa M (Trabajador) continuously for five (5) years entitles you to apply for permanent Resident Visa (Visa R)."
+      }
+    ]
+  },
+  "peru": {
+    "cname": "Peru",
+    "scheme": "Permanent Residency (Calidad Migratoria Inmigrante) / Investor Status",
+    "overview": "Peru offers permanent residency under the Inmigrante status (Legislative Decree 1350). Foreign nationals who have resided legally in Peru for at least three (3) consecutive years on a resident status (such as Resident Worker or Investor), and who demonstrate continuous financial solvency and tax compliance, qualify for permanent residence with indefinite work and domicile rights.",
+    "fees": {
+      "visa_fee": "$150 (Inmigrante Processing Fee)",
+      "service_fee": "$30 (Permanent Carné de Extranjería)",
+      "total_fee": "$180 USD (approx. ₹15,000)",
+      "notes": "Administered by Migraciones Peru in Lima."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Application evaluated by the Directorate of Immigration Management in Lima.",
+    "source": "Superintendencia Nacional de Migraciones",
+    "validity": "Indefinite / Permanent Status",
+    "stay": "Permanent lawful domicile in Peru",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "3-Year Continuous Resident History & SUNAT Tax Clearance",
+    "assessment_desc": "Certified proof of 3+ years legal residence without exceeding statutory absence limits (max 183 days out per year), plus clean criminal record and SUNAT tax compliance.",
+    "min_funds": "Demonstrated ongoing employment income, enterprise profits, or $150,000 USD qualifying investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite Settlement Rights",
+        "description": "Permanent residence status never expires as long as annual renewal of the physical Carné card is maintained."
+      },
+      {
+        "icon": "🇵🇪",
+        "title": "Pathway to Peruvian Citizenship",
+        "description": "Eligible to apply for Peruvian citizenship by naturalization after 2 years of legal residence."
+      },
+      {
+        "icon": "💼",
+        "title": "Exemption from Foreign Worker Quotas",
+        "description": "Permanent residents are classified as domestic workers, exempt from MTPE foreign hiring quotas."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long do I need to live in Peru to get permanent residency?",
+        "answer": "Under Peruvian immigration law, you must maintain temporary legal residence (such as worker or investor status) for three (3) consecutive years before applying for Inmigrante status."
+      },
+      {
+        "question": "Can Inmigrante status holders get Peruvian citizenship?",
+        "answer": "Yes. Peru has one of the shortest citizenship naturalization timelines in South America: you can apply for naturalization after just 2 years of legal residence in the country."
+      }
+    ]
+  },
+  "chile": {
+    "cname": "Chile",
+    "scheme": "Residencia Definitiva (Permanent Residency) - SERMIG",
+    "overview": "Chile offers permanent settlement under the Residencia Definitiva framework. Foreign nationals who have resided legally in Chile on a Temporary Residency permit for at least two (2) consecutive years without excessive overseas travel, and who demonstrate continuous gainful employment or enterprise ownership, qualify to apply for Residencia Definitiva through SERMIG.",
+    "fees": {
+      "visa_fee": "$150 - $250 (SERMIG Residencia Definitiva Fee)",
+      "service_fee": "$10 (Cédula renewal)",
+      "total_fee": "approx. ₹18,000",
+      "notes": "Applied online through SERMIG portal."
+    },
+    "proc_time": "6 to 12 Months",
+    "proc_details": "Application evaluated directly by Servicio Nacional de Migraciones in Santiago.",
+    "source": "Servicio Nacional de Migraciones (SERMIG)",
+    "validity": "Indefinite / Permanent Status",
+    "stay": "Permanent lawful domicile in Chile",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "2-Year Continuous Temporary Residency Records & SII Tax Contributions",
+    "assessment_desc": "Certified proof of 2 years lawful residency, pension contributions (AFP), and clean background certificate.",
+    "min_funds": "Demonstrated continuous employment salary or profitable registered business enterprise",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Permanent Settlement Security",
+        "description": "Indefinite right to reside and work anywhere in Chile without further permit renewals."
+      },
+      {
+        "icon": "🇨🇱",
+        "title": "Pathway to Chilean Citizenship",
+        "description": "Eligible to apply for Chilean naturalization and one of the world's most powerful passports (visa-free to USA/EU) after 5 years of legal residence."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Permanent Status",
+        "description": "Spouse and children receive concurrent permanent residence privileges."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence lead to Chilean citizenship?",
+        "answer": "You can apply for Chilean citizenship by naturalization after five (5) continuous years of legal residence from the date of your initial temporary visa."
+      },
+      {
+        "question": "How long can a Permanent Resident remain outside Chile?",
+        "answer": "Under SERMIG rules, permanent residents must not spend more than two (2) continuous years outside Chile, or their Residencia Definitiva may lapse."
+      }
+    ]
+  },
+  "argentina": {
+    "cname": "Argentina",
+    "scheme": "Radicación Permanente (Permanent Residence) / Inversionista Status",
+    "overview": "Argentina provides one of the most generous permanent settlement frameworks in the world under Migration Law No. 25.871. Foreign nationals qualify for Radicación Permanente (Permanent Residence) after three (3) consecutive years of lawful temporary residence, or by making a qualifying productive investment (minimum 1,500,000 Argentine Pesos capital injection in approved commercial, industrial, or service enterprises).",
+    "fees": {
+      "visa_fee": "$250 (Radicación Permanente Application)",
+      "service_fee": "$50 (Permanent DNI Card)",
+      "total_fee": "$300 USD (approx. ₹25,000)",
+      "notes": "Processed directly at Migraciones in Buenos Aires."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Application evaluated directly by the Dirección Nacional de Migraciones in Buenos Aires.",
+    "source": "Dirección Nacional de Migraciones (DNM)",
+    "validity": "Indefinite Permanent Status",
+    "stay": "Permanent lawful domicile in Argentina",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "3-Year Legal Residence Records & Clean Criminal Record (ReNaP) in Argentina",
+    "assessment_desc": "Certified proof of 3 continuous years of temporary residency, Argentine police certificate, and active tax registration.",
+    "min_funds": "Continuous gainful employment or qualifying enterprise investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Constitutional Right to Settle",
+        "description": "Argentina's National Constitution guarantees foreign residents equal civil rights to citizens, including property ownership and work."
+      },
+      {
+        "icon": "🇦🇷",
+        "title": "Direct Path to Argentine Citizenship",
+        "description": "Eligible to apply for Argentine naturalization and passport after just two (2) continuous years of residence."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Full Family Domicile Rights",
+        "description": "Spouses, children, and parents enjoy concurrent permanent residency rights."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How quickly can I apply for Argentine citizenship?",
+        "answer": "Argentina has the fastest citizenship timeline in South America: under Law 346, any foreigner who has lived legally in Argentina for two (2) consecutive years can apply directly to a federal court for Argentine citizenship."
+      },
+      {
+        "question": "Can permanent residents work for any employer in Argentina?",
+        "answer": "Yes. Permanent residents have unrestricted right to work, start businesses, and reside anywhere in the country without employer sponsorship."
+      }
+    ]
+  },
+  "costa-rica": {
+    "cname": "Costa Rica",
+    "scheme": "Residencia Permanente (Permanent Residency) / Inversionista Status",
+    "overview": "Costa Rica offers permanent residency (Residencia Permanente) under General Migration Law No. 8764. Foreign nationals qualify after holding continuous temporary residency (such as Temporary Worker or Inversionista) for three (3) consecutive years, or immediately if possessing a direct first-degree family tie (marriage or birth of a child) to a Costa Rican citizen. High-net-worth investors can also obtain Inversionista temporary residency with a qualifying capital investment of $150,000 USD.",
+    "fees": {
+      "visa_fee": "$200 (Permanent Residency Application Fee)",
+      "service_fee": "$125 (DIMEX Permanent Card)",
+      "total_fee": "$325 USD (approx. ₹27,500)",
+      "notes": "Processed at DGME headquarters in San José."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the Dirección General de Migración y Extranjería (DGME).",
+    "source": "Dirección General de Migración y Extranjería (DGME)",
+    "validity": "Indefinite Permanent Status",
+    "stay": "Permanent lawful domicile in Costa Rica",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "3-Year Temporary Residency Records & Clean Background Checks",
+    "assessment_desc": "Certified proof of 3 continuous years of temporary residency, Costa Rican judicial record (Hoja de Delincuencia), and CCSS compliance.",
+    "min_funds": "Demonstrated ongoing legal income or $150,000 USD registered capital investment",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite Right to Reside & Work",
+        "description": "Permanent residents can work for any employer or operate businesses without needing work permit approvals."
+      },
+      {
+        "icon": "🇨🇷",
+        "title": "Pathway to Costa Rican Citizenship",
+        "description": "Eligible to apply for Costa Rican naturalization and one of the world's most reputable neutral passports after 5 to 7 years of residence."
+      },
+      {
+        "icon": "🌴",
+        "title": "World-Class Tropical Retirement",
+        "description": "Consistently ranked as one of the best countries in the world for long-term expat settlement and retirement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long do I need to hold temporary residency before applying for PR?",
+        "answer": "Under Costa Rican law, you must maintain continuous temporary residency for three (3) consecutive years before qualifying to apply for Residencia Permanente."
+      },
+      {
+        "question": "What is the Inversionista category in Costa Rica?",
+        "answer": "The Inversionista category allows foreign nationals to obtain residency by investing at least $150,000 USD in real estate, active businesses, venture funds, or tourism projects."
+      }
+    ]
+  },
+  "romania": {
+    "cname": "Romania",
+    "scheme": "Drept de Ședere pe Termen Lung (EU Long-Term Permanent Residence)",
+    "overview": "Romania grants permanent settlement under the EU Long-Term Resident Directive (Drept de Ședere pe Termen Lung). Foreign nationals who have resided continuously and legally in Romania for at least five (5) consecutive years on a temporary residence permit (such as employment or business), without absences exceeding 6 consecutive months or 10 months total, qualify for EU permanent residence.",
+    "fees": {
+      "visa_fee": "€120 (Permanent Residence Application)",
+      "service_fee": "259 RON (IGI Permanent Card Fee)",
+      "total_fee": "approx. ₹18,000",
+      "notes": "Administered by Inspectoratul General pentru Imigrări (IGI)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Requires submission of continuous residency file and Romanian language/civics evaluation at IGI.",
+    "source": "Inspectoratul General pentru Imigrări (IGI) & Ministry of Internal Affairs",
+    "validity": "5 Years (Renewable Indefinite EU Long-Term Residence Card)",
+    "stay": "Permanent lawful residence in Romania",
+    "entry_type": "Multiple Entry (Free border movement across EU)",
+    "assessment_doc": "5-Year IGI Continuous Residence Records & ANAF Tax Proof",
+    "assessment_desc": "Proof of 5 continuous years legal residence, proof of stable income meeting statutory minimums, health insurance (CNAS), and clean police record.",
+    "min_funds": "Continuous income meeting national statutory minimum wage standards",
+    "highlights": [
+      {
+        "icon": "🇪🇺",
+        "title": "EU Long-Term Resident Status",
+        "description": "Grants permanent settlement protections and equal treatment with Romanian citizens regarding employment, education, and social benefits."
+      },
+      {
+        "icon": "🇷🇴",
+        "title": "Pathway to Romanian / EU Citizenship",
+        "description": "Eligible to apply for Romanian citizenship and an EU passport after 8 years of legal residence (reduced to 5 years if married to a citizen)."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Work Authorization",
+        "description": "Work for any employer in Romania without requiring annual Aviz de Muncă approvals."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence are required for PR in Romania?",
+        "answer": "You must reside continuously and legally in Romania for five (5) consecutive years under temporary residence permits before qualifying for EU Long-Term Resident status."
+      },
+      {
+        "question": "Is a Romanian language test required for PR?",
+        "answer": "Yes. Basic communicative knowledge of the Romanian language is evaluated by IGI during the long-term residence interview."
+      }
+    ]
+  },
+  "bulgaria": {
+    "cname": "Bulgaria",
+    "scheme": "Long-Term / Permanent Residence (EU Long-Term Resident Directive)",
+    "overview": "Bulgaria offers permanent settlement under the Foreigners in the Republic of Bulgaria Act and EU Long-Term Resident Directive. Foreign nationals who have resided legally and continuously in Bulgaria for at least five (5) consecutive years on temporary permits, without absences exceeding 6 consecutive months or 10 months total, qualify for EU Long-Term Resident status, granting indefinite residence and equal rights with Bulgarian citizens in employment, education, and healthcare.",
+    "fees": {
+      "visa_fee": "€100 (Application Fee)",
+      "service_fee": "1,000 BGN (Permanent Residence Issuance Fee)",
+      "total_fee": "approx. ₹50,000",
+      "notes": "Administered by the Migration Directorate (Ministry of Interior)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the Migration Directorate in Sofia.",
+    "source": "Migration Directorate (Ministry of Interior)",
+    "validity": "5 Years (Renewable Indefinite EU Residence Card)",
+    "stay": "Permanent lawful residence in Bulgaria",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year Continuous Residence Records & NRA Tax Clearance",
+    "assessment_desc": "Proof of 5 years lawful residency, stable legal income, National Revenue Agency (NRA) tax compliance, and clean criminal record.",
+    "min_funds": "Continuous income meeting national statutory minimum wage benchmarks",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite EU Resident Protections",
+        "description": "Equal treatment with Bulgarian citizens in labour access, social security, and business ownership."
+      },
+      {
+        "icon": "🇧🇬",
+        "title": "Pathway to Bulgarian / EU Citizenship",
+        "description": "Eligible to apply for Bulgarian naturalization and an EU passport after 5 years on permanent resident status."
+      },
+      {
+        "icon": "💼",
+        "title": "Open Labour Market",
+        "description": "Work freely for any employer in Bulgaria without requiring work permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How many years of residence lead to PR in Bulgaria?",
+        "answer": "Foreign nationals who have lived continuously and legally in Bulgaria for five (5) consecutive years qualify to apply for EU Long-Term Residence."
+      },
+      {
+        "question": "Can EU Long-Term Residents in Bulgaria move to other EU countries?",
+        "answer": "Yes. EU Long-Term Resident status facilitates simplified mobility and work permit applications in other European Union member states under EU Directive 2003/109/EC."
+      }
+    ]
+  },
+  "croatia": {
+    "cname": "Croatia",
+    "scheme": "Stalni boravak (Permanent Residence) / Dugotrajno boravište (EU Long-Term Residence)",
+    "overview": "Croatia grants permanent settlement under the Aliens Act (Zakon o strancima) and EU Long-Term Resident Directive. Foreign nationals who have resided continuously and legally in Croatia for at least five (5) consecutive years on temporary residence permits, without absences exceeding 6 consecutive months or 10 months total, qualify for EU Long-Term Resident status (Dugotrajno boravište). This grants indefinite residence and equal rights to Croatian citizens regarding employment, education, and social protection.",
+    "fees": {
+      "visa_fee": "€119 (Permanent Residence Application)",
+      "service_fee": "€41 (Biometric Permanent Card)",
+      "total_fee": "approx. ₹14,500",
+      "notes": "Administered by the Ministry of the Interior (MUP)."
+    },
+    "proc_time": "3 to 6 Months",
+    "proc_details": "Application evaluated directly by the local Police Administration (MUP) in Croatia.",
+    "source": "Ministry of the Interior of the Republic of Croatia (MUP)",
+    "validity": "5 Years (Renewable Indefinite EU Permanent Residence Card)",
+    "stay": "Permanent lawful residence in Croatia",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year MUP Continuous Residence Records & Tax Administration (Porezna uprava) Clearance",
+    "assessment_desc": "Proof of 5 years lawful residency, proof of stable income, Croatian health insurance (HZZO), and basic Croatian language/Latin script proficiency.",
+    "min_funds": "Continuous income meeting national statutory living minimums",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite EU Resident Protections",
+        "description": "Equal treatment with Croatian citizens in employment access, trade licensing, and higher education."
+      },
+      {
+        "icon": "🇭🇷",
+        "title": "Pathway to Croatian / EU Citizenship",
+        "description": "Eligible to apply for Croatian naturalization and an EU passport after 8 years of continuous legal residence."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Employment",
+        "description": "Work freely in any sector across Croatia without requiring work permits or labour market tests."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is a Croatian language test required for permanent residency?",
+        "answer": "Yes. Applicants must demonstrate basic knowledge of the Croatian language and Latin script, evaluated through an accredited higher education institution or examination board (exemptions apply for university graduates)."
+      },
+      {
+        "question": "How long can a Permanent Resident remain outside Croatia?",
+        "answer": "EU Long-Term Residents in Croatia can remain outside the European Union for up to 12 consecutive months without losing their permanent resident status."
+      }
+    ]
+  },
+  "slovenia": {
+    "cname": "Slovenia",
+    "scheme": "Dovoljenje za stalno prebivanje (Permanent Residence) / EU Long-Term Residence",
+    "overview": "Slovenia grants permanent settlement under the Foreigners Act (Zakon o tujcih) and EU Long-Term Resident Directive. Foreign nationals who have resided continuously and legally in Slovenia for at least five (5) consecutive years on temporary residence permits, without absences exceeding 6 consecutive months or 10 months total, qualify for Permanent Residence (Dovoljenje za stalno prebivanje). This confers indefinite residence and equal treatment with Slovenian citizens regarding employment, education, and social security.",
+    "fees": {
+      "visa_fee": "€89 (Permanent Residence Application Fee)",
+      "service_fee": "€15 (Biometric Permanent Card)",
+      "total_fee": "approx. ₹9,500",
+      "notes": "Administered by the Administrative Unit (Upravna enota)."
+    },
+    "proc_time": "2 to 4 Months",
+    "proc_details": "Application evaluated directly by the local Administrative Unit (Upravna enota) in Slovenia.",
+    "source": "Ministry of the Interior of the Republic of Slovenia (MNZ)",
+    "validity": "5 Years (Renewable Indefinite EU Permanent Residence Card)",
+    "stay": "Permanent lawful residence in Slovenia",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "5-Year Upravna Enota Continuous Residence Records & FURS Tax Clearance",
+    "assessment_desc": "Proof of 5 years continuous legal residence, stable financial means, health insurance (ZZZS), clean criminal record, and basic Slovenian language proficiency (A1 level).",
+    "min_funds": "Continuous income meeting national statutory basic living allowance",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Indefinite EU Resident Protections",
+        "description": "Equal treatment with Slovenian citizens in employment access, commercial enterprise, and university education."
+      },
+      {
+        "icon": "🇸🇮",
+        "title": "Pathway to Slovenian / EU Citizenship",
+        "description": "Eligible to apply for Slovenian citizenship by naturalization and an EU passport after 10 years of legal residence (including 5 years on PR status)."
+      },
+      {
+        "icon": "💼",
+        "title": "Unrestricted Work Rights",
+        "description": "Work for any employer or operate private businesses in Slovenia without needing work permits."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is a Slovenian language test required for permanent residency?",
+        "answer": "Yes. Under recent amendments to the Slovenian Foreigners Act, applicants for permanent residence must demonstrate basic knowledge of the Slovenian language at the A1 level (entry-level survival standard)."
+      },
+      {
+        "question": "Can EU permanent residents in Slovenia buy property?",
+        "answer": "Yes. Permanent residents have full rights to purchase and hold residential and commercial real estate across Slovenia."
+      }
+    ]
+  },
+  "cyprus": {
+    "cname": "Cyprus",
+    "scheme": "Permanent Residence (Category 6.2 Fast-Track Golden Visa) / EU Long-Term Residence",
+    "overview": "Cyprus offers one of Europe's most renowned permanent settlement programs under Regulation 6(2) of the Aliens and Immigration Regulations. Foreign investors who make a qualifying investment of at least €300,000 (+ VAT) in new residential real estate, commercial property, or registered Cypriot company share capital receive Permanent Residency within 2 to 3 months. In addition, professionals residing lawfully in Cyprus for five (5) consecutive years qualify for EU Long-Term Residence.",
+    "fees": {
+      "visa_fee": "€500 (Permanent Residence Filing Fee)",
+      "service_fee": "€70 (Biometric PR Card per person)",
+      "total_fee": "approx. ₹52,000",
+      "notes": "Official fees administered by Civil Registry and Migration Department (CRMD)."
+    },
+    "proc_time": "2 to 4 Months (Fast-Track Category 6.2)",
+    "proc_details": "Application evaluated directly by the Civil Registry and Migration Department in Nicosia.",
+    "source": "Civil Registry and Migration Department (CRMD) & Ministry of Interior",
+    "validity": "Indefinite Permanent Residency (Card renewed every 10 years)",
+    "stay": "Permanent lawful domicile in Cyprus",
+    "entry_type": "Multiple Entry",
+    "assessment_doc": "Proof of €300,000 Property Acquisition & Certified Annual Foreign Income",
+    "assessment_desc": "Certified contract of sale for new residential/commercial property deposited with the Land Registry, proof of payment of €300,000 from abroad, and verified secure annual income of €50,000.",
+    "min_funds": "Minimum €300,000 (+ VAT) capital investment and €50,000 secure annual foreign income",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Lifetime European Permanent Residency",
+        "description": "Permanent residence status for life; card only requires physical renewal every 10 years without re-assessment."
+      },
+      {
+        "icon": "🇨🇾",
+        "title": "Pathway to Cypriot / EU Citizenship",
+        "description": "Eligible to apply for Cypriot citizenship by naturalization and an EU passport after 5 to 7 years of legal residence."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Whole Family Inclusion",
+        "description": "Covers investor, spouse, dependent unmarried children up to age 25 in higher education, and parents."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do I have to live in Cyprus to maintain permanent residency under Category 6.2?",
+        "answer": "No! Category 6.2 permanent residents only need to visit Cyprus once every two (2) years to keep their permanent resident status active."
+      },
+      {
+        "question": "How long does it take to obtain Cyprus PR through real estate?",
+        "answer": "Under the fast-track Category 6(2) procedure, permanent residency approvals are typically granted within 2 to 3 months from file submission."
+      }
+    ]
+  },
+
   "canada": {
     "cname": "Canada",
     "scheme": "Express Entry (FSWP / CEC) & Provincial Nominee Programs (PNP)",

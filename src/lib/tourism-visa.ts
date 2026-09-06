@@ -145,12 +145,3989 @@ export function normalizeCountry(country: string): string {
   if (c.includes('israel') || c.includes('tel aviv') || c.includes('jerusalem')) return 'israel';
   if (c.includes('chile') || c.includes('santiago') || c.includes('patagonia')) return 'chile';
   if (c.includes('mexico') || c.includes('cancun') || c.includes('mexico city')) return 'mexico';
+  
+  // ── 35 NEW COUNTRIES NORMALIZATION ──
+  // RUSSIA & CIS
+  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
+  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
+  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
+  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
+  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
+  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
+  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
+  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
+  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
+  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+
+  // ASIA
+  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
+  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
+  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
+  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
+  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
+  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
+  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
+  if (c.includes('macau') || c.includes('macao')) return 'macau';
+
+  // AFRICA
+  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
+  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
+  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
+  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
+  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
+
+  // AMERICAS
+  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
+  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
+  if (c.includes('chile') || c.includes('santiago')) return 'chile';
+  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
+  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
+
+  // EUROPE
+  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
+  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
+
   return c;
 }
 
 // ── 1. TOURISM OVERVIEW — COUNTRY SPECIFIC ──
+export const TOURISM_DESTS: Record<string, any> = {
+  "russia": {
+    "overview": "Russia offers eVisa and traditional tourist visas for Indian travelers. Explore Moscow, St. Petersburg, the Trans-Siberian Railway, and stunning natural landscapes. eVisa available for select regions including St. Petersburg and the Far East. Valid for up to 30 days.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Historic Cities",
+        "description": "Moscow, St. Petersburg — Kremlin, Red Square, Hermitage Museum"
+      },
+      {
+        "icon": "🚂",
+        "title": "Trans-Siberian Railway",
+        "description": "World's longest railway journey across Russia"
+      },
+      {
+        "icon": "🎭",
+        "title": "Culture & Arts",
+        "description": "Ballet, opera, and world-class museums"
+      },
+      {
+        "icon": "📱",
+        "title": "eVisa Available",
+        "description": "Unified Electronic Visa available online for Indian citizens"
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "eVisa Application Form",
+        "description": "Completed online for eligible regions.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Invitation Letter",
+        "description": "Accommodation proof or host invitation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay in Russia.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Russia Itinerary — Research Moscow, St. Petersburg, and other destinations.",
+      "Step 2: Check eVisa Eligibility — Visit Russian MFA website to check if you qualify for eVisa.",
+      "Step 3: Complete eVisa Application — Fill online form with passport scan and photograph.",
+      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 5: Receive eVisa — Download eVisa PDF (issued within 4 days).",
+      "Step 6: Board Flight to Russia — Carry passport, eVisa, and supporting documents.",
+      "Step 7: Clear Immigration — Present documents at Russian airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "eVisa: $40 USD (approx. ₹3,300)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "$40 USD Total Reference",
+      "notes": "eVisa fee paid online via Russian MFA portal."
+    },
+    "proc_time": "4 Calendar Days (eVisa Standard)",
+    "proc_details": "Processed online via the Russian Ministry of Foreign Affairs (MFA) electronic visa portal.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months from entry date with 2 blank pages."
+      },
+      {
+        "category": "eVisa Regions",
+        "details": "Unified electronic visa valid for travel across the Russian Federation."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Maximum 16 days on eVisa; traditional tourist visa allows up to 30-90 days."
+      },
+      {
+        "category": "Insurance",
+        "details": "Travel medical insurance covering the entire stay with at least €30,000 coverage."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Personal Bank Statement",
+        "minimum_balance_or_amount": "₹1,50,000 - ₹2,50,000",
+        "time_frame": "Past 3 months",
+        "notes": "Bank statement showing adequate daily travel allowance."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Russia?",
+        "answer": "Yes, Indian passport holders require an electronic visa (eVisa) or traditional consular visa."
+      },
+      {
+        "question": "How long can I stay in Russia?",
+        "answer": "Up to 16 days on unified eVisa; traditional consular tourist visa allows up to 30 to 90 days."
+      },
+      {
+        "question": "What is the processing time for Russia eVisa?",
+        "answer": "eVisa is typically processed within 4 calendar days on the Russian MFA portal."
+      }
+    ],
+    "validity": "60 Days Validity / 16-30 Days Stay",
+    "stay_duration": "Up to 16-30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Russian Ministry of Foreign Affairs (MFA) & Consular Department"
+  },
+  "kazakhstan": {
+    "overview": "Kazakhstan offers visa-free entry for Indian passport holders for up to 14 days (extendable to 30 days). Explore Almaty, Astana (Nur-Sultan), the Altai Mountains, and the Caspian Sea. Growing tourism destination with modern infrastructure.",
+    "highlights": [
+      {
+        "icon": "🏔️",
+        "title": "Natural Beauty",
+        "description": "Altai Mountains, Charyn Canyon, and Lake Balkhash."
+      },
+      {
+        "icon": "🌆",
+        "title": "Modern Cities",
+        "description": "Almaty and Astana — modern architecture and vibrant culture."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free Entry",
+        "description": "Indian citizens enjoy 14-30 day visa-free entry."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Silk Road Heritage",
+        "description": "Historic sites along the ancient Silk Road."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip flight reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation",
+        "description": "Proof of stay in Kazakhstan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for the entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Plan Your Kazakhstan Itinerary — Research Almaty, Astana, and natural attractions.",
+      "Step 2: Ensure Passport Validity — Verify 6+ months validity.",
+      "Step 3: Book Flights & Accommodation — Secure confirmed bookings.",
+      "Step 4: Board Flight to Kazakhstan — No prior visa required (14-30 days visa-free).",
+      "Step 5: Clear Immigration — Present passport and return ticket at immigration counter."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Visa-Free Entry)",
+      "service_fee": "₹0 (No Appointment Needed)",
+      "total_fee": "₹0 (Free Entry)",
+      "notes": "Indian passport holders enjoy visa-free entry for up to 14 days per visit (max 42 days per 180 days)."
+    },
+    "proc_time": "Instant on Arrival (0 Days)",
+    "proc_details": "Immigration clearance completed directly at Almaty (ALA) or Astana (NQZ) international airports.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Visa-Free Entry",
+        "details": "Indian citizens enjoy 14-day visa-free entry per visit."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return or onward ticket required."
+      },
+      {
+        "category": "Registration",
+        "details": "Hotels or hosts register foreign guests electronically upon check-in."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Personal Bank Statement / Credit Cards",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Spot solvency check at border control."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Kazakhstan?",
+        "answer": "No, Indian passport holders enjoy visa-free entry for up to 14 days per visit."
+      },
+      {
+        "question": "How long can I stay in Kazakhstan visa-free?",
+        "answer": "Up to 14 consecutive calendar days per entry (maximum 42 days per 180 days)."
+      },
+      {
+        "question": "Is registration required?",
+        "answer": "Electronic migration registration is completed automatically by hotels."
+      }
+    ],
+    "validity": "14 Days on Arrival",
+    "stay_duration": "Up to 14 Days",
+    "entry_type": "Visa-Free Entry",
+    "official_source": "Ministry of Foreign Affairs & Migration Committee of Kazakhstan"
+  },
+  "ukraine": {
+    "overview": "Ukraine offers an electronic visa (eVisa Type C-02) for Indian passport holders for tourism and visitor travel. Discover Kyiv's historic gold-domed cathedrals, Lviv's UNESCO World Heritage Old Town, and the Carpathian Mountains.",
+    "highlights": [
+      {
+        "icon": "⛪",
+        "title": "Kyiv Pechersk Lavra",
+        "description": "UNESCO-listed ancient cave monastery and St. Sophia Cathedral."
+      },
+      {
+        "icon": "🏰",
+        "title": "Lviv Medieval Charm",
+        "description": "Historic cobblestone squares, grand opera house, and artisanal coffee culture."
+      },
+      {
+        "icon": "📱",
+        "title": "eVisa Processing",
+        "description": "Direct application via the official MFA Ukraine online portal."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Carpathian Landscapes",
+        "description": "Scenic mountain trails, wooden churches, and alpine health resorts."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months after departure from Ukraine with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Ukraine eVisa Application Form",
+        "description": "Completed online application on evisa.mfa.gov.ua.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid for Ukraine covering at least €30,000 in emergency medical costs.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Bank statements demonstrating minimum $50 USD per day of stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Check Travel Advisories & Entry Points — Review current entry conditions and border crossings.",
+      "Step 2: Register on MFA Portal — Create account on evisa.mfa.gov.ua.",
+      "Step 3: Upload Scanned Documents — Submit passport bio page, photo, health insurance, and funds proof.",
+      "Step 4: Pay eVisa Fee — Settle $20 USD statutory fee online by credit/debit card.",
+      "Step 5: Receive eVisa PDF — Decision delivered via email within 3 business days.",
+      "Step 6: Travel to Ukraine — Present printed eVisa, passport, and insurance at border control."
+    ],
+    "fees": {
+      "visa_fee": "$20 USD (Single Entry) / $30 USD (Double Entry)",
+      "service_fee": "₹0 (Direct MFA Portal)",
+      "total_fee": "$20 USD Total Reference",
+      "notes": "Urgent processing available for $40 USD within 1 working day."
+    },
+    "proc_time": "3 Working Days (Standard eVisa)",
+    "proc_details": "Processed centrally by the Ministry of Foreign Affairs (MFA) of Ukraine.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months after departure with 2 blank pages."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days per visit."
+      },
+      {
+        "category": "Medical Insurance",
+        "details": "Minimum €30,000 coverage policy valid in Ukraine."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statement",
+        "minimum_balance_or_amount": "Minimum $50 USD per day (approx. ₹1,50,000+)",
+        "time_frame": "Past 3 months",
+        "notes": "Certified bank statement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian passport holders qualify for Ukraine eVisa?",
+        "answer": "Yes, Indian citizens are eligible to apply for the Ukraine eVisa online at evisa.mfa.gov.ua."
+      },
+      {
+        "question": "How long is the Ukraine eVisa valid?",
+        "answer": "Valid for up to 30 days of stay with single or double entry options."
+      }
+    ],
+    "validity": "Up to 30 Days (Single/Double Entry)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single / Double Entry",
+    "official_source": "Ministry of Foreign Affairs of Ukraine (MFA eVisa Portal)"
+  },
+  "belarus": {
+    "overview": "Belarus offers rich Eastern European culture, grand Soviet-classicist boulevards in Minsk, UNESCO World Heritage castles in Mir and Nesvizh, and pristine primeval forests in Belovezhskaya Pushcha. Consular visa required for Indian citizens entering via land or commercial flights.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Mir & Nesvizh Castles",
+        "description": "16th-century UNESCO World Heritage Renaissance and Baroque fortresses."
+      },
+      {
+        "icon": "🌆",
+        "title": "Minsk Grandeur",
+        "description": "Independence Avenue, Victory Square, and pristine public parks."
+      },
+      {
+        "icon": "🌲",
+        "title": "Belovezhskaya Pushcha",
+        "description": "Ancient primeval forest home to the European bison (wisent)."
+      },
+      {
+        "icon": "🎭",
+        "title": "Culture & Ballet",
+        "description": "National Bolshoi Opera and Ballet Theatre of Belarus."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 90 days beyond intended departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Consular Visa Application Form",
+        "description": "Completed and signed Belarus visa form with photo.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Tourist Voucher / Travel Agency Confirmation",
+        "description": "Official booking confirmation from a licensed Belarusian travel agency.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Health Insurance",
+        "description": "Mandatory medical insurance with at least €10,000 coverage valid in Belarus (Belgosstrakh or approved).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Tickets",
+        "description": "Round-trip flight booking to Minsk International Airport.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Obtain Belarusian Travel Voucher — Secure booking through an authorized Belarusian travel company.",
+      "Step 2: Purchase Mandatory Health Insurance — Acquire Belgosstrakh-approved insurance policy with €10,000 coverage.",
+      "Step 3: Complete Visa Application — Fill out the official form from the Embassy of Belarus in New Delhi.",
+      "Step 4: Submit Dossier at Consular Section — Lodge passport, photos, voucher, and insurance at the Embassy.",
+      "Step 5: Pay Consular Fee — Pay €60 standard consular fee (€120 for urgent 2-day processing).",
+      "Step 6: Collect Stamped Passport — Retrieve passport with Belarus visa vignette.",
+      "Step 7: Travel & Register — Enter via Minsk Airport; register within 10 days if staying outside hotels."
+    ],
+    "fees": {
+      "visa_fee": "€60 (approx. ₹5,400) Standard / €120 Express",
+      "service_fee": "₹0 (Direct Consular Section)",
+      "total_fee": "€60 Consular Fee",
+      "notes": "Express processing issued within 48 hours for €120."
+    },
+    "proc_time": "5 Working Days (Standard) / 2 Days (Express)",
+    "proc_details": "Processed directly by the Consular Section of the Embassy of Belarus in New Delhi.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 90 days beyond departure date with 2 blank pages."
+      },
+      {
+        "category": "Medical Insurance",
+        "details": "Mandatory health insurance policy with minimum €10,000 coverage."
+      },
+      {
+        "category": "Registration",
+        "details": "Hotels register foreign visitors automatically; private stays must register within 10 days."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement",
+        "minimum_balance_or_amount": "Minimum 2 basic units (approx. $25 USD) per day of stay (₹1,50,000+)",
+        "time_frame": "Past 3 months",
+        "notes": "Original certified bank statement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Belarus?",
+        "answer": "Yes, Indian passport holders require a tourist visa issued by the Embassy of Belarus."
+      },
+      {
+        "question": "How long can I stay on a Belarus Tourist Visa?",
+        "answer": "Up to 30 days per single or double entry."
+      }
+    ],
+    "validity": "Up to 30 Days (Single/Double Entry)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single / Double Entry",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Belarus & Embassy in New Delhi"
+  },
+  "uzbekistan": {
+    "overview": "Uzbekistan is the dazzling crown jewel of the ancient Silk Road. Explore the turquoise-domed mosques of Samarkand (Registan), the minarets and trading domes of Bukhara, and the mud-brick oasis of Khiva. Indian passport holders can easily obtain an electronic visa (eVisa) online.",
+    "highlights": [
+      {
+        "icon": "🕌",
+        "title": "Samarkand Registan",
+        "description": "Iconic ensemble of three majestic madrasahs with turquoise tilework."
+      },
+      {
+        "icon": "🏜️",
+        "title": "Historic Bukhara",
+        "description": "Over 140 architectural monuments including Kalyan Minaret and Ark Citadel."
+      },
+      {
+        "icon": "🧱",
+        "title": "Walled City of Khiva",
+        "description": "Itchan Kala open-air museum city protected by ancient mud-brick walls."
+      },
+      {
+        "icon": "📱",
+        "title": "Official eVisa",
+        "description": "100% digital application issued online within 3 working days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond intended departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Uzbekistan eVisa Application",
+        "description": "Completed online on the official portal e-visa.gov.uz.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color scan of passport bio page in JPEG format.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Digital Photograph",
+        "description": "Recent 35x45mm color photo on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking to Tashkent or Samarkand.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official eVisa Portal — Visit e-visa.gov.uz.",
+      "Step 2: Enter Nationality & Passport Details — Select Indian citizenship and tourism category.",
+      "Step 3: Upload Passport Scan & Photo — Attach clear JPEG files meeting size specifications.",
+      "Step 4: Pay Statutory Fee — Pay $20 USD fee online via Visa or Mastercard.",
+      "Step 5: Receive Electronic Visa — Approved eVisa PDF sent via email within 3 working days.",
+      "Step 6: Travel to Uzbekistan — Present passport and printed eVisa at Tashkent airport immigration.",
+      "Step 7: Hotel Registration — Hotels automatically register guests via the E-Mehmon online system."
+    ],
+    "fees": {
+      "visa_fee": "$20 USD (Single Entry) / $35 USD (Double) / $50 USD (Multiple)",
+      "service_fee": "₹0 (Direct Government Portal)",
+      "total_fee": "$20 USD Total Reference",
+      "notes": "Paid online at e-visa.gov.uz via international credit/debit card."
+    },
+    "proc_time": "3 Working Days (Standard eVisa)",
+    "proc_details": "Processed electronically by the Ministry of Foreign Affairs of Uzbekistan.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond expiry of the visa."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days per entry within 90 days validity window."
+      },
+      {
+        "category": "Registration",
+        "details": "Mandatory E-Mehmon electronic registration provided by hotels upon check-in."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Balance / Cash",
+        "minimum_balance_or_amount": "Minimum $40 USD per day or ₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "International debit/credit cards accepted in major cities."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian passport holders qualify for Uzbekistan eVisa?",
+        "answer": "Yes, Indian citizens are fully eligible to apply for the electronic visa online at e-visa.gov.uz."
+      },
+      {
+        "question": "How long can I stay on an Uzbekistan eVisa?",
+        "answer": "The eVisa allows a stay of up to 30 days and is valid for entry within 90 days of issuance."
+      }
+    ],
+    "validity": "90 Days Validity / 30 Days Stay",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single / Double / Multiple Entry",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Uzbekistan (e-visa.gov.uz)"
+  },
+  "kyrgyzstan": {
+    "overview": "Kyrgyzstan is a paradise for mountain lovers, trekkers, and cultural nomads. Known as the 'Switzerland of Central Asia', marvel at the massive alpine Lake Issyk-Kul, hike through Ala Archa National Park, sleep in traditional yurts, and ride horses through Tian Shan mountain passes.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Lake Issyk-Kul",
+        "description": "World's second-largest alpine lake surrounded by snow-capped Tian Shan peaks."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Ala Archa National Park",
+        "description": "Spectacular gorges, glaciers, and hiking trails just 45 minutes from Bishkek."
+      },
+      {
+        "icon": "⛺",
+        "title": "Yurt & Nomadic Culture",
+        "description": "Experience authentic nomadic hospitality, eagle hunting, and horse riding at Song-Kul."
+      },
+      {
+        "icon": "📱",
+        "title": "Official eVisa",
+        "description": "Apply online via evisa.e-gov.kg for fast consular clearance."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "eVisa Application Form",
+        "description": "Completed online application at evisa.e-gov.kg.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Digital Passport Photo",
+        "description": "Color photo meeting official biometric format on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Booking",
+        "description": "Round-trip airline reservation to Manas International Airport (Bishkek).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Guesthouse Booking",
+        "description": "Confirmed accommodation bookings in Bishkek or Issyk-Kul.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Kyrgyz eVisa Portal — Navigate to evisa.e-gov.kg.",
+      "Step 2: Complete Online Form — Input passport info, travel dates, and contact details.",
+      "Step 3: Upload Photo & Passport Bio Page — Attach high-resolution scans.",
+      "Step 4: Pay Processing Fee — Pay $50 USD (single entry 30 days) via Visa/Mastercard.",
+      "Step 5: Receive Approval PDF — Decision issued within 5-7 business days.",
+      "Step 6: Travel to Kyrgyzstan — Arrive at Manas Airport (FRU) and present printed eVisa.",
+      "Step 7: Hotel Registration — Register with state migration service if stay exceeds statutory limits."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (30 Days Single) / $70 USD (90 Days Single)",
+      "service_fee": "₹0 (Official eVisa Portal)",
+      "total_fee": "$50 USD Total Reference",
+      "notes": "Paid online at evisa.e-gov.kg."
+    },
+    "proc_time": "5 to 7 Working Days",
+    "proc_details": "Processed electronically by the Ministry of Foreign Affairs of the Kyrgyz Republic.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond the intended departure date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 or 90 days as per visa category selected."
+      },
+      {
+        "category": "Entry Points",
+        "details": "Accepted at Manas International Airport (Bishkek) and Osh International Airport."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement / Credit Cards",
+        "minimum_balance_or_amount": "₹1,00,000 - ₹1,50,000",
+        "time_frame": "Past 3 months",
+        "notes": "Proof of sufficient funds for duration of travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Kyrgyzstan?",
+        "answer": "Yes, Indian passport holders require a tourist visa, which can be obtained online as an eVisa via evisa.e-gov.kg."
+      },
+      {
+        "question": "How long can I stay in Kyrgyzstan on an eVisa?",
+        "answer": "The tourist eVisa allows stays of up to 30 or 90 days."
+      }
+    ],
+    "validity": "30 to 90 Days",
+    "stay_duration": "Up to 30 or 90 Days",
+    "entry_type": "Single / Double Entry",
+    "official_source": "Ministry of Foreign Affairs of the Kyrgyz Republic (evisa.e-gov.kg)"
+  },
+  "tajikistan": {
+    "overview": "Tajikistan is the breathtaking 'Roof of the World', dominated by the colossal Pamir Mountains and Fan Mountains. Drive the legendary Pamir Highway (M41), hike to the crystal-clear turquoise Seven Lakes of Haft Kul, and explore ancient Silk Road fortresses.",
+    "highlights": [
+      {
+        "icon": "🛣️",
+        "title": "Pamir Highway (M41)",
+        "description": "World's second-highest international road winding through rugged mountain passes."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Fan Mountains & Haft Kul",
+        "description": "Breathtaking turquoise alpine lakes and world-class high-altitude trekking circuits."
+      },
+      {
+        "icon": "🏰",
+        "title": "Hissar Fortress",
+        "description": "Ancient 16th-century fortress and historical reserve near Dushanbe."
+      },
+      {
+        "icon": "📱",
+        "title": "Instant eVisa",
+        "description": "Electronic visa issued online via evisa.tj in just 3 business days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond travel dates with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Tajikistan eVisa Application",
+        "description": "Completed online application at evisa.tj.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Scan",
+        "description": "Clear color copy of passport bio-data page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "GBAO Permit (Optional)",
+        "description": "Special permit required if traveling along the Pamir Highway (Gorno-Badakhshan Autonomous Region).",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Travel Itinerary",
+        "description": "Flight booking and hotel or homestay reservations.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official Portal — Visit evisa.tj.",
+      "Step 2: Complete Application Form — Fill in personal details and travel dates.",
+      "Step 3: Select GBAO Permit (if visiting Pamir) — Check GBAO box to add permit for $20 USD.",
+      "Step 4: Upload Passport Bio Page — Attach clear scan in JPEG or PDF format.",
+      "Step 5: Pay Fee Online — Pay $30 USD (+$20 USD for GBAO) by credit card.",
+      "Step 6: Receive eVisa PDF — Download approved eVisa delivered via email within 3 working days.",
+      "Step 7: Travel to Dushanbe — Present printed eVisa at Dushanbe International Airport (DYU)."
+    ],
+    "fees": {
+      "visa_fee": "$30 USD (Standard eVisa) + $20 USD (Optional GBAO Permit)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$30-50 USD Total Reference",
+      "notes": "GBAO permit is required for travel to the Pamir region."
+    },
+    "proc_time": "3 Working Days (Standard eVisa)",
+    "proc_details": "Processed electronically by the Ministry of Foreign Affairs of the Republic of Tajikistan.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond departure date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 60 days of stay within 90 days validity window."
+      },
+      {
+        "category": "GBAO Permit",
+        "details": "Mandatory separate permit for traveling in the Gorno-Badakhshan region."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Balance / Cash",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Cash in USD or Somoni is recommended in remote mountain regions."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Tajikistan?",
+        "answer": "Yes, Indian passport holders require a visa, which is easily obtainable online via the official eVisa portal (evisa.tj)."
+      },
+      {
+        "question": "What is the GBAO permit for Tajikistan?",
+        "answer": "It is a mandatory special entry permit to travel along the Pamir Highway and the Gorno-Badakhshan Autonomous Region, easily added to your eVisa application for $20 USD."
+      }
+    ],
+    "validity": "90 Days Validity / 60 Days Stay",
+    "stay_duration": "Up to 60 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Tajikistan (evisa.tj)"
+  },
+  "turkmenistan": {
+    "overview": "Turkmenistan is one of the most mysterious and fascinating destinations on Earth. Explore Ashgabat, the world's gleaming white-marble capital holding the Guinness World Record, visit the fiery Darvaza Gas Crater ('Door to Hell') burning in the Karakum Desert, and discover ancient Merv.",
+    "highlights": [
+      {
+        "icon": "🔥",
+        "title": "Darvaza Gas Crater",
+        "description": "The legendary 'Door to Hell' — a flaming natural gas crater burning in the desert since 1971."
+      },
+      {
+        "icon": "🏛️",
+        "title": "White Marble Ashgabat",
+        "description": "Capital city featuring over 500 white-marble palaces, gold-plated statues, and futuristic monuments."
+      },
+      {
+        "icon": "🏺",
+        "title": "Ancient Silk Road Merv",
+        "description": "UNESCO World Heritage ancient oasis city that was once one of the greatest cities in the Islamic world."
+      },
+      {
+        "icon": "🐴",
+        "title": "Akhal-Teke Golden Horses",
+        "description": "Ancient and noble equine breed famous for their shimmering metallic coat and endurance."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond the visa expiry date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Letter of Invitation (LOI)",
+        "description": "Mandatory official LOI certified by the State Migration Service of Turkmenistan (arranged via licensed tour agency).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Consular Visa Application Form",
+        "description": "Completed visa application form with recent color photographs.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Tour Package & Guide Undertaking",
+        "description": "Licensed local travel agency itinerary with certified guide and hotel bookings.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Booking",
+        "description": "Round-trip airline reservation to Ashgabat International Airport (ASB).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Book Licensed Tour Agency — Foreign tourists must book through an authorized Turkmen travel agency.",
+      "Step 2: Agency Applies for LOI — The agency submits your dossier to the State Migration Service in Ashgabat (takes 2-3 weeks).",
+      "Step 3: Receive Certified LOI — Migration Service issues the official invitation approval.",
+      "Step 4: Visa Issuance — Obtain visa sticker at the Embassy of Turkmenistan in New Delhi, or on arrival at Ashgabat Airport.",
+      "Step 5: Pay Government & COVID/Migration Fees — Pay statutory visa fee ($55-155 USD) and border entry taxes.",
+      "Step 6: Travel with Licensed Guide — Tour the country accompanied by your accredited guide.",
+      "Step 7: Hotel Registration — Tour operator ensures immigration registration within 3 days of arrival."
+    ],
+    "fees": {
+      "visa_fee": "$55 USD (10 Days) / $85 USD (20 Days) / $115 USD (30 Days)",
+      "service_fee": "Tour operator LOI handling fees apply",
+      "total_fee": "$55-155 USD Consular Fee + LOI",
+      "notes": "Can be stamped at Embassy or collected on arrival at Ashgabat Airport with valid LOI."
+    },
+    "proc_time": "15 to 20 Working Days (LOI Approval)",
+    "proc_details": "Adjudicated by the State Migration Service of Turkmenistan in Ashgabat.",
+    "requirements": [
+      {
+        "category": "Mandatory LOI",
+        "details": "No visa can be issued without an approved Letter of Invitation from the State Migration Service."
+      },
+      {
+        "category": "Tour Guide Requirement",
+        "details": "Foreign tourists must be accompanied by an accredited local guide throughout their stay."
+      },
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Tour Package Payment Receipt & Cash",
+        "minimum_balance_or_amount": "Prepaid package + $500 USD cash",
+        "time_frame": "Travel duration",
+        "notes": "Cash in crisp, unblemished USD bills is essential as international credit cards are rarely accepted."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I travel to Turkmenistan independently without a tour?",
+        "answer": "No, all foreign tourists require an approved Letter of Invitation (LOI) through a licensed local tour operator and must be accompanied by an authorized guide."
+      },
+      {
+        "question": "Can I get a visa on arrival in Turkmenistan?",
+        "answer": "Yes, but ONLY if you hold an official Letter of Invitation (LOI) approved in advance by the State Migration Service of Turkmenistan."
+      }
+    ],
+    "validity": "10 to 30 Days (Tied to Tour Itinerary)",
+    "stay_duration": "10 to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "State Migration Service of Turkmenistan & Ministry of Foreign Affairs"
+  },
+  "azerbaijan": {
+    "overview": "Azerbaijan, the 'Land of Fire', bridges East and West on the Caspian Sea. Explore Baku's UNESCO-listed Old City (Icherisheher), the iconic Flame Towers, Mud Volcanoes in Gobustan, and the alpine resort town of Shahdag. Indian passport holders enjoy fast online ASAN eVisa processing in just 3 hours to 3 days.",
+    "highlights": [
+      {
+        "icon": "🔥",
+        "title": "Baku Flame Towers",
+        "description": "Iconic illuminated trio of skyscrapers dominating the Baku bay skyline."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Icherisheher Old City",
+        "description": "Maiden Tower, Palace of the Shirvanshahs, and medieval stone alleys."
+      },
+      {
+        "icon": "🌋",
+        "title": "Gobustan Mud Volcanoes",
+        "description": "UNESCO petroglyphs and over half of the world's mud volcanoes."
+      },
+      {
+        "icon": "⚡",
+        "title": "Fast ASAN eVisa",
+        "description": "100% digital electronic visa issued in 3 hours (Urgent) or 3 days (Standard)."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond the intended departure date with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "ASAN eVisa Application",
+        "description": "Completed online application on evisa.gov.az.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color copy of passport bio-data page in JPEG format.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking Confirmation",
+        "description": "Confirmed hotel reservation or proof of accommodation in Azerbaijan.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Round-trip airline reservation to Heydar Aliyev International Airport (GYD).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official ASAN Portal — Visit evisa.gov.az.",
+      "Step 2: Choose Processing Speed — Select Standard (3 business days) or Urgent (3 hours).",
+      "Step 3: Enter Information & Upload Passport — Fill form and attach passport scan.",
+      "Step 4: Pay Statutory Fee — Pay $26 USD (Standard) or $60 USD (Urgent) online.",
+      "Step 5: Receive ASAN eVisa — Download the electronic visa PDF sent to your email.",
+      "Step 6: Travel to Baku — Present passport and printed eVisa at airport immigration.",
+      "Step 7: Migration Registration — If staying over 15 days, hotel registers you with State Migration Service."
+    ],
+    "fees": {
+      "visa_fee": "$26 USD (Standard - 3 Days) / $60 USD (Urgent - 3 Hours)",
+      "service_fee": "₹0 (Official ASAN Portal)",
+      "total_fee": "$26 USD Total Reference",
+      "notes": "Paid online at evisa.gov.az via credit/debit card."
+    },
+    "proc_time": "3 Business Days (Standard) / 3 Hours (Urgent)",
+    "proc_details": "Processed electronically through the State Agency for Public Service and Social Innovations (ASAN).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond intended departure date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days per entry."
+      },
+      {
+        "category": "15-Day Registration Rule",
+        "details": "Foreigners staying more than 15 calendar days must register with the State Migration Service (hotels handle this automatically)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Balance / Credit Cards",
+        "minimum_balance_or_amount": "₹1,00,000 - ₹1,50,000",
+        "time_frame": "Travel duration",
+        "notes": "Proof of adequate travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian passport holders qualify for Azerbaijan ASAN eVisa?",
+        "answer": "Yes, Indian citizens are fully eligible for the fast-track ASAN electronic visa at evisa.gov.az."
+      },
+      {
+        "question": "How long does Azerbaijan eVisa take?",
+        "answer": "Standard eVisa takes 3 working days ($26 USD); Urgent eVisa is issued in just 3 hours ($60 USD)."
+      }
+    ],
+    "validity": "90 Days Validity / 30 Days Stay",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "State Agency for Public Service (ASAN Visa - evisa.gov.az) & Ministry of Foreign Affairs"
+  },
+  "georgia": {
+    "overview": "Georgia is where breathtaking Caucasus alpine peaks meet world-famous winemaking traditions, ancient cave cities, and warm hospitality. Explore the cobblestone charm of Old Tbilisi, hike around Mount Kazbek in Stepantsminda, and discover the wine valleys of Kakheti. Indian passport holders holding valid visas/PR for the US, UK, Canada, or Schengen can enter visa-free for 90 days; otherwise, apply online via evisa.gov.ge.",
+    "highlights": [
+      {
+        "icon": "🍷",
+        "title": "8,000 Years of Wine",
+        "description": "Cradle of winemaking using ancient UNESCO-protected clay Qvevri vessels in Kakheti."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Kazbegi & Caucasus",
+        "description": "Gergeti Trinity Church dramatically set against the snow-capped Mount Kazbek."
+      },
+      {
+        "icon": "🏰",
+        "title": "Old Tbilisi & Sulfur Baths",
+        "description": "Narikala Fortress, colorful wooden balconies, and thermal sulfur bathhouses."
+      },
+      {
+        "icon": "✈️",
+        "title": "Visa-Free for US/UK/Schengen Visa Holders",
+        "description": "Holders of valid US/UK/Schengen visas enter visa-free for up to 90 days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 3 months beyond the validity of the visa with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Georgia eVisa Application",
+        "description": "Completed online on the official portal evisa.gov.ge (if not visa-exempt).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US/UK/Schengen Visa (if claiming visa-free entry)",
+        "description": "Original valid multiple-entry visa or permanent residence card.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid in Georgia covering emergency hospitalization and medical repatriation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Airline Ticket",
+        "description": "Round-trip airline reservation to Tbilisi (TBS) or Batumi (BUS).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation Proof",
+        "description": "Confirmed booking for entire stay.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Check Visa-Exemption — If you hold a valid visa or PR for US, UK, Schengen, Canada, or Japan, you can enter visa-free for 90 days.",
+      "Step 2: Access eVisa Portal (if not exempt) — Navigate to evisa.gov.ge.",
+      "Step 3: Enter Details & Upload Documents — Submit passport scan, photo, return ticket, and hotel booking.",
+      "Step 4: Pay Statutory Fee — Pay $20 USD + 2% service charge via credit/debit card.",
+      "Step 5: Receive eVisa Grant — Electronic visa delivered via email in 5 business days.",
+      "Step 6: Travel to Georgia — Present passport, visa (or US/UK visa), insurance, and return ticket at airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "$20 USD (approx. ₹1,650) or ₹0 (if holding valid US/UK/Schengen visa)",
+      "service_fee": "2% card processing fee",
+      "total_fee": "$20 USD Total Reference",
+      "notes": "Free 90-day entry for holders of valid US, UK, Schengen, Canada, Japan visas."
+    },
+    "proc_time": "5 Business Days (eVisa) / Instant on Arrival (if Visa-Exempt)",
+    "proc_details": "Processed electronically by the Consular Department of the Ministry of Foreign Affairs of Georgia.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond intended departure date."
+      },
+      {
+        "category": "Visa Exemption Rule",
+        "details": "Holders of valid multiple-entry visas or PR from US, UK, Schengen, Canada, Japan, Australia, GCC enter visa-free for 90 days in 180 days."
+      },
+      {
+        "category": "Travel Insurance",
+        "details": "Mandatory travel medical insurance covering the full stay."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Personal Bank Statement / Credit Cards",
+        "minimum_balance_or_amount": "Minimum $50 USD per day (approx. ₹1,50,000+)",
+        "time_frame": "Past 3 months",
+        "notes": "Proof of financial solvency."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indians travel to Georgia visa-free?",
+        "answer": "Yes, if you hold a valid multiple-entry visa or permanent residence from the US, UK, Schengen countries, Canada, Japan, or GCC, you can enter Georgia visa-free for up to 90 days within 180 days."
+      },
+      {
+        "question": "How do I apply for a Georgia eVisa without a Western visa?",
+        "answer": "Apply directly online via the official portal evisa.gov.ge with passport scan, travel insurance, return flight, and hotel booking for $20 USD."
+      }
+    ],
+    "validity": "120 Days Validity / 30-90 Days Stay",
+    "stay_duration": "Up to 30 Days (eVisa) / 90 Days (Visa-Exempt)",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Ministry of Foreign Affairs of Georgia (evisa.gov.ge) & Consular Department"
+  },
+  "armenia": {
+    "overview": "Armenia, the world's first Christian nation, offers ancient mountaintop monasteries, stunning alpine Lake Sevan, views of biblical Mount Ararat, and rich culinary traditions. Indian citizens can obtain an electronic visa (eVisa) or Visa on Arrival (VOA) at Zvartnots International Airport in Yerevan.",
+    "highlights": [
+      {
+        "icon": "⛪",
+        "title": "Geghard & Khor Virap",
+        "description": "Ancient UNESCO monasteries framed against dramatic cliffs and Mount Ararat."
+      },
+      {
+        "icon": "🌊",
+        "title": "Lake Sevan",
+        "description": "High-altitude alpine lake known as the 'Jewel of Armenia' with hilltop Sevanavank monastery."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Pink City Yerevan",
+        "description": "Vibrant capital built from rosy volcanic tuff stone, featuring the Cascade complex and Republic Square."
+      },
+      {
+        "icon": "📱",
+        "title": "eVisa / Visa on Arrival",
+        "description": "Easy online eVisa (evisa.mfa.am) for $7 USD (21 days) or Visa on Arrival at airport."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 3 months beyond the period of requested visa with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Armenia eVisa Application Form",
+        "description": "Completed online application at evisa.mfa.am.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color copy of passport bio page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation to Yerevan (EVN).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking / Accommodation Proof",
+        "description": "Confirmed booking or host invitation.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official eVisa Portal — Visit evisa.mfa.am.",
+      "Step 2: Choose Visa Type — Select Short-Stay 21-day ($7 USD) or 120-day ($33 USD).",
+      "Step 3: Enter Details & Upload Passport — Fill form and attach passport scan.",
+      "Step 4: Pay Statutory Fee — Settle visa charge online via credit/debit card.",
+      "Step 5: Receive Approval PDF — eVisa approved and sent via email within 3 business days.",
+      "Step 6: Travel to Yerevan — Present passport and printed eVisa at Zvartnots Airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "$7 USD (21 Days Stay) / $33 USD (120 Days Stay)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$7 USD Total Reference",
+      "notes": "Extremely affordable visa fees paid online at evisa.mfa.am."
+    },
+    "proc_time": "3 Business Days (Standard eVisa)",
+    "proc_details": "Processed electronically by the Ministry of Foreign Affairs of the Republic of Armenia.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond intended departure date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 21 days or 120 days depending on visa category selected."
+      },
+      {
+        "category": "Entry Points",
+        "details": "Accepted at Zvartnots Airport (Yerevan), Shirak Airport (Gyumri), and land border crossings."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Personal Bank Statement / Credit Cards",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Proof of financial solvency for stay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens qualify for Armenia eVisa?",
+        "answer": "Yes, Indian passport holders can easily obtain an electronic visa online at evisa.mfa.am for just $7 USD."
+      },
+      {
+        "question": "Can Indians get a Visa on Arrival in Armenia?",
+        "answer": "Holders of valid visas/PR for US, UK, EU/Schengen, Canada, or GCC can obtain a Visa on Arrival; all others should apply online for an eVisa."
+      }
+    ],
+    "validity": "90 Days Validity (21-Day Visa) / 180 Days (120-Day Visa)",
+    "stay_duration": "Up to 21 or 120 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Armenia (evisa.mfa.am)"
+  },
+  "moldova": {
+    "overview": "Moldova is Europe's hidden wine and cultural sanctuary. Tour Cricova and Mileștii Mici — the world's largest underground wine cellars with over 200km of tunnels holding Guinness World Records. Explore the historic Orheiul Vechi cave monastery and the charming capital Chișinău. Apply online via evisa.gov.md.",
+    "highlights": [
+      {
+        "icon": "🍷",
+        "title": "Mileștii Mici & Cricova",
+        "description": "Guinness World Record largest underground wine cellars stretching over 200km."
+      },
+      {
+        "icon": "⛪",
+        "title": "Orheiul Vechi Cave Monastery",
+        "description": "Breathtaking medieval archaeological complex carved into limestone cliffs."
+      },
+      {
+        "icon": "🌳",
+        "title": "Chișinău Green Capital",
+        "description": "Vibrant European boulevards, Soviet heritage monuments, and lush parks."
+      },
+      {
+        "icon": "📱",
+        "title": "Online eVisa Portal",
+        "description": "Direct electronic application via official government portal evisa.gov.md."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 3 months after departure from Moldova with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Moldova eVisa Application Form",
+        "description": "Completed online application at evisa.gov.md.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Digital Passport Photo",
+        "description": "Recent 35x45mm color photo meeting ICAO standards on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Valid in Moldova covering emergency treatment with minimum €30,000 coverage.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Airline Ticket",
+        "description": "Round-trip flight booking to Chișinău International Airport (RMO).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking Confirmation",
+        "description": "Confirmed booking for entire stay in Moldova.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official eVisa Portal — Navigate to evisa.gov.md.",
+      "Step 2: Complete Online Application — Fill in passport, travel dates, and destination details.",
+      "Step 3: Upload Scanned Documents — Attach passport copy, photo, hotel booking, and insurance.",
+      "Step 4: Pay Processing Fee — Settle €40 consular fee online by card.",
+      "Step 5: Receive Approval Notification — Application decided within 10 to 15 calendar days.",
+      "Step 6: Download & Print eVisa — Download the official electronic visa authorization.",
+      "Step 7: Travel to Chișinău — Present passport, printed eVisa, and travel insurance at airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "€40 (approx. ₹3,600)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "€40 Total Reference",
+      "notes": "Paid online at evisa.gov.md."
+    },
+    "proc_time": "10 to 15 Calendar Days",
+    "proc_details": "Processed electronically by the Ministry of Foreign Affairs and European Integration of Moldova.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 3 months beyond departure date with 2 blank pages."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 90 days of stay within any 180-day period."
+      },
+      {
+        "category": "Medical Insurance",
+        "details": "Mandatory travel insurance covering at least €30,000."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement",
+        "minimum_balance_or_amount": "Minimum €30/day (at least €300 total - approx. ₹1,50,000+)",
+        "time_frame": "Past 3 months",
+        "notes": "Proof of financial solvency for travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens qualify for Moldova eVisa?",
+        "answer": "Yes, Indian passport holders can apply for an electronic tourist visa directly via evisa.gov.md."
+      },
+      {
+        "question": "How long can I stay on a Moldova Tourist Visa?",
+        "answer": "Up to 90 days within any 180-day period."
+      }
+    ],
+    "validity": "Up to 90 Days",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Ministry of Foreign Affairs and European Integration of Moldova (evisa.gov.md)"
+  },
+  "pakistan": {
+    "overview": "Pakistan offers breathtaking high-altitude wonders in Gilgit-Baltistan and the Karakoram range (K2), Mughal historical splendor in Lahore (Badshahi Mosque and Lahore Fort), and ancient Indus Valley heritage in Mohenjo-daro. Indian passport holders must apply through the Pakistan Online Visa System (visa.nadra.gov.pk) or through the Pakistan High Commission.",
+    "highlights": [
+      {
+        "icon": "🏔️",
+        "title": "Karakoram & Hunza Valley",
+        "description": "Majestic peaks including K2, Rakaposhi, and ancient Baltit Fort in Hunza."
+      },
+      {
+        "icon": "🕌",
+        "title": "Lahore Mughal Heritage",
+        "description": "Badshahi Mosque, Lahore Fort (Shahi Qila), Shalimar Gardens, and Anarkali Bazaar."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Indus Valley Civilization",
+        "description": "5,000-year-old archaeological wonders at Mohenjo-daro and Harappa."
+      },
+      {
+        "icon": "📱",
+        "title": "NADRA Visa Portal",
+        "description": "Online visa portal via visa.nadra.gov.pk."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Pakistan Visa Application",
+        "description": "Completed online via NADRA portal visa.nadra.gov.pk.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Digital Photo",
+        "description": "Recent photograph on white background meeting NADRA specifications.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Sponsorship / Invitation / Tour Booking",
+        "description": "Formal sponsorship letter from host or tour operator itinerary.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Travel Itinerary",
+        "description": "Flight booking or Wagah border crossing documentation.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access NADRA Portal — Visit visa.nadra.gov.pk.",
+      "Step 2: Complete Online Application — Fill individual details and select specific cities to visit.",
+      "Step 3: Upload Scanned Bio Page & Photo — Attach clear color scans.",
+      "Step 4: Pay Processing Fee — Settle $35 USD fee via international card.",
+      "Step 5: Security Clearance & Interview — Application undergoes consular review; in-person interview may be requested.",
+      "Step 6: Receive Electronic Travel Authorization (ETA) — Approved ETA PDF issued via email.",
+      "Step 7: Border Clearance — Present ETA and passport at Wagah-Attari border or international airport."
+    ],
+    "fees": {
+      "visa_fee": "$35 USD (approx. ₹2,900)",
+      "service_fee": "NADRA online portal charge",
+      "total_fee": "$35 USD Total Reference",
+      "notes": "Fee schedule determined by NADRA."
+    },
+    "proc_time": "4 to 6 Weeks (Subject to Security Review)",
+    "proc_details": "Requires consular review and inter-agency clearance.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "City-Specific Stays",
+        "details": "Visa is typically granted for specific designated cities."
+      },
+      {
+        "category": "Police Reporting",
+        "details": "Foreign visitors may be subject to local police station registration upon arrival."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement",
+        "minimum_balance_or_amount": "₹1,50,000+",
+        "time_frame": "Past 6 months",
+        "notes": "Certified bank statement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for a Pakistan visa online?",
+        "answer": "Yes, applications are lodged online via visa.nadra.gov.pk, followed by consular processing and security review."
+      },
+      {
+        "question": "How long is the tourist visa valid?",
+        "answer": "Typically issued for up to 30 days single entry for specific itinerary locations."
+      }
+    ],
+    "validity": "Up to 30 Days",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Interior & NADRA Pakistan Online Visa System (visa.nadra.gov.pk)"
+  },
+  "bangladesh": {
+    "overview": "Bangladesh offers lush riverine landscapes, the world's longest unbroken natural sandy sea beach in Cox's Bazar (120km), the dense mangrove forests of the Sundarbans (home to Royal Bengal Tigers), and ancient tea gardens in Sreemangal. Indian citizens apply via the Bangladesh High Commission / Deputy High Commissions.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Cox's Bazar Sea Beach",
+        "description": "World's longest unbroken natural sand beach stretching 120km along the Bay of Bengal."
+      },
+      {
+        "icon": "🐅",
+        "title": "Sundarbans Mangrove",
+        "description": "UNESCO World Heritage mangrove delta and sanctuary of the Royal Bengal Tiger."
+      },
+      {
+        "icon": "🍵",
+        "title": "Sreemangal Tea Estates",
+        "description": "Rolling emerald tea plantations, rainforests, and ethnic tribal villages."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Old Dhaka & Lalbagh Fort",
+        "description": "17th-century Mughal Lalbagh Fort, Ahsan Manzil Pink Palace, and bustling riverfront."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Original passport valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bangladesh Visa Application Form",
+        "description": "Completed online application at visa.gov.bd and printed.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Photographs",
+        "description": "Two recent 45x35mm color photos on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Booking / Host Letter",
+        "description": "Hotel reservation voucher or invitation from host in Bangladesh with NID copy.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Itinerary / Flight Ticket",
+        "description": "Round-trip flight booking or Maitree/Bandhan Express train booking / land border port.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Complete Online Application — Fill form on visa.gov.bd.",
+      "Step 2: Print Form & Attach Photos — Print completed application and sign.",
+      "Step 3: Submit at Deputy High Commission / Visa Center — Lodge file at New Delhi, Kolkata, Agartala, Mumbai, or Guwahati.",
+      "Step 4: Pay Processing / Service Fee — Visa fee is ₹0 under bilateral treaty; nominal VAC service fee applies.",
+      "Step 5: Consular Review — Application processed within 7 to 10 working days.",
+      "Step 6: Collect Stamped Passport — Retrieve passport with Bangladesh visa sticker.",
+      "Step 7: Travel to Bangladesh — Enter via Dhaka Airport, Haridaspur-Benapole, or Gede-Darshana land border."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Bilateral Exemption for Indians)",
+      "service_fee": "approx. ₹850 (VAC Application Processing Fee)",
+      "total_fee": "₹850 Total Reference",
+      "notes": "Consular visa fee is ₹0 for Indian passport holders under bilateral agreement."
+    },
+    "proc_time": "7 to 10 Working Days",
+    "proc_details": "Processed by the High Commission of Bangladesh in New Delhi and Deputy High Commissions across India.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Designated Port of Entry",
+        "details": "Must enter and exit via designated land port or international airport indicated on visa."
+      },
+      {
+        "category": "Consular Exemption",
+        "details": "Zero visa fee for Indian citizens."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Past 3 months",
+        "notes": "Original certified bank statement."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens pay a visa fee for Bangladesh?",
+        "answer": "No, consular visa fees are ₹0 for Indian passport holders under bilateral treaties (only VAC logistics fees apply)."
+      },
+      {
+        "question": "Can I travel to Bangladesh by train from India?",
+        "answer": "Yes, passenger trains including the Maitree Express (Kolkata-Dhaka) and Bandhan Express operate between India and Bangladesh."
+      }
+    ],
+    "validity": "Up to 90 Days",
+    "stay_duration": "Up to 30-90 Days",
+    "entry_type": "Single / Double / Multiple Entry",
+    "official_source": "High Commission of Bangladesh in India & Department of Immigration and Passports (visa.gov.bd)"
+  },
+  "myanmar": {
+    "overview": "Myanmar (Burma), the 'Golden Land', is renowned for the mesmerizing temple-dotted plains of Bagan, the sacred gold-leaf Shwedagon Pagoda in Yangon, the leg-rowing fishermen of Inle Lake, and the royal heritage of Mandalay. Indian citizens can apply for an electronic visa (eVisa) online at evisa.moip.gov.mm.",
+    "highlights": [
+      {
+        "icon": "🛕",
+        "title": "Ancient Bagan Plains",
+        "description": "Over 2,200 ancient Buddhist temples and stupas scattered across lush river plains."
+      },
+      {
+        "icon": "✨",
+        "title": "Shwedagon Pagoda",
+        "description": "Massive 99-meter gold-plated stupa encrusted with thousands of diamonds and rubies in Yangon."
+      },
+      {
+        "icon": "🛶",
+        "title": "Inle Lake",
+        "description": "Tranquil floating gardens, stilt-house villages, and traditional Intha leg-rowing fishermen."
+      },
+      {
+        "icon": "📱",
+        "title": "Official eVisa",
+        "description": "Apply online at evisa.moip.gov.mm with fast 3-day approval."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 6 months beyond intended stay with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Myanmar eVisa Application",
+        "description": "Completed online application on evisa.moip.gov.mm.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color copy of passport bio page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Digital Passport Photo",
+        "description": "Color photo on white background (maximum 3 months old).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Reservation",
+        "description": "Booking at a registered hotel or resort in Myanmar.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation to Yangon (RGN) or Mandalay (MDL).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official Portal — Visit evisa.moip.gov.mm.",
+      "Step 2: Select Tourist eVisa — Choose standard Tourist Visa category ($50 USD).",
+      "Step 3: Enter Details & Upload Documents — Submit personal info, photo, and passport bio page.",
+      "Step 4: Pay Processing Fee — Settle $50 USD statutory fee online via credit card.",
+      "Step 5: Receive Approval Letter — Approval letter PDF issued within 3 business days.",
+      "Step 6: Travel to Myanmar — Present approval letter and passport at Yangon or Mandalay international airports to receive entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (approx. ₹4,150)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$50 USD Total Reference",
+      "notes": "Paid online at evisa.moip.gov.mm."
+    },
+    "proc_time": "3 Working Days (Standard eVisa)",
+    "proc_details": "Processed electronically by the Ministry of Immigration and Population of Myanmar.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 28 days of stay from the date of arrival."
+      },
+      {
+        "category": "Designated Entry Ports",
+        "details": "Accepted at Yangon, Mandalay, and Nay Pyi Taw international airports."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Bank Statement",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Crisp USD cash recommended as card acceptance is limited outside major hotels."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens qualify for Myanmar eVisa?",
+        "answer": "Yes, Indian passport holders can easily apply for the 28-day tourist eVisa online via evisa.moip.gov.mm."
+      },
+      {
+        "question": "Can the 28-day tourist eVisa be extended?",
+        "answer": "Tourist visas are generally non-extendable except under force majeure or certified medical emergencies."
+      }
+    ],
+    "validity": "90 Days Validity / 28 Days Stay",
+    "stay_duration": "Up to 28 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Ministry of Immigration and Population of Myanmar (evisa.moip.gov.mm)"
+  },
+  "laos": {
+    "overview": "Laos (Lao PDR) is Southeast Asia's tranquil, land-linked hidden paradise. Discover the UNESCO-protected colonial and Buddhist architecture of Luang Prabang (Kuang Si Falls, morning alms giving), the limestone karst landscapes of Vang Vieng, and the golden stupas of Vientiane (Pha That Luang). Indian passport holders can easily apply for an electronic visa (eVisa) online at laoevisa.gov.la or obtain a Visa on Arrival (VOA).",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "UNESCO Luang Prabang",
+        "description": "Preserved fusion of traditional Lao architecture and 19th-century French colonial charm."
+      },
+      {
+        "icon": "🌊",
+        "title": "Kuang Si Turquoise Waterfalls",
+        "description": "Tiered three-tier limestone cascades flowing into vibrant turquoise swimming pools."
+      },
+      {
+        "icon": "🧗",
+        "title": "Vang Vieng Karst Landscapes",
+        "description": "Towering limestone mountains, river tubing, hot-air ballooning, and caves."
+      },
+      {
+        "icon": "📱",
+        "title": "Official eVisa / VOA",
+        "description": "Apply online at laoevisa.gov.la or get Visa on Arrival at international airports."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 6 months with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Laos eVisa Application",
+        "description": "Completed online on the official portal laoevisa.gov.la.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color copy of passport bio page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Digital Passport Photograph",
+        "description": "Recent 4x6cm color photo on white background.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Booking",
+        "description": "Proof of accommodation in Vientiane, Luang Prabang, or Vang Vieng.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking to Wattay (VTE) or Luang Prabang (LPQ) airport.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official Portal — Visit laoevisa.gov.la.",
+      "Step 2: Fill Out Online Form — Provide personal details, passport info, and travel dates.",
+      "Step 3: Upload Scanned Bio Page & Photo — Attach clear JPEG/PNG scans.",
+      "Step 4: Pay Processing Fee — Settle $50 USD statutory fee online via Visa/Mastercard.",
+      "Step 5: Receive eVisa Approval Letter — Download official approval PDF issued in 3 business days.",
+      "Step 6: Travel to Laos — Present passport and printed approval letter at Wattay Airport (Vientiane) or Luang Prabang Airport for instant clearance."
+    ],
+    "fees": {
+      "visa_fee": "$50 USD (approx. ₹4,150)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$50 USD Total Reference",
+      "notes": "Also available as Visa on Arrival for $50 USD cash at major border checkpoints."
+    },
+    "proc_time": "3 Business Days (Standard eVisa)",
+    "proc_details": "Processed electronically by the Consular Department of the Ministry of Foreign Affairs of Lao PDR.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond the arrival date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days of stay per entry."
+      },
+      {
+        "category": "Designated Entry Ports",
+        "details": "Accepted at Wattay International Airport, Luang Prabang Airport, Pakse Airport, and major Thai-Lao Friendship Bridges."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash / Bank Statement",
+        "minimum_balance_or_amount": "₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Cash in crisp USD bills is widely accepted and recommended."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens qualify for Laos eVisa?",
+        "answer": "Yes, Indian passport holders can apply online at laoevisa.gov.la for a 30-day single-entry tourist visa."
+      },
+      {
+        "question": "Can I get a Visa on Arrival in Laos?",
+        "answer": "Yes, Visa on Arrival is available at Wattay Airport (Vientiane) and Luang Prabang Airport for $50 USD cash."
+      }
+    ],
+    "validity": "60 Days Validity / 30 Days Stay",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Consular Department, Ministry of Foreign Affairs of Lao PDR (laoevisa.gov.la)"
+  },
+  "mongolia": {
+    "overview": "Mongolia, the 'Land of the Eternal Blue Sky', offers boundless steppe, the dramatic Gobi Desert, pristine alpine Lake Khövsgöl, and living nomadic horse culture. Experience the vibrant Naadam Festival (wrestling, horse racing, archery), explore ancient Karakorum (Genghis Khan's capital), and sleep in traditional felt Gers. Apply online via evisa.mn.",
+    "highlights": [
+      {
+        "icon": "🐎",
+        "title": "Nomadic Steppe & Ger Camps",
+        "description": "Endless grasslands, sleeping under star-filled skies in traditional felt Gers (yurts)."
+      },
+      {
+        "icon": "🐪",
+        "title": "Gobi Desert & Flaming Cliffs",
+        "description": "Singing Sand Dunes (Khongoryn Els), ice canyons in Yolyn Am, and dinosaur fossils."
+      },
+      {
+        "icon": "🏹",
+        "title": "Naadam Festival",
+        "description": "Ancient 'Three Games of Men' — world-famous wrestling, cross-country horse racing, and archery."
+      },
+      {
+        "icon": "📱",
+        "title": "Official eVisa",
+        "description": "Apply online at evisa.mn for fast 72-hour electronic visa issuance."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 6 months beyond intended stay with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Mongolia eVisa Application",
+        "description": "Completed online on the official portal evisa.mn.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Bio-Data Page Scan",
+        "description": "Clear color copy of passport bio page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Digital Passport Photo",
+        "description": "Recent color photograph meeting ICAO biometric standards.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel / Ger Camp Booking",
+        "description": "Proof of accommodation in Ulaanbaatar or regional tour camps.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation to Chinggis Khaan International Airport (UBN).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official eVisa Portal — Visit evisa.mn.",
+      "Step 2: Fill Out Application Form — Enter personal info, passport data, and travel dates.",
+      "Step 3: Upload Scanned Bio Page & Photo — Attach clear digital images.",
+      "Step 4: Pay Processing Fee — Settle $51.50 USD statutory fee online via credit/debit card.",
+      "Step 5: Receive Approval Notification — Decision issued within 72 hours (3 business days).",
+      "Step 6: Download & Print eVisa — Download the official electronic visa PDF.",
+      "Step 7: Travel to Ulaanbaatar — Present passport and printed eVisa at Chinggis Khaan Airport immigration."
+    ],
+    "fees": {
+      "visa_fee": "$51.50 USD (approx. ₹4,300)",
+      "service_fee": "₹0 (Official Direct Portal)",
+      "total_fee": "$51.50 USD Total Reference",
+      "notes": "Paid online at evisa.mn via card."
+    },
+    "proc_time": "72 Hours (3 Business Days)",
+    "proc_details": "Processed electronically by the Mongolia Immigration Agency (MIA).",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond arrival date."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days of stay per single entry."
+      },
+      {
+        "category": "Designated Entry Ports",
+        "details": "Accepted at Chinggis Khaan International Airport and major border checkpoints."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement",
+        "minimum_balance_or_amount": "₹1,50,000+",
+        "time_frame": "Past 3 months",
+        "notes": "Proof of adequate travel funds."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens qualify for Mongolia eVisa?",
+        "answer": "Yes, Indian passport holders can easily apply for the 30-day tourist eVisa online at evisa.mn."
+      },
+      {
+        "question": "What is the best time to visit Mongolia?",
+        "answer": "Summer months (June to August) are ideal for warm weather and the spectacular Naadam Festival."
+      }
+    ],
+    "validity": "150 Days Validity / 30 Days Stay",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Mongolia Immigration Agency (MIA - evisa.mn) & Ministry of Foreign Affairs"
+  },
+  "taiwan": {
+    "overview": "Taiwan is a powerhouse of cutting-edge innovation, world-famous night markets, stunning nature (Taroko Marble Gorge, Sun Moon Lake), and warm hospitality. Explore Taipei 101, the National Palace Museum, and lush tea mountains. Indian citizens holding a valid visa or permanent residency for the US, UK, Canada, Japan, Australia, New Zealand, or Schengen can obtain an instant, FREE online ROC Travel Authorization Certificate (TAC); all others apply via BOCA.",
+    "highlights": [
+      {
+        "icon": "🏙️",
+        "title": "Taipei 101 & Night Markets",
+        "description": "Iconic bamboo-inspired skyscraper and legendary Shilin and Raohe street food night markets."
+      },
+      {
+        "icon": "🏞️",
+        "title": "Taroko Marble Gorge",
+        "description": "Spectacular turquoise river cutting through towering marble cliffs and suspension bridges."
+      },
+      {
+        "icon": "🌊",
+        "title": "Sun Moon Lake & Alishan",
+        "description": "Scenic alpine lake and high-altitude mist-shrouded ancient cypress forests and sunrise trains."
+      },
+      {
+        "icon": "⚡",
+        "title": "Instant Free Travel Certificate (TAC)",
+        "description": "Free instant 14-day online entry permit for holders of valid US, UK, Canada, Japan, or Schengen visas."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond the date of arrival with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "ROC Travel Authorization Certificate (TAC) or Visitor Visa Application",
+        "description": "Instant online TAC certificate (if eligible) or completed BOCA visa form.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Qualifying Western Visa / PR Card (for TAC applicants)",
+        "description": "Original valid visa or permanent residence card for US, UK, Schengen, Canada, Japan, Australia, or NZ.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation leaving Taiwan within 14-30 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking Confirmation",
+        "description": "Confirmed accommodation bookings for stay in Taiwan.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Check TAC Eligibility — If you hold a valid visa or PR for US, UK, Canada, Japan, Australia, or Schengen, apply for the FREE online ROC TAC.",
+      "Step 2: Complete Online TAC (if eligible) — Fill form on the National Immigration Agency portal (immigration.gov.tw) and get instant PDF approval.",
+      "Step 3: Apply for Visitor Visa via BOCA (if not eligible for TAC) — Fill application on visawebview.boca.gov.tw and submit at Taipei Economic and Cultural Center (TECC) in New Delhi or Chennai.",
+      "Step 4: Pay Processing Fee (if BOCA visa) — Pay ₹4,000 for single entry or ₹8,000 for multiple entry (TAC is 100% FREE).",
+      "Step 5: Receive Visa Vignette — Collect passport with visa stamped within 5 working days.",
+      "Step 6: Travel to Taiwan — Present passport, return ticket, and TAC or visa at Taoyuan Airport (TPE) immigration."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (Free Online TAC for Western visa holders) or ₹4,000 (TECC Visitor Visa Single Entry)",
+      "service_fee": "₹0 (Direct Portal / TECC)",
+      "total_fee": "₹0 or ₹4,000 Total Reference",
+      "notes": "Online ROC Travel Authorization Certificate (TAC) is completely free of charge."
+    },
+    "proc_time": "Instant Online (TAC) / 5 Working Days (TECC Consular Visa)",
+    "proc_details": "Instant digital issuance via National Immigration Agency (NIA) or consular review at TECC in India.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months beyond entry date."
+      },
+      {
+        "category": "TAC Entry Rule",
+        "details": "Permits up to 14 days of stay; multiple entry valid for 90 days."
+      },
+      {
+        "category": "Return Ticket",
+        "details": "Confirmed return airline ticket or onward ticket is strictly enforced at boarding."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Personal Bank Statement",
+        "minimum_balance_or_amount": "₹1,50,000 - ₹2,50,000",
+        "time_frame": "Past 3 months",
+        "notes": "Required if applying for traditional consular visa at TECC."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can Indian passport holders visit Taiwan for free?",
+        "answer": "If you hold a valid multiple-entry visa or permanent residence from the US, UK, Schengen, Canada, Japan, Australia, or New Zealand, you can obtain a 100% FREE online ROC Travel Authorization Certificate (TAC) in 2 minutes."
+      },
+      {
+        "question": "How long can I stay in Taiwan on a TAC?",
+        "answer": "The TAC permits a stay of up to 14 days per entry and is valid for 90 days with multiple entries."
+      }
+    ],
+    "validity": "90 Days Validity (TAC) / Up to 180 Days (Consular Visa)",
+    "stay_duration": "Up to 14 Days (TAC) / 30-90 Days (Consular Visa)",
+    "entry_type": "Single / Multiple Entry",
+    "official_source": "Bureau of Consular Affairs (BOCA) & National Immigration Agency (NIA Taiwan)"
+  },
+  "hong-kong": {
+    "overview": "Hong Kong SAR is a dazzling vertical metropolis where towering neon skylines meet ancient Cantonese fishing villages, misty green peaks, and Michelin-starred culinary culture. Marvel at Victoria Harbour and Symphony of Lights from Victoria Peak, ride the historic Star Ferry, explore Lantau Island (Tian Tan Big Buddha), and shop in Mong Kok. Indian passport holders must complete an instant, FREE online Pre-Arrival Registration (PAR) at gov.hk before departure.",
+    "highlights": [
+      {
+        "icon": "🌃",
+        "title": "Victoria Peak & Harbour",
+        "description": "World's most iconic skyscraper skyline, Star Ferry crossing, and Symphony of Lights laser show."
+      },
+      {
+        "icon": "🛕",
+        "title": "Lantau Island Giant Buddha",
+        "description": "Massive 34-meter bronze Tian Tan Buddha reached via the scenic Ngong Ping 360 glass-bottom cable car."
+      },
+      {
+        "icon": "🥟",
+        "title": "Dim Sum & Culinary Capital",
+        "description": "World-famous traditional tea houses, roast goose, egg tarts, and Michelin-starred street food."
+      },
+      {
+        "icon": "📱",
+        "title": "Instant Free Online PAR",
+        "description": "Complete Pre-Arrival Registration online in 5 minutes at gov.hk for 14 days visa-free entry."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Notification Slip for Pre-Arrival Registration (PAR)",
+        "description": "Printed official PAR notification slip generated online via gov.hk (mandatory at flight boarding).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip airline reservation leaving Hong Kong within 14 days.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking Confirmation",
+        "description": "Proof of accommodation in Hong Kong.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Access Official GovHK Portal — Visit the official Immigration Department PAR portal on gov.hk.",
+      "Step 2: Enter Bio-Data & Passport Details — Fill in exact personal details matching your Indian passport.",
+      "Step 3: Submit Registration — System instantly verifies and issues electronic result in real-time.",
+      "Step 4: Print PAR Notification Slip — Print the official A4-sized 'Notification Slip for Pre-Arrival Registration'.",
+      "Step 5: Board Flight to Hong Kong — Airline counter verifies your printed PAR slip and return ticket.",
+      "Step 6: Clear Immigration at HKIA — Present passport and printed PAR slip at Hong Kong International Airport (HKG) for 14-day landing slip."
+    ],
+    "fees": {
+      "visa_fee": "₹0 (100% Free Online Pre-Arrival Registration)",
+      "service_fee": "₹0 (Direct GovHK Portal)",
+      "total_fee": "₹0 (Completely Free)",
+      "notes": "Pre-Arrival Registration (PAR) is 100% free of charge on gov.hk."
+    },
+    "proc_time": "Instant Online (Real-time in 5 minutes)",
+    "proc_details": "Generated instantly by the Hong Kong Immigration Department automated system.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 6 months with 2 blank pages."
+      },
+      {
+        "category": "PAR Notification Slip",
+        "details": "Must be printed on plain white A4 paper; digital copies on mobile phones are NOT accepted by airlines."
+      },
+      {
+        "category": "Stay Limit",
+        "details": "Maximum 14 days of stay per visit; PAR is valid for 6 months with multiple entries."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Credit Card / Cash / Bank Balance",
+        "minimum_balance_or_amount": "Minimum HK$5,000 or ₹1,00,000+",
+        "time_frame": "Travel duration",
+        "notes": "Spot solvency check at border control."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens need a visa for Hong Kong?",
+        "answer": "Indian passport holders do NOT need a prior visa for visits up to 14 days; however, you MUST complete the free online Pre-Arrival Registration (PAR) at gov.hk and print the slip before flying."
+      },
+      {
+        "question": "What if my PAR is unsuccessful?",
+        "answer": "If your online PAR registration is not accepted, you must apply for an entry visa directly to the Hong Kong Immigration Department (takes 4-6 weeks)."
+      }
+    ],
+    "validity": "6 Months Validity (Multiple Entries)",
+    "stay_duration": "Up to 14 Days per Visit",
+    "entry_type": "Multiple Entry",
+    "official_source": "Immigration Department of the Government of the Hong Kong Special Administrative Region (gov.hk)"
+  },
+  "macau": {
+    "overview": "Macau SAR, the 'Vegas of the East', is a mesmerizing blend of centuries-old Portuguese colonial architecture and modern resort spectacle. Explore the UNESCO World Heritage Historic Centre of Macao (Ruins of St. Paul's, Senado Square, A-Ma Temple), Portuguese cobblestone lanes, world-class entertainment resorts on the Cotai Strip, and Portuguese egg tarts. Indian passport holders can obtain an Entry Permit (Visa on Arrival) for 30 days at airport and ferry terminals.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Ruins of St. Paul's",
+        "description": "17th-century Portuguese Jesuit church stone façade — Macau's most iconic UNESCO landmark."
+      },
+      {
+        "icon": "🎰",
+        "title": "Cotai Strip & Venetian",
+        "description": "World-famous integrated luxury resorts, indoor canals with gondolas, and spectacular shows."
+      },
+      {
+        "icon": "🥧",
+        "title": "Portuguese Culinary Heritage",
+        "description": "Lord Stow's legendary Portuguese egg tarts, Macanese African chicken, and egg rolls."
+      },
+      {
+        "icon": "🚢",
+        "title": "Ferry & Delta Bridge",
+        "description": "Hop over from Hong Kong in 55 minutes via TurboJET ferry or the 55km Hong Kong-Zhuhai-Macau Bridge."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid International Passport",
+        "description": "Valid for at least 30 days beyond intended stay with 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Entry Permit Application Form (on Arrival)",
+        "description": "Completed entry slip provided at Macau border checkpoints.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return / Onward Travel Ticket",
+        "description": "Return air ticket or TurboJET/Cotai Water Jet ferry ticket back to Hong Kong or onward destination.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Booking Confirmation",
+        "description": "Confirmed booking at a registered Macau hotel or resort.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Proof of holding at least 5,000 MOP (approx. ₹52,000) for stays up to 7 days, or 10,000 MOP for up to 14 days.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Step 1: Travel to Macau — Fly directly into Macau International Airport (MFM) or take TurboJET ferry/cross-border bus from Hong Kong.",
+      "Step 2: Proceed to Immigration — Approach the 'Visa upon Arrival' (Entry Permit) counter.",
+      "Step 3: Present Passport & Solvency Proof — Show passport, return ticket, hotel voucher, and cash/credit card proof.",
+      "Step 4: Pay Statutory Entry Permit Fee — Pay 100 MOP (approx. ₹1,050 / $12 USD) per person in MOP or HKD cash.",
+      "Step 5: Receive Landing Slip — Immigration officer prints and stamps your 30-day landing slip.",
+      "Step 6: Enjoy Macau — Explore the historic center and Cotai Strip resorts."
+    ],
+    "fees": {
+      "visa_fee": "100 MOP (approx. ₹1,050 / $12 USD) on Arrival",
+      "service_fee": "₹0 (No prior appointment)",
+      "total_fee": "100 MOP Total Reference",
+      "notes": "Payable in Macau Patacas (MOP) or Hong Kong Dollars (HKD) at border control."
+    },
+    "proc_time": "Instant on Arrival (10-15 Minutes at Checkpoint)",
+    "proc_details": "Issued directly by the Public Security Police Force (PSPF) at airport and ferry terminals.",
+    "requirements": [
+      {
+        "category": "Passport Validity",
+        "details": "Valid for at least 30 days beyond intended stay."
+      },
+      {
+        "category": "Duration of Stay",
+        "details": "Up to 30 days from date of arrival."
+      },
+      {
+        "category": "Financial Solvency Requirement",
+        "details": "Visitors must demonstrate minimum cash/credit card availability: 5,000 MOP (stays up to 7 days) or 10,000 MOP (up to 14 days)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Cash (MOP / HKD / USD) or Credit Cards",
+        "minimum_balance_or_amount": "Minimum 5,000 MOP (approx. ₹52,000)",
+        "time_frame": "Carried during travel",
+        "notes": "Statutory spot check enforced by Macau border control."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens get a visa on arrival in Macau?",
+        "answer": "Yes, Indian passport holders can obtain an Entry Permit (Visa on Arrival) at Macau airport and ferry terminals for 100 MOP (approx. ₹1,050) valid for up to 30 days."
+      },
+      {
+        "question": "Can I visit Macau for a day trip from Hong Kong?",
+        "answer": "Yes! Ferries (TurboJET / Cotai Water Jet) run every 15-30 minutes taking just 55 minutes, or you can take the shuttle bus across the 55km Hong Kong-Zhuhai-Macau Bridge."
+      }
+    ],
+    "validity": "30 Days on Arrival",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry",
+    "official_source": "Public Security Police Force of Macau SAR (Immigration Department - fsm.gov.mo)"
+  },
+  "nigeria": {
+    "overview": "Nigeria is West Africa's economic giant and cultural powerhouse, renowned for its energetic megacity Lagos, national capital Abuja, rich Yoruba and Igbo cultural traditions, and breathtaking natural wonders like Zuma Rock and Olumo Rock. Indian passport holders must apply for a tourist visa through the Nigeria Immigration Service (NIS) portal or at the Nigerian High Commission in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏙️",
+        "title": "Lagos Megacity & Victoria Island",
+        "description": "Dynamic nightlife, Lekki Conservation Centre canopy walk, vibrant contemporary art scene, and beaches."
+      },
+      {
+        "icon": "🪨",
+        "title": "Abuja & Iconic Zuma Rock",
+        "description": "The monumental monolithic Zuma Rock, Aso Rock, and modernist National Mosque and National Church in Abuja."
+      },
+      {
+        "icon": "🌿",
+        "title": "Osun-Osogbo Sacred Grove",
+        "description": "UNESCO World Heritage sacred forest sanctuary with ancient shrines, sculptures, and sanctuaries along the Osun River."
+      },
+      {
+        "icon": "🎭",
+        "title": "Calabar Carnival & Cultural Festivals",
+        "description": "Celebrated as Africa's biggest street party, featuring spectacular pageantry, music, and masquerade heritage."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Card",
+        "description": "Mandatory international certificate of yellow fever vaccination (Yellow Card) checked at airport health controls.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Hotel Reservation or Host Invitation",
+        "description": "Hotel booking voucher or notarized Letter of Invitation from Nigerian host accompanied by their passport/ID copy.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Flight Ticket",
+        "description": "Verifiable round-trip air flight itinerary showing departure from and return to India.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Original stamped bank statements for past 6 months showing sufficient funds for stay (minimum $1,500 equivalent).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Sized Photographs",
+        "description": "Recent color photos (35x45mm) on a plain white background without glasses.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Complete Online Application: Fill the visa form on the official Nigeria Immigration Service portal (portal.immigration.gov.ng).",
+      "Pay Statutory Visa Fees Online: Pay consular visa fee and NIS processing charge using international credit card through Innovate1 Services.",
+      "Print Application & Payment Receipts: Download and print the completed Form, Acknowledgement Slip, and Payment Receipt.",
+      "Gather Mandatory Documents & Yellow Card: Secure original passport, 6-month bank statements, hotel voucher, and yellow fever certificate.",
+      "Submit at High Commission / OIS Services: Attend your biometric submission and document review at OIS Services or Nigerian High Commission in New Delhi.",
+      "Passport Collection: Receive your stamped Nigerian tourist visa sticker typically within 7 to 14 business days."
+    ],
+    "fees": {
+      "visa_fee": "$160 (NIS Tourist Statutory Fee)",
+      "service_fee": "$90 (OIS Services Biometrics & Logistics)",
+      "total_fee": "$250 (approx. ₹21,000 Total)",
+      "notes": "Official NIS portal rates are set in USD and paid online."
+    },
+    "proc_time": "7 to 14 Working Days",
+    "proc_details": "Processed via OIS Services center in New Delhi/Mumbai and Nigerian High Commission consular section.",
+    "requirements": [
+      {
+        "category": "Health & Vaccination",
+        "details": "Mandatory Yellow Fever vaccination certificate administered at least 10 days prior to arrival."
+      },
+      {
+        "category": "Host Acceptance",
+        "details": "Host in Nigeria must provide an acceptance of immigration responsibility letter if not staying in a commercial hotel."
+      },
+      {
+        "category": "Financial Sufficiency",
+        "details": "Demonstrated minimum bank balance of ₹1,50,000 maintained over 6 months."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000 to ₹2,50,000",
+        "description": "Original bank statement with bank stamp and branch manager seal for the last 6 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Financial Years",
+        "description": "ITR-V acknowledgement forms demonstrating legitimate steady earnings in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is the Yellow Fever card strictly required for entering Nigeria?",
+        "answer": "Yes, international health port control strictly verifies the Yellow Card upon arrival at Lagos and Abuja airports. It must be administered at least 10 days before travel."
+      },
+      {
+        "question": "Can Indian tourists get a Visa on Arrival in Nigeria?",
+        "answer": "No. The Visa on Arrival (VoA) facility for Nigeria is reserved exclusively for high-net-worth investors and urgent business executives with prior NIS Comptroller General approval. Tourists must obtain a visa before travel."
+      },
+      {
+        "question": "How long can an Indian tourist stay in Nigeria?",
+        "answer": "The standard single-entry tourist visa authorizes a stay of up to 30 days, extendable inside Nigeria at a state NIS headquarters."
+      }
+    ],
+    "validity": "90 Days from Date of Issue",
+    "stay_duration": "Up to 30 Days (Extendable locally)",
+    "entry_type": "Single Entry (Multiple available upon justified request)",
+    "official_source": "Nigeria Immigration Service (portal.immigration.gov.ng) & Nigeria High Commission New Delhi"
+  },
+  "ghana": {
+    "overview": "Ghana, celebrated as the 'Gateway to Africa', is revered for its peaceful democracy, warm hospitality ('Akwaaba'), golden Atlantic coastline, historic Cape Coast and Elmina castles, vibrant Accra nightlife, and rich Ashanti royal heritage. Indian passport holders must obtain a tourist visa from the Ghana High Commission in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Cape Coast & Elmina Castles",
+        "description": "UNESCO World Heritage fortress monuments along the Atlantic coast, poignant memorials to the trans-Atlantic trade."
+      },
+      {
+        "icon": "🌳",
+        "title": "Kakum National Park Canopy Walk",
+        "description": "Thrilling 350-meter suspended canopy walkway high above the lush virgin tropical rainforest."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Accra & Labadi Beach Culture",
+        "description": "Osu Oxford Street's buzzing food scene, National Museum, Makola market, and lively beachfront drum circles."
+      },
+      {
+        "icon": "🐘",
+        "title": "Mole National Park Safaris",
+        "description": "Ghana's premier wildlife sanctuary in the northern savanna, home to roaming wild elephants and antelopes."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for minimum 6 months beyond intended stay with at least 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate",
+        "description": "Original International Health Certificate proving yellow fever vaccination at least 10 days before departure.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Completed Visa Application Forms",
+        "description": "Fully filled application forms with two recent identical passport-size photos (white background).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Itinerary",
+        "description": "Verifiable return flight ticket showing arrival into and departure from Kotoka International Airport (ACC), Accra.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation or Host Invitation",
+        "description": "Confirmed booking at a registered hotel or notarized letter from a host in Ghana with copy of their Ghanaian passport/residence ID.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Original stamped bank statements demonstrating financial solvency (minimum balance ₹1,25,000).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Download & Complete Visa Application: Complete the official Ghana consular visa form accurately in duplicate.",
+      "Secure Mandatory Yellow Fever Shot: Ensure yellow fever vaccine is administered at an authorized international vaccination center.",
+      "Assemble Supporting Dossier: Prepare passport, 3-month bank statement, hotel booking voucher, flight ticket, and 2 photos.",
+      "Submit at Ghana High Commission New Delhi: Submit physical file and pay consular fee by Demand Draft at the High Commission in New Delhi.",
+      "Consular Assessment & Interview: Embassy conducts security checks and may contact host or applicant.",
+      "Collect Passport: Retrieve your stamped visa sticker within 7 to 10 working days."
+    ],
+    "fees": {
+      "visa_fee": "₹6,000 (Single Entry 3 Months) / ₹10,000 (Multiple Entry)",
+      "service_fee": "₹1,500 (Consular Submission Logistics)",
+      "total_fee": "₹7,500 - ₹11,500 Total",
+      "notes": "Fees paid via Demand Draft to Ghana High Commission New Delhi."
+    },
+    "proc_time": "7 to 10 Working Days",
+    "proc_details": "Consular processing at Ghana High Commission, Vasant Vihar, New Delhi.",
+    "requirements": [
+      {
+        "category": "Health Requirement",
+        "details": "Mandatory Yellow Fever vaccination card required for entry at Kotoka International Airport (Accra)."
+      },
+      {
+        "category": "Host Letter",
+        "details": "If staying with friends/family, notarized invitation letter and host's Ghanaian ID/residence permit required."
+      },
+      {
+        "category": "Sufficient Funds",
+        "details": "Minimum ₹1,25,000 balance in applicant's personal bank account."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statement",
+        "minimum_balance_or_amount": "₹1,25,000",
+        "description": "Original 3-month bank statement bearing original bank seal and stamp."
+      },
+      {
+        "type": "Employment Proof / Salary Slips",
+        "minimum_balance_or_amount": "Last 3 Months",
+        "description": "Salary slips and employer leave authorization letter."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders get a Visa on Arrival in Ghana?",
+        "answer": "No. Visa on Arrival for Ghana requires special prior authorization from the Comptroller-General of the Ghana Immigration Service (GIS) arranged by a sponsoring entity. Tourists must obtain a visa in New Delhi before travel."
+      },
+      {
+        "question": "Is the Yellow Fever vaccine compulsory for Ghana?",
+        "answer": "Yes. Every traveller aged 9 months or older must show a valid Yellow Fever Vaccination Card upon boarding and arrival in Accra."
+      },
+      {
+        "question": "How long can I stay in Ghana on a single-entry tourist visa?",
+        "answer": "Consulates issue a 30-day stay upon entry, which can be extended at Ghana Immigration Service headquarters in Accra."
+      }
+    ],
+    "validity": "3 Months from Date of Issue",
+    "stay_duration": "Up to 30 Days (Extendable at GIS Accra)",
+    "entry_type": "Single Entry (Multiple available for regular visitors)",
+    "official_source": "Ghana Immigration Service (GIS) & High Commission of Ghana in New Delhi"
+  },
+  "ethiopia": {
+    "overview": "Ethiopia, the cradle of mankind and Africa's ancient Christian empire, boasts 3,000 years of unbroken history. Marvel at the 12th-century monolithic rock-hewn churches of Lalibela, the dramatic peaks and Gelada baboons of the Simien Mountains, the geothermal lava lakes of Danakil Depression, and the bustling coffee heritage of Addis Ababa. Indian passport holders can easily obtain an official tourist eVisa online via evisa.gov.et.",
+    "highlights": [
+      {
+        "icon": "⛪",
+        "title": "Rock-Hewn Churches of Lalibela",
+        "description": "11 monolithic medieval rock-cut churches, including the cross-shaped Church of Saint George (UNESCO)."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Simien Mountains National Park",
+        "description": "Spectacular jagged escarpments, home to endemic Gelada baboons, Walia ibex, and Ethiopian wolves."
+      },
+      {
+        "icon": "🌋",
+        "title": "Danakil Depression & Erta Ale",
+        "description": "Otherworldly salt pans, bubbling sulfur springs, and active molten lava lakes in the Afar triangle."
+      },
+      {
+        "icon": "☕",
+        "title": "Addis Ababa & Coffee Ceremony",
+        "description": "National Museum (Lucy fossil skeleton), Holy Trinity Cathedral, and authentic Ethiopian Bunna coffee ceremonies."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months from the intended arrival date with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Ethiopian eVisa Approval",
+        "description": "Printed confirmation of approved tourist eVisa from the official portal (evisa.gov.et).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Passport Size Photograph",
+        "description": "Digital color passport photograph (35x45mm) uploaded during eVisa application.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Confirmed round-trip ticket arriving at Addis Ababa Bole International Airport (ADD).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation",
+        "description": "Confirmed booking voucher from a registered hotel or tour operator in Ethiopia.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Card (if arriving from endemic zone)",
+        "description": "Required if transiting through or arriving from an internationally designated yellow fever endemic area.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit the official Ethiopian eVisa portal (evisa.gov.et) and select Tourist Visa.",
+      "Upload Passport & Photo: Upload clean digital scan of your passport biodata page and recent portrait photo.",
+      "Pay eVisa Fee Online: Pay $82 (30-day single entry) or $202 (90-day single entry) via international credit/debit card.",
+      "Receive Approval PDF: Official electronic visa approval is emailed within 24 to 72 hours.",
+      "Board Ethiopian Airlines / Flight: Print the eVisa document and carry your passport.",
+      "Immigration Clearance: Present your printed eVisa and passport at Bole International Airport (Addis Ababa) for passport entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$82 (30 Days Single Entry) / $202 (90 Days Single Entry)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$82 - $202 (approx. ₹6,900 - ₹17,000)",
+      "notes": "Official fees paid directly via card on evisa.gov.et."
+    },
+    "proc_time": "1 to 3 Working Days (Often within 24 hours)",
+    "proc_details": "Processed completely online by the Main Department for Immigration and Nationality Affairs (ICS).",
+    "requirements": [
+      {
+        "category": "Entry Port",
+        "details": "The tourist eVisa is valid for entry ONLY through Addis Ababa Bole International Airport (ADD)."
+      },
+      {
+        "category": "Passport Validity",
+        "details": "Passport must have at least 6 months remaining validity from your entry date."
+      },
+      {
+        "category": "Payment Method",
+        "details": "Requires an international credit/debit card enabled for foreign currency transactions."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Statement / Card Limit",
+        "minimum_balance_or_amount": "₹1,00,000",
+        "description": "Bank account statement or international credit card statement proving ability to fund travels."
+      },
+      {
+        "type": "Tour Package Booking",
+        "minimum_balance_or_amount": "Voucher Confirmation",
+        "description": "Tour booking itinerary for regional trips to Lalibela or Danakil."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens apply for an Ethiopian eVisa?",
+        "answer": "Yes! Indian passport holders are 100% eligible for the official Ethiopian online eVisa through evisa.gov.et."
+      },
+      {
+        "question": "Can I get a Visa on Arrival at Addis Ababa airport?",
+        "answer": "Visa on Arrival facilities at Bole Airport are limited and subject to sudden changes. All tourists are strongly advised by Ethiopian authorities to obtain their eVisa online prior to boarding."
+      },
+      {
+        "question": "Can I extend my tourist visa inside Ethiopia?",
+        "answer": "Yes. You can extend your tourist stay in Addis Ababa at the Immigration and Nationality Affairs main headquarters before your initial 30 days expire."
+      }
+    ],
+    "validity": "30 or 90 Days from Date of Arrival",
+    "stay_duration": "30 or 90 Days (as selected on application)",
+    "entry_type": "Single Entry",
+    "official_source": "Main Department for Immigration and Nationality Affairs (evisa.gov.et) & Ethiopian Embassy New Delhi"
+  },
+  "rwanda": {
+    "overview": "Rwanda, known as 'The Land of a Thousand Hills', is celebrated worldwide for its exceptional safety, pristine streets, world-class governance, and remarkable eco-tourism. Experience rare mountain gorilla trekking in Volcanoes National Park, chimpanzee tracking in Nyungwe rainforest, boat cruises on Lake Kivu, and the inspiring modern architecture of Kigali. Indian passport holders can receive a 30-day Visa on Arrival (VOA) or apply online via IREMBO.",
+    "highlights": [
+      {
+        "icon": "🦍",
+        "title": "Mountain Gorilla Trekking",
+        "description": "Encounter endangered mountain gorilla families in their natural mist-shrouded bamboo habitat in Volcanoes National Park."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Kigali & Modern Cleanliness",
+        "description": "Africa's cleanest and safest capital city, featuring the Kigali Genocide Memorial, Convention Centre, and art galleries."
+      },
+      {
+        "icon": "🌳",
+        "title": "Nyungwe Forest Canopy Walk",
+        "description": "Suspended bridge 70 meters above one of Africa's oldest montane rainforests, teeming with primates and birdlife."
+      },
+      {
+        "icon": "🦏",
+        "title": "Akagera Big Five Safaris",
+        "description": "Savanna wildlife game drives featuring lions, rhinos, elephants, leopards, and buffaloes along picturesque lakes."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months beyond intended stay with at least 1 blank visa page.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Accommodation Booking",
+        "description": "Hotel booking voucher or safari lodge confirmation in Rwanda.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Round-trip flight booking arriving at Kigali International Airport (KGL).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Bank account statement or international credit card demonstrating minimum $50/day living allowance.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Card (if arriving from endemic country)",
+        "description": "Mandatory if travelling from or transiting through yellow fever endemic zones.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Select Application Method: Choose 30-day Visa on Arrival (VOA) at Kigali Airport or apply in advance on irembo.gov.rw.",
+      "Check Passport Validity: Ensure your Indian passport has at least 6 months validity.",
+      "Book Flights & Hotels: Reserve round-trip flights into Kigali International Airport and accommodation.",
+      "Fly to Kigali: Board your flight to Kigali (RwandAir operates non-stop direct flights from Mumbai).",
+      "Pay Fee at Immigration Counter: Present your passport at Kigali Airport border control and pay the $50 statutory tourist visa fee.",
+      "Receive Entry Stamp: Border control stamps your 30-day tourist entry visa into your passport."
+    ],
+    "fees": {
+      "visa_fee": "$50 (Single Entry 30 Days) / $70 (Multiple Entry 90 Days)",
+      "service_fee": "$0 (Direct at Airport Border or Irembo)",
+      "total_fee": "$50 (approx. ₹4,200)",
+      "notes": "Payable by Visa/Mastercard credit card or cash at Kigali Airport."
+    },
+    "proc_time": "Instant (On Arrival) or 3 Days (via Irembo online)",
+    "proc_details": "Granted instantly at Kigali International Airport immigration desk or land borders.",
+    "requirements": [
+      {
+        "category": "Visa on Arrival",
+        "details": "Indian citizens are granted a 30-day Visa on Arrival without requiring pre-approval letters."
+      },
+      {
+        "category": "East Africa Tourist Visa",
+        "details": "Eligible to purchase the $100 East Africa Tourist Visa (EATV) allowing travel across Rwanda, Kenya, and Uganda."
+      },
+      {
+        "category": "Health Checks",
+        "details": "Yellow fever card required if arriving from infected zones."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Card / Account",
+        "minimum_balance_or_amount": "₹50,000",
+        "description": "International debit/credit card or bank balance demonstrating personal travel funds."
+      },
+      {
+        "type": "Gorilla Trekking Permit (if applicable)",
+        "minimum_balance_or_amount": "$1,500 booking voucher",
+        "description": "Official RDB gorilla trekking permit voucher."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Do Indian citizens get Visa on Arrival in Rwanda?",
+        "answer": "Yes! Rwanda provides Visa on Arrival for citizens of all countries, including India. You pay $50 at the immigration counter upon landing at Kigali International Airport."
+      },
+      {
+        "question": "What is the East Africa Tourist Visa (EATV)?",
+        "answer": "The EATV costs $100 and allows 90 days of multiple-entry travel across Rwanda, Uganda, and Kenya, provided you enter first through the issuing country."
+      },
+      {
+        "question": "Are there direct flights between India and Rwanda?",
+        "answer": "Yes! RwandAir operates regular non-stop direct flights connecting Mumbai (BOM) to Kigali (KGL) in just about 6 hours."
+      }
+    ],
+    "validity": "30 Days from Date of Entry",
+    "stay_duration": "30 Days (Extendable at DGIE Kigali)",
+    "entry_type": "Single Entry (Multiple available on request)",
+    "official_source": "Directorate General of Immigration and Emigration (migration.gov.rw) & Rwanda Development Board (RDB)"
+  },
+  "zimbabwe": {
+    "overview": "Zimbabwe is a land of dramatic natural drama, warm African hospitality, and ancient civilizations. Gaze upon Victoria Falls ('Mosi-oa-Tunya' - The Smoke That Thunders), one of the Seven Natural Wonders of the World; witness massive elephant herds in Hwange National Park; explore the UNESCO medieval dry-stone citadel of Great Zimbabwe; and canoe down the wild Zambezi River in Mana Pools. Indian passport holders can obtain an official eVisa online (evisa.gov.zw) or enter on Category B visa terms.",
+    "highlights": [
+      {
+        "icon": "🌊",
+        "title": "Victoria Falls & Zambezi River",
+        "description": "The world's largest sheet of falling water, Devils Pool, white-water rafting, and luxury sunset Zambezi cruises."
+      },
+      {
+        "icon": "🐘",
+        "title": "Hwange National Park Wildlife",
+        "description": "Zimbabwe's largest national park, home to one of the world's highest concentrations of African elephants and predators."
+      },
+      {
+        "icon": "🏰",
+        "title": "Great Zimbabwe Monument (UNESCO)",
+        "description": "Colossal 11th-century medieval granite stone city, the historic capital of the ancient Kingdom of Zimbabwe."
+      },
+      {
+        "icon": "🛶",
+        "title": "Mana Pools National Park",
+        "description": "UNESCO World Heritage floodplains famous for walking safaris, canoeing past hippos, and untamed wilderness."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 3 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Approved Zimbabwean eVisa Approval",
+        "description": "Electronic Visa Approval Letter obtained online via evisa.gov.zw.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Itinerary",
+        "description": "Return flight booking arriving into Harare (HRE) or Victoria Falls (VFA).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel / Safari Lodge Booking",
+        "description": "Proof of accommodation in Victoria Falls, Harare, or wildlife safari lodges.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Sufficient Funds",
+        "description": "Recent bank statement or credit card proving funds for accommodation and safaris.",
+        "is_mandatory": true
+      },
+      {
+        "title": "KAZA UniVisa Option (if visiting Zambia)",
+        "description": "Eligible for $50 KAZA UniVisa covering both Zimbabwe and Zambia plus day trips to Botswana.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Apply Online: Visit official eVisa portal (evisa.gov.zw) and choose Holiday/Tourist Visa.",
+      "Upload Documents: Upload digital passport copy, photo, hotel reservation, and proof of residence in India.",
+      "Await Electronic Approval: Zimbabwe Department of Immigration reviews application and issues Approval Letter within 3 to 7 working days.",
+      "Print Visa Approval: Print the official approval letter to carry with your travel documents.",
+      "Travel to Zimbabwe: Fly into Victoria Falls Airport (VFA) or Robert Gabriel Mugabe International Airport (HRE).",
+      "Pay Fee & Border Stamping: Present approval letter at immigration desk and pay the $30-$45 statutory fee to receive your visa sticker."
+    ],
+    "fees": {
+      "visa_fee": "$30 (Single Entry) / $45 (Double Entry) / $50 (KAZA UniVisa)",
+      "service_fee": "$0 (Direct Government Portal)",
+      "total_fee": "$30 - $50 (approx. ₹2,500 - ₹4,200)",
+      "notes": "Payable online or upon arrival with pre-approved eVisa letter."
+    },
+    "proc_time": "3 to 7 Working Days",
+    "proc_details": "Processed online through the Department of Immigration Zimbabwe (evisa.gov.zw).",
+    "requirements": [
+      {
+        "category": "Visa Regime",
+        "details": "India is in Category B (Eligible for online pre-approved eVisa or border visa with clearance)."
+      },
+      {
+        "category": "KAZA UniVisa",
+        "details": "Tourists visiting both Victoria Falls (Zimbabwe) and Livingstone (Zambia) should request the $50 KAZA UniVisa."
+      },
+      {
+        "category": "Health Requirement",
+        "details": "Yellow fever certificate required if travelling from yellow fever risk zones."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statement",
+        "minimum_balance_or_amount": "₹75,000",
+        "description": "3-month bank statement demonstrating travel solvency."
+      },
+      {
+        "type": "Safari Itinerary Voucher",
+        "minimum_balance_or_amount": "Confirmed booking",
+        "description": "Tour confirmation for Victoria Falls or Hwange safari packages."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens get an eVisa for Zimbabwe?",
+        "answer": "Yes! Indian passport holders can apply for a holiday visa online via the official Zimbabwe Immigration portal (evisa.gov.zw) and receive an approval letter within 3 to 7 days."
+      },
+      {
+        "question": "What is the KAZA UniVisa?",
+        "answer": "The KAZA UniVisa costs $50 and allows tourists to travel freely between Zimbabwe and Zambia for up to 30 days, including day-trips into Botswana (Chobe National Park)."
+      },
+      {
+        "question": "Which airport should I fly into to see Victoria Falls?",
+        "answer": "Fly directly into Victoria Falls International Airport (VFA), which receives regional flights from Johannesburg, Addis Ababa, and Nairobi."
+      }
+    ],
+    "validity": "3 Months from Date of Issue",
+    "stay_duration": "Up to 30 Days (Extendable at Immigration offices)",
+    "entry_type": "Single Entry / Double Entry / KAZA UniVisa",
+    "official_source": "Department of Immigration Zimbabwe (evisa.gov.zw) & Embassy of Zimbabwe New Delhi"
+  },
+  "colombia": {
+    "overview": "Colombia, the vibrant gateway to South America, enchants visitors with its Caribbean beaches, colonial walled cities (Cartagena), high Andean peaks (Bogotá), lush coffee plantations (Salento), and the innovative 'City of Eternal Spring' (Medellín). Indian passport holders who hold a valid US visa (B1/B2/etc.) or Schengen visa with at least 180 days validity can enter Colombia VISA-FREE for up to 90 days. All other Indian passport holders can apply online for a Visitor Visa (Visa V Turismo) via cancilleria.gov.co.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Cartagena's Colonial Walled City",
+        "description": "UNESCO World Heritage 16th-century Spanish colonial ramparts, bougainvillea-draped balconies, and Caribbean islands."
+      },
+      {
+        "icon": "☕",
+        "title": "Coffee Cultural Landscape & Cocora Valley",
+        "description": "Hike among towering 60-meter wax palm trees in Cocora Valley and tour historic coffee fincas in Salento and Armenia."
+      },
+      {
+        "icon": "🏙️",
+        "title": "Medellín & Comuna 13",
+        "description": "The innovative 'City of Eternal Spring' famous for Metrocable views, Botero sculptures, and vibrant street art transformation."
+      },
+      {
+        "icon": "🎉",
+        "title": "VISA-FREE with US or Schengen Visa",
+        "description": "Indian passport holders enter 100% VISA-FREE for 90 days if holding a valid US (B1/B2) or Schengen visa (min 180 days validity)."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Qualifying US or Schengen Visa (if entering visa-free)",
+        "description": "Physical valid US visa or Schengen visa valid for at least 180 days from entry date for visa exemption.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Check-MIG Border Registration Form",
+        "description": "Mandatory online pre-travel registration (Check-Mig) completed within 72 hours before boarding flight at migracioncolombia.gov.co.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Confirmed round-trip ticket departing Colombia within 90 days of arrival.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation or Host Invitation",
+        "description": "Proof of accommodation in Bogotá, Medellín, Cartagena, or host letter.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months (for Visa V applicants)",
+        "description": "Demonstrating financial solvency (minimum balance equivalent to 100 times Colombian minimum daily wage, approx. ₹1,50,000).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa Exemption Eligibility: If you hold a valid US visa (B1/B2/etc.) or Schengen visa valid for 180+ days, you are exempt from a visa and can travel directly.",
+      "Apply Online for Visa V (if not visa-exempt): Visit the official Cancillería portal (cancilleria.gov.co) and submit an online tourist visa application.",
+      "Upload Required Documents: Upload passport scan, bank statements, flight itinerary, and photos.",
+      "Pay Study Fee: Pay initial visa evaluation fee ($52 USD) online.",
+      "Await Consular Decision: Cancillería processes application within 10 to 30 calendar days.",
+      "Pay Issuance Fee: Upon approval, pay the visa issuance fee ($82 USD) online to receive your electronic e-Visa.",
+      "Complete Check-Mig: Complete the mandatory Check-MIG form online within 72 hours prior to boarding your flight."
+    ],
+    "fees": {
+      "visa_fee": "$52 (Study Fee) + $82 (Issuance Fee) = $134 USD",
+      "service_fee": "FREE Entry if holding US or Schengen Visa",
+      "total_fee": "$0 (Visa-free) or $134 (approx. ₹11,300 for Visa V)",
+      "notes": "Zero visa cost for Indian passport holders with qualifying US/Schengen visas."
+    },
+    "proc_time": "Instant (Visa-Free) or 10 to 20 Business Days (Online Visa V)",
+    "proc_details": "Visa-free entry at airport immigration, or 100% digital e-Visa issued by Ministry of Foreign Affairs (Cancillería).",
+    "requirements": [
+      {
+        "category": "Visa Exemption Criteria",
+        "details": "US (B1/B2) or Schengen visa must be valid for at least 180 days upon arrival in Colombia."
+      },
+      {
+        "category": "Check-MIG Requirement",
+        "details": "All inbound travellers must submit the electronic Check-MIG form before boarding."
+      },
+      {
+        "category": "Stay Limit",
+        "details": "Tourists may stay up to 90 days per visit, extendable up to a maximum of 180 calendar days per year."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Last 3 months bank statements showing regular income and sufficient travel funds."
+      },
+      {
+        "type": "Credit Card Limit",
+        "minimum_balance_or_amount": "USD $1,500 equivalent",
+        "description": "Credit card statement indicating available limit for travel expenses."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens travel to Colombia visa-free?",
+        "answer": "YES! Under Resolution 5488, Indian passport holders who hold a valid US visa (B1/B2, etc.) or Schengen visa with at least 180 days validity can enter Colombia VISA-FREE for up to 90 days."
+      },
+      {
+        "question": "What is the Check-MIG form for Colombia?",
+        "answer": "Check-MIG is a mandatory online border control form operated by Migración Colombia. You must complete it within 72 hours before your flight departure."
+      },
+      {
+        "question": "Can I extend my stay in Colombia as a tourist?",
+        "answer": "Yes. You can extend your 90-day stay by another 90 days (up to 180 days total per calendar year) online through the Migración Colombia portal for a small fee."
+      }
+    ],
+    "validity": "Up to 90 Days upon Entry (or up to 1 Year for Visa V)",
+    "stay_duration": "Up to 90 Days (Extendable to 180 days per calendar year)",
+    "entry_type": "Multiple Entry",
+    "official_source": "Cancillería Colombia (cancilleria.gov.co) & Migración Colombia (migracioncolombia.gov.co)"
+  },
+  "peru": {
+    "overview": "Peru, the heart of the ancient Inca Empire and the gastronomic capital of South America, is home to legendary Machu Picchu, the Sacred Valley, Lake Titicaca's floating islands, Rainbow Mountain, and Lima's world-renowned Michelin-starred dining. Indian passport holders who possess a valid visa or permanent residency for the United States, Canada, United Kingdom, Australia, or Schengen area (with at least 6 months validity) can enter Peru 100% VISA-FREE for up to 180 days! All other Indian citizens apply for a tourist visa through the Embassy of Peru in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏛️",
+        "title": "Machu Picchu & Inca Trail",
+        "description": "The mystical 15th-century Inca citadel perched dramatically among high Andean cloud forest peaks (UNESCO)."
+      },
+      {
+        "icon": "🍽️",
+        "title": "Gastronomic Capital of the Americas",
+        "description": "Lima is home to world-renowned restaurants Central and Maido, celebrated for ceviche, Nikkei, and Amazonian cuisine."
+      },
+      {
+        "icon": "🌈",
+        "title": "Rainbow Mountain & Sacred Valley",
+        "description": "Stunning multicolored mineral ridges of Vinicunca and ancient agricultural terraces of Moray and Ollantaytambo."
+      },
+      {
+        "icon": "🎉",
+        "title": "100% VISA-FREE with US/UK/Canada/Schengen",
+        "description": "Indian passport holders enter visa-free for up to 180 days with a valid visa (min 6 months validity) from the US, UK, Canada, Australia, or Schengen."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months from entry date with at least 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Qualifying US, UK, Canada, Australia, or Schengen Visa",
+        "description": "Must have minimum 6 months remaining validity from arrival date in Peru for visa exemption under Supreme Decree 069-2016-RE.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return Air Ticket",
+        "description": "Confirmed round-trip flight ticket entering and exiting Jorge Chávez International Airport (LIM), Lima.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Tour Itinerary",
+        "description": "Proof of accommodation in Lima, Cusco, or Sacred Valley.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements (if applying for Consular Visa)",
+        "description": "Last 3 months stamped bank statements showing minimum balance of ₹1,50,000.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Sized Photographs",
+        "description": "Recent color photos (35x45mm) on a pure white background without spectacles.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Visa Exemption: If you hold a valid visa (minimum 6 months validity) from the US, UK, Canada, Australia, or Schengen area, you are 100% EXEMPT from a Peruvian visa.",
+      "Book Direct Travel (if visa-exempt): Book your flights into Lima (LIM) and prepare passport and qualifying visa.",
+      "Apply at Peruvian Embassy New Delhi (if not visa-exempt): Schedule an appointment and submit application form, passport, photos, and financial documents.",
+      "Pay Consular Fee: Pay ₹2,700 tourist visa statutory fee at the embassy.",
+      "Attend Interview / Biometrics: Consular officer conducts brief document review.",
+      "Collect Passport: Retrieve stamped visa within 7 to 10 working days.",
+      "Immigration Entry: Present passport at Lima airport border control to receive your TAM Virtual entry stamp (up to 180 days)."
+    ],
+    "fees": {
+      "visa_fee": "₹2,700 (Consular Tourist Visa Fee)",
+      "service_fee": "FREE Entry if holding US/UK/Canada/Schengen Visa",
+      "total_fee": "₹0 (Visa-free) or ₹2,700 (Embassy Visa)",
+      "notes": "No cost at all for Indian passport holders holding qualifying third-country visas."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival) or 7 to 10 Working Days (Consular)",
+    "proc_details": "Instant border entry at Lima airport for visa-exempt travellers, or consular processing in New Delhi.",
+    "requirements": [
+      {
+        "category": "Supreme Decree Exemption",
+        "details": "Indian nationals holding valid visas (min 6 months validity) for the US, Canada, UK, Australia, or Schengen enter visa-free."
+      },
+      {
+        "category": "Stay Duration",
+        "details": "Border officer typically stamps 90 to 180 days of authorized stay upon entry."
+      },
+      {
+        "category": "TAM Virtual",
+        "details": "Peru uses electronic Tarjeta Andina de Migración (TAM Virtual); keep your passport entry stamp secure."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Original 3-month bank statement stamped by bank branch."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Last 2 Assessment Years",
+        "description": "ITR-V acknowledgement forms."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian citizens visit Peru visa-free?",
+        "answer": "YES! Under Supreme Decree No. 069-2016-RE, Indian passport holders holding a valid visa (minimum 6 months remaining validity) or permanent residency for the US, Canada, UK, Australia, or Schengen area can enter Peru VISA-FREE for up to 180 days."
+      },
+      {
+        "question": "How long can I stay in Peru as a tourist?",
+        "answer": "You can stay up to 180 days (either consecutive or cumulative) in a 365-day period as granted by the border immigration inspector."
+      },
+      {
+        "question": "What is TAM Virtual in Peru?",
+        "answer": "TAM Virtual (Tarjeta Andina de Migración Virtual) is an electronic entry record registered automatically by Migraciones Peru when your passport is scanned at the airport."
+      }
+    ],
+    "validity": "Up to 180 Days upon Entry",
+    "stay_duration": "Up to 180 Days",
+    "entry_type": "Multiple Entry",
+    "official_source": "Superintendencia Nacional de Migraciones (migraciones.gob.pe) & Embassy of Peru New Delhi"
+  },
+  "chile": {
+    "overview": "Chile is a breathtaking ribbon of diverse extremes stretching 4,300 km along the Pacific: from the Mars-like Atacama Desert (driest on earth) in the north, through the lush Central Valley wine country and vibrant capital Santiago, to the emerald lakes, fjords, and towering granite spires of Torres del Paine in Patagonia, plus mystical Easter Island (Rapa Nui). Indian passport holders must apply online for a Tourist Visa (Visto de Turismo) via the official consular portal (serviciosconsulares.cl).",
+    "highlights": [
+      {
+        "icon": "🏔️",
+        "title": "Torres del Paine National Park",
+        "description": "Legendary Patagonian spires, turquoise glacial lakes, icebergs, and world-class 'W' and 'O' trekking circuits."
+      },
+      {
+        "icon": "🌌",
+        "title": "San Pedro de Atacama & Stargazing",
+        "description": "Moon Valley (Valle de la Luna), high-altitude salt flats with flamingos, El Tatio geysers, and the clearest night skies on Earth."
+      },
+      {
+        "icon": "🗿",
+        "title": "Easter Island (Rapa Nui)",
+        "description": "Iconic archaeological mystery in the Pacific Ocean featuring over 900 colossal stone Moai statues (UNESCO)."
+      },
+      {
+        "icon": "🍷",
+        "title": "Santiago & Casablanca Wine Valley",
+        "description": "Vibrant Andean metropolis, historic bohemian Valparaíso hills, and world-renowned Cabernet and Carménère vineyards."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Online Application Form & Digital Photo",
+        "description": "Completed application on serviciosconsulares.cl with recent color photo on white background (JPG).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Stamped bank statements proving financial solvency (minimum balance ₹1,50,000 to ₹2,00,000).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Itinerary",
+        "description": "Round-trip flight booking arriving into Arturo Merino Benítez International Airport (SCL), Santiago.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Tour Itinerary",
+        "description": "Confirmed booking for each destination in Chile or notarized host letter of invitation.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Employment Letter / Income Proof",
+        "description": "Official letter from employer stating position, salary, and authorized leave period, or business registration for self-employed.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Create Consular Account: Visit the official Chilean Consular Services portal (serviciosconsulares.cl) and create an online profile.",
+      "Complete Visto de Turismo Form: Fill the tourist visa application and select the Embassy of Chile in New Delhi.",
+      "Upload Mandatory Documents: Upload PDF scans of passport biodata, 3-month bank statements, hotel vouchers, flight itinerary, and employer letter.",
+      "Await Consular Review: Chilean Ministry of Foreign Affairs (SERMIG / Consular section) reviews application within 15 to 30 calendar days.",
+      "Attend Consular Appointment: Upon preliminary approval, attend the Chilean Embassy in New Delhi to submit original passport and pay visa fee.",
+      "Passport Stamping & Collection: Receive your physical Chilean visa sticker stamped into your passport (or electronic e-visa as instructed)."
+    ],
+    "fees": {
+      "visa_fee": "$50 (Single Entry) / $70 (Multiple Entry)",
+      "service_fee": "Variable consular processing fee (approx. ₹1,500)",
+      "total_fee": "$50 - $70 (approx. ₹4,200 - ₹5,900)",
+      "notes": "Fee payable only after visa application has been approved by the consul."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Applied online at serviciosconsulares.cl, followed by passport stamping at Embassy of Chile in New Delhi.",
+    "requirements": [
+      {
+        "category": "Advance Application",
+        "details": "Applications must be submitted at least 30 to 45 days prior to intended travel date."
+      },
+      {
+        "category": "PDI Tourism Card",
+        "details": "Keep the physical PDI receipt (Tarjeta Única Migratoria) given at Santiago airport immigration for hotel tax exemption and departure."
+      },
+      {
+        "category": "Health & Customs",
+        "details": "Strict SAG agricultural inspection at border—all plant and food products must be declared."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000 - ₹2,00,000",
+        "description": "Original stamped bank statements for past 3 months showing stable balance."
+      },
+      {
+        "type": "Salary Slips / Form 16",
+        "minimum_balance_or_amount": "Last 3 Months",
+        "description": "Salary slips and tax returns proving ongoing financial stability."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How do Indian citizens apply for a Chilean tourist visa?",
+        "answer": "Indian citizens must apply online through the official Chilean Consular Services portal (tramites.minrel.gov.cl / serviciosconsulares.cl). Once approved online, you submit your passport at the Chilean Embassy in New Delhi for visa stamping."
+      },
+      {
+        "question": "Does holding a US visa exempt Indian citizens from a Chilean visa?",
+        "answer": "Unlike Peru and Colombia, Chile currently requires Indian passport holders to apply for a Chilean Visto de Turismo, though holding a US visa significantly strengthens your application."
+      },
+      {
+        "question": "What is the PDI receipt in Chile?",
+        "answer": "When entering Chile, the PDI (Policía de Investigaciones) border officer hands you a small paper slip (Tarjeta Única Migratoria). Keep it inside your passport: showing it exempts tourists from Chile's 19% VAT hotel tax, and it must be surrendered upon departure."
+      }
+    ],
+    "validity": "Up to 90 Days from Date of Entry (valid for 90 days to enter)",
+    "stay_duration": "Up to 90 Days (Extendable locally at SERMIG)",
+    "entry_type": "Single or Multiple Entry",
+    "official_source": "Servicio Nacional de Migraciones (SERMIG) & Ministerio de Relaciones Exteriores de Chile (serviciosconsulares.cl)"
+  },
+  "argentina": {
+    "overview": "Argentina, the passionate land of tango, gaucho traditions, and staggering natural wonders, stretches from the subtropics to Antarctica. Stand before the mighty thunder of Iguazú Falls (UNESCO Wonder of Nature); explore the grand European boulevards and bohemian tango halls of Buenos Aires; sip world-class Malbec wine against the backdrop of snow-capped Andes in Mendoza; and trek upon the colossal blue ice of Perito Moreno Glacier in Patagonia. Indian citizens holding a valid US B2 tourist visa can apply for the ultra-convenient online Electronic Travel Authorization (AVE - Autorización de Viaje Electrónica) via migraciones.gov.ar; all other applicants apply for a consular tourist visa at the Embassy of Argentina in New Delhi or Consulate in Mumbai.",
+    "highlights": [
+      {
+        "icon": "🧊",
+        "title": "Perito Moreno Glacier & Patagonia",
+        "description": "The world's most accessible advancing glacier in Los Glaciares National Park; witness massive ice calvings."
+      },
+      {
+        "icon": "🌊",
+        "title": "Iguazú Falls (UNESCO Wonder)",
+        "description": "275 spectacular cascading waterfalls surrounded by lush jungle, featuring the deafening Devil's Throat (Garganta del Diablo)."
+      },
+      {
+        "icon": "💃",
+        "title": "Buenos Aires & Tango Heritage",
+        "description": "Grand European architecture in Recoleta and Palermo, vibrant colorful houses in La Boca, and authentic San Telmo tango milongas."
+      },
+      {
+        "icon": "⚡",
+        "title": "Instant Online AVE with US Visa",
+        "description": "Indian passport holders holding a valid US B2 tourist visa can apply 100% online for the AVE travel authorization."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid US B2 Tourist Visa (for online AVE applicants)",
+        "description": "Valid physical US B1/B2 visa sticker valid for the duration of travel to qualify for online AVE.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Approved AVE Confirmation (if using AVE)",
+        "description": "Printed electronic travel authorization issued by Migraciones Argentina.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Ticket",
+        "description": "Confirmed flight itinerary entering and leaving Ministro Pistarini International Airport (EZE), Buenos Aires.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Tour Booking",
+        "description": "Proof of accommodation in Buenos Aires, El Calafate, Mendoza, or Iguazú.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 6 Months",
+        "description": "Stamped bank account statements demonstrating personal travel funds (minimum balance ₹2,00,000).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Credit Card Copies & Salary Slips",
+        "description": "International credit card front copy and last 3 months salary slips or business tax returns.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check AVE Eligibility: If you hold a valid US B2 tourist visa, you can apply online for the AVE (Autorización de Viaje Electrónica) on migraciones.gov.ar.",
+      "Apply for Online AVE (with US Visa): Pay $200 USD AVE statutory fee, upload complete passport scan (all pages in single PDF) and US visa, and receive electronic approval within 10 to 20 working days.",
+      "Apply for Consular Visa (without US Visa): Book an appointment at the Embassy of Argentina in New Delhi or Consulate in Mumbai.",
+      "Assemble Physical Dossier: Prepare passport, 6-month bank statements, ITR returns, employer NOC, hotel bookings, and flight itinerary.",
+      "Attend Consular Interview: Attend in-person consular interview in New Delhi or Mumbai (consular tourist visa is GRATIS / free of charge for Indian citizens!).",
+      "Collect Stamped Passport: Receive your physical stamped tourist visa sticker within 7 to 10 working days."
+    ],
+    "fees": {
+      "visa_fee": "$200 USD (Online AVE Fee with US Visa) / GRATIS ₹0 (Consular Visa)",
+      "service_fee": "₹0 (Consular Tourist Visa is completely FREE for Indian citizens)",
+      "total_fee": "₹0 (Consular Visa) or $200 USD (Online AVE)",
+      "notes": "Remarkably, Argentina does NOT charge any visa fee for Indian citizens applying at the embassy!"
+    },
+    "proc_time": "7 to 14 Working Days (Consular) or 10 to 20 Days (Online AVE)",
+    "proc_details": "Applied online at migraciones.gob.ar (AVE) or in-person at Embassy of Argentina New Delhi / Consulate Mumbai.",
+    "requirements": [
+      {
+        "category": "Free Consular Visa",
+        "details": "By reciprocal agreement, standard Argentine consular tourist visas are issued GRATIS (free of charge) to Indian passport holders."
+      },
+      {
+        "category": "AVE Full Passport Scan",
+        "details": "If applying for AVE, Argentine immigration requires a single PDF scan of ALL passport pages (including blank pages)."
+      },
+      {
+        "category": "Consular Interview",
+        "details": "Consular visa applicants must appear for a mandatory in-person interview in New Delhi or Mumbai."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,00,000",
+        "description": "Original stamped bank statements for past 6 months showing regular income."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 3 Financial Years",
+        "description": "ITR acknowledgement forms verifying domestic earnings in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is the Argentine tourist visa really free for Indian citizens?",
+        "answer": "YES! By virtue of a bilateral agreement between India and Argentina, the Argentine Embassy in New Delhi and Consulate in Mumbai issue tourist visas GRATIS (100% free of consular fees) to Indian citizens."
+      },
+      {
+        "question": "What is the Argentine AVE?",
+        "answer": "AVE (Autorización de Viaje Electrónica) is an online electronic travel authorization. If you hold a valid US B2 visa, you can apply online for the AVE at migraciones.gob.ar for $200 USD without visiting the embassy."
+      },
+      {
+        "question": "How long can an Indian tourist stay in Argentina?",
+        "answer": "The standard tourist visa grants a stay of up to 90 days, which can be extended for an additional 90 days at the Dirección Nacional de Migraciones in Buenos Aires."
+      }
+    ],
+    "validity": "90 Days from Date of Entry (valid for 3 months to enter)",
+    "stay_duration": "Up to 90 Days (Extendable locally)",
+    "entry_type": "Multiple Entry",
+    "official_source": "Dirección Nacional de Migraciones (migraciones.gob.pe) & Embassy of the Argentine Republic in New Delhi"
+  },
+  "costa-rica": {
+    "overview": "Costa Rica is the undisputed world capital of eco-tourism, sustainability, and the joyous 'Pura Vida' (pure life) lifestyle. Nestled between the Caribbean and Pacific, Costa Rica shelters 5% of the planet's biodiversity within lush mist-shrouded cloud forests (Monteverde), active volcanic cones (Arenal Volcano), pristine surf beaches (Manuel Antonio, Tamarindo), and protected turtle nesting sanctuaries (Tortuguero). Indian passport holders holding a valid multiple-entry visa for the United States, Canada, or Schengen area (valid for minimum 1 to 3 months) can enter Costa Rica 100% VISA-FREE for up to 30 days! All other Indian passport holders apply for a Consular Visa via the Embassy of Costa Rica in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🌋",
+        "title": "Arenal Volcano & Natural Hot Springs",
+        "description": "Iconic symmetrical volcanic cone surrounded by geothermal mineral springs, waterfall rappelling, and hanging bridges."
+      },
+      {
+        "icon": "🌿",
+        "title": "Monteverde Cloud Forest Reserve",
+        "description": "High-altitude canopy zip-lining and suspension bridges among orchids, mosses, and the resplendent Quetzal."
+      },
+      {
+        "icon": "🐒",
+        "title": "Manuel Antonio National Park",
+        "description": "White-sand Pacific beaches where tropical rainforests meet the ocean, teeming with wild sloths, monkeys, and toucans."
+      },
+      {
+        "icon": "🎉",
+        "title": "100% VISA-FREE with US/Canada/Schengen Visa",
+        "description": "Indian citizens holding a valid multi-entry US (B1/B2/etc.), Canada, or Schengen visa enter 100% visa-free for up to 30 days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 6 months with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Qualifying US, Canada, or Schengen Visa (for Visa Exemption)",
+        "description": "Multiple-entry visa for the US (B1/B2/etc.), Canada, or Schengen area with minimum 1 to 3 months remaining validity upon arrival for visa waiver.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Confirmed Return or Onward Air Ticket",
+        "description": "Confirmed flight booking departing Costa Rica within 30 days of arrival (strictly verified by airlines before boarding).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Economic Solvency",
+        "description": "Minimum $100 USD in cash or international credit card per month of stay.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Tour Itinerary",
+        "description": "Proof of accommodation across San José, Arenal, Monteverde, or Guanacaste.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Yellow Fever Vaccination Certificate (if coming from endemic zone)",
+        "description": "Required if arriving from countries in South America or sub-Saharan Africa with yellow fever risk.",
+        "is_mandatory": false
+      }
+    ],
+    "steps": [
+      "Check Visa Waiver: If you hold a valid multi-entry US, Canada, or Schengen visa, you are EXEMPT from a Costa Rican visa and can travel immediately.",
+      "Prepare Direct Travel (if visa-exempt): Ensure passport is valid for 6 months, book round-trip flights into Juan Santamaría Airport (SJO) or Guanacaste Airport (LIR), and carry proof of accommodation.",
+      "Apply for Consular Visa (if not visa-exempt): Contact the Embassy of Costa Rica in New Delhi and schedule a visa appointment.",
+      "Assemble Required Documents: Prepare passport, 3-month stamped bank statements, employer NOC, round-trip flight booking, and police clearance certificate.",
+      "Pay Consular Fee: Pay the $52 USD statutory visa fee at the embassy.",
+      "Attend Interview: Consular officer reviews documents and conducts brief interview.",
+      "Receive Visa Stamping: Stamped visa sticker is collected within 10 to 15 working days.",
+      "Border Entry: Present passport at Costa Rican airport immigration to receive your 30-day entry stamp."
+    ],
+    "fees": {
+      "visa_fee": "$52 USD (Consular Visa Fee)",
+      "service_fee": "FREE Entry if holding US/Canada/Schengen Visa",
+      "total_fee": "$0 (Visa-free) or $52 USD (approx. ₹4,400 Consular)",
+      "notes": "Zero visa cost for Indian passport holders with qualifying US/Canada/Schengen visas."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival) or 10 to 15 Business Days (Consular)",
+    "proc_details": "Direct entry at airport border control for visa-exempt travellers, or consular processing in New Delhi.",
+    "requirements": [
+      {
+        "category": "Visa Exemption Terms",
+        "details": "US (B1/B2), Canada, or Schengen multi-entry visa must have minimum 1 to 3 months validity remaining upon entry into Costa Rica."
+      },
+      {
+        "category": "Strict Departure Ticket",
+        "details": "Airlines and border control strictly enforce proof of outward travel from Costa Rica within 30 days."
+      },
+      {
+        "category": "Yellow Fever",
+        "details": "Mandatory yellow fever card if arriving from endemic South American nations (e.g., Colombia, Peru, Brazil)."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000",
+        "description": "Original 3-month bank statement stamped by bank branch."
+      },
+      {
+        "type": "International Credit Card",
+        "minimum_balance_or_amount": "Available limit",
+        "description": "Proof of international card with sufficient credit limit for travel."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can Indian passport holders enter Costa Rica visa-free?",
+        "answer": "YES! Under Costa Rican immigration regulations (Grupo Tercero), Indian citizens holding a valid multiple-entry visa for the United States (B1/B2, etc.), Canada, or Schengen area can enter Costa Rica VISA-FREE for up to 30 days."
+      },
+      {
+        "question": "Can I extend my 30-day tourist stay in Costa Rica?",
+        "answer": "Yes. You can extend your tourist stay locally up to a total of 90 days at the Dirección General de Migración y Extranjería (DGME) in San José, or via a short cross-border trip."
+      },
+      {
+        "question": "Which airport is best to fly into for Costa Rica?",
+        "answer": "Fly into Juan Santamaría International Airport (SJO) in San José for central and Caribbean destinations, or Guanacaste Airport (LIR) in Liberia for Pacific surf beaches."
+      }
+    ],
+    "validity": "30 Days upon Entry (Extendable to 90 days)",
+    "stay_duration": "Up to 30 Days",
+    "entry_type": "Single Entry (Multiple upon authorized consular request)",
+    "official_source": "Dirección General de Migración y Extranjería (migracion.go.cr) & Embassy of Costa Rica in New Delhi"
+  },
+  "romania": {
+    "overview": "Romania, nestled in Eastern Europe, mesmerizes visitors with fairy-tale Transylvanian castles (Bran 'Dracula' Castle, Peleș Castle), medieval fortified Saxon towns (Brașov, Sibiu, Sighișoara), the wild Carpathian Mountains, and the stunning Danube Delta (UNESCO). As of March 31, 2024, Romania is a member of the Schengen Area (air and maritime borders). Indian passport holders can enter with an approved Uniform Schengen Visa (Type C) issued by Romania or any Schengen member state, or apply online via the Romanian Ministry of Foreign Affairs eVisa portal (evisa.mae.ro).",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Bran Castle & Peleș Royal Castle",
+        "description": "The dramatic Gothic castle perched on a Transylvanian cliff associated with Dracula legends, and Neo-Renaissance royal Peleș Castle in Sinaia."
+      },
+      {
+        "icon": "🏘️",
+        "title": "Brașov, Sibiu & Sighișoara",
+        "description": "UNESCO medieval citadel of Sighișoara (birthplace of Vlad the Impaler), charming cobblestone plazas, and medieval watchtowers."
+      },
+      {
+        "icon": "🛣️",
+        "title": "Transfăgărășan Alpine Highway",
+        "description": "One of the world's most spectacular scenic high-altitude mountain drives winding through the rugged Făgăraș Mountains."
+      },
+      {
+        "icon": "🇪🇺",
+        "title": "Official Schengen Member (from 2024)",
+        "description": "Romania now issues Schengen Type C visas, granting access across Romania and the entire 29-nation European Schengen Zone."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Issued within the last 10 years, valid for at least 3 months after intended departure from the Schengen area, with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Uniform Schengen Visa Application Form",
+        "description": "Fully completed and signed application form submitted online via evisa.mae.ro.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Recent Passport Photographs",
+        "description": "ICAO-standard color photographs (35x45mm) on light background taken within the last 6 months.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Schengen Travel Medical Insurance",
+        "description": "Coverage of minimum €30,000 for emergency medical care and repatriation across all Schengen states.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Accommodation & Flight Reservations",
+        "description": "Confirmed hotel bookings throughout Romania and verified round-trip flight reservations.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Means",
+        "description": "Bank statements for the last 3 months demonstrating at least €50/day of stay (minimum €500 total).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Employment / Socio-Professional Proof",
+        "description": "Employer leave letter, salary slips for last 3 months, and ITR-V forms for past 2 years.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Complete eVisa Application: Fill the Schengen visa application on the Romanian MFA portal (evisa.mae.ro).",
+      "Upload Supporting Documents: Upload scans of passport, photo, hotel bookings, flight itinerary, insurance, and bank statements.",
+      "Consular Validation: Romanian consular authorities validate the online dossier and issue an appointment date.",
+      "Attend Consular Appointment: Submit original passport, biometric fingerprints, and hard-copy documents at the Embassy of Romania in New Delhi.",
+      "Pay Schengen Visa Fee: Pay the statutory €90 Schengen visa fee.",
+      "Collect Passport: Retrieve passport with Schengen visa sticker within 15 to 45 calendar days."
+    ],
+    "fees": {
+      "visa_fee": "€90 (Standard Schengen Type C Visa Fee)",
+      "service_fee": "₹1,500 - ₹2,000 (Consular logistics / VAC)",
+      "total_fee": "€90 (approx. ₹8,100 + logistics)",
+      "notes": "Official EU statutory Schengen visa fee updated in 2024."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Applied online via evisa.mae.ro and finalized at the Embassy of Romania in New Delhi.",
+    "requirements": [
+      {
+        "category": "Schengen Regulations",
+        "details": "Subject to the standard Schengen 90/180-day rule across the European Schengen area."
+      },
+      {
+        "category": "Travel Insurance",
+        "details": "Mandatory €30,000 emergency medical and hospitalization insurance valid in all Schengen countries."
+      },
+      {
+        "category": "Financial Requirement",
+        "details": "Demonstrated minimum €50 per day of stay in Romania."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,50,000",
+        "description": "Original stamped bank statements for the past 3 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Years",
+        "description": "ITR acknowledgement forms proving steady personal income in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is Romania part of the Schengen Area?",
+        "answer": "Yes! On March 31, 2024, Romania officially joined the Schengen Area for air and maritime borders. Romanian diplomatic missions now issue standard Uniform Schengen Visas (Type C)."
+      },
+      {
+        "question": "Can I travel to other European countries with a Romanian tourist visa?",
+        "answer": "Yes. A Uniform Schengen Visa (Type C) issued by Romania allows travel across all 29 Schengen member states (France, Germany, Italy, Switzerland, etc.) within the 90/180-day limit."
+      },
+      {
+        "question": "What is the evisa.mae.ro portal?",
+        "answer": "It is the official electronic visa portal operated by the Ministry of Foreign Affairs of Romania where all visa applicants must pre-register their applications before visiting the embassy."
+      }
+    ],
+    "validity": "Up to 90 Days within a 180-Day Period",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry Schengen Visa",
+    "official_source": "Ministry of Foreign Affairs of Romania (evisa.mae.ro) & Embassy of Romania New Delhi"
+  },
+  "bulgaria": {
+    "overview": "Bulgaria, one of Europe's oldest nations, is celebrated for its golden Black Sea beaches (Varna, Sunny Beach), snow-capped ski resorts (Bansko, Borovets), UNESCO heritage sites like the 10th-century Rila Monastery, the ancient Thracian tombs, and Europe's oldest continuously inhabited city (Plovdiv). As of March 31, 2024, Bulgaria is officially a member of the Schengen Area (air and maritime borders). Indian passport holders can enter using a Uniform Schengen Visa (Type C) issued by Bulgaria or any Schengen state, or apply through VFS Global / Embassy of Bulgaria in New Delhi.",
+    "highlights": [
+      {
+        "icon": "⛪",
+        "title": "Rila Monastery (UNESCO)",
+        "description": "The monumental 10th-century Eastern Orthodox monastery nestled in the Rila Mountains, renowned for colorful frescoes and wooden balconies."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Plovdiv Old Town & Roman Theatre",
+        "description": "Europe's oldest continuously inhabited city, boasting remarkably preserved 2nd-century Roman amphitheatre and 19th-century Bulgarian National Revival mansions."
+      },
+      {
+        "icon": "🏖️",
+        "title": "Black Sea Coast & Nessebar",
+        "description": "Golden sandy beaches and the ancient UNESCO island citadel of Nessebar with Byzantine churches."
+      },
+      {
+        "icon": "🇪🇺",
+        "title": "Official Schengen Zone Member (from 2024)",
+        "description": "Bulgaria now issues Schengen Type C visas, granting access across Bulgaria and all 29 European Schengen member states."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond departure date from the Schengen area with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Harmonized Schengen Visa Application Form",
+        "description": "Completed and signed application form submitted via VFS Global or consular portal.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Color Passport Photographs",
+        "description": "Recent photos (35x45mm) on light background compliant with ICAO biometric standards.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Schengen Travel Medical Insurance",
+        "description": "Coverage of minimum €30,000 covering emergency medical expenses across all Schengen countries.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Accommodation & Flight Itinerary",
+        "description": "Confirmed hotel bookings throughout Bulgaria and round-trip flight reservations.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Financial Solvency",
+        "description": "Bank statements for the past 3 months showing minimum €50/day (minimum €500 total).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Employment / Income Proof",
+        "description": "Employer leave letter, last 3 months pay slips, and ITR-V forms for past 2 years.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Download & Complete Schengen Visa Form: Complete the standard Schengen application form for Bulgaria.",
+      "Gather Supporting Documents: Assemble passport, travel medical insurance (€30,000), hotel bookings, flight itinerary, and bank statements.",
+      "Book VFS Global Appointment: Schedule a biometric submission appointment at your nearest VFS Bulgaria visa application center.",
+      "Submit Biometrics & Dossier: Attend appointment to submit fingerprints, facial photograph, and hard-copy documents.",
+      "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
+      "Track & Collect Passport: Receive passport with Schengen visa sticker within 15 to 30 calendar days."
+    ],
+    "fees": {
+      "visa_fee": "€90 (Standard Schengen Type C Visa)",
+      "service_fee": "₹1,800 - ₹2,400 (VFS Global Service Fee)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Standardized EU Schengen fee updated in 2024."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Submitted via VFS Global Visa Application Centres across India and evaluated by the Embassy of the Republic of Bulgaria in New Delhi.",
+    "requirements": [
+      {
+        "category": "Schengen Status",
+        "details": "Uniform Schengen visa grants travel access to Bulgaria and the entire 29-nation Schengen Zone."
+      },
+      {
+        "category": "90/180 Rule",
+        "details": "Maximum stay of 90 days in any 180-day rolling period across the Schengen area."
+      },
+      {
+        "category": "Travel Insurance",
+        "details": "Mandatory €30,000 coverage valid across all Schengen states."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,50,000",
+        "description": "Original stamped bank statements for the past 3 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Financial Years",
+        "description": "ITR-V acknowledgement forms demonstrating verifiable income in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is Bulgaria in the Schengen Area?",
+        "answer": "Yes! As of March 31, 2024, Bulgaria joined the Schengen Area for air and maritime borders. Bulgarian consulates now issue standard Uniform Schengen Visas (Type C)."
+      },
+      {
+        "question": "Can I visit other Schengen countries on a Bulgarian tourist visa?",
+        "answer": "Yes. A Uniform Schengen Visa issued by Bulgaria is valid for travel across all 29 Schengen member states (e.g., France, Italy, Greece, Austria) within the 90/180-day limit."
+      },
+      {
+        "question": "Where do I apply for a Bulgarian visa in India?",
+        "answer": "Applications are submitted through VFS Global visa application centres in New Delhi, Mumbai, Bengaluru, Chennai, Kolkata, and other major Indian cities."
+      }
+    ],
+    "validity": "Up to 90 Days within a 180-Day Period",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry Schengen Visa",
+    "official_source": "Ministry of Foreign Affairs of the Republic of Bulgaria (mfa.bg) & VFS Global"
+  },
+  "croatia": {
+    "overview": "Croatia, the crown jewel of the Adriatic, enchants travellers with over 1,000 sun-drenched islands (Hvar, Korčula), the medieval walled fortress of Dubrovnik ('King's Landing' in Game of Thrones), the cascading emerald travertine lakes of Plitvice Lakes National Park (UNESCO), and the Roman Diocletian's Palace in Split. Croatia is a full member of the European Union, Eurozone (€), and the Schengen Area (since January 1, 2023). Indian passport holders require a Uniform Schengen Visa (Type C), applied through VFS Global in India or the Embassy of the Republic of Croatia in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏰",
+        "title": "Dubrovnik Old City Walls (UNESCO)",
+        "description": "Walk atop the monumental 16th-century medieval maritime ramparts overlooking the sparkling sapphire Adriatic Sea."
+      },
+      {
+        "icon": "🌊",
+        "title": "Plitvice Lakes National Park",
+        "description": "16 cascading terraced turquoise lakes interconnected by dramatic waterfalls and wooden boardwalks through lush beech forests."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Split & Diocletian's Palace",
+        "description": "The monumental 4th-century Roman Emperor's palace living complex, bustling seaside Riva promenade, and islands."
+      },
+      {
+        "icon": "🇪🇺",
+        "title": "Full Schengen & Eurozone Member",
+        "description": "Croatia uses the Euro (€) and is fully integrated into the border-free Schengen Area with standard Schengen visas."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Issued within the last 10 years, valid for at least 3 months after departure from Schengen territory, with at least 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Harmonized Schengen Visa Application Form",
+        "description": "Completed online via the Croatian MFA portal (crovisa.mvep.hr) and signed.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Passport Size Photographs",
+        "description": "Color photos (35x45mm) on light background compliant with ICAO biometric standards.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Schengen Travel Medical Insurance",
+        "description": "Minimum coverage of €30,000 for emergency medical treatment and repatriation across all Schengen states.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Flight Itinerary",
+        "description": "Round-trip flight booking arriving into Zagreb (ZAG), Dubrovnik (DBV), or Split (SPU).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Accommodation Proof",
+        "description": "Confirmed booking across Croatian destinations or registered host voucher.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Original stamped statements showing minimum €70/day of stay (or €30/day if accommodation is prepaid).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Employment / Income Documents",
+        "description": "Employer leave letter, last 3 months salary slips, and ITR-V acknowledgement forms for past 2 years.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Complete Online Crovisa Application: Fill the visa form on the official Croatian MFA portal (crovisa.mvep.hr).",
+      "Print Completed Application: Print the generated summary with barcode and sign it.",
+      "Gather Supporting Documents: Secure passport, travel insurance (€30,000), hotel bookings, flight itinerary, and bank statements.",
+      "Book Appointment at VFS Global: Schedule appointment at your nearest VFS Global Croatian Visa Application Centre in India.",
+      "Submit Biometrics & Application: Attend appointment to provide fingerprint scans, facial photo, and physical dossier.",
+      "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
+      "Receive Stamped Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 calendar days."
+    ],
+    "fees": {
+      "visa_fee": "€90 (Uniform Schengen Type C Visa)",
+      "service_fee": "₹2,200 (VFS Global Service Fee)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Official EU Schengen fee updated in 2024; currency in Croatia is Euro (€)."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Applied via VFS Global in New Delhi, Mumbai, etc., and adjudicated by the Embassy of Croatia in New Delhi.",
+    "requirements": [
+      {
+        "category": "Schengen Regulations",
+        "details": "Subject to standard 90/180-day rule across the European Schengen area."
+      },
+      {
+        "category": "Euro Currency",
+        "details": "Croatia adopted the Euro (€) on January 1, 2023; kuna is no longer in circulation."
+      },
+      {
+        "category": "Travel Insurance",
+        "details": "Mandatory €30,000 emergency medical insurance valid in all Schengen member states."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,50,000",
+        "description": "Original stamped bank statements for the past 3 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Financial Years",
+        "description": "ITR-V forms demonstrating verifiable earnings in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is Croatia part of the Schengen Area?",
+        "answer": "Yes! Croatia officially joined the Schengen Area on January 1, 2023. Croatian diplomatic missions now issue standard Uniform Schengen Visas (Type C)."
+      },
+      {
+        "question": "Can I visit other European countries with a Croatian visa?",
+        "answer": "Yes! A Uniform Schengen Visa issued by Croatia allows unrestricted travel across all 29 Schengen countries (France, Italy, Germany, Austria, Switzerland, etc.) within the 90/180-day limit."
+      },
+      {
+        "question": "What currency is used in Croatia?",
+        "answer": "Croatia adopted the Euro (€) as its official currency on January 1, 2023, replacing the Croatian kuna."
+      }
+    ],
+    "validity": "Up to 90 Days within a 180-Day Period",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry Schengen Visa",
+    "official_source": "Ministry of Foreign and European Affairs of Croatia (crovisa.mvep.hr) & VFS Global"
+  },
+  "slovenia": {
+    "overview": "Slovenia, Europe's green boutique jewel tucked between the Alps and the Mediterranean, enchants visitors with emerald alpine lakes (Lake Bled with its fairy-tale island church, Lake Bohinj), the subterranean wonderland of Postojna Cave and cliff-hanging Predjama Castle, the charming baroque and dragon bridges of Ljubljana, and the coastal Venetian town of Piran. Slovenia is a founding Central European member of the European Union, Eurozone (€), and Schengen Area (since 2007). Indian passport holders require a Uniform Schengen Visa (Type C), applied via VFS Global / Embassy of Slovenia in New Delhi.",
+    "highlights": [
+      {
+        "icon": "⛵",
+        "title": "Lake Bled & Island Church",
+        "description": "Fairy-tale alpine lake surrounded by Julian Alps; row traditional pletna boats to the island church and ring the wishing bell."
+      },
+      {
+        "icon": "🏰",
+        "title": "Postojna Cave & Predjama Castle",
+        "description": "Take an underground electric train through vast stalactite caverns and visit the world's largest cave castle built into a 123-meter cliff."
+      },
+      {
+        "icon": "🐉",
+        "title": "Ljubljana & Dragon Bridge",
+        "description": "One of Europe's greenest and most walkable capitals, designed by master architect Jože Plečnik (UNESCO)."
+      },
+      {
+        "icon": "🏔️",
+        "title": "Soča River Valley & Triglav National Park",
+        "description": "Vibrant emerald-turquoise alpine river famous for white-water rafting, fly fishing, and hiking among pristine Julian Alps peaks."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Issued within the last 10 years, valid for at least 3 months after departure from the Schengen area, with at least 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Uniform Schengen Visa Application Form",
+        "description": "Completed and signed application form submitted via VFS Global.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Color Passport Photographs",
+        "description": "Recent photos (35x45mm) on light background compliant with ICAO biometric standards.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Schengen Travel Medical Insurance",
+        "description": "Minimum coverage of €30,000 for emergency medical treatment and repatriation across all Schengen states.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Itinerary",
+        "description": "Flight booking entering and leaving Ljubljana Jože Pučnik Airport (LJU) or nearby regional hubs (Venice, Vienna).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservations / Accommodation Proof",
+        "description": "Confirmed booking across Slovenian destinations or registered host voucher.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Original stamped statements showing minimum €70/day of stay (or €35/day if accommodation is prepaid).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Employment & Tax Documents",
+        "description": "Employer leave NOC letter, last 3 months salary slips, and ITR-V acknowledgement forms for past 2 years.",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Download & Complete Schengen Visa Form: Complete the harmonized Schengen visa form for Slovenia.",
+      "Assemble Mandatory Documents: Prepare passport, €30,000 Schengen insurance, hotel vouchers, flight itinerary, and bank statements.",
+      "Book Appointment at VFS Global: Schedule an appointment at the nearest VFS Global Slovenia Visa Application Centre in India.",
+      "Submit Biometrics & Application: Attend appointment to provide digital fingerprints, photograph, and submit physical file.",
+      "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
+      "Collect Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 calendar days."
+    ],
+    "fees": {
+      "visa_fee": "€90 (Uniform Schengen Type C Visa)",
+      "service_fee": "₹2,000 - ₹2,500 (VFS Global Service Fee)",
+      "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
+      "notes": "Official EU Schengen fee; currency in Slovenia is Euro (€)."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Applied via VFS Global and adjudicated by the Embassy of the Republic of Slovenia in New Delhi.",
+    "requirements": [
+      {
+        "category": "Schengen Regulations",
+        "details": "Subject to standard 90/180-day rule across the European Schengen area."
+      },
+      {
+        "category": "Green Capital",
+        "details": "Ljubljana is recognized as the European Green Capital with pedestrianized historic center."
+      },
+      {
+        "category": "Travel Insurance",
+        "details": "Mandatory €30,000 emergency medical insurance valid in all Schengen member states."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹2,50,000",
+        "description": "Original stamped bank statements for the past 3 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Financial Years",
+        "description": "ITR-V acknowledgement forms demonstrating regular personal income in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is Slovenia part of the Schengen Area?",
+        "answer": "Yes! Slovenia has been a full member of the European Schengen Area since 2007. Slovenian diplomatic missions issue standard Uniform Schengen Visas (Type C)."
+      },
+      {
+        "question": "Can I visit Italy or Austria on a Slovenian tourist visa?",
+        "answer": "Yes! Slovenia borders Italy, Austria, Hungary, and Croatia. A Uniform Schengen Visa issued by Slovenia allows unrestricted travel across all 29 Schengen countries within the 90/180-day limit."
+      },
+      {
+        "question": "What currency is used in Slovenia?",
+        "answer": "Slovenia uses the Euro (€) as its official currency."
+      }
+    ],
+    "validity": "Up to 90 Days within a 180-Day Period",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry Schengen Visa",
+    "official_source": "Ministry of Foreign and European Affairs of Slovenia & Embassy of the Republic of Slovenia New Delhi"
+  },
+  "cyprus": {
+    "overview": "Cyprus, the legendary Mediterranean island of Aphrodite, enchants travellers with over 300 days of annual sunshine, golden sandy beaches (Nissi Beach, Fig Tree Bay), dramatic sea caves in Cape Greco, UNESCO Byzantine painted churches in the Troodos Mountains, the ancient Greco-Roman amphitheatre of Kourion, and the historic divided capital of Nicosia. Cyprus is a full member of the European Union. Indian passport holders holding a valid double- or multiple-entry Schengen visa (Type C) can enter Cyprus 100% VISA-FREE for up to 90 days! All other Indian citizens apply for a national tourist visa through Cyprus Visa Application Centres (VFS Global) or the High Commission of the Republic of Cyprus in New Delhi.",
+    "highlights": [
+      {
+        "icon": "🏖️",
+        "title": "Ayia Napa & Cape Greco Sea Caves",
+        "description": "Crystal-clear turquoise waters at Blue Lagoon, sea caves, and golden sands of Nissi Beach and Konnos Bay."
+      },
+      {
+        "icon": "🏛️",
+        "title": "Kourion Amphitheatre & Paphos Archaeological Park",
+        "description": "Spectacular cliffside Greco-Roman theatre overlooking the Mediterranean and Roman mosaic villas (UNESCO)."
+      },
+      {
+        "icon": "⛰️",
+        "title": "Troodos Mountains & Painted Churches",
+        "description": "Pine-scented mountain peaks, Kykkos Monastery, and 10 UNESCO World Heritage Byzantine painted churches."
+      },
+      {
+        "icon": "🎉",
+        "title": "VISA-FREE with Multi-Entry Schengen Visa",
+        "description": "Indian passport holders holding a valid double- or multiple-entry Schengen visa (Type C) enter Cyprus 100% visa-free for up to 90 days."
+      }
+    ],
+    "documents": [
+      {
+        "title": "Valid Passport",
+        "description": "Valid for at least 3 months beyond intended departure date from Cyprus with minimum 2 blank pages.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Valid Double/Multi-Entry Schengen Visa (if entering visa-free)",
+        "description": "Valid multi-entry Schengen Visa (Type C) allows 100% visa-free entry to Cyprus for up to 90 days without a separate Cypriot visa.",
+        "is_mandatory": false
+      },
+      {
+        "title": "Cyprus Visa Application Form",
+        "description": "Completed and signed application form submitted via VFS Global or High Commission.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Two Color Passport Photographs",
+        "description": "Recent photos (35x45mm) on plain white background compliant with ICAO biometric standards.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Travel Medical Insurance",
+        "description": "Emergency medical and hospitalization coverage of minimum €30,000 valid in Cyprus.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Confirmed Round-Trip Flight Itinerary",
+        "description": "Flight booking arriving into Larnaca International Airport (LCA) or Paphos International Airport (PFO).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Hotel Reservation / Proof of Accommodation",
+        "description": "Confirmed booking in Ayia Napa, Limassol, Larnaca, or Paphos, or notarized Assumption of Responsibility from a host.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements for Past 3 Months",
+        "description": "Original stamped bank statements demonstrating financial solvency (minimum balance ₹1,50,000 to ₹2,00,000).",
+        "is_mandatory": true
+      }
+    ],
+    "steps": [
+      "Check Schengen Visa Waiver: If you hold a valid double- or multiple-entry Schengen visa (Type C), you are 100% EXEMPT from a Cypriot visa and can travel directly.",
+      "Prepare Direct Travel (if visa-exempt): Book flights into Larnaca (LCA) or Paphos (PFO), ensure passport is valid, and carry proof of accommodation.",
+      "Apply via VFS Global (if not visa-exempt): Download and complete the official Cyprus visa application form.",
+      "Assemble Physical Dossier: Prepare passport, 3-month stamped bank statements, travel medical insurance (€30,000), flight itinerary, and hotel booking.",
+      "Submit at VFS Global: Attend your appointment at VFS Global in New Delhi, Mumbai, Bengaluru, etc., to submit documents.",
+      "Pay Statutory Visa Fee: Pay €80 consular fee plus VFS logistics fee.",
+      "Collect Passport: Retrieve passport with stamped Cyprus tourist visa sticker within 7 to 15 working days."
+    ],
+    "fees": {
+      "visa_fee": "€80 (National Tourist Visa Fee)",
+      "service_fee": "FREE Entry if holding Multi-Entry Schengen Visa (or approx. ₹1,800 VFS fee)",
+      "total_fee": "€0 (Visa-free with Schengen) or €80 (approx. ₹7,200 Consular)",
+      "notes": "Zero visa cost for Indian passport holders holding qualifying multi-entry Schengen visas."
+    },
+    "proc_time": "Instant (Visa-Free on Arrival with Schengen) or 7 to 12 Working Days (VFS)",
+    "proc_details": "Instant border entry for multi-entry Schengen visa holders, or processed via VFS Global and Cyprus High Commission New Delhi.",
+    "requirements": [
+      {
+        "category": "Schengen Exemption",
+        "details": "Holders of valid double- or multiple-entry Schengen visas can enter Cyprus without a national visa."
+      },
+      {
+        "category": "Legal Ports of Entry",
+        "details": "Travel must enter exclusively through legal ports: Larnaca (LCA) and Paphos (PFO) airports, or Limassol/Larnaca seaports."
+      },
+      {
+        "category": "Northern Cyprus Caution",
+        "details": "Entering Cyprus via northern airports (Ercan) is considered an illegal entry by the Republic of Cyprus."
+      },
+      {
+        "category": "Stay Duration",
+        "details": "Tourists may stay up to 90 days in any 180-day period."
+      }
+    ],
+    "financial_proofs": [
+      {
+        "type": "Bank Account Statements",
+        "minimum_balance_or_amount": "₹1,50,000 - ₹2,00,000",
+        "description": "Original stamped bank statements for the past 3 months."
+      },
+      {
+        "type": "Income Tax Returns",
+        "minimum_balance_or_amount": "Past 2 Years",
+        "description": "ITR acknowledgement forms demonstrating steady income in India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I visit Cyprus with a Schengen visa?",
+        "answer": "YES! Under Cypriot immigration law, third-country nationals (including Indian citizens) holding a valid double- or multiple-entry Schengen visa (Type C) can enter the Republic of Cyprus VISA-FREE for up to 90 days in a 180-day period."
+      },
+      {
+        "question": "Is Cyprus in the Schengen Area?",
+        "answer": "Cyprus is a full European Union member state but is not yet a full member of the Schengen border-free zone. However, it unilaterally recognizes valid Schengen visas for visa-free tourist entry."
+      },
+      {
+        "question": "Which airports are legal to fly into in Cyprus?",
+        "answer": "The only legal ports of entry into the Republic of Cyprus are Larnaca International Airport (LCA) and Paphos International Airport (PFO). Flying into Ercan (ECN) in northern Cyprus is deemed illegal by the Republic of Cyprus."
+      }
+    ],
+    "validity": "Up to 90 Days within a 180-Day Period (or up to 1-3 Years for Multi-Entry)",
+    "stay_duration": "Up to 90 Days",
+    "entry_type": "Single or Multiple Entry",
+    "official_source": "Civil Registry and Migration Department (CRMD - mip.gov.cy) & High Commission of Cyprus in New Delhi"
+  }
+};
+
 export function getTourismOverview(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.overview) return TOURISM_DESTS[c].overview;
   const map: Record<string, string> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': 'Thailand offers visa-free entry for Indian passport holders for up to 60 days. You can enjoy the vibrant culture, stunning beaches, delicious cuisine, and rich heritage. No prior visa application required — just show up with your passport and return ticket.',
@@ -238,6 +4215,7 @@ export function getTourismOverview(country: string): string {
 // ── 2. TOURISM HIGHLIGHTS — COUNTRY SPECIFIC ──
 export function getTourismHighlights(country: string): TourismHighlightItem[] {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.highlights) return TOURISM_DESTS[c].highlights;
   const map: Record<string, TourismHighlightItem[]> = {
     'thailand': [
       { icon: '🏖️', title: 'Beach Paradise', description: 'Phuket, Krabi, Koh Samui — world-famous beaches and islands' },
@@ -616,6 +4594,7 @@ export function getTourismHighlights(country: string): TourismHighlightItem[] {
 export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string): DocumentRequiredItem[] {
   const country = maybeCountry || countryOrFrom;
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.documents) return TOURISM_DESTS[c].documents;
   const map: Record<string, DocumentRequiredItem[]> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': [
@@ -1184,6 +5163,7 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
 export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): string[] {
   const country = maybeCountry || countryOrFrom;
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.steps) return TOURISM_DESTS[c].steps;
   const map: Record<string, string[]> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': [
@@ -1601,6 +5581,7 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
 // ── 5. TOURISM FEES — COUNTRY SPECIFIC ──
 export function getTourismFees(country: string): any {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.fees) return TOURISM_DESTS[c].fees;
   const map: Record<string, any> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': { visa_fee: '₹0 (Free Visa Exemption)', service_fee: '₹0 (No Appointment Needed)', total_fee: '₹0 (Free Entry)', notes: 'Indian passport holders receive 60-day visa-free entry. Extension available for 1,900 THB.' },
@@ -1692,6 +5673,7 @@ export function getTourismFees(country: string): any {
 // ── 6. TOURISM PROCESSING TIME — COUNTRY SPECIFIC ──
 export function getTourismProcessingTime(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.proc_time) return TOURISM_DESTS[c].proc_time;
   const map: Record<string, string> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': 'Instant on Arrival (0 Days) — Free 60-day entry stamp',
@@ -1778,6 +5760,7 @@ export function getTourismProcessingTime(country: string): string {
 // ── 7. TOURISM PROCESSING DETAILS — Additional Context ──
 export function getTourismProcessingDetails(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.proc_details) return TOURISM_DESTS[c].proc_details;
   const map: Record<string, string> = {
     'thailand': 'No prior application needed. Complete TM6 arrival card on flight. Entry stamp granted at immigration counter.',
     'malaysia': 'Submit MDAC online within 3 days of arrival. Entry stamp granted at immigration counter.',
@@ -1839,6 +5822,7 @@ export function getTourismProcessingDetails(country: string): string {
 // ── 8. TOURISM FAQ — COUNTRY SPECIFIC ──
 export function getTourismFAQ(country: string): FAQItem[] {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.faqs) return TOURISM_DESTS[c].faqs;
   const map: Record<string, FAQItem[]> = {
     'thailand': [
       { question: 'Do Indian citizens need a visa for Thailand?', answer: 'No, Indian passport holders can enter Thailand visa-free for up to 60 days. This is a visa exemption scheme effective from 2024 onwards.' },
@@ -2338,6 +6322,7 @@ export function getTourismFAQ(country: string): FAQItem[] {
 // ── 9. TOURISM REQUIREMENTS — COUNTRY SPECIFIC ──
 export function getTourismRequirements(country: string): OtherRequirementItem[] {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.requirements) return TOURISM_DESTS[c].requirements;
   const map: Record<string, OtherRequirementItem[]> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': [
@@ -2576,6 +6561,7 @@ export function getTourismRequirements(country: string): OtherRequirementItem[] 
 // ── 10. TOURISM FINANCIAL PROOFS — COUNTRY SPECIFIC ──
 export function getTourismFinancialProofs(country: string): FinancialProofItem[] {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.financial_proofs) return TOURISM_DESTS[c].financial_proofs;
   const map: Record<string, FinancialProofItem[]> = {
     'thailand': [
       { type: 'Cash / Card on Arrival', minimum_balance_or_amount: '10,000 THB per person / 20,000 THB per family (approx. ₹24,000 – ₹48,000)', time_frame: 'At time of entry', notes: 'Immigration spot-check verification upon arrival.' }
@@ -2737,6 +6723,7 @@ export function getTourismFinancialProofs(country: string): FinancialProofItem[]
 // ── 11. TOURISM VALIDITY — COUNTRY SPECIFIC ──
 export function getTourismValidity(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.validity) return TOURISM_DESTS[c].validity;
   const map: Record<string, string> = {
     'thailand': '60 Days on Arrival (Extendable by 30 Days)',
     'malaysia': '30 Days on Arrival',
@@ -2816,6 +6803,7 @@ export function getTourismValidity(country: string): string {
 // ── 12. TOURISM STAY DURATION — COUNTRY SPECIFIC ──
 export function getTourismStayDuration(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.stay_duration) return TOURISM_DESTS[c].stay_duration;
   const map: Record<string, string> = {
     'thailand': 'Up to 60 Days (Extendable by 30 Days)',
     'malaysia': 'Up to 30 Days',
@@ -2895,6 +6883,7 @@ export function getTourismStayDuration(country: string): string {
 // ── 13. TOURISM ENTRY TYPE — COUNTRY SPECIFIC ──
 export function getTourismEntryType(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.entry_type) return TOURISM_DESTS[c].entry_type;
   const map: Record<string, string> = {
     'thailand': 'Single Entry (Visa-Free)',
     'malaysia': 'Single Entry (Visa-Free)',
@@ -2974,6 +6963,7 @@ export function getTourismEntryType(country: string): string {
 // ── 14. OFFICIAL SOURCE NAME HELPER ──
 export function getTourismOfficialSourceName(country: string): string {
   const c = normalizeCountry(country);
+  if (TOURISM_DESTS[c]?.official_source) return TOURISM_DESTS[c].official_source;
   const map: Record<string, string> = {
     'thailand': 'Royal Thai Immigration Bureau & Ministry of Foreign Affairs',
     'malaysia': 'Immigration Department of Malaysia (Jabatan Imigresen Malaysia)',

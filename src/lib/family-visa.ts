@@ -96,10 +96,1520 @@ export function normalizeCountry(country: string): string {
   if (c.includes('finland') || c.includes('helsinki')) return 'finland';
   if (c.includes('italy') || c.includes('italia') || c.includes('rome') || c.includes('milan')) return 'italy';
   if (c.includes('sweden') || c.includes('stockholm')) return 'sweden';
+  
+  // ── 35 NEW COUNTRIES NORMALIZATION ──
+  // RUSSIA & CIS
+  if (c.includes('russia') || c.includes('russian federation') || c.includes('moscow')) return 'russia';
+  if (c.includes('ukraine') || c.includes('kyiv') || c.includes('kiev')) return 'ukraine';
+  if (c.includes('belarus') || c.includes('minsk')) return 'belarus';
+  if (c.includes('kazakhstan') || c.includes('astana') || c.includes('almaty')) return 'kazakhstan';
+  if (c.includes('uzbekistan') || c.includes('tashkent') || c.includes('samarkand')) return 'uzbekistan';
+  if (c.includes('kyrgyzstan') || c.includes('bishkek') || c.includes('kyrgyz republic')) return 'kyrgyzstan';
+  if (c.includes('tajikistan') || c.includes('dushanbe')) return 'tajikistan';
+  if (c.includes('turkmenistan') || c.includes('ashgabat')) return 'turkmenistan';
+  if (c.includes('azerbaijan') || c.includes('baku')) return 'azerbaijan';
+  if (c.includes('georgia') || c.includes('tbilisi') || c.includes('batumi')) return 'georgia';
+  if (c.includes('armenia') || c.includes('yerevan')) return 'armenia';
+  if (c.includes('moldova') || c.includes('chisinau') || c.includes('republic of moldova')) return 'moldova';
+
+  // ASIA
+  if (c.includes('pakistan') || c.includes('islamabad') || c.includes('lahore') || c.includes('karachi')) return 'pakistan';
+  if (c.includes('bangladesh') || c.includes('dhaka')) return 'bangladesh';
+  if (c.includes('myanmar') || c.includes('burma') || c.includes('yangon') || c.includes('naypyidaw')) return 'myanmar';
+  if (c.includes('laos') || c.includes('lao pdr') || c.includes('vientiane')) return 'laos';
+  if (c.includes('mongolia') || c.includes('ulaanbaatar')) return 'mongolia';
+  if (c.includes('taiwan') || c.includes('taipei') || c.includes('republic of china')) return 'taiwan';
+  if (c.includes('hong kong') || c.includes('hong-kong') || c.includes('hongkong') || c === 'hk') return 'hong-kong';
+  if (c.includes('macau') || c.includes('macao')) return 'macau';
+
+  // AFRICA
+  if (c.includes('nigeria') || c.includes('lagos') || c.includes('abuja')) return 'nigeria';
+  if (c.includes('ghana') || c.includes('accra')) return 'ghana';
+  if (c.includes('ethiopia') || c.includes('addis ababa')) return 'ethiopia';
+  if (c.includes('rwanda') || c.includes('kigali')) return 'rwanda';
+  if (c.includes('zimbabwe') || c.includes('harare')) return 'zimbabwe';
+
+  // AMERICAS
+  if (c.includes('colombia') || c.includes('bogota') || c.includes('medellin')) return 'colombia';
+  if (c.includes('peru') || c.includes('lima') || c.includes('cusco')) return 'peru';
+  if (c.includes('chile') || c.includes('santiago')) return 'chile';
+  if (c.includes('argentina') || c.includes('buenos aires')) return 'argentina';
+  if (c.includes('costa rica') || c.includes('costa-rica') || c.includes('san jose')) return 'costa-rica';
+
+  // EUROPE
+  if (c.includes('romania') || c.includes('bucharest')) return 'romania';
+  if (c.includes('bulgaria') || c.includes('sofia')) return 'bulgaria';
+  if (c.includes('croatia') || c.includes('zagreb') || c.includes('dubrovnik')) return 'croatia';
+  if (c.includes('slovenia') || c.includes('ljubljana')) return 'slovenia';
+  if (c.includes('cyprus') || c.includes('nicosia') || c.includes('limassol')) return 'cyprus';
+
   return c;
 }
 
 const DESTS: Record<string, any> = {
+  // ── 35 NEW COUNTRIES ──
+  "russia": {
+    "cname": "Russia",
+    "scheme": "Private / Family Reunion Visa & Temporary Residence by Marriage/Kinship",
+    "overview": "Russia Family Reunion Visa allows spouses, children, and parents of Russian citizens or residents to join their family in Russia. Requires sponsorship from the family member in Russia, accommodation proof, and financial support.",
+    "fees": {
+      "visa_fee": "$50-100 USD (approx. ₹4,100-8,200)",
+      "service_fee": "Payable at VFS",
+      "total_fee": "$50-100 USD + VFS Logistics",
+      "currency": "USD",
+      "notes": "Visa fee varies by relationship and duration."
+    },
+    "proc_time": "4-8 Weeks (Standard)",
+    "proc_details": "Issued by Russian Consulate based on notarized invitation or MVD family voucher.",
+    "source": "Russian Ministry of Internal Affairs (MVD) & Consular Department / VFS Global",
+    "validity": "1 Year Multi-Entry (Private Visa) / 3 Years (RVP Family Quota Exemption)",
+    "stay": "Duration of Family Status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Russian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Official marriage certificate or birth certificate proving direct kinship with Russian citizen or resident.",
+    "min_funds": "Sponsor financial solvency proof meeting Russian regional subsistence minimums",
+    "highlights": [
+      {
+        "icon": "💑",
+        "title": "Family Reunion",
+        "description": "Join your spouse, children, or parents in Russia."
+      },
+      {
+        "icon": "📋",
+        "title": "Sponsorship Required",
+        "description": "Family member in Russia must sponsor the application."
+      },
+      {
+        "icon": "🏠",
+        "title": "Accommodation Proof",
+        "description": "Must have registered living space (propiska) in Russia for the family."
+      },
+      {
+        "icon": "🔄",
+        "title": "Path to PR",
+        "description": "Family visa leads to quota-free Temporary Residence Permit (RVP) and PR."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Who can sponsor a family visa for Russia?",
+        "answer": "Russian citizens and permanent residence permit holders can sponsor spouses, children, and parents."
+      },
+      {
+        "question": "How long is the Russia Family Visa valid?",
+        "answer": "Family visas are typically issued for up to 1 year multiple entry, followed by 3-year RVP in-country."
+      },
+      {
+        "question": "Can I work on a family visa in Russia?",
+        "answer": "Once granted an RVP (Temporary Residence Permit) based on marriage/family, you can work lawfully without a separate work permit."
+      }
+    ]
+  },
+  "kazakhstan": {
+    "cname": "Kazakhstan",
+    "scheme": "Family Reunification Visa (Category C1 / C2) & Accompanying Dependents",
+    "overview": "Kazakhstan allows foreign spouses, minor children, and dependent parents of Kazakh citizens or lawful permanent/temporary residents to obtain Family Reunification visas and residence permits.",
+    "fees": {
+      "visa_fee": "$80 USD (Single Entry) / $200 USD (Annual Multi-Entry)",
+      "service_fee": "Consular handling fee",
+      "total_fee": "$80-200 USD Statutory Reference",
+      "currency": "USD",
+      "notes": "Fee set by Kazakh consular tariff schedule."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "Invitation confirmed through Migration Service Committee in Kazakhstan.",
+    "source": "Migration Service Committee & Ministry of Foreign Affairs of Kazakhstan",
+    "validity": "1 to 3 Years (Aligned with Principal Sponsor)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Russian/Kazakh Translated Marriage or Birth Certificate",
+    "relationship_desc": "Legalized civil status certificate proving legal marriage or parenthood.",
+    "min_funds": "Sponsor income proof covering accommodation and daily living allowance",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Reunification",
+        "description": "Join spouse or parents residing lawfully in Kazakhstan."
+      },
+      {
+        "icon": "📋",
+        "title": "Multi-Year Validity",
+        "description": "Issued for up to 3 years aligned with sponsor’s work/study permit."
+      },
+      {
+        "icon": "🏫",
+        "title": "Access to Education",
+        "description": "Dependent children can enroll in local public and international schools."
+      },
+      {
+        "icon": "🏥",
+        "title": "Healthcare Access",
+        "description": "Eligible for mandatory compulsory social medical insurance (OSMS)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can spouse and children join a foreign worker in Kazakhstan?",
+        "answer": "Yes, foreign professionals on C3 work visas can sponsor their spouse and children for C2 family visas."
+      },
+      {
+        "question": "Can a family visa holder work in Kazakhstan?",
+        "answer": "Family visas do not automatically grant work authorization; taking up employment requires a separate work permit."
+      },
+      {
+        "question": "What documents prove relationship?",
+        "answer": "Apostilled and notarized translated marriage certificates for spouses, and birth certificates for minor children."
+      }
+    ]
+  },
+  "ukraine": {
+    "cname": "Ukraine",
+    "scheme": "Family Reunification Visa (Type D-14 / D-15) & Temporary Residence (Posvidka)",
+    "overview": "Allows foreign spouses, minor children, and dependent family members of Ukrainian citizens or foreign permanent/temporary residents to reside in Ukraine.",
+    "fees": {
+      "visa_fee": "$65-130 USD",
+      "service_fee": "State migration card fee on arrival",
+      "total_fee": "$65-130 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Consular visa D-14/15 fee paid at VFS Ukraine."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Consular entry visa followed by temporary residence permit card from SMS within 30 days of arrival.",
+    "source": "State Migration Service of Ukraine & MFA Ukraine",
+    "validity": "1 to 3 Years (Renewable)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Ukrainian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Apostilled marriage or birth certificate translated into Ukrainian and notarized.",
+    "min_funds": "Sponsor maintenance guarantee and adequate registered housing in Ukraine",
+    "highlights": [
+      {
+        "icon": "💑",
+        "title": "Family Unity",
+        "description": "Live lawfully in Ukraine with your Ukrainian spouse or resident parent."
+      },
+      {
+        "icon": "📋",
+        "title": "Temporary Residence Card",
+        "description": "Biometric Posvidka card issued with full domestic movement rights."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I obtain a residence permit through marriage in Ukraine?",
+        "answer": "Yes, marriage to a Ukrainian citizen entitles you to a 1-year renewable temporary residence permit, and after 2 years, permanent residency."
+      }
+    ]
+  },
+  "belarus": {
+    "cname": "Belarus",
+    "scheme": "Family Reunification Visa & Temporary Residence Permit (RVP)",
+    "overview": "Allows foreign spouses, minor children, and dependent parents to join family members who are citizens of Belarus or lawful permanent/temporary residents.",
+    "fees": {
+      "visa_fee": "€60 (Consular Visa) / 3 basic units (Temporary Residence in-country)",
+      "service_fee": "Consular direct",
+      "total_fee": "€60 Consular Fee",
+      "currency": "EUR",
+      "notes": "Vignette issued by Embassy of Belarus in New Delhi."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "Consular entry visa followed by temporary residence permit registration in Belarus.",
+    "source": "Department on Citizenship and Migration & Ministry of Foreign Affairs of Belarus",
+    "validity": "1 Year (Renewable annually)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Russian/Belarusian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Official civil status certificate proving direct family relationship.",
+    "min_funds": "Sponsor income verification and registered living space (propiska) in Belarus",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Live and reside in Belarus with your family."
+      },
+      {
+        "icon": "🔄",
+        "title": "Annual Renewal",
+        "description": "Simple annual extension at the local migration office."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can spouse of a student or worker stay in Belarus?",
+        "answer": "Yes, family members can obtain temporary residence permits based on the principal applicant's valid status."
+      }
+    ]
+  },
+  "uzbekistan": {
+    "cname": "Uzbekistan",
+    "scheme": "Family Visit / Dependent Visa & Temporary Residence",
+    "overview": "Allows foreign spouses, minor children, and dependent parents of Uzbek citizens or foreign specialists to reside in Uzbekistan.",
+    "fees": {
+      "visa_fee": "$60 USD (Consular Entry Visa)",
+      "service_fee": "Registration and residence permit card fee in Uzbekistan",
+      "total_fee": "$60 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Consular visa stamped at Uzbek Embassy in New Delhi."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Host relative or employer requests visa support letter via Uzbek MFA.",
+    "source": "Ministry of Internal Affairs & Ministry of Foreign Affairs of Uzbekistan",
+    "validity": "1 Year (Renewable annually)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Russian/Uzbek-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Notarized translation of marriage certificate or children's birth certificates.",
+    "min_funds": "Sponsor financial maintenance proof and housing lease in Uzbekistan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Reside together in Uzbekistan during work or business assignments."
+      },
+      {
+        "icon": "🔄",
+        "title": "Simple Renewal",
+        "description": "Renewable annually at the regional migration department."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can family members of Indian workers accompany them to Uzbekistan?",
+        "answer": "Yes, family members can obtain dependent visas based on the principal worker's labour contract."
+      }
+    ]
+  },
+  "kyrgyzstan": {
+    "cname": "Kyrgyzstan",
+    "scheme": "Family Visit Visa & Temporary Residence",
+    "overview": "Allows spouses and minor children of Kyrgyz citizens or long-term foreign workers to reside together in Kyrgyzstan.",
+    "fees": {
+      "visa_fee": "$60 USD",
+      "service_fee": "Registration and residence card fee in-country",
+      "total_fee": "$60 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Entry visa stamped at Embassy or obtained online."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Foreign Affairs and State Migration Service.",
+    "source": "Ministry of Foreign Affairs & Ministry of Internal Affairs of Kyrgyzstan",
+    "validity": "1 Year (Renewable)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Apostilled marriage or birth certificate with notarized Russian translation.",
+    "min_funds": "Sponsor maintenance proof and registered residence in Kyrgyzstan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Keep family together in Bishkek or regional centers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can dependents of Indian students reside in Kyrgyzstan?",
+        "answer": "Spouses of students can obtain private visitor visas, but spouses of work permit holders receive renewable dependent residence permits."
+      }
+    ]
+  },
+  "tajikistan": {
+    "cname": "Tajikistan",
+    "scheme": "Family Reunion Visa (Category Kh) & Temporary Residence",
+    "overview": "Allows spouses and minor children of Tajik citizens or lawful foreign specialists to obtain family visas and temporary residence in Tajikistan.",
+    "fees": {
+      "visa_fee": "$50 USD",
+      "service_fee": "Residence permit card fee in-country",
+      "total_fee": "$50 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Issued by Tajik diplomatic missions or online portal."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Foreign Affairs and Ministry of Internal Affairs.",
+    "source": "Ministry of Foreign Affairs & Ministry of Internal Affairs of Tajikistan",
+    "validity": "1 Year (Renewable)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Apostilled marriage or birth certificate with certified Russian or Tajik translation.",
+    "min_funds": "Sponsor maintenance confirmation and housing proof in Tajikistan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Reunification",
+        "description": "Reside lawfully with your spouse or parent in Dushanbe."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreign spouses live in Tajikistan?",
+        "answer": "Yes, foreign spouses receive a Category Kh family visa and 1-year renewable residence permit."
+      }
+    ]
+  },
+  "turkmenistan": {
+    "cname": "Turkmenistan",
+    "scheme": "Private / Family Visit Visa & Residence",
+    "overview": "Allows spouses and minor children of Turkmen citizens or lawful foreign specialists to enter and reside in Turkmenistan under official sponsorship.",
+    "fees": {
+      "visa_fee": "$60-120 USD",
+      "service_fee": "Migration registration fee on arrival",
+      "total_fee": "$60-120 USD Consular Fee",
+      "currency": "USD",
+      "notes": "State Migration Service LOI approval is mandatory."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "State Migration Service in Ashgabat approves invitation.",
+    "source": "State Migration Service of Turkmenistan",
+    "validity": "Up to 1 Year (Renewable)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Civil status documents authenticated by Ministry of Foreign Affairs.",
+    "min_funds": "Sponsor maintenance and housing guarantee in Turkmenistan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Sponsorship",
+        "description": "Reunite with immediate family residing in Ashgabat or regional centers."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreign spouses join workers in Turkmenistan?",
+        "answer": "Yes, sponsoring companies can request family visas through the State Migration Service for senior specialists."
+      }
+    ]
+  },
+  "azerbaijan": {
+    "cname": "Azerbaijan",
+    "scheme": "Family Reunification Visa & Temporary Residence (Ailə üzvü)",
+    "overview": "Allows spouses, minor children, and dependent parents of Azerbaijani citizens or foreign permanent/temporary residents to live in Azerbaijan.",
+    "fees": {
+      "visa_fee": "$50-100 USD (Consular Visa) / State duty on arrival",
+      "service_fee": "State Migration residence card fee",
+      "total_fee": "$50-100 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Residence card issued by State Migration Service in Baku."
+    },
+    "proc_time": "15 to 20 Working Days",
+    "proc_details": "State Migration Service issues 1-year renewable residence permit card.",
+    "source": "State Migration Service of the Republic of Azerbaijan",
+    "validity": "1 Year (Renewable up to 2-3 years)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Translated Marriage or Birth Certificate",
+    "relationship_desc": "Certified translation of marriage or birth certificate legalized or apostilled.",
+    "min_funds": "Sponsor financial maintenance proof and registered apartment in Azerbaijan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Live and reside in Baku with your spouse and children."
+      },
+      {
+        "icon": "💳",
+        "title": "Biometric Residence Card",
+        "description": "Full access to local healthcare, public schools, and banking."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreign family members join Indian workers in Baku?",
+        "answer": "Yes, principal work permit holders can sponsor spouses and minor children for temporary residence cards."
+      }
+    ]
+  },
+  "georgia": {
+    "cname": "Georgia",
+    "scheme": "Category D4 Immigration Visa & Family Reunification Residence Permit",
+    "overview": "Allows spouses, minor children, and dependent parents of Georgian citizens or lawful foreign residents to obtain family residence permits.",
+    "fees": {
+      "visa_fee": "$20 USD (Consular D4 Visa) / 200-300 GEL (PSH Residence Card)",
+      "service_fee": "PSH logistics",
+      "total_fee": "approx. ₹8,000 Statutory Reference",
+      "currency": "GEL",
+      "notes": "Public Service Hall issues biometric family card."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Public Service Hall processes family reunification residence cards.",
+    "source": "Public Service Hall & Ministry of Justice of Georgia",
+    "validity": "1 Year (Renewable up to 5-6 years)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Georgian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Apostilled marriage or birth certificate with certified Georgian translation.",
+    "min_funds": "Sponsor income verification and registered residential lease in Georgia",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Unity",
+        "description": "Reside together in Tbilisi or coastal Batumi with full civil rights."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can an Indian worker sponsor their family in Georgia?",
+        "answer": "Yes, holders of a valid Georgian work residence permit can sponsor their spouse and children for family residence cards."
+      }
+    ]
+  },
+  "armenia": {
+    "cname": "Armenia",
+    "scheme": "Family Reunification & Temporary Residence (Ընտանեկան միավորում)",
+    "overview": "Allows spouses, minor children, and dependent parents of Armenian citizens or foreign permanent/temporary residents to live lawfully in Armenia.",
+    "fees": {
+      "visa_fee": "$33 USD (Consular Visa) / 105,000 AMD (Temporary Residence Card)",
+      "service_fee": "Migration card processing fee",
+      "total_fee": "approx. ₹15,000 Statutory Reference",
+      "currency": "AMD",
+      "notes": "Card issued by Migration and Citizenship Service in Yerevan."
+    },
+    "proc_time": "15 to 25 Calendar Days",
+    "proc_details": "Migration and Citizenship Service issues 1-year renewable residence card.",
+    "source": "Migration and Citizenship Service of the Republic of Armenia",
+    "validity": "1 Year (Renewable)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Armenian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Apostilled marriage or birth certificate translated into Armenian and notarized.",
+    "min_funds": "Sponsor maintenance confirmation and housing proof in Armenia",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Unity",
+        "description": "Reside together in Yerevan with full access to schooling and healthcare."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can foreign spouses obtain residency in Armenia?",
+        "answer": "Yes, foreign spouses of Armenian residents receive 1-year renewable temporary residence cards."
+      }
+    ]
+  },
+  "moldova": {
+    "cname": "Moldova",
+    "scheme": "Family Reunification Visa (Type D/VF) & Temporary Residence (Reîntregirea familiei)",
+    "overview": "Allows foreign spouses, minor children, and dependent parents of Moldovan citizens or lawful foreign residents to obtain family residence permits.",
+    "fees": {
+      "visa_fee": "€80 (Consular Visa D/VF)",
+      "service_fee": "IGM residence card fee on arrival",
+      "total_fee": "€80 Consular Fee",
+      "currency": "EUR",
+      "notes": "Visa D/VF issued by Moldovan Embassy in New Delhi."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "General Inspectorate for Migration issues 1-year renewable family residence card.",
+    "source": "General Inspectorate for Migration (IGM) & MFA Moldova",
+    "validity": "1 Year (Renewable)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Romanian-Translated Marriage or Birth Certificate",
+    "relationship_desc": "Certified translation of marriage or birth certificate with apostille.",
+    "min_funds": "Sponsor maintenance confirmation and housing proof in Moldova",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Reside together in Chișinău with full access to schools and healthcare."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can family members accompany a foreign worker in Moldova?",
+        "answer": "Yes, holders of an employment residence permit can sponsor their spouse and dependent children for family residence cards."
+      }
+    ]
+  },
+  "pakistan": {
+    "cname": "Pakistan",
+    "scheme": "Family Visit / Spousal Entry Visa & Extension",
+    "overview": "Allows foreign spouses, children, and parents of Pakistani citizens or lawful residents to visit and reside in Pakistan under family sponsorship.",
+    "fees": {
+      "visa_fee": "$35-60 USD",
+      "service_fee": "NADRA portal charge",
+      "total_fee": "$35-60 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Applied via visa.nadra.gov.pk."
+    },
+    "proc_time": "15 to 30 Working Days",
+    "proc_details": "Consular review and Ministry of Interior verification.",
+    "source": "Ministry of Interior & NADRA Pakistan",
+    "validity": "Up to 1 Year (Renewable)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage or Birth Certificate",
+    "relationship_desc": "Certified Nikahnama / marriage registration or birth certificate.",
+    "min_funds": "Sponsor maintenance confirmation and residence in Pakistan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Visit and reside with family in Pakistan."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can foreign spouses enter Pakistan?",
+        "answer": "Through a Family Visit visa obtained online via NADRA, followed by application for a Pakistan Origin Card (POC)."
+      }
+    ]
+  },
+  "bangladesh": {
+    "cname": "Family Visit / Dependent Visa (Category F / FE)",
+    "scheme": "Category F / FE Dependent Visa",
+    "overview": "Allows foreign spouses and minor children of Bangladeshi citizens or Category E work permit holders to reside together in Bangladesh.",
+    "fees": {
+      "visa_fee": "₹0 (Consular Visa)",
+      "service_fee": "approx. ₹850 (VAC Handling)",
+      "total_fee": "₹850 Total Reference",
+      "currency": "INR",
+      "notes": "Issued aligned with principal sponsor's permit."
+    },
+    "proc_time": "7 to 10 Working Days",
+    "proc_details": "Bangladesh High Commission / Deputy High Commissions.",
+    "source": "Department of Immigration and Passports & Ministry of Home Affairs",
+    "validity": "1 to 2 Years (Aligned with Sponsor)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage or Birth Certificate",
+    "relationship_desc": "Notarized and authenticated marriage or birth certificate.",
+    "min_funds": "Principal worker's salary certificate and housing proof in Bangladesh",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Live with your spouse and children in Dhaka or Chittagong."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can families of Indian workers reside in Bangladesh?",
+        "answer": "Yes, spouses and dependent children receive Category FE visas tied to the principal applicant's BIDA work permit."
+      }
+    ]
+  },
+  "myanmar": {
+    "cname": "Myanmar",
+    "scheme": "Social Visa (Type SV) & Accompanying Dependents",
+    "overview": "Allows foreign spouses and minor children of Myanmar citizens or long-term foreign workers to visit and reside in Myanmar.",
+    "fees": {
+      "visa_fee": "$50-70 USD",
+      "service_fee": "Stay permit extension in Yangon",
+      "total_fee": "$50-70 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Social visa issued via embassy or online portal."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Ministry of Immigration and Population.",
+    "source": "Ministry of Immigration and Population of Myanmar",
+    "validity": "70 Days (Extendable in-country)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Notarized and authenticated civil status certificates.",
+    "min_funds": "Sponsor maintenance confirmation and housing proof in Myanmar",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Reside together with family in Yangon or Mandalay."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can families of foreign workers stay in Myanmar?",
+        "answer": "Yes, spouses and dependent children receive Social Visas and stay permits tied to the principal applicant's employment."
+      }
+    ]
+  },
+  "laos": {
+    "cname": "Laos",
+    "scheme": "Family Visit Visa (Type SP) & Dependent Stay Permit",
+    "overview": "Allows spouses and minor children of Lao citizens or foreign specialists holding Type LA work permits to reside together in Laos.",
+    "fees": {
+      "visa_fee": "$50-70 USD",
+      "service_fee": "Stay permit extension in Vientiane",
+      "total_fee": "$50-70 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Tied to principal applicant's work permit."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Department of Immigration in Vientiane.",
+    "source": "Department of Immigration & Ministry of Public Security of Lao PDR",
+    "validity": "1 Year (Renewable)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Notarized and authenticated civil status certificates.",
+    "min_funds": "Sponsor maintenance confirmation and registered housing in Laos",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Reside together in Vientiane with peaceful lifestyle and international schooling."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can spouses of foreign workers live in Laos?",
+        "answer": "Yes, dependents receive Type SP family visas and stay permit cards tied to the primary worker's contract."
+      }
+    ]
+  },
+  "mongolia": {
+    "cname": "Mongolia",
+    "scheme": "Family Reunion Visa (Type F) & Dependent Residence Permit",
+    "overview": "Allows spouses and minor children of Mongolian citizens or lawful foreign specialists to live and reside in Mongolia.",
+    "fees": {
+      "visa_fee": "$60 USD (Consular Visa) / Residence card fee in-country",
+      "service_fee": "MIA processing",
+      "total_fee": "$60 USD Consular Fee",
+      "currency": "USD",
+      "notes": "Issued aligned with principal sponsor's permit."
+    },
+    "proc_time": "10 to 15 Working Days",
+    "proc_details": "Mongolia Immigration Agency in Ulaanbaatar.",
+    "source": "Mongolia Immigration Agency (MIA)",
+    "validity": "1 Year (Renewable annually)",
+    "stay": "Duration of Family Sponsorship",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Notarized and authenticated civil status documents.",
+    "min_funds": "Sponsor maintenance confirmation and housing proof in Mongolia",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Integrity",
+        "description": "Reside together in Ulaanbaatar with full access to schools and healthcare."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can families of Indian workers reside in Mongolia?",
+        "answer": "Yes, spouses and dependent children receive Type F family visas and residence cards tied to the primary worker's contract."
+      }
+    ]
+  },
+  "taiwan": {
+    "cname": "Taiwan",
+    "scheme": "Resident Visa for Dependents & Accompanying Family ARC",
+    "overview": "Allows spouses and minor children of Taiwan citizens, ARC holders, and Employment Gold Card holders to obtain resident visas and Alien Resident Certificates.",
+    "fees": {
+      "visa_fee": "₹5,300 (Resident Visa)",
+      "service_fee": "ARC fee: NT$1,000/year",
+      "total_fee": "approx. ₹8,000 Consular & ARC Reference",
+      "currency": "INR",
+      "notes": "Spouses of Gold Card holders can also work part-time/full-time under simplified rules."
+    },
+    "proc_time": "5 to 10 Working Days",
+    "proc_details": "TECC in India issues entry Resident Visa; NIA issues ARC in Taiwan.",
+    "source": "Bureau of Consular Affairs (BOCA) & National Immigration Agency (NIA)",
+    "validity": "1 to 3 Years (Aligned with Sponsor)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Translated Marriage or Birth Certificate",
+    "relationship_desc": "Certified marriage or birth certificate authenticated by TECC.",
+    "min_funds": "Principal worker's employment contract and tax statements in Taiwan",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Relocation",
+        "description": "High safety ranking, clean environment, and top international schools in Taipei and Hsinchu."
+      },
+      {
+        "icon": "🏥",
+        "title": "Universal Healthcare (NHI)",
+        "description": "All dependents covered under Taiwan's world-class National Health Insurance."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can spouses of foreign professionals work in Taiwan?",
+        "answer": "Spouses can apply for specialized work permits or freelance work authorization, and spouses of Gold Card holders enjoy facilitated work permissions."
+      }
+    ]
+  },
+  "hong-kong": {
+    "cname": "Hong Kong",
+    "scheme": "Dependant Visa (受養人簽證)",
+    "overview": "Allows spouses and unmarried dependent children under 18 of Hong Kong permanent residents or employment/talent visa holders (GEP, TTPS, QMAS) to live in Hong Kong with full employment rights.",
+    "fees": {
+      "visa_fee": "HK$230 (approx. ₹2,500)",
+      "service_fee": "₹0 (Online Portal)",
+      "total_fee": "HK$230 Statutory Reference",
+      "currency": "HKD",
+      "notes": "Dependents of work/talent visa holders have unrestricted rights to work."
+    },
+    "proc_time": "4 to 6 Weeks",
+    "proc_details": "Hong Kong Immigration Department.",
+    "source": "Hong Kong Immigration Department (ImmD)",
+    "validity": "Tied to Principal Sponsor (Pattern: 2+3+3 years)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage or Birth Certificate",
+    "relationship_desc": "Certified copy of marriage certificate or children's birth certificates.",
+    "min_funds": "Sponsor maintenance proof and registered residential accommodation in Hong Kong",
+    "highlights": [
+      {
+        "icon": "💼",
+        "title": "Full Work Authorization",
+        "description": "Spouses holding Dependant Visas have the legal right to work without needing separate work permits."
+      },
+      {
+        "icon": "🏫",
+        "title": "Public & International Schools",
+        "description": "Dependent children can enroll in subsidized public schools or top international schools."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a Hong Kong Dependant Visa?",
+        "answer": "YES! Unlike many other jurisdictions, spouses of employment and talent visa holders in Hong Kong have unrestricted legal rights to work in any job."
+      }
+    ]
+  },
+  "macau": {
+    "cname": "Macau",
+    "scheme": "Special Authorization to Stay for Family Dependents (家屬逗留許可)",
+    "overview": "Allows spouses and minor children of Macau permanent residents or senior specialized workers (Class A Blue Card holders) to reside in Macau.",
+    "fees": {
+      "visa_fee": "100 MOP",
+      "service_fee": "PSPF processing",
+      "total_fee": "100 MOP Consular Fee",
+      "currency": "MOP",
+      "notes": "Public Security Police Force Immigration issues family authorization."
+    },
+    "proc_time": "15 to 25 Working Days",
+    "proc_details": "Public Security Police Force (PSPF) Immigration Department.",
+    "source": "Public Security Police Force of Macau SAR (PSPF)",
+    "validity": "1 to 2 Years (Tied to Sponsor)",
+    "stay": "Duration of Family Ties",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Translated Marriage or Birth Certificate",
+    "relationship_desc": "Notarized and authenticated marriage or birth certificate.",
+    "min_funds": "Principal worker's salary verification and housing lease in Macau",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "Family Unity",
+        "description": "Reside together in Macau with world-class safety and quality of life."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can family members of Blue Card holders reside in Macau?",
+        "answer": "Senior foreign specialists and managerial personnel can sponsor spouses and dependent minor children for family stay authorization."
+      }
+    ]
+  },
+  "nigeria": {
+    "cname": "Nigeria",
+    "scheme": "Subject to Regularization (STR) Dependent Visa & Dependent CERPAC Card",
+    "overview": "Spouses and dependent children of expatriate professionals holding valid employment authorization or CERPAC cards in Nigeria can obtain STR Dependent Visas. This authorizes lawful residence in Nigeria alongside the principal earner, with access to international schools, healthcare, and multi-entry travel privileges.",
+    "fees": {
+      "visa_fee": "$160 (Consular STR Dependent Fee)",
+      "service_fee": "$1,000 (Annual Dependent CERPAC Card)",
+      "total_fee": "$1,160 (approx. ₹98,000 per family member)",
+      "notes": "Each dependent receives an individual CERPAC card for identification and travel."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Applied at Nigerian High Commission New Delhi, followed by biometric regularization at NIS state office in Nigeria.",
+    "source": "Nigeria Immigration Service & Federal Ministry of Interior",
+    "validity": "Aligned with Principal Expatriate's CERPAC Validity",
+    "stay": "Full duration of primary sponsor's assignment",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "Government-issued certificates verifying marriage and parentage, legalized by the Ministry of External Affairs (MEA) in India.",
+    "min_funds": "Principal sponsor's employment contract and housing allowance guarantee",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧‍👦",
+        "title": "Full Family Unity",
+        "description": "Keep your immediate family united throughout your corporate executive tenure in Lagos or Abuja."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International School Access",
+        "description": "Children can enroll in British, American, and international baccalaureate schools across major cities."
+      },
+      {
+        "icon": "✈️",
+        "title": "Seamless Re-entry",
+        "description": "Dependent CERPAC cards permit unrestricted travel to and from India without separate re-entry visas."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can an expatriate's spouse work in Nigeria on a dependent visa?",
+        "answer": "No. A dependent CERPAC holder cannot take up employment directly. If a spouse secures employment, their new employer must petition for an independent Expatriate Quota slot and STR conversion."
+      },
+      {
+        "question": "Are children required to get their own CERPAC cards?",
+        "answer": "Minor children receive dependent residence stamps and CERPAC exemption or dependent cards based on age under NIS regulations."
+      }
+    ]
+  },
+  "ghana": {
+    "cname": "Ghana",
+    "scheme": "Dependent Residence Permit for Spouses and Children",
+    "overview": "Spouses and minor children of foreign professionals holding valid Ghana Work and Residence Permits can reside lawfully in Ghana under a GIS Dependent Residence Permit. This allows peaceful family life, enrollment in Ghana's renowned international schools, and full travel freedom.",
+    "fees": {
+      "visa_fee": "₹6,000 (Consular Entry Visa per person)",
+      "service_fee": "$500 - $800 (GIS Annual Dependent Permit per person)",
+      "total_fee": "approx. ₹60,000 per dependent",
+      "notes": "Permit issued at GIS Headquarters in Accra."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Entry visa processed at High Commission in New Delhi; regularized at GIS Accra upon arrival.",
+    "source": "Ghana Immigration Service (GIS)",
+    "validity": "Tied to Principal Expatriate's Residence Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage Certificate & Birth Certificates",
+    "relationship_desc": "MEA-apostilled marriage certificate for spouse and birth certificates for children.",
+    "min_funds": "Principal worker's employment contract and certified accommodation in Ghana",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Safe Family Environment",
+        "description": "Accra and Kumasi offer family-friendly living with peaceful communities and excellent safety."
+      },
+      {
+        "icon": "📚",
+        "title": "British & IB Curricula",
+        "description": "Lincoln Community School, Ghana International School, and British International School provide world-class education."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel Mobility",
+        "description": "Multiple entry privileges allow hassle-free travel back to India during school vacations."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a dependent work in Ghana?",
+        "answer": "No. The dependent permit does not authorize employment. To work, the dependent must secure an independent GIPC quota and separate work permit."
+      },
+      {
+        "question": "What is the age limit for dependent children in Ghana?",
+        "answer": "Children under 18 years of age qualify as minor dependents. Adult children require independent student or work permits."
+      }
+    ]
+  },
+  "ethiopia": {
+    "cname": "Ethiopia",
+    "scheme": "Foreign National Dependent Residence Permit",
+    "overview": "Spouses and minor children of foreign professionals holding valid Ethiopian work permits or investor residency permits can reside in Ethiopia on a Dependent Resident Permit. This allows families to stay together in Addis Ababa and other regional cities, with access to international schooling and medical facilities.",
+    "fees": {
+      "visa_fee": "$82 (Consular Entry Visa)",
+      "service_fee": "$100/year (Dependent Resident ID)",
+      "total_fee": "approx. ₹15,000 per dependent",
+      "notes": "Processed at ICS headquarters in Addis Ababa."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Applied online or through the Embassy of Ethiopia, followed by resident ID issuance at ICS Addis Ababa.",
+    "source": "Immigration and Citizenship Service (ICS)",
+    "validity": "Aligned with Principal's Work or Investor Permit",
+    "stay": "Full duration of sponsor's valid contract",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage Certificate & Birth Certificates",
+    "relationship_desc": "MEA-attested marriage certificate and children's birth certificates.",
+    "min_funds": "Principal worker's salary contract and housing arrangement",
+    "highlights": [
+      {
+        "icon": "👨‍👩‍👧‍👦",
+        "title": "Family Unification",
+        "description": "Live together safely in Addis Ababa with comprehensive international community support."
+      },
+      {
+        "icon": "🏫",
+        "title": "International School Access",
+        "description": "Access to top schools like International Community School (ICS) Addis Ababa and Sandford International School."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel to India",
+        "description": "Daily non-stop Ethiopian Airlines flights connect Addis Ababa directly to Mumbai, New Delhi, and Bengaluru in under 5 hours."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long is the flight between India and Ethiopia?",
+        "answer": "Ethiopian Airlines operates non-stop direct flights connecting Addis Ababa to Mumbai and New Delhi in approximately 4.5 to 5 hours."
+      },
+      {
+        "question": "Can a spouse work on a dependent visa in Ethiopia?",
+        "answer": "No. The dependent status does not authorize employment. Spouses wishing to work must secure an independent work permit from an employing organization."
+      }
+    ]
+  },
+  "rwanda": {
+    "cname": "Rwanda",
+    "scheme": "Dependent Resident Permit (Class F1 / F2)",
+    "overview": "Spouses and minor children of foreign nationals holding valid Rwanda work permits, student visas, or investor permits can obtain a Dependent Resident Permit from DGIE. This provides legal status, healthcare access, and easy enrollment in Kigali's prestigious international schools.",
+    "fees": {
+      "visa_fee": "50,000 RWF (approx. $40 / ₹3,400 per person)",
+      "service_fee": "10,000 RWF administrative fee",
+      "total_fee": "approx. ₹4,500 per family member",
+      "notes": "Administered online via IREMBO."
+    },
+    "proc_time": "1 to 2 Weeks",
+    "proc_details": "Applied online on irembo.gov.rw with sponsor's permit and legalized family certificates.",
+    "source": "Directorate General of Immigration and Emigration (DGIE)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's legal status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage Certificate & Birth Certificates",
+    "relationship_desc": "Apostilled or embassy-certified marriage certificate and children's birth certificates.",
+    "min_funds": "Principal worker's salary contract and proof of residence in Rwanda",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Peaceful Family Haven",
+        "description": "Ranked among the safest countries globally with clean, quiet, and friendly residential neighborhoods."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "Ecole Belge, Kigali International Community School (KICS), and Green Hills Academy offer French, IB, and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Unrestricted Travel",
+        "description": "Multi-entry dependent permit allows easy school holiday travel to India and worldwide."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent permit in Rwanda?",
+        "answer": "A dependent permit alone does not authorize employment. However, securing a work permit is straightforward once a job offer is received, and can be converted inside Rwanda."
+      },
+      {
+        "question": "How safe is Kigali for expat families?",
+        "answer": "Kigali is widely recognized as one of the safest capital cities in the world, with virtually zero street crime and orderly civic life."
+      }
+    ]
+  },
+  "zimbabwe": {
+    "cname": "Zimbabwe",
+    "scheme": "Dependent / Scholar Permit for Spouses and Children",
+    "overview": "Spouses and minor children of foreign professionals holding valid Temporary Employment Permits (TEP) or investor permits can reside in Zimbabwe on a Dependent or Scholar Permit. Families enjoy Zimbabwe's pleasant subtropical climate, peaceful communities, and established international schooling.",
+    "fees": {
+      "visa_fee": "$100 (Dependent Entry Visa)",
+      "service_fee": "$100/year (Local Dependent Registration)",
+      "total_fee": "approx. ₹17,000 per family member",
+      "notes": "Processed via Department of Immigration Harare."
+    },
+    "proc_time": "2 to 4 Weeks",
+    "proc_details": "Applied online or through the Department of Immigration in Harare.",
+    "source": "Department of Immigration Zimbabwe",
+    "validity": "Aligned with Principal Worker's TEP Validity",
+    "stay": "Duration of principal earner's contract",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Legalized Marriage Certificate & Birth Certificates",
+    "relationship_desc": "MEA-attested marriage certificate and children's birth certificates.",
+    "min_funds": "Principal worker's salary contract and adequate family housing",
+    "highlights": [
+      {
+        "icon": "☀️",
+        "title": "Superb Subtropical Climate",
+        "description": "Harare and Bulawayo enjoy one of the most temperate and sunny year-round climates in the world."
+      },
+      {
+        "icon": "🏫",
+        "title": "Established Private Schools",
+        "description": "St. George's College, Chisipite Senior School, and Harare International School offer top Cambridge and IB education."
+      },
+      {
+        "icon": "✈️",
+        "title": "Travel Freedom",
+        "description": "Multiple entry privileges allow easy travel between Zimbabwe and India."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent permit in Zimbabwe?",
+        "answer": "No. The dependent permit does not allow employment. The spouse must obtain an independent Temporary Employment Permit (TEP)."
+      },
+      {
+        "question": "What is the cost of living for expat families in Harare?",
+        "answer": "Harare offers a comfortable expatriate lifestyle with modern shopping malls, international restaurants, and affordable domestic support."
+      }
+    ]
+  },
+  "colombia": {
+    "cname": "Colombia",
+    "scheme": "Beneficiary Visa (Visa M Beneficiario / Visa R Beneficiario)",
+    "overview": "Spouses, permanent domestic partners, and dependent children of foreign nationals holding valid Visa M or Visa R status in Colombia can obtain a matching Beneficiary Visa. This permits family members to live legally in Colombia, obtain Cédulas de Extranjería, access healthcare, and enroll in top bilingual schools.",
+    "fees": {
+      "visa_fee": "$52 (Study Fee) + $182 (Issuance Fee) = $234 USD",
+      "service_fee": "$55 (Cédula de Extranjería)",
+      "total_fee": "$289 USD (approx. ₹24,000 per dependent)",
+      "notes": "Applied online via Cancillería portal."
+    },
+    "proc_time": "15 to 30 Calendar Days",
+    "proc_details": "Submitted digitally on Cancillería portal with legalized marriage/birth certificates.",
+    "source": "Cancillería Colombia & Migración Colombia",
+    "validity": "Co-terminus with Principal Holder's Visa",
+    "stay": "Full duration of primary sponsor's legal status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "Apostilled and officially translated marriage certificates (for spouse) and birth certificates (for children).",
+    "min_funds": "Principal holder's employment income and declaration of economic dependency",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Vibrant Family Lifestyle",
+        "description": "Enjoy affordable luxury living, modern residential towers, and pleasant mountain climates in Medellín or Bogotá."
+      },
+      {
+        "icon": "📚",
+        "title": "Top Bilingual & IB Schools",
+        "description": "Colegio Anglo Colombiano, The Columbus School (Medellín), and Colegio Nueva Granada provide world-class bilingual education."
+      },
+      {
+        "icon": "🏥",
+        "title": "Premier Healthcare System",
+        "description": "Access Latin America's highest-ranked hospitals and affordable EPS health coverage."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Does a beneficiary visa allow the spouse to work in Colombia?",
+        "answer": "No. The Visa M Beneficiario does not include open work authorization. If the spouse secures local employment, they can apply for their own Visa M Trabajador."
+      },
+      {
+        "question": "Do official documents need to be translated into Spanish?",
+        "answer": "Yes. Indian certificates must be apostilled by the MEA in India and officially translated into Spanish by a certified Colombian translator."
+      }
+    ]
+  },
+  "peru": {
+    "cname": "Peru",
+    "scheme": "Resident Family Visa (Calidad Migratoria Familiar de Residente)",
+    "overview": "Spouses and unmarried dependent children of foreign professionals holding valid Peruvian resident worker or investor status can reside in Peru under the Familiar de Residente category. Dependents receive individual Carné de Extranjería cards, authorizing peaceful family life, domestic healthcare, and enrollment in top international schools.",
+    "fees": {
+      "visa_fee": "$80 (Familiar de Residente Visa Fee)",
+      "service_fee": "$30 (Carné de Extranjería per person)",
+      "total_fee": "$110 USD (approx. ₹9,200 per dependent)",
+      "notes": "Processed through Migraciones Peru portal."
+    },
+    "proc_time": "3 to 5 Weeks",
+    "proc_details": "Submitted to Migraciones Peru with apostilled marriage and birth certificates.",
+    "source": "Superintendencia Nacional de Migraciones",
+    "validity": "Co-terminus with Principal Holder's Visa",
+    "stay": "Full duration of primary sponsor's legal status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Spanish by a sworn translator (Traductor Público Juramentado) in Peru.",
+    "min_funds": "Principal worker's salary contract and declaration of family maintenance",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "High Quality Expat Living",
+        "description": "Safe, beautiful coastal neighborhoods like Miraflores, San Isidro, and Barranco in Lima with oceanfront boardwalks."
+      },
+      {
+        "icon": "🎓",
+        "title": "Prestigious International Schools",
+        "description": "Franklin Delano Roosevelt American School, Markham College, and Newton College offer elite British, American, and IB programs."
+      },
+      {
+        "icon": "✈️",
+        "title": "Seamless Border Mobility",
+        "description": "Multiple-entry Carné de Extranjería eliminates the need for entry visas when returning to Peru."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family resident visa in Peru?",
+        "answer": "The Familiar de Residente visa allows the spouse to reside. To work, the spouse can easily regularize work authorization through Migraciones once an employment offer is secured."
+      },
+      {
+        "question": "Do birth and marriage certificates need apostille?",
+        "answer": "Yes. All foreign certificates must be apostilled by the Ministry of External Affairs (MEA) in India and translated into Spanish by a licensed sworn translator in Peru."
+      }
+    ]
+  },
+  "chile": {
+    "cname": "Chile",
+    "scheme": "Reunificación Familiar (Family Temporary Residency)",
+    "overview": "Spouses, registered civil partners, and minor children of foreign professionals holding valid Chilean Temporary Residency or Residencia Definitiva can obtain Family Temporary Residency (Reunificación Familiar). Dependents receive full resident status, Chilean Cédula cards, and access to the public/private healthcare and education systems.",
+    "fees": {
+      "visa_fee": "$100 - $150 per dependent",
+      "service_fee": "$10 (Cédula de Identidad)",
+      "total_fee": "approx. ₹12,000 per family member",
+      "notes": "Applied online via SERMIG platform."
+    },
+    "proc_time": "6 to 10 Weeks",
+    "proc_details": "Applied online on SERMIG portal with apostilled relationship certificates.",
+    "source": "Servicio Nacional de Migraciones (SERMIG)",
+    "validity": "Co-terminus with Principal Holder's Visa",
+    "stay": "Duration of primary sponsor's legal residency",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Spanish.",
+    "min_funds": "Principal worker's salary contract and declaration of economic dependency",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Exceptional Safety & Infrastructure",
+        "description": "Santiago's Las Condes, Vitacura, and Providencia districts offer European-level infrastructure, parks, and safety."
+      },
+      {
+        "icon": "📚",
+        "title": "Elite International Schools",
+        "description": "The Grange School, Nido de Aguilas International School, and Santiago College offer top English, IB, and Cambridge programs."
+      },
+      {
+        "icon": "✈️",
+        "title": "Easy Travel Mobility",
+        "description": "Chilean Cédula enables easy travel across South America without needing separate visas."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can dependent spouses work in Chile under the new migration law?",
+        "answer": "Under Law 21.325, dependent spouses holding family temporary residency can engage in lawful economic activities and employment in Chile."
+      },
+      {
+        "question": "Do Indian documents require apostille for Chile?",
+        "answer": "Yes. Chile is a member of the Hague Apostille Convention. All Indian certificates (birth, marriage, police clearance) must be apostilled by the MEA in India."
+      }
+    ]
+  },
+  "argentina": {
+    "cname": "Argentina",
+    "scheme": "Radicación por Reunificación Familiar (Family Reunification Residency)",
+    "overview": "Spouses, registered civil partners, and minor children of foreign professionals holding valid Argentine temporary or permanent residency can obtain a Family Reunification Residence Permit. Dependents receive Argentine DNI cards, granting full rights to live, study, and access the public healthcare system.",
+    "fees": {
+      "visa_fee": "$150 (Consular Visa Fee per person)",
+      "service_fee": "$50 (DNI Extranjero)",
+      "total_fee": "$200 USD (approx. ₹16,800 per dependent)",
+      "notes": "Applied at consulate or regularized at Migraciones in Buenos Aires."
+    },
+    "proc_time": "4 to 6 Weeks",
+    "proc_details": "Submitted to Argentine consulate or Migraciones with apostilled relationship documents.",
+    "source": "Dirección Nacional de Migraciones (DNM)",
+    "validity": "Co-terminus with Principal Holder's Status",
+    "stay": "Full duration of primary sponsor's legal residency",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Spanish by a licensed Colegio de Traductores Públicos translator in Argentina.",
+    "min_funds": "Principal worker's employment contract and certified accommodation",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Cosmopolitan & Cultured Lifestyle",
+        "description": "Buenos Aires offers a world-famous literary, theatrical, and café culture with magnificent European parks."
+      },
+      {
+        "icon": "📚",
+        "title": "Free Public University Access",
+        "description": "Children of permanent and temporary residents can attend prestigious Argentine public universities tuition-free."
+      },
+      {
+        "icon": "✈️",
+        "title": "Mercosur Free Travel",
+        "description": "Argentine DNI holders can travel across South America (Brazil, Uruguay, Chile, etc.) using just their DNI card without a passport."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification visa in Argentina?",
+        "answer": "Yes! Unlike many other countries, Argentine residence permits granted under family reunification grant the dependent spouse full legal authorization to work and engage in commerce."
+      },
+      {
+        "question": "Do official certificates need to be translated in Argentina?",
+        "answer": "Yes. Documents must be translated into Spanish by a sworn translator registered with the Colegio de Traductores Públicos in Argentina."
+      }
+    ]
+  },
+  "costa-rica": {
+    "cname": "Costa Rica",
+    "scheme": "Residencia Temporal por Vínculo (Family Dependent Residency)",
+    "overview": "Spouses and minor children of foreign nationals holding valid Costa Rican temporary or permanent residency can obtain dependent residency under the Vínculo category. Family members receive individual DIMEX cards, granting peaceful residence, enrollment in bilingual schools, and access to the Caja Costarricense de Seguro Social (CCSS) healthcare system.",
+    "fees": {
+      "visa_fee": "$200 per family member",
+      "service_fee": "$125 (DIMEX card issuance)",
+      "total_fee": "$325 USD (approx. ₹27,500 per dependent)",
+      "notes": "Administered via DGME San José."
+    },
+    "proc_time": "8 to 14 Weeks",
+    "proc_details": "Submitted to DGME with apostilled marriage and birth certificates.",
+    "source": "Dirección General de Migración y Extranjería (DGME)",
+    "validity": "Co-terminus with Principal Holder's DIMEX",
+    "stay": "Full duration of primary sponsor's legal status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates translated into Spanish by an official sworn translator in Costa Rica.",
+    "min_funds": "Principal worker's salary contract and CCSS health insurance coverage",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Safe & Peaceful Family Living",
+        "description": "Enjoy idyllic mountain and coastal living with high public safety and strong environmental protection."
+      },
+      {
+        "icon": "🏫",
+        "title": "Top International Schools",
+        "description": "Country Day School, Lincoln School, and British School of Costa Rica offer premier American, IB, and British curricula."
+      },
+      {
+        "icon": "🏥",
+        "title": "Exceptional Healthcare System",
+        "description": "Universal CCSS public healthcare plus world-class private hospitals (CIMA, Clínica Bíblica) accredited by JCI."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a dependent visa in Costa Rica?",
+        "answer": "Dependent spouses holding temporary family residency must apply for work authorization or convert to independent temporary residency upon receiving an employment offer."
+      },
+      {
+        "question": "Do Indian certificates require apostille for Costa Rica?",
+        "answer": "Yes. Costa Rica is a member of the Hague Apostille Convention. All Indian certificates (birth, marriage, police clearance) must be apostilled by the Ministry of External Affairs (MEA) in India."
+      }
+    ]
+  },
+  "romania": {
+    "cname": "Romania",
+    "scheme": "Reîntregirea Familiei (Family Reunification Long-Stay Visa Type D/VF)",
+    "overview": "Spouses and minor children of foreign nationals holding a valid Romanian residence permit (valid for at least 1 year), EU Blue Card, or permanent residency can obtain a Family Reunification Long-Stay Visa (Type D/VF) through IGI and the Ministry of Foreign Affairs. Family members receive a biometric Permis de Ședere, allowing lawful residence, healthcare, and education in Romania.",
+    "fees": {
+      "visa_fee": "€120 (Type D/VF Visa Fee per person)",
+      "service_fee": "259 RON (IGI Residence Card)",
+      "total_fee": "approx. ₹16,000 per family member",
+      "notes": "Applied at Romanian Embassy in New Delhi after IGI pre-approval."
+    },
+    "proc_time": "6 to 12 Weeks",
+    "proc_details": "Principal sponsor files family reunification petition at IGI in Romania; upon approval, family applies for Visa D/VF in New Delhi.",
+    "source": "Inspectoratul General pentru Imigrări (IGI) & Ministry of Foreign Affairs",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Romanian by an authorized sworn translator (Traducător Autorizat).",
+    "min_funds": "Principal worker's employment salary and registered rental lease in Romania",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Affordable European Family Living",
+        "description": "Romania offers one of the lowest costs of living in the European Union while maintaining excellent internet and infrastructure."
+      },
+      {
+        "icon": "🎓",
+        "title": "International Schooling",
+        "description": "American International School of Bucharest (AISB), British School of Bucharest (BSB), and Cambridge School offer world-class IB/British diplomas."
+      },
+      {
+        "icon": "🏥",
+        "title": "EU Healthcare Access",
+        "description": "Full access to national public health insurance (CNAS) and modern private medical networks (Regina Maria, MedLife)."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification visa in Romania?",
+        "answer": "Yes. Spouses holding a family reunification residence permit (Permis de Ședere) are legally authorized to work in Romania without requiring their employer to obtain a separate Aviz de Muncă."
+      },
+      {
+        "question": "Do Indian certificates need Romanian translation?",
+        "answer": "Yes. Indian birth and marriage certificates must be apostilled by the MEA in India and translated into Romanian by an authorized translator."
+      }
+    ]
+  },
+  "bulgaria": {
+    "cname": "Bulgaria",
+    "scheme": "Family Reunification Long-Stay Visa (Type D) & Residence Permit",
+    "overview": "Spouses and minor children of foreign nationals holding a valid Bulgarian residence permit (valid for at least 1 year), EU Blue Card, or permanent residency can obtain a Family Reunification Long-Stay Visa (Type D) and Bulgarian Residence Card. Family members can live legally in Bulgaria, enroll in international schools, and access medical care.",
+    "fees": {
+      "visa_fee": "€100 (Type D Visa Fee per person)",
+      "service_fee": "150 BGN - 500 BGN (Bulgarian Residence Card)",
+      "total_fee": "approx. ₹18,000 per family member",
+      "notes": "Applied at Embassy of Bulgaria in New Delhi after Migration Directorate pre-approval."
+    },
+    "proc_time": "6 to 10 Weeks",
+    "proc_details": "Sponsor files for family reunification at Migration Directorate in Sofia; upon approval, family applies for Visa D in New Delhi.",
+    "source": "Migration Directorate (Ministry of Interior) & Ministry of Foreign Affairs",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Bulgarian by an accredited sworn translator.",
+    "min_funds": "Principal worker's salary contract and registered rental lease in Bulgaria",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Extremely Affordable EU Living",
+        "description": "Bulgaria offers some of the lowest living expenses, property costs, and utilities in the entire European Union."
+      },
+      {
+        "icon": "🏫",
+        "title": "Top International Schools",
+        "description": "Anglo-American School of Sofia (AAS) and British School of Sofia offer premier American and IB/Cambridge curricula."
+      },
+      {
+        "icon": "✈️",
+        "title": "Schengen Free Travel",
+        "description": "Bulgarian residence card allows visa-free travel across the Schengen zone."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification permit in Bulgaria?",
+        "answer": "Yes. Spouses granted residence under family reunification are eligible for employment in Bulgaria upon completing local registration."
+      },
+      {
+        "question": "Do Indian documents need apostille for Bulgaria?",
+        "answer": "Yes. Bulgaria is a party to the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India and translated into Bulgarian."
+      }
+    ]
+  },
+  "croatia": {
+    "cname": "Croatia",
+    "scheme": "Privremeni boravak u svrhu spajanja obitelji (Family Reunification Temporary Residence)",
+    "overview": "Spouses, registered life partners, and minor children of foreign nationals holding a valid Croatian residence permit (valid for at least 1 year), EU Blue Card, or permanent residency can obtain a Family Reunification Temporary Residence Permit. Family members receive individual biometric resident cards, granting lawful residence, healthcare through HZZO, and enrollment in public/private schools.",
+    "fees": {
+      "visa_fee": "€93 (Temporary Residence Permit per person)",
+      "service_fee": "€41 (Biometric Residence Card)",
+      "total_fee": "approx. ₹12,000 per family member",
+      "notes": "Processed via MUP Police Administration."
+    },
+    "proc_time": "6 to 10 Weeks",
+    "proc_details": "Applied through the Croatian diplomatic mission in New Delhi or directly at the Police Administration (MUP) in Croatia.",
+    "source": "Ministry of the Interior of the Republic of Croatia (MUP)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Croatian by a court interpreter (Stalni sudski tumač).",
+    "min_funds": "Principal worker's salary contract and registered rental lease in Croatia",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Safe & Wholesome Family Haven",
+        "description": "Croatia is ranked among the safest countries in Europe with exceptionally low crime rates and clean Adriatic environment."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "American International School of Zagreb (AISZ) and British International School of Zagreb offer elite IB and Cambridge diplomas."
+      },
+      {
+        "icon": "✈️",
+        "title": "Schengen Border-Free Travel",
+        "description": "Croatian residence card allows easy family travel across Europe without visas."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification permit in Croatia?",
+        "answer": "Yes! Under the Croatian Aliens Act, family members granted temporary residence for family reunification are legally entitled to work in Croatia without needing a separate work permit."
+      },
+      {
+        "question": "Do Indian certificates need apostille for Croatia?",
+        "answer": "Yes. Croatia is a member of the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India and translated into Croatian by a certified court interpreter."
+      }
+    ]
+  },
+  "slovenia": {
+    "cname": "Slovenia",
+    "scheme": "Dovoljenje za začasno prebivanje zaradi združitve družine (Family Reunification Temporary Residence)",
+    "overview": "Spouses, registered civil partners, and minor children of foreign nationals holding a valid Slovenian residence permit (valid for at least 1 year), EU Blue Card, or permanent residency can obtain a Family Reunification Temporary Residence Permit. Family members receive individual biometric resident cards, granting lawful residence, healthcare through ZZZS, and enrollment in public/private schools.",
+    "fees": {
+      "visa_fee": "€50 (Temporary Residence Permit per person)",
+      "service_fee": "€15 (Biometric Residence Card)",
+      "total_fee": "approx. ₹6,000 per family member",
+      "notes": "Highly affordable statutory levies in Slovenia."
+    },
+    "proc_time": "6 to 10 Weeks",
+    "proc_details": "Applied through Embassy of Slovenia in New Delhi or Administrative Unit (Upravna enota) in Slovenia.",
+    "source": "Ministry of the Interior of the Republic of Slovenia (MNZ)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into Slovenian by a sworn court interpreter (Sodni tolmač).",
+    "min_funds": "Principal worker's salary contract and registered rental lease in Slovenia",
+    "highlights": [
+      {
+        "icon": "🏡",
+        "title": "Pristine & Safe Environment",
+        "description": "Ljubljana, Maribor, and Kranj offer exceptionally clean, tranquil, and family-friendly living with abundant parks and alpine nature."
+      },
+      {
+        "icon": "🎓",
+        "title": "Top International Schools",
+        "description": "QSI International School of Ljubljana and British International School of Ljubljana offer world-class English and IB education."
+      },
+      {
+        "icon": "✈️",
+        "title": "Schengen Border-Free Travel",
+        "description": "Slovenian residence card allows easy family travel across all 29 European Schengen countries."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can a spouse work on a family reunification permit in Slovenia?",
+        "answer": "Yes! Spouses granted temporary residence under family reunification have the legal right to work and seek employment in Slovenia under the ZZSDT regulations."
+      },
+      {
+        "question": "Do Indian certificates need apostille for Slovenia?",
+        "answer": "Yes. Slovenia is a member of the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the MEA in India and translated into Slovenian by an authorized court interpreter."
+      }
+    ]
+  },
+  "cyprus": {
+    "cname": "Cyprus",
+    "scheme": "Temporary Residence for Family Members (Pink Slip / Family Reunification)",
+    "overview": "Spouses and minor children of foreign professionals working in Cyprus (especially under the Foreign Interest Company regime) or holding Permanent Residency can obtain a Temporary Residence Permit (Pink Slip) for family members. Families enjoy Cyprus's safe Mediterranean lifestyle, English-speaking culture, and world-class British-curriculum private academies.",
+    "fees": {
+      "visa_fee": "€70 (Family Residence Permit per person)",
+      "service_fee": "€70 (Alien Registration ARC card)",
+      "total_fee": "approx. ₹13,000 per dependent",
+      "notes": "Processed through the Civil Registry and Migration Department."
+    },
+    "proc_time": "4 to 6 Weeks",
+    "proc_details": "Coordinated with sponsor's employer and submitted to CRMD in Nicosia.",
+    "source": "Civil Registry and Migration Department (CRMD)",
+    "validity": "Co-terminus with Principal Sponsor's Permit",
+    "stay": "Full duration of primary sponsor's valid status",
+    "entry_type": "Multiple Entry",
+    "relationship_doc": "Apostilled Marriage Certificate & Children's Birth Certificates",
+    "relationship_desc": "MEA-apostilled certificates officially translated into English or Greek by a certified translator (PIO).",
+    "min_funds": "Principal worker's salary contract and registered residential rental agreement in Cyprus",
+    "highlights": [
+      {
+        "icon": "☀️",
+        "title": "Mediterranean Coastal Paradise",
+        "description": "300+ days of sunshine, Blue Flag beaches, safe neighborhoods, and high English literacy across the island."
+      },
+      {
+        "icon": "🎓",
+        "title": "Elite British & International Schools",
+        "description": "The English School Nicosia, Heritage Private School (Limassol), and Foley's School offer premier British GCSE and A-Level diplomas."
+      },
+      {
+        "icon": "🏥",
+        "title": "GeSY Universal Healthcare",
+        "description": "Residents gain access to Cyprus's General Healthcare System (GeSY) offering comprehensive medical coverage."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can dependent spouses work in Cyprus under the Foreign Interest Company regime?",
+        "answer": "Yes! Spouses of third-country specialists employed by Foreign Interest Companies (FIC) have direct access to the Cypriot labour market without needing an independent work permit test."
+      },
+      {
+        "question": "Do Indian certificates need apostille for Cyprus?",
+        "answer": "Yes. Cyprus is a signatory to the Hague Apostille Convention. All Indian certificates (marriage, birth, PCC) must be apostilled by the Ministry of External Affairs (MEA) in India."
+      }
+    ]
+  },
+
   "uk": {
     "cname": "United Kingdom",
     "scheme": "Spouse / Partner Visa (Appendix FM)",

@@ -100,6 +100,24 @@ import {
   getPROfficialSourceName,
   getPRVisaData
 } from '../../../lib/pr-visa';
+import {
+  getFamilyOverview,
+  getFamilyHighlights,
+  getFamilyDocuments,
+  getFamilySteps,
+  getFamilyVisaSteps,
+  getFamilyFees,
+  getFamilyProcessingTime,
+  getFamilyProcessingDetails,
+  getFamilyRequirements,
+  getFamilyFinancialProofs,
+  getFamilyFAQ,
+  getFamilyValidity,
+  getFamilyStayDuration,
+  getFamilyEntryType,
+  getFamilyOfficialSourceName,
+  getFamilyVisaData
+} from '../../../lib/family-visa';
 
 export {
   normalizeCountry,
@@ -183,7 +201,23 @@ export {
   getPRStayDuration,
   getPREntryType,
   getPROfficialSourceName,
-  getPRVisaData
+  getPRVisaData,
+  getFamilyOverview,
+  getFamilyHighlights,
+  getFamilyDocuments,
+  getFamilySteps,
+  getFamilyVisaSteps,
+  getFamilyFees,
+  getFamilyProcessingTime,
+  getFamilyProcessingDetails,
+  getFamilyRequirements,
+  getFamilyFinancialProofs,
+  getFamilyFAQ,
+  getFamilyValidity,
+  getFamilyStayDuration,
+  getFamilyEntryType,
+  getFamilyOfficialSourceName,
+  getFamilyVisaData
 };
 
 export const prerender = false;
@@ -6295,6 +6329,32 @@ export const POST: APIRoute = async ({ request }) => {
         success: true,
         data: sanitizeCurrencyCodes(prData as any),
         source: 'consular-pr-pipeline',
+        verification_status: 'verified',
+        is_v3_verified: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const isFamily = purposeLower.includes('family') ||
+                     purposeLower.includes('spouse') ||
+                     purposeLower.includes('partner') ||
+                     purposeLower.includes('dependent') ||
+                     purposeLower.includes('marriage') ||
+                     purposeLower.includes('spousal') ||
+                     purposeLower.includes('k-1') ||
+                     purposeLower.includes('k1') ||
+                     purposeLower.includes('cr-1') ||
+                     purposeLower.includes('cr1') ||
+                     (purposeLower.includes('join') && purposeLower.includes('family'));
+
+    if (isFamily) {
+      const familyData = getFamilyVisaData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(familyData as any),
+        source: 'consular-family-pipeline',
         verification_status: 'verified',
         is_v3_verified: true
       }), {

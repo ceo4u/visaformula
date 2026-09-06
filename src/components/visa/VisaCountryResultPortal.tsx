@@ -87,6 +87,23 @@ import {
   getPRRequirements,
   getPROfficialSourceName
 } from '../../lib/pr-visa';
+import {
+  getFamilySteps,
+  getFamilyVisaSteps,
+  getFamilyDocuments,
+  getFamilyOverview,
+  getFamilyHighlights,
+  getFamilyFees,
+  getFamilyProcessingTime,
+  getFamilyProcessingDetails,
+  getFamilyValidity,
+  getFamilyStayDuration,
+  getFamilyEntryType,
+  getFamilyFAQ,
+  getFamilyFinancialProofs,
+  getFamilyRequirements,
+  getFamilyOfficialSourceName
+} from '../../lib/family-visa';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3499,6 +3516,34 @@ export function VisaCountryResultPortal({
     const isWorkPathway = activePurposeTab === 'work' || activePurposeTab === 'employment' || initialPurpose === 'work' || initialPurpose === 'employment' || (initialPurpose || '').toLowerCase().includes('work');
     const isBusinessPathway = activePurposeTab === 'business' || initialPurpose === 'business' || (initialPurpose || '').toLowerCase().includes('business') || (activePurposeTab || '').toLowerCase().includes('business');
     const isPRPathway = activePurposeTab === 'pr' || initialPurpose === 'pr' || (initialPurpose || '').toLowerCase().includes('pr') || (activePurposeTab || '').toLowerCase().includes('pr') || (initialPurpose || '').toLowerCase().includes('permanent') || (initialPurpose || '').toLowerCase().includes('settle');
+    const isFamilyPathway = activePurposeTab === 'family' || activePurposeTab === 'spouse' || initialPurpose === 'family' || initialPurpose === 'spouse' || (initialPurpose || '').toLowerCase().includes('family') || (initialPurpose || '').toLowerCase().includes('spouse') || (activePurposeTab || '').toLowerCase().includes('family') || (activePurposeTab || '').toLowerCase().includes('spouse');
+
+    const familySteps = getFamilySteps(countryName).map((s, i) => {
+      const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
+      let title = '';
+      let desc = '';
+      if (clean.includes('—')) {
+        const parts = clean.split('—');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('—').trim();
+      } else if (clean.includes('–')) {
+        const parts = clean.split('–');
+        title = parts[0].trim();
+        desc = parts.slice(1).join('–').trim();
+      } else if (clean.includes(':')) {
+        const parts = clean.split(':');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(':').trim();
+      } else if (clean.includes(' - ')) {
+        const parts = clean.split(' - ');
+        title = parts[0].trim();
+        desc = parts.slice(1).join(' - ').trim();
+      } else {
+        title = `Step ${i + 1}`;
+        desc = clean;
+      }
+      return { title, desc };
+    });
 
     const prSteps = getPRSteps(countryName).map((s, i) => {
       const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*[:\-\.]?\s*/i, '').trim();
@@ -3635,7 +3680,7 @@ export function VisaCountryResultPortal({
       return { title, desc };
     });
 
-    const default8Steps = isPRPathway ? prSteps : isStudentPathway ? student8Steps : isWorkPathway ? workSteps : isBusinessPathway ? businessSteps : (tourismSteps && tourismSteps.length >= 4) ? tourismSteps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
+    const default8Steps = isFamilyPathway ? familySteps : isPRPathway ? prSteps : isStudentPathway ? student8Steps : isWorkPathway ? workSteps : isBusinessPathway ? businessSteps : (tourismSteps && tourismSteps.length >= 4) ? tourismSteps : isMauritius ? mauritiusVoASteps : (isJamaica && (activePurposeTab === 'tourism' || !activePurposeTab || activePurposeTab === 'general')) ? jamaicaVoASteps : (isVisaOnArrivalOrFree && activePurposeTab === 'tourism') ? generalVoASteps : isChina ? [
       {
         title: 'Check Eligibility',
         desc: 'Verify single or double entry requirements for China Tourist L-Visa and check CVASC jurisdiction.'
@@ -3875,12 +3920,20 @@ export function VisaCountryResultPortal({
   const isWorkTab = activePurposeTab === 'work' || initialPurpose === 'work';
   const isBusinessTab = activePurposeTab === 'business' || initialPurpose === 'business';
   const isPRTab = activePurposeTab === 'pr' || initialPurpose === 'pr';
+  const isFamilyTab = activePurposeTab === 'family' || activePurposeTab === 'spouse' || initialPurpose === 'family' || initialPurpose === 'spouse' || (initialPurpose || '').toLowerCase().includes('family') || (initialPurpose || '').toLowerCase().includes('spouse') || (activePurposeTab || '').toLowerCase().includes('family') || (activePurposeTab || '').toLowerCase().includes('spouse');
 
   const getResolvedProcessingTime = () => {
     const cLow = (countryName || '').toLowerCase().trim();
     const pLow = (passportCountry || '').toLowerCase().trim();
     const isIndian = pLow.includes('india') || pLow.includes('in');
     const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
+
+    // Family pathway processing time
+    if (isFamilyTab) {
+      if (aiData?.processing_time) return aiData.processing_time;
+      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
+      return getFamilyProcessingTime(countryName);
+    }
 
     // PR pathway processing time
     if (isPRTab) {
@@ -3924,6 +3977,10 @@ export function VisaCountryResultPortal({
   const resolvedOverview = useMemo(() => {
     if (aiData?.overview) {
       const oLow = aiData.overview.toLowerCase();
+      // Guard against tourist overview leaking into family tab
+      if (isFamilyTab && !oLow.includes('family') && !oLow.includes('spouse') && !oLow.includes('partner') && !oLow.includes('marriage') && !oLow.includes('reunification') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
+        return getFamilyOverview(countryName);
+      }
       // Guard against tourist overview leaking into PR tab
       if (isPRTab && !oLow.includes('permanent') && !oLow.includes('pr') && !oLow.includes('settle') && !oLow.includes('immigrat') && !oLow.includes('residency') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
         return getPROverview(countryName);
@@ -3942,6 +3999,9 @@ export function VisaCountryResultPortal({
       }
       return aiData.overview;
     }
+    if (isFamilyTab) {
+      return getFamilyOverview(countryName);
+    }
     if (isPRTab) {
       return getPROverview(countryName);
     }
@@ -3955,7 +4015,7 @@ export function VisaCountryResultPortal({
       return getBusinessOverview(countryName);
     }
     return getTourismOverview(countryName);
-  }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab]);
+  }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab]);
 
   useEffect(() => {
     let mounted = true;
@@ -3970,11 +4030,11 @@ export function VisaCountryResultPortal({
         } catch (_) {}
 
         const cleanPurpose = 
+          (activePurposeTab === 'family' || initialPurpose === 'family' || isFamilyTab) ? 'Family / Spouse Visa' :
           (activePurposeTab === 'pr' || initialPurpose === 'pr') ? 'Permanent Residency (PR) / Immigration' :
           (activePurposeTab === 'study' || initialPurpose === 'study') ? 'Higher Studies' :
           (activePurposeTab === 'work' || initialPurpose === 'work') ? 'Employment / Work' :
           (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
-          (activePurposeTab === 'family' || initialPurpose === 'family') ? 'Family / Friends Visit' :
           'Tourism / Vacation';
 
         const res = await fetch('/api/visa/ai-requirements', {
@@ -4150,11 +4210,14 @@ export function VisaCountryResultPortal({
     try {
       const trackingId = `TT-${(countryName || 'VI').slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`;
       const submissionDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const isFamily = isFamilyTab || activePurposeTab === 'family' || activePurposeTab === 'spouse';
+      const isPR = activePurposeTab === 'pr';
       const isStudy = activePurposeTab === 'study';
       const isWork = activePurposeTab === 'work';
       const isBusiness = activePurposeTab === 'business';
-      const isPR = activePurposeTab === 'pr';
-      const visaTypeName = isStudy 
+      const visaTypeName = isFamily
+        ? `${countryName} Family / Spouse Visa`
+        : isStudy 
         ? 'Student Visa' 
         : isWork 
         ? 'Skilled Worker Visa' 
@@ -4163,10 +4226,12 @@ export function VisaCountryResultPortal({
         : isPR
         ? 'Permanent Residency'
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
-      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isPR ? getPRProcessingTime(countryName) : isStudy ? getStudentProcessingTime(countryName) : isWork ? getWorkProcessingTime(countryName) : isBusiness ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName));
-      const consularFeeVal = aiData?.costs?.visa_fee || (isPR ? getPRFees(countryName).visa_fee : isStudy ? getStudentFees(countryName).visa_fee : isWork ? getWorkFees(countryName).visa_fee : isBusiness ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
-      const serviceFeeVal = aiData?.costs?.service_fee || (isPR ? getPRFees(countryName).service_fee : isStudy ? getStudentFees(countryName).service_fee : isWork ? getWorkFees(countryName).service_fee : isBusiness ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee);
-      const stayDurationVal = isPR
+      const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isFamily ? getFamilyProcessingTime(countryName) : isPR ? getPRProcessingTime(countryName) : isStudy ? getStudentProcessingTime(countryName) : isWork ? getWorkProcessingTime(countryName) : isBusiness ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName));
+      const consularFeeVal = aiData?.costs?.visa_fee || (isFamily ? getFamilyFees(countryName).visa_fee : isPR ? getPRFees(countryName).visa_fee : isStudy ? getStudentFees(countryName).visa_fee : isWork ? getWorkFees(countryName).visa_fee : isBusiness ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
+      const serviceFeeVal = aiData?.costs?.service_fee || (isFamily ? getFamilyFees(countryName).service_fee : isPR ? getPRFees(countryName).service_fee : isStudy ? getStudentFees(countryName).service_fee : isWork ? getWorkFees(countryName).service_fee : isBusiness ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee);
+      const stayDurationVal = isFamily
+        ? getFamilyStayDuration(countryName)
+        : isPR
         ? getPRStayDuration(countryName)
         : isStudy 
         ? getStudentStayDuration(countryName) 
@@ -4181,6 +4246,12 @@ export function VisaCountryResultPortal({
         ? aiData.documents_required.map((d: any) => ({
             title: d.title || d.name || 'Document Requirement',
             description: d.description || d.hint || 'Must comply with official consular specifications.',
+            isMandatory: d.is_mandatory !== false
+          }))
+        : isFamily
+        ? getFamilyDocuments(passportCountry, countryName, 'Family').map(d => ({
+            title: d.title,
+            description: d.description,
             isMandatory: d.is_mandatory !== false
           }))
         : isPR
@@ -4248,6 +4319,16 @@ export function VisaCountryResultPortal({
           })
         : (dynamicSteps && dynamicSteps.length > 0)
         ? dynamicSteps.map(s => ({ step: s.step, title: s.title, desc: s.desc }))
+        : isFamily
+        ? getFamilyVisaSteps(passportCountry, countryName, 'Family Visa').map((s, idx) => {
+            const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
+            const parts = clean.includes('—') ? clean.split('—') : clean.includes(':') ? clean.split(':') : [clean, 'Follow official consular procedural guidelines.'];
+            return {
+              step: idx + 1,
+              title: parts[0]?.trim() || `Step ${idx + 1}`,
+              desc: parts[1]?.trim() || 'Follow official consular procedural guidelines.'
+            };
+          })
         : isPR
         ? getPRVisaSteps(passportCountry, countryName, 'PR Visa').map((s, idx) => {
             const clean = s.replace(/^[0-9\uFE0F\u20E3\.\)\s]+/, '').replace(/^\[?step\s*\d+\]?\s*/i, '').trim();
@@ -4330,17 +4411,22 @@ export function VisaCountryResultPortal({
         embassyFee: consularFeeVal,
         childFee: isSchengen ? '45 EUR (under 6: Free)' : (aiData?.costs?.child_fee || 'Exempt / Reduced'),
         serviceFee: serviceFeeVal,
-        totalFee: aiData?.costs?.total_fee || (isPR ? getPRFees(countryName).total_fee : isStudy ? getStudentFees(countryName).total_fee : isWork ? getWorkFees(countryName).total_fee : isBusiness ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee),
+        totalFee: aiData?.costs?.total_fee || (isFamily ? getFamilyFees(countryName).total_fee : isPR ? getPRFees(countryName).total_fee : isStudy ? getStudentFees(countryName).total_fee : isWork ? getWorkFees(countryName).total_fee : isBusiness ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee),
         feeNotes: 'Consular statutory fees are non-refundable and set by the destination sovereign immigration department.',
         stayDuration: stayDurationVal,
-        validity: isPR ? getPRValidity(countryName) : isStudy ? getStudentValidity(countryName) : isWork ? getWorkValidity(countryName) : isBusiness ? getBusinessValidity(countryName) : getTourismValidity(countryName),
-        entryType: isPR ? getPREntryType(countryName) : isStudy ? getStudentEntryType(countryName) : isWork ? getWorkEntryType(countryName) : isBusiness ? getBusinessEntryType(countryName) : getTourismEntryType(countryName),
-        applyWindow: isPR ? 'Apply 6 to 12 months prior to planned relocation' : isStudy ? 'Apply 3 to 4 months prior to program intake' : isWork ? 'Apply 3 to 6 months prior to employment start date' : isBusiness ? 'Apply 3 to 6 weeks prior to planned business travel' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
+        validity: isFamily ? getFamilyValidity(countryName) : isPR ? getPRValidity(countryName) : isStudy ? getStudentValidity(countryName) : isWork ? getWorkValidity(countryName) : isBusiness ? getBusinessValidity(countryName) : getTourismValidity(countryName),
+        entryType: isFamily ? getFamilyEntryType(countryName) : isPR ? getPREntryType(countryName) : isStudy ? getStudentEntryType(countryName) : isWork ? getWorkEntryType(countryName) : isBusiness ? getBusinessEntryType(countryName) : getTourismEntryType(countryName),
+        applyWindow: isFamily ? 'Apply 3 to 6 months prior to planned travel' : isPR ? 'Apply 6 to 12 months prior to planned relocation' : isStudy ? 'Apply 3 to 4 months prior to program intake' : isWork ? 'Apply 3 to 6 months prior to employment start date' : isBusiness ? 'Apply 3 to 6 weeks prior to planned business travel' : 'Submit application 15 - 30 days prior to travel (or 72 hrs for digital/eVisa forms)',
         profileScore: currentProfileScore,
         profileDetails: profileDetailsList,
         documents: rawDocs,
         steps: rawSteps,
-        requirements: isPR ? [
+        requirements: isFamily ? [
+          { title: 'Passport Validity Requirement', desc: 'Valid for at least 6 months beyond intended stay with minimum 2 blank pages.' },
+          { title: 'Genuine Partnership & Cohabitation Evidence', desc: 'Comprehensive proof of relationship (Marriage certificate, shared residence, communications, financial interdependency).' },
+          { title: 'Sponsorship & Financial Solvency', desc: getFamilyFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Verified sponsor income and accommodation compliance.' },
+          { title: 'Statutory Admissibility & Health Clearance', desc: getFamilyRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'Police clearances and panel physician medical examinations.' }
+        ] : isPR ? [
           { title: 'Passport Validity Requirement', desc: 'Valid for at least 12 months with minimum 2 blank pages.' },
           { title: 'Points, Language & Skills Assessment', desc: getPRRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'Verified ECA, IELTS/CLB scores, and skills accreditation.' },
           { title: 'Financial Solvency & Settlement Funds', desc: getPRFinancialProofs(countryName).map(f => `${f.type}: ${f.minimum_balance_or_amount || f.notes}`).join('; ') || 'Verified liquid settlement funds.' },
@@ -4387,8 +4473,8 @@ export function VisaCountryResultPortal({
           documentsCount: rawDocs.length,
           submittedAt: submissionDate,
           targetDate: processingTimeVal,
-          validity: isPR ? getPRValidity(countryName) : isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days',
-          entryType: isPR ? getPREntryType(countryName) : 'Single / Multiple Entry',
+          validity: isFamily ? getFamilyValidity(countryName) : isPR ? getPRValidity(countryName) : isSchengen ? 'Based on approved itinerary (up to 6 months or 1 year multi-entry)' : '180 Days',
+          entryType: isFamily ? getFamilyEntryType(countryName) : isPR ? getPREntryType(countryName) : 'Single / Multiple Entry',
           consularFee: consularFeeVal,
           serviceFee: serviceFeeVal,
           createdAt: new Date().toISOString(),
@@ -6019,6 +6105,10 @@ export function VisaCountryResultPortal({
   ];
 
   const resolvedFaqs: Array<{ question: string; answer: string }> = useMemo(() => {
+    if (isFamilyTab) {
+      if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
+      return getFamilyFAQ(countryName);
+    }
     if (isPRTab) {
       if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
       return getPRFAQ(countryName);
@@ -6037,7 +6127,7 @@ export function VisaCountryResultPortal({
     }
     if (aiData?.faqs && aiData.faqs.length > 0) return aiData.faqs;
     return getTourismFAQ(countryName);
-  }, [isStudyTab, isWorkTab, isBusinessTab, isPRTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
+  }, [isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab, aiData?.faqs, countryName, passportCountry, guaranteedDate]);
 
     // Dynamic Official Checklist populated directly from live AI / Consular Registry
   const portalDocItems = useMemo(() => {
@@ -6267,6 +6357,56 @@ export function VisaCountryResultPortal({
         const sentences = doc.description
           ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
           : ['Official consular requirement for permanent residency application'];
+
+        return {
+          key,
+          name: doc.title,
+          mandatory: doc.is_mandatory !== false,
+          iconBg,
+          icon,
+          conditions: sentences.slice(0, 3)
+        };
+      });
+    }
+
+    // Family / Spouse visa fallback if AI is still fetching
+    if (isFamilyTab || activePurposeTab === 'family' || activePurposeTab === 'spouse' || initialPurpose === 'family' || initialPurpose === 'spouse') {
+      const famDocs = getFamilyDocuments(passportCountry, countryName, 'Family');
+      return famDocs.map((doc, idx) => {
+        const key = `doc_fam_${idx}_${doc.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const titleLower = doc.title.toLowerCase();
+        let icon = <FileText className="w-4 h-4" />;
+        let iconBg = 'bg-purple-100 text-purple-700';
+
+        if (titleLower.includes('passport')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-purple-100 text-purple-700';
+        } else if (titleLower.includes('photo')) {
+          icon = <Camera className="w-4 h-4" />;
+          iconBg = 'bg-amber-100 text-amber-700';
+        } else if (titleLower.includes('marriage') || titleLower.includes('relationship') || titleLower.includes('partnership') || titleLower.includes('cohabitation') || titleLower.includes('spouse') || titleLower.includes('family')) {
+          icon = <Users className="w-4 h-4" />;
+          iconBg = 'bg-pink-100 text-pink-700';
+        } else if (titleLower.includes('medical') || titleLower.includes('health') || titleLower.includes('tb')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-rose-100 text-rose-700';
+        } else if (titleLower.includes('fund') || titleLower.includes('financial') || titleLower.includes('sponsor') || titleLower.includes('salary') || titleLower.includes('bank') || titleLower.includes('tax') || titleLower.includes('i-864')) {
+          icon = <CreditCard className="w-4 h-4" />;
+          iconBg = 'bg-teal-100 text-teal-700';
+        } else if (titleLower.includes('police') || titleLower.includes('pcc') || titleLower.includes('clearance')) {
+          icon = <ShieldCheck className="w-4 h-4" />;
+          iconBg = 'bg-blue-100 text-blue-700';
+        } else if (titleLower.includes('accommodation') || titleLower.includes('housing') || titleLower.includes('residence')) {
+          icon = <Building2 className="w-4 h-4" />;
+          iconBg = 'bg-indigo-100 text-indigo-700';
+        } else if (titleLower.includes('language') || titleLower.includes('english') || titleLower.includes('a1') || titleLower.includes('cefr')) {
+          icon = <FileText className="w-4 h-4" />;
+          iconBg = 'bg-emerald-100 text-emerald-700';
+        }
+
+        const sentences = doc.description
+          ? doc.description.split(/(?<=[.!?])\s+(?=[A-Z0-9])|\n+/).map((s: string) => s.trim()).filter(Boolean)
+          : ['Official consular requirement for family and spouse visa application'];
 
         return {
           key,
@@ -6512,11 +6652,11 @@ export function VisaCountryResultPortal({
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}</strong>
               </div>
               <div>
                 <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
+                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
               </div>
             </div>
           </div>
@@ -6675,7 +6815,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.validity || (isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
+                      {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6687,7 +6827,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.stay_duration || (isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
+                      {cleanStatValue(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6699,7 +6839,7 @@ export function VisaCountryResultPortal({
                   <div className="min-w-0">
                     <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
-                      {cleanStatValue(aiData?.entry_type || (isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
+                      {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
                     </strong>
                   </div>
                 </div>
@@ -6872,6 +7012,8 @@ export function VisaCountryResultPortal({
                         {(() => {
                           const highlights = (aiData?.highlights && aiData.highlights.length > 0)
                             ? aiData.highlights
+                            : isFamilyTab
+                            ? getFamilyHighlights(countryName)
                             : isPRTab
                             ? getPRHighlights(countryName)
                             : isWorkTab
@@ -6891,7 +7033,7 @@ export function VisaCountryResultPortal({
                             const i = (iconName || '').toLowerCase();
                             if (i.includes('briefcase') || i.includes('work') || i.includes('job') || i.includes('business')) return <Briefcase className="w-4 h-4" />;
                             if (i.includes('handshake') || i.includes('deal') || i.includes('meeting')) return <Users className="w-4 h-4" />;
-                            if (i.includes('building') || i.includes('office') || i.includes('corporate')) return <Building2 className="w-4 h-4" />;
+                            if (i.includes('building') || i.includes('office') || i.includes('corporate') || i.includes('home') || i.includes('house')) return <Building2 className="w-4 h-4" />;
                             if (i.includes('trending') || i.includes('chart')) return <TrendingUp className="w-4 h-4" />;
                             if (i.includes('dollar') || i.includes('money')) return <CreditCard className="w-4 h-4" />;
                             if (i.includes('sun')) return <Sun className="w-4 h-4" />;
@@ -6899,11 +7041,17 @@ export function VisaCountryResultPortal({
                             if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
                             if (i.includes('shield')) return <ShieldCheck className="w-4 h-4" />;
                             if (i.includes('calendar') || i.includes('clock')) return <Calendar className="w-4 h-4" />;
-                            if (i.includes('user') || i.includes('people')) return <Users className="w-4 h-4" />;
+                            if (i.includes('user') || i.includes('people') || i.includes('family') || i.includes('spouse') || i.includes('partner') || i.includes('heart')) return <Users className="w-4 h-4" />;
                             if (i.includes('award') || i.includes('star')) return <Award className="w-4 h-4" />;
                             if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
                             if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
                             if (i.includes('globe')) return <Globe className="w-4 h-4" />;
+                            if (isFamilyTab) {
+                              if (idx === 0) return <Users className="w-4 h-4" />;
+                              if (idx === 1) return <ShieldCheck className="w-4 h-4" />;
+                              if (idx === 2) return <Building2 className="w-4 h-4" />;
+                              return <Award className="w-4 h-4" />;
+                            }
                             if (isPRTab) {
                               if (idx === 0) return <Award className="w-4 h-4" />;
                               if (idx === 1) return <Globe className="w-4 h-4" />;
@@ -7357,13 +7505,18 @@ export function VisaCountryResultPortal({
                     <ul className="space-y-2.5">
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isPRTab ? '12 months' : isStudyTab ? '6 months beyond intended program duration' : isWorkTab ? '6 months beyond intended employment period' : isBusinessTab ? '6 months beyond intended stay' : isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
+                        <span><strong className="font-semibold text-slate-900">Passport Validity:</strong> Valid for at least {isFamilyTab ? '6 months beyond intended stay' : isPRTab ? '12 months' : isStudyTab ? '6 months beyond intended program duration' : isWorkTab ? '6 months beyond intended employment period' : isBusinessTab ? '6 months beyond intended stay' : isSchengen ? '3 months beyond intended stay' : '6 months beyond intended stay'} with minimum 2 blank pages.</span>
                       </li>
                       <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                         <span className="text-slate-400 select-none">•</span>
-                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isPRTab ? (aiData?.stay_duration || getPRStayDuration(countryName)) : isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : isWorkTab ? (aiData?.stay_duration || getWorkStayDuration(countryName)) : isBusinessTab ? (aiData?.stay_duration || getBusinessStayDuration(countryName)) : (aiData?.stay_duration || getTourismStayDuration(countryName))}</span>
+                        <span><strong className="font-semibold text-slate-900">Stay Duration:</strong> {isFamilyTab ? (aiData?.stay_duration || getFamilyStayDuration(countryName)) : isPRTab ? (aiData?.stay_duration || getPRStayDuration(countryName)) : isStudyTab ? ((aiData?.stay_duration || getStudentStayDuration(countryName)) + ' (Renewable annually based on ongoing academic enrollment).') : isWorkTab ? (aiData?.stay_duration || getWorkStayDuration(countryName)) : isBusinessTab ? (aiData?.stay_duration || getBusinessStayDuration(countryName)) : (aiData?.stay_duration || getTourismStayDuration(countryName))}</span>
                       </li>
-                      {isPRTab ? (
+                      {isFamilyTab ? (
+                        <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                          <span className="text-slate-400 select-none">•</span>
+                          <span><strong className="font-semibold text-slate-900">Family Reunification Rights:</strong> Unrestricted residence, access to healthcare and open employment authorization across the destination territory.</span>
+                        </li>
+                      ) : isPRTab ? (
                         <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                           <span className="text-slate-400 select-none">•</span>
                           <span><strong className="font-semibold text-slate-900">Permanent Residency Status:</strong> Unrestricted live, work, and study rights across the sovereign territory with statutory path to citizenship.</span>
@@ -7404,6 +7557,8 @@ export function VisaCountryResultPortal({
                       {(() => {
                         const fpList = (aiData?.financial_proofs && aiData.financial_proofs.length > 0)
                           ? aiData.financial_proofs
+                          : isFamilyTab
+                          ? getFamilyFinancialProofs(countryName)
                           : isPRTab
                           ? getPRFinancialProofs(countryName)
                           : isStudyTab
@@ -7443,7 +7598,30 @@ export function VisaCountryResultPortal({
 
                   {/* Pillar 3: Home Ties / Academic Progression / Employer Sponsorship */}
                   <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-                    {isPRTab ? (
+                    {isFamilyTab ? (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                            <Users className="w-4 h-4" />
+                          </div>
+                          <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Genuine Partnership &amp; Cohabitation Evidence</h3>
+                        </div>
+                        <ul className="space-y-2.5">
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Subsisting Relationship:</strong> Genuine and subsisting relationship with official marriage certificate, civil partnership registry, or minimum cohabitation evidence.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Sponsor Legal Status:</strong> Sponsor must be a citizen or settled permanent resident with lawful status in the destination country.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
+                            <span className="text-slate-400 select-none">•</span>
+                            <span><strong className="font-semibold text-slate-900">Adequate Accommodation:</strong> Proof of adequate living space without recourse to public funds or statutory overcrowding.</span>
+                          </li>
+                        </ul>
+                      </>
+                    ) : isPRTab ? (
                       <>
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -7573,6 +7751,8 @@ export function VisaCountryResultPortal({
                       {(() => {
                         const otherList = (aiData?.other_requirements && aiData.other_requirements.length > 0)
                           ? aiData.other_requirements
+                          : isFamilyTab
+                          ? getFamilyRequirements(countryName)
                           : isPRTab
                           ? getPRRequirements(countryName)
                           : isStudyTab
@@ -7769,7 +7949,7 @@ export function VisaCountryResultPortal({
                 <div>
                   <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Fees &amp; Payment Details</h2>
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-0.5">
-                    Official statutory fees verified from {aiData?.official_source_name || (isPRTab ? getPROfficialSourceName(countryName) : isStudyTab ? getStudentOfficialSourceName(countryName) : isWorkTab ? getWorkOfficialSourceName(countryName) : isBusinessTab ? getBusinessOfficialSourceName(countryName) : getTourismOfficialSourceName(countryName))}.
+                    Official statutory fees verified from {aiData?.official_source_name || (isFamilyTab ? getFamilyOfficialSourceName(countryName) : isPRTab ? getPROfficialSourceName(countryName) : isStudyTab ? getStudentOfficialSourceName(countryName) : isWorkTab ? getWorkOfficialSourceName(countryName) : isBusinessTab ? getBusinessOfficialSourceName(countryName) : getTourismOfficialSourceName(countryName))}.
                   </p>
                 </div>
 
@@ -7777,25 +7957,25 @@ export function VisaCountryResultPortal({
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">Consular Visa Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.visa_fee || (isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
+                      {aiData?.costs?.visa_fee || (isFamilyTab ? getFamilyFees(countryName).visa_fee : isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                     </strong>
                   </div>
                   <div className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80">
                     <span className="text-[14px] sm:text-[15px] text-slate-700 font-normal">VAC Biometrics &amp; Service Fee</span>
                     <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900">
-                      {aiData?.costs?.service_fee || (isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
+                      {aiData?.costs?.service_fee || (isFamilyTab ? getFamilyFees(countryName).service_fee : isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                     </strong>
                   </div>
                   <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
                     <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900">Total Official Fee</span>
                     <strong className="text-[20px] sm:text-[22px] font-semibold text-teal-700">
-                      {aiData?.costs?.total_fee || (isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
+                      {aiData?.costs?.total_fee || (isFamilyTab ? getFamilyFees(countryName).total_fee : isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                     </strong>
                   </div>
                 </div>
-                {(aiData?.costs?.notes || (isPRTab ? getPRFees(countryName).notes : isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : isBusinessTab ? getBusinessFees(countryName).notes : getTourismFees(countryName).notes)) && (
+                {(aiData?.costs?.notes || (isFamilyTab ? getFamilyFees(countryName).notes : isPRTab ? getPRFees(countryName).notes : isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : isBusinessTab ? getBusinessFees(countryName).notes : getTourismFees(countryName).notes)) && (
                   <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                    ℹ️ {aiData?.costs?.notes || (isPRTab ? getPRFees(countryName).notes : isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : isBusinessTab ? getBusinessFees(countryName).notes : getTourismFees(countryName).notes)}
+                    ℹ️ {aiData?.costs?.notes || (isFamilyTab ? getFamilyFees(countryName).notes : isPRTab ? getPRFees(countryName).notes : isStudyTab ? getStudentFees(countryName).notes : isWorkTab ? getWorkFees(countryName).notes : isBusinessTab ? getBusinessFees(countryName).notes : getTourismFees(countryName).notes)}
                   </p>
                 )}
                 <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal">
@@ -7814,19 +7994,19 @@ export function VisaCountryResultPortal({
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isPRTab ? getPRProcessingTime(countryName) : isStudyTab ? getStudentProcessingTime(countryName) : isWorkTab ? getWorkProcessingTime(countryName) : isBusinessTab ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName))}
+                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isFamilyTab ? getFamilyProcessingTime(countryName) : isPRTab ? getPRProcessingTime(countryName) : isStudyTab ? getStudentProcessingTime(countryName) : isWorkTab ? getWorkProcessingTime(countryName) : isBusinessTab ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName))}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isPRTab ? getPRProcessingDetails(countryName) : isStudyTab ? getStudentProcessingDetails(countryName) : isWorkTab ? getWorkProcessingDetails(countryName) : isBusinessTab ? getBusinessProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
+                      {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isFamilyTab ? getFamilyProcessingDetails(countryName) : isPRTab ? getPRProcessingDetails(countryName) : isStudyTab ? getStudentProcessingDetails(countryName) : isWorkTab ? getWorkProcessingDetails(countryName) : isBusinessTab ? getBusinessProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
                     </p>
                   </div>
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Recommended Filing Window</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.apply_window || (isPRTab ? 'Apply 6 to 12 months prior to planned relocation' : isStudyTab ? 'Apply 3 to 4 months prior to program intake' : isWorkTab ? 'Apply 3 to 6 months prior to planned employment start date' : isBusinessTab ? 'Apply 3 to 6 weeks prior to planned business travel' : countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
+                      {aiData?.processing_and_timing?.apply_window || (isFamilyTab ? 'Apply 3 to 6 months prior to planned relocation' : isPRTab ? 'Apply 6 to 12 months prior to planned relocation' : isStudyTab ? 'Apply 3 to 4 months prior to program intake' : isWorkTab ? 'Apply 3 to 6 months prior to planned employment start date' : isBusinessTab ? 'Apply 3 to 6 weeks prior to planned business travel' : countryName.toLowerCase().includes('mauritius') ? 'Complete All-in-One Digital Form before departure' : '15 Days to 3 Months Before')}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
-                      {aiData?.processing_and_timing?.max_extension || (isPRTab ? 'Permanent resident status is indefinite. Card renewal as per statutory country requirements.' : isStudyTab ? 'Renewable annually based on ongoing academic standing.' : isWorkTab ? 'Extendable with employer sponsorship and continued employment eligibility.' : isBusinessTab ? 'Subject to local immigration bureau discretion.' : countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
+                      {aiData?.processing_and_timing?.max_extension || (isFamilyTab ? 'Renewable based on genuine relationship status and sponsor legal residence.' : isPRTab ? 'Permanent resident status is indefinite. Card renewal as per statutory country requirements.' : isStudyTab ? 'Renewable annually based on ongoing academic standing.' : isWorkTab ? 'Extendable with employer sponsorship and continued employment eligibility.' : isBusinessTab ? 'Subject to local immigration bureau discretion.' : countryName.toLowerCase().includes('mauritius') ? 'Extendable up to 90 days total for tourism via Passport & Immigration Office.' : 'Plan in advance to avoid consular peak season appointment delays.')}
                     </p>
                   </div>
                 </div>
@@ -7970,19 +8150,19 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Adult)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.visa_fee || (isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
+                    {aiData?.costs?.visa_fee || (isFamilyTab ? getFamilyFees(countryName).visa_fee : isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Visa Fee (Child 6-12 yrs)</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.child_fee || (isPRTab ? 'Included / Child Dependent Rate' : isStudyTab ? 'N/A (Primary Applicant)' : isWorkTab ? 'N/A (Individual Worker)' : isBusinessTab ? 'N/A (Business Delegate)' : isSchengen ? '€45' : '$95 USD')}
+                    {aiData?.costs?.child_fee || (isFamilyTab ? 'Included / Child Dependent Rate' : isPRTab ? 'Included / Child Dependent Rate' : isStudyTab ? 'N/A (Primary Applicant)' : isWorkTab ? 'N/A (Individual Worker)' : isBusinessTab ? 'N/A (Business Delegate)' : isSchengen ? '€45' : '$95 USD')}
                   </strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-600 font-normal">
                   <span>Service Fee</span>
                   <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.service_fee || (isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
+                    {aiData?.costs?.service_fee || (isFamilyTab ? getFamilyFees(countryName).service_fee : isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
                   </strong>
                 </div>
 
@@ -7991,7 +8171,7 @@ export function VisaCountryResultPortal({
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-slate-900 text-[14px]">Total</span>
                   <strong className="text-[16px] font-semibold text-slate-900">
-                    {aiData?.costs?.total_fee || (isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
+                    {aiData?.costs?.total_fee || (isFamilyTab ? getFamilyFees(countryName).total_fee : isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
                   </strong>
                 </div>
 

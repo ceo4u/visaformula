@@ -6522,12 +6522,34 @@ export function VisaCountryResultPortal({
   const mandatoryDocsCount = portalDocItems.filter((d: any) => d.mandatory).length;
   const recommendedDocsCount = portalDocItems.filter((d: any) => !d.mandatory).length;
 
-  const completedDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'completed').length;
-  const inProgressDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'in_progress').length;
-  const pendingDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'pending').length;
-  const notStartedDocsCount = portalDocItems.filter((d: any) => !portalUploadedDocs[d.key] || portalUploadedDocs[d.key]?.status === 'not_started').length;
+  const isDocReady = (d: any) => {
+    const k = d.key || '';
+    const name = d.name || d.title || '';
+    return Boolean(
+      readyDocKeys[k] ||
+      readyDocKeys[name] ||
+      readyDocKeys[k.toLowerCase()] ||
+      readyDocKeys[name.toLowerCase()] ||
+      portalUploadedDocs[k]?.status === 'completed' ||
+      uploadedDocuments[k] ||
+      uploadedDocuments[name]
+    );
+  };
 
-  // Dynamic Visa Readiness Scoring (Profile Questionnaire + Document Availability)
+  const readyDocTitlesCount = Object.keys(readyDocKeys).filter(k => readyDocKeys[k]).length;
+  const matchedReadyCount = portalDocItems.filter((d: any) => isDocReady(d)).length;
+  const effectiveReadyDocsCount = Math.max(matchedReadyCount, readyDocTitlesCount);
+  const effectiveTotalDocsCount = Math.max(totalDocsCount, 5);
+
+  const completedStepsCount = dynamicSteps.filter(s => userCheckedSteps[s.step]).length;
+  const totalStepsCount = dynamicSteps.length || 8;
+
+  const completedDocsCount = matchedReadyCount;
+  const inProgressDocsCount = portalDocItems.filter((d: any) => portalUploadedDocs[d.key]?.status === 'in_progress').length;
+  const pendingDocsCount = portalDocItems.filter((d: any) => !isDocReady(d) && portalUploadedDocs[d.key]?.status === 'pending').length;
+  const notStartedDocsCount = Math.max(0, effectiveTotalDocsCount - effectiveReadyDocsCount);
+
+  // Dynamic Visa Readiness Scoring (Profile Questionnaire + Document Availability + Consular Steps)
   let profileScore = 0;
   if (visitPlanStatus) profileScore += 8;
   if (visitTiming && visitReturnDate && tripDurationDays > 0) profileScore += 8;
@@ -6566,8 +6588,15 @@ export function VisaCountryResultPortal({
     profileScore = wScore;
   }
 
-  const docsScore = totalDocsCount > 0 ? Math.round((completedDocsCount / totalDocsCount) * 50) : 0;
-  const readinessPercent = Math.min(100, profileScore + docsScore);
+  // 3-Pillar Dynamic Readiness Score:
+  // Pillar 1: Application Profile Details (Max 40%)
+  const profileScorePart = Math.min(40, Math.round((profileScore / 50) * 40));
+  // Pillar 2: Required Documents Ready / Uploaded (Max 40%)
+  const docsScorePart = effectiveTotalDocsCount > 0 ? Math.min(40, Math.round((effectiveReadyDocsCount / effectiveTotalDocsCount) * 40)) : 0;
+  // Pillar 3: Consular Steps Completed (Max 20%)
+  const stepsScorePart = totalStepsCount > 0 ? Math.min(20, Math.round((completedStepsCount / totalStepsCount) * 20)) : 0;
+
+  const readinessPercent = Math.min(100, profileScorePart + docsScorePart + stepsScorePart);
   const readinessLabel = readinessPercent >= 80 
     ? 'Visa Ready! (High Approval)' 
     : readinessPercent >= 60 
@@ -6576,7 +6605,17 @@ export function VisaCountryResultPortal({
     ? 'Moderate Readiness' 
     : readinessPercent > 0 
     ? 'In Progress' 
-    : 'Ready to Start';
+    : 'Assessment Ready';
+
+  const readinessSubtext = readinessPercent >= 80
+    ? 'All criteria met for official consular submission'
+    : readinessPercent >= 60
+    ? 'Complete remaining items to maximize approval chances'
+    : readinessPercent >= 30
+    ? 'Good progress! Complete documents and steps'
+    : readinessPercent > 0
+    ? 'Fill profile and verify documents to increase score'
+    : 'Fill profile details & mark documents ready to calculate readiness';
 
   const stayPeriod = lengthOfStay;
 
@@ -6663,7 +6702,7 @@ export function VisaCountryResultPortal({
                   />
                   <path
                     className="text-slate-900"
-                    strokeDasharray={`${readinessPercent || 72}, 100`}
+                    strokeDasharray={`${readinessPercent}, 100`}
                     strokeWidth="3.5"
                     strokeLinecap="round"
                     stroke="currentColor"
@@ -6671,12 +6710,12 @@ export function VisaCountryResultPortal({
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   />
                 </svg>
-                <span className="absolute text-xs font-black text-slate-950">{readinessPercent || 72}%</span>
+                <span className="absolute text-xs font-black text-slate-950">{readinessPercent}%</span>
               </div>
               <div className="min-w-0 flex-1">
-                <strong className="text-sm font-black text-slate-950 block">Good Progress</strong>
+                <strong className="text-sm font-black text-slate-950 block">{readinessLabel}</strong>
                 <p className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
-                  Complete remaining items to improve approval chances
+                  {readinessSubtext}
                 </p>
               </div>
             </div>
@@ -6685,31 +6724,49 @@ export function VisaCountryResultPortal({
             <div className="space-y-2 pt-1 border-t border-slate-100 text-xs font-semibold">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                  <span>Passport Details</span>
+                  {profileScore > 0 ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                  ) : (
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                  <span>Profile Questionnaire</span>
                 </div>
-                <span className="text-emerald-700 font-bold text-[11px]">Valid (8+ months)</span>
+                <span className={profileScore > 0 ? "text-emerald-700 font-bold text-[11px]" : "text-slate-400 font-medium text-[11px]"}>
+                  {profileScore > 0 ? `+${profileScore}/50 pts` : 'Pending (0/50)'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-slate-700">
+                  {effectiveReadyDocsCount > 0 ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                  ) : (
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                  <span>Documents Checklist</span>
+                </div>
+                <span className={effectiveReadyDocsCount > 0 ? "text-emerald-700 font-bold text-[11px]" : "text-slate-400 font-medium text-[11px]"}>
+                  {effectiveReadyDocsCount > 0 ? `${effectiveReadyDocsCount} of ${effectiveTotalDocsCount} Ready` : `Pending (0/${effectiveTotalDocsCount})`}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-slate-700">
+                  {completedStepsCount > 0 ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                  ) : (
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                  <span>Consular Steps</span>
+                </div>
+                <span className={completedStepsCount > 0 ? "text-emerald-700 font-bold text-[11px]" : "text-slate-400 font-medium text-[11px]"}>
+                  {completedStepsCount > 0 ? `${completedStepsCount} of ${totalStepsCount} Done` : `Pending (0/${totalStepsCount})`}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-700">
                   <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                  <span>Financial Proof</span>
+                  <span>Passport &amp; Nationality</span>
                 </div>
-                <span className="text-emerald-700 font-bold text-[11px]">Updated</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-700">
-                  <Clock className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Travel Itinerary</span>
-                </div>
-                <span className="text-amber-600 font-bold text-[11px]">Pending</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-700">
-                  <Clock className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Hotel Booking</span>
-                </div>
-                <span className="text-amber-600 font-bold text-[11px]">Pending</span>
+                <span className="text-emerald-700 font-bold text-[11px]">{passportCountry || 'India'} (Valid)</span>
               </div>
             </div>
 
@@ -8050,7 +8107,7 @@ export function VisaCountryResultPortal({
                     />
                     <path
                       className="text-slate-900"
-                      strokeDasharray={`${readinessPercent || 72}, 100`}
+                      strokeDasharray={`${readinessPercent}, 100`}
                       strokeWidth="3.5"
                       strokeLinecap="round"
                       stroke="currentColor"
@@ -8059,37 +8116,31 @@ export function VisaCountryResultPortal({
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-xl font-semibold text-slate-950">{readinessPercent || 72}%</span>
+                    <span className="text-xl font-semibold text-slate-950">{readinessPercent}%</span>
                   </div>
                 </div>
-                <span className="text-[13px] font-semibold text-slate-700 mt-2">Good Progress</span>
+                <span className="text-[13px] font-semibold text-slate-700 mt-2">{readinessLabel}</span>
               </div>
 
               {/* Status Breakdown Rows */}
               <div className="space-y-2 text-[13px] sm:text-[14px] font-medium pt-1 border-t border-slate-100">
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-emerald-600 font-medium">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" /> Completed
+                    <Check className="w-3.5 h-3.5 stroke-[3]" /> Documents Ready
                   </span>
-                  <strong className="text-slate-900 font-semibold">{completedDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{effectiveReadyDocsCount}/{effectiveTotalDocsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-amber-600 font-medium">
-                    <Clock className="w-3.5 h-3.5" /> In Progress
+                  <span className="flex items-center gap-1.5 text-indigo-600 font-medium">
+                    <CheckCircle className="w-3.5 h-3.5" /> Steps Followed
                   </span>
-                  <strong className="text-slate-900 font-semibold">{inProgressDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">{completedStepsCount}/{totalStepsCount}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-rose-600 font-medium">
-                    <AlertCircle className="w-3.5 h-3.5" /> Pending
+                  <span className="flex items-center gap-1.5 text-purple-600 font-medium">
+                    <FileText className="w-3.5 h-3.5" /> Profile Score
                   </span>
-                  <strong className="text-slate-900 font-semibold">{pendingDocsCount}</strong>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-slate-400 font-medium">
-                    <Circle className="w-3.5 h-3.5 text-slate-300" /> Not Started
-                  </span>
-                  <strong className="text-slate-900 font-semibold">{notStartedDocsCount}</strong>
+                  <strong className="text-slate-900 font-semibold">+{profileScore}/50</strong>
                 </div>
               </div>
 

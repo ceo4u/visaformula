@@ -1,4 +1,16 @@
 import { resolvePureRouteTourism } from './pure-routes';
+import {
+  SPECIAL_REGIONS_DESTS,
+  applyDynamicRulesToRequirements,
+  FEE_UPDATES,
+  SCHENGEN_RULE,
+  GCC_COUNTRIES,
+  GCC_RULE,
+  ASEAN_COUNTRIES,
+  ASEAN_RULE,
+  CARICOM_COUNTRIES,
+  CARICOM_RULE
+} from './special-regions-data';
 // src/lib/tourism-visa.ts
 // Country-specific tourism / visitor visa steps, documents, fees, processing, and requirements pipeline based on official consular requirements
 
@@ -323,11 +335,20 @@ export function normalizeCountry(str: string): string {
   if (s.includes('tuvalu') || s === 'tv') return 'tuvalu';
   if (s.includes('vanuatu') || s === 'vu') return 'vanuatu';
 
+  // ── SPECIAL REGIONS & TERRITORIES ──
+  if (s.includes('guam') || s === 'gu') return 'guam';
+  if (s.includes('virgin islands') || s === 'vi') return s.includes('british') ? 'british-virgin-islands' : 'us-virgin-islands';
+  if (s.includes('bermuda') || s === 'bm') return 'bermuda';
+  if (s.includes('cayman') || s === 'ky') return 'cayman-islands';
+  if (s.includes('gibraltar') || s === 'gi') return 'gibraltar';
+  if (s.includes('western sahara') || s === 'eh') return 'western-sahara';
+
   return s.replace(/\s+/g, '-');
 }
 
 // ── 1. TOURISM OVERVIEW — COUNTRY SPECIFIC ──
 export const TOURISM_DESTS: Record<string, any> = {
+  ...SPECIAL_REGIONS_DESTS,
   "russia": {
     "overview": "Russia offers eVisa and traditional tourist visas for Indian travelers. Explore Moscow, St. Petersburg, the Trans-Siberian Railway, and stunning natural landscapes. eVisa available for select regions including St. Petersburg and the Far East. Valid for up to 30 days.",
     "highlights": [
@@ -12284,6 +12305,7 @@ export function getTourismFees(country: string): any {
 export function getTourismProcessingTime(country: string): string {
   const c = normalizeCountry(country);
   if (TOURISM_DESTS[c]?.proc_time) return TOURISM_DESTS[c].proc_time;
+  if (TOURISM_DESTS[c]?.processing_time) return TOURISM_DESTS[c].processing_time;
   const map: Record<string, string> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': 'Instant on Arrival (0 Days) — Free 60-day entry stamp',
@@ -12371,6 +12393,7 @@ export function getTourismProcessingTime(country: string): string {
 export function getTourismProcessingDetails(country: string): string {
   const c = normalizeCountry(country);
   if (TOURISM_DESTS[c]?.proc_details) return TOURISM_DESTS[c].proc_details;
+  if (TOURISM_DESTS[c]?.processing_time_details) return TOURISM_DESTS[c].processing_time_details;
   const map: Record<string, string> = {
     'thailand': 'No prior application needed. Complete TM6 arrival card on flight. Entry stamp granted at immigration counter.',
     'malaysia': 'Submit MDAC online within 3 days of arrival. Entry stamp granted at immigration counter.',
@@ -12933,6 +12956,7 @@ export function getTourismFAQ(country: string): FAQItem[] {
 export function getTourismRequirements(country: string): OtherRequirementItem[] {
   const c = normalizeCountry(country);
   if (TOURISM_DESTS[c]?.requirements) return TOURISM_DESTS[c].requirements;
+  if (TOURISM_DESTS[c]?.other_requirements) return TOURISM_DESTS[c].other_requirements;
   const map: Record<string, OtherRequirementItem[]> = {
     // ── VISA-FREE / VOA COUNTRIES ──
     'thailand': [
@@ -13651,9 +13675,11 @@ export function getTourismVisaData(
   purpose: string = 'Tourism'
 ): StructuredVisaRequirements {
   const fromNorm = normalizeCountry(from);
+  const toNorm = normalizeCountry(to);
+
   if (fromNorm && fromNorm !== 'india') {
     const pureRoute = resolvePureRouteTourism(from, to);
-    if (pureRoute) return pureRoute;
+    if (pureRoute) return applyDynamicRulesToRequirements(pureRoute, fromNorm, toNorm);
   }
 
   const c = normalizeCountry(to);
@@ -13668,11 +13694,11 @@ export function getTourismVisaData(
   const faqs = getTourismFAQ(to);
   const highlights = getTourismHighlights(to);
 
-  return {
+  const rawData: StructuredVisaRequirements = {
     passport_country: from,
     destination_country: countryName,
     purpose_of_visit: 'Tourism / Vacation',
-    visa_type: ['mauritius', 'thailand', 'malaysia', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles'].includes(c)
+    visa_type: ['mauritius', 'thailand', 'malaysia', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles', 'fiji', 'samoa', 'tonga', 'vanuatu', 'tuvalu', 'palau', 'micronesia', 'hong-kong', 'macau'].includes(c)
       ? `${countryName} Visa-Free Entry (On-Arrival Permit)`
       : `${countryName} Tourist Visa`,
     source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' tourist visa official consular requirements')}`,
@@ -13724,15 +13750,17 @@ export function getTourismVisaData(
         ? 'BLS International Spain Visa Application Centre (blsspainvisa.com). Spain does NOT use VFS Global.'
         : c === 'greece'
         ? 'GVCW Greece (Global Visa Center World - in-gr.gvcworld.eu). Greece does NOT use VFS Global.'
-        : ['thailand', 'malaysia', 'mauritius', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles'].includes(c)
+        : ['thailand', 'malaysia', 'mauritius', 'maldives', 'jamaica', 'nepal', 'bhutan', 'seychelles', 'fiji', 'samoa', 'tonga', 'vanuatu', 'tuvalu', 'palau', 'micronesia', 'hong-kong', 'macau'].includes(c)
         ? 'Airport Immigration Checkpoint / On-Arrival Clearance. Zero Embassy or VAC appointments required.'
-        : ['uae', 'singapore', 'turkey', 'egypt', 'kenya', 'tanzania', 'qatar', 'saudi-arabia', 'oman', 'bahrain'].includes(c)
+        : ['uae', 'singapore', 'turkey', 'egypt', 'kenya', 'tanzania', 'qatar', 'saudi-arabia', 'oman', 'bahrain', 'taiwan'].includes(c)
         ? 'Official Government Electronic Visa Portal. 100% digital application — no physical VAC visit required.'
         : c === 'usa'
         ? 'U.S. Embassy / Consulate & VAC (Visa Application Center) for Biometrics and In-person Consular Interview.'
         : `VFS Global / ${countryName} Embassy/Consulate. Check appointment availability online.`
     }
   };
+
+  return applyDynamicRulesToRequirements(rawData, fromNorm, toNorm);
 }
 
 export const getTourismVisaSteps = getTourismSteps;

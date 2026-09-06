@@ -3,6 +3,14 @@ import { normalizeCountryName } from "../utils/countryHelpers";
 import { computeExpiryStatus } from "../utils/vaultHelpers";
 import type { VaultDocChecklistEntry } from "../types";
 
+export interface VaultAlertData {
+  type: 'mismatch' | 'quality' | 'error';
+  title: string;
+  message: string;
+  expectedType?: string;
+  detectedType?: string;
+}
+
 export function useDocuments({
   email,
   selectedDestination = "United States",
@@ -25,6 +33,8 @@ export function useDocuments({
     }
     return [];
   });
+
+  const [vaultAlert, setVaultAlert] = useState<VaultAlertData | null>(null);
 
   const [vaultChecklistState, setVaultChecklistState] = useState<Record<string, VaultDocChecklistEntry>>(() => {
     if (typeof window !== "undefined") {
@@ -125,29 +135,59 @@ export function useDocuments({
                   targetCountry: selectedDestination || 'Global'
                 })
               });
-              if (res.ok) {
-                const json = await res.json();
-                if (json?.success && json?.data && json.data.passportNumber) {
-                  const pData = json.data;
-                  extractedDocNumber = pData.passportNumber;
-                  if (pData.fullName) extractedFullName = pData.fullName;
-                  if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
-                  if (pData.nationality) extractedNationality = pData.nationality;
-                  if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
-                  if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
-                  if (pData.placeOfIssue) extractedPlaceOfIssue = pData.placeOfIssue;
-                  if (pData.issueDate) extractedIssueDate = pData.issueDate;
-                  if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
-                  if (pData.mrzLine1) extractedMrz1 = pData.mrzLine1;
-                  if (pData.mrzLine2) extractedMrz2 = pData.mrzLine2;
-                  scanSummary = `Passport ${extractedDocNumber} verified. MRZ checksum valid.`;
-                  type = 'passport';
-                  if (!docReq || effectiveKey === 'vault_upload') {
-                    effectiveKey = 'statutory_passport';
-                    effectiveTitle = 'Valid Passport';
-                  }
-                  passportOcrSuccess = true;
+              const json = await res.json().catch(() => null);
+
+              // Quality check rejection
+              if (json?.error === 'low_quality') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'quality',
+                  title: 'Low Quality Image Detected',
+                  message: json.message || 'Low quality image detected! The image is blurry, low resolution, or unreadable. Please upload your Passport at the highest quality (clear 300 DPI scan or sharp photo with readable MRZ text).',
+                  expectedType: 'Passport'
+                });
+                return;
+              }
+
+              // Document mismatch rejection
+              if (json?.error === 'mismatched_document') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'mismatch',
+                  title: 'Document Mismatch: Not a Passport',
+                  message: json.message || 'You uploaded another document instead of a Passport bio-data page. Please upload your original Passport booklet.',
+                  expectedType: 'Passport',
+                  detectedType: json.detectedType || 'other'
+                });
+                return;
+              }
+
+              if (res.ok && json?.success && json?.data && json.data.passportNumber) {
+                const pData = json.data;
+                extractedDocNumber = pData.passportNumber;
+                if (pData.fullName) extractedFullName = pData.fullName;
+                if (pData.dateOfBirth) extractedDob = pData.dateOfBirth;
+                if (pData.nationality) extractedNationality = pData.nationality;
+                if (pData.sex) extractedSex = pData.sex === 'F' ? 'Female' : 'Male';
+                if (pData.placeOfBirth) extractedPlaceOfBirth = pData.placeOfBirth;
+                if (pData.placeOfIssue) extractedPlaceOfIssue = pData.placeOfIssue;
+                if (pData.issueDate) extractedIssueDate = pData.issueDate;
+                if (pData.expiryDate) extractedExpiryDate = pData.expiryDate;
+                if (pData.mrzLine1) extractedMrz1 = pData.mrzLine1;
+                if (pData.mrzLine2) extractedMrz2 = pData.mrzLine2;
+                scanSummary = `Passport ${extractedDocNumber} verified. MRZ checksum valid.`;
+                type = 'passport';
+                if (!docReq || effectiveKey === 'vault_upload') {
+                  effectiveKey = 'statutory_passport';
+                  effectiveTitle = 'Valid Passport';
                 }
+                passportOcrSuccess = true;
               }
             } catch(e) {
               console.error('Passport OCR error:', e);
@@ -170,30 +210,61 @@ export function useDocuments({
                   currentPurpose: 'tourism'
                 })
               });
-              if (res.ok) {
-                const json = await res.json();
-                if (json?.success && json?.data) {
-                  const vData = json.data;
-                  visaOcrDetails = vData;
-                  if (vData.visaNumber) extractedDocNumber = vData.visaNumber;
-                  if (vData.bearerName) extractedFullName = vData.bearerName;
-                  if (vData.grantDate) extractedIssueDate = vData.grantDate;
-                  if (vData.expiryDate) extractedExpiryDate = vData.expiryDate;
-                  if (vData.passportCountry) extractedNationality = vData.passportCountry;
-                  scanSummary = `${vData.visaType || 'Visa'} (${extractedDocNumber || 'Verified'}) • ${vData.issuingAuthority || vData.issuingCountry || 'Consular Approved'}`;
-                  type = 'visa';
-                  if (!docReq || effectiveKey === 'vault_upload') {
-                    effectiveKey = 'statutory_visa';
-                    effectiveTitle = vData.visaType ? `${vData.issuingCountry ? vData.issuingCountry + ' ' : ''}${vData.visaType}`.trim() : 'Visa Document';
-                  }
-                  visaOcrSuccess = true;
+              const json = await res.json().catch(() => null);
+
+              // Quality check rejection
+              if (json?.error === 'low_quality') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'quality',
+                  title: 'Low Quality Image Detected',
+                  message: json.message || 'Low quality image detected! The image is blurry or unreadable. Please upload your Visa Document at the highest quality.',
+                  expectedType: 'Visa Document'
+                });
+                return;
+              }
+
+              // Document mismatch rejection
+              if (json?.error === 'mismatched_document') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'mismatch',
+                  title: 'Document Mismatch: Not a Visa Document',
+                  message: json.message || 'You uploaded another document instead of a Visa Document. Please upload your official Visa sticker, eVisa PDF, or grant letter.',
+                  expectedType: 'Visa Document',
+                  detectedType: json.detectedType || 'other'
+                });
+                return;
+              }
+
+              if (res.ok && json?.success && json?.data) {
+                const vData = json.data;
+                visaOcrDetails = vData;
+                if (vData.visaNumber) extractedDocNumber = vData.visaNumber;
+                if (vData.bearerName) extractedFullName = vData.bearerName;
+                if (vData.grantDate) extractedIssueDate = vData.grantDate;
+                if (vData.expiryDate) extractedExpiryDate = vData.expiryDate;
+                if (vData.passportCountry) extractedNationality = vData.passportCountry;
+                scanSummary = `${vData.visaType || 'Visa'} (${extractedDocNumber || 'Verified'}) • ${vData.issuingAuthority || vData.issuingCountry || 'Consular Approved'}`;
+                type = 'visa';
+                if (!docReq || effectiveKey === 'vault_upload') {
+                  effectiveKey = 'statutory_visa';
+                  effectiveTitle = vData.visaType ? `${vData.issuingCountry ? vData.issuingCountry + ' ' : ''}${vData.visaType}`.trim() : 'Visa Document';
                 }
+                visaOcrSuccess = true;
               }
             } catch(e) {
               console.error('Visa OCR error:', e);
             }
           }
 
+          let docOcrSuccess = false;
           if (!passportOcrSuccess && !visaOcrSuccess) {
             try {
               const res = await fetch('/api/ocr-analyze-document', {
@@ -208,35 +279,116 @@ export function useDocuments({
                   passportCountry: selectedPassport
                 })
               });
-              if (res.ok) {
-                const json = await res.json();
-                if (json?.success && json?.data) {
-                  if (json.data.summary) scanSummary = json.data.summary;
-                  const ext = json.data.extractedDetails || json.data.extracted;
-                  if (ext) {
-                    extractedDocNumber = ext.documentNumber || ext.docNumber || '';
-                    if (ext.holderName || ext.fullName) extractedFullName = ext.holderName || ext.fullName;
-                    extractedDob = ext.dateOfBirth || ext.dob || '';
-                    extractedNationality = ext.nationality || extractedNationality;
-                    extractedSex = ext.sex || extractedSex;
-                    extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
-                    extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
-                    extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+              const json = await res.json().catch(() => null);
 
-                    const isPassportPattern = Boolean(extractedDocNumber && /^[A-Z][0-9]{6,9}$/i.test(extractedDocNumber));
-                    const docTypeIsPassport = Boolean(json.data.documentType?.toLowerCase().includes('passport') || scanSummary.toLowerCase().includes('passport'));
-                    if (isPassportPattern || docTypeIsPassport) {
-                      type = 'passport';
-                      if (!docReq || effectiveKey === 'vault_upload') {
-                        effectiveKey = 'statutory_passport';
-                        effectiveTitle = 'Valid Passport';
-                      }
-                      scanSummary = `Passport ${extractedDocNumber} verified. Consular record valid.`;
+              // Quality check rejection
+              if (json?.error === 'low_quality') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'quality',
+                  title: 'Low Quality Document Detected',
+                  message: json.message || `Low quality image detected for ${effectiveTitle}. Please upload at highest quality (clear 300 DPI scan or sharp photo).`,
+                  expectedType: effectiveTitle
+                });
+                return;
+              }
+
+              // Document mismatch rejection
+              if (json?.error === 'mismatched_document') {
+                setIsScanningVaultDoc(false);
+                setReplacingDocId(null);
+                setVaultUploadTargetReq(null);
+                vaultUploadTargetReqRef.current = null;
+                setVaultAlert({
+                  type: 'mismatch',
+                  title: `Document Mismatch: Not ${effectiveTitle}`,
+                  message: json.message || `Document mismatch detected. You uploaded a different document instead of ${effectiveTitle}. Please upload the requested ${effectiveTitle}.`,
+                  expectedType: effectiveTitle,
+                  detectedType: json.detectedType || 'other'
+                });
+                return;
+              }
+
+              if (res.ok && json?.success && json?.data) {
+                docOcrSuccess = true;
+                if (json.data.summary) scanSummary = json.data.summary;
+                const ext = json.data.extractedDetails || json.data.extracted;
+                if (ext) {
+                  extractedDocNumber = ext.documentNumber || ext.docNumber || '';
+                  if (ext.holderName || ext.fullName) extractedFullName = ext.holderName || ext.fullName;
+                  extractedDob = ext.dateOfBirth || ext.dob || '';
+                  extractedNationality = ext.nationality || extractedNationality;
+                  extractedSex = ext.sex || extractedSex;
+                  extractedPlaceOfBirth = ext.placeOfBirth || extractedPlaceOfBirth;
+                  extractedIssueDate = ext.dateOfIssue || ext.issueDate || extractedIssueDate;
+                  extractedExpiryDate = ext.dateOfExpiry || ext.expiryDate || '';
+
+                  const isPassportPattern = Boolean(extractedDocNumber && /^[A-Z][0-9]{6,9}$/i.test(extractedDocNumber));
+                  const docTypeIsPassport = Boolean(json.data.documentType?.toLowerCase().includes('passport') || scanSummary.toLowerCase().includes('passport'));
+                  if (isPassportPattern || docTypeIsPassport) {
+                    type = 'passport';
+                    if (!docReq || effectiveKey === 'vault_upload') {
+                      effectiveKey = 'statutory_passport';
+                      effectiveTitle = 'Valid Passport';
                     }
+                    scanSummary = `Passport ${extractedDocNumber} verified. Consular record valid.`;
+                    passportOcrSuccess = true;
                   }
                 }
               }
             } catch(e) {}
+          }
+
+          // Strict validation: If user was uploading for a specific requirement slot,
+          // reject if not verified rather than silently accepting fake/mismatched docs!
+          if (docReq) {
+            const isPassportSlot = effectiveKey.includes('passport') || effectiveTitle.toLowerCase().includes('passport') || type === 'passport';
+            const isVisaSlot = effectiveKey.includes('visa') || effectiveTitle.toLowerCase().includes('visa') || type === 'visa';
+
+            if (isPassportSlot && !passportOcrSuccess) {
+              setIsScanningVaultDoc(false);
+              setReplacingDocId(null);
+              setVaultUploadTargetReq(null);
+              vaultUploadTargetReqRef.current = null;
+              setVaultAlert({
+                type: 'mismatch',
+                title: 'Passport Verification Failed',
+                message: 'The uploaded file could not be verified as a valid passport. Please upload a clear photo or scan of your passport bio-data page.',
+                expectedType: 'Passport'
+              });
+              return;
+            }
+
+            if (isVisaSlot && !visaOcrSuccess) {
+              setIsScanningVaultDoc(false);
+              setReplacingDocId(null);
+              setVaultUploadTargetReq(null);
+              vaultUploadTargetReqRef.current = null;
+              setVaultAlert({
+                type: 'mismatch',
+                title: 'Visa Verification Failed',
+                message: 'The uploaded file could not be verified as an official visa document or grant letter. Please upload a valid visa document.',
+                expectedType: 'Visa Document'
+              });
+              return;
+            }
+
+            if (!passportOcrSuccess && !visaOcrSuccess && !docOcrSuccess && !extractedDocNumber) {
+              setIsScanningVaultDoc(false);
+              setReplacingDocId(null);
+              setVaultUploadTargetReq(null);
+              vaultUploadTargetReqRef.current = null;
+              setVaultAlert({
+                type: 'mismatch',
+                title: `${effectiveTitle} Verification Failed`,
+                message: `We could not verify that the uploaded file matches "${effectiveTitle}". Please upload the requested document in high quality.`,
+                expectedType: effectiveTitle
+              });
+              return;
+            }
           }
 
           if (!extractedDocNumber) {
@@ -676,8 +828,34 @@ export function useDocuments({
               passportCountry: selectedPassport
             })
           });
-          const json = await res.json();
-          if (json.success && json.data) {
+          const json = await res.json().catch(() => null);
+
+          // Quality check rejection
+          if (json?.error === 'low_quality') {
+            setScanningDocKey(null);
+            setVaultAlert({
+              type: 'quality',
+              title: 'Low Quality Document Detected',
+              message: json.message || `The uploaded document for ${docTitle} is low resolution or blurry. Please upload at highest quality (clear 300 DPI scan or sharp photo).`,
+              expectedType: docTitle
+            });
+            return;
+          }
+
+          // Document mismatch rejection
+          if (json?.error === 'mismatched_document') {
+            setScanningDocKey(null);
+            setVaultAlert({
+              type: 'mismatch',
+              title: `Document Mismatch: Not ${docTitle}`,
+              message: json.message || `Document mismatch detected. You uploaded a different document instead of ${docTitle}. Please upload the requested ${docTitle}.`,
+              expectedType: docTitle,
+              detectedType: json.detectedType || 'other'
+            });
+            return;
+          }
+
+          if (res.ok && json?.success && json?.data) {
             if (json.data.summary) scanSummary = json.data.summary;
             if (json.data.score) scanScore = json.data.score;
           }
@@ -718,6 +896,8 @@ export function useDocuments({
   return {
     documents,
     setDocuments,
+    vaultAlert,
+    setVaultAlert,
     vaultChecklistState,
     setVaultChecklistState,
     isScanningVaultDoc,

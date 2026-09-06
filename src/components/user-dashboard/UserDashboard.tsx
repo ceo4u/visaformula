@@ -175,6 +175,8 @@ export const UserDashboard: React.FC = () => {
                             setReplacingDocId={state.documents.setReplacingDocId}
                             vaultActionToast={state.documents.vaultActionToast}
                             setVaultActionToast={state.documents.setVaultActionToast}
+                            vaultAlert={state.documents.vaultAlert}
+                            setVaultAlert={state.documents.setVaultAlert}
 
                             vaultFileInputRef={state.documents.vaultFileInputRef}
                             replaceFileInputRef={state.documents.replaceFileInputRef}

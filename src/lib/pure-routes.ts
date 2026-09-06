@@ -6,6 +6,18 @@
  */
 
 import { cleanCountryName, isDestination, SCHENGEN_COUNTRIES, GCC_COUNTRIES } from './country-matching';
+import {
+  SPECIAL_REGIONS_DESTS,
+  applyDynamicRulesToRequirements,
+  FEE_UPDATES,
+  SCHENGEN_RULE,
+  GCC_COUNTRIES as SPEC_GCC_COUNTRIES,
+  GCC_RULE,
+  ASEAN_COUNTRIES,
+  ASEAN_RULE,
+  CARICOM_COUNTRIES,
+  CARICOM_RULE
+} from './special-regions-data';
 
 export interface StructuredVisaRequirements {
   passport_country: string;
@@ -280,6 +292,14 @@ export function normalizeCountry(str: string): string {
   if (s.includes('tuvalu') || s === 'tv') return 'tuvalu';
   if (s.includes('vanuatu') || s === 'vu') return 'vanuatu';
 
+  // ── SPECIAL REGIONS & TERRITORIES ──
+  if (s.includes('guam') || s === 'gu') return 'guam';
+  if (s.includes('virgin islands') || s === 'vi') return s.includes('british') ? 'british-virgin-islands' : 'us-virgin-islands';
+  if (s.includes('bermuda') || s === 'bm') return 'bermuda';
+  if (s.includes('cayman') || s === 'ky') return 'cayman-islands';
+  if (s.includes('gibraltar') || s === 'gi') return 'gibraltar';
+  if (s.includes('western sahara') || s === 'eh') return 'western-sahara';
+
   return s.replace(/\s+/g, '-');
 }
 
@@ -287,14 +307,14 @@ export const ORIGINS: string[] = [
   'afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'argentina',
   'armenia', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain',
   'bangladesh', 'barbados', 'belarus', 'belgium', 'belize', 'benin',
-  'bhutan', 'bolivia', 'bosnia', 'botswana', 'brazil', 'brunei',
+  'bermuda', 'bhutan', 'bolivia', 'bosnia', 'botswana', 'brazil', 'british-virgin-islands', 'brunei',
   'bulgaria', 'burkina-faso', 'burundi', 'cabo-verde', 'cambodia', 'cameroon',
-  'canada', 'car', 'chad', 'chile', 'china', 'colombia',
+  'canada', 'car', 'cayman-islands', 'chad', 'chile', 'china', 'colombia',
   'comoros', 'congo', 'costa-rica', 'croatia', 'cuba', 'cyprus',
   'czech-republic', 'denmark', 'djibouti', 'dominican-republic', 'drc', 'ecuador',
   'egypt', 'el-salvador', 'equatorial-guinea', 'eritrea', 'estonia', 'eswatini',
   'ethiopia', 'fiji', 'finland', 'france', 'gabon', 'gambia',
-  'georgia', 'germany', 'ghana', 'greece', 'guatemala', 'guinea',
+  'georgia', 'germany', 'ghana', 'gibraltar', 'greece', 'guam', 'guatemala', 'guinea',
   'guinea-bissau', 'guyana', 'haiti', 'honduras', 'hong-kong', 'hungary',
   'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland',
   'israel', 'italy', 'ivory-coast', 'jamaica', 'japan', 'jordan',
@@ -314,8 +334,8 @@ export const ORIGINS: string[] = [
   'sri-lanka', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria',
   'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo',
   'tonga', 'trinidad', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu',
-  'uae', 'uganda', 'uk', 'ukraine', 'uruguay', 'usa',
-  'uzbekistan', 'vanuatu', 'vatican-city', 'venezuela', 'vietnam', 'yemen',
+  'uae', 'uganda', 'uk', 'ukraine', 'uruguay', 'usa', 'us-virgin-islands',
+  'uzbekistan', 'vanuatu', 'vatican-city', 'venezuela', 'vietnam', 'western-sahara', 'yemen',
   'zambia', 'zimbabwe',
 ];
 
@@ -326,23 +346,24 @@ export function isPureRoute(from: string): boolean {
 }
 
 export function getPureRouteData(from: string, to: string, purpose: string = 'Tourism'): any {
+  const normFrom = normalizeCountry(from);
+  const normTo = normalizeCountry(to);
   const p = (purpose || 'tourism').toLowerCase();
+  let result: any = null;
   if (p.includes('student') || p.includes('study') || p.includes('education')) {
-    return resolvePureRouteStudent(from, to);
+    result = resolvePureRouteStudent(from, to);
+  } else if (p.includes('work') || p.includes('job') || p.includes('employment')) {
+    result = resolvePureRouteWork(from, to);
+  } else if (p.includes('business')) {
+    result = resolvePureRouteBusiness(from, to);
+  } else if (p.includes('pr') || p.includes('permanent')) {
+    result = resolvePureRoutePR(from, to);
+  } else if (p.includes('family') || p.includes('spouse')) {
+    result = resolvePureRouteFamily(from, to);
+  } else {
+    result = resolvePureRouteTourism(from, to);
   }
-  if (p.includes('work') || p.includes('job') || p.includes('employment')) {
-    return resolvePureRouteWork(from, to);
-  }
-  if (p.includes('business')) {
-    return resolvePureRouteBusiness(from, to);
-  }
-  if (p.includes('pr') || p.includes('permanent')) {
-    return resolvePureRoutePR(from, to);
-  }
-  if (p.includes('family') || p.includes('spouse')) {
-    return resolvePureRouteFamily(from, to);
-  }
-  return resolvePureRouteTourism(from, to);
+  return result ? applyDynamicRulesToRequirements(result, normFrom, normTo) : null;
 }
 
 
@@ -366,11 +387,48 @@ export function isGCCMember(slug: string): boolean {
 // ═══════════════════════════════════════════════════════════════════════════════
 // 1. PURE ROUTE TOURISM RESOLVER
 // ═══════════════════════════════════════════════════════════════════════════════
-export function resolvePureRouteTourism(fromRaw: string, toRaw: string): StructuredVisaRequirements | null {
+function resolvePureRouteTourismInternal(fromRaw: string, toRaw: string): StructuredVisaRequirements | null {
   const from = normalizeCountry(fromRaw);
   const to = normalizeCountry(toRaw);
   const fromName = cleanCountryName(fromRaw);
   const toName = cleanCountryName(toRaw);
+
+  // 0. SPECIAL DESTINATIONS (Microstates, Pacific Islands, Disputed, Special Regions)
+  if (SPECIAL_REGIONS_DESTS[to]) {
+    const spec = SPECIAL_REGIONS_DESTS[to];
+    const isExempt = spec.overview.toLowerCase().includes('visa-free') || ['andorra', 'monaco', 'san-marino', 'vatican-city', 'fiji', 'samoa', 'tonga', 'vanuatu', 'tuvalu', 'palau', 'micronesia', 'hong-kong', 'macau'].includes(to);
+    return {
+      passport_country: fromName,
+      destination_country: toName,
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: isExempt ? `${toName} Visa-Free Entry` : `${toName} Tourist Visa`,
+      source_url: `https://www.google.com/search?q=${encodeURIComponent(toName + ' visa requirements for ' + fromName + ' citizens')}`,
+      official_source_name: spec.official_source,
+      overview: spec.overview,
+      highlights: spec.highlights,
+      how_to_apply: spec.steps,
+      documents_required: spec.documents,
+      costs: spec.fees,
+      processing_time: spec.processing_time || spec.proc_time || 'Instant on Arrival',
+      processing_time_details: spec.processing_time_details || spec.proc_details || 'Standard border processing.',
+      other_requirements: spec.requirements,
+      financial_proofs: [
+        { type: 'Credit Cards / Funds', minimum_balance_or_amount: 'Sufficient funds for duration of trip', time_frame: 'Valid cards', notes: 'Proof of economic solvency.' }
+      ],
+      faqs: spec.faqs,
+      validity: spec.validity,
+      validity_details: `Standard tourist validity: ${spec.validity}`,
+      stay_duration: spec.stay_duration,
+      stay_duration_details: `Maximum permitted stay per entry: ${spec.stay_duration}`,
+      entry_type: spec.entry_type,
+      entry_type_details: `${spec.entry_type} entry`,
+      validity_and_stay: {
+        visa_validity: spec.validity,
+        max_stay_per_entry: spec.stay_duration,
+        entry_type: spec.entry_type
+      }
+    };
+  }
 
   // 1. USA -> UK
   if (from === 'usa' && to === 'uk') {
@@ -1396,6 +1454,14 @@ export function resolvePureRouteTourism(fromRaw: string, toRaw: string): Structu
   }
 
   return null;
+}
+
+export function resolvePureRouteTourism(fromRaw: string, toRaw: string): StructuredVisaRequirements | null {
+  const res = resolvePureRouteTourismInternal(fromRaw, toRaw);
+  if (!res) return null;
+  const from = normalizeCountry(fromRaw);
+  const to = normalizeCountry(toRaw);
+  return applyDynamicRulesToRequirements(res, from, to);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

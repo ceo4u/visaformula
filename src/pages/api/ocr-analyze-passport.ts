@@ -283,33 +283,54 @@ export const POST: APIRoute = async ({ request }) => {
     const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '').trim();
 
     const prompt = `You are the Lead Consular Passport Verification & Biometric OCR Engine for TravlTik.
-Analyze this uploaded passport bio-data page image with 100% precision.
-This can be a passport from ANY country in the world (e.g. India, United States, United Kingdom, Canada, Australia, European Union / Schengen countries, UAE, Singapore, Japan, Nepal, Bangladesh, Philippines, etc.).
+Analyze this uploaded document image with 100% precision.
 
-Extract:
+CRITICAL SECURITY INSPECTION - MANDATORY 3-STEP AUDIT:
+
+STEP 1: DOCUMENT TYPE CLASSIFICATION & VALIDATION
+Determine the EXACT type of document shown in the image:
+- "passport": An official national passport booklet bio-data page with bearer photo, passport booklet background/stitching, nationality, and 2-line ICAO Doc 9303 MRZ lines at the bottom.
+- "visa": A consular visa sticker, electronic visa (eVisa PDF/grant letter), consular entry permit (e.g. Indian Tourist Visa, US B1/B2 Visa, Canada Study Permit, Australian Visa, Schengen Visa). NOTE: A visa sticker or eVisa is NOT a passport bio-page!
+- "national_id": National identity card (Aadhaar, Citizen ID, PAN card, voter ID, driving license, state ID).
+- "educational": Degree certificate, university marksheet, academic diploma, transcript.
+- "financial": Bank statement, salary payslip, ITR, tax receipt.
+- "other": Unrelated photo, selfie, random paper, or unidentifiable document.
+
+STEP 2: IMAGE RESOLUTION & LEGIBILITY AUDIT
+Evaluate visual clarity and quality:
+- "imageQuality": "high" | "medium" | "low"
+- "isBlurryOrLowQuality": boolean (true if image is blurry, out of focus, low-resolution, glare-obscured, text is illegible, or difficult to read)
+- "qualityFeedback": string explaining clarity, resolution, or illegibility issues if any.
+
+STEP 3: EXTRACT PASSPORT DATA (ONLY IF THE DOCUMENT IS ACTUALLY A PASSPORT):
 1. Surname / Family Name / Nom (as printed on passport)
 2. Given Name(s) / Prénoms (as printed on passport)
-3. Full Name (Format properly: Given Name(s) followed by Surname, e.g. "ARJUN KUMAR SHARMA" or "JOHN EDWARD DOE")
-4. Passport Number / Numéro de passeport (Official document number, e.g. "X1234567")
-5. Nationality (Issuing country full name, e.g. "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", etc.)
-6. Date of Birth (format strictly as YYYY-MM-DD, e.g. "2002-07-15")
+3. Full Name (Given Name(s) followed by Surname)
+4. Passport Number / Numéro de passeport
+5. Nationality (Issuing country full name, e.g. "India", "United States", "United Kingdom", "Canada", etc.)
+6. Date of Birth (strictly YYYY-MM-DD)
 7. Sex (strictly "M" or "F")
-8. Place of Birth (city, state, or country as printed, e.g. "HYDERABAD, TELANGANA" or "CHENNAI, TAMIL NADU" or "NEW YORK")
-9. Place of Issue (as printed on passport, e.g. "HYDERABAD" or "DELHI")
-10. Date of Issue (format strictly as YYYY-MM-DD, e.g. "2024-05-20")
-11. Date of Expiry (format strictly as YYYY-MM-DD, e.g. "2034-05-19")
-12. Exact 2-line ICAO Doc 9303 MRZ lines visible at the bottom:
+8. Place of Birth
+9. Place of Issue
+10. Date of Issue (strictly YYYY-MM-DD)
+11. Date of Expiry (strictly YYYY-MM-DD)
+12. 2-line ICAO Doc 9303 MRZ lines:
     mrzLine1 (starts with P<)
     mrzLine2 (starts with passport number and contains dates)
 
-CRITICAL INSTRUCTIONS:
-- Passports from different nations format dates differently (e.g. DD/MM/YYYY, DD MMM YYYY, MM/DD/YYYY, bilingual "15 JUL / JUIL 2024").
-- You MUST standardize ALL extracted dates (Date of Birth, Date of Issue, Date of Expiry) strictly to ISO format: YYYY-MM-DD.
-- Carefully check both the visual inspection text on the passport AND the bottom 2-line Machine Readable Zone (MRZ). The MRZ contains accurate dates in YYMMDD format.
-- Do NOT output placeholder or dummy names. Extract the exact text from the image.
+CRITICAL RULES:
+- If the image is a Visa (e.g. contains "VISA", "TOURIST VISA", "VISA TYPE", "VALID UNTIL", "ENTRY PERMIT", "GOVERNMENT OF INDIA / VISA"), you MUST set "detectedDocumentType": "visa" and "isPassport": false.
+- If the image is blurry, low-res, or text cannot be deciphered clearly, you MUST set "isBlurryOrLowQuality": true and "imageQuality": "low".
+- Do NOT output placeholder or dummy values.
 
 Return ONLY valid JSON matching this schema:
 {
+  "detectedDocumentType": "passport" | "visa" | "national_id" | "educational" | "financial" | "other",
+  "isPassport": true | false,
+  "imageQuality": "high" | "medium" | "low",
+  "isBlurryOrLowQuality": true | false,
+  "qualityFeedback": "...",
+  "mismatchMessage": "...",
   "surname": "...",
   "givenName": "...",
   "fullName": "...",
@@ -374,13 +395,47 @@ Return ONLY valid JSON matching this schema:
       return new Response(
         JSON.stringify({
           success: false,
-          error: 'Could not extract structured data from passport image. Please provide a clear, well-lit photo of the passport bio-data page.'
+          error: 'unreadable',
+          message: 'Could not extract structured data from passport image. Please provide a clear, well-lit photo of your passport bio-data page.'
         }),
         { status: 422, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     const parsed = JSON.parse(jsonMatch[0]);
+
+    // Quality check rejection
+    if (parsed.isBlurryOrLowQuality || parsed.imageQuality === 'low') {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'low_quality',
+          message: parsed.qualityFeedback || 'Low quality image detected! The image is blurry, low resolution, or unreadable. Please upload at the highest quality (clear 300 DPI scan or sharp photo with readable text).'
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Document mismatch rejection
+    const isActuallyPassport = parsed.isPassport === true && parsed.detectedDocumentType === 'passport';
+    if (!isActuallyPassport) {
+      const detectedLabel = parsed.detectedDocumentType === 'visa' ? 'Visa Document (Visa Sticker / eVisa)'
+        : parsed.detectedDocumentType === 'national_id' ? 'National ID Card (Aadhaar / Citizen ID)'
+        : parsed.detectedDocumentType === 'educational' ? 'Educational Document'
+        : parsed.detectedDocumentType === 'financial' ? 'Income / Financial Proof'
+        : 'different document type';
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'mismatched_document',
+          detectedType: parsed.detectedDocumentType || 'other',
+          expectedType: 'passport',
+          message: `Document Mismatch: You uploaded a ${detectedLabel} instead of a Passport. Please upload your original Passport booklet bio-data page.`
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Cross-verify with MRZ lines if available
     const mrzParsed = parseMRZLines(parsed.mrzLine1 || '', parsed.mrzLine2 || '');

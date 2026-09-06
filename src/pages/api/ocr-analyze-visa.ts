@@ -82,17 +82,41 @@ export const POST: APIRoute = async ({ request }) => {
         // Strip data URL header if present (handles images, PDFs, etc.)
         const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '').trim();
 
-        const prompt = `You are a high-accuracy government visa document and passport OCR engine.
-Analyze this uploaded visa sticker / grant letter image with 100% precision.
+        const prompt = `You are the Lead Consular Visa Verification & Optical Character Recognition (OCR) Engine for TravlTik.
+Analyze this uploaded document image with 100% precision.
+
+CRITICAL SECURITY INSPECTION - MANDATORY 3-STEP AUDIT:
+
+STEP 1: DOCUMENT TYPE CLASSIFICATION & VALIDATION
+Determine the EXACT type of document shown in the image:
+- "visa": An official consular visa sticker (pasted inside a passport), an electronic visa (eVisa PDF), visa grant notice letter, or official government entry permit (e.g. Indian Tourist Visa, US B1/B2 Visa, Canada Study Permit, Australia Subclass 500, UK Standard Visitor Visa, Schengen Visa).
+- "passport": An original national passport booklet bio-data page (with passport holder photo, passport booklet background, and ICAO MRZ lines). NOTE: A passport bio-page is NOT a visa document!
+- "national_id": A national identity card (Aadhaar, Citizen ID, PAN card, voter ID, driving license).
+- "educational": Degree certificate, diploma, marksheet, transcript.
+- "financial": Bank account statement, payslip, tax document.
+- "other": Any other document, selfie, or unidentifiable image.
+
+STEP 2: IMAGE RESOLUTION & LEGIBILITY AUDIT
+Evaluate visual clarity and quality:
+- "imageQuality": "high" | "medium" | "low"
+- "isBlurryOrLowQuality": boolean (true if image is blurry, out of focus, low-resolution, glare-obscured, or text is unreadable)
+- "qualityFeedback": string explaining clarity, resolution, or illegibility issues if any.
+
+STEP 3: EXTRACT VISA DATA (ONLY IF THE DOCUMENT IS ACTUALLY A VISA):
 Extract every single field and return ONLY valid JSON without markdown wrapping:
 {
+  "detectedDocumentType": "visa" | "passport" | "national_id" | "educational" | "financial" | "other",
+  "isVisa": true | false,
+  "imageQuality": "high" | "medium" | "low",
+  "isBlurryOrLowQuality": true | false,
+  "qualityFeedback": "...",
   "issuingCountry": "Exact country issuing the visa (e.g. India, United States, Canada, United Kingdom, Australia, Germany, UAE, etc.)",
   "destination": "Destination Country matching the visa",
-  "passportCountry": "Bearer's citizenship/nationality (e.g. Australia, India, United States, United Kingdom, Canada, etc.)",
+  "passportCountry": "Bearer's citizenship/nationality",
   "bearerName": "Full name of bearer as written on visa/MRZ",
   "passportNumber": "Passport number if present",
   "visaNumber": "Visa / Document number (e.g. VJ9CHC0C or similar)",
-  "visaType": "Full visa type/subclass (e.g. Indian Tourist Visa, Canada Study Permit, Australia Subclass 500, etc.)",
+  "visaType": "Full visa type/subclass (e.g. Indian Tourist Visa, Canada Study Permit, Australia Subclass 500, US B1/B2)",
   "grantDate": "YYYY-MM-DD format (convert from DD/MM/YYYY or text)",
   "expiryDate": "YYYY-MM-DD format (convert from DD/MM/YYYY or text)",
   "entries": "Single, Double, or Multiple",
@@ -100,14 +124,14 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
   "workRights": "Permitted work entitlement or prohibition",
   "healthCover": "Applicable healthcare insurance requirement",
   "conditions": [
-    "Array of 3 to 5 exact statutory conditions, endorsements, or restrictions printed on the visa (e.g. 'Change of Purpose Not Allowed', 'Tourist Visa Non-Extendable', 'Condition 8105', etc.)"
+    "Array of 3 to 5 exact statutory conditions, endorsements, or restrictions printed on the visa"
   ]
 }`;
 
         let response: any = null;
         try {
           response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-2.5-flash',
             contents: [
               {
                 role: 'user',
@@ -125,7 +149,7 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
           });
         } catch (f35Err) {
           response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.5-flash-lite',
             contents: [
               {
                 role: 'user',
@@ -147,6 +171,40 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
         const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[0]);
+
+          // Quality check rejection
+          if (parsed.isBlurryOrLowQuality || parsed.imageQuality === 'low') {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: 'low_quality',
+                message: parsed.qualityFeedback || 'Low quality image detected! The image is blurry, low resolution, or unreadable. Please upload your Visa Document at the highest quality (clear 300 DPI scan or sharp photo with readable text).'
+              }),
+              { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+          }
+
+          // Document mismatch rejection
+          const isActuallyVisa = parsed.isVisa === true && parsed.detectedDocumentType === 'visa';
+          if (!isActuallyVisa) {
+            const detectedLabel = parsed.detectedDocumentType === 'passport' ? 'Passport booklet bio-data page'
+              : parsed.detectedDocumentType === 'national_id' ? 'National ID Card (Aadhaar / Citizen ID)'
+              : parsed.detectedDocumentType === 'educational' ? 'Educational Document'
+              : parsed.detectedDocumentType === 'financial' ? 'Income / Financial Proof'
+              : 'different document type';
+
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: 'mismatched_document',
+                detectedType: parsed.detectedDocumentType || 'other',
+                expectedType: 'visa',
+                message: `Document Mismatch: You uploaded a ${detectedLabel} instead of a Visa Document. Please upload your official Visa sticker, eVisa PDF, or grant letter.`
+              }),
+              { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+          }
+
           return new Response(
             JSON.stringify({
               success: true,
@@ -165,41 +223,19 @@ Extract every single field and return ONLY valid JSON without markdown wrapping:
       }
     }
 
-    // High-Precision Fallback Parser (e.g. Indian Visa, Canada, US, UK, Australia)
-    // Check if filename or image features match Indian Tourist Visa (as in user screenshot)
     return new Response(
       JSON.stringify({
-        success: true,
-        source: 'smart_mrz_fallback',
-        data: {
-          issuingCountry: 'Republic of India',
-          destination: 'India',
-          passportCountry: 'Australia',
-          bearerName: 'CHANG ANTHONY SHU JEN',
-          passportNumber: 'PUP10408',
-          visaNumber: 'VJ9CHC0C',
-          visaType: 'Indian Tourist Visa (Single Entry - VJ9CHC0C)',
-          grantDate: '2016-12-27',
-          expiryDate: '2017-06-26',
-          entries: 'Single Entry',
-          issuingAuthority: 'Republic of India / Ministry of Home Affairs',
-          workRights: 'No employment or business permitted under Tourist category',
-          healthCover: 'Mandatory International Travel & Visitor Health Cover',
-          conditions: [
-            'Change of Purpose Not Allowed (प्रयोजन बदलने की अनुमति नहीं है)',
-            'Tourist Visa Non-Extendable (पर्यटक वीजा गैर-विस्तारणीय)',
-            'Single entry valid for travel prior to 26/06/2017',
-            'Unauthorized study or business employment is strictly prohibited'
-          ]
-        }
+        success: false,
+        error: 'unrecognized_visa',
+        message: 'Could not detect an official Visa Document from this image. Please upload a clear, high-quality scan or photo of your Visa sticker, electronic visa (eVisa PDF), or entry permit.'
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
 
   } catch (err: any) {
     console.error('[API /api/ocr-analyze-visa] Error:', err);
     return new Response(
-      JSON.stringify({ success: false, error: 'Failed to analyze visa image.' }),
+      JSON.stringify({ success: false, error: 'Failed to analyze visa image. Please provide a clear, high-resolution document.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

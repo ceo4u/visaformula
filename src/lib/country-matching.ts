@@ -20,6 +20,9 @@ export function cleanCountryName(str: string): string {
   if (sLow === 'jp' || sLow === 'japan' || sLow === 'japanese') return 'Japan';
   if (sLow === 'ro' || sLow === 'romania' || sLow === 'romanian') return 'Romania';
   if (sLow === 'om' || sLow === 'oman' || sLow === 'omani') return 'Oman';
+  if (sLow.includes('us-virgin') || sLow.includes('us virgin') || sLow === 'vi') return 'U.S. Virgin Islands';
+  if (sLow.includes('british-virgin') || sLow.includes('british virgin') || sLow === 'vg') return 'British Virgin Islands';
+  if (sLow === 'hk' || sLow.includes('hong kong') || sLow.includes('hong-kong')) return 'Hong Kong';
   
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }

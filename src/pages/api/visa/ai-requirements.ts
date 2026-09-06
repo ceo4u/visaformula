@@ -64,6 +64,24 @@ import {
   getWorkOfficialSourceName,
   getWorkVisaData
 } from '../../../lib/work-visa';
+import {
+  getBusinessOverview,
+  getBusinessHighlights,
+  getBusinessDocuments,
+  getBusinessSteps,
+  getBusinessVisaSteps,
+  getBusinessFees,
+  getBusinessProcessingTime,
+  getBusinessProcessingDetails,
+  getBusinessRequirements,
+  getBusinessFinancialProofs,
+  getBusinessFAQ,
+  getBusinessValidity,
+  getBusinessStayDuration,
+  getBusinessEntryType,
+  getBusinessOfficialSourceName,
+  getBusinessVisaData
+} from '../../../lib/business-visa';
 
 export {
   normalizeCountry,
@@ -115,7 +133,23 @@ export {
   getWorkStayDuration,
   getWorkEntryType,
   getWorkOfficialSourceName,
-  getWorkVisaData
+  getWorkVisaData,
+  getBusinessOverview,
+  getBusinessHighlights,
+  getBusinessDocuments,
+  getBusinessSteps,
+  getBusinessVisaSteps,
+  getBusinessFees,
+  getBusinessProcessingTime,
+  getBusinessProcessingDetails,
+  getBusinessRequirements,
+  getBusinessFinancialProofs,
+  getBusinessFAQ,
+  getBusinessValidity,
+  getBusinessStayDuration,
+  getBusinessEntryType,
+  getBusinessOfficialSourceName,
+  getBusinessVisaData
 };
 
 export const prerender = false;
@@ -6236,6 +6270,22 @@ export const POST: APIRoute = async ({ request }) => {
         success: true,
         data: sanitizeCurrencyCodes(workData as any),
         source: 'consular-work-pipeline',
+        verification_status: 'verified',
+        is_v3_verified: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const isBusiness = purposeLower.includes('business') || purposeLower.includes('corporate') || purposeLower.includes('commercial') || purposeLower.includes('meeting') || purposeLower.includes('conference') || purposeLower.includes('negotiation') || purposeLower.includes('b-1') || purposeLower.includes('b1') || purposeLower.includes('m-visa') || purposeLower.includes('m visa');
+
+    if (isBusiness) {
+      const businessData = getBusinessVisaData(fromCountry, toCountry, purpose);
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(businessData as any),
+        source: 'consular-business-pipeline',
         verification_status: 'verified',
         is_v3_verified: true
       }), {
